@@ -7420,8 +7420,89 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         variation_id: 'hub_return_v1'
       }
     ],
-    choices: [],
+    choices: [
+      {
+        choiceId: 'offer_quiet_hour',
+        text: "[Patience] Samuel, you seem quieter than usual. Something weighing on you?",
+        nextNodeId: 'samuel_loyalty_trigger',
+        pattern: 'patience',
+        skills: ['activeListening', 'empathy'],
+        visibleCondition: {
+          trust: { min: 8 },
+          patterns: { patience: { min: 5 } },
+          hasGlobalFlags: ['samuel_farewell_complete']
+        }
+      }
+    ],
     tags: ['farewell']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // LOYALTY EXPERIENCE: THE QUIET HOUR
+  // Requires: Trust >= 8, Patience >= 50%, samuel_farewell_complete
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'samuel_loyalty_trigger',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "It's platform seven.\n\nThere's a young man there. Twenty-two. Engineering degree, three job offers, can't decide between any of them. Paralyzed by the weight of choosing wrong.\n\nHe's been sitting on that bench for six hours. Not reading. Not scrolling. Just staring at the tracks.\n\nI've watched a thousand passengers wrestle with choice. But this one... something about him reminds me of myself at that age. The fear that one wrong turn ruins everything.\n\nHe doesn't need advice. He needs someone to sit with him. To make the silence less heavy.\n\nYou understand patience. Would you... sit with him? Just for an hour. Let him know he's not alone in the uncertainty?",
+      emotion: 'vulnerable_warm',
+      variation_id: 'loyalty_trigger_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      patterns: { patience: { min: 5 } },
+      hasGlobalFlags: ['samuel_farewell_complete']
+    },
+    metadata: {
+      experienceId: 'the_quiet_hour'
+    },
+    choices: [
+      {
+        choiceId: 'accept_quiet_hour',
+        text: "I'll sit with him.",
+        nextNodeId: 'samuel_loyalty_start',
+        pattern: 'patience'
+      },
+      {
+        choiceId: 'decline_quiet_hour',
+        text: "I'm not sure I'm the right person for that.",
+        nextNodeId: 'samuel_loyalty_declined'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_loyalty_declined',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "That's okay. Not everyone's ready to hold space for someone else's silence.\n\nThe offer stands if you change your mind.",
+      emotion: 'understanding',
+      variation_id: 'loyalty_declined_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'return_to_hub',
+        text: "Thank you for understanding.",
+        nextNodeId: 'samuel_hub_return'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_loyalty_start',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "Platform seven. The bench by the schedule board.\n\nDon't try to fix him. Don't rush him. Just... be there.\n\nSometimes that's all someone needs.",
+      emotion: 'warm_grateful',
+      variation_id: 'loyalty_start_v1'
+    }],
+    onEnter: [
+      { characterId: 'samuel', addKnowledgeFlags: ['samuel_loyalty_accepted'] }
+    ],
+    choices: []
   }
 ]
 

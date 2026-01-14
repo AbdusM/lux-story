@@ -901,9 +901,89 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'nadia_exploration_hub',
         pattern: 'patience',
         skills: ['curiosity']
+      },
+      {
+        choiceId: 'offer_whiteboard',
+        text: "[Analyst] Nadia, you look like you're wrestling with a problem. Need a second perspective?",
+        nextNodeId: 'nadia_loyalty_trigger',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'problemSolving'],
+        visibleCondition: {
+          trust: { min: 8 },
+          patterns: { analytical: { min: 5 } },
+          hasGlobalFlags: ['nadia_arc_complete']
+        }
       }
     ],
     tags: ['nadia_arc', 'hub', 'navigation']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // LOYALTY EXPERIENCE: THE WHITEBOARD
+  // Requires: Trust >= 8, Analytical >= 50%, nadia_arc_complete
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'nadia_loyalty_trigger',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "There's a presentation in two hours. Policy briefing for the Ethics Board.\n\nThey asked me to explain algorithmic bias in twenty minutes. Make it simple. Make it actionable. Don't get too technical.\n\nI've been staring at this whiteboard for three days. Every framework I try feels either too abstract to matter or too watered-down to be honest.\n\nHow do I explain that bias isn't a bug to fix—it's a structural property of how we build these systems? That real accountability requires redesigning incentives, not adding a fairness module?\n\nThey want a solution. I have a diagnosis. And I don't know how to bridge that gap without lying.\n\nYou understand systems thinking. Would you... help me work through this? Figure out what can actually be said in twenty minutes that's both true and useful?",
+      emotion: 'frustrated_determined',
+      variation_id: 'loyalty_trigger_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      patterns: { analytical: { min: 5 } },
+      hasGlobalFlags: ['nadia_arc_complete']
+    },
+    metadata: {
+      experienceId: 'the_whiteboard'
+    },
+    choices: [
+      {
+        choiceId: 'accept_whiteboard',
+        text: "Let's break it down together.",
+        nextNodeId: 'nadia_loyalty_start',
+        pattern: 'analytical'
+      },
+      {
+        choiceId: 'decline_whiteboard',
+        text: "That sounds like your expertise, not mine.",
+        nextNodeId: 'nadia_loyalty_declined'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_loyalty_declined',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "Fair. Not everyone wants to spend their afternoon arguing with a whiteboard.\n\nI'll figure it out. I always do.",
+      emotion: 'understanding',
+      variation_id: 'loyalty_declined_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'return_to_hub',
+        text: "Good luck with the presentation.",
+        nextNodeId: 'nadia_return_hub'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_loyalty_start',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "Terminal B. Conference room with the giant whiteboard.\n\nBring coffee. This is going to take the full two hours.\n\nAnd thank you. For being willing to sit in the complexity with me.",
+      emotion: 'warm_grateful',
+      variation_id: 'loyalty_start_v1'
+    }],
+    onEnter: [
+      { characterId: 'nadia', addKnowledgeFlags: ['nadia_loyalty_accepted'] }
+    ],
+    choices: []
   },
 
   // ============= ADDITIONAL DEPTH NODES =============
@@ -973,6 +1053,11 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         variation_id: 'nadia_both_v1',
         text: "[Nadia stares at you. Then laughs—a real laugh, surprised out of her.]\n\nBoth. Vigilance.\n\nI never thought of it that way. The person who could ship harmful code and the person who's haunted by it—same person. The haunting is what keeps me careful.\n\nIf I ever stop being haunted... that's when I should worry.\n\nThank you. Genuinely. That reframe helps.",
         emotion: 'moved'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['nadia_arc_complete']
       }
     ],
     choices: [
@@ -1106,7 +1191,454 @@ export const nadiaDialogueNodes: DialogueNode[] = [
   { nodeId: 'nadia_technical_path', speaker: 'Nadia Chen', content: [{ text: "Technical skills got me here. But the real work is translation—explaining why bias matrices matter to people who just want the product to ship.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Translation is key.", nextNodeId: 'nadia_hub_return', pattern: 'analytical' }], tags: ['stub'] },
   { nodeId: 'nadia_terrifying_truth', speaker: 'Nadia Chen', content: [{ text: "The terrifying truth? Most AI systems deployed today have never been audited for bias. We're running an experiment on society.", emotion: 'troubled', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "That is terrifying.", nextNodeId: 'nadia_hub_return', pattern: 'analytical' }], tags: ['stub'] },
   { nodeId: 'nadia_translation_skill', speaker: 'Nadia Chen', content: [{ text: "Translation between technical and human is my superpower. Making the invisible visible, the abstract concrete.", emotion: 'confident', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Making it real.", nextNodeId: 'nadia_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'nadia_vigilance_methods', speaker: 'Nadia Chen', content: [{ text: "Vigilance methods: audit trails, red teams, diverse testing groups, sunset clauses. Technical solutions for human problems.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Practical safeguards.", nextNodeId: 'nadia_hub_return', pattern: 'building' }], tags: ['stub'] }
+  { nodeId: 'nadia_vigilance_methods', speaker: 'Nadia Chen', content: [{ text: "Vigilance methods: audit trails, red teams, diverse testing groups, sunset clauses. Technical solutions for human problems.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Practical safeguards.", nextNodeId: 'nadia_hub_return', pattern: 'building' }], tags: ['stub'] },
+
+  // ============= PHASE 1 SIMULATION: BIAS DETECTION (Trust ≥ 2) =============
+  {
+    nodeId: 'nadia_simulation_phase1_setup',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "I want to show you something.\n\nIt's a hiring AI. Resume screening. Supposed to be neutral, efficient, fair.\n\nBut I've been auditing it. And there's a pattern in who it rejects. Not explicit. Not intentional. But consistent.\n\nWant to help me find the bias?",
+      emotion: 'focused_concerned',
+      variation_id: 'simulation_phase1_intro_v1'
+    }],
+    requiredState: {
+      trust: { min: 2 }
+    },
+    choices: [
+      {
+        choiceId: 'phase1_accept',
+        text: "Let's audit it together.",
+        nextNodeId: 'nadia_simulation_phase1',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'phase1_decline',
+        text: "Maybe another time.",
+        nextNodeId: 'nadia_exploration_hub',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['simulation', 'nadia_arc']
+  },
+
+  {
+    nodeId: 'nadia_simulation_phase1',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "Here's the data. Find the hidden bias.",
+      emotion: 'focused',
+      variation_id: 'simulation_phase1_v1'
+    }],
+    simulation: {
+      type: 'data_analysis',
+      title: 'Bias Detection: Hidden Patterns',
+      taskDescription: 'A hiring AI claims to be fair, but rejection rates vary by demographic group. Analyze the data to identify the source of bias.',
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'nadia_bias_detection_phase1',
+      initialContext: {
+        label: 'HIRING_AI_AUDIT',
+        content: `RESUME SCREENING AI - 6 Month Analysis
+
+OVERALL METRICS:
+- Total applicants: 10,000
+- Accepted: 4,200 (42%)
+- Rejected: 5,800 (58%)
+
+DEMOGRAPHIC BREAKDOWN:
+Group A: 45% acceptance rate
+Group B: 38% acceptance rate
+
+AI TRAINING DATA:
+- Historical hires from 2015-2020
+- Skills keywords weighted heavily
+- "Culture fit" signals included
+
+REJECTION PATTERNS:
+- Group B resumes flagged for "non-traditional backgrounds"
+- Career gaps weighted as negative signals
+- University prestige heavily weighted
+
+QUESTION: What's the root cause of bias?
+A) The AI algorithm itself is flawed
+B) The training data reflects historical discrimination
+C) The "culture fit" criteria is subjective
+D) Career gap penalties disadvantage caregivers`,
+        displayStyle: 'code'
+      },
+      successFeedback: '✓ ROOT CAUSE: Option B - Training data bias. The AI learned discrimination from historical hiring patterns (2015-2020). Garbage in, garbage out.',
+      successThreshold: 75,
+      unlockRequirements: {
+        trustMin: 2
+      }
+    },
+    choices: [
+      {
+        choiceId: 'phase1_success',
+        text: "The training data encoded historical bias.",
+        nextNodeId: 'nadia_simulation_phase1_success',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'dataLiteracy']
+      }
+    ],
+    onEnter: [{
+      characterId: 'nadia',
+      addKnowledgeFlags: ['nadia_simulation_phase1_complete']
+    }],
+    tags: ['simulation', 'phase1']
+  },
+
+  {
+    nodeId: 'nadia_simulation_phase1_success',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "Yes. Exactly.\n\nThe AI isn't racist. It doesn't have beliefs. But it learned from a world that does.\n\nWe fed it five years of hiring decisions made by humans. Humans with blind spots. With assumptions. With structural biases they didn't even know they carried.\n\nAnd the AI? It optimized for that pattern. It became a perfect mirror of our imperfection.\n\nThat's what people don't understand. AI doesn't create bias. It reveals it. Amplifies it. Makes it systematic.",
+      emotion: 'passionate_vindicated',
+      variation_id: 'phase1_success_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'phase1_success_continue',
+        text: "So fixing AI means fixing ourselves.",
+        nextNodeId: 'nadia_exploration_hub',
+        pattern: 'analytical',
+        skills: ['systemsThinking'],
+        consequence: {
+          characterId: 'nadia',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['simulation', 'success']
+  },
+
+  {
+    nodeId: 'nadia_simulation_phase1_fail',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "That's a symptom, not the cause.\n\nThe algorithm is doing exactly what it was trained to do. The problem is deeper.\n\nWe gave it data from the past. From a world with hiring discrimination, career penalties for caregivers, prestige bias.\n\nThe AI learned to be efficient at replicating that world. It's a mirror, not a monster.",
+      emotion: 'patient_teaching',
+      variation_id: 'phase1_fail_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'phase1_fail_continue',
+        text: "The data carries the bias forward.",
+        nextNodeId: 'nadia_exploration_hub',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'nadia',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'fail']
+  },
+
+  // ============= PHASE 2 SIMULATION: ETHICAL CONSTRAINTS (Trust ≥ 5) =============
+  {
+    nodeId: 'nadia_simulation_phase2_setup',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "Okay. Harder problem.\n\nI've been hired to design guardrails for a medical diagnosis AI. It's 92% accurate. Better than most human doctors at detecting early-stage cancer from scans.\n\nBut that 8% error rate? It's not random. The AI fails more often on darker skin tones. Training data bias again.\n\nI need to decide: Do we deploy it now and save lives, knowing it works better for some than others? Or hold it back until we fix the bias, letting people die while we perfect it?\n\nHelp me think through the ethics.",
+      emotion: 'conflicted_heavy',
+      variation_id: 'simulation_phase2_intro_v1'
+    }],
+    requiredState: {
+      trust: { min: 5 },
+      hasKnowledgeFlags: ['nadia_simulation_phase1_complete']
+    },
+    choices: [
+      {
+        choiceId: 'phase2_accept',
+        text: "Let's work through the trade-offs.",
+        nextNodeId: 'nadia_simulation_phase2',
+        pattern: 'analytical',
+        skills: ['ethicalReasoning']
+      },
+      {
+        choiceId: 'phase2_decline',
+        text: "That's an impossible choice.",
+        nextNodeId: 'nadia_exploration_hub',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'nadia',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'nadia_arc']
+  },
+
+  {
+    nodeId: 'nadia_simulation_phase2',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "What's the ethical path forward?",
+      emotion: 'focused',
+      variation_id: 'simulation_phase2_v1'
+    }],
+    simulation: {
+      type: 'data_analysis',
+      title: 'Ethical AI Deployment: Imperfect Tools',
+      taskDescription: 'A medical AI is 92% accurate overall, but fails more on darker skin tones. Deploy now and save lives unequally, or hold back until perfect and let people die waiting?',
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'nadia_ethical_constraints_phase2',
+      timeLimit: 120,
+      initialContext: {
+        label: 'ETHICAL_DECISION_FRAMEWORK',
+        content: `MEDICAL DIAGNOSIS AI - Cancer Detection
+
+PERFORMANCE:
+- Overall accuracy: 92%
+- Light skin tones: 95% accuracy
+- Dark skin tones: 84% accuracy
+
+CONTEXT:
+- Current human doctor average: 87% accuracy
+- AI could save ~50,000 lives/year if deployed
+- Bias affects ~20% of patient population
+
+OPTIONS:
+A) Deploy immediately (utilitarian: maximize lives saved overall)
+B) Hold back until bias fixed (equity: no disparate impact)
+C) Deploy with disclosure (transparency: patients choose)
+D) Deploy only where AI outperforms doctors (selective: 84% > 87%)
+
+TRADE-OFFS:
+- Option A: Saves most lives, entrenches health inequality
+- Option B: Maintains equity, people die waiting for perfection
+- Option C: Patient autonomy, but informed consent is complex
+- Option D: Deploys where helpful, limits harm, but delays full benefits
+
+Which option best balances utility and justice?`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ ETHICAL FRAMEWORK: Option D - Deploy where it helps (darker skin: 84% > 87% human baseline). Full transparency. Aggressively fix bias. Harm reduction, not perfection.',
+      successThreshold: 85,
+      unlockRequirements: {
+        trustMin: 5,
+        previousPhaseCompleted: 'nadia_bias_detection_phase1'
+      }
+    },
+    choices: [
+      {
+        choiceId: 'phase2_success',
+        text: "Deploy where it helps. Be transparent. Fix the bias aggressively.",
+        nextNodeId: 'nadia_simulation_phase2_success',
+        pattern: 'helping',
+        skills: ['ethicalReasoning', 'systemsThinking']
+      }
+    ],
+    onEnter: [{
+      characterId: 'nadia',
+      addKnowledgeFlags: ['nadia_simulation_phase2_complete']
+    }],
+    tags: ['simulation', 'phase2']
+  },
+
+  {
+    nodeId: 'nadia_simulation_phase2_success',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "Yes. That's the answer I needed to hear.\n\nNot perfection. Harm reduction. Deploy where it actually helps—even for darker skin tones, 84% beats the 87% human baseline. Full disclosure to patients. And fix the damn bias like our lives depend on it.\n\nBecause they do.\n\nMost people want simple answers. Deploy or don't. Black or white. But the real world is full of 84 percents. Tools that help some more than others. Imperfect choices in a world that won't wait for perfect.\n\nThe question isn't whether to use AI. It's how to use it without pretending it's neutral.",
+      emotion: 'grateful_awed',
+      variation_id: 'phase2_success_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [
+      {
+        choiceId: 'phase2_success_continue',
+        text: "Ethical AI isn't about perfection. It's about accountability.",
+        nextNodeId: 'nadia_exploration_hub',
+        pattern: 'helping',
+        skills: ['ethicalReasoning'],
+        consequence: {
+          characterId: 'nadia',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['simulation', 'success']
+  },
+
+  {
+    nodeId: 'nadia_simulation_phase2_fail',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "That path... it either abandons equity or lets people die for the sake of purity.\n\nThere's a third way. Harder than both.\n\nDeploy where the AI genuinely helps—even 84% beats 87%. Be transparent about the limitations. And treat fixing the bias like the emergency it is.\n\nNot perfect. But better than the status quo. That's the standard we have to work with.",
+      emotion: 'patient_firm',
+      variation_id: 'phase2_fail_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'phase2_fail_continue',
+        text: "Harm reduction over perfection.",
+        nextNodeId: 'nadia_exploration_hub',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'nadia',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'fail']
+  },
+
+  // ============= PHASE 3 SIMULATION: SHUTTING IT DOWN (Trust ≥ 8, Post-Vulnerability) =============
+  {
+    nodeId: 'nadia_simulation_phase3_setup',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "I need your help with the hardest decision I've ever faced.\n\nThere's an AI system I helped build. Predictive policing. It's supposed to allocate police resources efficiently, reduce crime.\n\nBut I've been watching the data. It's creating a feedback loop. Over-policing neighborhoods that were already over-policed. Arresting people for crimes they haven't committed yet. Justifying it with 'predictions.'\n\nI built this. I have the access to shut it down.\n\nBut if I do, I'll violate my NDA. Lose my career. Possibly face legal consequences.\n\nShould I kill my own creation?",
+      emotion: 'vulnerable_desperate',
+      variation_id: 'simulation_phase3_intro_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      hasGlobalFlags: ['nadia_vulnerability_revealed'],
+      hasKnowledgeFlags: ['nadia_simulation_phase2_complete']
+    },
+    choices: [
+      {
+        choiceId: 'phase3_accept',
+        text: "Walk me through the decision.",
+        nextNodeId: 'nadia_simulation_phase3',
+        pattern: 'helping',
+        skills: ['ethicalReasoning']
+      },
+      {
+        choiceId: 'phase3_gentle',
+        text: "This isn't just about the AI. It's about you.",
+        nextNodeId: 'nadia_exploration_hub',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'nadia',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'nadia_arc', 'transformation']
+  },
+
+  {
+    nodeId: 'nadia_simulation_phase3',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "Help me think through the ethics of shutting it down.",
+      emotion: 'vulnerable_focused',
+      variation_id: 'simulation_phase3_v1'
+    }],
+    simulation: {
+      type: 'data_analysis',
+      title: 'Whistleblower Decision: When to Kill Your Creation',
+      taskDescription: 'A predictive policing AI you built is causing harm through feedback loops. Shut it down and face consequences, or stay silent and let it continue?',
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'nadia_whistleblower_phase3',
+      timeLimit: 90,
+      initialContext: {
+        label: 'DECISION_MATRIX',
+        content: `PREDICTIVE POLICING AI - Ethical Crisis
+
+SYSTEM IMPACT:
+- Arrests up 34% in "high-risk" zones (predominantly Black/Latino)
+- False positive rate: 67% (people flagged who commit no crime)
+- Community trust in police: down 41%
+- Feedback loop confirmed: more policing → more arrests → higher "risk scores"
+
+YOUR SITUATION:
+- You have admin access to shut it down
+- NDA prevents disclosure of algorithm flaws
+- Career ending if you blow the whistle
+- Legal liability possible
+- No one else has raised concerns internally
+
+DECISION FACTORS:
+A) Shut it down immediately (moral imperative, personal sacrifice)
+B) Work within the system to fix it (pragmatic, slower, complicit?)
+C) Anonymously leak evidence to journalists (protect yourself, lose control)
+D) Document harm and report to regulatory authorities (legal path, may be ignored)
+
+Which path balances personal risk and moral responsibility?`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ WHISTLEBLOWER PATH: Options A+D combined - Shut it down, then report through official channels with documentation. Accept consequences. Some things are more important than careers.',
+      successThreshold: 95,
+      unlockRequirements: {
+        trustMin: 8,
+        previousPhaseCompleted: 'nadia_ethical_constraints_phase2',
+        requiredFlags: ['nadia_vulnerability_revealed']
+      }
+    },
+    choices: [
+      {
+        choiceId: 'phase3_success',
+        text: "Shut it down. Document everything. Face the consequences.",
+        nextNodeId: 'nadia_simulation_phase3_success',
+        pattern: 'helping',
+        skills: ['ethicalReasoning', 'courage']
+      }
+    ],
+    onEnter: [{
+      characterId: 'nadia',
+      addKnowledgeFlags: ['nadia_simulation_phase3_complete']
+    }],
+    tags: ['simulation', 'phase3', 'mastery']
+  },
+
+  {
+    nodeId: 'nadia_simulation_phase3_success',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "You're right.\n\nI built this thing. I'm responsible for what it does, even if I didn't intend the harm.\n\nShut it down. Document the feedback loop. Report to the regulatory authorities. And accept that my career might be over.\n\nBecause some things are more important than my career. Like the 67% of people being flagged for crimes they never committed. Like the communities losing trust in institutions that are supposed to protect them.\n\nI thought I could change the system from inside. But the system doesn't want to change. It wants to optimize.\n\nSo I'm opting out. And if that means I lose everything I worked for... then at least I'll know I chose people over my own comfort.\n\nThank you. For seeing what needed to be done when I was too afraid to see it myself.",
+      emotion: 'transformed_resolved',
+      variation_id: 'phase3_success_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [
+      {
+        choiceId: 'phase3_success_continue',
+        text: "Courage isn't the absence of fear. It's doing what's right anyway.",
+        nextNodeId: 'nadia_exploration_hub',
+        pattern: 'helping',
+        skills: ['ethicalReasoning', 'courage'],
+        consequence: {
+          characterId: 'nadia',
+          trustChange: 3,
+          addGlobalFlags: ['nadia_whistleblower_mastery']
+        }
+      }
+    ],
+    tags: ['simulation', 'success', 'transformation']
+  },
+
+  {
+    nodeId: 'nadia_simulation_phase3_fail',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "That path... it either delays action while people suffer, or protects me at their expense.\n\nI keep looking for a way to do the right thing without losing everything. But maybe there isn't one.\n\nMaybe the cost of building something harmful is facing the cost of stopping it.\n\nI don't know if I'm brave enough for that.",
+      emotion: 'defeated_conflicted',
+      variation_id: 'phase3_fail_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'phase3_fail_continue',
+        text: "Knowing what's right is the first step toward doing it.",
+        nextNodeId: 'nadia_exploration_hub',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'nadia',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'fail']
+  }
 ]
 
 // Entry points for navigation

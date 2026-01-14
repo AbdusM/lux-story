@@ -35,6 +35,29 @@ export interface PatternCombo {
 
   /** Birmingham-specific connection */
   birminghamConnection?: string
+
+  /** Primary pattern (highest threshold requirement, alphabetical if tied) */
+  primaryPattern: PatternType
+}
+
+/**
+ * Calculate primary pattern for a combo
+ * Uses highest threshold requirement; alphabetical if tied
+ */
+function calculatePrimaryPattern(requirements: Partial<Record<PatternType, number>>): PatternType {
+  const entries = Object.entries(requirements) as [PatternType, number][]
+
+  if (entries.length === 0) {
+    throw new Error('Combo must have at least one requirement')
+  }
+
+  // Sort by threshold desc, then alphabetically
+  entries.sort((a, b) => {
+    if (b[1] !== a[1]) return b[1] - a[1]  // Highest threshold first
+    return a[0].localeCompare(b[0])         // Alphabetical if tied
+  })
+
+  return entries[0][0]
 }
 
 /**
@@ -49,7 +72,8 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     careerHint: 'systems architects',
     careerDescription: 'People who design how complex systems work together - the invisible architects behind everything from apps to city infrastructure.',
     characterId: 'maya',
-    birminghamConnection: 'UAB has a growing tech hub for systems design'
+    birminghamConnection: 'UAB has a growing tech hub for systems design',
+    primaryPattern: 'analytical'
   },
   {
     id: 'data_storyteller',
@@ -64,7 +88,8 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     requirements: { building: 5, exploring: 4 },
     careerHint: 'creative technologists',
     careerDescription: 'Inventors at the intersection of art and engineering - they make technology feel human.',
-    characterId: 'maya'
+    characterId: 'maya',
+    primaryPattern: 'building'
   },
 
   // Marcus's Healthcare Combos
@@ -82,14 +107,16 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     careerHint: 'medical researchers',
     careerDescription: 'Scientists who solve the puzzles of disease - their curiosity saves lives.',
     characterId: 'marcus',
-    birminghamConnection: 'UAB is a leading research hospital'
+    birminghamConnection: 'UAB is a leading research hospital',
+    primaryPattern: 'analytical'
   },
   {
     id: 'health_educator',
     requirements: { helping: 5, patience: 4 },
     careerHint: 'community health workers',
     careerDescription: 'Bridge-builders between medical expertise and community needs - they make health accessible.',
-    characterId: 'marcus'
+    characterId: 'marcus',
+    primaryPattern: 'helping'
   },
 
   // Devon's Engineering Combos
@@ -98,7 +125,8 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     requirements: { analytical: 5, patience: 4 },
     careerHint: 'process engineers',
     careerDescription: 'Optimizers who see the whole picture - they make complex systems work smoothly.',
-    characterId: 'devon'
+    characterId: 'devon',
+    primaryPattern: 'analytical'
   },
   {
     id: 'sustainable_builder',
@@ -106,7 +134,8 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     careerHint: 'sustainability engineers',
     careerDescription: 'Builders who think in generations - designing systems that last and heal.',
     characterId: 'devon',
-    birminghamConnection: 'Alabama Power and Southern Company are investing in sustainable infrastructure'
+    birminghamConnection: 'Alabama Power and Southern Company are investing in sustainable infrastructure',
+    primaryPattern: 'building'
   },
 
   // Tess's Education Combos
@@ -115,14 +144,16 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     requirements: { helping: 5, patience: 5 },
     careerHint: 'education specialists',
     careerDescription: 'Those who understand that learning takes time - creating spaces where everyone can grow.',
-    characterId: 'tess'
+    characterId: 'tess',
+    primaryPattern: 'helping'
   },
   {
     id: 'curriculum_designer',
     requirements: { building: 4, helping: 5 },
     careerHint: 'curriculum developers',
     careerDescription: 'Architects of learning experiences - building bridges between knowledge and understanding.',
-    characterId: 'tess'
+    characterId: 'tess',
+    primaryPattern: 'helping'
   },
 
   // Rohan's Deep Tech Combos
@@ -131,7 +162,8 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     requirements: { analytical: 6, building: 4 },
     careerHint: 'software architects',
     careerDescription: 'The ones who build the foundations - their code runs systems you use every day without knowing.',
-    characterId: 'rohan'
+    characterId: 'rohan',
+    primaryPattern: 'analytical'
   },
   {
     id: 'security_guardian',
@@ -139,7 +171,8 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     careerHint: 'cybersecurity specialists',
     careerDescription: 'Digital guardians who think like both protectors and threats - keeping systems safe.',
     characterId: 'rohan',
-    birminghamConnection: 'Birmingham is becoming a cybersecurity hub'
+    birminghamConnection: 'Birmingham is becoming a cybersecurity hub',
+    primaryPattern: 'analytical'
   },
 
   // Elena's Information Science Combos
@@ -148,14 +181,16 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     requirements: { analytical: 4, patience: 5 },
     careerHint: 'information architects',
     careerDescription: 'Organizers of knowledge - they create systems that help people find what they need.',
-    characterId: 'elena'
+    characterId: 'elena',
+    primaryPattern: 'patience'
   },
   {
     id: 'research_navigator',
     requirements: { exploring: 5, analytical: 4 },
     careerHint: 'research librarians',
     careerDescription: 'Guides through vast seas of information - they help discoveries happen.',
-    characterId: 'elena'
+    characterId: 'elena',
+    primaryPattern: 'exploring'
   },
 
   // Alex's Operations Combos
@@ -164,14 +199,16 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     requirements: { analytical: 4, building: 5 },
     careerHint: 'supply chain managers',
     careerDescription: 'Orchestrators of movement - they make sure everything arrives where it needs to be.',
-    characterId: 'alex'
+    characterId: 'alex',
+    primaryPattern: 'building'
   },
   {
     id: 'operations_optimizer',
     requirements: { analytical: 5, patience: 4 },
     careerHint: 'operations analysts',
     careerDescription: 'Efficiency experts who see patterns in processes - they find the hidden improvements.',
-    characterId: 'alex'
+    characterId: 'alex',
+    primaryPattern: 'analytical'
   },
 
   // Grace's Healthcare Operations Combos
@@ -180,7 +217,8 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     requirements: { helping: 5, analytical: 4 },
     careerHint: 'patient care coordinators',
     careerDescription: 'Navigators who blend empathy with systems thinking - ensuring care flows smoothly.',
-    characterId: 'grace'
+    characterId: 'grace',
+    primaryPattern: 'helping'
   },
 
   // Jordan's Career Navigation Combos
@@ -189,7 +227,8 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     requirements: { helping: 4, exploring: 5 },
     careerHint: 'career counselors',
     careerDescription: 'Guides who help others find their way - they see potential before it blooms.',
-    characterId: 'jordan'
+    characterId: 'jordan',
+    primaryPattern: 'exploring'
   },
 
   // Kai's Safety Combos
@@ -198,7 +237,8 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     requirements: { analytical: 4, helping: 4, patience: 3 },
     careerHint: 'safety engineers',
     careerDescription: 'Protectors who think ahead - designing systems that keep people safe before danger arrives.',
-    characterId: 'kai'
+    characterId: 'kai',
+    primaryPattern: 'analytical'
   },
 
   // Silas's Manufacturing Combos
@@ -208,7 +248,8 @@ export const PATTERN_COMBOS: PatternCombo[] = [
     careerHint: 'advanced manufacturing specialists',
     careerDescription: 'Craftspeople of the future - where precision meets innovation.',
     characterId: 'silas',
-    birminghamConnection: 'Mercedes and Honda have major facilities nearby'
+    birminghamConnection: 'Mercedes and Honda have major facilities nearby',
+    primaryPattern: 'building'
   }
 ]
 
@@ -314,9 +355,9 @@ export function getCareersForPattern(
   pattern: PatternType,
   patterns: PlayerPatterns
 ): PatternCareerMatch[] {
-  // Find all combos that require this pattern
+  // Find all combos where this pattern is PRIMARY (prevents duplicates across orbs)
   const relevantCombos = PATTERN_COMBOS.filter(combo =>
-    combo.requirements[pattern] !== undefined
+    combo.primaryPattern === pattern
   )
 
   // Calculate progress and sort by closest to unlocking

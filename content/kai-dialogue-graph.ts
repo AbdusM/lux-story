@@ -1729,10 +1729,109 @@ Available Components:
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.KAI_REFLECTION_GATEWAY,
         pattern: 'exploring'
+      },
+      // Loyalty Experience trigger - only visible at high trust + building pattern
+      {
+        choiceId: 'offer_inspection_help',
+        text: "[Builder's Eye] Kai, you mentioned the studio has a safety audit coming up. High stakes inspection. Need a second set of eyes?",
+        nextNodeId: 'kai_loyalty_trigger',
+        pattern: 'building',
+        skills: ['problemSolving', 'attentionToDetail'],
+        visibleCondition: {
+          trust: { min: 8 },
+          patterns: { building: { min: 50 } },
+          hasGlobalFlags: ['kai_arc_complete']
+        }
       }
     ],
     tags: ['transition', 'kai_arc']
   },
+
+  // ============= LOYALTY EXPERIENCE TRIGGER =============
+  {
+    nodeId: 'kai_loyalty_trigger',
+    speaker: 'Kai',
+    content: [{
+      text: "You heard about that.\n\nThe regional safety inspector. Three-day audit. If we fail, the studio shuts down. Twenty years of training lives, gone.\n\nThe problem is... I know we're not ready. Emergency exits partially blocked by equipment. Fire suppression system three months overdue for service. Training records scattered across two systems.\n\nI can fix most of it. But not everything. Not in time. Some things require budget I don't have, or vendor schedules I can't control.\n\nSo I need to decide what to fix, what to hide, and what to pray they don't notice. And live with whatever happens.\n\nYou build things. You understand systems and trade-offs. Will you... help me triage this before the inspector arrives?",
+      emotion: 'anxious_determined',
+      variation_id: 'loyalty_trigger_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      patterns: { building: { min: 5 } },
+      hasGlobalFlags: ['kai_arc_complete']
+    },
+    metadata: {
+      experienceId: 'the_inspection'  // Triggers loyalty experience engine
+    },
+    choices: [
+      {
+        choiceId: 'accept_inspection_challenge',
+        text: "Let's walk the facility together. Two sets of eyes, one systematic plan.",
+        nextNodeId: 'kai_loyalty_start',
+        pattern: 'building',
+        skills: ['problemSolving', 'attentionToDetail'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'encourage_but_decline',
+        text: "Kai, you know this studio better than anyone. Trust your judgment on priorities.",
+        nextNodeId: 'kai_loyalty_declined',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'kai',
+        addKnowledgeFlags: ['loyalty_offered']
+      }
+    ],
+    tags: ['loyalty_experience', 'kai_loyalty', 'high_trust']
+  },
+
+  {
+    nodeId: 'kai_loyalty_declined',
+    speaker: 'Kai',
+    content: [{
+      text: "You're right. I've been running this studio for twenty years. I know every wire, every exit, every risk.\n\nI don't need someone else to tell me what matters. I need to trust my own judgment about acceptable risk.\n\nThank you for the vote of confidence. Sometimes I forget I know what I'm doing.\n\nThe inspection will go however it goes. But at least I'll make the decisions myself.",
+      emotion: 'resolved',
+      variation_id: 'loyalty_declined_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'loyalty_declined_farewell',
+        text: "You'll make the right calls. You always do.",
+        nextNodeId: samuelEntryPoints.KAI_REFLECTION_GATEWAY,
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'kai',
+        addKnowledgeFlags: ['loyalty_declined_gracefully']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'kai_loyalty_start',
+    speaker: 'Kai',
+    content: [{
+      text: "Thank you. I've been dreading this alone.\n\nAlright. Let's start at the north entrance and work systematically. You spot risks, I'll assess what we can fix versus what we have to manage.\n\nTwo builders. One inspection. Let's make sure those twenty years of training lives don't end because I missed something.",
+      emotion: 'focused_grateful',
+      variation_id: 'loyalty_start_v1'
+    }],
+    metadata: {
+      experienceId: 'the_inspection'  // Experience engine takes over
+    },
+    choices: []  // Experience engine handles next steps
+  },
+
   // ============= RECIPROCITY: KAI ASKS PLAYER =============
   {
     nodeId: 'kai_asks_player',
@@ -1912,6 +2011,152 @@ Available Components:
       }
     ]
   },
+  // ============= SIMULATION 3: TRAINING THAT SAVES LIVES =============
+  {
+    nodeId: 'kai_sim3_training_intro',
+    speaker: 'Kai',
+    content: [{
+      text: "Final scenario. The one that haunts me.\n\nWarehouse safety training. Current version: 47-slide PowerPoint. 'Click Next' every 8 seconds. Quiz at the end. 80% pass rate.\n\nCompliant? Yes. Effective? No.\n\nLast month: Forklift incident. Worker crushed. She'd taken the training. Passed the quiz. Wore the vest. Followed every rule.\n\nBut the training never taught her to FEEL the danger. It taught her to pass a test.\n\nNow you're redesigning it. The company wants another PowerPoint. I want something that actually changes behavior.\n\nHow do you design training that saves lives, not just checks compliance boxes?",
+      emotion: 'haunted_determined',
+      variation_id: 'sim3_intro_v1'
+    }],
+    simulation: {
+      type: 'visual_canvas',
+      title: 'Safety Training Redesign: Compliance vs Life-Saving',
+      taskDescription: 'Redesign warehouse safety training. Current: PowerPoint compliance theater. Goal: Training that actually prevents injuries.',
+      initialContext: {
+        label: 'Training Design Canvas',
+        content: `CURRENT TRAINING:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- 47-slide PowerPoint
+- Average completion time: 6 minutes
+- "Click Next" to advance
+- 10-question multiple choice quiz
+- 80% pass rate
+- Annual completion: 98%
+
+ACTUAL INCIDENT RATE: 12 injuries/year
+
+CONSTRAINT: Budget allows ONE of these approaches:
+
+OPTION A: Enhanced Compliance
+- Increase quiz difficulty (15 questions)
+- Add manager sign-off requirement
+- Track completion metrics
+- Cost: $5K/year
+
+OPTION B: Scenario-Based Simulation
+- VR/Desktop simulation of warehouse floor
+- Practice identifying hazards in context
+- Real-time feedback on danger zones
+- Cost: $45K/year
+
+OPTION C: Peer Training Program
+- Workers train new hires in pairs
+- On-the-job hazard identification
+- Buddy system during first 30 days
+- Cost: $15K/year (labor hours)
+
+Which approach actually reduces injuries?`,
+        displayStyle: 'code'
+      },
+      successFeedback: 'TRAINING REDESIGN SUBMITTED: Evaluating injury prevention potential...'
+    },
+    requiredState: {
+      hasKnowledgeFlags: ['kai_simulation_complete', 'golden_prompt_safety_design']
+    },
+    choices: [
+      {
+        choiceId: 'sim3_compliance',
+        text: "Option A. Harder tests ensure they actually learn the material.",
+        nextNodeId: 'kai_sim3_fail',
+        pattern: 'analytical',
+        skills: ['compliance']
+      },
+      {
+        choiceId: 'sim3_vr_simulation',
+        text: "Option B. Simulation lets them practice before real danger.",
+        nextNodeId: 'kai_sim3_partial',
+        pattern: 'building',
+        skills: ['instructionalDesign', 'technology']
+      },
+      {
+        choiceId: 'sim3_peer_training',
+        text: "Option C. Real workers teaching real context beats any module.",
+        nextNodeId: 'kai_sim3_success',
+        pattern: 'helping',
+        skills: ['socialLearning', 'systemsThinking']
+      }
+    ],
+    tags: ['simulation', 'kai_arc', 'phase3', 'mastery']
+  },
+
+  {
+    nodeId: 'kai_sim3_success',
+    speaker: 'Kai',
+    content: [{
+      text: "Peer training. Yes.\n\nHere's why it works:\n\n**Month 1**: Senior worker pairs with new hire. They walk the floor together.\n\n\"See that? When the forklift turns here, there's a blind spot. Stand there—\" points to the red zone \"—and you're invisible to the driver. You'll get hit.\"\n\nThe new hire FEELS the danger. Not from a slide. From context. From someone who's been there.\n\n**Month 6**: Incident rate drops from 12/year to 4/year.\n\nWhy? Because the learning happened:\n1. In context (real warehouse, real equipment)\n2. From trusted peers (not corporate training)\n3. With emotional weight (\"I saw someone get hurt here\")\n4. Continuously (not just once annually)\n\nCompliance training teaches facts. Peer training teaches survival instincts.\n\nThe PowerPoint version cost less. This version saves lives.\n\nThat's the difference between training that checks boxes and training that matters.\n\nYou just designed something that actually works.",
+      emotion: 'triumphant_relieved_wise',
+      interaction: 'bloom',
+      variation_id: 'sim3_success_v1',
+      richEffectContext: 'success'
+    }],
+    onEnter: [{
+      characterId: 'kai',
+      trustChange: 3,
+      addKnowledgeFlags: ['kai_sim3_complete', 'kai_all_sims_complete']
+    }],
+    choices: [{
+      choiceId: 'sim3_complete',
+      text: "Training that teaches survival instincts, not facts. That's the standard.",
+      nextNodeId: 'kai_hub_return',
+      pattern: 'helping',
+      skills: ['wisdom', 'instructionalDesign']
+    }],
+    tags: ['simulation', 'kai_arc', 'phase3', 'success']
+  },
+
+  {
+    nodeId: 'kai_sim3_partial',
+    speaker: 'Kai',
+    content: [{
+      text: "VR simulation. I love the instinct. Immersion matters.\n\nBut here's the problem: it's still a simulation. It's still removed from real context.\n\nWorkers complete the VR module. They identify hazards in the virtual warehouse. They pass. They feel prepared.\n\nThen they step onto the REAL floor. The forklift sounds different. The blind spots are in different places. The muscle memory doesn't transfer.\n\nMonth 6: Incident rate drops from 12/year to 8/year. Better. Not great.\n\nWhat if instead you did peer training? Senior workers pair with new hires. Walk the actual floor. Point to the actual blind spots.\n\n\"See that? When the forklift turns here, YOU get hit.\"\n\nSame budget as VR ($15K in labor hours vs $45K in software). But the learning happens in real context, from trusted peers, with emotional weight.\n\nIncident rate would drop to 4/year.\n\nSimulation helps. Real-world mentorship saves lives.",
+      emotion: 'patient_teaching',
+      variation_id: 'sim3_partial_v1'
+    }],
+    onEnter: [{
+      characterId: 'kai',
+      addKnowledgeFlags: ['kai_sim3_partial']
+    }],
+    choices: [{
+      choiceId: 'sim3_partial_reflect',
+      text: "Real context beats perfect simulation. Got it.",
+      nextNodeId: 'kai_hub_return',
+      pattern: 'building',
+      skills: ['systemsThinking']
+    }],
+    tags: ['simulation', 'kai_arc', 'phase3', 'partial']
+  },
+
+  {
+    nodeId: 'kai_sim3_fail',
+    speaker: 'Kai',
+    content: [{
+      text: "Harder tests. More compliance.\n\nMonth 1: Quiz difficulty increases. Pass rate drops to 65%. Managers require retakes.\n\nMonth 3: Everyone passes eventually. Compliance rate: 100%.\n\nMonth 6: Incident rate: Still 12/year. Unchanged.\n\nHere's why:\n\nHarder tests don't change behavior. They change test-taking skills.\n\nWorkers memorize answers. \"Which direction should you face when operating a forklift?\" Answer: B. They know the answer. They don't know WHY.\n\nBecause the training never put them IN the situation. It never made them FEEL the danger.\n\nCompliance training protects the company from lawsuits. It doesn't protect workers from injury.\n\nWhat you needed was peer training. Senior workers teaching new hires on the actual floor. Pointing to actual blind spots. Sharing actual near-misses.\n\nThat's training that changes behavior. Because the learning happens in context, with emotional weight, from trusted peers.\n\nCompliance is theater. Context is survival.",
+      emotion: 'firm_disappointed',
+      variation_id: 'sim3_fail_v1',
+      richEffectContext: 'error'
+    }],
+    choices: [{
+      choiceId: 'sim3_retry',
+      text: "I see it now. Context over compliance. Peer training over PowerPoints.",
+      nextNodeId: 'kai_sim3_success',
+      pattern: 'helping',
+      skills: ['learningAgility']
+    }],
+    tags: ['simulation', 'kai_arc', 'phase3', 'failure']
+  },
+
   {
     nodeId: 'kai_hub_return',
     speaker: 'Kai',

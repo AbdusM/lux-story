@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
                 metrics: {
                     totalChoices: profile.total_choices,
                     // Reconstruct metrics from DB columns
-                    strongAffinities: playerCareers.filter((c: any) => c.match_score > 50).length,
+                    strongAffinities: playerCareers.filter((c: { match_score: number }) => c.match_score > 50).length,
                     dominantPattern: profile.dominant_patterns?.[0] || 'emerging',
                     engagementLevel: calculateLevelFromDb(profile), // Helper
                     lastSession: profile.last_updated
@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
                         social: profile.social_orientation,
                         approach: profile.problem_approach
                     },
-                    career_matches: playerCareers.map((c: any) => ({
+                    career_matches: playerCareers.map((c: { career_field: string; match_score: number }) => ({
                         field: c.career_field,
                         score: c.match_score
                     }))
@@ -113,7 +113,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Helper to replicate the logic from engagement-metrics.ts but using DB fields
-function calculateLevelFromDb(profile: any): 'low' | 'moderate' | 'high' {
+function calculateLevelFromDb(profile: { total_choices?: number }): 'low' | 'moderate' | 'high' {
     const choices = profile.total_choices || 0
     if (choices > 40) return 'high'
     if (choices > 15) return 'moderate'

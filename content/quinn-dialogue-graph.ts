@@ -692,9 +692,112 @@ export const quinnDialogueNodes: DialogueNode[] = [
         nextNodeId: samuelEntryPoints.HUB_INITIAL,
         pattern: 'exploring',
         skills: ['communication']
+      },
+      // Loyalty Experience trigger - only visible at high trust + analytical pattern
+      {
+        choiceId: 'offer_portfolio_help',
+        text: "[Financial Analyst] Quinn, you mentioned rebuilding your portfolio ethically. Want to work through it together?",
+        nextNodeId: 'quinn_loyalty_trigger',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'dataAnalysis'],
+        visibleCondition: {
+          trust: { min: 8 },
+          patterns: { analytical: { min: 50 } },
+          hasGlobalFlags: ['quinn_arc_complete']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['quinn_arc_complete']
       }
     ],
     tags: ['quinn_arc', 'return_hub']
+  },
+
+  // ============= LOYALTY EXPERIENCE TRIGGER =============
+  {
+    nodeId: 'quinn_loyalty_trigger',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "You want to help rebuild it.\n\nI've been staring at this spreadsheet for weeks. Every investment I made. Every client I advised. Tracking where the money went. What it enabled.\n\nSome of it was fine. Index funds. Municipal bonds. Boring stuff.\n\nBut some of it... private equity that gutted companies. Real estate funds that displaced families. Returns built on exploitation I chose not to see.\n\nI can't just delete it and start over. I need to understand the full scope. Document it. Make it right where I can.\n\nBut doing that alone means facing every compromise I made. Every time I prioritized returns over impact.\n\nYou understand analysis and systems. Would you... help me audit my own complicity?",
+      emotion: 'anxious_determined',
+      variation_id: 'loyalty_trigger_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      patterns: { analytical: { min: 5 } },
+      hasGlobalFlags: ['quinn_arc_complete']
+    },
+    metadata: {
+      experienceId: 'the_portfolio'  // Triggers loyalty experience engine
+    },
+    choices: [
+      {
+        choiceId: 'accept_portfolio_challenge',
+        text: "Let's go through it together. Line by line. No judgment, just truth.",
+        nextNodeId: 'quinn_loyalty_start',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'dataAnalysis'],
+        consequence: {
+          characterId: 'quinn',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'encourage_but_decline',
+        text: "Quinn, you're already doing the hardest part. Trust your analysis.",
+        nextNodeId: 'quinn_loyalty_declined',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'quinn',
+        addKnowledgeFlags: ['loyalty_offered']
+      }
+    ],
+    tags: ['loyalty_experience', 'quinn_loyalty', 'high_trust']
+  },
+
+  {
+    nodeId: 'quinn_loyalty_declined',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "You're right. I've been avoiding this because I'm afraid of what I'll find.\n\nBut I know how to analyze financial systems. I can apply that same rigor to my own portfolio.\n\nThe numbers don't lie. They'll show me exactly where I compromised. And that's what I need to see.\n\nThank you for the confidence. Sometimes courage is just doing the analysis you're afraid of.",
+      emotion: 'resolved',
+      variation_id: 'loyalty_declined_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'loyalty_declined_farewell',
+        text: "The truth is in the spreadsheet. Go find it.",
+        nextNodeId: samuelEntryPoints.HUB_INITIAL,
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'quinn',
+        addKnowledgeFlags: ['loyalty_declined_gracefully']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_loyalty_start',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "No judgment. Just truth. That's exactly what I need.\n\nOkay. Let me pull up the full portfolio history. Two analysts. One reckoning. Let's see what I built and what I need to rebuild.",
+      emotion: 'determined_grateful',
+      variation_id: 'loyalty_start_v1'
+    }],
+    metadata: {
+      experienceId: 'the_portfolio'  // Experience engine takes over
+    },
+    choices: []  // Experience engine handles next steps
   },
 
   // ============= ADDITIONAL CONVERSATION NODES =============
@@ -2110,6 +2213,422 @@ export const quinnDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['mystery', 'breadcrumb']
+  },
+
+  // ============= SIMULATION 1: BUDGET BASICS =============
+  {
+    nodeId: 'quinn_sim1_budget_intro',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "Want to understand finance? Start simple. Real simple.\n\nMeet Jasmine. 23, first job out of college. $42K salary. Birmingham.\n\nShe asked me to look at her budget. I'm going to show you what I see—and what most people miss.\n\nReady?",
+      emotion: 'teaching',
+      variation_id: 'sim1_intro_v1'
+    }],
+    simulation: {
+      type: 'dashboard_triage',
+      title: 'Financial Literacy: The 50/30/20 Rule',
+      taskDescription: 'Jasmine earns $42K ($2,625/month after tax). Categorize her expenses using the 50/30/20 rule: 50% needs, 30% wants, 20% savings.',
+      initialContext: {
+        label: 'Monthly Budget Analysis',
+        content: `INCOME: $2,625/month (after tax)
+
+EXPENSES:
+- Rent: $950
+- Car payment: $320
+- Groceries: $280
+- Utilities: $110
+- Insurance: $85
+- Streaming services: $45
+- Restaurants: $220
+- Gym: $35
+- Student loans: $180
+- Gas: $120
+
+TARGET: 50% needs ($1,312) | 30% wants ($787) | 20% savings ($525)`,
+        displayStyle: 'code'
+      },
+      successFeedback: 'BUDGET ANALYZED: Total expenses $2,345. No savings allocated. Red flag detected.'
+    },
+    choices: [{
+      choiceId: 'sim1_continue',
+      text: "I see the problem. She's not saving anything.",
+      nextNodeId: 'quinn_sim1_diagnosis',
+      pattern: 'analytical',
+      skills: ['financialLiteracy', 'criticalThinking']
+    }],
+    tags: ['simulation', 'finance', 'phase1']
+  },
+
+  {
+    nodeId: 'quinn_sim1_diagnosis',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "Exactly. $2,345 spent. Zero saved. Most people would say 'she's doing fine—she's not in debt.'\n\nBut here's what I see: one car repair away from a credit card spiral. No emergency fund. No retirement. No financial breathing room.\n\nThe invisible crisis. What would you tell her to cut?",
+      emotion: 'serious',
+      variation_id: 'sim1_diagnosis_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'sim1_cut_wants',
+        text: "Cut the 'wants': streaming, restaurants, gym. That's $300 right there.",
+        nextNodeId: 'quinn_sim1_success',
+        pattern: 'analytical',
+        skills: ['financialLiteracy', 'prioritization']
+      },
+      {
+        choiceId: 'sim1_cut_needs',
+        text: "She needs a cheaper apartment. $950 is 36% of income—too high.",
+        nextNodeId: 'quinn_sim1_partial',
+        pattern: 'building',
+        skills: ['strategicThinking']
+      },
+      {
+        choiceId: 'sim1_increase_income',
+        text: "Don't cut anything. Help her increase income instead.",
+        nextNodeId: 'quinn_sim1_partial',
+        pattern: 'building',
+        skills: ['entrepreneurship']
+      }
+    ],
+    tags: ['simulation', 'finance', 'phase1']
+  },
+
+  {
+    nodeId: 'quinn_sim1_success',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "Good call. The low-hanging fruit.\n\nStreaming: Keep one, cut three. Save $30.\nRestaurants: Half as often. Save $110.\nGym: Planet Fitness is $10. Save $25.\n\n$165/month saved. Not the full 20%, but it's a start. And here's the key—she still gets to live.\n\nFinancial advice that makes you miserable doesn't stick. You have to find the balance.\n\nThat's lesson one: small changes compound. $165/month is $2,000/year. In 5 years, with modest returns, that's $11,000. Her first emergency fund.\n\nNot bad for cutting two streaming services.",
+      emotion: 'proud_teaching',
+      interaction: 'nod',
+      variation_id: 'sim1_success_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [{
+      choiceId: 'sim1_complete',
+      text: "Small changes compound. I get it.",
+      nextNodeId: 'quinn_hub_return',
+      pattern: 'analytical',
+      skills: ['financialLiteracy']
+    }],
+    onEnter: [{
+      characterId: 'quinn',
+      addKnowledgeFlags: ['quinn_sim1_complete']
+    }],
+    tags: ['simulation', 'finance', 'phase1', 'success']
+  },
+
+  {
+    nodeId: 'quinn_sim1_partial',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "Not wrong, but harder to execute.\n\nMoving costs money. New apartment, deposit, movers—$2,000 upfront she doesn't have. And income growth takes time.\n\nI teach people to start with what they can control today. Cut the streaming services. Skip restaurants twice a month. That's $165 saved immediately.\n\nSmall wins build momentum. Once she has $1,000 saved, then we talk about the bigger moves.\n\nFinance isn't just math. It's psychology. You have to meet people where they are.",
+      emotion: 'patient_teaching',
+      variation_id: 'sim1_partial_v1'
+    }],
+    choices: [{
+      choiceId: 'sim1_partial_complete',
+      text: "Meet them where they are. Got it.",
+      nextNodeId: 'quinn_hub_return',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence']
+    }],
+    onEnter: [{
+      characterId: 'quinn',
+      addKnowledgeFlags: ['quinn_sim1_partial']
+    }],
+    tags: ['simulation', 'finance', 'phase1', 'partial']
+  },
+
+  // ============= SIMULATION 2: INVESTMENT ALLOCATION =============
+  {
+    nodeId: 'quinn_sim2_portfolio_intro',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "Alright. Next level. You've got $10,000 to invest. First time.\n\nMost people freeze here. Too many choices. Too much jargon. FOMO from crypto bros. Fear from the last crash.\n\nBut investing isn't gambling—it's calculated risk. Let me show you how I think about allocation.\n\nAge: 28. Time horizon: 30+ years to retirement. Risk tolerance: moderate.\n\nHow would you split it?",
+      emotion: 'teaching',
+      variation_id: 'sim2_intro_v1'
+    }],
+    simulation: {
+      type: 'dashboard_triage',
+      title: 'Portfolio Allocation',
+      taskDescription: 'Allocate $10,000 across asset classes. Balance growth potential vs risk for a 30-year horizon.',
+      initialContext: {
+        label: 'Investment Options',
+        content: `TOTAL: $10,000
+TIME HORIZON: 30 years
+RISK TOLERANCE: Moderate
+
+OPTIONS:
+1. S&P 500 Index (Stocks) - High growth, high volatility
+2. Bond Index - Low growth, low volatility
+3. Real Estate (REITs) - Moderate growth, moderate risk
+4. International Stocks - High growth, currency risk
+5. Cash/Savings - No growth, no risk
+
+CLASSIC ALLOCATION (Age 28):
+- 70-80% stocks
+- 20-30% bonds
+- 0-10% alternatives`,
+        displayStyle: 'text'
+      },
+      successFeedback: 'ALLOCATION SUBMITTED: Reviewing risk profile...'
+    },
+    choices: [{
+      choiceId: 'sim2_continue',
+      text: "70% stocks, 20% bonds, 10% REITs. Diversified growth.",
+      nextNodeId: 'quinn_sim2_analysis',
+      pattern: 'analytical',
+      skills: ['financialLiteracy', 'riskManagement']
+    }],
+    requiredState: {
+      hasKnowledgeFlags: ['quinn_sim1_complete', 'quinn_sim1_partial']
+    },
+    tags: ['simulation', 'finance', 'phase2']
+  },
+
+  {
+    nodeId: 'quinn_sim2_analysis',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "Solid. Textbook, even. 70/20/10 is what most advisors would recommend at 28.\n\nBut here's what they don't tell you: that allocation assumes you can stomach a 40% drop and not panic-sell.\n\n2008: Down 37%. 2020: Down 34%. 2022: Down 18%.\n\nCan you watch $10K become $6K and not touch it? Most people can't. They sell at the bottom, lock in losses, miss the recovery.\n\nSo I ask differently: what allocation lets you sleep at night? Because the best portfolio is the one you don't abandon.\n\nWould you adjust knowing that?",
+      emotion: 'challenging',
+      variation_id: 'sim2_analysis_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'sim2_stay_course',
+        text: "I'd stay the course. Volatility is the price of growth.",
+        nextNodeId: 'quinn_sim2_success',
+        pattern: 'patience',
+        skills: ['resilience', 'discipline']
+      },
+      {
+        choiceId: 'sim2_more_conservative',
+        text: "Shift to 50/40/10. Sleep better, grow slower.",
+        nextNodeId: 'quinn_sim2_partial',
+        pattern: 'patience',
+        skills: ['selfAwareness']
+      },
+      {
+        choiceId: 'sim2_timing',
+        text: "What if I wait for the next dip to invest?",
+        nextNodeId: 'quinn_sim2_fail',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      }
+    ],
+    tags: ['simulation', 'finance', 'phase2']
+  },
+
+  {
+    nodeId: 'quinn_sim2_success',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "That's the mindset. Volatility is the price you pay for growth.\n\n$10K at 8% average returns for 30 years? $100K. That's the power of compound interest and staying invested.\n\nMost people trade that away chasing hot stocks or panic-selling in crashes. You just committed to not being most people.\n\nLesson two: time in the market beats timing the market. Every. Single. Time.\n\nWelcome to the long game.",
+      emotion: 'proud',
+      interaction: 'nod',
+      variation_id: 'sim2_success_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [{
+      choiceId: 'sim2_complete',
+      text: "Time in the market. Got it.",
+      nextNodeId: 'quinn_hub_return',
+      pattern: 'patience',
+      skills: ['discipline']
+    }],
+    onEnter: [{
+      characterId: 'quinn',
+      addKnowledgeFlags: ['quinn_sim2_complete']
+    }],
+    tags: ['simulation', 'finance', 'phase2', 'success']
+  },
+
+  {
+    nodeId: 'quinn_sim2_partial',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "Honest answer. I respect that.\n\n50/40/10 still grows—just slower. $10K at 6% for 30 years? $57K instead of $100K.\n\nYou're trading $43K for peace of mind. Some people say that's a bad trade. I say it depends on whether that peace lets you stay invested.\n\nA conservative portfolio you stick with beats an aggressive portfolio you abandon.\n\nKnow yourself. That's half the battle.",
+      emotion: 'understanding',
+      variation_id: 'sim2_partial_v1'
+    }],
+    choices: [{
+      choiceId: 'sim2_partial_complete',
+      text: "Know yourself. That's the lesson.",
+      nextNodeId: 'quinn_hub_return',
+      pattern: 'helping',
+      skills: ['selfAwareness']
+    }],
+    onEnter: [{
+      characterId: 'quinn',
+      addKnowledgeFlags: ['quinn_sim2_partial']
+    }],
+    tags: ['simulation', 'finance', 'phase2', 'partial']
+  },
+
+  {
+    nodeId: 'quinn_sim2_fail',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "Market timing. The dream that kills portfolios.\n\nHere's the data: Missing the 10 best days in the market over 30 years cuts your returns in half. And those best days? Often happen right after the worst days.\n\nYou can't predict them. Nobody can. The people who try miss the recovery waiting for the perfect entry.\n\n'Time in beats timing.' That's not a slogan—it's math.\n\nWant to try that allocation again?",
+      emotion: 'firm_teaching',
+      variation_id: 'sim2_fail_v1',
+      richEffectContext: 'error'
+    }],
+    choices: [{
+      choiceId: 'sim2_retry',
+      text: "You're right. I'll stay invested through the volatility.",
+      nextNodeId: 'quinn_sim2_success',
+      pattern: 'patience',
+      skills: ['learningAgility']
+    }],
+    tags: ['simulation', 'finance', 'phase2', 'failure']
+  },
+
+  // ============= SIMULATION 3: ETHICAL INVESTMENT DILEMMA =============
+  {
+    nodeId: 'quinn_sim3_ethics_intro',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "Final scenario. This one's harder. No right answer.\n\nYou're managing a $2M portfolio for a nonprofit focused on youth education in Birmingham.\n\nYou find an investment opportunity: defense contractor. 18% annual returns. Stable. Ethical concerns.\n\nThat $2M becomes $2.36M in year one. Extra $360K for scholarships. Real kids. Real futures.\n\nBut it's weapons manufacturing. Some of those weapons go to conflicts you don't support.\n\nDo you invest?",
+      emotion: 'serious',
+      variation_id: 'sim3_intro_v1'
+    }],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Values vs Returns: The Ethical Investor',
+      taskDescription: 'A defense contractor offers 18% returns for a youth education nonprofit. High returns fund scholarships. But the source conflicts with values. What do you do?',
+      initialContext: {
+        label: 'Investment Proposal',
+        content: `OPPORTUNITY: Defense Contractor Stock
+PROJECTED RETURN: 18% annually
+PORTFOLIO SIZE: $2M
+POTENTIAL IMPACT: $360K/year → 36 full scholarships
+
+CONCERNS:
+- Weapons manufacturing
+- Contracts with controversial regimes
+- Misalignment with nonprofit mission
+
+ALTERNATIVES:
+- S&P 500: 10% average (lower returns, neutral ethics)
+- ESG Funds: 8% average (lower returns, aligned values)
+- Impact Investing: 6% average (lower returns, direct mission alignment)`,
+        displayStyle: 'text'
+      },
+      successFeedback: 'DECISION LOGGED: This is the hard part of fiduciary duty.'
+    },
+    requiredState: {
+      hasKnowledgeFlags: ['quinn_sim2_complete', 'quinn_sim2_partial']
+    },
+    choices: [
+      {
+        choiceId: 'sim3_invest',
+        text: "Invest. 36 more kids get scholarships. The ends justify the means.",
+        nextNodeId: 'quinn_sim3_pragmatic',
+        pattern: 'analytical',
+        skills: ['pragmatism', 'utilitarian']
+      },
+      {
+        choiceId: 'sim3_decline',
+        text: "Decline. You can't fund education with weapons money.",
+        nextNodeId: 'quinn_sim3_principled',
+        pattern: 'helping',
+        skills: ['integrity', 'values']
+      },
+      {
+        choiceId: 'sim3_third_way',
+        text: "Find a middle ground. ESG funds at 8% still fund 16 scholarships.",
+        nextNodeId: 'quinn_sim3_balanced',
+        pattern: 'patience',
+        skills: ['criticalThinking', 'negotiation']
+      }
+    ],
+    tags: ['simulation', 'finance', 'phase3', 'ethics']
+  },
+
+  {
+    nodeId: 'quinn_sim3_pragmatic',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "The utilitarian play. Greatest good for the greatest number.\n\n36 kids who wouldn't have gone to college, now do. Some become teachers, nurses, engineers. Compound impact over generations.\n\nBut here's what happens: word gets out. Donors ask questions. 'We're funding scholarships with defense money?' Some pull support. Board members resign.\n\nYou gained $360K in returns. You lose $500K in donations.\n\nAnd the mission? Compromised. The kids you're helping now learn that ethics bend when the numbers are good enough.\n\nWhat did you really win?",
+      emotion: 'challenging',
+      variation_id: 'sim3_pragmatic_v1',
+      richEffectContext: 'warning'
+    }],
+    choices: [{
+      choiceId: 'sim3_prag_reflect',
+      text: "I see it now. Short-term gains, long-term cost.",
+      nextNodeId: 'quinn_sim3_lesson',
+      pattern: 'analytical',
+      skills: ['systemsThinking']
+    }],
+    tags: ['simulation', 'finance', 'phase3']
+  },
+
+  {
+    nodeId: 'quinn_sim3_principled',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "The values play. Clean hands matter more than full coffers.\n\nYou decline. Invest in ESG funds instead. 8% returns, not 18%. That's 16 scholarships, not 36.\n\n20 kids don't get funding this year. You have to call their families. Explain why they didn't make the cut.\n\nBut the nonprofit's integrity stays intact. Donors keep giving. The mission stays clear.\n\nHere's the hard part: those 20 kids? They're real. Their futures mattered too.\n\nValues aren't free. Someone always pays.",
+      emotion: 'somber',
+      variation_id: 'sim3_principled_v1'
+    }],
+    choices: [{
+      choiceId: 'sim3_prin_reflect',
+      text: "Someone always pays. That's the weight of it.",
+      nextNodeId: 'quinn_sim3_lesson',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence']
+    }],
+    tags: ['simulation', 'finance', 'phase3']
+  },
+
+  {
+    nodeId: 'quinn_sim3_balanced',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "The middle path. Harder to walk, but often the right one.\n\n8% ESG returns fund 16 scholarships. Not as many as 36. More than 0.\n\nYou call donors: 'We're prioritizing aligned investments.' They respect it. Some increase giving to close the gap.\n\nThe 20 kids who didn't get funding? You build a waitlist. Launch a separate campaign. Raise $200K in new donations from people who care about ethical investing.\n\nNet result: 26 scholarships funded. Not 36, but close. And you built something sustainable.\n\nLesson three: the best financial decisions serve both values AND value. When you can't have both, get creative.\n\nThat's what separates good investors from great ones.",
+      emotion: 'proud_wise',
+      interaction: 'bloom',
+      variation_id: 'sim3_balanced_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [{
+      choiceId: 'sim3_balanced_complete',
+      text: "Values AND value. That's the real skill.",
+      nextNodeId: 'quinn_sim3_lesson',
+      pattern: 'building',
+      skills: ['creativity', 'strategicThinking']
+    }],
+    onEnter: [{
+      characterId: 'quinn',
+      trustChange: 2,
+      addKnowledgeFlags: ['quinn_sim3_complete']
+    }],
+    tags: ['simulation', 'finance', 'phase3', 'success']
+  },
+
+  {
+    nodeId: 'quinn_sim3_lesson',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "Finance isn't just math. It's philosophy. Every allocation is a statement about what you value.\n\nMost people don't realize they're making ethical choices when they invest. They think they're just 'maximizing returns.'\n\nBut you can't separate money from meaning. Every dollar you invest votes for the kind of world you want.\n\nThat's why I came back to Birmingham. Not to make more money. To make money mean something.\n\nYou get it now?",
+      emotion: 'earnest',
+      variation_id: 'sim3_lesson_v1'
+    }],
+    choices: [{
+      choiceId: 'sim3_complete',
+      text: "Money votes for the world you want. I get it.",
+      nextNodeId: 'quinn_hub_return',
+      pattern: 'helping',
+      skills: ['values', 'purpose']
+    }],
+    onEnter: [{
+      characterId: 'quinn',
+      addKnowledgeFlags: ['quinn_all_sims_complete']
+    }],
+    tags: ['simulation', 'finance', 'phase3', 'mastery']
   },
 
   {

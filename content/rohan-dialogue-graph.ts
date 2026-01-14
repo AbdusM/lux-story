@@ -1346,11 +1346,108 @@ export const rohanDialogueNodes: DialogueNode[] = [
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.ROHAN_REFLECTION_GATEWAY,
         pattern: 'exploring'
+      },
+      // Loyalty Experience trigger - only visible at high trust + analytical pattern
+      {
+        choiceId: 'offer_confrontation_help',
+        text: "[System Thinker] Rohan, that maintenance log you mentioned... there's something deeper there. Want to trace it together?",
+        nextNodeId: 'rohan_loyalty_trigger',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'criticalThinking'],
+        visibleCondition: {
+          trust: { min: 8 },
+          patterns: { analytical: { min: 50 } },
+          hasGlobalFlags: ['rohan_arc_complete']
+        }
       }
     ],
     tags: ['transition', 'rohan_arc']
   },
 
+  // ============= LOYALTY EXPERIENCE TRIGGER =============
+  {
+    nodeId: 'rohan_loyalty_trigger',
+    speaker: 'Rohan',
+    content: [{
+      text: "You picked up on that.\n\nThe logs don't match the official narrative. Equipment failures blamed on 'aging infrastructure' but the timestamps show systematic targeting. Someone compromised the station's foundational systems deliberately.\n\nIf this is sabotage, it goes deeper than Platform Seven. It means someone wants the station to fail from the inside out.\n\nI've been tracking it alone because... because confronting institutional corruption means making enemies. Means risking everything I've built here.\n\nBut you see patterns like David did. You understand systems. Will you... help me trace this before it brings the whole station down?",
+      emotion: 'anxious_determined',
+      variation_id: 'loyalty_trigger_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      patterns: { analytical: { min: 5 } },
+      hasGlobalFlags: ['rohan_arc_complete']
+    },
+    metadata: {
+      experienceId: 'the_confrontation'  // Triggers loyalty experience engine
+    },
+    choices: [
+      {
+        choiceId: 'accept_confrontation_challenge',
+        text: "Show me the logs. We'll trace the pattern together.",
+        nextNodeId: 'rohan_loyalty_start',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'criticalThinking'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'encourage_but_decline',
+        text: "Rohan, you've uncovered it this far. Trust your analysis.",
+        nextNodeId: 'rohan_loyalty_declined',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'rohan',
+        addKnowledgeFlags: ['loyalty_offered']
+      }
+    ],
+    tags: ['loyalty_experience', 'rohan_loyalty', 'high_trust']
+  },
+
+  {
+    nodeId: 'rohan_loyalty_declined',
+    speaker: 'Rohan',
+    content: [{
+      text: "You're right. I've been building this case methodically. Every timestamp cross-referenced. Every failure mode documented.\n\nI don't need validation. I need to trust my own detective work.\n\nDavid would have said the same thing. Follow the evidence wherever it leads.\n\nThank you for the confidence. Sometimes I second-guess myself when the implications get this large.",
+      emotion: 'resolved',
+      variation_id: 'loyalty_declined_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'loyalty_declined_farewell',
+        text: "The truth is there. You'll find it.",
+        nextNodeId: samuelEntryPoints.ROHAN_REFLECTION_GATEWAY,
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'rohan',
+        addKnowledgeFlags: ['loyalty_declined_gracefully']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'rohan_loyalty_start',
+    speaker: 'Rohan',
+    content: [{
+      text: "Thank you. I've been dreading this moment. Facing institutional failure alone.\n\nBut with you... maybe we can expose it without getting crushed.\n\nLet me pull up the full forensics. Two minds. One pattern. Let's see who's trying to tear this place down from within.",
+      emotion: 'focused_grateful',
+      variation_id: 'loyalty_start_v1'
+    }],
+    metadata: {
+      experienceId: 'the_confrontation'  // Experience engine takes over
+    },
+    choices: []  // Experience engine handles next steps
+  },
 
   // ============= CAREER MENTION NODES (Invisible Depth) =============
   // ... (previous content ends here)
@@ -1945,6 +2042,259 @@ export const rohanDialogueNodes: DialogueNode[] = [
       }
     ]
   },
+  // ============= SIMULATION 2: LEGACY CODE ARCHAEOLOGY =============
+  {
+    nodeId: 'rohan_sim2_legacy_intro',
+    speaker: 'Rohan',
+    content: [{
+      text: "Next level. Real archaeology.\n\nI inherited a codebase from 2012. No documentation. Original dev left the company. The system processes $2M in transactions daily.\n\nAnd there's a function. 900 lines. Called `processPayment()`.\n\nIt works. Mostly. But sometimes—maybe 1 in 10,000 transactions—it doubles the charge. We can't figure out why.\n\nI need you to read it. Find the ghost. No AI assist. Just you, the code, and first principles.\n\nReady?",
+      emotion: 'serious_teaching',
+      variation_id: 'sim2_intro_v1'
+    }],
+    simulation: {
+      type: 'dashboard_triage',
+      title: 'Legacy Code Archaeology',
+      taskDescription: 'A 900-line payment function occasionally doubles charges. Find the bug without documentation or AI assistance.',
+      initialContext: {
+        label: 'processPayment() - Lines 402-1302',
+        content: `function processPayment(user, amount, cart) {
+  // Validation layer (lines 402-520)
+  if (!user || !amount) return error('Invalid input')
+
+  // Transaction setup (lines 521-680)
+  const txnId = generateId()
+  const timestamp = Date.now()
+
+  // Payment gateway call (lines 681-780)
+  const result = await gateway.charge(user.card, amount)
+
+  // CRITICAL SECTION (lines 781-850)
+  // Legacy retry logic from 2012
+  // Original comment: "Handle gateway timeouts"
+  if (!result.success) {
+    log('Gateway timeout. Retrying...')
+    const retry = await gateway.charge(user.card, amount)
+    if (retry.success) result = retry
+  }
+
+  // Database write (lines 851-900)
+  db.insert({ userId: user.id, amount, txnId, timestamp })
+
+  return result
+}
+
+BUG REPORT: 1 in 10,000 transactions show double charges.
+HINT: The gateway sometimes responds AFTER the timeout window.`,
+        displayStyle: 'code'
+      },
+      successFeedback: 'BUG IDENTIFIED: Race condition in retry logic detected.'
+    },
+    requiredState: {
+      hasKnowledgeFlags: ['rohan_simulation_complete', 'rohan_partial_trust']
+    },
+    choices: [
+      {
+        choiceId: 'sim2_race_condition',
+        text: "The retry logic doesn't check if the first charge already succeeded.",
+        nextNodeId: 'rohan_sim2_success',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'systemsThinking', 'debuggingMastery']
+      },
+      {
+        choiceId: 'sim2_gateway_bug',
+        text: "The payment gateway is broken. Not our code's fault.",
+        nextNodeId: 'rohan_sim2_partial',
+        pattern: 'exploring',
+        skills: ['technicalLiteracy']
+      },
+      {
+        choiceId: 'sim2_add_logging',
+        text: "Add more logging to capture the exact failure pattern.",
+        nextNodeId: 'rohan_sim2_partial',
+        pattern: 'patience',
+        skills: ['debugging']
+      }
+    ],
+    tags: ['simulation', 'rohan_arc', 'phase2']
+  },
+
+  {
+    nodeId: 'rohan_sim2_success',
+    speaker: 'Rohan',
+    content: [{
+      text: "There it is. The ghost.\n\nGateway responds at 3.1 seconds. Timeout is set to 3.0 seconds. Code assumes timeout = failure. Triggers retry.\n\nBut the first charge already went through. It just took 100ms too long to respond.\n\nSo the system charges twice. Once from the 'failed' request. Once from the retry.\n\nHere's the fix:\n\n```\nif (!result.success && !result.timeout) {\n  // Only retry if the gateway explicitly failed\n  // NOT if it timed out (might have succeeded silently)\n}\n```\n\nOne line. Saves $200K/year in refunds.\n\nYou found it by reading code. Not by asking an AI. Not by guessing. By understanding how the system actually works.\n\nThat's the skill. That's what separates engineers from prompters.",
+      emotion: 'proud_fierce',
+      interaction: 'nod',
+      variation_id: 'sim2_success_v1',
+      richEffectContext: 'success'
+    }],
+    onEnter: [{
+      characterId: 'rohan',
+      addKnowledgeFlags: ['rohan_sim2_complete']
+    }],
+    choices: [{
+      choiceId: 'sim2_complete',
+      text: "Engineers understand systems. Prompters trust black boxes.",
+      nextNodeId: 'rohan_hub_return',
+      pattern: 'analytical',
+      skills: ['mastery']
+    }],
+    tags: ['simulation', 'rohan_arc', 'phase2', 'success']
+  },
+
+  {
+    nodeId: 'rohan_sim2_partial',
+    speaker: 'Rohan',
+    content: [{
+      text: "Logging helps. Blaming the gateway is tempting. But you're not looking deep enough.\n\nThe bug is in our code. In the assumptions we made.\n\n'If the gateway times out, assume it failed. Retry.'\n\nBut what if the gateway succeeds AND times out? What if it charges the card at 3.1 seconds, but our timeout is 3.0 seconds?\n\nWe never hear the success response. We think it failed. We retry. Double charge.\n\nThe fix isn't more logging. It's understanding the race condition:\n\n```\nif (!result.success && !result.timeout) {\n  // Only retry on explicit failure, not on timeout\n}\n```\n\nOne line. $200K/year in refunds saved.\n\nYou have to read the code like it's lying to you. Question every assumption. That's debugging at the machine level.",
+      emotion: 'patient_teaching',
+      variation_id: 'sim2_partial_v1'
+    }],
+    onEnter: [{
+      characterId: 'rohan',
+      addKnowledgeFlags: ['rohan_sim2_partial']
+    }],
+    choices: [{
+      choiceId: 'sim2_partial_complete',
+      text: "Question every assumption. Got it.",
+      nextNodeId: 'rohan_hub_return',
+      pattern: 'analytical',
+      skills: ['criticalThinking']
+    }],
+    tags: ['simulation', 'rohan_arc', 'phase2', 'partial']
+  },
+
+  // ============= SIMULATION 3: PRODUCTION DEBUGGING CRISIS =============
+  {
+    nodeId: 'rohan_sim3_prod_intro',
+    speaker: 'Rohan',
+    content: [{
+      text: "Final test. Production crisis. Real one.\n\n3:47 AM. PagerDuty alert. API response time: 847ms. SLA threshold: 200ms.\n\nYou're on call. The system is a microservices mesh: API gateway → Auth service → User service → Database.\n\nEach service says: 'Not me. My metrics look fine.'\n\nBut users are timing out. Revenue is dropping. CEO is awake.\n\nYou have 15 minutes before the incident escalates to the CTO.\n\nWhere do you start?",
+      emotion: 'urgent_focused',
+      variation_id: 'sim3_intro_v1'
+    }],
+    simulation: {
+      type: 'dashboard_triage',
+      title: 'Production Debugging: The Distributed Mystery',
+      taskDescription: 'API response time degraded from 200ms to 847ms. Four services, all claiming innocence. Find the bottleneck.',
+      initialContext: {
+        label: 'System Status Dashboard',
+        content: `INCIDENT: API Latency Spike
+ALERT TIME: 03:47 AM
+CURRENT LATENCY: 847ms (SLA: 200ms)
+
+SERVICE METRICS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+API Gateway:     45ms avg response  ✓
+Auth Service:    23ms avg response  ✓
+User Service:    38ms avg response  ✓
+Database:        Query time 12ms    ✓
+
+NETWORK: All green
+CPU: 42% avg
+MEMORY: 68% avg
+DISK I/O: Normal
+
+WHERE IS THE 847ms COMING FROM?`,
+        displayStyle: 'code'
+      },
+      successFeedback: 'INVESTIGATION STARTED: Analyzing service call patterns...'
+    },
+    requiredState: {
+      hasKnowledgeFlags: ['rohan_sim2_complete', 'rohan_sim2_partial']
+    },
+    choices: [
+      {
+        choiceId: 'sim3_distributed_trace',
+        text: "Check distributed tracing. Look at the FULL request path, not individual services.",
+        nextNodeId: 'rohan_sim3_success',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'distributedSystems', 'observability']
+      },
+      {
+        choiceId: 'sim3_restart_services',
+        text: "Restart all services. Clear whatever's stuck.",
+        nextNodeId: 'rohan_sim3_fail',
+        pattern: 'building',
+        skills: ['incidentManagement']
+      },
+      {
+        choiceId: 'sim3_add_caching',
+        text: "Add caching layer. Buy time while investigating.",
+        nextNodeId: 'rohan_sim3_partial',
+        pattern: 'patience',
+        skills: ['pragmatism']
+      }
+    ],
+    tags: ['simulation', 'rohan_arc', 'phase3', 'mastery']
+  },
+
+  {
+    nodeId: 'rohan_sim3_success',
+    speaker: 'Rohan',
+    content: [{
+      text: "You pull the distributed trace. And there it is.\n\nThe ghost in the wires:\n\n```\nAPI Gateway → Auth (23ms) → User (38ms) → Database (12ms)\nTotal service time: 73ms\n\nBUT:\n\nAPI Gateway → Auth: 312ms network latency\nAuth → User: 287ms network latency  \nUser → Database: 175ms network latency\n\nTotal: 847ms\n```\n\nThe services are fine. The network between them is drowning.\n\nYou check the network topology. Someone deployed a new microservice at 2:34 AM. It's broadcasting health checks every 100ms to ALL services.\n\nNetwork saturation. Death by a thousand pings.\n\nYou disable the health check broadcast. Latency drops to 94ms.\n\nIncident resolved: 07 minutes.\n\nHere's the lesson: Individual metrics lie. Systems thinking reveals truth.\n\nEach service looked healthy because they were measuring themselves in isolation. But the system—the space BETWEEN the services—was choking.\n\nMost engineers never learn to see the space. You just did.\n\nWelcome to the deep end.",
+      emotion: 'triumphant_wise',
+      interaction: 'bloom',
+      variation_id: 'sim3_success_v1',
+      richEffectContext: 'success'
+    }],
+    onEnter: [{
+      characterId: 'rohan',
+      trustChange: 3,
+      addKnowledgeFlags: ['rohan_sim3_complete', 'rohan_all_sims_complete']
+    }],
+    choices: [{
+      choiceId: 'sim3_complete',
+      text: "See the space between the services. That's where truth lives.",
+      nextNodeId: 'rohan_hub_return',
+      pattern: 'analytical',
+      skills: ['systemsThinking', 'mastery']
+    }],
+    tags: ['simulation', 'rohan_arc', 'phase3', 'success']
+  },
+
+  {
+    nodeId: 'rohan_sim3_partial',
+    speaker: 'Rohan',
+    content: [{
+      text: "Caching helps. Symptom management. Latency drops to 650ms. Better, not fixed.\n\nBut you haven't found the root cause.\n\nHere's what you missed: the individual services look healthy because they're measuring themselves in isolation.\n\nBut distributed systems fail in the SPACES BETWEEN services. Network latency. Connection pools. Service mesh overhead.\n\nYou pull the distributed trace:\n\n```\nService execution: 73ms\nNetwork latency: 774ms\n```\n\nThe ghost lives in the wires. Someone deployed a chatty microservice that's saturating the network.\n\nCaching bought you time. But systems thinking would have found the root cause in 7 minutes instead of 47.\n\nLesson: Treat the system as one organism, not isolated parts.",
+      emotion: 'patient_teaching',
+      variation_id: 'sim3_partial_v1'
+    }],
+    onEnter: [{
+      characterId: 'rohan',
+      addKnowledgeFlags: ['rohan_sim3_partial']
+    }],
+    choices: [{
+      choiceId: 'sim3_partial_complete',
+      text: "Systems thinking. See the whole organism.",
+      nextNodeId: 'rohan_hub_return',
+      pattern: 'analytical',
+      skills: ['systemsThinking']
+    }],
+    tags: ['simulation', 'rohan_arc', 'phase3', 'partial']
+  },
+
+  {
+    nodeId: 'rohan_sim3_fail',
+    speaker: 'Rohan',
+    content: [{
+      text: "You restart all services. They come back up.\n\nLatency: Still 847ms.\n\nNow you've lost your investigation time. Services are fresh. Logs are gone. The CEO is calling.\n\n'Have we identified the root cause?'\n\nNo. Because you treated the symptom, not the disease.\n\nHere's what you missed: the services were never the problem. The NETWORK between them was saturated. A chatty microservice broadcasting health checks.\n\nRestarting services cleared the symptom for 30 seconds. Then the network saturation returned.\n\nYou should have checked distributed tracing. Seen the network latency. Found the chatty service. Disabled it.\n\n7 minute fix. Instead: 2 hour outage, SLA breach, and a very uncomfortable postmortem meeting.\n\nLesson: Rebooting is not debugging. Understanding is.",
+      emotion: 'firm_disappointed',
+      variation_id: 'sim3_fail_v1',
+      richEffectContext: 'error'
+    }],
+    choices: [{
+      choiceId: 'sim3_retry',
+      text: "I see it now. Check distributed tracing first.",
+      nextNodeId: 'rohan_sim3_success',
+      pattern: 'analytical',
+      skills: ['learningAgility']
+    }],
+    tags: ['simulation', 'rohan_arc', 'phase3', 'failure']
+  },
+
   {
     nodeId: 'rohan_hub_return',
     speaker: 'Rohan',

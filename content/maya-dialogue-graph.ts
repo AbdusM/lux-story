@@ -3624,6 +3624,227 @@ MISSION: Stabilize the wave form within safety limits.`,
       variation_id: 'hub_return_v1'
     }],
     choices: []
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // LOYALTY EXPERIENCE: The Demo (trust ≥ 8, post-vulnerability)
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'maya_loyalty_trigger',
+    speaker: 'Maya Chen',
+    content: [{
+      text: "Hey. I need your help with something.\n\nThe senior design showcase is next week. Faculty, industry partners, parents—everyone will be there.\n\nI've been working on something. Not for class. For me. An adaptive learning interface for kids with ADHD. Uses motion tracking and gamification to keep attention without overstimulation.\n\nIt's... it's good. Really good. But if I present it, my parents will be there. They'll see that I've been 'wasting time' on this instead of focusing on pre-med coursework.\n\nBut I think this could actually help people. Real people. Kids who struggle like I did.\n\nWill you help me prepare? Be my practice audience?",
+      emotion: 'vulnerable_determined',
+      variation_id: 'loyalty_trigger_v1'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      hasKnowledgeFlags: ['maya_vulnerability_revealed']
+    },
+    choices: [
+      {
+        choiceId: 'accept_loyalty',
+        text: "I'll help you prep. Show me what you've built.",
+        nextNodeId: 'maya_loyalty_start',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'decline_loyalty',
+        text: "This sounds important. Maybe ask Devon? He knows engineering presentations.",
+        nextNodeId: 'maya_loyalty_declined',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['loyalty_experience', 'the_demo']
+  },
+
+  {
+    nodeId: 'maya_loyalty_declined',
+    speaker: 'Maya Chen',
+    content: [{
+      text: "Yeah. You're probably right. Devon's presented at conferences. He'd know the technical stuff better.\n\nThanks anyway.",
+      emotion: 'disappointed',
+      variation_id: 'loyalty_declined_v1'
+    }],
+    choices: [{
+      choiceId: 'return_to_hub',
+      text: "(Let her go)",
+      nextNodeId: 'maya_hub_return',
+      pattern: 'patience'
+    }],
+    tags: ['loyalty_declined']
+  },
+
+  {
+    nodeId: 'maya_loyalty_start',
+    speaker: 'Maya Chen',
+    content: [{
+      text: "Okay. Here's the prototype.\n\n[She pulls up a tablet showing a colorful, fluid interface. Shapes morph and dance in response to movement, but there's structure underneath—curriculum goals, progress tracking, adaptive difficulty.]\n\nThe pitch is 7 minutes. Faculty will ask technical questions. Industry partners will ask about market viability. And my parents...\n\nMy parents will ask why I'm not in med school.\n\nLet me run through it. Stop me when something doesn't land.",
+      emotion: 'focused_anxious',
+      variation_id: 'loyalty_start_v1'
+    }],
+    onEnter: [
+      { characterId: 'maya', addKnowledgeFlags: ['maya_loyalty_accepted'] }
+    ],
+    choices: [{
+      choiceId: 'begin_practice',
+      text: "Start from the top. I'm listening.",
+      nextNodeId: 'maya_loyalty_practice',
+      pattern: 'patience',
+      skills: ['activeListening']
+    }],
+    tags: ['loyalty_experience', 'the_demo', 'practice_start']
+  },
+
+  {
+    nodeId: 'maya_loyalty_practice',
+    speaker: 'Maya Chen',
+    content: [{
+      text: "[Maya takes a breath. Begins.]\n\n\"Traditional educational software treats attention as a binary: focused or distracted. But ADHD brains don't work that way. Attention is kinetic. It flows.\n\nMy interface—MotionMind—tracks micro-movements. Fidgeting, head tilts, posture shifts. Instead of punishing distraction, it channels kinetic energy into curriculum engagement.\n\nA kid bounces their leg? The animation speed increases to match their rhythm. They look away? The interface pauses, waits, invites them back with motion cues.\n\nEarly testing with 12 students showed 340% increase in task completion and 89% reduction in frustration behaviors.\"\n\n[She stops. Looks at you.]\n\nToo technical? Not technical enough? Did I lose you at 'kinetic'?",
+      emotion: 'anxious_hopeful',
+      variation_id: 'practice_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'affirm_technical',
+        text: "The data is strong. But lead with the kid, not the stats.",
+        nextNodeId: 'maya_loyalty_iteration',
+        pattern: 'helping',
+        skills: ['communication', 'empathy']
+      },
+      {
+        choiceId: 'question_clarity',
+        text: "What does 'frustration behavior' mean? Will parents understand that?",
+        nextNodeId: 'maya_loyalty_iteration',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'miss_point',
+        text: "It's great. Just be confident and you'll crush it.",
+        nextNodeId: 'maya_loyalty_shallow',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['loyalty_experience', 'the_demo', 'practice']
+  },
+
+  {
+    nodeId: 'maya_loyalty_iteration',
+    speaker: 'Maya Chen',
+    content: [{
+      text: "[She nods, thinking.]\n\n\"Right. Start human. Okay.\"\n\n[Takes another breath. Restarts.]\n\n\"I was diagnosed with ADHD at 8. School was torture. Sit still. Focus. Pay attention. But my brain doesn't sit still. It moves.\n\nSo I built something that moves with it.\"\n\n[She demonstrates. The interface responds to her hand waves, her shifting weight. It's mesmerizing.]\n\n\"This is MotionMind. For kids whose attention is kinetic, not broken.\"\n\n[Pause.]\n\nBetter?",
+      emotion: 'hopeful_vulnerable',
+      variation_id: 'iteration_v1'
+    }],
+    choices: [{
+      choiceId: 'affirm_iteration',
+      text: "Much better. Now they'll remember the kid before the data.",
+      nextNodeId: 'maya_loyalty_parents_question',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence']
+    }],
+    tags: ['loyalty_experience', 'the_demo', 'iteration']
+  },
+
+  {
+    nodeId: 'maya_loyalty_shallow',
+    speaker: 'Maya Chen',
+    content: [{
+      text: "[She smiles, but it doesn't reach her eyes.]\n\n\"Yeah. Confidence. That's all I need.\"\n\n[She closes the laptop.]\n\nThanks for listening. I should... I should practice more on my own.",
+      emotion: 'disappointed_closed_off',
+      variation_id: 'shallow_v1'
+    }],
+    choices: [{
+      choiceId: 'shallow_return',
+      text: "(Let her go)",
+      nextNodeId: 'maya_hub_return',
+      pattern: 'patience'
+    }],
+    onEnter: [{
+      characterId: 'maya',
+      addKnowledgeFlags: ['maya_loyalty_incomplete']
+    }],
+    tags: ['loyalty_experience', 'the_demo', 'incomplete']
+  },
+
+  {
+    nodeId: 'maya_loyalty_parents_question',
+    speaker: 'Maya Chen',
+    content: [{
+      text: "Okay. Now the hard part.\n\n[She sits down. Vulnerability cracks through.]\n\nWhat if they ask why I'm doing this instead of preparing for the MCAT? What if Dad says, 'This is a nice hobby, but when are you going to focus on your future?'\n\nHow do I tell them... this IS my future? That I'm not failing. I'm just not following their plan.\n\nWhat do I say?",
+      emotion: 'vulnerable_desperate',
+      variation_id: 'parents_question_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'truth_gentle',
+        text: "Tell them the truth gently: 'This is what I'm good at. This is where I belong.'",
+        nextNodeId: 'maya_loyalty_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'courage']
+      },
+      {
+        choiceId: 'compromise',
+        text: "Maybe frame it as 'exploring options' so they don't panic.",
+        nextNodeId: 'maya_loyalty_partial',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['loyalty_experience', 'the_demo', 'parents_crisis']
+  },
+
+  {
+    nodeId: 'maya_loyalty_success',
+    speaker: 'Maya Chen',
+    content: [{
+      text: "[She closes her eyes. Nods.]\n\n\"This is what I'm good at. This is where I belong.\"\n\n[Opens them.]\n\n\"Simple. Direct. True.\"\n\n[A week later. You get a text.]\n\n\"Presented today. Faculty loved it. Industry partner wants a meeting. And my parents...\n\nMom cried. Said she didn't know I'd been struggling all those years. That she's sorry for not listening.\n\nDad still wants me to 'keep options open.' But he said he's proud. That's... that's enough for now.\n\nThank you. For helping me find the words. For believing this mattered.\n\nIt did. It does.\"",
+      emotion: 'grateful_transformed',
+      variation_id: 'success_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [{
+      choiceId: 'success_return',
+      text: "You found your voice. That's everything.",
+      nextNodeId: 'maya_hub_return',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence']
+    }],
+    onEnter: [
+      {
+        characterId: 'maya',
+        trustChange: 3,
+        addKnowledgeFlags: ['maya_loyalty_complete'],
+        addGlobalFlags: ['maya_demo_triumph']
+      }
+    ],
+    tags: ['loyalty_experience', 'the_demo', 'success']
+  },
+
+  {
+    nodeId: 'maya_loyalty_partial',
+    speaker: 'Maya Chen',
+    content: [{
+      text: "[She nods slowly.]\n\n\"Yeah. 'Exploring options.' Keep it vague. Safe.\"\n\n[Pause.]\n\n\"It's just... I'm tired of being safe. Of hedging.\"\n\n[A week later. You get a text.]\n\n\"Presented. It went okay. Parents seemed... confused but supportive? Hard to tell.\n\nIndustry partner said 'interesting concept, reach out if you pursue this seriously.'\n\nI don't know if I softened the truth too much or if I just wasn't ready.\n\nThanks for trying to help.\"",
+      emotion: 'conflicted_uncertain',
+      variation_id: 'partial_v1'
+    }],
+    choices: [{
+      choiceId: 'partial_return',
+      text: "(She'll find her way)",
+      nextNodeId: 'maya_hub_return',
+      pattern: 'patience'
+    }],
+    onEnter: [
+      {
+        characterId: 'maya',
+        trustChange: 1,
+        addKnowledgeFlags: ['maya_loyalty_partial']
+      }
+    ],
+    tags: ['loyalty_experience', 'the_demo', 'partial']
   }
 ]
 

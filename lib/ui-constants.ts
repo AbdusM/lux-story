@@ -84,6 +84,13 @@ export const SAFE_AREA_PADDING = {
   bottom: 'pb-[max(16px,env(safe-area-inset-bottom))]',
 } as const;
 
+// Modal height constants
+export const MODAL_HEIGHT = {
+  mobile: '50vh',
+  tablet: '60vh',
+  dragHandle: 40,
+} as const;
+
 // =============================================================================
 // ANIMATION DURATIONS
 // =============================================================================

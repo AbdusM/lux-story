@@ -1201,9 +1201,107 @@ export const liraDialogueNodes: DialogueNode[] = [
                 text: "Return to Station",
                 nextNodeId: 'samuel_orb_introduction',
                 pattern: 'exploring'
+            },
+            // Loyalty Experience trigger - only visible at high trust + patience pattern
+            {
+                choiceId: 'offer_memory_song_help',
+                text: "[Patient Listener] Lira, you mentioned recording your grandmother's last song. Want company while you work?",
+                nextNodeId: 'lira_loyalty_trigger',
+                pattern: 'patience',
+                skills: ['patience', 'emotionalIntelligence'],
+                visibleCondition: {
+                    trust: { min: 8 },
+                    patterns: { patience: { min: 50 } },
+                    hasGlobalFlags: ['lira_arc_complete']
+                }
             }
         ],
         tags: ['lira_arc', 'farewell', 'transition']
+    },
+
+    // ============= LOYALTY EXPERIENCE TRIGGER =============
+    {
+        nodeId: 'lira_loyalty_trigger',
+        speaker: 'Lira Vance',
+        content: [{
+            text: "You remember.\n\nGrandma Rose's last song. She hummed it in her final weeks. Never wrote it down. Never recorded it.\n\nI've been trying to recreate it from memory. But memory fades. The melody shifts. I'm afraid I'm making it up instead of remembering it.\n\nI have maybe sixty percent of it. But the middle section... it's gone. Like trying to remember a dream after you wake up.\n\nIf I don't capture it soon, it'll be lost forever. Her last song. The one she never got to share.\n\nYou understand patience. Sitting with something until it reveals itself. Would you... sit with me while I try to remember?",
+            emotion: 'anxious_desperate',
+            variation_id: 'loyalty_trigger_v1',
+            richEffectContext: 'warning'
+        }],
+        requiredState: {
+            trust: { min: 8 },
+            patterns: { patience: { min: 5 } },
+            hasGlobalFlags: ['lira_arc_complete']
+        },
+        metadata: {
+            experienceId: 'the_memory_song'  // Triggers loyalty experience engine
+        },
+        choices: [
+            {
+                choiceId: 'accept_memory_song_challenge',
+                text: "Let's sit with it together. Maybe the silence will help it surface.",
+                nextNodeId: 'lira_loyalty_start',
+                pattern: 'patience',
+                skills: ['patience', 'emotionalIntelligence'],
+                consequence: {
+                    characterId: 'lira',
+                    trustChange: 1
+                }
+            },
+            {
+                choiceId: 'encourage_but_decline',
+                text: "Lira, you carry her music in you. Trust what surfaces.",
+                nextNodeId: 'lira_loyalty_declined',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence']
+            }
+        ],
+        onEnter: [
+            {
+                characterId: 'lira',
+                addKnowledgeFlags: ['loyalty_offered']
+            }
+        ],
+        tags: ['loyalty_experience', 'lira_loyalty', 'high_trust']
+    },
+
+    {
+        nodeId: 'lira_loyalty_declined',
+        speaker: 'Lira Vance',
+        content: [{
+            text: "You're right. The music is in me. Not in perfect notation. In feeling.\n\nMaybe the point isn't to reproduce it exactly. Maybe the point is to honor what I remember. Let it evolve.\n\nGrandma Rose always said music changes every time you play it. Living thing, not fossil.\n\nThank you. Sometimes I forget that preservation isn't the same as perfection.",
+            emotion: 'resolved',
+            variation_id: 'loyalty_declined_v1'
+        }],
+        choices: [
+            {
+                choiceId: 'loyalty_declined_farewell',
+                text: "She'd want you to play it your way. Go honor her.",
+                nextNodeId: 'samuel_orb_introduction',
+                pattern: 'patience'
+            }
+        ],
+        onEnter: [
+            {
+                characterId: 'lira',
+                addKnowledgeFlags: ['loyalty_declined_gracefully']
+            }
+        ]
+    },
+
+    {
+        nodeId: 'lira_loyalty_start',
+        speaker: 'Lira Vance',
+        content: [{
+            text: "Thank you. I've been afraid to sit with this alone. Afraid the silence will be empty.\n\nBut with you... maybe the silence will speak.\n\nLet's find Grandma Rose's song. Two listeners. One memory. One last melody.",
+            emotion: 'hopeful_vulnerable',
+            variation_id: 'loyalty_start_v1'
+        }],
+        metadata: {
+            experienceId: 'the_memory_song'  // Experience engine takes over
+        },
+        choices: []  // Experience engine handles next steps
     },
 
     // ============= INTERRUPT TARGET NODES =============

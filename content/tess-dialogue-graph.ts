@@ -1745,6 +1745,24 @@ Stakes: Trust, fairness, emotional safety for both students`,
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.TESS_REFLECTION_GATEWAY,
         pattern: 'exploring'
+      },
+      // Loyalty Experience trigger - only visible at high trust + helping pattern
+      {
+        choiceId: 'offer_first_class_help',
+        text: "[Helper's Intuition] Tess, first cohort launches soon. That's a lot of pressure. Need someone in your corner?",
+        nextNodeId: 'tess_loyalty_trigger',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'problemSolving'],
+        visibleCondition: {
+          trust: { min: 8 },
+          patterns: { helping: { min: 50 } },
+          hasGlobalFlags: ['tess_arc_complete']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['tess_arc_complete']
       }
     ],
     tags: ['phase2', 'tess_arc', 'complete']
@@ -2030,6 +2048,91 @@ Stakes: Trust, fairness, emotional safety for both students`,
         }
       }
     ]
+  },
+
+  // ============= LOYALTY EXPERIENCE TRIGGER =============
+  {
+    nodeId: 'tess_loyalty_trigger',
+    speaker: 'Tess',
+    content: [{
+      text: "You can tell.\n\nFirst cohort. Twelve students. They signed up for my experimental curriculum about Birmingham's hidden music history as a lens for education design.\n\nLaunch is in three days. But one student just emailed. She's struggling financially. Can't afford the materials. Might have to drop out.\n\nI could waive the fee. But that sets a precedent I can't sustain. Or I could hold the line and lose someone who needs this most.\n\nFirst real test of what kind of educator I want to be. Business founder or community builder. Can't be both without burning out.\n\nYou understand helping people. Would you... sit with me while I figure this out?",
+      emotion: 'anxious_determined',
+      variation_id: 'loyalty_trigger_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      patterns: { helping: { min: 5 } },
+      hasGlobalFlags: ['tess_arc_complete']
+    },
+    metadata: {
+      experienceId: 'the_first_class'  // Triggers loyalty experience engine
+    },
+    choices: [
+      {
+        choiceId: 'accept_first_class_challenge',
+        text: "Let's think through this together. There might be a third option.",
+        nextNodeId: 'tess_loyalty_start',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'problemSolving'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'encourage_but_decline',
+        text: "Tess, you've built something meaningful. Trust your instincts on this.",
+        nextNodeId: 'tess_loyalty_declined',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'tess',
+        addKnowledgeFlags: ['loyalty_offered']
+      }
+    ],
+    tags: ['loyalty_experience', 'tess_loyalty', 'high_trust']
+  },
+
+  {
+    nodeId: 'tess_loyalty_declined',
+    speaker: 'Tess',
+    content: [{
+      text: "You're right. I've been second-guessing myself because the stakes feel so high.\n\nBut I didn't build The B-Side to be another extractive institution. I built it to create space for people who've been locked out.\n\nI'll find a way. Sliding scale. Work-study. Something.\n\nThank you for reminding me why I started this.",
+      emotion: 'resolved',
+      variation_id: 'loyalty_declined_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'loyalty_declined_farewell',
+        text: "Your students are lucky to have you. Go build something beautiful.",
+        nextNodeId: samuelEntryPoints.TESS_REFLECTION_GATEWAY,
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'tess',
+        addKnowledgeFlags: ['loyalty_declined_gracefully']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'tess_loyalty_start',
+    speaker: 'Tess',
+    content: [{
+      text: "A third option. Yeah. Maybe there is.\n\nOkay. Let's think this through together. You, me, and twelve students who deserve a chance.\n\nFirst cohort. Let's make it count.",
+      emotion: 'hopeful_determined',
+      variation_id: 'loyalty_start_v1'
+    }],
+    metadata: {
+      experienceId: 'the_first_class'  // Experience engine takes over
+    },
+    choices: []  // Experience engine handles next steps
   }
 ]
 

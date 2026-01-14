@@ -1,4 +1,4 @@
-import { findCharacterForNode, isValidCharacterId } from './graph-registry'
+import { findCharacterForNode, isValidCharacterId, CHARACTER_IDS } from './graph-registry'
 import { ActiveThought, THOUGHT_REGISTRY } from '@/content/thoughts'
 import { calculateResonantTrustChange } from './pattern-affinity'
 import { PatternType, isValidPattern } from './patterns'
@@ -397,19 +397,25 @@ export class GameStateUtils {
 
     // Apply character-specific changes
     if (change.characterId) {
-      const charState = newState.characters.get(change.characterId)
-      if (!charState) {
+      const oldCharState = newState.characters.get(change.characterId)
+      if (!oldCharState) {
         console.error(`Character ${change.characterId} not found in state`)
         return newState
       }
 
+      // PHASE 1: CALCULATE all new values (no mutations)
+      let updatedTrust = oldCharState.trust
+      let updatedAnxiety = oldCharState.anxiety
+      let updatedNervousSystemState = oldCharState.nervousSystemState
+      let updatedLastReaction = oldCharState.lastReaction
+      let updatedRelationshipStatus = oldCharState.relationshipStatus
+      let updatedTrustMomentum = oldCharState.trustMomentum
+      let updatedKnowledgeFlags = oldCharState.knowledgeFlags
+
       // Trust changes with pattern-character resonance
       if (change.trustChange !== undefined) {
-        const _oldTrust = charState.trust
-
         // Calculate resonant trust change based on player's pattern affinity
-        // This makes certain characters connect better with certain play styles
-        const { modifiedTrust, resonanceTriggered: _resonanceTriggered, resonanceDescription: _resonanceDescription } =
+        const { modifiedTrust } =
           calculateResonantTrustChange(
             change.trustChange,
             change.characterId,
@@ -420,82 +426,90 @@ export class GameStateUtils {
           )
 
         // D-082: Apply trust momentum (accelerates/decelerates changes based on history)
-        // Initialize momentum if not present
-        if (!charState.trustMomentum) {
-          charState.trustMomentum = createTrustMomentum(change.characterId)
-        }
-        const momentumAdjustedTrust = applyMomentumToTrustChange(modifiedTrust, charState.trustMomentum)
-        charState.trustMomentum = updateTrustMomentum(charState.trustMomentum, modifiedTrust)
+        const currentMomentum = oldCharState.trustMomentum || createTrustMomentum(change.characterId)
+        const momentumAdjustedTrust = applyMomentumToTrustChange(modifiedTrust, currentMomentum)
+        updatedTrustMomentum = updateTrustMomentum(currentMomentum, modifiedTrust)
 
-        charState.trust = Math.max(
+        updatedTrust = Math.max(
           NARRATIVE_CONSTANTS.MIN_TRUST,
-          Math.min(NARRATIVE_CONSTANTS.MAX_TRUST, charState.trust + momentumAdjustedTrust)
+          Math.min(NARRATIVE_CONSTANTS.MAX_TRUST, oldCharState.trust + momentumAdjustedTrust)
         )
 
         // Limbic System Update: Recalculate biological state
-        // Higher trust buffers anxiety. For now, anxiety inversely mirrors trust unless explicitly set.
-        // ISP UPDATE: Added skill context (patterns) to the calculation "Neuro-Link"
-        charState.anxiety = (10 - charState.trust) * 10
+        updatedAnxiety = (10 - updatedTrust) * 10
 
-        charState.nervousSystemState = determineNervousSystemState(
-          charState.anxiety,
-          charState.trust,
-          newState.patterns as unknown as Record<string, number>, // The "Neuro-Link": Patterns -> Skills -> Biology
-          newState.globalFlags // The "Simulation Effect": Golden Prompts -> Biology
+        updatedNervousSystemState = determineNervousSystemState(
+          updatedAnxiety,
+          updatedTrust,
+          newState.patterns as unknown as Record<string, number>,
+          newState.globalFlags
         )
 
         // ISP UPDATE: The Chemistry Engine
-        // Calculate dynamic reaction based on new state + skills
-        charState.lastReaction = calculateReaction(
-          charState.nervousSystemState,
+        updatedLastReaction = calculateReaction(
+          updatedNervousSystemState,
           newState.patterns as unknown as Record<string, number>,
-          charState.trust
+          updatedTrust
         )
 
-        // ISP UPDATE: Telemetry Feed (CEO Dashboard)
-        // Emit the bio-state change immediately
-        if (typeof window !== 'undefined') {
-          import('@/lib/telemetry/dashboard-feed').then(({ dashboard }) => {
-            dashboard.emit('BIO_STATE_CHANGE', {
-              characterId: change.characterId,
-              state: charState.nervousSystemState,
-              reaction: charState.lastReaction, // Telemetry now sees the "Chemical Reaction"
-              trust: charState.trust,
-              anxiety: charState.anxiety
-            }, newState)
-          })
-        }
-
-        // Log resonance for debugging (can be used for consequence echoes later)
-        // if (resonanceTriggered && resonanceDescription) {
-        //   console.log(`[Resonance] ${change.characterId}: ${resonanceDescription}`)
-        // }
-
         // Auto-update relationship status based on trust level
-        // Only if not explicitly set in this change
         if (!change.setRelationshipStatus) {
-          const newTrust = charState.trust
-          if (newTrust >= TRUST_THRESHOLDS.close) {
-            charState.relationshipStatus = 'confidant'
-          } else if (newTrust >= TRUST_THRESHOLDS.friendly) {
-            charState.relationshipStatus = 'acquaintance'
+          if (updatedTrust >= TRUST_THRESHOLDS.close) {
+            updatedRelationshipStatus = 'confidant'
+          } else if (updatedTrust >= TRUST_THRESHOLDS.friendly) {
+            updatedRelationshipStatus = 'acquaintance'
           } else {
-            charState.relationshipStatus = 'stranger'
+            updatedRelationshipStatus = 'stranger'
           }
         }
       }
 
       // EXPLICIT relationship status change (overrides auto-update)
       if (change.setRelationshipStatus) {
-        charState.relationshipStatus = change.setRelationshipStatus
+        updatedRelationshipStatus = change.setRelationshipStatus
       }
 
-      // Knowledge flag changes
-      if (change.addKnowledgeFlags) {
-        change.addKnowledgeFlags.forEach(flag => charState.knowledgeFlags.add(flag))
+      // Knowledge flag changes - create new Set if needed
+      if (change.addKnowledgeFlags || change.removeKnowledgeFlags) {
+        updatedKnowledgeFlags = new Set(oldCharState.knowledgeFlags)
+        if (change.addKnowledgeFlags) {
+          change.addKnowledgeFlags.forEach(flag => updatedKnowledgeFlags.add(flag))
+        }
+        if (change.removeKnowledgeFlags) {
+          change.removeKnowledgeFlags.forEach(flag => updatedKnowledgeFlags.delete(flag))
+        }
       }
-      if (change.removeKnowledgeFlags) {
-        change.removeKnowledgeFlags.forEach(flag => charState.knowledgeFlags.delete(flag))
+
+      // PHASE 2: CREATE new immutable CharacterState with all updates
+      const updatedCharState: CharacterState = {
+        ...oldCharState,
+        trust: updatedTrust,
+        anxiety: updatedAnxiety,
+        nervousSystemState: updatedNervousSystemState,
+        lastReaction: updatedLastReaction,
+        relationshipStatus: updatedRelationshipStatus,
+        trustMomentum: updatedTrustMomentum,
+        knowledgeFlags: updatedKnowledgeFlags
+      }
+
+      // PHASE 3: REPLACE in Map
+      newState.characters.set(change.characterId, updatedCharState)
+
+      // ISP UPDATE: Telemetry Feed (CEO Dashboard)
+      // Emit snapshot AFTER calculating all values
+      if (change.trustChange !== undefined && typeof window !== 'undefined') {
+        const telemetrySnapshot = {
+          characterId: change.characterId,
+          state: updatedNervousSystemState,
+          reaction: updatedLastReaction,
+          trust: updatedTrust,
+          anxiety: updatedAnxiety
+        }
+        import('@/lib/telemetry/dashboard-feed')
+          .then(({ dashboard }) => {
+            dashboard.emit('BIO_STATE_CHANGE', telemetrySnapshot, newState)
+          })
+          .catch(err => console.error('[Telemetry] Failed to load dashboard-feed', err))
       }
     }
 
@@ -530,6 +544,10 @@ export class GameStateUtils {
             knowledgeFlags: new Set(char.knowledgeFlags),
             relationshipStatus: char.relationshipStatus,
             conversationHistory: [...char.conversationHistory],
+            // FIX: Clone optional properties that were missing
+            visitedPatternUnlocks: char.visitedPatternUnlocks ? new Set(char.visitedPatternUnlocks) : undefined,
+            lastInteractionTimestamp: char.lastInteractionTimestamp,
+            trustMomentum: char.trustMomentum ? { ...char.trustMomentum } : undefined,
             // D-039: Clone trust timeline
             trustTimeline: char.trustTimeline ? {
               ...char.trustTimeline,
@@ -591,28 +609,12 @@ export class GameStateUtils {
     return {
       saveVersion: NARRATIVE_CONSTANTS.SAVE_VERSION,
       playerId,
-      characters: new Map([
-        ['samuel', this.createCharacterState('samuel')],
-        ['maya', this.createCharacterState('maya')],
-        ['devon', this.createCharacterState('devon')],
-        ['jordan', this.createCharacterState('jordan')],
-        ['marcus', this.createCharacterState('marcus')],
-        ['tess', this.createCharacterState('tess')],
-        ['yaquin', this.createCharacterState('yaquin')],
-        ['kai', this.createCharacterState('kai')],
-        ['alex', this.createCharacterState('alex')],
-        ['rohan', this.createCharacterState('rohan')],
-        ['silas', this.createCharacterState('silas')],
-        ['elena', this.createCharacterState('elena')],
-        ['grace', this.createCharacterState('grace')],
-        ['asha', this.createCharacterState('asha')],
-        ['lira', this.createCharacterState('lira')],
-        ['zara', this.createCharacterState('zara')],
-        ['station_entry', this.createCharacterState('station_entry')],
-        ['grand_hall', this.createCharacterState('grand_hall')],
-        ['market', this.createCharacterState('market')],
-        ['deep_station', this.createCharacterState('deep_station')]
-      ]),
+      characters: new Map(
+        CHARACTER_IDS.map(charId => [
+          charId,
+          this.createCharacterState(charId)
+        ])
+      ),
       globalFlags: new Set(),
       patterns: {
         analytical: 0,

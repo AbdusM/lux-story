@@ -2275,9 +2275,112 @@ const nodes: DialogueNode[] = [
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.ELENA_REFLECTION_GATEWAY,
         pattern: 'exploring'
+      },
+      // Loyalty Experience trigger - only visible at high trust + analytical pattern
+      {
+        choiceId: 'offer_pattern_help',
+        text: "[Pattern Seeker] Elena, you mentioned data inconsistencies in the archives. Want another set of eyes on the anomaly?",
+        nextNodeId: 'elena_loyalty_trigger',
+        pattern: 'analytical',
+        skills: ['dataAnalysis', 'criticalThinking'],
+        visibleCondition: {
+          trust: { min: 8 },
+          patterns: { analytical: { min: 50 } },
+          hasGlobalFlags: ['elena_arc_complete']
+        }
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['elena_arc_complete']
       }
     ],
     tags: ['transition', 'elena_arc']
+  },
+
+  // ============= LOYALTY EXPERIENCE TRIGGER =============
+  {
+    nodeId: 'elena_loyalty_trigger',
+    speaker: 'Elena',
+    content: [{
+      text: "You noticed.\n\nThere's a pattern in the station records. Passenger manifests that don't align with arrival timestamps. Catalog entries that reference documents that don't exist.\n\nEveryone else says it's data corruption. Historical noise. But the pattern is too consistent. Too deliberate.\n\nSomething was removed from the archives. And someone went to great lengths to hide the gaps.\n\nI've been tracking it alone because... because suggesting institutional record manipulation makes you sound paranoid. Makes you the problem instead of the problem-finder.\n\nBut you see patterns like I do. Would you... help me trace this before I convince myself I'm imagining it?",
+      emotion: 'anxious_determined',
+      variation_id: 'loyalty_trigger_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      patterns: { analytical: { min: 5 } },
+      hasGlobalFlags: ['elena_arc_complete']
+    },
+    metadata: {
+      experienceId: 'the_pattern'  // Triggers loyalty experience engine
+    },
+    choices: [
+      {
+        choiceId: 'accept_pattern_challenge',
+        text: "Show me the data. We'll map the gaps together.",
+        nextNodeId: 'elena_loyalty_start',
+        pattern: 'analytical',
+        skills: ['dataAnalysis', 'criticalThinking'],
+        consequence: {
+          characterId: 'elena',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'encourage_but_decline',
+        text: "Elena, you're the best pattern-finder I know. Trust your analysis.",
+        nextNodeId: 'elena_loyalty_declined',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'elena',
+        addKnowledgeFlags: ['loyalty_offered']
+      }
+    ],
+    tags: ['loyalty_experience', 'elena_loyalty', 'high_trust']
+  },
+
+  {
+    nodeId: 'elena_loyalty_declined',
+    speaker: 'Elena',
+    content: [{
+      text: "You're right. I've cross-referenced sixteen different data sources. Run statistical anomaly detection. The pattern is real.\n\nI don't need external validation. I need to trust my own analytical work.\n\nThank you for believing in the process. Sometimes I doubt myself when everyone else calls it noise.",
+      emotion: 'resolved',
+      variation_id: 'loyalty_declined_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'loyalty_declined_farewell',
+        text: "The pattern is there. You'll find the truth.",
+        nextNodeId: samuelEntryPoints.ELENA_REFLECTION_GATEWAY,
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'elena',
+        addKnowledgeFlags: ['loyalty_declined_gracefully']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'elena_loyalty_start',
+    speaker: 'Elena',
+    content: [{
+      text: "Thank you. I've been afraid to pursue this alone.\n\nLet me pull up the full dataset. Two analysts. One pattern. Let's see what someone tried to erase from history.",
+      emotion: 'focused_grateful',
+      variation_id: 'loyalty_start_v1'
+    }],
+    metadata: {
+      experienceId: 'the_pattern'  // Experience engine takes over
+    },
+    choices: []  // Experience engine handles next steps
   },
 
   // ============= CAREER MENTION NODES (Invisible Depth) =============

@@ -1580,9 +1580,107 @@ WARNING: Response time > 48h`,
         text: "(Return to the station, changed by this connection)",
         nextNodeId: 'hub_return',
         pattern: 'patience'
+      },
+      // Loyalty Experience trigger - only visible at high trust + analytical pattern
+      {
+        choiceId: 'offer_breach_help',
+        text: "[System Analyst] Marcus, I've been monitoring the station network. There's an anomaly in the patient database. Active breach?",
+        nextNodeId: 'marcus_loyalty_trigger',
+        pattern: 'analytical',
+        skills: ['cybersecurity', 'riskManagement'],
+        visibleCondition: {
+          trust: { min: 8 },
+          patterns: { analytical: { min: 50 } },
+          hasGlobalFlags: ['marcus_arc_complete']
+        }
       }
     ],
     tags: ['marcus_arc', 'resolution', 'transformation']
+  },
+
+  // ============= LOYALTY EXPERIENCE TRIGGER =============
+  {
+    nodeId: 'marcus_loyalty_trigger',
+    speaker: 'Marcus',
+    content: [{
+      text: "You see it too.\n\nActive intrusion. Patient records being accessed without authorization. I flagged it ten minutes ago.\n\nEarly detection means we can contain it. But containment requires choices. Do we shut down the system and risk interrupting active treatments? Do we let it run and trace the exfiltration? Do we notify patients now or wait until we understand the scope?\n\nEvery choice has consequences. Every delay costs trust. Every action risks lives.\n\nThis is what I lived through before. Competing priorities. Impossible timelines. The weight of thousands depending on one decision.\n\nYou understand systems and risk. Will you... help me navigate this before it becomes another breach I carry forever?",
+      emotion: 'anxious_determined',
+      variation_id: 'loyalty_trigger_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      patterns: { analytical: { min: 5 } },
+      hasGlobalFlags: ['marcus_arc_complete']
+    },
+    metadata: {
+      experienceId: 'the_breach'  // Triggers loyalty experience engine
+    },
+    choices: [
+      {
+        choiceId: 'accept_breach_challenge',
+        text: "Show me the logs. We'll triage this together.",
+        nextNodeId: 'marcus_loyalty_start',
+        pattern: 'analytical',
+        skills: ['cybersecurity', 'riskManagement'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'encourage_but_decline',
+        text: "Marcus, you've built these protocols precisely for this. Trust your framework.",
+        nextNodeId: 'marcus_loyalty_declined',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'marcus',
+        addKnowledgeFlags: ['loyalty_offered']
+      }
+    ],
+    tags: ['loyalty_experience', 'marcus_loyalty', 'high_trust']
+  },
+
+  {
+    nodeId: 'marcus_loyalty_declined',
+    speaker: 'Marcus',
+    content: [{
+      text: "You are right. I built the framework for this exact scenario.\n\nI have decision trees. Risk matrices. Escalation protocols. Everything I learned from the breach, codified into action.\n\nI do not need someone else to validate my decisions. I need to trust the system I built.\n\nThank you for the confidence. Sometimes I still doubt myself. But you are right. The framework will hold.",
+      emotion: 'resolved',
+      variation_id: 'loyalty_declined_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'loyalty_declined_farewell',
+        text: "Your protocols will protect them. Trust the work.",
+        nextNodeId: 'hub_return',
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'marcus',
+        addKnowledgeFlags: ['loyalty_declined_gracefully']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'marcus_loyalty_start',
+    speaker: 'Marcus',
+    content: [{
+      text: "Thank you. Pulling up the incident dashboard now.\n\nTwo heads. One system. Let us contain this before anyone gets hurt.",
+      emotion: 'focused_grateful',
+      variation_id: 'loyalty_start_v1'
+    }],
+    metadata: {
+      experienceId: 'the_breach'  // Experience engine takes over
+    },
+    choices: []  // Experience engine handles next steps
   },
 
   // ============= PATTERN-GATED BRANCHES =============

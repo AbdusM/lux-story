@@ -683,9 +683,89 @@ export const danteDialogueNodes: DialogueNode[] = [
         nextNodeId: 'dante_exploration_hub',
         pattern: 'patience',
         skills: ['curiosity']
+      },
+      {
+        choiceId: 'offer_real_pitch',
+        text: "[Helper] Dante, you look troubled. Someone need your help?",
+        nextNodeId: 'dante_loyalty_trigger',
+        pattern: 'helping',
+        skills: ['empathy', 'emotionalIntelligence'],
+        visibleCondition: {
+          trust: { min: 8 },
+          patterns: { helping: { min: 5 } },
+          hasGlobalFlags: ['dante_arc_complete']
+        }
       }
     ],
     tags: ['dante_arc', 'hub', 'navigation']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // LOYALTY EXPERIENCE: THE REAL PITCH
+  // Requires: Trust >= 8, Helping >= 50%, dante_arc_complete
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'dante_loyalty_trigger',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "There's a kid in the conference room. Twenty. Dropped out of college to start a tutoring business. Hasn't made a sale in three months.\n\nHe reached out because he saw my LinkedIn. Thought I could teach him the tricks. How to manipulate people into saying yes.\n\nBut here's the thing—his service is actually good. Really good. He just doesn't believe in it enough to sell it honestly.\n\nI could give him my old playbook. The one that worked. Mirroring, scarcity tactics, emotional leverage. He'd probably start closing deals.\n\nBut I don't want to teach him how to perform. I want to teach him how to believe in what he's offering. How to sell from a place of service, not survival.\n\nI've never done that before. I don't even know if I can.\n\nYou understand helping people. Would you... sit in on this? Help me figure out how to coach someone when the goal isn't just winning?",
+      emotion: 'vulnerable_determined',
+      variation_id: 'loyalty_trigger_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      patterns: { helping: { min: 5 } },
+      hasGlobalFlags: ['dante_arc_complete']
+    },
+    metadata: {
+      experienceId: 'the_real_pitch'
+    },
+    choices: [
+      {
+        choiceId: 'accept_real_pitch',
+        text: "I'll be there.",
+        nextNodeId: 'dante_loyalty_start',
+        pattern: 'helping'
+      },
+      {
+        choiceId: 'decline_real_pitch',
+        text: "That sounds like something you should figure out yourself.",
+        nextNodeId: 'dante_loyalty_declined'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'dante_loyalty_declined',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Yeah. You're probably right. Some lessons you gotta teach yourself.\n\nStill appreciate you listening.",
+      emotion: 'understanding',
+      variation_id: 'loyalty_declined_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'return_to_hub',
+        text: "Good luck with the session.",
+        nextNodeId: 'dante_return_hub'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'dante_loyalty_start',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Conference room C. Third floor.\n\nJust... if I start slipping into performance mode, call me on it. I need someone to keep me honest.\n\nLet's go figure this out together.",
+      emotion: 'warm_grateful',
+      variation_id: 'loyalty_start_v1'
+    }],
+    onEnter: [
+      { characterId: 'dante', addKnowledgeFlags: ['dante_loyalty_accepted'] }
+    ],
+    choices: []
   },
 
   // ============= ADDITIONAL NODES FOR DEPTH =============
@@ -876,6 +956,11 @@ export const danteDialogueNodes: DialogueNode[] = [
         variation_id: 'dante_habit_v1',
         text: "Habit. Not identity.\n\n...That's actually helpful. The performance isn't who I am—it's just what I learned to do to survive. And I can learn something else.\n\nYou're pretty good at this, you know. The listening thing.",
         emotion: 'lighter'
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['dante_arc_complete']
       }
     ],
     choices: [
@@ -1359,6 +1444,434 @@ export const danteDialogueNodes: DialogueNode[] = [
       { choiceId: 'wr_growth', text: "That's growth.", nextNodeId: 'dante_hub_return', pattern: 'patience' }
     ],
     tags: ['dante_arc', 'growth']
+  },
+
+  // ============= PHASE 1 SIMULATION: READING THE ROOM (Trust ≥ 2) =============
+  {
+    nodeId: 'dante_simulation_phase1_setup',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Want to see what I'm actually good at?\n\nNot the pitch. Not the close. Just... reading the room.\n\nThere's a small business owner I've been working with. She says she needs a new website. Marketing automation. The whole digital transformation package.\n\nBut when I listen—really listen—she's saying something else.\n\nWant to practice listening with me?",
+      emotion: 'inviting',
+      variation_id: 'simulation_phase1_intro_v1'
+    }],
+    requiredState: {
+      trust: { min: 2 }
+    },
+    choices: [
+      {
+        choiceId: 'phase1_accept',
+        text: "Show me how you listen.",
+        nextNodeId: 'dante_simulation_phase1',
+        pattern: 'helping',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'phase1_decline',
+        text: "Maybe another time.",
+        nextNodeId: 'dante_exploration_hub',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['simulation', 'dante_arc']
+  },
+
+  {
+    nodeId: 'dante_simulation_phase1',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Listen past what she's saying. What is she actually asking for?",
+      emotion: 'focused',
+      variation_id: 'simulation_phase1_v1'
+    }],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Active Listening: Reading Between the Lines',
+      taskDescription: 'A bakery owner says she needs a new website and marketing automation. But her real need is different. Listen carefully and identify what she truly wants help with.',
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'dante_active_listening_phase1',
+      initialContext: {
+        label: 'CLIENT_TRANSCRIPT',
+        content: `CLIENT (Maria, bakery owner):
+"I need a new website. Something modern. Maybe with automation for email campaigns.
+
+My competitors all have these sleek sites with online ordering. I'm falling behind.
+
+Though honestly, I don't even know if my customers would use online ordering. They're mostly regulars who come in every morning.
+
+I just... everyone says I need to be online. That's where the future is, right?
+
+What do you think I should do?"
+
+QUESTION: What is Maria's real need?
+A) New website with modern design
+B) Email marketing automation
+C) Clarity on whether digital transformation fits her actual business
+D) Online ordering system`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ INSIGHT: She doesn\'t need a website—she needs strategic clarity. Her regulars don\'t need online ordering. She\'s chasing solutions instead of understanding her business model.',
+      successThreshold: 75,
+      unlockRequirements: {
+        trustMin: 2
+      }
+    },
+    choices: [
+      {
+        choiceId: 'phase1_success',
+        text: "She doesn't need digital tools. She needs to understand her business.",
+        nextNodeId: 'dante_simulation_phase1_success',
+        pattern: 'helping',
+        skills: ['criticalThinking', 'communication']
+      }
+    ],
+    onEnter: [{
+      characterId: 'dante',
+      addKnowledgeFlags: ['dante_simulation_phase1_complete']
+    }],
+    tags: ['simulation', 'phase1']
+  },
+
+  {
+    nodeId: 'dante_simulation_phase1_success',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Exactly. You heard it too.\n\nShe doesn't need a website. She needs permission to trust what's already working. Her regulars. Her daily rhythm. The human connection.\n\nMost salespeople would've sold her the website. Closed the deal. Made commission.\n\nBut that's not selling. That's taking advantage of confusion.\n\nReal sales? It's helping someone see clearly. Even if it means walking away from the deal.",
+      emotion: 'warm_vindicated',
+      variation_id: 'phase1_success_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'phase1_success_continue',
+        text: "Clarity over commission. That's rare.",
+        nextNodeId: 'dante_exploration_hub',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'dante',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['simulation', 'success']
+  },
+
+  {
+    nodeId: 'dante_simulation_phase1_fail',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "That's the surface need. What she's saying she wants.\n\nBut if you listen deeper... there's a question underneath. About whether chasing 'modern' is even right for her.\n\nMost people never hear that second conversation. The real one.",
+      emotion: 'patient_teaching',
+      variation_id: 'phase1_fail_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'phase1_fail_continue',
+        text: "I'll practice listening deeper.",
+        nextNodeId: 'dante_exploration_hub',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'dante',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'fail']
+  },
+
+  // ============= PHASE 2 SIMULATION: ETHICAL PERSUASION (Trust ≥ 5) =============
+  {
+    nodeId: 'dante_simulation_phase2_setup',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "This one's harder.\n\nThere's a founder who wants to rebrand their entire nonprofit. New logo, new messaging, new website. Six-figure project.\n\nHere's the problem: their current brand is working. Donors love it. Volunteers recognize it. The community trusts it.\n\nBut the founder... he's bored of it. Wants something 'fresh'.\n\nHow do I tell him the truth without losing his trust? Or worse—letting him make a mistake because I was afraid to speak up?",
+      emotion: 'conflicted',
+      variation_id: 'simulation_phase2_intro_v1'
+    }],
+    requiredState: {
+      trust: { min: 5 },
+      hasKnowledgeFlags: ['dante_simulation_phase1_complete']
+    },
+    choices: [
+      {
+        choiceId: 'phase2_accept',
+        text: "Show me how you navigate this.",
+        nextNodeId: 'dante_simulation_phase2',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'phase2_decline',
+        text: "That's a delicate balance.",
+        nextNodeId: 'dante_exploration_hub',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'dante',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'dante_arc']
+  },
+
+  {
+    nodeId: 'dante_simulation_phase2',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "How do you redirect someone who's excited about the wrong thing?",
+      emotion: 'focused',
+      variation_id: 'simulation_phase2_v1'
+    }],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Ethical Persuasion: Truth Over Commission',
+      taskDescription: 'A nonprofit founder wants a costly rebrand, but their current brand is working well. How do you tell them the truth without losing trust or the relationship?',
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'dante_ethical_persuasion_phase2',
+      timeLimit: 120,
+      initialContext: {
+        label: 'FOUNDER_MEETING',
+        content: `FOUNDER (excited):
+"I've been thinking about this for months. Our brand feels... stale. We need something modern. Bold. Something that screams innovation.
+
+I want a complete rebrand. Logo, colors, website, messaging—everything.
+
+I know it's expensive, but this is an investment in our future."
+
+CONTEXT YOU KNOW (but he doesn't):
+- Current brand has 87% donor recognition
+- Last rebrand (5 years ago) caused 23% donor drop
+- Community surveys show trust in current visual identity
+- His board hasn't approved this yet
+
+APPROACH OPTIONS:
+A) Agree and take the project (easy commission, but wrong for them)
+B) Direct confrontation: "Your idea is bad" (truthful but relationship-ending)
+C) Ask questions to help him discover the risk himself (ethical persuasion)
+D) Suggest a brand "refresh" instead of full rebrand (compromise)
+
+What's the most ethical approach?`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ ETHICAL WIN: Option C - Ask questions. "What problem does the current brand fail to solve?" Let him realize the brand isn\'t the issue. Truth through discovery.',
+      successThreshold: 85,
+      unlockRequirements: {
+        trustMin: 5,
+        previousPhaseCompleted: 'dante_active_listening_phase1'
+      }
+    },
+    choices: [
+      {
+        choiceId: 'phase2_success',
+        text: "Guide him to discover the answer himself.",
+        nextNodeId: 'dante_simulation_phase2_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    onEnter: [{
+      characterId: 'dante',
+      addKnowledgeFlags: ['dante_simulation_phase2_complete']
+    }],
+    tags: ['simulation', 'phase2']
+  },
+
+  {
+    nodeId: 'dante_simulation_phase2_success',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "That\'s it. That\'s the move.\n\nYou didn\'t tell him he was wrong. You didn\'t take his money. You asked a question that let him see it himself.\n\n'What problem does the current brand fail to solve?'\n\nWhen he couldn't answer that... he realized. The brand wasn't the problem. His boredom was.\n\nThat\'s what ethical persuasion looks like. Not manipulation. Not even convincing. Just... clarity.\n\nYou can sell truth. You just have to trust the other person enough to let them find it.",
+      emotion: 'grateful_awed',
+      variation_id: 'phase2_success_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [
+      {
+        choiceId: 'phase2_success_continue',
+        text: "You helped him avoid a mistake.",
+        nextNodeId: 'dante_exploration_hub',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'dante',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['simulation', 'success']
+  },
+
+  {
+    nodeId: 'dante_simulation_phase2_fail',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "That approach... it either takes his money or loses his trust.\n\nThere's a third way. Harder than both.\n\nYou ask questions that help him see what you see. Not telling. Not selling. Just... illuminating.\n\n'What problem does your current brand fail to solve?'\n\nIf he can't answer that, he'll realize the brand isn\'t broken. And you didn't have to be the one to say it.",
+      emotion: 'patient_teaching',
+      variation_id: 'phase2_fail_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'phase2_fail_continue',
+        text: "Questions as truth-telling.",
+        nextNodeId: 'dante_exploration_hub',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'dante',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'fail']
+  },
+
+  // ============= PHASE 3 SIMULATION: SELLING TRUTH (Trust ≥ 8, Post-Vulnerability) =============
+  {
+    nodeId: 'dante_simulation_phase3_setup',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "I need your help with something I've never done before.\n\nActual selling. Not manipulation. Not charm. Just... truth.\n\nThere's a youth program in New Orleans. Kids like I used to be. Learning to read people, but not being taught why it matters. How to use that gift without losing yourself.\n\nI want to pitch them on building an ethical sales curriculum. Teaching influence as service, not extraction.\n\nBut I've spent so long avoiding my own talent... I don't know if I can pitch something I genuinely believe in.\n\nWill you help me practice?",
+      emotion: 'vulnerable_determined',
+      variation_id: 'simulation_phase3_intro_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      hasGlobalFlags: ['dante_vulnerability_revealed'],
+      hasKnowledgeFlags: ['dante_simulation_phase2_complete']
+    },
+    choices: [
+      {
+        choiceId: 'phase3_accept',
+        text: "Let's craft a pitch you believe in.",
+        nextNodeId: 'dante_simulation_phase3',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'phase3_gentle',
+        text: "This isn't just a pitch. It's your transformation.",
+        nextNodeId: 'dante_exploration_hub',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'dante',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'dante_arc', 'transformation']
+  },
+
+  {
+    nodeId: 'dante_simulation_phase3',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Here's what I want to say. Help me make it true.",
+      emotion: 'vulnerable_focused',
+      variation_id: 'simulation_phase3_v1'
+    }],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Authentic Persuasion: Selling What You Believe',
+      taskDescription: 'Craft a pitch for an ethical sales curriculum that balances passion, evidence, and vulnerability. This isn\'t manipulation—it\'s authentic persuasion.',
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'dante_authentic_pitch_phase3',
+      timeLimit: 90,
+      initialContext: {
+        label: 'PITCH_FRAMEWORK',
+        content: `PROGRAM: Ethical Sales & Influence Curriculum for At-Risk Youth
+
+YOUR GOAL: Convince program director to pilot this curriculum
+
+AVAILABLE ELEMENTS:
+1. EMOTIONAL HOOK: "I learned to read people in survival mode. These kids deserve better."
+2. DATA: Sales skills increase employability by 47% (BLS)
+3. DIFFERENTIATION: "Not manipulation. Service. Not extraction. Empowerment."
+4. VULNERABILITY: "I've spent years fearing this gift. I want them to embrace it."
+5. CALL TO ACTION: "8-week pilot. 20 students. Let me prove it works."
+
+PITCH STRUCTURE OPTIONS:
+A) Lead with emotion → data → call to action (classic persuasion arc)
+B) Lead with vulnerability → differentiation → emotional close (authentic arc)
+C) Lead with data → differentiation → vulnerability (credibility-first arc)
+D) Lead with story → mirror their values → collaborative invitation (ethical arc)
+
+Which structure creates genuine persuasion without manipulation?`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ AUTHENTIC PITCH: Option D - Story first (your journey), mirror their mission (youth empowerment), invite collaboration (we build this together). Truth as the foundation.',
+      successThreshold: 95,
+      unlockRequirements: {
+        trustMin: 8,
+        previousPhaseCompleted: 'dante_ethical_persuasion_phase2',
+        requiredFlags: ['dante_vulnerability_revealed']
+      }
+    },
+    choices: [
+      {
+        choiceId: 'phase3_success',
+        text: "Your story IS the pitch. Lead with truth.",
+        nextNodeId: 'dante_simulation_phase3_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    onEnter: [{
+      characterId: 'dante',
+      addKnowledgeFlags: ['dante_simulation_phase3_complete']
+    }],
+    tags: ['simulation', 'phase3', 'mastery']
+  },
+
+  {
+    nodeId: 'dante_simulation_phase3_success',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "You're right.\n\nThe pitch isn't the structure. It's not the data. It's not even the call to action.\n\nIt's the truth. My truth. That I learned to read people to survive. That I feared that gift because I saw how it could be weaponized. That these kids deserve to learn influence as service, not manipulation.\n\nThat's... that\'s a pitch I can deliver without losing myself.\n\nThank you. For showing me that selling truth isn't a technique. It's just... being honest about what matters.\n\nI think I can do that now. Finally.",
+      emotion: 'transformed_grateful',
+      variation_id: 'phase3_success_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [
+      {
+        choiceId: 'phase3_success_continue',
+        text: "You were always capable of this. You just needed to trust yourself.",
+        nextNodeId: 'dante_exploration_hub',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'dante',
+          trustChange: 3,
+          addGlobalFlags: ['dante_authentic_selling_mastery']
+        }
+      }
+    ],
+    tags: ['simulation', 'success', 'transformation']
+  },
+
+  {
+    nodeId: 'dante_simulation_phase3_fail',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "That structure... it\'s still a technique. Still a framework. Still manipulation dressed up as authenticity.\n\nI don't know if I can pitch this without it feeling like I'm selling them on something. Even if I believe in it.\n\nMaybe some people aren't meant to sell truth. Maybe I'm one of them.",
+      emotion: 'defeated_vulnerable',
+      variation_id: 'phase3_fail_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'phase3_fail_continue',
+        text: "The fact that you question it means you're ready.",
+        nextNodeId: 'dante_exploration_hub',
+        pattern: 'patience',
+        consequence: {
+          characterId: 'dante',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'fail']
   }
 ]
 

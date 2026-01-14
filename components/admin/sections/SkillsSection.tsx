@@ -191,8 +191,8 @@ export function SkillsSection({ userId, profile, adminViewMode }: SkillsSectionP
                       className="w-full p-4 text-left min-h-[60px] touch-manipulation"
                     >
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 flex-1 min-w-0">
-                          <span className="inline-flex items-center gap-1.5" aria-label="Recent activity">
+                        <div className="flex items-start gap-3 flex-1 min-w-0">
+                          <span className="inline-flex items-center gap-1.5 mt-0.5" aria-label="Recent activity">
                             <span className={`w-2.5 h-2.5 rounded-full ${recency.color} flex-shrink-0`} title={recency.label} />
                             {adminViewMode === 'family' && recency.familyLabel && (
                               <span className={`text-xs ${recency.color === 'bg-green-500' ? 'text-green-700' : 'text-yellow-700'}`}>
@@ -200,7 +200,7 @@ export function SkillsSection({ userId, profile, adminViewMode }: SkillsSectionP
                               </span>
                             )}
                           </span>
-                          <span className="font-bold text-sm sm:text-base truncate">
+                          <span className="font-bold text-sm sm:text-base line-clamp-2">
                             {formatSkillName(pattern.skillName)}
                           </span>
                           <span className="hidden sm:block text-xs text-muted-foreground truncate">

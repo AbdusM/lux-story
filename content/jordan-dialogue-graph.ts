@@ -1478,9 +1478,107 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         nextNodeId: samuelEntryPoints.JORDAN_REFLECTION_GATEWAY,
         pattern: 'helping',
         skills: ["emotionalIntelligence", "communication"]
+      },
+      // Loyalty Experience trigger - only visible at high trust + helping pattern
+      {
+        choiceId: 'offer_crossroads_help',
+        text: "[Helper's Insight] Jordan, before you go... you mentioned a client at a crossroads. Want to talk through it?",
+        nextNodeId: 'jordan_loyalty_trigger',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        visibleCondition: {
+          trust: { min: 8 },
+          patterns: { helping: { min: 50 } },
+          hasGlobalFlags: ['jordan_arc_complete']
+        }
       }
     ],
     tags: ['transition', 'jordan_arc', 'bittersweet']
+  },
+
+  // ============= LOYALTY EXPERIENCE TRIGGER =============
+  {
+    nodeId: 'jordan_loyalty_trigger',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "You remember.\n\nThere's a student. Brilliant kid. Got into MIT. Full ride.\n\nBut her grandmother raised her. Single parent. Terminal illness. Six months maybe.\n\nStudent wants to defer. Stay in Birmingham. Be there at the end.\n\nFamily says go. Grandmother says go. Everyone says this opportunity won't come again.\n\nBut the kid keeps saying 'what if she dies while I'm gone? What if I miss it?'\n\nI've been a career counselor for twelve years. I'm supposed to have an answer. But this one... I don't know what's right.\n\nYou understand helping people. Would you... sit with me and think through this before I meet with her tomorrow?",
+      emotion: 'anxious_vulnerable',
+      variation_id: 'loyalty_trigger_v1',
+      richEffectContext: 'warning'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      patterns: { helping: { min: 5 } },
+      hasGlobalFlags: ['jordan_arc_complete']
+    },
+    metadata: {
+      experienceId: 'the_crossroads'  // Triggers loyalty experience engine
+    },
+    choices: [
+      {
+        choiceId: 'accept_crossroads_challenge',
+        text: "Let's think through it together. There might not be a right answer, but we can find a human one.",
+        nextNodeId: 'jordan_loyalty_start',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'encourage_but_decline',
+        text: "Jordan, you've guided hundreds of people. Trust your instincts.",
+        nextNodeId: 'jordan_loyalty_declined',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'jordan',
+        addKnowledgeFlags: ['loyalty_offered']
+      }
+    ],
+    tags: ['loyalty_experience', 'jordan_loyalty', 'high_trust']
+  },
+
+  {
+    nodeId: 'jordan_loyalty_declined',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "You're right. I've sat with hundreds of people at crossroads.\n\nI know how to hold space for impossible choices. I know how to help someone find their own answer instead of giving them mine.\n\nI just needed to remember that I know how to do this.\n\nThank you for the confidence.",
+      emotion: 'resolved',
+      variation_id: 'loyalty_declined_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'loyalty_declined_farewell',
+        text: "You'll help her find her path. You always do.",
+        nextNodeId: samuelEntryPoints.JORDAN_REFLECTION_GATEWAY,
+        pattern: 'patience'
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'jordan',
+        addKnowledgeFlags: ['loyalty_declined_gracefully']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'jordan_loyalty_start',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "A human answer. Yeah. Not right or wrong. Just... human.\n\nOkay. Let's sit with this together. Two people who care about helping people find their way.\n\nThe Crossroads. Let's see if we can hold space for the impossible.",
+      emotion: 'grateful_determined',
+      variation_id: 'loyalty_start_v1'
+    }],
+    metadata: {
+      experienceId: 'the_crossroads'  // Experience engine takes over
+    },
+    choices: []  // Experience engine handles next steps
   },
 
   {
@@ -1942,6 +2040,444 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         skills: ['leadership']
       }
     ]
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // SIMULATION PHASE 1: Career Choice Paralysis (trust ≥ 2)
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'jordan_simulation_phase1_setup',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "One of my students is stuck. Two job offers. Both good. Different directions.\n\nShe keeps asking: \"Which one is the RIGHT choice?\" Like there's a formula.\n\nWant to help me think through how to guide her?",
+      emotion: 'focused',
+      variation_id: 'sim_phase1_setup_v1'
+    }],
+    requiredState: {
+      trust: { min: 2 }
+    },
+    choices: [
+      {
+        choiceId: 'phase1_accept',
+        text: "Let\'s work through it together.",
+        nextNodeId: 'jordan_simulation_phase1',
+        pattern: 'helping',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'phase1_decline',
+        text: "You know how to guide people. Trust your instincts.",
+        nextNodeId: 'jordan_hub_return',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['simulation', 'jordan_sim', 'phase1']
+  },
+
+  {
+    nodeId: 'jordan_simulation_phase1',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "Here\'s the situation. Let me know what you\'d say.",
+      emotion: 'focused',
+      variation_id: 'simulation_phase1_v1'
+    }],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Career Choice Paralysis',
+      taskDescription: 'A student has two job offers and can\'t decide. She keeps asking which is \"right.\" How do you guide her to find her own answer?',
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'jordan_choice_paralysis_phase1',
+      timeLimit: 90,
+      initialContext: {
+        label: 'STUDENT_SESSION',
+        content: `STUDENT (anxious):
+"I have two offers. Both good. Different.
+
+Offer A: Big tech company. Great pay. Structured career path. But it's a role I've done before. Safe.
+
+Offer B: Startup. Lower pay. Risky. But I'd learn new skills. Build something from scratch.
+
+Everyone has an opinion. My parents say A. My friends say B.
+
+Which one is RIGHT? I need to make the perfect choice."
+
+CONTEXT:
+- She's 24, early career
+- First time choosing between opportunities (not just taking what's available)
+- Terrified of regret
+- Keeps asking you to tell her which to pick
+
+APPROACH OPTIONS:
+A) Tell her which one to choose (she's asking for an answer)
+B) Ask her which one excites her more (focus on emotion)
+C) Help her see there's no "wrong" choice - both paths teach something (reframe)
+D) Build a pros/cons list together (analytical approach)
+
+What's the most empowering guidance?`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ BREAKTHROUGH: Option C - "There is no perfect choice. There are two different adventures. Which adventure do you want to experience first?" She relaxes. The paralysis breaks.',
+      successThreshold: 80,
+      unlockRequirements: {
+        trustMin: 2
+      }
+    },
+    choices: [{
+      choiceId: 'phase1_success',
+      text: "She stopped asking which is right. Started asking which feels true.",
+      nextNodeId: 'jordan_simulation_phase1_success',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence', 'communication']
+    }],
+    onEnter: [{
+      characterId: 'jordan',
+      addKnowledgeFlags: ['jordan_simulation_phase1_complete']
+    }],
+    tags: ['simulation', 'phase1', 'jordan_sim']
+  },
+
+  {
+    nodeId: 'jordan_simulation_phase1_success',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "Exactly. That shift. From \"right\" to \"true.\"\n\nThat\'s the work. Not giving answers. Helping people find the question underneath the question.\n\nYou get it. Most people want to be the expert. You want to be the guide.",
+      emotion: 'impressed',
+      variation_id: 'phase1_success_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [{
+      choiceId: 'phase1_success_continue',
+      text: "Guides trust the person to find their own path.",
+      nextNodeId: 'jordan_hub_return',
+      pattern: 'helping',
+      skills: ['leadership']
+    }],
+    onEnter: [{
+      characterId: 'jordan',
+      trustChange: 2
+    }],
+    tags: ['simulation', 'phase1', 'success']
+  },
+
+  {
+    nodeId: 'jordan_simulation_phase1_fail',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "That approach... it might work short-term. But she\'ll come back with the next choice. And the next.\n\nWe didn\'t teach her how to choose. We just made the choice for her.\n\nGuidance isn\'t about having the answer. It\'s about helping someone find their own compass.",
+      emotion: 'disappointed',
+      variation_id: 'phase1_fail_v1',
+      richEffectContext: 'error'
+    }],
+    choices: [{
+      choiceId: 'phase1_fail_reflect',
+      text: "You\'re right. I was trying to fix it instead of guide it.",
+      nextNodeId: 'jordan_hub_return',
+      pattern: 'patience',
+      skills: ['criticalThinking']
+    }],
+    onEnter: [{
+      characterId: 'jordan',
+      trustChange: 1
+    }],
+    tags: ['simulation', 'phase1', 'fail']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // SIMULATION PHASE 2: Industry Pivot Crisis (trust ≥ 5)
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'jordan_simulation_phase2_setup',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "Got a tough one. Finance professional. Ten years in. Wants to pivot to nonprofit work.\n\nEveryone says it\'s career suicide. She says it\'s her calling.\n\nBut she\'s terrified her skills won\'t transfer. That she\'ll start over at the bottom.\n\nThis is where career guidance gets hard. Want to work through it with me?",
+      emotion: 'serious',
+      variation_id: 'sim_phase2_setup_v1'
+    }],
+    requiredState: {
+      trust: { min: 5 },
+      hasKnowledgeFlags: ['jordan_simulation_phase1_complete']
+    },
+    choices: [
+      {
+        choiceId: 'phase2_accept',
+        text: "Let\'s help her see what transfers.",
+        nextNodeId: 'jordan_simulation_phase2',
+        pattern: 'analytical',
+        skills: ['systemsThinking']
+      },
+      {
+        choiceId: 'phase2_decline',
+        text: "That\'s complex. But you\'ve navigated seven careers. You know transitions.",
+        nextNodeId: 'jordan_hub_return',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['simulation', 'jordan_sim', 'phase2']
+  },
+
+  {
+    nodeId: 'jordan_simulation_phase2',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "Here\'s where she is. Help me guide her through this.",
+      emotion: 'focused',
+      variation_id: 'simulation_phase2_v1'
+    }],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'Industry Pivot Crisis',
+      taskDescription: 'A finance professional wants to pivot to nonprofit work but can\'t see how her skills transfer. How do you help her see what she\'s built?',
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'jordan_industry_pivot_phase2',
+      timeLimit: 120,
+      initialContext: {
+        label: 'PIVOT_SESSION',
+        content: `PROFESSIONAL (defeated):
+"I\'ve been in finance for ten years. Investment analysis. Portfolio management. High-stakes decisions.
+
+But I want to work for a nonprofit. Climate action. Education. Something that matters.
+
+Problem: Nonprofits don\'t need investment analysts. They need grant writers. Program coordinators. Fundraisers.
+
+I\'d have to start over. Take a pay cut AND lose my expertise.
+
+Everyone says I\'m throwing away my career. Maybe they\'re right."
+
+YOUR KNOWLEDGE:
+- She manages $500M in assets
+- Makes decisions under uncertainty
+- Communicates complex data to non-technical stakeholders
+- Builds relationships with high-net-worth clients
+- Led a team of 7 analysts
+
+APPROACH OPTIONS:
+A) Help her translate skills to nonprofit language (reframe)
+B) Tell her to stay in finance but volunteer (compromise)
+C) Focus on her passion and ignore the practical concerns (validation)
+D) Map her expertise to nonprofit needs she doesn\'t see yet (discovery)
+
+What helps her see what she\'s actually built?`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ REFRAME: Options A+D combined - "You don\'t manage portfolios. You allocate scarce resources under uncertainty. That\'s EXACTLY what nonprofit directors do. Different spreadsheet. Same skill." She sits up straighter.',
+      successThreshold: 85,
+      unlockRequirements: {
+        trustMin: 5,
+        previousPhaseCompleted: 'jordan_choice_paralysis_phase1'
+      }
+    },
+    choices: [{
+      choiceId: 'phase2_success',
+      text: "She didn\'t lose her expertise. She just found a new place to use it.",
+      nextNodeId: 'jordan_simulation_phase2_success',
+      pattern: 'analytical',
+      skills: ['systemsThinking', 'communication']
+    }],
+    onEnter: [{
+      characterId: 'jordan',
+      addKnowledgeFlags: ['jordan_simulation_phase2_complete']
+    }],
+    tags: ['simulation', 'phase2', 'jordan_sim']
+  },
+
+  {
+    nodeId: 'jordan_simulation_phase2_success',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "That\'s it. THAT\'S the work.\n\nHelping people see the through-line. The pattern connecting their past to their future.\n\nShe thought she was starting over. But she\'s not. She\'s just... redirecting.\n\nLike I did. Seven times.\n\nMaybe that\'s why I can see it in others. Because I had to learn to see it in myself.",
+      emotion: 'profound',
+      variation_id: 'phase2_success_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [{
+      choiceId: 'phase2_success_continue',
+      text: "Your seven jobs weren\'t wandering. They were research.",
+      nextNodeId: 'jordan_hub_return',
+      pattern: 'exploring',
+      skills: ['emotionalIntelligence']
+    }],
+    onEnter: [{
+      characterId: 'jordan',
+      trustChange: 2
+    }],
+    tags: ['simulation', 'phase2', 'success']
+  },
+
+  {
+    nodeId: 'jordan_simulation_phase2_fail',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "Safe advice. Practical.\n\nBut she didn\'t come to me for safe. She came because she\'s ready to leap and doesn\'t know how.\n\nIf I don\'t help her see what she\'s really built, she\'ll stay stuck. Or worse - she\'ll leap without seeing her own parachute.\n\nGuidance isn\'t about reducing risk. It\'s about helping people see what they\'re capable of carrying across the gap.",
+      emotion: 'disappointed',
+      variation_id: 'phase2_fail_v1',
+      richEffectContext: 'error'
+    }],
+    choices: [{
+      choiceId: 'phase2_fail_reflect',
+      text: "You\'re right. I was protecting her from risk instead of helping her navigate it.",
+      nextNodeId: 'jordan_hub_return',
+      pattern: 'analytical',
+      skills: ['criticalThinking']
+    }],
+    onEnter: [{
+      characterId: 'jordan',
+      trustChange: 1
+    }],
+    tags: ['simulation', 'phase2', 'fail']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // SIMULATION PHASE 3: The Unanswerable Question (trust ≥ 8)
+  // ═══════════════════════════════════════════════════════════════
+
+  {
+    nodeId: 'jordan_simulation_phase3_setup',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "There\'s a question I can\'t answer. The one that student asked me last year.\n\n\"How do you know when to quit versus when to push through?\"\n\nI froze then. Still don\'t have the answer.\n\nBut now... there\'s another student asking the exact same thing. Different context. Same impossible question.\n\nI have to face it this time. Will you... be there while I try?",
+      emotion: 'vulnerable',
+      variation_id: 'sim_phase3_setup_v1',
+      richEffectContext: 'thinking'
+    }],
+    requiredState: {
+      trust: { min: 8 },
+      hasKnowledgeFlags: ['jordan_simulation_phase2_complete', 'jordan_vulnerability_revealed']
+    },
+    choices: [
+      {
+        choiceId: 'phase3_accept',
+        text: "I\'ll be right here. Let\'s face it together.",
+        nextNodeId: 'jordan_simulation_phase3',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'phase3_decline',
+        text: "Some questions don\'t have answers. Maybe that\'s what you tell her.",
+        nextNodeId: 'jordan_hub_return',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['simulation', 'jordan_sim', 'phase3', 'vulnerability']
+  },
+
+  {
+    nodeId: 'jordan_simulation_phase3',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "Here it is. The question I couldn\'t answer.",
+      emotion: 'raw',
+      variation_id: 'simulation_phase3_v1'
+    }],
+    simulation: {
+      type: 'chat_negotiation',
+      title: 'The Unanswerable Question',
+      taskDescription: 'A student asks the question Jordan couldn\'t answer: \"How do you know when to quit versus when to push through?\" This time, Jordan has to try.',
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'jordan_unanswerable_phase3',
+      timeLimit: 90,
+      initialContext: {
+        label: 'THE_QUESTION',
+        content: `STUDENT (desperate):
+"I\'ve been at this startup for two years. Grind culture. Toxic management. But I believe in the mission. Really believe.
+
+Everyone says I should quit. My friends. My therapist. Even my partner.
+
+But what if I\'m just being weak? What if I quit every time things get hard?
+
+You\'ve had seven jobs. You know what it\'s like to leave. To start over.
+
+How do you know when to quit versus when to push through?
+
+Please. I need to know if leaving makes me a quitter or just... smart."
+
+JORDAN\'S INTERNAL VOICE:
+"This is the question. The one I froze on last year. The one that exposed me as a fraud.
+
+Because I don\'t know the answer. I\'ve quit six times. Stayed too long once. Which was wisdom? Which was fear?"
+
+APPROACH OPTIONS:
+A) Share your own story - the startup that broke you, the Slack channel, the Target parking lot (vulnerability)
+B) Give a framework - "Quit when X, stay when Y" (expertise)
+C) Admit you don\'t know, but help them find their own answer (honesty + guidance)
+D) Deflect with platitudes - "Trust your gut" (avoidance)
+
+What does Jordan say this time?`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ BREAKTHROUGH: Option A+C combined - Jordan shares the Slack channel story. Then: "I can\'t tell you when to quit. But I can tell you this: staying in a place that tells you you\'re not enough will kill the part of you that knows you are." The student cries. Then nods.',
+      successThreshold: 95,
+      unlockRequirements: {
+        trustMin: 8,
+        previousPhaseCompleted: 'jordan_industry_pivot_phase2',
+        requiredFlags: ['jordan_vulnerability_revealed']
+      }
+    },
+    choices: [{
+      choiceId: 'phase3_success',
+      text: "You didn\'t give the answer. You gave yourself. That was braver.",
+      nextNodeId: 'jordan_simulation_phase3_success',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence', 'leadership']
+    }],
+    onEnter: [{
+      characterId: 'jordan',
+      addKnowledgeFlags: ['jordan_simulation_phase3_complete', 'jordan_faced_the_question']
+    }],
+    tags: ['simulation', 'phase3', 'jordan_sim', 'mastery']
+  },
+
+  {
+    nodeId: 'jordan_simulation_phase3_success',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "I\'ve been a career counselor for twelve years.\n\nToday was the first time I counseled from my scars instead of my credentials.\n\nThe impostor voice is still there. Probably always will be.\n\nBut now I know: that voice doesn\'t disqualify me. It makes me human. And humans can guide other humans.\n\nExperts can\'t.\n\nThank you for being here when I faced it.",
+      emotion: 'transformed',
+      variation_id: 'phase3_success_v1',
+      richEffectContext: 'success'
+    }],
+    choices: [{
+      choiceId: 'phase3_success_continue',
+      text: "Your uncertainty is your superpower, Jordan. It always was.",
+      nextNodeId: 'jordan_hub_return',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence', 'leadership']
+    }],
+    onEnter: [{
+      characterId: 'jordan',
+      trustChange: 3,
+      addGlobalFlags: ['jordan_mastery_achieved']
+    }],
+    tags: ['simulation', 'phase3', 'success', 'transformation']
+  },
+
+  {
+    nodeId: 'jordan_simulation_phase3_fail',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "I gave advice. Clean. Professional. Safe.\n\nAnd I saw it in her eyes. The same thing I saw last year.\n\n\"You don\'t really get it, do you?\"\n\nShe was right. I didn\'t give guidance. I gave distance.\n\nThe question still stands. Unanswered. And now I\'ve failed twice.",
+      emotion: 'defeated',
+      variation_id: 'phase3_fail_v1',
+      richEffectContext: 'error'
+    }],
+    choices: [{
+      choiceId: 'phase3_fail_reflect',
+      text: "Maybe next time you\'ll be ready to face it.",
+      nextNodeId: 'jordan_hub_return',
+      pattern: 'patience',
+      skills: ['emotionalIntelligence']
+    }],
+    onEnter: [{
+      characterId: 'jordan',
+      trustChange: 1
+    }],
+    tags: ['simulation', 'phase3', 'fail']
   }
 ]
 

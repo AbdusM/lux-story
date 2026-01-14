@@ -98,7 +98,7 @@ import { PatternOrb } from '@/components/PatternOrb'
 import { GooeyPatternOrbs, patternScoresToWeights } from '@/components/GooeyPatternOrbs'
 import { CharacterAvatar } from '@/components/CharacterAvatar'
 import { getTrustLabel } from '@/lib/trust-labels'
-import { GameState, GameStateUtils } from '@/lib/character-state'
+import { CharacterState, GameState, GameStateUtils } from '@/lib/character-state'
 import { GameLogic } from '@/lib/game-logic'
 import { synthEngine } from '@/lib/audio/synth-engine'
 import { HeroBadge } from '@/components/HeroBadge'
@@ -1633,58 +1633,70 @@ export default function StatefulGameInterface() {
         newGameState.characters.set(targetCharacterId, targetCharacter)
       }
 
-      // D-001: Update last interaction timestamp for trust decay calculation
-      targetCharacter.lastInteractionTimestamp = Date.now()
+      // Get current timestamp for interaction tracking
+      const currentTimestamp = Date.now()
 
-      // Track pattern unlock visit (so it doesn't show again)
-      if (choice.choice.choiceId?.startsWith('pattern_unlock_')) {
-        if (!targetCharacter.visitedPatternUnlocks) {
-          targetCharacter.visitedPatternUnlocks = new Set()
-        }
-        targetCharacter.visitedPatternUnlocks.add(nextNode.nodeId)
-        logger.info('[StatefulGameInterface] Pattern unlock visited:', {
-          characterId: targetCharacterId,
-          nodeId: nextNode.nodeId
-        })
-      }
-
-      // D-001: Apply pattern-influenced trust decay when returning to a character
+      // D-001: Check for trust decay BEFORE updating timestamp
       // Only apply if character has been interacted with before and some time has passed
       if (targetCharacter.lastInteractionTimestamp && targetCharacterId !== state.currentCharacterId) {
         const SESSION_DURATION_MS = 10 * 60 * 1000 // 10 minutes = 1 "session"
-        const timeSinceLastInteraction = Date.now() - targetCharacter.lastInteractionTimestamp
+        const timeSinceLastInteraction = currentTimestamp - targetCharacter.lastInteractionTimestamp
         const sessionsAbsent = Math.floor(timeSinceLastInteraction / SESSION_DURATION_MS)
 
         if (sessionsAbsent > 0) {
           const decayAmount = calculateCharacterTrustDecay(sessionsAbsent, newGameState.patterns)
           if (decayAmount > 0 && targetCharacter.trust > 0) {
             const oldTrust = targetCharacter.trust
-            targetCharacter.trust = Math.max(0, targetCharacter.trust - decayAmount)
+
+            // STATE FIX: Use applyStateChange instead of direct mutation
+            newGameState = GameStateUtils.applyStateChange(newGameState, {
+              characterId: targetCharacterId,
+              trustChange: -decayAmount
+            })
+
             logger.info('[StatefulGameInterface] D-001 Trust decay applied:', {
               characterId: targetCharacterId,
               sessionsAbsent,
               decayAmount,
               oldTrust,
-              newTrust: targetCharacter.trust
+              newTrust: targetCharacter.trust - decayAmount
             })
 
-            // D-039: Record trust decay in timeline
-            if (targetCharacter.trustTimeline) {
-              targetCharacter.trustTimeline = recordTrustChange(
-                targetCharacter.trustTimeline,
-                targetCharacter.trust,
-                -decayAmount,
-                nextNode.nodeId,
-                `Trust decay (${sessionsAbsent} sessions absent)`
-              )
-            }
+            // Refresh targetCharacter reference after state change
+            targetCharacter = newGameState.characters.get(targetCharacterId)!
           }
         }
       }
 
+      // STATE FIX: Create new CharacterState immutably instead of mutating
+      const updatedVisitedPatternUnlocks = choice.choice.choiceId?.startsWith('pattern_unlock_')
+        ? new Set([...(targetCharacter.visitedPatternUnlocks || new Set()), nextNode.nodeId])
+        : targetCharacter.visitedPatternUnlocks
+
+      if (choice.choice.choiceId?.startsWith('pattern_unlock_')) {
+        logger.info('[StatefulGameInterface] Pattern unlock visited:', {
+          characterId: targetCharacterId,
+          nodeId: nextNode.nodeId
+        })
+      }
+
       // Track first meeting with non-Samuel character for Constellation nudge
       const isFirstMeeting = targetCharacter.conversationHistory.length === 0 && targetCharacterId !== 'samuel'
-      targetCharacter.conversationHistory.push(nextNode.nodeId)
+
+      // Create new CharacterState with all updates (immutable)
+      const updatedCharacter: CharacterState = {
+        ...targetCharacter,
+        lastInteractionTimestamp: currentTimestamp,
+        visitedPatternUnlocks: updatedVisitedPatternUnlocks,
+        conversationHistory: [...targetCharacter.conversationHistory, nextNode.nodeId]
+      }
+
+      // STATE FIX: Clone the characters Map to avoid mutating shared reference
+      // (GameLogic.processChoice only does shallow clone, so Map is shared)
+      newGameState.characters = new Map(newGameState.characters)
+      newGameState.characters.set(targetCharacterId, updatedCharacter)
+
+      // Update top-level navigation state
       newGameState.currentNodeId = nextNode.nodeId
       newGameState.currentCharacterId = targetCharacterId
 
@@ -2998,7 +3010,8 @@ export default function StatefulGameInterface() {
         const samuelGraph = getGraphForCharacter('samuel', state.gameState)
         const introNode = samuelGraph.nodes.get(samuelEntryPoints.INTRODUCTION)
         if (introNode) {
-          const newGameState = { ...state.gameState }
+          // STATE FIX: Use full clone instead of shallow clone
+          const newGameState = GameStateUtils.cloneGameState(state.gameState)
           newGameState.currentNodeId = introNode.nodeId
           newGameState.currentCharacterId = 'samuel'
           const samuelChar = newGameState.characters.get('samuel') || GameStateUtils.createCharacterState('samuel')
@@ -3072,7 +3085,8 @@ export default function StatefulGameInterface() {
       }
 
       // Navigate to the target node (similar to handleChoice but without choice consequences)
-      let newGameState = state.gameState
+      // STATE FIX: Start with full clone to avoid mutations
+      let newGameState = GameStateUtils.cloneGameState(state.gameState)
       const targetCharacterId = searchResult.characterId
       const targetGraph = searchResult.graph
 
@@ -3089,9 +3103,15 @@ export default function StatefulGameInterface() {
         newGameState.characters.set(targetCharacterId, newChar)
       }
 
-      const targetCharacter = newGameState.characters.get(targetCharacterId)!
+      // STATE FIX: Update conversation history immutably
+      let targetCharacter = newGameState.characters.get(targetCharacterId)!
       if (!targetCharacter.conversationHistory.includes(targetNode.nodeId)) {
-        targetCharacter.conversationHistory.push(targetNode.nodeId)
+        const updatedCharacter: CharacterState = {
+          ...targetCharacter,
+          conversationHistory: [...targetCharacter.conversationHistory, targetNode.nodeId]
+        }
+        newGameState.characters.set(targetCharacterId, updatedCharacter)
+        targetCharacter = updatedCharacter
       }
       newGameState.currentNodeId = targetNode.nodeId
       newGameState.currentCharacterId = targetCharacterId

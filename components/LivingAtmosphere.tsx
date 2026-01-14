@@ -13,7 +13,7 @@
  */
 
 import * as React from "react"
-import { motion, useReducedMotion, useSpring, useMotionValue } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import type { CharacterId } from "@/lib/graph-registry"
 import { useStationStore } from "@/lib/station-state"
@@ -138,7 +138,7 @@ export function LivingAtmosphere({
 }: LivingAtmosphereProps) {
     // P5: Subscribe to station atmosphere
     const atmosphere = useStationStore((state) => state.atmosphere)
-    const [visibleAtmosphere, setVisibleAtmosphere] = React.useState<string | null>(atmosphere)
+    const [_visibleAtmosphere, _setVisibleAtmosphere] = React.useState<string | null>(atmosphere)
 
     // Resolve base color hue
     const baseHue = React.useMemo(() => {

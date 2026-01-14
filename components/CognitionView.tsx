@@ -263,7 +263,7 @@ interface EngagementBadgeProps {
   isEngaged: boolean
 }
 
-function EngagementBadge({ level, activeDays, isEngaged }: EngagementBadgeProps) {
+function EngagementBadge({ level: _level, activeDays, isEngaged }: EngagementBadgeProps) {
   const color = isEngaged ? 'bg-emerald-500/20 border-emerald-500/30 text-emerald-400'
     : 'bg-slate-500/20 border-slate-500/30 text-slate-400'
 

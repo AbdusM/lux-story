@@ -790,7 +790,40 @@ async function convertTrackerProfileToDashboard(
     empathy: 0,
     accountability: 0,
     visionaryThinking: 0,
-    promptEngineering: 0
+    promptEngineering: 0,
+
+    // Content-Referenced Skills
+    activeListening: 0,
+    attentionToDetail: 0,
+    contentCreation: 0,
+    cybersecurity: 0,
+    dataAnalysis: 0,
+    dataLiteracy: 0,
+    ethicalReasoning: 0,
+    selfMarketing: 0,
+
+    // Simulation Skills (Jan 13, 2026)
+    projectManagement: 0,
+    metaphoricalThinking: 0,
+    negotiation: 0,
+    confidence: 0,
+    values: 0,
+    growth: 0,
+    openness: 0,
+    selfAwareness: 0,
+    compliance: 0,
+    technology: 0,
+    socialLearning: 0,
+    prioritization: 0,
+    discipline: 0,
+    purpose: 0,
+    utilitarian: 0,
+    distributedSystems: 0,
+    observability: 0,
+    incidentManagement: 0,
+    debuggingMastery: 0,
+    debugging: 0,
+    mastery: 0
   }
 
   // Boost internal levels based on demonstrations (for algorithms only)

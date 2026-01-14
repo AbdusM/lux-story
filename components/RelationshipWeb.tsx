@@ -7,7 +7,7 @@ import { useRelationshipGraph, GraphNode, GraphLink } from '@/lib/hooks/use-rela
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
-import { X, Quote, Zap } from 'lucide-react'
+import { X, Quote } from 'lucide-react'
 
 // Force Simulation Types
 type SimulationNode = D3.SimulationNodeDatum & GraphNode

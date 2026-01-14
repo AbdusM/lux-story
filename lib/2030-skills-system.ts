@@ -60,6 +60,39 @@ export interface FutureSkills {
   accountability: number
   visionaryThinking: number
   promptEngineering: number // Added for 2025 Toolkit Mastery
+
+  // Content-Referenced Skills (Jan 13, 2026)
+  activeListening: number // Communication sub-skill
+  attentionToDetail: number // Quality/precision focus
+  contentCreation: number // Creating digital content (writing, video, media)
+  cybersecurity: number // Security domain expertise
+  dataAnalysis: number // Data interpretation and insights
+  dataLiteracy: number // Understanding and using data effectively
+  ethicalReasoning: number // Moral decision-making framework
+  selfMarketing: number // Personal branding and self-promotion
+
+  // Simulation Skills (Jan 13, 2026)
+  projectManagement: number // Planning and executing projects
+  metaphoricalThinking: number // Abstract conceptual connections
+  negotiation: number // Conflict resolution and compromise
+  confidence: number // Self-assurance and conviction
+  values: number // Ethical and moral principles
+  growth: number // Continuous improvement mindset
+  openness: number // Receptivity to new ideas
+  selfAwareness: number // Understanding one's own strengths/weaknesses
+  compliance: number // Following rules and regulations
+  technology: number // General technical proficiency
+  socialLearning: number // Learning through social interaction
+  prioritization: number // Ranking and sequencing tasks
+  discipline: number // Self-control and consistency
+  purpose: number // Sense of meaning and direction
+  utilitarian: number // Greatest good for greatest number thinking
+  distributedSystems: number // Understanding distributed architectures
+  observability: number // System monitoring and diagnostics
+  incidentManagement: number // Crisis response and resolution
+  debuggingMastery: number // Expert-level problem diagnosis
+  debugging: number // Finding and fixing code issues
+  mastery: number // Deep expertise in a domain
 }
 
 export interface CareerPath2030 {
@@ -146,7 +179,40 @@ export class FutureSkillsSystem {
       empathy: 0.5,
       accountability: 0.5,
       visionaryThinking: 0.5,
-      promptEngineering: 0.5
+      promptEngineering: 0.5,
+
+      // Content-Referenced Skills
+      activeListening: 0.5,
+      attentionToDetail: 0.5,
+      contentCreation: 0.5,
+      cybersecurity: 0.5,
+      dataAnalysis: 0.5,
+      dataLiteracy: 0.5,
+      ethicalReasoning: 0.5,
+      selfMarketing: 0.5,
+
+      // Simulation Skills (Jan 13, 2026)
+      projectManagement: 0.5,
+      metaphoricalThinking: 0.5,
+      negotiation: 0.5,
+      confidence: 0.5,
+      values: 0.5,
+      growth: 0.5,
+      openness: 0.5,
+      selfAwareness: 0.5,
+      compliance: 0.5,
+      technology: 0.5,
+      socialLearning: 0.5,
+      prioritization: 0.5,
+      discipline: 0.5,
+      purpose: 0.5,
+      utilitarian: 0.5,
+      distributedSystems: 0.5,
+      observability: 0.5,
+      incidentManagement: 0.5,
+      debuggingMastery: 0.5,
+      debugging: 0.5,
+      mastery: 0.5
     }
 
     this.skillHistory = []

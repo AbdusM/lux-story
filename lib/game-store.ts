@@ -171,6 +171,16 @@ export interface FutureSkills {
   financialLiteracy: number
   timeManagement: number
   problemSolving: number
+
+  // Content-Referenced Skills (Jan 13, 2026 - sync with 2030-skills-system.ts)
+  activeListening: number
+  attentionToDetail: number
+  contentCreation: number
+  cybersecurity: number
+  dataAnalysis: number
+  dataLiteracy: number
+  ethicalReasoning: number
+  selfMarketing: number
 }
 
 // Game store actions
@@ -358,7 +368,17 @@ const initialState: GameState = {
     culturalCompetence: 0,
     financialLiteracy: 0,
     timeManagement: 0,
-    problemSolving: 0
+    problemSolving: 0,
+
+    // Content-Referenced Skills
+    activeListening: 0,
+    attentionToDetail: 0,
+    contentCreation: 0,
+    cybersecurity: 0,
+    dataAnalysis: 0,
+    dataLiteracy: 0,
+    ethicalReasoning: 0,
+    selfMarketing: 0
   },
 
   // Thought Cabinet
@@ -1062,6 +1082,10 @@ export function clearCorruptedStorage() {
   }
 }
 
+// Memoization cache for hydrated state (prevents deserializing on every render)
+let cachedSerializedState: SerializableGameState | null = null
+let cachedHydratedState: CoreGameState | null = null
+
 // Selectors for optimized re-renders
 export const useGameSelectors = {
   // Scene selectors
@@ -1166,10 +1190,22 @@ export const useGameSelectors = {
   useCoreGameState: () => useGameStore((state) => state.coreGameState),
 
   // Get hydrated core game state (with Map/Set restored - for dialogue engine)
+  // OPTIMIZED: Only deserializes when serialized state actually changes
   useCoreGameStateHydrated: () => {
     const serialized = useGameStore((state) => state.coreGameState)
-    if (!serialized) return null
-    return GameStateUtils.deserialize(serialized)
+    if (!serialized) {
+      cachedSerializedState = null
+      cachedHydratedState = null
+      return null
+    }
+
+    // Only deserialize if state changed (prevents 1000+ Map/Set ops per render)
+    if (serialized !== cachedSerializedState) {
+      cachedSerializedState = serialized
+      cachedHydratedState = GameStateUtils.deserialize(serialized)
+    }
+
+    return cachedHydratedState
   },
 
   // Get specific character from core state
