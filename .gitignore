@@ -75,6 +75,9 @@ dialogue-length-report.json
 validation_output.txt
 *.log
 
+# Additional test artifacts
+test-results/.last-run.json
+
 # Temporary files
 *.temp.*
 temp_*.json
