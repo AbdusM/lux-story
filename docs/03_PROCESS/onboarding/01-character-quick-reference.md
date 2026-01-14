@@ -154,9 +154,12 @@ Maya, Lira, Zara
 
 All character specs located in: `docs/02_WORLD/03_CHARACTERS/`
 
-File format: `[Name]-character-spec.md`
+File structure: `[CharacterName]/spec.md`
 
-Example: `Quinn-character-spec.md`, `Maya-character-spec.md`
+Examples:
+- `Quinn/spec.md`
+- `Maya/spec.md`
+- `Samuel/spec.md`
 
 Each spec includes:
 - Core identity and motivations

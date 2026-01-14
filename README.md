@@ -83,9 +83,9 @@ npx tsx scripts/validate-dialogue-graphs.ts
 *   [Game Terminology Glossary](docs/03_PROCESS/onboarding/02-glossary.md) - Understand patterns, trust, simulations, and more.
 
 ### Technical Documentation
-*   [Game Capabilities Audit](docs/01_MECHANICS/GAME_CAPABILITIES_AUDIT.md) - Full feature breakdown.
-*   [System Integration Report](docs/01_MECHANICS/SYSTEM_INTEGRATION_REPORT.md) - Verification of Career/Skill mapping.
-*   [Worldbuilding Bible](docs/02_WORLD/STATION_HISTORY_BIBLE.md) - The lore foundation.
+*   [Game Capabilities Audit](docs/01_MECHANICS/11-game-capabilities-audit.md) - Full feature breakdown.
+*   [System Integration Report](docs/01_MECHANICS/10-system-integration-report.md) - Verification of Career/Skill mapping.
+*   [Worldbuilding Bible](docs/02_WORLD/01-station-history-bible.md) - The lore foundation.
 
 ---
 
