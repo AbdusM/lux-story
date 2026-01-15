@@ -8,6 +8,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getPatternProfile, getPatternSummaryQuick } from '@/lib/pattern-profile-adapter'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
 import { logger } from '@/lib/logger'
 import {
   extractAndValidateUserIdFromQuery,
@@ -20,12 +21,23 @@ export const runtime = 'nodejs'
 
 const OPERATION_GET = 'pattern-profile.get'
 
+// Rate limiter: 60 reads per minute
+const readLimiter = rateLimit({ interval: 60 * 1000, uniqueTokenPerInterval: 500 })
+
 /**
  * GET /api/user/pattern-profile?userId=xxx&mode=full|quick
  * Retrieve pattern profile for a user
  */
 export async function GET(request: NextRequest) {
   try {
+    // Rate limiting
+    const ip = getClientIp(request)
+    try {
+      await readLimiter.check(ip, 60)
+    } catch {
+      return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 })
+    }
+
     const { searchParams } = new URL(request.url)
     const mode = searchParams.get('mode') || 'full'
 
