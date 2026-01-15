@@ -3586,7 +3586,14 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         text: "Of course. She'll be glad to see you.\n\nThe relationship you built with her doesn't end when the conversation does. That's one of the gifts of this place - the connections are real, and they persist.\n\nYou'll find her back on Platform 1.",
         emotion: 'encouraging',
-        variation_id: 'revisit_guidance_v1'
+        variation_id: 'revisit_guidance_v1',
+        voiceVariations: {
+          analytical: "Of course. You're tracking the relationship longitudinally - that's good.\n\nThe data point you're collecting isn't just the first conversation. It's how connections develop over time.\n\nPlatform 1. Same variables, evolved state.",
+          helping: "Of course. You care enough to check in. That's what she needs - someone who doesn't just solve and leave.\n\nThe relationship you built doesn't end when the crisis does. That's real support.\n\nPlatform 1. She'll be glad to see you.",
+          building: "Of course. You're not done building yet - that's the sign of good work.\n\nThe foundations you laid don't just hold one conversation. They're what you build on next time.\n\nPlatform 1. Keep constructing.",
+          exploring: "Of course. You're curious how the story continues - that's what relationships need.\n\nThe conversation doesn't end when you walk away. That's when the real discovery starts.\n\nPlatform 1. See what's changed.",
+          patience: "Of course. You understand relationships take time, multiple conversations.\n\nThe first talk was just the beginning. The connections that matter persist, grow slowly.\n\nPlatform 1. No rush."
+        }
       }
     ],
     choices: [
@@ -3608,7 +3615,14 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         text: "Most people don't. They think traits are just personality.\n\nWe're all carrying patterns we learned before we had words.\n\nYour parents showed you steady work creates space. Security as foundation. You give that gift now.",
         emotion: 'teaching',
-        variation_id: 'inheritance_wisdom_v1'
+        variation_id: 'inheritance_wisdom_v1',
+        voiceVariations: {
+          analytical: "Most people don't analyze their own origins. They see patterns but not the source code.\n\nWe're all running algorithms we learned before we understood programming.\n\nYour parents debugged the world through steady work. You inherited that methodology.",
+          helping: "Most people don't realize how much they give comes from what they received.\n\nWe're all carrying gifts we were handed before we could name them.\n\nYour parents showed you: security creates the space to care for others. You pass that forward.",
+          building: "Most people don't see how much they're constructing from blueprints drawn years ago.\n\nWe're all building with materials handed down.\n\nYour parents showed you: steady work creates foundations. You're still laying those foundations for others.",
+          exploring: "Most people don't trace back to discover where their curiosity came from.\n\nWe're all walking paths cleared before we could walk.\n\nYour parents showed you: safety enables exploration. You create that safe space for others now.",
+          patience: "Most people don't take time to understand what they're carrying from before.\n\nWe're all inheriting patterns planted long ago, growing slowly.\n\nYour parents showed you: steady presence over time. You practice that same patience now."
+        }
       }
     ],
     choices: [
@@ -5181,7 +5195,14 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         text: "Tonight's travelers:\n\n**Maya Chen** - Platform 1. Pre-med student choosing between family expectations and robotics dreams.\n\n**Devon Kumar** - Platform 3. Engineering student learning that logic isn't enough.\n\n**Jordan Packard** - Conference Room B. Seven jobs, one question: qualified or fraudulent?\n\n**Marcus** - Platform 4. CVICU nurse realizing machines matter as much as medicine.\n\n**Tess** - Pizitz Food Hall. Career counselor building a new kind of school.\n\n**Yaquin** - Platform 5. Dental assistant teaching what universities won't.\n\n**Kai** - Platform 6. Instructional architect choosing depth over compliance.\n\n**Rohan** - Platform 7. Site reliability engineer guarding the systems that matter.\n\n**Silas** - Platform 8 (Greenhouse). Former cloud architect now debugging nature.\n\n**Alex** - Platform 8 (Learning Loop). Former bootcamp instructor questioning everything they taught.\n\nWho would you like to meet?",
         emotion: 'comprehensive_guide',
-        variation_id: 'comprehensive_hub_v1'
+        variation_id: 'comprehensive_hub_v1',
+        voiceVariations: {
+          analytical: "You're looking for patterns, aren't you? Tonight's travelers each facing their own logic puzzle:\n\n**Maya** - Platform 1. Data says pre-med. Heart says robotics. Which variable matters more?\n\n**Devon** - Platform 3. Perfect engineer with a father problem his algorithms can't solve.\n\n**Jordan** - Conference Room B. Seven career paths. One hypothesis: impostor syndrome or valid concern?\n\n**Marcus** - Platform 4. Medical systems analyst. Debugging human+machine failures.\n\n**Rohan** - Platform 7. Site reliability engineer. Knows how fragile everything is.\n\nWho do you want to analyze first?",
+          helping: "I can see it in how you listen. You're here to support someone. Tonight's travelers, each carrying their own weight:\n\n**Maya** - Platform 1. Brilliant student crushed by family expectations she can't voice.\n\n**Devon** - Platform 3. Engineer who can't solve what matters most: his dad.\n\n**Jordan** - Conference Room B. Seven jobs. Zero self-compassion. Needs someone to see them clearly.\n\n**Marcus** - Platform 4. Nurse caring for machines because he can't save every patient.\n\n**Tess** - Pizitz. Teacher building a school the system doesn't want to exist.\n\n**Grace** - Platform 2. Caregiver who's never been cared for. Invisible labor, visible exhaustion.\n\nWho needs you tonight?",
+          building: "You've got a maker's eye. Tonight's travelers, each constructing something new:\n\n**Maya** - Platform 1. Building medical robots while her family builds walls.\n\n**Devon** - Platform 3. Engineering systems. Rebuilding relationship with his father.\n\n**Jordan** - Conference Room B. Reconstructing their entire self-concept. Seven careers, one foundation.\n\n**Marcus** - Platform 4. Assembling the bridge between human care and machine precision.\n\n**Tess** - Pizitz. Architecting the school system that should exist.\n\n**Silas** - Platform 8 (Greenhouse). Former cloud architect now growing real things.\n\n**Yaquin** - Platform 5. Crafting educational tools from nothing but need and ingenuity.\n\nWho's building what you want to see?",
+          exploring: "Curious, aren't you? Tonight's travelers, each asking questions they're afraid to answer:\n\n**Maya** - Platform 1. What if the career everyone expects isn't the one that fits?\n\n**Devon** - Platform 3. What if perfect logic can't solve messy human problems?\n\n**Jordan** - Conference Room B. Am I a chameleon or a fraud? Seven jobs, one identity crisis.\n\n**Marcus** - Platform 4. What if saving lives requires understanding machines?\n\n**Tess** - Pizitz. What if we built schools from scratch? What would change?\n\n**Rohan** - Platform 7. What happens when the systems we trust start to fail?\n\n**Alex** - Platform 8 (Learning Loop). Did I teach people to code, or to hate themselves?\n\nWhich question calls to you?",
+          patience: "You take your time with things. These travelers are all in transition, not rushing:\n\n**Maya** - Platform 1. Slowly realizing family's plan isn't hers. Taking years to voice it.\n\n**Devon** - Platform 3. Learning that healing relationships takes longer than fixing code.\n\n**Jordan** - Conference Room B. Seven careers. Still discovering what 'qualified' even means.\n\n**Marcus** - Platform 4. Understanding medicine is a marathon, not heroic sprints.\n\n**Tess** - Pizitz. Building a school one relationship at a time. Slow, intentional.\n\n**Kai** - Platform 6. Choosing depth over speed. Real learning takes time.\n\nWho's on a journey you want to witness?"
+        }
       }
     ],
     choices: [
