@@ -6804,12 +6804,32 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'helping_continue',
         text: "I think I understand.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_beat_after_helping_reveal',
         pattern: 'helping',
         skills: ['communication', 'emotionalIntelligence']
       }
     ],
     tags: ['orb_gated', 'helping', 'samuel_backstory', 'mastery_tier']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_helping_reveal',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You do. Every person you help builds something bigger than systems. That's what this place is really about.\n\n[He looks toward the platforms]\n\nReady to meet more people finding their way?",
+        emotion: 'vulnerable',
+        variation_id: 'beat_after_helping_reveal_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
   },
   {
     nodeId: 'samuel_orb_helping_affirm',
@@ -6881,12 +6901,32 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'building_continue',
         text: "I hope so.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_beat_after_building_reveal',
         pattern: 'building',
         skills: ['communication']
       }
     ],
     tags: ['orb_gated', 'building', 'samuel_backstory', 'mastery_tier']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_building_reveal',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You will. The best builders know when to shift what they're making. From systems to people. From structures to stories.\n\n[He gestures to the station around you]\n\nReady to meet more builders?",
+        emotion: 'reflective',
+        variation_id: 'beat_after_building_reveal_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
   },
   {
     nodeId: 'samuel_orb_building_affirm',
@@ -7051,12 +7091,32 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'patience_continue',
         text: "Some things can't be rushed.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_beat_after_patience_reveal',
         pattern: 'patience',
         skills: ['communication']
       }
     ],
     tags: ['orb_gated', 'patience', 'samuel_backstory', 'mastery_tier']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_patience_reveal',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "They can't. Some things unfold when they're ready, not before. That lesson took me years to learn the hard way.\n\n[He looks around the station]\n\nReady to meet more travelers learning their own timing?",
+        emotion: 'reflective',
+        variation_id: 'beat_after_patience_reveal_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
   },
   {
     nodeId: 'samuel_orb_patience_affirm',
