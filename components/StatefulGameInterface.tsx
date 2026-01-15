@@ -149,6 +149,7 @@ import { ConstellationPanel } from '@/components/constellation'
 import { SectionErrorBoundary } from '@/components/LayeredErrorBoundaries'
 import { StationStatusBadge } from '@/components/StationStatusBadge'
 import { TextProcessor } from '@/lib/text-processor'
+import { InGameSettings } from '@/components/InGameSettings'
 import { JourneySummary } from '@/components/JourneySummary'
 import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } from '@/lib/journey-narrative-generator'
 import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
@@ -4007,6 +4008,9 @@ export default function StatefulGameInterface() {
         }
 
         {/* PatternOrb moved to Journal panel for cleaner main game view */}
+
+        {/* In-Game Settings Gear - Quick accessibility access */}
+        <InGameSettings />
 
         {/* Keyboard Shortcuts Help Modal */}
         <KeyboardShortcutsHelp
