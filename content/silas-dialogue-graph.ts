@@ -892,7 +892,12 @@ HINT: Sensors measure WHERE they're placed...`,
       {
         text: "That technology should amplify human judgment, not replace it.\n\nBy week three, they've developed intuition. The sensor becomes a tool for calibrating that intuition. Not a substitute for it.\n\nOne woman, a data scientist, said something that stuck with me: \"I used to think dashboards showed me reality. Now I know they show me someone's decision about what to measure.\"\n\nThat's the shift. Sensors don't lie. They just answer the question you asked. The wisdom is in asking the right question.",
         emotion: 'teaching',
-        variation_id: 'integration_v1'
+        variation_id: 'integration_v1',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "You think analytically. So understand this critical distinction.\n\nTechnology should amplify human judgment, not replace it. By week three, they develop intuition. Sensors calibrate that intuition—not substitute.\n\nA data scientist told me: 'Dashboards show someone's decision about what to measure.' That's the analytical insight.\n\nSensors don't lie. They answer the question you asked. The wisdom is asking the right question. Your analytical mind needs to choose what to measure.", altEmotion: 'teaching_serious' },
+          { pattern: 'building', minLevel: 4, altText: "You're a builder. So build with this principle.\n\nTechnology should amplify human judgment, not replace it. Build sensors that calibrate intuition, not substitute for it.\n\nDashboards show reality? No. They show your decision about what to measure. Build consciously.\n\nSensors don't lie—they answer the question you built into them. The wisdom is in the architecture. Build tools that amplify humans, not replace them.", altEmotion: 'teaching' },
+          { pattern: 'patience', minLevel: 4, altText: "You're patient. That patience matters here.\n\nTechnology should amplify judgment. By week three—with patience—people develop intuition. Sensors calibrate slowly-built intuition.\n\nRushing to dashboards skips the patient development of judgment. Dashboards show what you chose to measure. Not reality.\n\nSensors answer the question you asked. Wisdom is in patiently asking the right question. Your patience builds better judgment than any sensor.", altEmotion: 'mentoring' }
+        ]
       }
     ],
     choices: [

@@ -2036,7 +2036,12 @@ export const ashaDialogueNodes: DialogueNode[] = [
             {
                 text: "You don't rush. That's rare. Most people want quick resolutions. Someone to be right, someone to be wrong.\n\nMy grandmother taught me something. Conflict isn't a problem to solve. It's a signal to understand.\n\nWhen two people argue, they're both saying something true that the other can't hear. My job isn't to pick sides. It's to translate until they can hear each other.\n\nPatience isn't waiting for the fight to end. It's staying present while the truth emerges. Sometimes that takes years.",
                 emotion: 'teaching_profound',
-                variation_id: 'philosophy_v1'
+                variation_id: 'philosophy_v1',
+                patternReflection: [
+                    { pattern: 'patience', minLevel: 4, altText: "You don't rush. That's rare—and exactly what this work needs.\n\nMy grandmother taught me: conflict isn't a problem to solve quickly. It's a signal to understand patiently.\n\nTwo people argue. Both saying truth the other can't hear. My job is translate patiently until they can hear each other.\n\nYour patience isn't waiting for the fight to end. It's staying present while truth emerges. Sometimes years. Your patience is the gift.", altEmotion: 'teaching_profound' },
+                    { pattern: 'helping', minLevel: 4, altText: "You help people. But you don't rush them toward resolution.\n\nMy grandmother taught me: conflict isn't a problem to solve. It's a signal. Two people saying truths the other can't hear.\n\nHelping isn't picking sides. It's translating patiently until they can hear each other. Helping through presence, not answers.\n\nYour helping patience—staying present while truth emerges—that's what transforms conflict. Sometimes it takes years. You have what this needs.", altEmotion: 'warm_teaching' },
+                    { pattern: 'analytical', minLevel: 4, altText: "You analyze deeply. So understand this framework.\n\nConflict isn't a problem to solve with logic. It's a signal. Two people, both saying something true the analytical mind can't resolve by picking sides.\n\nMy job: translate systematically until both can hear. Analyze the structure of misunderstanding, not who's right.\n\nPatience is the analytical method here. Stay present while the data emerges. Sometimes years of observation. Your analytical patience reveals truth.", altEmotion: 'teaching_serious' }
+                ]
             }
         ],
         requiredState: {

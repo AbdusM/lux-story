@@ -557,7 +557,12 @@ export const zaraDialogueNodes: DialogueNode[] = [
             {
                 text: "Want to know how I hunt bias? Most people think it's just statistics. It's not.\n\nStep one: Question the question. What was the model built to optimize? Efficiency? Cost? Speed? Every optimization has a trade-off. Something gets sacrificed.\n\nStep two: Follow the training data. Who collected it? What did they measure? What did they NOT measure?\n\nThe triage algorithm? It optimized for \"urgency indicators.\" But the training data came from hospitals where low-income patients were already being undertreated. We taught the model to replicate existing bias, then called it \"objective.\"",
                 emotion: 'teaching',
-                variation_id: 'methodology_v1'
+                variation_id: 'methodology_v1',
+                patternReflection: [
+                    { pattern: 'analytical', minLevel: 4, altText: "You think analytically. Perfect. Bias hunting is analytical work.\n\nStep one: Question the optimization function. Efficiency? Cost? Speed? Every optimization has a trade-off. Analytical minds see this.\n\nStep two: Audit the training data. Who collected it? What did they measure? What systematic gaps exist?\n\nThe triage algorithm optimized for 'urgency indicators.' But the data came from biased hospitals. We trained the model to replicate bias, then called it 'objective.' Your analytical eye needs to catch this.", altEmotion: 'teaching_serious' },
+                    { pattern: 'helping', minLevel: 4, altText: "You help people. So understand how systems hurt people unintentionally.\n\nStep one: Question what the model optimizes. Efficiency? Whose efficiency? Every optimization sacrifices someone.\n\nStep two: Follow the training data. Who collected it? Whose experiences are missing?\n\nTriage algorithm optimized for 'urgency.' But data came from hospitals already undertreating low-income patients. We built 'objective' systems that replicate harm. Helping means seeing this.", altEmotion: 'teaching_passionate' },
+                    { pattern: 'building', minLevel: 4, altText: "You're a builder. So build with awareness of what you're building on.\n\nStep one: Question the optimization. What are you building to maximize? Every optimization sacrifices something else.\n\nStep two: Audit your foundation. What training data? Who collected it? What's missing from your building materials?\n\nTriage algorithm? Built on data from biased hospitals. Built 'objective' systems on biased foundations. Your building replicates the foundation's flaws. Build consciously.", altEmotion: 'teaching' }
+                ]
             }
         ],
         choices: [

@@ -974,7 +974,12 @@ QUESTION: How do you approach her?
       {
         text: "Ask yourself: can you be with suffering without trying to fix it?\n\nThat's the real question. Not \"are you strong enough to lift someone.\" Not \"can you handle bodily fluids.\"\n\nCan you sit with someone who's dying and not run away? Can you be present without needing to solve?\n\nIf you can... this work will break your heart and fill it at the same time.\n\nIt's not for everyone. But for the right person? It's everything.",
         emotion: 'wise',
-        variation_id: 'advice_v1'
+        variation_id: 'advice_v1',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 4, altText: "Ask yourself: can you be with suffering without trying to fix it?\n\nYou help people. I see that. But this work asks a harder question: can you be present with pain you can't solve?\n\nCan you sit with someone who's dying and not run away? Can you help without needing to fix?\n\nIt will break your heart and fill it. Your helping instinct is right. But it needs to be helping through presence, not solutions.", altEmotion: 'wise_warm' },
+          { pattern: 'patience', minLevel: 4, altText: "Ask yourself: can you be with suffering without rushing to fix it?\n\nYou're patient. I see that. This work requires that patience in its purest form.\n\nCan you sit with someone who's dying? Can you be present slowly, without needing to solve quickly?\n\nYour patience is the foundation. It will break your heart and fill it. But for someone with your patience? This work can be everything.", altEmotion: 'knowing' },
+          { pattern: 'analytical', minLevel: 4, altText: "Ask yourself: can you be with suffering that has no solution to analyze?\n\nYou think systematically. But this work asks you to sit with problems that can't be solved.\n\nCan you be present with someone dying? Not analyzing how to fix it. Just... being there.\n\nIt will break your analytical heart and fill it with something words can't capture. Not for everyone. But the right analytical mind learns presence is data too.", altEmotion: 'teaching_wise' }
+        ]
       }
     ],
     choices: [

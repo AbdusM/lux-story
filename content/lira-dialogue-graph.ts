@@ -476,7 +476,12 @@ export const liraDialogueNodes: DialogueNode[] = [
             {
                 text: "[She types: 'Piano melody, C minor, 72 BPM, melancholic.']\n\n[A simple, competent piano line plays.]\n\nSee? It's... fine. It knows music theory. It can generate endless variations on 'sad piano.'\n\nBut this is like asking someone to describe sadness by listing symptoms. 'Tears. Slow movement. Low energy.' Accurate. Empty.\n\nNow watch what happens when I add context.",
                 emotion: 'teaching',
-                variation_id: 'skeleton_v1'
+                variation_id: 'skeleton_v1',
+                patternReflection: [
+                    { pattern: 'analytical', minLevel: 4, altText: "[She types: 'Piano melody, C minor, 72 BPM, melancholic.']\n\n[Piano plays.]\n\nYou analyze systems. So analyze this: it knows music theory perfectly. Generates endless 'sad piano' variations.\n\nBut it's describing sadness by listing symptoms. 'Tears. Slow movement.' Analytically accurate. Experientially empty.\n\nThe analytical framework is correct. The data is missing. Context changes everything. Watch.", altEmotion: 'teaching' },
+                    { pattern: 'building', minLevel: 4, altText: "[She types: 'Piano melody, C minor, 72 BPM, melancholic.']\n\n[Piano plays.]\n\nYou're a builder. See the structural problem? It knows music theory. Can build endless variations.\n\nBut it's building sadness from a blueprint. 'Tears. Slow movement.' Structurally correct. Soullessly empty.\n\nBuilding needs context, not just specifications. Watch what happens when I add the missing variable.", altEmotion: 'teaching' },
+                    { pattern: 'exploring', minLevel: 4, altText: "[She types: 'Piano melody, C minor, 72 BPM, melancholic.']\n\n[Piano plays.]\n\nYou explore possibilities. But notice the limitation: it generates endless 'sad piano' variations from one formula.\n\nDescribing sadness by symptoms. 'Tears. Slow movement.' Technically accurate. Experientially empty. No exploration, just iteration.\n\nReal exploration needs context. Watch what happens when I add it.", altEmotion: 'teaching_curious' }
+                ]
             }
         ],
         choices: [
