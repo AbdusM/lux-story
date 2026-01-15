@@ -4220,9 +4220,29 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'marcus_bridge_return',
         text: "He's going to design better machines.",
-        nextNodeId: 'samuel_hub_after_devon', // Or appropriate hub
+        nextNodeId: 'samuel_beat_after_marcus_stakes',
         pattern: 'building',
         skills: ['adaptability', 'creativity']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_marcus_stakes',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "He is. And he'll do it with the precision of someone who's held life in the balance.\n\n[He gestures toward the platforms]\n\nThere are others here tonight if you're ready.",
+        emotion: 'warm',
+        variation_id: 'beat_after_marcus_stakes_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
       }
     ]
   },
@@ -4286,8 +4306,28 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'tess_return_hub',
         text: "She's going to build something amazing.",
-        nextNodeId: 'samuel_hub_after_devon',
+        nextNodeId: 'samuel_beat_after_tess_risk',
         pattern: 'helping'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_tess_risk',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "She is. The eye of a founder - you've got it too.\n\n[He turns toward the platforms]\n\nReady to meet another traveler?",
+        emotion: 'warm',
+        variation_id: 'beat_after_tess_risk_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
       }
     ]
   },
