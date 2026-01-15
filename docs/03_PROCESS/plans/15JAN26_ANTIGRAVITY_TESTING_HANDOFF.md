@@ -33,12 +33,54 @@ IF error occurs:
 
 ---
 
-## App URLs to Test
+## Error Logging (IMPORTANT)
 
-| Environment | URL |
-|-------------|-----|
-| Production | https://lux-story.vercel.app |
-| Local Dev | http://localhost:3000 |
+Write all errors to: `/tmp/gemini-test-errors.log`
+
+After each phase or when encountering errors, append to log:
+```
+### [Timestamp] Phase X - [Description]
+- Route: /path
+- Error: [message]
+- Console: [any JS errors]
+- Action: [what you tried]
+```
+
+---
+
+## Browser Cleanup (CRITICAL)
+
+**System is under heavy load.** Baseline shows 43 Chrome processes, 3% CPU idle, 64MB RAM free.
+
+**Between each test phase, close extra tabs:**
+```
+browser_tabs action=close
+```
+
+**Memory management:**
+- Keep only 1 tab open at a time
+- Close tab before navigating to new route
+- If tests slow down, close browser and reopen
+
+**Performance hygiene (IMPORTANT):**
+- Use headless mode when visuals aren't needed for the test
+- Avoid opening multiple browser windows
+- If response times exceed 5s, pause testing and wait 30s
+- Between major phases (Phase 3→4, etc.), consider browser restart
+
+**Signs of resource exhaustion:**
+- Page loads taking >10s
+- Console shows "out of memory" warnings
+- Browser becomes unresponsive
+- Action: Stop testing, log status, restart browser
+
+---
+
+## App URL to Test
+
+**Use Local Dev:** http://localhost:3005
+
+(Production at lux-story.vercel.app is 25 commits behind)
 
 ---
 
@@ -293,7 +335,7 @@ If you find interesting patterns or behaviors, document:
 
 ## Quick Start
 
-1. Navigate to https://lux-story.vercel.app
+1. Navigate to http://localhost:3005
 2. Run `browser_snapshot` to see initial state
 3. Start Phase 1, log issues as you go
 4. Don't stop for errors - document and continue
@@ -301,3 +343,21 @@ If you find interesting patterns or behaviors, document:
 6. Compile final report
 
 Good luck! Goal is comprehensive coverage, not perfection.
+
+---
+
+## Resource Optimization Notes
+
+**Current System State (as of test session start):**
+- RAM: 15GB/16GB used (64MB free)
+- CPU: 3% idle
+- Top consumers: Antigravity (127% CPU), Claude Code (58% CPU), Chrome GPU (32% CPU)
+
+**If system becomes sluggish:**
+1. Complete current test phase
+2. Log progress to error log
+3. Close browser: `browser_close`
+4. Wait 30 seconds
+5. Restart browser and continue from next phase
+
+**Reference:** See `15JAN26_PERFORMANCE_BASELINE.md` for full system analysis.
