@@ -796,7 +796,12 @@ Which opening sells the VALUE of practical experience?`,
         emotion: 'shame_pain',
         variation_id: 'vulnerability_v1',
         richEffectContext: 'warning',
-        useChatPacing: true
+        useChatPacing: true,
+        patternReflection: [
+          { pattern: 'helping', minLevel: 5, altText: "Can tell you something? You help people. You understand.\n\nMy father came from Manila. 1989. Three jobs. Four kids through college. Engineer, pharmacist, accountant.\n\nMe: dental assistant.\n\nTold him I wasn't going to dental school. He looked at me like I'd died. Said: 'You had same chances. Why you waste them?'\n\nStill hear his voice. Every time I help someone learn. Am I helping or wasting chances he gave me?", altEmotion: 'vulnerable_shame' },
+          { pattern: 'building', minLevel: 5, altText: "Can tell you something? You're builder. You understand making something from nothing.\n\nMy father built new life. Manila to America. Three jobs. Four kids through college.\n\nSister: engineer. Brother: pharmacist. Sister: accountant. Me: dental assistant.\n\nTold him I'm building course instead of dental career. He said: 'Why you waste chances?'\n\nIs building online course wasting what he built for me?", altEmotion: 'vulnerable_conflicted' },
+          { pattern: 'patience', minLevel: 5, altText: "Can tell you something? You're patient listener. Maybe you understand.\n\nMy father waited thirty years. Manila to America. Three jobs. Saved everything. Four kids through college.\n\nThree took traditional path. Me... dental assistant. Not dentist.\n\nTold him my choice. He didn't speak for month. Finally said: 'Why you waste chances?'\n\nHis patience gave me options. My choice feels like betrayal of that patience.", altEmotion: 'vulnerable_grief' }
+        ]
       }
     ],
     requiredState: {
