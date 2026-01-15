@@ -224,6 +224,13 @@ export const graceDialogueNodes: DialogueNode[] = [
         emotion: 'appreciative',
         interaction: 'small',
         variation_id: 'quiet_sit_v1',
+        voiceVariations: {
+          analytical: "That's nice. Most people process through talking. Analyze out loud. Fill the silence with data.\n\nYou observe first. Presence before analysis. That's rare.",
+          helping: "That's nice. Most people rush to help. Try to fix immediately.\n\nYou know how to just... be with someone. Support without solving. That's rare.",
+          building: "That's nice. Most people need to construct immediately. Build conversation. Fill every gap.\n\nYou let the space exist first. Foundation of silence. That's rare.",
+          exploring: "That's nice. Most people explore through questions. Navigate with words.\n\nYou know how to discover through quiet. Map through presence. That's rare.",
+          patience: "That's nice. Most people rush. Fill every silence immediately.\n\nYou gave it time. Let the moment breathe. That's the rarest gift."
+        },
         patternReflection: [
           { pattern: 'patience', minLevel: 4, altText: "That's nice. Most people fill every silence. You just... waited.\n\nYou understand stillness. That's the hardest skill to teach.", altEmotion: 'recognized' },
           { pattern: 'helping', minLevel: 4, altText: "You know how to be with someone without needing anything from them.\n\nThat's what I do for a living. Recognize it when I see it.", altEmotion: 'kindred' }
@@ -360,7 +367,14 @@ export const graceDialogueNodes: DialogueNode[] = [
         text: "You caught that, huh.\n\nYeah. It's more than \"somebody's gotta.\"\n\nMy grandmother raised me. Strong woman. Worked thirty years at a laundry, retired, thought she'd have time to rest. Then the dementia started.\n\nAt the end... I was the only one who could calm her down. She didn't know my name anymore. But she knew my presence.\n\nThat's when I knew. This work isn't about tasks. It's about being the calm in someone's storm.",
         emotion: 'vulnerable',
         interaction: 'small',
-        variation_id: 'more_than_v1'
+        variation_id: 'more_than_v1',
+        voiceVariations: {
+          analytical: "You processed the subtext. Good.\n\nYeah. It's more than the work equation.\n\nMy grandmother raised me. At the end, she didn't know my name. But she recognized my pattern. My presence.\n\nThat's when I understood the variables. This work isn't about the tasks. It's about being the constant in someone's chaos.",
+          helping: "You heard the weight in it. Thank you.\n\nYeah. It's more than duty.\n\nMy grandmother raised me. At the end, she didn't know my name. But she needed my presence. That specific comfort only I could give.\n\nThat's when I knew. This work isn't about helping with tasks. It's about being the calm they need.",
+          building: "You caught the foundation under the words.\n\nYeah. It's more than the structure of the job.\n\nMy grandmother raised me. At the end, she didn't know my name. But she knew my presence was safe. Something she could lean on.\n\nThat's when I knew. This work isn't building services. It's constructing stability in someone's storm.",
+          exploring: "You heard the story beneath the words.\n\nYeah. It's more than the surface path.\n\nMy grandmother raised me. At the end, she didn't know my name. But she knew my presence. A familiar territory in the confusion.\n\nThat's when I discovered it. This work isn't about tasks. It's about being the known place in someone's storm.",
+          patience: "You waited to hear what I wasn't saying.\n\nYeah. It's more than the clock-in, clock-out.\n\nMy grandmother raised me. At the end, she didn't know my name. But she knew my presence. Recognized me over time, even when memory failed.\n\nThat's when I understood. This work isn't about the tasks. It's about being the patience in someone's storm."
+        }
       }
     ],
     choices: [
@@ -402,7 +416,14 @@ export const graceDialogueNodes: DialogueNode[] = [
         text: "Every day.\n\nEvery time I sit with someone who's scared and confused, I think: what if this was her? What would I want someone to do?\n\nThat's the job. Not the tasks. The remembering that every person used to be someone's whole world.\n\nMrs. Patterson? She was a jazz singer. Mr. Chen? Built bridges. They're not just bodies that need help. They're people with stories.",
         emotion: 'tender',
         interaction: 'nod',
-        variation_id: 'grandmother_v1'
+        variation_id: 'grandmother_v1',
+        voiceVariations: {
+          analytical: "Every day.\n\nEvery time I observe someone scared and confused, I run the algorithm: what if this was her? What would optimize their experience?\n\nThat's the real function. Not the task list. The calculation that every person contains a lifetime of data.\n\nMrs. Patterson? Jazz singer. Mr. Chen? Bridge engineer. They're not cases. They're complete datasets with stories.",
+          helping: "Every day.\n\nEvery time I'm with someone who's scared and confused, I think: what if someone helped her this way? What would I want them to feel?\n\nThat's the real work. Not checking boxes. The caring that every person deserves - remembering they're someone's whole world.\n\nMrs. Patterson? Jazz singer. Mr. Chen? Built bridges. They're not just bodies. They're people who mattered.",
+          building: "Every day.\n\nEvery time I work with someone scared and confused, I think: what if someone built her care this way? What foundation would I want?\n\nThat's the real construction. Not the task structure. The framework that remembers every person built a whole life.\n\nMrs. Patterson? Jazz singer. Mr. Chen? Built bridges. They're not just clients. They're people who created.",
+          exploring: "Every day.\n\nEvery time I discover someone scared and confused, I wonder: what if someone explored her world this way? What would I want them to find?\n\nThat's the real journey. Not the checklist. The curiosity that every person traveled through a lifetime of stories.\n\nMrs. Patterson? Jazz singer. Mr. Chen? Built bridges. They're not just bodies. They're paths worth knowing.",
+          patience: "Every day.\n\nEvery time I sit with someone who's scared and confused, I think: what if someone gave her this time? What would I want them to feel?\n\nThat's the real gift. Not rushing through tasks. The patience that every person deserves - they lived a whole lifetime.\n\nMrs. Patterson? Jazz singer. Mr. Chen? Built bridges. They're not just bodies. They're stories that take time."
+        }
       }
     ],
     choices: [
