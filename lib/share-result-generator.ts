@@ -1,10 +1,12 @@
 /**
  * Share Result Generator - TikTok-Optimized
- * 
+ *
  * Generates casual, human-sounding shareable content optimized for TikTok/social media.
  * Uses conversational language, trendy phrases, and relatable moments.
  * Makes achievements sound like a friend sharing, not a corporate announcement.
  */
+
+import { getCharacterName } from '@/lib/character-names'
 
 export type ShareCardType = 'skill' | 'character' | 'career' | 'journey'
 
@@ -20,21 +22,7 @@ export interface ShareCardData {
   charactersMet?: number
 }
 
-/**
- * Character name mapping for casual sharing
- */
-const CHARACTER_NAMES: Record<string, string> = {
-  samuel: 'Samuel',
-  maya: 'Maya',
-  devon: 'Devon',
-  jordan: 'Jordan',
-  marcus: 'Marcus',
-  tess: 'Tess',
-  yaquin: 'Yaquin',
-  kai: 'Kai',
-  rohan: 'Rohan',
-  silas: 'Silas'
-}
+// Character names now imported from @/lib/character-names
 
 /**
  * Skill level to casual description mapping
@@ -96,7 +84,7 @@ export function generateCharacterCompletionCard(
   characterName: string,
   trustLevel: string
 ): string {
-  const displayName = CHARACTER_NAMES[characterName.toLowerCase()] || characterName
+  const displayName = getCharacterName(characterName)
   const trustPhrase = TRUST_LEVEL_PHRASES[trustLevel.toLowerCase()] || 'talked to'
   
   const variations = [

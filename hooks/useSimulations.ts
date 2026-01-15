@@ -7,6 +7,7 @@ import { useMemo } from 'react'
 import { useGameSelectors } from '@/lib/game-store'
 import { SIMULATION_REGISTRY, SimulationMeta } from '@/lib/simulation-registry'
 import { CharacterId, isValidCharacterId } from '@/lib/graph-registry'
+import { getCharacterName } from '@/lib/character-names'
 
 export interface SimulationWithStatus extends SimulationMeta {
   isCompleted: boolean
@@ -21,30 +22,7 @@ export interface SimulationsData {
   totalCount: number
 }
 
-/**
- * Get character display name
- */
-function getCharacterName(characterId: CharacterId): string {
-  const names: Partial<Record<CharacterId, string>> = {
-    samuel: 'Samuel',
-    maya: 'Maya',
-    jordan: 'Jordan',
-    devon: 'Devon',
-    kai: 'Kai',
-    tess: 'Tess',
-    rohan: 'Rohan',
-    silas: 'Silas',
-    marcus: 'Marcus',
-    yaquin: 'Yaquin',
-    elena: 'Elena',
-    grace: 'Grace',
-    alex: 'Alex',
-    asha: 'Asha',
-    lira: 'Lira',
-    zara: 'Zara'
-  }
-  return names[characterId] || characterId
-}
+// getCharacterName now imported from @/lib/character-names
 
 export function useSimulations(): SimulationsData {
   const coreGameState = useGameSelectors.useCoreGameState()
