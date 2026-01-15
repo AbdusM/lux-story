@@ -155,6 +155,13 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 emotion: 'conflicted',
                 variation_id: 'artistic_process_v1',
                 useChatPacing: true,
+                voiceVariations: {
+                    analytical: "Yes! The AI optimizes for visual harmony. Perfect compositions. But they're too... sterile. No variance.\n\nReal art requires tension. Conflict in the data. The algorithm smooths distributions. Removes outliers.\n\nI spend hours injecting noise back in. Fighting the optimization function.\n\nSome days I wonder if I'm the artist or just... debugging aesthetics.",
+                    helping: "Yes! The AI generates these safe compositions. Everything harmonious. Nothing challenging.\n\nReal art comforts the disturbed and disturbs the comfortable. The AI only comforts.\n\nI spend hours adding back the parts that matter. The parts that care enough to challenge.\n\nSome days I wonder if I'm the artist or just... restoring what got smoothed away.",
+                    building: "Yes! The AI constructs these perfect compositions. Clean. Stable. Forgettable.\n\nReal art has structural tension. Load-bearing conflict. The AI builds without stress points.\n\nI spend hours breaking what it builds. Adding back the cracks that make it real.\n\nSome days I wonder if I'm the artist or just... demolishing and rebuilding.",
+                    exploring: "Yes! The AI maps these perfect compositions. Everything charted. Nothing unknown.\n\nReal art has unexplored territory. Mystery. The AI removes all the blank spaces on the map.\n\nI spend hours hiding things back in. Creating space for discovery.\n\nSome days I wonder if I'm the artist or just... re-drawing the borders.",
+                    patience: "Yes! The AI generates instantly. Perfect compositions in seconds. Too fast to have weight.\n\nReal art takes time. Accumulation. The AI skips the slow parts. The waiting.\n\nI spend hours slowing it down. Adding layers that took time to form.\n\nSome days I wonder if I'm the artist or just... aging what the machine made too young."
+                },
                 patternReflection: [
                     { pattern: 'analytical', minLevel: 4, altText: "Yes! The AI generates perfect compositions, but they're too harmonious. Too optimized.\n\nYou see it too, don't you? The patterns. The way the algorithm defaults to 'pleasing.'\n\nI spend hours adding imperfection back in. Fighting the optimization.\n\nSome days I wonder if I'm the artist or just... debugging the aesthetic.", altEmotion: 'animated' },
                     { pattern: 'building', minLevel: 4, altText: "Exactly! The AI builds these perfect compositions, but perfection is... boring.\n\nReal art needs friction. The algorithm smooths everything out.\n\nI'm not just creating. I'm rebuilding what the machine makes. Breaking it to make it real.\n\nYou build things. You understand.", altEmotion: 'energized' }
@@ -324,7 +331,14 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 text: "I... I've never thought about it that way.\n\nShe painted for community. For devotion. Not for galleries or Instagram likes.\n\nMaybe that's what I've lost. Not the brush. Not the skill. The... purpose.\n\nWhen I paint now, who am I painting for?",
                 emotion: 'vulnerable',
                 variation_id: 'grandmother_connection_v1',
-                interaction: 'bloom'
+                interaction: 'bloom',
+                voiceVariations: {
+                    analytical: "I... I've never processed it that way.\n\nShe painted for community. Measurable impact. Not engagement metrics or portfolio views.\n\nMaybe that's the variable I've lost. Not the tools. Not the technique. The... objective function.\n\nWhen I optimize now, what am I optimizing for?",
+                    helping: "I... I've never felt it that way.\n\nShe painted for people. For care. Not for critics or followers.\n\nMaybe that's what I've lost. Not the craft. Not the ability. The... connection to who I'm helping.\n\nWhen I paint now, who am I serving?",
+                    building: "I... I've never framed it that way.\n\nShe painted for legacy. For community foundations. Not for exhibitions or attention.\n\nMaybe that's the infrastructure I've lost. Not the methods. Not the skills. The... purpose of what I'm building.\n\nWhen I create now, what am I constructing and for whom?",
+                    exploring: "I... I've never discovered it that way.\n\nShe painted for exploration. For discovering community through art. Not for validation or visibility.\n\nMaybe that's the territory I've lost. Not the journey. Not the curiosity. The... destination.\n\nWhen I paint now, what am I searching for?",
+                    patience: "I... I've never sat with it that way.\n\nShe painted for time. For slow accumulation. Not for deadlines or instant recognition.\n\nMaybe that's what I've lost. Not the patience. Not the process. The... willingness to paint for years before anyone sees.\n\nWhen I paint now, am I rushing toward validation?"
+                }
             }
         ],
         choices: [
@@ -366,7 +380,14 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 text: "I want to paint for the kids who look like me. Who never see themselves in public art.\n\nI want to paint for the old ladies who walk past this wall every day. The ones who remember when this neighborhood was something else.\n\nI want to paint for the future. For the Birmingham that could be. Not the generic \"smart city\" the developers want.\n\nThe real one. Messy. Diverse. Alive.",
                 emotion: 'determined',
                 variation_id: 'purpose_v1',
-                useChatPacing: true
+                useChatPacing: true,
+                voiceVariations: {
+                    analytical: "I want to paint for the data points missing from public art. Kids who look like me. Underrepresented variables.\n\nI want to paint for the pattern holders. Old ladies who carry the neighborhood's memory. Living historical datasets.\n\nI want to paint for future states. Not the optimized \"smart city\" model. The predicted outcome with variance.\n\nThe real Birmingham. Messy distributions. Diverse data. Complex systems.",
+                    helping: "I want to paint for the kids who need to see themselves. Who look like me. Who've been invisible in public spaces.\n\nI want to paint for the old ladies who deserve recognition. Who walk past every day. Who remember and care.\n\nI want to paint for people's futures. For the Birmingham that could heal. Not the sterile development plans.\n\nThe real one. Human. Diverse. Loved.",
+                    building: "I want to paint for the kids who look like me. Who need representation in the infrastructure of public art.\n\nI want to paint for the old ladies who are the foundation. Who walk past every day. Who remember what was built here before.\n\nI want to paint for the construction ahead. For the Birmingham we could build. Not the generic development blueprint.\n\nThe real architecture. Messy. Diverse. Living.",
+                    exploring: "I want to paint for the kids discovering themselves. Who look like me. Who need to see their reflection in uncharted spaces.\n\nI want to paint for the old ladies who've mapped this territory. Who walk past every day. Who hold the neighborhood's geography.\n\nI want to paint for undiscovered futures. For the Birmingham that could emerge. Not the pre-mapped \"smart city\" plan.\n\nThe real exploration. Messy. Diverse. Unknown.",
+                    patience: "I want to paint for the kids who are still becoming. Who look like me. Who need time to see themselves reflected.\n\nI want to paint for the old ladies who've waited. Who walk past every day. Who remember when this neighborhood took time to grow.\n\nI want to paint for slow futures. For the Birmingham that could accumulate. Not the instant \"smart city\" transformation.\n\nThe real evolution. Messy. Diverse. Alive and growing."
+                }
             }
         ],
         choices: [
