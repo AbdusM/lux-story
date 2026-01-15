@@ -3629,9 +3629,29 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_from_inheritance',
         text: "That's a beautiful way to see it.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_inheritance',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_inheritance',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "It is beautiful, isn't it? The patterns we inherit. The gifts we carry forward.\n\n[He pauses, looking toward the platforms]\n\nThere are other travelers tonight.",
+        emotion: 'warm',
+        variation_id: 'beat_after_inheritance_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
@@ -3650,12 +3670,32 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_from_confirmation',
         text: "[Nod thoughtfully]",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_pattern_confirmation',
         pattern: 'patience',
         consequence: {
           characterId: 'samuel',
           trustChange: 1
         }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_pattern_confirmation',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "[He nods back, a moment of mutual understanding]\n\nYou're starting to see how the pieces connect. Good. That awareness will serve you well with the other travelers.",
+        emotion: 'knowing',
+        variation_id: 'beat_after_pattern_confirmation_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
@@ -3674,9 +3714,29 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_from_pattern',
         text: "I'm starting to see it too.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_pattern_wisdom',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'communication']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_pattern_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You are. And the more you see, the more there is to discover.\n\n[He gestures outward]\n\nSpeak of which - there are more patterns to observe tonight. More travelers to meet.",
+        emotion: 'encouraging',
+        variation_id: 'beat_after_pattern_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'exploring'
       }
     ]
   },
@@ -4781,7 +4841,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'return_to_hub',
         text: "What's next?",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_listening',
         pattern: 'exploring',
         skills: ['communication', 'adaptability']
       }
@@ -4790,6 +4850,26 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['recognized_listening_skill']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_listening',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "What's next? Good question. That curiosity - that eagerness to keep exploring - that's what brought you here.\n\n[He gestures toward the platforms]\n\nLet me show you who else is traveling tonight.",
+        emotion: 'encouraging',
+        variation_id: 'beat_after_listening_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'exploring'
       }
     ]
   },
@@ -4834,13 +4914,33 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'understand_witnessing',
         text: "Present without fixing.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_witnessing',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'emotionalIntelligence', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 2
         }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_witnessing',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Exactly. Present without fixing. That's the whole lesson.\n\n[He nods with quiet respect]\n\nNow, let me tell you about the other travelers tonight.",
+        emotion: 'proud',
+        variation_id: 'beat_after_witnessing_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
