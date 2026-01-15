@@ -183,7 +183,14 @@ const nodes: DialogueNode[] = [
     content: [{
       text: "You... noticed. Most would have pushed for answers. I appreciate the space.",
       emotion: 'grateful',
-      variation_id: 'default'
+      variation_id: 'default',
+      voiceVariations: {
+        analytical: "You... observed the pattern. System overload. Human capacity exceeded.\n\nMost would have pushed for root cause analysis. You recognized I needed buffer time first.",
+        helping: "You... saw I needed a moment. Not solutions. Not advice. Just... space.\n\nThat kind of attention is rare. Thank you.",
+        building: "You... let the system stabilize before debugging.\n\nMost would have started fixing immediately. You know you can't rebuild under load.",
+        exploring: "You... stayed curious without demanding answers.\n\nMost would have pushed. You let the story emerge at its own pace.",
+        patience: "You... waited. Gave me room to breathe.\n\nThat silence was the first rest I've had in cycles."
+      }
     }],
     choices: [
       {
@@ -2461,7 +2468,14 @@ WARNING: Response time > 48h`,
     content: [{
       text: "You carry something too. I can see it.\n\nNot the same weight as mine. But weight nonetheless. Everyone at the station has their reasons for being between who they were and who they are becoming.\n\nI have shared my burden with you. That is unusual for me. Most people get my competence. Few get my story.\n\nWould you tell me something about yourself? Not everything. Just enough that I am not the only one exposed here.",
       emotion: 'vulnerable',
-      variation_id: 'connection_burden_v1'
+      variation_id: 'connection_burden_v1',
+      voiceVariations: {
+        analytical: "You're analyzing everything. I can see it. Patterns, systems, structures.\n\nBut you're analyzing yourself too. Debugging your own code. Everyone here is between versions.\n\nI have shared my error logs with you. That is unusual. Most people get my uptime metrics. Few see the crashes.\n\nWould you share a variable? Just one piece of your algorithm?",
+        helping: "You've been helping everyone. I can see it. The way you listen, really listen.\n\nBut who helps the helper? Everyone here is between who they cared for and who they're learning to be.\n\nI have shared my burden with you. That is unusual. Most people get my support. Few get my need.\n\nWould you let me see yours? Not everything. Just enough that I'm not the only one exposed here.",
+        building: "You're building something. I can see it. In how you approach problems, construct solutions.\n\nBut you're rebuilding yourself too. Everyone here is between what they made and what they're becoming.\n\nI have shared my broken systems with you. That is unusual. Most people get my fixes. Few see the failures.\n\nWould you show me your blueprint? Not the whole architecture. Just enough foundation.",
+        exploring: "You're exploring everything. I can see it. Questions, possibilities, paths.\n\nBut you're exploring yourself too. Mapping unknown territory. Everyone here is between who they were and who they're discovering.\n\nI have shared my map with you - all the dead ends. That is unusual. Most people get my confidence. Few get my uncertainty.\n\nWould you share part of your journey? Not the whole route. Just where you've been lost.",
+        patience: "You carry something quietly. I can see it. The way you wait, don't rush.\n\nEveryone here is between who they were and who they're becoming. It takes time.\n\nI have shared my burden with you. That is unusual. Most people get my composure. Few get my grief.\n\nWould you tell me something? Not everything. Just enough that I'm not the only one exposed here."
+      }
     }],
     requiredState: {
       trust: { min: 5 }
