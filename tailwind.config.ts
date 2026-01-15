@@ -22,6 +22,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // Responsive Breakpoints
+      screens: {
+        xs: '400px',   // Small phone breakpoint for container sizing
+      },
+
       // Design System Colors
       colors: {
         background: "hsl(var(--background))",

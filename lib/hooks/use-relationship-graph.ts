@@ -82,6 +82,11 @@ export const useRelationshipGraph = () => {
         }
 
         CHARACTER_RELATIONSHIP_WEB.forEach((edge, index) => {
+            // CRITICAL FIX: Only add links if both nodes exist
+            if (!metCharacterIds.has(edge.fromCharacterId) || !metCharacterIds.has(edge.toCharacterId)) {
+                return // Skip this link if either character hasn't been met
+            }
+
             // Check reveal conditions
             if (edge.revealConditions) {
                 // Trust check (from the 'from' character's perspective)

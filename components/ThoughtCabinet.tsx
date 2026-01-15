@@ -75,6 +75,19 @@ export function ThoughtCabinet() {
 
     return (
         <div className="p-4 space-y-6">
+            {/* Header & Description */}
+            <div className="space-y-2 px-1">
+                <div className="flex items-center gap-2">
+                    <Brain className="w-5 h-5 text-purple-400" />
+                    <h3 className="text-xs font-bold text-purple-400 uppercase tracking-widest">
+                        Mind
+                    </h3>
+                </div>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                    Track the mysteries you're uncovering and thoughts taking shape as you explore the station.
+                </p>
+            </div>
+
             {/* Mysteries Section */}
             {mysteries && (
                 <div className="space-y-3">

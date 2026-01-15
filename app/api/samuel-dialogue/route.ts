@@ -17,8 +17,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import type { PlayerPersona } from '@/lib/player-persona'
 import { logger } from '@/lib/logger'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
+
+// Rate limiter: 20 requests per hour (prevents Gemini API abuse)
+const samuelDialogueLimiter = rateLimit({
+  interval: 60 * 60 * 1000, // 1 hour
+  uniqueTokenPerInterval: 500,
+})
 
 interface SamuelDialogueRequest {
   nodeId: string
@@ -172,6 +179,22 @@ export async function POST(request: NextRequest) {
   const startTime = Date.now()
 
   logger.debug('Request received', { operation: 'api.samuel-dialogue', timestamp: new Date().toISOString() })
+
+  // Rate limiting: 20 requests per hour
+  const ip = getClientIp(request)
+  try {
+    await samuelDialogueLimiter.check(ip, 20)
+  } catch {
+    return NextResponse.json(
+      { error: 'Too many dialogue generation requests. Please try again in an hour.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': '3600' // 1 hour in seconds
+        }
+      }
+    )
+  }
 
   try {
     // 1. Validate API key

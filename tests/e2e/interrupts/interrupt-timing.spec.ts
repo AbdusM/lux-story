@@ -55,7 +55,7 @@ test.describe('Interrupt Timing Validation', () => {
       expect(timingDelay).toBeGreaterThanOrEqual(2000)
       expect(timingDelay).toBeLessThanOrEqual(4000)
 
-      console.log(\`✓ Interrupt appeared \${timingDelay}ms after dialogue (expected 2000-4000ms)\`)
+      console.log(`✓ Interrupt appeared ${timingDelay}ms after dialogue (expected 2000-4000ms)`)
 
       // Verify interrupt button has correct attributes
       const interruptType = await interruptButton.getAttribute('data-interrupt-type')
@@ -64,7 +64,7 @@ test.describe('Interrupt Timing Validation', () => {
       const interruptAction = await interruptButton.textContent()
       expect(interruptAction).toBeTruthy()
 
-      console.log(\`✓ Interrupt type: \${interruptType}, Action: \${interruptAction}\`)
+      console.log(`✓ Interrupt type: ${interruptType}, Action: ${interruptAction}`)
     }
   })
 
@@ -104,7 +104,7 @@ test.describe('Interrupt Timing Validation', () => {
     const interruptDisappearTime = Date.now()
     const displayDuration = interruptDisappearTime - interruptAppearTime
 
-    console.log(\`✓ Interrupt displayed for \${displayDuration}ms\`)
+    console.log(`✓ Interrupt displayed for ${displayDuration}ms`)
 
     // Duration should be between 3-5 seconds (3500ms typical + some tolerance)
     expect(displayDuration).toBeGreaterThanOrEqual(3000)

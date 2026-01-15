@@ -297,7 +297,7 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
                 textAnchor="middle"
                 className={cn(
                   "text-[2.5px] uppercase tracking-widest font-sans transition-all duration-300",
-                  isActiveCluster ? "font-bold fill-white" : "font-medium fill-slate-600"
+                  isActiveCluster ? "font-bold fill-white" : "font-medium fill-slate-400"
                 )}
               >
                 {cluster.name}

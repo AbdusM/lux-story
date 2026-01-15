@@ -16,10 +16,12 @@ interface GameMenuProps {
     onShowConstellation?: () => void
     isMuted?: boolean
     onToggleMute?: () => void
+    volume?: number
+    onVolumeChange?: (volume: number) => void
     playerId?: string
 }
 
-export function GameMenu({ onShowReport, onReturnToStation: _onReturnToStation, onShowConstellation: _onShowConstellation, isMuted = false, onToggleMute, playerId }: GameMenuProps) {
+export function GameMenu({ onShowReport, onReturnToStation: _onReturnToStation, onShowConstellation: _onShowConstellation, isMuted = false, onToggleMute, volume = 50, onVolumeChange, playerId }: GameMenuProps) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -54,6 +56,30 @@ export function GameMenu({ onShowReport, onReturnToStation: _onReturnToStation, 
                         )}
                         <span>{isMuted ? 'Unmute Audio' : 'Mute Audio'}</span>
                     </DropdownMenuItem>
+                )}
+
+                {onVolumeChange && (
+                    <>
+                        <DropdownMenuSeparator />
+                        <div className="px-2 py-3 space-y-2">
+                            <div className="flex items-center justify-between text-xs text-slate-400 px-1">
+                                <span>Volume</span>
+                                <span className="text-amber-400 font-medium">{volume}%</span>
+                            </div>
+                            <input
+                                type="range"
+                                min="0"
+                                max="100"
+                                value={volume}
+                                onChange={(e) => onVolumeChange(parseInt(e.target.value, 10))}
+                                onClick={(e) => e.stopPropagation()}
+                                className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                                style={{
+                                    background: `linear-gradient(to right, rgb(245 158 11) 0%, rgb(245 158 11) ${volume}%, rgb(51 65 85) ${volume}%, rgb(51 65 85) 100%)`
+                                }}
+                            />
+                        </div>
+                    </>
                 )}
             </DropdownMenuContent>
         </DropdownMenu>

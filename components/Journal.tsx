@@ -24,6 +24,7 @@ import { CognitionView } from "./CognitionView"
 import { PatternType } from "@/lib/patterns"
 import { ORB_TIERS } from "@/lib/orbs"
 import { useSimulations } from "@/hooks/useSimulations"
+import { useUserRole } from "@/hooks/useUserRole"
 
 interface JournalProps {
   isOpen: boolean
@@ -53,6 +54,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const { hasNewOrbs, markOrbsViewed, balance, tier } = useOrbs()
   const thoughts = useGameSelectors.useThoughts()
   const { availableCount: availableSimulations } = useSimulations()
+  const { isEducator, loading: roleLoading } = useUserRole()
 
   // Tab badge indicators
   const hasNewPatterns = hasNewOrbs
@@ -110,7 +112,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   // ... (variants)
 
   // New Prism Tabs
-  const tabs: { id: TabId; label: string; icon: typeof Users }[] = [
+  // Base tabs available to all users
+  const baseTabs: { id: TabId; label: string; icon: typeof Users }[] = [
     { id: 'harmonics', label: 'Harmonics', icon: Zap },
     { id: 'essence', label: 'Essence', icon: Compass },
     { id: 'mastery', label: 'Mastery', icon: Crown },
@@ -120,8 +123,21 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     { id: 'simulations', label: 'Sims', icon: Play },
     { id: 'cognition', label: 'Cognition', icon: Brain },
     { id: 'analysis', label: 'Analysis', icon: TrendingUp },
-    { id: 'god_mode', label: 'GOD MODE', icon: AlertTriangle }, // ISP: Exposed for testing
   ]
+
+  // Show God Mode tab if:
+  // 1. Development mode (always)
+  // 2. Production with educator/admin role (authenticated)
+  // 3. Production with ?godmode=true URL parameter (fallback for non-authenticated educators)
+  const hasGodModeParam = typeof window !== 'undefined' && window.location.search.includes('godmode=true')
+  const showGodMode =
+    process.env.NODE_ENV === 'development' ||
+    (!roleLoading && isEducator) ||
+    hasGodModeParam
+
+  const tabs = showGodMode
+    ? [...baseTabs, { id: 'god_mode' as TabId, label: 'GOD MODE', icon: AlertTriangle }]
+    : baseTabs
 
 
   return (
@@ -209,7 +225,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                   key={tab.id}
                   onClick={() => handleTabSelect(tab.id)}
                   className={cn(
-                    "flex-1 py-4 px-3 text-xs font-medium transition-colors flex flex-col items-center gap-1.5 min-w-[64px] relative",
+                    "flex-1 py-4 px-4 text-xs font-medium transition-colors flex flex-col items-center gap-1.5 min-w-[72px] relative",
                     activeTab === tab.id
                       ? "text-white"
                       : "text-slate-500 hover:text-slate-300"

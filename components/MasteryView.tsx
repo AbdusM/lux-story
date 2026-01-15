@@ -45,6 +45,9 @@ export function MasteryView() {
                 <p className="text-sm text-slate-400">
                     As your patterns deepen, the station reveals its hidden layers to you.
                 </p>
+                <p className="text-xs text-slate-500 italic">
+                    Abilities unlock automatically as you earn orbs—no purchase needed.
+                </p>
             </div>
 
             <div className="grid grid-cols-1 gap-4">
@@ -91,7 +94,7 @@ export function MasteryView() {
                                         </h4>
                                         {!isUnlocked && (
                                             <span className="text-2xs uppercase font-bold text-slate-600 bg-slate-800 px-2 py-0.5 rounded">
-                                                {tierMeta.minOrbs} Orbs
+                                                Unlocks at {tierMeta.minOrbs}
                                             </span>
                                         )}
                                     </div>

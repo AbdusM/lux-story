@@ -153,6 +153,16 @@ export default defineConfig({
         headless: true,
       },
     },
+    {
+      name: 'visual-validation',
+      testDir: './tests/visual',
+      fullyParallel: false,
+      workers: 1,
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: false, // Use headed mode for visual tests
+      },
+    },
 
     // Mobile projects (device-specific)
     {

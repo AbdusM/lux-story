@@ -17,6 +17,18 @@ import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-c
 import type { UrgencyAPIResponse, RecalculationResponse, UrgencyLevel } from '@/lib/types/admin'
 import { auditLog } from '@/lib/audit-logger'
 import { logger } from '@/lib/logger'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
+
+// Rate limiters
+const queryLimiter = rateLimit({
+  interval: 60 * 1000, // 1 minute
+  uniqueTokenPerInterval: 500,
+})
+
+const recalculateLimiter = rateLimit({
+  interval: 15 * 60 * 1000, // 15 minutes
+  uniqueTokenPerInterval: 500,
+})
 
 /**
  * GET /api/admin/urgency
@@ -28,8 +40,29 @@ import { logger } from '@/lib/logger'
  */
 export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPIResponse>> {
   // Authentication check
-  const authError = requireAdminAuth(request)
+  const authError = await requireAdminAuth(request)
   if (authError) return authError as NextResponse<UrgencyAPIResponse>
+
+  // Rate limiting: 20 requests per minute
+  const ip = getClientIp(request)
+  try {
+    await queryLimiter.check(ip, 20)
+  } catch {
+    return NextResponse.json(
+      {
+        students: [],
+        count: 0,
+        timestamp: new Date().toISOString(),
+        error: 'Too many requests. Please try again later.'
+      } as UrgencyAPIResponse,
+      {
+        status: 429,
+        headers: {
+          'Retry-After': '60'
+        }
+      }
+    )
+  }
 
   try {
     const supabase = getAdminSupabaseClient()
@@ -39,13 +72,33 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
     // Single user lookup - optimized path
     if (userIdParam) {
       logger.debug('Fetching urgency data for user', { operation: 'admin.urgency.single', userId: userIdParam })
-      
-      const { data, error } = await supabase
-        .from('urgent_students')
-        .select('*')
-        .eq('user_id', userIdParam)
-        .abortSignal(AbortSignal.timeout(10000)) // 10 second timeout
-        .single()
+
+      let data, error
+      try {
+        const result = await supabase
+          .from('urgent_students')
+          .select('*')
+          .eq('user_id', userIdParam)
+          .abortSignal(AbortSignal.timeout(10000)) // 10 second timeout
+          .single()
+        data = result.data
+        error = result.error
+      } catch (err) {
+        // Check if timeout error
+        if (err instanceof Error && err.name === 'AbortError') {
+          console.error('[Admin API] Query timeout for user:', userIdParam)
+          // @ts-expect-error - NextResponse type compatibility
+          return NextResponse.json(
+            {
+              user: null,
+              timestamp: new Date().toISOString(),
+              error: 'Request timed out. The database may be under heavy load. Please try again.'
+            },
+            { status: 504 } // Gateway Timeout
+          )
+        }
+        throw err // Re-throw non-timeout errors
+      }
 
       if (error) {
         console.error('[Admin API] Single user query error:', error)
@@ -123,7 +176,27 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
       query = query.eq('urgency_level', level)
     }
 
-    const { data, error } = await query.abortSignal(AbortSignal.timeout(10000))
+    let data, error
+    try {
+      const result = await query.abortSignal(AbortSignal.timeout(10000))
+      data = result.data
+      error = result.error
+    } catch (err) {
+      // Check if timeout error
+      if (err instanceof Error && err.name === 'AbortError') {
+        console.error('[Admin API] Query timeout for urgency list')
+        return NextResponse.json(
+          {
+            students: [],
+            count: 0,
+            timestamp: new Date().toISOString(),
+            error: 'Request timed out. The database may be under heavy load. Please try again.'
+          },
+          { status: 504 } // Gateway Timeout
+        )
+      }
+      throw err // Re-throw non-timeout errors
+    }
 
     if (error) {
       console.error('[Admin API] Database error:', error)
@@ -198,8 +271,28 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
  */
 export async function POST(request: NextRequest): Promise<NextResponse<RecalculationResponse>> {
   // Authentication check
-  const authError = requireAdminAuth(request)
+  const authError = await requireAdminAuth(request)
   if (authError) return authError as NextResponse<RecalculationResponse>
+
+  // Rate limiting: 3 recalculations per 15 minutes (expensive operation)
+  const ip = getClientIp(request)
+  try {
+    await recalculateLimiter.check(ip, 3)
+  } catch {
+    return NextResponse.json(
+      {
+        message: 'Too many recalculation requests. This is an expensive operation. Please try again in 15 minutes.',
+        playersProcessed: 0,
+        timestamp: new Date().toISOString()
+      },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': '900' // 15 minutes in seconds
+        }
+      }
+    )
+  }
 
   try {
     logger.debug('Starting urgency recalculation for all players', { operation: 'admin.urgency.recalculate-start' })
@@ -207,10 +300,29 @@ export async function POST(request: NextRequest): Promise<NextResponse<Recalcula
     const supabase = getAdminSupabaseClient()
 
     // Get all player IDs
-    const { data: players, error: fetchError } = await supabase
-      .from('player_profiles')
-      .select('user_id')
-      .abortSignal(AbortSignal.timeout(10000))
+    let players, fetchError
+    try {
+      const result = await supabase
+        .from('player_profiles')
+        .select('user_id')
+        .abortSignal(AbortSignal.timeout(10000))
+      players = result.data
+      fetchError = result.error
+    } catch (err) {
+      // Check if timeout error
+      if (err instanceof Error && err.name === 'AbortError') {
+        console.error('[Admin API] Query timeout fetching players for recalculation')
+        return NextResponse.json(
+          {
+            message: 'Request timed out while fetching players. The database may be under heavy load. Please try again.',
+            playersProcessed: 0,
+            timestamp: new Date().toISOString()
+          },
+          { status: 504 } // Gateway Timeout
+        )
+      }
+      throw err // Re-throw non-timeout errors
+    }
 
     if (fetchError) {
       console.error('[Admin API] Error fetching players:', fetchError)

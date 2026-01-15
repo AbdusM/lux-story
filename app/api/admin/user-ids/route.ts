@@ -10,29 +10,67 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-client'
 import { auditLog } from '@/lib/audit-logger'
 import { logger } from '@/lib/logger'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
+
+// Rate limiter: 30 requests per minute (lightweight query)
+const userIdsLimiter = rateLimit({
+  interval: 60 * 1000, // 1 minute
+  uniqueTokenPerInterval: 500,
+})
 
 /**
  * GET /api/admin/user-ids
  * Fetch all user IDs for admin dashboard
  */
 export async function GET(request: NextRequest) {
-  // Authentication check - verify admin cookie
-  const authError = requireAdminAuth(request)
+  // Authentication check - verify user role
+  const authError = await requireAdminAuth(request)
   if (authError) return authError
+
+  // Rate limiting: 30 requests per minute
+  const ip = getClientIp(request)
+  try {
+    await userIdsLimiter.check(ip, 30)
+  } catch {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': '60'
+        }
+      }
+    )
+  }
 
   try {
     const supabase = getAdminSupabaseClient()
 
     // Fetch all user IDs from player_profiles
-    const { data: profiles, error } = await supabase
-      .from('player_profiles')
-      .select('user_id, last_activity')
-      .order('last_activity', { ascending: false })
-      .abortSignal(AbortSignal.timeout(10000))
+    let profiles, error
+    try {
+      const result = await supabase
+        .from('player_profiles')
+        .select('user_id, last_activity')
+        .order('last_activity', { ascending: false })
+        .abortSignal(AbortSignal.timeout(10000))
+      profiles = result.data
+      error = result.error
+    } catch (err) {
+      // Check if timeout error
+      if (err instanceof Error && err.name === 'AbortError') {
+        console.error('[Admin:UserIds] Query timeout')
+        return NextResponse.json(
+          { error: 'Request timed out. The database may be under heavy load. Please try again.' },
+          { status: 504 } // Gateway Timeout
+        )
+      }
+      throw err // Re-throw non-timeout errors
+    }
 
     if (error) {
       console.error('❌ [Admin:UserIds] Supabase error:', {

@@ -15,34 +15,80 @@
  */
 
 import { createClient } from '@supabase/supabase-js'
+import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession } from '@/lib/auth-utils'
 
 /**
- * Verify admin authentication via session token
- * SECURITY FIX: Previously compared raw password, now validates session token
+ * Verify admin authentication via user role
+ *
+ * Checks if the authenticated user has admin or educator role.
+ * Uses Supabase session cookies for authentication.
+ *
  * Returns error response if unauthorized, null if authorized
  */
-export function requireAdminAuth(request: NextRequest): NextResponse | null {
-  const sessionToken = request.cookies.get('admin_auth_token')?.value
+export async function requireAdminAuth(request: NextRequest): Promise<NextResponse | null> {
+  // Create Supabase client from request cookies
+  const supabase = createSupabaseServerClient(request)
 
-  if (!sessionToken) {
+  // Get authenticated user
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+  if (authError || !user) {
     return NextResponse.json(
-      { error: 'Unauthorized - Admin access required' },
+      { error: 'Unauthorized - Please sign in' },
       { status: 401 }
     )
   }
 
-  // Validate session token (not password comparison!)
-  const userId = validateSession(sessionToken)
-  if (!userId) {
+  // Check user role from profiles table
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  if (profileError || !profile) {
     return NextResponse.json(
-      { error: 'Session expired - Please log in again' },
+      { error: 'Unauthorized - Profile not found' },
       { status: 401 }
     )
   }
 
-  return null // Auth passed
+  // Check if user has admin or educator role
+  if (!['admin', 'educator'].includes(profile.role)) {
+    return NextResponse.json(
+      { error: 'Forbidden - Admin access required' },
+      { status: 403 }
+    )
+  }
+
+  // Auth passed - user is admin or educator
+  return null
+}
+
+/**
+ * Create Supabase server client for API routes
+ * Handles cookies from NextRequest
+ */
+function createSupabaseServerClient(request: NextRequest) {
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll().map(cookie => ({
+            name: cookie.name,
+            value: cookie.value
+          }))
+        },
+        setAll(cookiesToSet) {
+          // Can't set cookies in API route GET requests
+          // Middleware handles session refresh
+        }
+      }
+    }
+  )
 }
 
 // Cache whether we've already logged the missing env var warning
@@ -117,10 +163,10 @@ export function getAdminSupabaseClientOrNull() {
  * // Use supabase safely
  * ```
  */
-export function getAuthenticatedAdminClient(
+export async function getAuthenticatedAdminClient(
   request: NextRequest
-): [ReturnType<typeof getAdminSupabaseClient>, null] | [null, NextResponse] {
-  const authError = requireAdminAuth(request)
+): Promise<[ReturnType<typeof getAdminSupabaseClient>, null] | [null, NextResponse]> {
+  const authError = await requireAdminAuth(request)
   if (authError) {
     return [null, authError]
   }

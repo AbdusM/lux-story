@@ -9,6 +9,8 @@ import { type PatternType, PATTERN_METADATA, isValidPattern } from '@/lib/patter
 import { type GravityResult } from '@/lib/narrative-gravity'
 import { getPatternPreviewStyles, getPatternHintText } from '@/lib/pattern-derivatives'
 import { type PlayerPatterns } from '@/lib/character-state'
+import { cn } from '@/lib/utils'
+import { CHOICE_CONTAINER_HEIGHT } from '@/lib/ui-constants'
 
 import { useGameStore } from '@/lib/game-store'
 import { truncateTextForLoad, CognitiveLoadLevel } from '@/lib/cognitive-load'
@@ -16,103 +18,77 @@ import { truncateTextForLoad, CognitiveLoadLevel } from '@/lib/cognitive-load'
 // ... (retain pattern styles constants: PATTERN_HOVER_STYLES, DEFAULT_HOVER_STYLE, PATTERN_GLASS_STYLES, DEFAULT_GLASS_STYLE, PATTERN_MARQUEE_COLORS, DEFAULT_MARQUEE_COLORS) ...
 
 /**
- * Pattern-specific hover colors for choice buttons
+ * Pattern-specific hover colors for choice buttons (light mode)
  * Each pattern gets its own glow color for visual identity
+ * NOTE: Only borders and shadows - backgrounds handled by Button variant
  */
 const PATTERN_HOVER_STYLES: Record<PatternType, {
-  bg: string
   border: string
   shadow: string
-  activeBg: string
 }> = {
   analytical: {
-    bg: 'hover:bg-blue-50',
     border: 'hover:border-blue-300',
-    shadow: 'hover:shadow-[0_4px_12px_rgba(59,130,246,0.2),0_2px_4px_rgba(0,0,0,0.05)]',
-    activeBg: 'active:bg-blue-100'
+    shadow: 'hover:shadow-[0_4px_12px_rgba(59,130,246,0.2)]',
   },
   patience: {
-    bg: 'hover:bg-green-50',
     border: 'hover:border-green-300',
-    shadow: 'hover:shadow-[0_4px_12px_rgba(16,185,129,0.2),0_2px_4px_rgba(0,0,0,0.05)]',
-    activeBg: 'active:bg-green-100'
+    shadow: 'hover:shadow-[0_4px_12px_rgba(16,185,129,0.2)]',
   },
   exploring: {
-    bg: 'hover:bg-purple-50',
     border: 'hover:border-purple-300',
-    shadow: 'hover:shadow-[0_4px_12px_rgba(139,92,246,0.2),0_2px_4px_rgba(0,0,0,0.05)]',
-    activeBg: 'active:bg-purple-100'
+    shadow: 'hover:shadow-[0_4px_12px_rgba(139,92,246,0.2)]',
   },
   helping: {
-    bg: 'hover:bg-pink-50',
     border: 'hover:border-pink-300',
-    shadow: 'hover:shadow-[0_4px_12px_rgba(236,72,153,0.2),0_2px_4px_rgba(0,0,0,0.05)]',
-    activeBg: 'active:bg-pink-100'
+    shadow: 'hover:shadow-[0_4px_12px_rgba(236,72,153,0.2)]',
   },
   building: {
-    bg: 'hover:bg-amber-50',
     border: 'hover:border-amber-300',
-    shadow: 'hover:shadow-[0_4px_12px_rgba(245,158,11,0.2),0_2px_4px_rgba(0,0,0,0.05)]',
-    activeBg: 'active:bg-amber-100'
+    shadow: 'hover:shadow-[0_4px_12px_rgba(245,158,11,0.2)]',
   }
 }
 
 // Default hover style when no pattern specified
 const DEFAULT_HOVER_STYLE = {
-  bg: 'hover:bg-amber-50',
-  border: 'hover:border-amber-300 border-transparent', // Added transparent border to prevent shift
-  shadow: 'hover:shadow-[0_4px_12px_rgba(251,191,36,0.15),0_2px_4px_rgba(0,0,0,0.05)]',
-  activeBg: 'active:bg-amber-100'
+  border: 'hover:border-amber-300',
+  shadow: 'hover:shadow-[0_4px_12px_rgba(251,191,36,0.15)]',
 }
 
 /**
  * Glass mode hover styles for dark theme
  * Pattern-specific glows with canonical colors from lib/patterns.ts
+ * NOTE: Only borders and shadows - backgrounds handled by Button variant
  */
 const PATTERN_GLASS_STYLES: Record<PatternType, {
-  bg: string
   border: string
   shadow: string
-  activeBg: string
 }> = {
   analytical: {
-    bg: 'hover:bg-white/10',
     border: 'hover:border-blue-400/40',
     shadow: 'hover:shadow-[0_0_20px_rgba(59,130,246,0.25)]',
-    activeBg: 'active:bg-white/15'
   },
   patience: {
-    bg: 'hover:bg-white/10',
     border: 'hover:border-green-400/40',
     shadow: 'hover:shadow-[0_0_20px_rgba(16,185,129,0.25)]',
-    activeBg: 'active:bg-white/15'
   },
   exploring: {
-    bg: 'hover:bg-white/10',
     border: 'hover:border-purple-400/40',
     shadow: 'hover:shadow-[0_0_20px_rgba(139,92,246,0.25)]',
-    activeBg: 'active:bg-white/15'
   },
   helping: {
-    bg: 'hover:bg-white/10',
     border: 'hover:border-pink-400/40',
     shadow: 'hover:shadow-[0_0_20px_rgba(236,72,153,0.25)]',
-    activeBg: 'active:bg-white/15'
   },
   building: {
-    bg: 'hover:bg-white/10',
     border: 'hover:border-amber-400/40',
     shadow: 'hover:shadow-[0_0_20px_rgba(245,158,11,0.25)]',
-    activeBg: 'active:bg-white/15'
   }
 }
 
 // Default glass hover style when no pattern specified
 const DEFAULT_GLASS_STYLE = {
-  bg: 'hover:bg-white/10',
   border: 'hover:border-white/20',
   shadow: 'hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]',
-  activeBg: 'active:bg-white/15'
 }
 
 /**
@@ -438,54 +414,63 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
         style={{ scrollSnapAlign: 'start' }}
       >
         <Button
-          key={index}
           onClick={() => onChoice(choice)}
           disabled={isProcessing}
           variant={glass ? "glass" : "outline"} // Agent 8: Systemic Fix - Use first-class glass variant
           data-testid="choice-button"
           data-choice-text={choice.text}
+          data-choice-index={index}
           data-pattern={choice.pattern || ''}
           data-pivotal={choice.pivotal ? 'true' : undefined}
           aria-label={`Choice ${index + 1}: ${choice.text}`}
-          className={`
-            w-full min-h-[60px] sm:min-h-[56px] h-auto px-5 py-4
-            text-base sm:text-[15px] font-medium text-left justify-start break-words whitespace-normal leading-relaxed
-            ${glass ? '!text-slate-100 !bg-slate-900/60 border-white/10' : '!text-stone-700 bg-white/90 backdrop-blur-sm shadow-sm hover:!text-stone-900'}
-            ${(() => {
+          className={cn(
+            // Base sizing and layout (unified 60px height across all breakpoints)
+            "w-full min-h-[60px] h-auto px-5 py-4",
+            "text-base sm:text-[15px] font-medium text-left justify-start",
+            "break-words whitespace-normal leading-relaxed",
+            "rounded-[14px] touch-manipulation select-none",
+            "transition-colors duration-200 active:shadow-none",
+
+            // Text color ONLY (let Button variant handle background)
+            glass ? "text-slate-100" : "text-stone-700 hover:text-stone-900",
+
+            // Pattern-specific hover/glow (borders and shadows only, NO backgrounds)
+            (() => {
               const pattern = choice.pattern
               if (glass) {
                 const styles = pattern && isValidPattern(pattern) ? PATTERN_GLASS_STYLES[pattern] : DEFAULT_GLASS_STYLE
-                return `${styles.bg} ${styles.border} ${styles.shadow} ${styles.activeBg}`
+                // ONLY apply border and shadow, NOT bg or activeBg
+                return `${styles.border} ${styles.shadow}`
               } else {
                 const styles = pattern && isValidPattern(pattern) ? PATTERN_HOVER_STYLES[pattern] : DEFAULT_HOVER_STYLE
-                return `${styles.bg} border border-transparent ${styles.shadow} ${styles.activeBg}`
+                // ONLY apply border and shadow
+                return `border border-transparent ${styles.shadow}`
               }
-            })()}
-            ${(choice.pivotal || (choice.pattern && isValidPattern(choice.pattern))) ? 'marquee-border' : ''}
-            active:shadow-none
-            transition-colors duration-200
-            rounded-[14px]
-            touch-manipulation select-none
-            ${choice.feedback === 'shake' ? (glass ? 'border-red-400/40 bg-red-900/20' : 'border-red-200 bg-red-50') : ''}
-            ${choice.feedback === 'glow' ? (glass ? 'border-amber-400/40 bg-amber-900/20' : 'border-amber-300 bg-amber-50') : ''}
-            ${isFocused ? (glass
-              ? 'ring-2 ring-white/30 ring-offset-2 ring-offset-transparent border-white/30 bg-white/15'
-              : 'ring-2 ring-stone-900/10 ring-offset-2 border-stone-300 bg-stone-50') : ''}
-            ${(choice.gravity?.effect === 'repel' && !isFocused && !isLocked)
-              ? (glass ? 'text-slate-400 bg-white/[0.02] shadow-none' : 'text-stone-400 bg-stone-50/50 shadow-none')
-              : ''}
-            ${(choice.gravity?.effect === 'attract' && !isFocused && !isLocked)
-              ? (glass ? 'border-emerald-400/30 bg-emerald-900/20 shadow-[0_0_20px_rgba(16,185,129,0.2)]' : 'border-emerald-200/50 bg-emerald-50/40 shadow-emerald-100')
-              : ''}
-          `}
+            })(),
+
+            // Marquee border for pivotal choices
+            (choice.pivotal || (choice.pattern && isValidPattern(choice.pattern))) && 'marquee-border',
+
+            // Feedback states (borders only, no background overrides)
+            choice.feedback === 'shake' && (glass ? 'border-red-400/40' : 'border-red-200'),
+            choice.feedback === 'glow' && (glass ? 'border-amber-400/40' : 'border-amber-300'),
+
+            // Focus ring (no background overrides)
+            isFocused && (glass
+              ? 'ring-2 ring-white/30 ring-offset-2 ring-offset-transparent border-white/30'
+              : 'ring-2 ring-stone-900/10 ring-offset-2 border-stone-300'),
+
+            // Gravity effects (text color + shadow only, NO backgrounds)
+            (choice.gravity?.effect === 'repel' && !isFocused && !isLocked) && (glass
+              ? 'text-slate-400 shadow-none'
+              : 'text-stone-400 shadow-none'),
+
+            (choice.gravity?.effect === 'attract' && !isFocused && !isLocked) && (glass
+              ? 'border-emerald-400/30 shadow-[0_0_20px_rgba(16,185,129,0.2)]'
+              : 'border-emerald-200/50 shadow-emerald-100'),
+          )}
           style={{
-            // GLASS MODE: Force dark background via inline style (tailwind-merge strips !important classes)
-            ...(glass ? {
-              backgroundColor: 'rgba(15, 23, 42, 0.7)',
-              color: 'rgb(241, 245, 249)',
-              borderColor: 'rgba(255, 255, 255, 0.1)'
-            } : {}),
-            // Marquee colors for pivotal choices
+            // Marquee gradient CSS variables (doesn't conflict with background)
             ...((() => {
               const pattern = choice.pattern
               const colors = pattern && isValidPattern(pattern) ? PATTERN_MARQUEE_COLORS[pattern] : DEFAULT_MARQUEE_COLORS
@@ -495,7 +480,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
                 '--color-end': colors.end,
               } as React.CSSProperties
             })()),
-            // D-007: Pattern preview glow for developed patterns
+            // D-007: Pattern preview glow uses box-shadow, doesn't conflict
             ...(glass && playerPatterns && choice.pattern && isValidPattern(choice.pattern)
               ? getPatternPreviewStyles(choice.pattern, playerPatterns)
               : {})
@@ -619,14 +604,22 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
 
     return (
       <motion.div
-        className="space-y-8"
+        className={cn(
+          "space-y-8",
+          // Fixed container heights for layout stability (prevents jumping when button count changes)
+          CHOICE_CONTAINER_HEIGHT.mobileSm,  // 220px on small phones (< 400px)
+          CHOICE_CONTAINER_HEIGHT.mobile,    // 296px on larger phones (≥ 400px)
+          CHOICE_CONTAINER_HEIGHT.tablet,    // 198px on tablets+ (≥ 640px)
+          "overflow-y-auto overflow-x-hidden"
+        )}
+        style={{ scrollbarGutter: 'stable' }}  // Prevent layout shift when scrollbar appears
         ref={containerRef}
         role="listbox"
         aria-label="Choose your response"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        key={choices.map(c => c.text).join(',')} // Re-trigger animation on choice change
+        key={`grouped-${choices.map(c => c.consequence || c.text).join(',')}`} // Unique prefix + stable IDs
       >
         {nonEmptyGroups.map(([title, groupChoices]) => (
           <div key={title} className="space-y-3" role="group" aria-label={title}>
@@ -641,9 +634,13 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
                 // Apply lock unless it's the mercy override
                 const isLocked = isChoiceLocked(choice, orbFillLevels) && choice !== mercyUnlockChoice
 
+                // Stable key priority: consequence > text-based hash
+                const stableKey = choice.consequence
+                  || `choice-${choice.text.slice(0, 30).replace(/\s+/g, '-')}`
+
                 return (
                   <ChoiceButton
-                    key={`${title}-${localIndex}`}
+                    key={stableKey}
                     choice={choice}
                     index={currentGlobalIndex}
                     onChoice={onChoice}
@@ -667,14 +664,23 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   return (
     <motion.div
       ref={containerRef}
-      className={`grid gap-3 p-2 w-full ${useGrid ? 'md:grid-cols-2' : 'grid-cols-1'}`}
+      className={cn(
+        "grid gap-3 p-2 w-full",
+        useGrid ? "md:grid-cols-2" : "grid-cols-1",
+        // Fixed container heights for layout stability (prevents jumping when button count changes)
+        CHOICE_CONTAINER_HEIGHT.mobileSm,  // 220px on small phones (< 400px)
+        CHOICE_CONTAINER_HEIGHT.mobile,    // 296px on larger phones (≥ 400px)
+        CHOICE_CONTAINER_HEIGHT.tablet,    // 198px on tablets+ (≥ 640px)
+        "overflow-y-auto overflow-x-hidden"
+      )}
+      style={{ scrollbarGutter: 'stable' }}  // Prevent layout shift when scrollbar appears
       data-testid="game-choices"
       role="listbox"
       aria-label="Choose your response"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      key={choices.map(c => c.text).join(',')} // Re-trigger animation on choice change
+      key={`ungrouped-${choices.map(c => c.consequence || c.text).join(',')}`} // Unique prefix + stable IDs
     >
       {(() => {
         // Safety Net Calculation (Duplicated for non-grouped view)
@@ -692,9 +698,14 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
 
         return sortedChoices.map((choice, index) => {
           const isLocked = isChoiceLocked(choice, orbFillLevels) && choice !== mercyUnlockChoice
+
+          // Stable key priority: consequence > text-based hash
+          const stableKey = choice.consequence
+            || `choice-${choice.text.slice(0, 30).replace(/\s+/g, '-')}`
+
           return (
             <ChoiceButton
-              key={index}
+              key={stableKey}
               choice={choice}
               index={index}
               onChoice={onChoice}
