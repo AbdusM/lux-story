@@ -304,7 +304,14 @@ export const tessDialogueNodes: DialogueNode[] = [
         text: "Most people call it reckless. Or lucky. You're the first to call it guts.\n\nMaybe it was both. Reckless enough to jump. Lucky enough to land somewhere that matters.\n\nBut courage... yeah. I'll take that.",
         emotion: 'touched',
         variation_id: 'courage_response_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        voiceVariations: {
+          analytical: "Most people analyze it to death. Run the risk calculations. You saw the data point that matters - courage.\n\nReckless enough to jump. Lucky enough to land somewhere real.\n\nI'll take that frame.",
+          helping: "Most people call it reckless. You're the first to see the heart in it.\n\nMaybe that's what courage is. Risking stability to help something real survive.\n\nThank you for saying that.",
+          building: "Most people see destruction. You see construction - tearing down the fake to build something real.\n\nReckless enough to jump. Committed enough to land somewhere I could build.\n\nThat's the right word for it.",
+          exploring: "Most people call it reckless. You're curious about what I found on the other side.\n\nMaybe it was both. Reckless enough to jump. Open enough to discover what matters.\n\nCourage to explore. Yeah.",
+          patience: "Most people rush to judge it. You took time to understand.\n\nReckless enough to jump. Patient enough to let it become something real over years.\n\nCourage... yeah. I'll take that."
+        }
       }
     ],
     choices: [
@@ -391,7 +398,14 @@ export const tessDialogueNodes: DialogueNode[] = [
         text: "Fight for it. Like it's simple.\n\nYou know what? You're right. Everyone tells me to be practical. Be realistic. Take the money.\n\nNo one's said \"fight for it\" in months.\n\nMaybe that's the problem.",
         emotion: 'fierce',
         variation_id: 'fight_response_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        voiceVariations: {
+          analytical: "Fight for it. You say it like there's a strategy I haven't seen.\n\nYou're right though. Everyone gives me probability analysis. Risk assessment. Exit strategies.\n\nNo one's mapped out the path to win in months.\n\nMaybe I've been solving the wrong equation.",
+          helping: "Fight for it. You say it like you believe in me.\n\nYou know what? You're right. Everyone tells me to protect myself. Be safe. Take care of my future.\n\nNo one's said \"fight for what matters\" in months.\n\nMaybe I forgot that's still an option.",
+          building: "Fight for it. Build something they can't ignore.\n\nYou're right. Everyone tells me the structure won't hold. The foundation's cracked. Tear it down.\n\nNo one's said \"keep building\" in months.\n\nMaybe that's exactly what I need to do.",
+          exploring: "Fight for it. Like there's still territory to discover.\n\nYou're right. Everyone tells me to retreat. The path's closed. Turn back.\n\nNo one's said \"keep exploring the options\" in months.\n\nMaybe I stopped looking too soon.",
+          patience: "Fight for it. You're not rushing me to decide.\n\nYou're right. Everyone tells me time's running out. Decide now. Move fast.\n\nNo one's said \"this is worth the fight\" in months.\n\nMaybe I just needed permission to take my time with this."
+        }
       }
     ],
     choices: [
@@ -412,7 +426,14 @@ export const tessDialogueNodes: DialogueNode[] = [
         text: "That's the question, isn't it? \"How\" is where dreams go to die.\n\nPassion says keep going. Math says sell.\n\nEvery month I solve that equation differently. Some months passion wins. Lately, math's been catching up.",
         emotion: 'tired',
         variation_id: 'how_response_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        voiceVariations: {
+          analytical: "That's the question, isn't it? \"How\" is where the algorithm breaks down.\n\nPassion says keep going. Math says sell. You understand that tension - logic vs. intuition.\n\nEvery month I run the numbers differently. Some months passion outweighs probability. Lately, math's been winning.",
+          helping: "That's the question, isn't it? \"How\" is where care meets reality.\n\nPassion says keep going - for the kid who cried in the aisles, for the music that saves lives. Math says I can't help anyone if I'm broke.\n\nEvery month I weigh those needs differently. Lately, the numbers are getting heavier.",
+          building: "That's the question, isn't it? \"How\" is where blueprints meet budgets.\n\nPassion says keep building. Math says the foundation's crumbling and I can't afford repairs.\n\nEvery month I reassess the structure. Some months I see ways to reinforce it. Lately, math's been showing me cracks I can't fix.",
+          exploring: "That's the question, isn't it? \"How\" is where the path gets foggy.\n\nPassion says keep exploring possibilities. Math says I've hit a dead end and should turn back while I still can.\n\nEvery month I discover a different route. Lately, math's been blocking more paths than it opens.",
+          patience: "That's the question, isn't it? \"How\" is where time runs out.\n\nPassion says keep going - good things take time to grow. Math says I've already waited too long and the window's closing.\n\nEvery month I give it more time to work. Lately, math's been saying time's up."
+        }
       }
     ],
     choices: [
