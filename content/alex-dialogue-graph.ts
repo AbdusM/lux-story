@@ -1128,6 +1128,10 @@ export const alexDialogueNodes: DialogueNode[] = [
         interaction: 'nod',
         variation_id: 'wisdom_v1',
         useChatPacing: true,
+        skillReflection: [
+          { skill: 'strategicThinking', minLevel: 5, altText: "You don't have to choose between them. You think strategically—I can tell.\n\nCredentials are signaling. Learning is substance. You already know that every choice is context-dependent.\n\nNeed a job next month? Optimize for credentials. Building long-term? Optimize for learning. Your strategic mind already gets this. Apply it.", altEmotion: 'knowing' },
+          { skill: 'adaptability', minLevel: 5, altText: "You don't have to choose between them. You adapt well—I've noticed.\n\nCredentials are signaling. Learning is substance. Most people lock into one strategy.\n\nYour adaptability lets you switch between optimization modes. Need survival? Credentials. Need growth? Learning. The flexibility itself is your advantage.", altEmotion: 'appreciative' }
+        ],
         patternReflection: [
           { pattern: 'analytical', minLevel: 4, altText: "You analyze systems. So analyze this optimization problem.\n\nCredentials are signaling. Learning is substance. You need both variables.\n\nNeed a job next month? Optimize for credentials. Play the game. But don't confuse survival strategy with actual learning.\n\nChase only signals, you end up hollow. Chase only substance, you might starve. The wisdom is knowing which optimization function to run when.", altEmotion: 'teaching_wise' },
           { pattern: 'building', minLevel: 4, altText: "You're a builder. So understand what you're building on.\n\nCredentials are signaling. Learning is substance. You need both to build a career.\n\nNeed a job? Get credentials. Build the resume. But don't confuse survival construction with actual foundation.\n\nChase only signals, you build on sand. Chase only substance, you might never get funded. Wisdom is knowing when to build which layer.", altEmotion: 'balanced_wise' },

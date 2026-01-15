@@ -224,6 +224,10 @@ const nodes: DialogueNode[] = [
       text: "You're right. I get lost sometimes. The patterns pull me in and I forget to surface.\n\nOne stream at a time. Let me show you what I found.",
       emotion: 'calmer',
       variation_id: 'default',
+      skillReflection: [
+        { skill: 'informationLiteracy', minLevel: 5, altText: "You're right. You handle information well—I can tell by how you process what I'm saying.\n\nI get lost in the streams. But you... you filter naturally. One stream at a time.\n\nThat information literacy is exactly what this work needs. Let me show you what I found.", altEmotion: 'appreciative' },
+        { skill: 'observation', minLevel: 5, altText: "You're right. You observe carefully—I've noticed how you take things in.\n\nI get lost in the patterns. The details pull me under. But you... you observed my struggle and named it.\n\nOne stream at a time. Thank you. Let me show you what I found.", altEmotion: 'grateful' }
+      ],
       voiceVariations: {
         analytical: "You're right. I optimize for depth but lose sight of prioritization.\n\nOne stream at a time. Let me process this sequentially for you.",
         helping: "You're right. I get lost sometimes. Thank you for pulling me back.\n\nOne stream at a time. I appreciate you staying with me through this.",

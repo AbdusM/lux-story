@@ -20,6 +20,10 @@ export const mayaDialogueNodes: DialogueNode[] = [
         emotion: 'anxious_scattered',
         variation_id: 'intro_v3_minimal',
         richEffectContext: 'warning',
+        skillReflection: [
+          { skill: 'emotionalIntelligence', minLevel: 5, altText: "Wait. Don't touch that.\n\nOh. Hi.\n\nYou have patient eyes. Most people don't look at me like that.\n\nI know this looks like chaos. It is chaos. But there's a pattern in there somewhere.", altEmotion: 'noticed' },
+          { skill: 'creativity', minLevel: 5, altText: "Wait. Don't touch that.\n\nOh. Hi.\n\nYou're looking at the robot parts, aren't you? Most people just see the mess.\n\nYou've got that look—like you build things too.", altEmotion: 'curious' }
+        ],
         patternReflection: [
           { pattern: 'helping', minLevel: 5, altText: "Wait. Don't touch that.\n\nOh. Hi.\n\nYou have kind eyes. Sorry, I'm scattered.\n\nBiochem notes, robotics parts. I know it looks like a disaster. It is a disaster.", altEmotion: 'vulnerable' },
           { pattern: 'analytical', minLevel: 5, altText: "Wait. Don't touch that.\n\nOh. Hi.\n\nYou're taking this all in, aren't you? The chaos.\n\nYes, there's a system. Sort of. I'm trying to be two different people at the same table.", altEmotion: 'anxious_scattered' },
@@ -1261,7 +1265,11 @@ STATUS: Signal fighting itself`,
         emotion: 'anxious',
         variation_id: 'crossroads_v1',
         useChatPacing: true,
-        richEffectContext: 'thinking'
+        richEffectContext: 'thinking',
+        skillReflection: [
+          { skill: 'emotionalIntelligence', minLevel: 5, altText: "Okay so. You've been really good at... understanding me. I can tell you read people well.\n\nI got accepted to UAB's biomedical engineering program. I could transfer.\n\nBut there's also pre-med - the path my parents have been dreaming about forever.\n\nYou see how hard this is. The train's coming soon.", altEmotion: 'trusting_anxious' },
+          { skill: 'problemSolving', minLevel: 5, altText: "Okay so. You're good at seeing solutions. Maybe you can see one I can't?\n\nI got accepted to UAB's biomedical engineering program. I could transfer.\n\nBut there's also pre-med. The path my parents pictured.\n\nThe train's coming soon. I have to choose a platform.", altEmotion: 'hopeful_anxious' }
+        ]
       }
     ],
     patternReflection: [
