@@ -2752,7 +2752,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'what_did_maya_choose',
         text: "What path did she choose?",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_reflect_on_influence',
         pattern: 'exploring',
         skills: ['communication', 'creativity']
       },
@@ -2766,13 +2766,33 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'accept_insight',
         text: "That distinction matters.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_reflect_on_influence',
         pattern: 'patience',
         skills: ['criticalThinking', 'emotionalIntelligence'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
         }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_reflect_on_influence',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You're learning what took me thirty years to understand - real influence isn't telling, it's revealing.\n\n[He looks toward the platforms]\n\nReady to meet more people finding their own answers?",
+        emotion: 'teaching',
+        variation_id: 'beat_after_reflect_on_influence_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
@@ -6295,13 +6315,33 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue',
         text: "I'll keep exploring.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_your_path',
         pattern: 'exploring'
       }
     ],
     onEnter: [
       {
         characterId: 'samuel'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_your_path',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Keep exploring. Your blueprint is taking shape with every encounter, every choice.\n\n[He gestures toward the platforms]\n\nLet's see what else the station has to reveal.",
+        emotion: 'patient',
+        variation_id: 'beat_after_your_path_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
@@ -6320,12 +6360,32 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'will_do',
         text: "I'll do that.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_action_plan_intro',
         pattern: 'building',
         skills: ['timeManagement', 'problemSolving']
       }
     ],
     tags: ['synthesis', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_action_plan_intro',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Good. Map it out. Anchor it. That's how insight becomes wisdom.\n\n[He gestures toward the platforms]\n\nReady to discover what else is waiting for you here?",
+        emotion: 'teaching',
+        variation_id: 'beat_after_action_plan_intro_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
+      }
+    ]
   },
 
   // ============= PATTERN-GATED BONUS CONTENT =============
