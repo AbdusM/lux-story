@@ -122,7 +122,14 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'isaiah_cost_v1',
         text: "Sleep. Relationships. The ability to enjoy things without guilt.\n\nWhen you do this work, you become a container for other people's trauma. Kids tell you things they've never told anyone. Donors tell you what they want to believe about themselves. Your job is to hold it all without cracking.\n\nAnd some days... you crack anyway. And nobody's there to hold you.\n\nThe salary doesn't compensate. The mission statements don't cover it. You do this because you have to. Because walking away feels like betrayal.",
-        emotion: 'raw'
+        emotion: 'raw',
+        voiceVariations: {
+          analytical: "Sleep. Relationships. Cognitive capacity for non-mission activities.\n\nWhen you do this work, you become a data repository for other people's trauma. Kids provide information they've never disclosed. Donors project their ideal selves. Your function is to process it all without system failure.\n\nAnd some days... the system fails anyway. And there's no backup.\n\nThe compensation doesn't offset cost. The value propositions don't account for it. You do this because the exit cost—abandoning commitments—exceeds the continuation cost.",
+          helping: "Sleep. Relationships. The ability to enjoy anything without feeling like you should be helping.\n\nWhen you do this work, you become a vessel for other people's pain. Kids trust you with their worst moments. Donors trust you to heal the world for them. Your job is to carry it all without breaking.\n\nAnd some days... you break anyway. And nobody carries you.\n\nThe salary doesn't heal you. The mission statements don't hold you. You do this because stopping feels like abandoning people who need you.",
+          building: "Sleep. Relationships. The foundation for a life outside the work.\n\nWhen you do this work, you become infrastructure for other people's trauma. Kids build their first safety on you. Donors build their identity through you. Your job is to bear the load without structural failure.\n\nAnd some days... the structure fails anyway. And there's no support beam.\n\nThe salary doesn't rebuild you. The mission statements don't reinforce you. You do this because walking away feels like demolishing what you've built.",
+          exploring: "Sleep. Relationships. The ability to discover joy without mapping back to mission.\n\nWhen you do this work, you become a map for other people's trauma. Kids navigate their stories through you. Donors navigate their values through you. Your job is to chart it all without losing your way.\n\nAnd some days... you lose your way anyway. And there's no one to guide you back.\n\nThe salary doesn't orient you. The mission statements don't chart paths for you. You do this because turning back feels like abandoning the journey.",
+          patience: "Sleep. Relationships. The ability to rest without guilt accumulating.\n\nWhen you do this work, you become a timeline for other people's trauma. Kids process their histories through you. Donors process their legacies through you. Your job is to hold it all without running out of time.\n\nAnd some days... time runs out anyway. And nobody gives you more.\n\nThe salary doesn't give you back years. The mission statements don't slow down the clock. You do this because walking away feels like wasting all the time you already gave."
+        }
       }
     ],
     choices: [
@@ -164,7 +171,14 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'isaiah_holds_v1',
         text: "[Long silence. Isaiah's eyes get bright.]\n\nNobody, for a long time. I thought needing support was weakness. Ministry training, you know? You're supposed to be the strong one.\n\nNow I have a therapist. Took me until last year to finally go. Best decision I've made in a decade.\n\nBut a lot of people in this work don't get there. They just... burn out. Leave. Or worse, stay but stop caring.",
-        emotion: 'vulnerable'
+        emotion: 'vulnerable',
+        voiceVariations: {
+          analytical: "[Long silence. Isaiah processes.]\n\nNobody, for a long time. I thought requiring external support indicated system failure. Ministry training, you know? You're designed to be the support structure.\n\nNow I have a therapist. Took me until last year to implement that solution. Optimal decision in the past decade.\n\nBut a lot of people in this work don't reach that data point. They just... reach critical failure. Exit. Or worse, continue operating at zero effectiveness.",
+          helping: "[Long silence. Isaiah's eyes shine with tears.]\n\nNobody, for a long time. I thought needing help meant I couldn't help others. Ministry training, you know? You're supposed to give, not receive.\n\nNow I have a therapist. Took me until last year to let someone care for me. Best gift I've given myself in a decade.\n\nBut a lot of people in this work don't get there. They just... burn out. Leave. Or worse, stay but their heart dies.",
+          building: "[Long silence. Isaiah's foundation trembles.]\n\nNobody, for a long time. I thought needing support meant my construction was weak. Ministry training, you know? You're supposed to be the load-bearing wall.\n\nNow I have a therapist. Took me until last year to add that reinforcement. Strongest structural decision in a decade.\n\nBut a lot of people in this work don't build that support. They just... collapse. Abandon the site. Or worse, stay standing but hollow inside.",
+          exploring: "[Long silence. Isaiah finds his words.]\n\nNobody, for a long time. I thought needing support meant I was lost. Ministry training, you know? You're supposed to be the guide.\n\nNow I have a therapist. Took me until last year to accept I needed navigation too. Best path I've found in a decade.\n\nBut a lot of people in this work don't discover that. They just... lose their way. Leave the field. Or worse, stay but wander without direction.",
+          patience: "[Long silence. Isaiah takes his time.]\n\nNobody, for a long time. I thought needing support meant I was too slow to recover. Ministry training, you know? You're supposed to bounce back fast.\n\nNow I have a therapist. Took me until last year—too many years—to go. Best thing I've waited for in a decade.\n\nBut a lot of people in this work don't give themselves that time. They just... burn out faster. Leave. Or worse, stay but stop feeling anything."
+        }
       }
     ],
     choices: [
@@ -198,7 +212,14 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'isaiah_burnout_v1',
         text: "[Isaiah's facade cracks, just slightly.]\n\nYeah. You're right.\n\nI've been running on fumes for... I don't know how long. Months? Years? At some point the exhaustion became normal. I forgot what rested felt like.\n\nThe thing is—burnout in this field is almost a badge of honor. 'Look how much I sacrificed.' But it's not sacrifice if you destroy yourself. Then you're just... destroyed.",
-        emotion: 'tired_honest'
+        emotion: 'tired_honest',
+        voiceVariations: {
+          analytical: "[Isaiah's data model reveals its flaws.]\n\nYeah. Accurate diagnosis.\n\nI've been operating below baseline capacity for... I don't know the duration. Months? Years? At some point low performance became the new normal. I lost my reference point for optimal function.\n\nThe thing is—burnout in this field is almost a performance metric. 'Look at my utilization rate.' But it's not efficiency if you degrade the system. Then you're just... degraded.",
+          helping: "[Isaiah's heart shows through.]\n\nYeah. You see it.\n\nI've been running on empty for... I don't know how long. Months? Years? At some point exhaustion became who I am. I forgot what having energy to care felt like.\n\nThe thing is—burnout in this field is almost proof of love. 'Look how much I gave.' But it's not giving if you destroy yourself. Then you're just... gone. And you can't help anyone anymore.",
+          building: "[Isaiah's structure shows the cracks.]\n\nYeah. You're right.\n\nI've been operating on failing infrastructure for... I don't know the timeline. Months? Years? At some point the deterioration became the baseline. I forgot what stable foundation felt like.\n\nThe thing is—burnout in this field is almost architectural achievement. 'Look how much load I carried.' But it's not strength if you collapse. Then you're just... rubble.",
+          exploring: "[Isaiah's map shows the dead ends.]\n\nYeah. You're right.\n\nI've been navigating without reserves for... I don't know the distance. Months? Years? At some point being lost became normal. I forgot what having clear direction felt like.\n\nThe thing is—burnout in this field is almost a badge of exploration. 'Look how far I went.' But it's not discovery if you lose yourself. Then you're just... lost. Can't guide anyone else.",
+          patience: "[Isaiah's timeline shows the cost.]\n\nYeah. You're right.\n\nI've been running on borrowed time for... I don't know how long anymore. Months? Years? At some point the rushing became constant. I forgot what rest felt like.\n\nThe thing is—burnout in this field is almost proof of commitment. 'Look at all the time I gave.' But it's not sacrifice if you destroy your future. Then you're just... used up. Nothing left to give."
+        }
       }
     ],
     choices: [
