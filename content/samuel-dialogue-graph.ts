@@ -6551,26 +6551,46 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'patience_learned',
         text: "Learned. Through waiting I didn't choose.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_patience_bonus',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability']
       },
       {
         choiceId: 'patience_practice',
         text: "Still practicing. Every encounter teaches me.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_patience_bonus',
         pattern: 'exploring',
         skills: ['adaptability', 'communication']
       },
       {
         choiceId: 'patience_natural',
         text: "Maybe both. Some things are native, some cultivated.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_patience_bonus',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence']
       }
     ],
     tags: ['pattern_bonus', 'patience', 'deep_wisdom', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_patience_bonus',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "However it came - through necessity, practice, or nature - you have it now. And Birmingham needs patient people who can sit with complexity.\n\n[He looks toward the platforms]\n\nReady to meet more travelers learning to wait well?",
+        emotion: 'deeply_present',
+        variation_id: 'beat_after_patience_bonus_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
+      }
+    ]
   },
 
   {
@@ -6645,26 +6665,46 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'exploring_necessity',
         text: "Necessity. Traditional paths didn't fit me.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_exploring_bonus',
         pattern: 'exploring',
         skills: ['adaptability', 'creativity']
       },
       {
         choiceId: 'exploring_curiosity',
         text: "Curiosity. I can't help asking 'what if?'",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_exploring_bonus',
         pattern: 'exploring',
         skills: ['creativity', 'criticalThinking']
       },
       {
         choiceId: 'exploring_learned',
         text: "Learned from watching closed doors create suffering.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_exploring_bonus',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'creativity']
       }
     ],
     tags: ['pattern_bonus', 'exploring', 'possibility_creation', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_exploring_bonus',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Whatever the source - necessity, curiosity, or witnessing suffering - you have it now. That exploratory mind that sees possibilities where others see limits.\n\n[He gestures toward the platforms]\n\nReady to meet more travelers creating new paths?",
+        emotion: 'recognizing_kindred',
+        variation_id: 'beat_after_exploring_bonus_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
+      }
+    ]
   },
 
   {
@@ -6739,26 +6779,46 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'helping_question',
         text: "That's... a question I avoid asking.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_helping_bonus',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication']
       },
       {
         choiceId: 'helping_mutual',
         text: "Maybe we witness each other. Right now.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_helping_bonus',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'collaboration']
       },
       {
         choiceId: 'helping_role',
         text: "I'm more comfortable in the helper role.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_helping_bonus',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence']
       }
     ],
     tags: ['pattern_bonus', 'helping', 'profound_connection', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_helping_bonus',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You asked the question. That's the first step - recognizing you're a traveler too, not just a guide.\n\n[He holds your gaze with quiet intensity]\n\nReady to meet more travelers who need witnesses?",
+        emotion: 'vulnerable_profound',
+        variation_id: 'beat_after_helping_bonus_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
+      }
+    ]
   },
 
   {
