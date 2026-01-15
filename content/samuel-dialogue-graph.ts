@@ -3418,8 +3418,28 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'kai_return_hub',
         text: "They're ready.",
-        nextNodeId: 'samuel_hub_after_devon',
+        nextNodeId: 'samuel_beat_after_kai_studio',
         pattern: 'helping'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_kai_studio',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "They are. And they learned the most important lesson: You can't reform what's designed to resist reform. Sometimes revolution is the only evolution.\n\n[He gestures to the platforms]\n\nOthers here tonight are learning similar lessons.",
+        emotion: 'wise',
+        variation_id: 'beat_after_kai_studio_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
       }
     ]
   },
@@ -3470,6 +3490,26 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'rohan_return_hub',
         text: "He will.",
+        nextNodeId: 'samuel_beat_after_rohan_truth',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_rohan_truth',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "He will. In a world that increasingly questions what's real, we need guardians of truth.\n\n[He looks toward the platforms]\n\nThere are others here tonight who are finding their titles too.",
+        emotion: 'solemn',
+        variation_id: 'beat_after_rohan_truth_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -3522,8 +3562,28 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'silas_return_hub',
         text: "He's happy.",
-        nextNodeId: 'samuel_hub_after_devon',
+        nextNodeId: 'samuel_beat_after_silas_soil',
         pattern: 'helping'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_silas_soil',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "He is. The soil doesn't care about your credentials. Just your attention, your patience, your care.\n\n[He smiles]\n\nThere are others here tonight learning what really matters.",
+        emotion: 'warm',
+        variation_id: 'beat_after_silas_soil_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
       }
     ]
   },
@@ -4451,6 +4511,26 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'tess_return_hub_safe',
         text: "She'll get there, one step at a time.",
+        nextNodeId: 'samuel_beat_after_tess_caution',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_tess_caution',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "She will. One deliberate step at a time. Sustainability isn't slow - it's strategic.\n\n[He looks toward the platforms]\n\nOthers here are learning about their own pace too.",
+        emotion: 'wise',
+        variation_id: 'beat_after_tess_caution_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -4630,7 +4710,27 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       }
     ],
     choices: [
-      { choiceId: 'continue_questions', text: "[Continue]", nextNodeId: 'samuel_hub_after_devon' }
+      { choiceId: 'continue_questions', text: "[Continue]", nextNodeId: 'samuel_beat_after_jordan_questions' }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_jordan_questions',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "A conversation, not a lecture. That's what transforms people.\n\n[He nods thoughtfully]\n\nThere are more conversations waiting tonight.",
+        emotion: 'wise',
+        variation_id: 'beat_after_jordan_questions_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
+      }
     ]
   },
   {
