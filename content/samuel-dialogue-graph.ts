@@ -2839,7 +2839,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'what_path_did_she_choose',
         text: "Which path did she choose?",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_reflect_on_agency',
         pattern: 'exploring',
         skills: ['communication']
       },
@@ -2849,6 +2849,26 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         nextNodeId: 'samuel_station_keeper_truth',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_reflect_on_agency',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That facilitator instinct - asking questions, holding space - that's what real leadership looks like. Not telling, revealing.\n\n[He looks toward the platforms]\n\nReady to meet more people finding their own answers?",
+        emotion: 'proud',
+        variation_id: 'beat_after_reflect_on_agency_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
@@ -4040,13 +4060,33 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_from_possibility',
         text: "There's usually a third option.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_possibility_keeper',
         pattern: 'helping',
         skills: ['creativity', 'problemSolving', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
         }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_possibility_keeper',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "There is. And you have the gift of seeing it. That third option nobody else notices until you point it out.\n\n[He gestures toward the platforms]\n\nReady to meet more travelers learning to find third options?",
+        emotion: 'proud',
+        variation_id: 'beat_after_possibility_keeper_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
@@ -6893,26 +6933,46 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'building_still_discovering',
         text: "Still discovering what materials I have.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_building_bonus',
         pattern: 'exploring',
         skills: ['adaptability', 'creativity']
       },
       {
         choiceId: 'building_framework',
         text: "Maybe a framework for helping others build.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_building_bonus',
         pattern: 'building',
         skills: ['creativity', 'leadership']
       },
       {
         choiceId: 'building_between',
         text: "Bridges between people and their potential.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_building_bonus',
         pattern: 'helping',
         skills: ['collaboration', 'communication']
       }
     ],
     tags: ['pattern_bonus', 'building', 'framework_creation', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_building_bonus',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Whatever you're building - whether you know it yet or not - you're building it with what you have, right now. That's the only way.\n\n[He gestures toward the platforms]\n\nReady to meet more builders working with their own materials?",
+        emotion: 'wise_constructive',
+        variation_id: 'beat_after_building_bonus_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
+      }
+    ]
   },
 
   // ============= ORB-GATED DIALOGUE: DEEPER CONVERSATIONS =============
