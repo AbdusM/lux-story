@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react'
 import { cn } from '@/lib/utils'
 import type { CharacterWithState } from '@/hooks/useConstellationData'
 import { CHARACTER_CONNECTIONS, CHARACTER_COLORS } from '@/lib/constellation/character-positions'
@@ -17,6 +17,8 @@ interface ConstellationGraphProps {
 export function ConstellationGraph({ characters, onOpenDetail, onTravel }: ConstellationGraphProps) {
     const [hoveredId, setHoveredId] = useState<string | null>(null)
     const [selectedId, setSelectedId] = useState<string | null>(null)
+    const [focusedIndex, setFocusedIndex] = useState<number>(0)
+    const nodeRefs = useRef<Map<string, SVGGElement>>(new Map())
 
     // Helper to get character state (since we need to look up connection targets)
     const getCharState = (id: string) => characters.find(c => c.id === id)
@@ -78,7 +80,75 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
         if (onOpenDetail) onOpenDetail(char)
     }
 
+    // Keyboard Navigation
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        const visibleChars = characters.filter(c => c.position?.x !== undefined)
+        if (visibleChars.length === 0) return
+
+        const currentChar = visibleChars[focusedIndex]
+
+        switch (e.key) {
+            case 'ArrowRight':
+            case 'ArrowDown':
+                e.preventDefault()
+                setFocusedIndex((prev) => (prev + 1) % visibleChars.length)
+                break
+            case 'ArrowLeft':
+            case 'ArrowUp':
+                e.preventDefault()
+                setFocusedIndex((prev) => (prev - 1 + visibleChars.length) % visibleChars.length)
+                break
+            case 'Enter':
+            case ' ':
+                e.preventDefault()
+                if (currentChar) {
+                    if (selectedId === currentChar.id && onTravel) {
+                        // Double-select behavior: travel
+                        onTravel(currentChar.id)
+                    } else {
+                        // First select
+                        setSelectedId(currentChar.id)
+                    }
+                }
+                break
+            case 'i':
+            case 'I':
+                e.preventDefault()
+                if (currentChar && onOpenDetail) {
+                    onOpenDetail(currentChar)
+                }
+                break
+            case 't':
+            case 'T':
+                e.preventDefault()
+                if (currentChar && onTravel) {
+                    onTravel(currentChar.id)
+                }
+                break
+        }
+    }, [characters, focusedIndex, selectedId, onTravel, onOpenDetail])
+
+    // Keyboard navigation setup
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown)
+    }, [handleKeyDown])
+
+    // Focus management - focus the current node
+    useEffect(() => {
+        const visibleChars = characters.filter(c => c.position?.x !== undefined)
+        const currentChar = visibleChars[focusedIndex]
+        if (currentChar) {
+            const node = nodeRefs.current.get(currentChar.id)
+            if (node) {
+                node.focus()
+            }
+        }
+    }, [focusedIndex, characters])
+
     const selectedChar = characters.find(c => c.id === selectedId)
+    const visibleCharacters = characters.filter(c => c.position?.x !== undefined)
+    const focusedChar = visibleCharacters[focusedIndex]
 
     return (
         <div className="relative w-full h-full flex items-center justify-center bg-slate-900 overflow-hidden rounded-xl border border-white/10 shadow-inner">
@@ -93,7 +163,16 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
                 viewBox="0 0 100 100"
                 className="w-full h-full max-w-[600px] max-h-[600px] touch-none select-none relative z-10"
                 style={{ overflow: 'visible' }}
+                role="img"
+                aria-label="Character relationship network graph"
             >
+                <title>Character Constellation</title>
+                <desc>
+                    Interactive network showing {characters.length} characters and their relationships.
+                    {focusedChar && ` Currently focused: ${focusedChar.name}, ${focusedChar.role}.`}
+                    Use arrow keys to navigate, Enter or Space to select, I for info, T to travel.
+                </desc>
+
                 {/* --- DEFINITIONS (Reusable Gradients) --- */}
                 <defs>
                     {/* Sphere Highlight (Top-Left Shine) */}
@@ -185,12 +264,13 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
 
                 {/* --- NODES LAYER (3D Orbs) --- */}
                 <g className="nodes">
-                    {characters.map((char) => {
+                    {characters.map((char, index) => {
                         // Skip characters without valid positions (defensive guard)
                         if (char.position?.x === undefined || char.position?.y === undefined) return null
 
                         const isSelected = selectedId === char.id
                         const isHovered = hoveredId === char.id
+                        const isFocused = focusedChar?.id === char.id
                         const colors = CHARACTER_COLORS[char.color]
 
                         // Geometric Purity: Just circles. No blurs.
@@ -200,16 +280,34 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
                         // "Brass" Rim Color (Unified Golden Look)
                         const rimColor = "#d97706" // Amber-600
 
+                        // Accessibility label
+                        const ariaLabel = `${char.name}, ${char.role}. ${char.hasMet ? `Trust level ${char.trust} out of 10.` : 'Not yet met.'} ${char.arcComplete ? 'Story complete.' : ''} Press Enter to select, I for info, T to travel.`
+
                         return (
                             <g
                                 key={char.id}
+                                ref={(el) => {
+                                    if (el) {
+                                        nodeRefs.current.set(char.id, el)
+                                    }
+                                }}
                                 transform={`translate(${char.position.x},${char.position.y})`}
                                 onClick={() => handleNodeClick(char)}
                                 onDoubleClick={() => handleNodeDoubleClick(char)}
                                 onMouseEnter={() => setHoveredId(char.id)}
                                 onMouseLeave={() => setHoveredId(null)}
+                                onFocus={() => {
+                                    const visibleChars = characters.filter(c => c.position?.x !== undefined)
+                                    const charIndex = visibleChars.findIndex(c => c.id === char.id)
+                                    if (charIndex !== -1) {
+                                        setFocusedIndex(charIndex)
+                                    }
+                                }}
+                                tabIndex={0}
+                                role="button"
+                                aria-label={ariaLabel}
                                 className={cn(
-                                    "transition-all duration-500 ease-out cursor-pointer"
+                                    "transition-all duration-500 ease-out cursor-pointer focus:outline-none"
                                 )}
                                 style={{
                                     opacity: char.hasMet ? 1 : 0.5 // Increased from 0.4 for visibility
@@ -229,6 +327,19 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
                                             "transition-all duration-300",
                                             isSelected || isHovered ? "opacity-100" : "opacity-80"
                                         )}
+                                    />
+                                )}
+
+                                {/* Keyboard Focus Ring */}
+                                {isFocused && (
+                                    <circle
+                                        r={radius + 3.8}
+                                        fill="none"
+                                        stroke="#3b82f6"
+                                        strokeWidth="0.4"
+                                        strokeDasharray="0.8 0.8"
+                                        className="opacity-90 animate-pulse"
+                                        aria-hidden="true"
                                     />
                                 )}
 
@@ -402,6 +513,25 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
                         System Online
                     </p>
                 )}
+            </div>
+
+            {/* Screen Reader Announcements - Hidden visually but available to screen readers */}
+            <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+                {focusedChar && (
+                    <span>
+                        Focused on {focusedChar.name}, {focusedChar.role}.
+                        {focusedChar.hasMet ? ` Trust level ${focusedChar.trust} out of 10.` : ' Not yet met.'}
+                        {focusedChar.arcComplete ? ' Story complete.' : ''}
+                        {' '}Use arrow keys to navigate. Press Enter or Space to select. Press I for info, T to travel.
+                    </span>
+                )}
+            </div>
+
+            {/* Keyboard Navigation Instructions - Visible for all users */}
+            <div className="absolute top-2 right-2 text-[9px] text-slate-500 font-mono bg-slate-900/80 px-2 py-1 rounded border border-white/5">
+                <p className="whitespace-nowrap">
+                    ← → ↑ ↓ Navigate | ↵ Select | I Info | T Travel
+                </p>
             </div>
         </div>
     )
