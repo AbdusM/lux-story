@@ -392,7 +392,14 @@ export const jordanDialogueNodes: DialogueNode[] = [
     content: [{
       text: "Selling phones at the Galleria. Those kiosks where you chase people speed-walking past.\n\nHumbling.\n\nBut I learned to read people in three seconds. Ask questions that made them feel heard.\n\nCustomer service is applied empathy.",
       emotion: 'reflective',
-      variation_id: 'jordan_job2_v2'
+      variation_id: 'jordan_job2_v2',
+      voiceVariations: {
+        analytical: "Selling phones at the Galleria. Those kiosks where you analyze people mid-stride.\n\nHumbling.\n\nBut I learned pattern recognition in three seconds. Questions that mapped their decision tree.\n\nCustomer service is applied behavioral analysis.",
+        helping: "Selling phones at the Galleria. Those kiosks where you meet people at their busiest.\n\nHumbling.\n\nBut I learned to care in three seconds. Ask questions that made them feel seen, not sold to.\n\nCustomer service is just caring about strangers.",
+        building: "Selling phones at the Galleria. Those kiosks where you construct rapport instantly.\n\nHumbling.\n\nBut I learned to build trust in three seconds. Questions that created connection.\n\nCustomer service is relationship architecture.",
+        exploring: "Selling phones at the Galleria. Those kiosks where you discover people mid-journey.\n\nHumbling.\n\nBut I learned to explore needs in three seconds. Questions that opened new territory.\n\nCustomer service is navigating what people actually want.",
+        patience: "Selling phones at the Galleria. Those kiosks where everyone's rushing past.\n\nHumbling.\n\nBut I learned to slow moments down. Three seconds of real attention. Questions that gave them space.\n\nCustomer service is patience when everyone's impatient."
+      }
     }],
     requiredState: {
       trust: { min: 3 },
@@ -565,7 +572,14 @@ export const jordanDialogueNodes: DialogueNode[] = [
     content: [{
       text: "You're really following along. Most people zone out by job three.\n\nEyes glaze over. Polite nods.\n\nBut you're actually listening. Means a lot.",
       emotion: 'appreciative',
-      variation_id: 'jordan_acknowledgment_v2'
+      variation_id: 'jordan_acknowledgment_v2',
+      voiceVariations: {
+        analytical: "You're tracking the data points. Most people lose the thread by job three.\n\nPattern recognition failure. Polite nods.\n\nBut you're processing it. That matters.",
+        helping: "You're really staying with me. Most people check out by job three.\n\nEyes glaze over. Polite patience.\n\nBut you care about the story. Thank you.",
+        building: "You're following the structure. Most people lose the blueprint by job three.\n\nFoundation forgotten. Polite nods.\n\nBut you're building the picture with me. Means a lot.",
+        exploring: "You're still curious. Most people stop exploring by job three.\n\nTerritory too complicated. Polite nods.\n\nBut you want to see where this goes. That's rare.",
+        patience: "You're giving this time. Most people rush past by job three.\n\nEyes glaze over. Polite waiting.\n\nBut you're actually present. Really means something."
+      }
     }],
     choices: [
       {
@@ -869,7 +883,14 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       text: "Exactly. It wasn't a software bug. It was a human bug.\n\nThey needed encouragement, not data entry.\n\nThat's when I realized:\nUser research? That's customer service listening.\nWireframing? That's graphic design.\nMotivation loops? That's personal training.\n\nI've been training for this job my whole life.",
       emotion: 'triumphant',
       variation_id: 'job7_insight_v1',
-      richEffectContext: 'success'
+      richEffectContext: 'success',
+      voiceVariations: {
+        analytical: "Exactly. It wasn't a code error. It was a logic error about users.\n\nThey needed validation algorithms, not data structures.\n\nThat's when the patterns connected:\nUser research? Pattern recognition from customer service.\nWireframing? Visual logic from graphic design.\nMotivation loops? Behavioral systems from personal training.\n\nEvery data point was preparing me for this.",
+        helping: "Exactly. It wasn't a technical problem. It was an emotional one.\n\nThey needed support, not features.\n\nThat's when I understood:\nUser research? Listening from customer service.\nWireframing? Communication from graphic design.\nMotivation loops? Encouragement from personal training.\n\nI've been learning how to help people my whole life.",
+        building: "Exactly. It wasn't a bug. It was missing infrastructure.\n\nThey needed scaffolding, not tools.\n\nThat's when the blueprint emerged:\nUser research? Foundation from customer service.\nWireframing? Structure from graphic design.\nMotivation loops? Architecture from personal training.\n\nI've been building toward this my whole life.",
+        exploring: "Exactly. It wasn't a software issue. It was an unmapped territory.\n\nThey needed guidance, not navigation.\n\nThat's when I discovered the map:\nUser research? Exploration from customer service.\nWireframing? Charting from graphic design.\nMotivation loops? Pathfinding from personal training.\n\nI've been exploring toward this destination my whole life.",
+        patience: "Exactly. It wasn't a quick fix. It was years of slow accumulation.\n\nThey needed time and attention, not speed.\n\nThat's when it all came together:\nUser research? Patience from customer service.\nWireframing? Process from graphic design.\nMotivation loops? Persistence from personal training.\n\nEvery step was preparing me. I just had to wait to see it."
+      }
     }],
     onEnter: [
       {
