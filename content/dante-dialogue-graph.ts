@@ -329,7 +329,12 @@ export const danteDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'dante_hub_v1',
         text: "I'm an open book. Well—a book you have to read carefully. Every chapter has two meanings.\n\nWhat aspect of sales and connection interests you most?",
-        emotion: 'inviting'
+        emotion: 'inviting',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "You read between the lines. I appreciate that. Most people take me at face value.\n\nI'm an open book—but every chapter has layers. What aspect of persuasion do you want to analyze?", altEmotion: 'knowing' },
+          { pattern: 'helping', minLevel: 4, altText: "You listen like you actually care. That's rare in sales. Or anywhere, honestly.\n\nI'm an open book. Well—mostly. What aspect of connection interests someone who leads with care?", altEmotion: 'warm' },
+          { pattern: 'patience', minLevel: 4, altText: "You take your time. I see that in you. Not rushing to conclusions, not filling silence.\n\nI'm an open book. But some chapters take time to read carefully. Where do you want to pause?", altEmotion: 'appreciative' }
+        ]
       }
     ],
     choices: [
@@ -373,7 +378,12 @@ export const danteDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'dante_ethics_v1',
         text: "Here's my line: I never sell anyone something they don't need.\n\nSounds simple. It's not. Because 'need' is subjective. Do they need it, or have I convinced them they need it?\n\nI had a prospect once. Single mom, needed a car. I could have upsold her into debt that would have followed her for years. Instead, I found her a reliable used sedan and lost my commission.\n\nThat's the day I knew who I wanted to be.",
-        emotion: 'reflective'
+        emotion: 'reflective',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "You think critically. Good. This is a critical question.\n\nMy line: I never sell anyone something they don't need. But 'need' is subjective. Do they need it, or have I convinced them they need it?\n\nThe epistemological problem of persuasion. Single mom, car purchase, potential debt spiral. I chose the used sedan. Lost commission. Defined my ethics.", altEmotion: 'teaching' },
+          { pattern: 'helping', minLevel: 4, altText: "You care about impact. So you'll understand this.\n\nMy line: I never sell anyone something they don't need. Simple words, complex execution.\n\nSingle mom, needed a car. I could have profited from her vulnerability. Instead I helped her find what she actually needed. Lost my commission. Found my integrity.", altEmotion: 'serious_warm' },
+          { pattern: 'patience', minLevel: 4, altText: "You take time with decisions. That patience matters in this work.\n\nMy line: I never sell anyone something they don't need. But that requires pausing. Asking: do they need it, or have I convinced them?\n\nSingle mom, car purchase. I could have rushed the upsell. Instead I took time to find what she actually needed. Lost commission. Gained clarity.", altEmotion: 'reflective' }
+        ]
       }
     ],
     choices: [
@@ -486,7 +496,12 @@ export const danteDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'dante_origin_v1',
         text: "You want the real version or the one I tell at networking events?\n\n...Okay. Real version.\n\nGrew up poor in New Orleans. Mom worked three jobs. Dad wasn't around. I learned early that charm was currency.\n\nBy fifteen, I was running small hustles. Nothing illegal—just a kid who knew how to make people feel important. Got into sales young. Rose fast.\n\nBut somewhere along the way, I started feeling empty. Like I was becoming a caricature of myself. All persona, no person.\n\nThat's when I came to Birmingham. Started over. Decided to figure out who I actually am beneath all the charm.",
-        emotion: 'vulnerable'
+        emotion: 'vulnerable',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 4, altText: "You want the real version or the one I tell at networking events?\n\n...You help people. So you'll get the real version.\n\nGrew up poor. New Orleans. Learned charm was currency. By fifteen I was making people feel important for survival.\n\nRose fast in sales. But somewhere I became all persona, no person. Came to Birmingham to figure out who I am when I'm not performing.", altEmotion: 'vulnerable_warm' },
+          { pattern: 'analytical', minLevel: 4, altText: "You want the real version or the one I tell at networking events?\n\n...You analyze. So here's the unoptimized truth.\n\nNew Orleans. Poor. Learned charm was survival currency. By fifteen: small hustles, all legal, all effective. Sales career trajectory: rapid ascent.\n\nBut at some point the optimization became the identity. All caricature, no core. Birmingham: attempt to debug the system. Find the authentic variable underneath.", altEmotion: 'vulnerable_analytical' },
+          { pattern: 'patience', minLevel: 4, altText: "You want the real version or the one I tell at networking events?\n\n...You're patient. So I'll take time with the real version.\n\nNew Orleans. Poor. Learned charm young. Rose fast in sales. But somewhere I became a performance—all persona, no person.\n\nBirmingham: starting over. Taking time to figure out who I am when I'm not rushing toward the next sale.", altEmotion: 'vulnerable_reflective' }
+        ]
       }
     ],
     choices: [
@@ -528,7 +543,12 @@ export const danteDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'dante_vuln_v1',
         text: "[Dante's usual ease falters. He looks past you.]\n\nYou want to know my real fear?\n\nI'm terrified I don't know how to be genuine anymore. That all my interactions are some version of a pitch. Even this conversation—part of me is tracking your responses, adjusting my delivery.\n\nI've been performing so long I'm not sure where the act ends and I begin.\n\nWhat if there's nothing underneath?",
-        emotion: 'scared'
+        emotion: 'scared',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 5, altText: "[Dante's usual ease falters. He looks past you.]\n\nYou care about people genuinely. I see that. That's why I'm asking you this.\n\nI'm terrified I don't know how to be genuine anymore. Every interaction feels like a pitch. Even now—I'm tracking your responses, adjusting delivery.\n\nI've been performing so long... what if there's nothing real underneath?", altEmotion: 'vulnerable_scared' },
+          { pattern: 'analytical', minLevel: 5, altText: "[Dante's usual ease falters. He looks past you.]\n\nYou analyze deeply. Maybe you can help me understand this.\n\nI can't tell where performance ends and authenticity begins. Even this conversation—I'm tracking responses, optimizing delivery.\n\nI've been performing so long the variable is lost. What if there's no authentic self underneath the optimization?", altEmotion: 'vulnerable_analytical' },
+          { pattern: 'patience', minLevel: 5, altText: "[Dante's usual ease falters. He looks past you.]\n\nYou're patient. You don't rush. That's why I'm telling you this.\n\nI'm terrified I've performed so long I don't know how to be genuine. Every interaction feels rehearsed, even this one.\n\nWhat if slowing down reveals there's nothing underneath? Just… layers of performance all the way down?", altEmotion: 'vulnerable_terrified' }
+        ]
       }
     ],
     requiredState: { trust: { min: 6 } },

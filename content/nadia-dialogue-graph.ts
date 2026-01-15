@@ -343,7 +343,12 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'nadia_hub_v1',
         text: "There's a lot to cover in AI ethics. Most of it uncomfortable.\n\nWhere do you want to go?",
-        emotion: 'open'
+        emotion: 'open',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "You ask good questions. I see how you process information—methodical, thorough. There's a lot to cover in AI ethics.\n\nWhere should we focus that analytical mind?", altEmotion: 'appreciative' },
+          { pattern: 'helping', minLevel: 4, altText: "You care about impact. I can tell by how you listen—you're not just gathering information, you're thinking about who it affects.\n\nThere's a lot to cover. Where do you want to help most?", altEmotion: 'warm' },
+          { pattern: 'building', minLevel: 4, altText: "You think like a builder. I see it—you want to understand not just what's broken, but what we can make instead.\n\nThere's a lot to build in AI ethics. Where do you want to start?", altEmotion: 'knowing' }
+        ]
       }
     ],
     choices: [
@@ -495,7 +500,12 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'nadia_vuln_v1',
         text: "[Nadia stops arranging her equipment. Her hands are shaking slightly.]\n\nCan I tell you something I've never said out loud?\n\nI still dream about the algorithm. Not nightmares—that would be easier. I dream about the code. Lines and lines of it. Beautiful, elegant code.\n\nAnd in the dream, I know exactly what it's going to do. I know it will hurt people. And I ship it anyway. Because it's too beautiful to stop.\n\nI wake up and I don't know if I've changed. Or if I'm still that person who chose beauty over safety.",
-        emotion: 'terrified'
+        emotion: 'terrified',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 5, altText: "[Nadia stops arranging her equipment. Her hands are shaking slightly.]\n\nYou've been kind to me. Patient. That's why I'm telling you this.\n\nI still dream about the algorithm. Not nightmares—that would be easier. Beautiful, elegant code that I knew would hurt people. And I shipped it anyway.\n\nYou help people. But have you ever helped the wrong thing? Chosen beauty over safety?", altEmotion: 'vulnerable_warm' },
+          { pattern: 'analytical', minLevel: 5, altText: "[Nadia stops arranging her equipment. Her hands are shaking slightly.]\n\nYou understand systems. I can tell. So maybe you'll understand this.\n\nI still dream about the algorithm. The logic was perfect. Elegant. And completely, knowingly harmful. And I shipped it because the beauty blinded me.\n\nDo you ever fear your analytical mind could lead you to the wrong conclusion?", altEmotion: 'vulnerable_knowing' },
+          { pattern: 'patience', minLevel: 5, altText: "[Nadia stops arranging her equipment. Her hands are shaking slightly.]\n\nYou've been so patient with me. Listening without judgment. That's rare.\n\nI still dream about the algorithm. Beautiful code I knew would hurt people. I shipped it anyway. Because it was too beautiful to stop.\n\nI don't know if I've changed, or if I'm still choosing wrong things for beautiful reasons.", altEmotion: 'vulnerable_terrified' }
+        ]
       }
     ],
     requiredState: { trust: { min: 6 } },
@@ -729,7 +739,12 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'nadia_career_v1',
         text: "Two paths into this work.\n\nPath one: Technical. Learn ML deeply enough to audit it. Python, statistics, understanding how models actually work under the hood.\n\nPath two: Policy. Learn regulation, governance, organizational change. You don't need to code the systems—you need to know what questions to ask and who has the power to change things.\n\nMost good auditors have elements of both. But you can start from either side.\n\nWhich interests you more?",
-        emotion: 'mentoring'
+        emotion: 'mentoring',
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "You're a builder. I've seen how you think—you want to understand how things are made.\n\nTwo paths into this work. Technical: learn to audit the systems themselves. Policy: learn to change how systems get built.\n\nMost good auditors build both skills. Where do you want to start building?", altEmotion: 'knowing' },
+          { pattern: 'analytical', minLevel: 4, altText: "You analyze deeply. I can tell—you're not satisfied with surface explanations.\n\nTwo paths into AI auditing. Technical: understand the math and code. Policy: understand power structures and incentives.\n\nBoth require analytical thinking. Which framework calls to you?", altEmotion: 'mentoring' },
+          { pattern: 'helping', minLevel: 4, altText: "You lead with care. I see how you think about impact, not just systems.\n\nTwo paths into this work. Technical: audit the systems for harm. Policy: change who makes decisions and how.\n\nBoth help people. Which path feels right for how you want to help?", altEmotion: 'warm' }
+        ]
       }
     ],
     choices: [
@@ -766,7 +781,12 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'nadia_tradeoffs_v1',
         text: "Everything in AI is tradeoffs. Accuracy versus explainability. Speed versus safety. Innovation versus tested reliability.\n\nThe problem is, we pretend these tradeoffs don't exist. We want AI that's fast AND safe AND explainable AND innovative.\n\nMy job is to make the tradeoffs visible. Force organizations to actually choose instead of assuming they can have everything.",
-        emotion: 'teaching'
+        emotion: 'teaching',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "You understand tradeoffs already. I can tell by how you question—you see that every choice has costs.\n\nEverything in AI is tradeoffs. Accuracy versus explainability. Speed versus safety.\n\nMy job is to make those tradeoffs visible. Force real choices instead of pretending we can optimize everything simultaneously.", altEmotion: 'knowing' },
+          { pattern: 'patience', minLevel: 4, altText: "You take time with decisions. That patience is exactly what AI development needs more of.\n\nEverything in AI is tradeoffs. But we rush. We want fast AND safe AND explainable—all at once.\n\nMy job is to slow people down. Make them choose consciously instead of assuming they can have everything.", altEmotion: 'teaching' },
+          { pattern: 'building', minLevel: 4, altText: "You're a builder. You know that every design choice closes other possibilities.\n\nEverything in AI is tradeoffs. Accuracy versus explainability. Innovation versus tested reliability.\n\nBut we pretend we can build systems with no tradeoffs. My job is to make them visible—so builders like you choose consciously.", altEmotion: 'mentoring' }
+        ]
       }
     ],
     choices: [
