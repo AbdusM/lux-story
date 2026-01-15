@@ -1005,7 +1005,19 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "UAB Systems Engineering. Senior capstone on error detection in distributed systems.\n\nSouthern Company's DevOps team is coming to our showcase. Looking for system resilience grads.\n\nIronic. I can debug code but not emotions.",
         emotion: 'self_aware',
-        variation_id: 'uab_systems_v1'
+        variation_id: 'uab_systems_v1',
+        // E2-CHALLENGE: Opportunity to challenge the false dichotomy
+        interrupt: {
+          duration: 3000,
+          type: 'challenge',
+          action: 'Challenge that assumption',
+          targetNodeId: 'devon_challenge_accepted',
+          consequence: {
+            characterId: 'devon',
+            trustChange: 1,
+            addKnowledgeFlags: ['player_challenged_devon']
+          }
+        }
       }
     ],
     choices: [
@@ -1040,6 +1052,62 @@ export const devonDialogueNodes: DialogueNode[] = [
         addKnowledgeFlags: ['revealed_career_path']
       }
     ]
+  },
+
+  // ============= CHALLENGE INTERRUPT TARGET =============
+  {
+    nodeId: 'devon_challenge_accepted',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "Wait. You're calling that out?\n\n\"Can't debug emotions.\" I just said that like it's a fact. But that's not true, is it?\n\nI debug code by understanding how it works. By being patient with failures. By tracing problems to their root.\n\nMaybe... maybe that IS what emotions need. Not fixing. Understanding.",
+        emotion: 'breakthrough',
+        variation_id: 'challenge_accepted_v1',
+        voiceVariations: {
+          analytical: "Wait. You caught that logical flaw.\n\n\"Can't debug emotions.\" I stated that as fact. But debugging isn't about fixing—it's about understanding.\n\nMaybe emotions aren't the exception. Maybe I've been using the wrong metaphor all along.",
+          helping: "Wait. You're pushing back on that?\n\n\"Can't debug emotions.\" I say that to protect myself. But you see through it.\n\nMaybe the skills ARE transferable. Just... not the way I thought.",
+          building: "Wait. You're challenging that assumption.\n\n\"Can't debug emotions.\" But debugging is just... understanding how something works. Being patient with failures.\n\nMaybe I've been building walls when I should be building bridges.",
+          exploring: "Wait. That's an interesting challenge.\n\n\"Can't debug emotions.\" But what if I'm wrong? What if the same curiosity that helps me find bugs could help me understand feelings?",
+          patience: "Wait. You didn't let that slide.\n\n\"Can't debug emotions.\" I've been telling myself that for years. But you're right to question it.\n\nMaybe patience with code and patience with people aren't that different."
+        }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'challenge_follow_systems',
+        text: "Systems thinking might be exactly what grief needs.",
+        nextNodeId: 'devon_realizes_bridge',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'challenge_follow_patience',
+        text: "Debugging requires patience. So does grief.",
+        nextNodeId: 'devon_career_context',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'challenge_follow_connection',
+        text: "You already have the skills. You just need to apply them differently.",
+        nextNodeId: 'devon_career_context',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['devon_arc', 'challenge_interrupt', 'breakthrough']
   },
 
   {

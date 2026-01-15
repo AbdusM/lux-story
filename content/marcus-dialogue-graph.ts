@@ -508,7 +508,14 @@ const nodes: DialogueNode[] = [
       text: "However, the users require connection. If I send auto-replies, retention drops. The community architecture is built on trust.",
       emotion: 'skeptical',
       microAction: 'He gestures to the glowing "Trust" metric on his dash, which is plummeting.',
-      variation_id: 'default'
+      variation_id: 'default',
+      voiceVariations: {
+        helping: "However, the users require connection. If I send auto-replies, retention drops.\n\nYou understand. People aren't metrics. They know when someone actually cares.",
+        analytical: "However, the users require connection. Retention drops 47% with automated responses.\n\nYou see it in the data too. Trust isn't quantifiable. But it's measurable when it's gone.",
+        building: "However, the users require connection. If I send auto-replies, retention drops.\n\nYou're thinking about how to build something better. I can tell. What would you architect?",
+        exploring: "However, the users require connection. If I send auto-replies, retention drops.\n\nYou're curious about the edge case, aren't you? When does automation work?",
+        patience: "However, the users require connection. If I send auto-replies, retention drops.\n\nYou're not rushing to solutions. Good. The quick fixes always cost more in trust."
+      }
     }],
     choices: [
       {
@@ -1969,7 +1976,14 @@ WARNING: Response time > 48h`,
     content: [{
       text: 'I just need a minute. Everything is spinning.\n\nPower through. That is what they always say. But power is finite. And I have been running on empty for three years.',
       emotion: 'exhausted',
-      variation_id: 'burnout_v1'
+      variation_id: 'burnout_v1',
+      voiceVariations: {
+        helping: "I just need a minute. Everything is spinning.\n\nYou care. I can see it. But caring about others when you're empty... it just empties them too.",
+        analytical: "I just need a minute. Everything is spinning.\n\nYou're calculating the cost, aren't you? Three years at this rate. The math doesn't work. It never did.",
+        building: "I just need a minute. Everything is spinning.\n\nYou want to build something to fix this. But some things can't be automated. Rest is one of them.",
+        exploring: "I just need a minute. Everything is spinning.\n\nCurious how far the human body can go? Further than it should. That's the answer.",
+        patience: "I just need a minute. Everything is spinning.\n\nYou're just... waiting. Not trying to fix it. That's rarer than you know."
+      }
     }],
     choices: [
       {
