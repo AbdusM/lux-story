@@ -297,7 +297,12 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'isaiah_kids_v1',
         text: "Started in youth ministry. Fourteen years old, running a Sunday school class because nobody else would.\n\nNow I'm Chief Development Officer for a youth services nonprofit. Fancy title. It means I spend most of my time asking rich people for money so we can keep the lights on for kids who have nowhere else to go.\n\nThe fundraising... it's necessary. But I miss being in the room with the kids. That's where the real work happens.",
-        emotion: 'nostalgic'
+        emotion: 'nostalgic',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 4, altText: "You help people. I see that in you immediately.\n\nStarted in youth ministry at fourteen. Sunday school because nobody else would step up. Now I'm CDO—fancy title for asking rich people for money so kids have somewhere to go.\n\nThe fundraising? Necessary. But I miss the room with the kids. That's where you actually help.", altEmotion: 'warm_nostalgic' },
+          { pattern: 'building', minLevel: 4, altText: "You're a builder. So you'll understand this tension.\n\nStarted building Sunday school programs at fourteen. Now I build fundraising systems—asking donors for money so we can keep programs alive.\n\nThe systems work. But I miss being in the room building futures directly with kids. That's the construction I care about most.", altEmotion: 'nostalgic' },
+          { pattern: 'patience', minLevel: 4, altText: "You're patient. I see that in how you listen.\n\nStarted in youth ministry at fourteen. Had to learn patience early—kids need time, not quick fixes.\n\nNow I fundraise. Still requires patience—cultivation takes years. But I miss the patience required in the room with kids. That's the patience that matters.", altEmotion: 'reflective' }
+        ]
       }
     ],
     choices: [
@@ -334,7 +339,12 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'isaiah_hub_v1',
         text: "There's a lot I can tell you about this work. The good, the bad, the complicated.\n\nWhat do you want to know?",
-        emotion: 'open'
+        emotion: 'open',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 4, altText: "You care about people. I see it in how you listen—you're not just collecting facts, you're understanding impact.\n\nThere's a lot I can tell you about nonprofit work. Where do you want to help?", altEmotion: 'warm' },
+          { pattern: 'analytical', minLevel: 4, altText: "You ask sharp questions. I respect that. Too many people want the feel-good story without the messy reality.\n\nThere's a lot I can tell you—good, bad, complicated. What do you want to analyze?", altEmotion: 'appreciative' },
+          { pattern: 'building', minLevel: 4, altText: "You think like a builder. I can tell—you want to understand how things actually work, not just what they look like.\n\nThere's a lot to this work. What systems do you want to understand?", altEmotion: 'knowing' }
+        ]
       }
     ],
     choices: [
@@ -378,7 +388,12 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'isaiah_fund_v1',
         text: "Alright. Fundraising 101.\n\nSmall donations keep the lights on. $25, $50—they add up. But they're not enough to grow programs.\n\nMajor gifts move the needle. $10,000 and up. That's where I spend most of my time. Cultivation, solicitation, stewardship. Fancy words for: build relationship, make ask, maintain relationship after they give.\n\nThe trick? Donors give when they feel connected to the mission. Your job is to be the bridge between their values and your work.\n\nSome people find that manipulative. I find it honest. I'm not making them care about something new—I'm helping them act on what they already care about.",
-        emotion: 'teaching'
+        emotion: 'teaching',
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "You're a builder. So you'll appreciate this.\n\nFundraising is building relationships at scale. Small donations build foundation. Major gifts ($10k+) build capacity.\n\nCultivation, solicitation, stewardship—fancy words for: build trust, make ask, maintain relationship.\n\nYour job is to be the bridge between donor values and organizational work. Build that connection right, and it sustains itself.", altEmotion: 'mentoring' },
+          { pattern: 'analytical', minLevel: 4, altText: "You think analytically. Good. Fundraising has a clear structure.\n\nSmall donations: consistent revenue. Major gifts: growth capital. The math is simple.\n\nCultivation, solicitation, stewardship. Build relationship, make ask, maintain relationship. A system.\n\nThe variable? Connection. Donors give when values align with mission. Your job is to optimize for that connection.", altEmotion: 'teaching' },
+          { pattern: 'helping', minLevel: 4, altText: "You help people. So you'll understand this instinctively.\n\nFundraising is helping donors act on what they already care about. I'm not manipulating—I'm connecting their values to our work.\n\nCultivation, solicitation, stewardship. Build relationship, invite giving, honor the gift.\n\nWhen it works, everyone wins. Donors feel meaningful. Kids get resources. That's helping at scale.", altEmotion: 'warm' }
+        ]
       }
     ],
     choices: [
@@ -415,7 +430,12 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'isaiah_vuln_v1',
         text: "[Isaiah's voice drops. He's looking at his hands.]\n\nThere was a kid. Marcus. Not his real name, but I call him that in my head.\n\nFourteen when he came to us. Brilliant. Angry. All the things that make you both worry and hope.\n\nI invested everything in that kid. Extra tutoring. My personal cell number. Drove him to college visits.\n\nHe died three days before his eighteenth birthday. Drug deal gone wrong.\n\nI was supposed to be his bridge to something better. And I couldn't... I couldn't...\n\n[Isaiah stops. Collects himself.]\n\nI haven't told anyone the whole story in years.",
-        emotion: 'grief'
+        emotion: 'grief',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 5, altText: "[Isaiah's voice drops. He's looking at his hands.]\n\nYou help people. I see that in you. So maybe you'll understand this.\n\nThere was a kid. Marcus. Fourteen. Brilliant, angry. I invested everything—tutoring, my cell number, college visits.\n\nHe died three days before his eighteenth birthday. Drug deal gone wrong.\n\nI was supposed to save him. And I... I couldn't.\n\nHow do you keep helping when you couldn't help the one who mattered most?", altEmotion: 'vulnerable_grief' },
+          { pattern: 'patience', minLevel: 5, altText: "[Isaiah's voice drops. He's looking at his hands.]\n\nYou've been patient with me. That's why I'm telling you this.\n\nThere was a kid. Marcus. I gave him years—tutoring, mentorship, hope. Drug deal gone wrong, three days before his eighteenth birthday.\n\nI couldn't save him. And I don't know if patience was enough, or if I should have done more, faster.", altEmotion: 'vulnerable_grief' },
+          { pattern: 'analytical', minLevel: 5, altText: "[Isaiah's voice drops. He's looking at his hands.]\n\nYou think systematically. So maybe you can help me understand this.\n\nMarcus. Fourteen. Brilliant, angry. I did everything by the book—tutoring, relationship-building, resources.\n\nHe died anyway. Drug deal gone wrong, three days before his eighteenth birthday.\n\nI've analyzed it a thousand times. What variable did I miss? What intervention would have worked?\n\nThere's no answer. And that breaks me.", altEmotion: 'vulnerable_analytical_grief' }
+        ]
       }
     ],
     requiredState: { trust: { min: 6 } },
