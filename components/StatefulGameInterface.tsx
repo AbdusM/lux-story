@@ -158,7 +158,7 @@ import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achieveme
 import { selectAmbientEvent, IDLE_CONFIG, type AmbientEvent } from '@/lib/ambient-events'
 import { PATTERN_TYPES, type PatternType, getPatternSensation, isValidPattern } from '@/lib/patterns'
 import { calculatePatternGain } from '@/lib/identity-system'
-import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, createResonanceEchoFromDescription, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, getDiscoveryHint, DISCOVERY_HINTS, type ConsequenceEcho } from '@/lib/consequence-echoes'
+import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, createResonanceEchoFromDescription, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, getDiscoveryHint, DISCOVERY_HINTS, type ConsequenceEcho, resolveContentVoiceVariation, applySkillReflection, applyNervousSystemReflection } from '@/lib/consequence-echoes'
 import { calculateResonantTrustChange } from '@/lib/pattern-affinity'
 import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS, analyzeTrustAsymmetry, getAsymmetryComment, type AsymmetryReaction, calculateInheritedTrust, recordTrustChange, type TrustTimeline, executeInfoTrade, getAvailableInfoTrades, type InfoTradeOffer } from '@/lib/trust-derivatives'
 // D-057: Info Trades
@@ -1109,12 +1109,31 @@ export default function StatefulGameInterface() {
       // Apply pattern reflection to NPC dialogue based on player's patterns
       // Node-level patternReflection takes precedence over content-level
       const mergedPatternReflection = currentNode.patternReflection || content.patternReflection
-      const reflected = applyPatternReflection(
+      let reflected = applyPatternReflection(
         content.text,
         content.emotion,
         mergedPatternReflection,
         gameState.patterns
       )
+
+      // ═══════════════════════════════════════════════════════════════════════════
+      // BIDIRECTIONAL REFLECTION: NPCs respond to WHO the player is becoming
+      // This is the architectural fix - NPCs now see player patterns, skills, and state
+      // ═══════════════════════════════════════════════════════════════════════════
+
+      // Step 1: Apply NPC voice variations based on player's dominant pattern
+      const contentWithReflection = { ...content, text: reflected.text, emotion: reflected.emotion }
+      const voiceVaried = resolveContentVoiceVariation(contentWithReflection, gameState.patterns)
+
+      // Step 2: Apply skill reflection (NPCs notice demonstrated competence)
+      const skillReflected = applySkillReflection(voiceVaried, gameState.skillLevels)
+
+      // Step 3: Apply nervous system reflection (NPCs respond to player's state)
+      const charState = gameState.characters.get(actualCharacterId)
+      const fullyReflected = applyNervousSystemReflection(skillReflected, charState?.nervousSystemState)
+
+      // Update reflected with all bidirectional reflections applied
+      reflected = { text: fullyReflected.text, emotion: fullyReflected.emotion || reflected.emotion }
 
       // ═══════════════════════════════════════════════════════════════════════════
       // ORB RECONCILIATION: Check for missed ability unlocks (P0)
