@@ -138,7 +138,14 @@ export const alexDialogueNodes: DialogueNode[] = [
         emotion: 'surprised_vulnerable',
         interaction: 'nod',
         variation_id: 'response_helping_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        voiceVariations: {
+          analytical: "Yeah. Maybe.\n\n...Sorry. That was my default response algorithm. Pattern recognition failure.\n\nI'm Alex. Former bootcamp instructor. Now documentation writer.\n\nYou're the first person to query my state instead of my data.",
+          helping: "Yeah. Maybe.\n\n...Sorry. That was my old instructor voice. The one that says 'I'm fine' automatically.\n\nI'm Alex. I used to help people learn. Now I write docs for tools I'm not sure help anyone.\n\nYou're the first person to actually care how I'm doing.",
+          building: "Yeah. Maybe.\n\n...Sorry. That was my old instructor framework. Built to project confidence.\n\nI'm Alex. Used to construct learning experiences. Now I write documentation for tools I don't believe in.\n\nYou're the first person to check my foundation instead of my output.",
+          exploring: "Yeah. Maybe.\n\n...Sorry. That was my old instructor path. The territory I know by memory.\n\nI'm Alex. Used to guide people through bootcamps. Now I map documentation for tools that feel aimless.\n\nYou're the first person to explore how I'm doing instead of what I'm doing.",
+          patience: "Yeah. Maybe.\n\n...Sorry. That was my old instructor reflex. Years of trained responses.\n\nI'm Alex. Used to teach bootcamps. Now I write documentation and wonder if any of it matters.\n\nYou're the first person to wait and ask how I am. Not what I know."
+        }
       }
     ],
     choices: [
@@ -169,7 +176,14 @@ export const alexDialogueNodes: DialogueNode[] = [
         emotion: 'frustrated',
         interaction: 'shake',
         variation_id: 'response_analytical_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        voiceVariations: {
+          analytical: "Worth it for who? Optimize which variable?\n\nI'm Alex. Former bootcamp instructor. Now documentation writer for AI tools.\n\nYou want ROI analysis? Three cohorts. All followed the optimal path. Courses, projects, networking. Most struggled. The ones who succeeded? Didn't have the highest test scores.",
+          helping: "Worth it for who? The person stressed about keeping up? Or the platform profiting from that stress?\n\nI'm Alex. Used to teach bootcamps. Watched people exhaust themselves.\n\nYou want honesty? Three cohorts did everything \"right.\" Still struggled. The ones who succeeded? Weren't trying to help everyone. Just focused on their own path.",
+          building: "Worth it for who? The company building the course? Or you trying to build a career?\n\nI'm Alex. Former bootcamp instructor. Now I document tools I didn't help create.\n\nYou want real data? Three cohorts built portfolios, networked, did everything right. Most struggled. The ones who succeeded? Didn't build the most projects.",
+          exploring: "Worth it for who? The explorer or the map-maker profiting from confusion?\n\nI'm Alex. Used to guide people through bootcamps. Now I document AI tools nobody asked for.\n\nYou want truth? Three cohorts explored every path. Courses, projects, networking. Most got lost. The ones who succeeded? Weren't the best at exploring everything.",
+          patience: "Worth it for who? The person waiting to be ready? Or the system profiting from \"one more course\"?\n\nI'm Alex. Former bootcamp instructor. Watched people wait for readiness that never came.\n\nYou want reality? Three cohorts took their time, did everything right. Most struggled anyway. The ones who succeeded? Didn't wait to be perfect coders."
+        }
       }
     ],
     choices: [
@@ -193,7 +207,14 @@ export const alexDialogueNodes: DialogueNode[] = [
         emotion: 'reflective',
         interaction: 'nod',
         variation_id: 'response_exploring_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        voiceVariations: {
+          analytical: "\"Ready.\" The halting problem.\n\nOne more course. One more certificate. Then you'll reach the termination condition.\n\nExcept the loop is infinite. The condition never resolves.\n\nI'm Alex. I taught that algorithm for three years. Now I document AI tools and question the entire function.",
+          helping: "\"Ready.\" The cruelest word.\n\nOne more course. One more certificate. Then you'll finally help yourself. Feel worthy.\n\nExcept you never do. The goalpost moves every time you reach it.\n\nI'm Alex. I sold that lie for three years. Now I write docs for AI tools and wonder if I'm helping anyone.",
+          building: "\"Ready.\" The foundation fallacy.\n\nOne more course. One more certificate. Then your base will be solid enough to build.\n\nExcept it never is. You keep reinforcing instead of constructing.\n\nI'm Alex. I taught that trap for three years. Now I document AI tools and wonder what I'm really building.",
+          exploring: "\"Ready.\" The infinite map.\n\nOne more course. One more certificate. One more territory to chart. Then you'll know enough to start.\n\nExcept there's always another region. The map never completes.\n\nI'm Alex. I guided people into that maze for three years. Now I write docs for AI tools and wonder if we're all just lost.",
+          patience: "\"Ready.\" The eternal waiting.\n\nOne more course. One more certificate. Just a bit more time. Then you'll be ready.\n\nExcept \"ready\" never arrives. The waiting becomes permanent.\n\nI'm Alex. I taught people to wait for three years. Now I document AI tools and wonder if the moment to start ever comes."
+        }
       }
     ],
     choices: [
