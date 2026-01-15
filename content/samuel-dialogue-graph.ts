@@ -3332,8 +3332,28 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'yaquin_return_hub',
         text: "I'm glad he saw it.",
-        nextNodeId: 'samuel_hub_after_devon',
+        nextNodeId: 'samuel_beat_after_yaquin_launch',
         pattern: 'helping'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_yaquin_launch',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "He did. And now he's moving. The new economy rewards action over credentials.\n\n[He looks toward the platforms]\n\nOthers here are learning to move too.",
+        emotion: 'affirming',
+        variation_id: 'beat_after_yaquin_launch_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
       }
     ]
   },
@@ -3352,8 +3372,28 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'yaquin_return_hub_audience',
         text: "It's a solid plan.",
-        nextNodeId: 'samuel_hub_after_devon',
+        nextNodeId: 'samuel_beat_after_yaquin_audience',
         pattern: 'analytical'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_yaquin_audience',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "It is. Community first, then content. That's how you build something that lasts.\n\n[He gestures toward the platforms]\n\nReady to meet another strategist?",
+        emotion: 'wise',
+        variation_id: 'beat_after_yaquin_audience_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
       }
     ]
   },
@@ -3634,6 +3674,26 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'alex_return_hub',
         text: "They'll figure it out.",
+        nextNodeId: 'samuel_beat_after_alex_learning',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_alex_learning',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "They will. Because you reminded them: there are no shortcuts to becoming yourself. Just the daily practice of curiosity.\n\n[He looks around the station]\n\nReady to meet another traveler on that same journey?",
+        emotion: 'warm',
+        variation_id: 'beat_after_alex_learning_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
         nextNodeId: 'samuel_comprehensive_hub',
         pattern: 'patience'
       }
@@ -3686,8 +3746,28 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'elena_return_hub',
         text: "The lights stay on because of her.",
-        nextNodeId: 'samuel_comprehensive_hub',
+        nextNodeId: 'samuel_beat_after_elena_building',
         pattern: 'building'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_elena_building',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "They do. Her hands. Her knowledge. That's craft, not just competence.\n\n[He nods toward the platforms]\n\nThere are others here learning what real work means.",
+        emotion: 'warm',
+        variation_id: 'beat_after_elena_building_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_comprehensive_hub',
+        pattern: 'patience'
       }
     ]
   },
@@ -3738,8 +3818,28 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'grace_return_hub',
         text: "Mrs. Patterson is lucky to have her.",
-        nextNodeId: 'samuel_comprehensive_hub',
+        nextNodeId: 'samuel_beat_after_grace_care',
         pattern: 'helping'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_grace_care',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "She is. And Grace is lucky to have been seen. Care work is impossible and invisible until someone notices.\n\n[He looks toward the platforms]\n\nThere are others here doing work the world doesn't always see.",
+        emotion: 'warm',
+        variation_id: 'beat_after_grace_care_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_comprehensive_hub',
+        pattern: 'patience'
       }
     ]
   },
