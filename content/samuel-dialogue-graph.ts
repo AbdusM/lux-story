@@ -4091,13 +4091,33 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_from_presence',
         text: "Presence is the work.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_presence_teaching',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'emotionalIntelligence', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
         }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_presence_teaching',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "It is. The world rewards performance, but presence is what changes people. You're learning that.\n\n[He gestures toward the platforms]\n\nReady to meet more travelers learning that same lesson?",
+        emotion: 'encouraging',
+        variation_id: 'beat_after_presence_teaching_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
@@ -4178,13 +4198,33 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_from_boundary',
         text: "Boundaries invite connection.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_boundary_philosophy',
         pattern: 'analytical',
         skills: ['emotionalIntelligence', 'criticalThinking', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
         }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_boundary_philosophy',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "They do. Walls say 'I don't trust you.' Boundaries say 'I trust myself while staying open.' That's the difference.\n\n[He looks toward the platforms]\n\nReady to meet others learning to build boundaries instead of walls?",
+        emotion: 'teaching_nuance',
+        variation_id: 'beat_after_boundary_philosophy_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
@@ -5305,9 +5345,29 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_from_passions',
         text: "That's a gift, seeing people that clearly.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_station_knows_passions',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_station_knows_passions',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "It is. The station doesn't judge - it recognizes who people are when they're alone with what they love.\n\n[He smiles softly]\n\nReady to recognize more travelers?",
+        emotion: 'mystical_knowing',
+        variation_id: 'beat_after_station_knows_passions_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
