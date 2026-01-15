@@ -924,7 +924,11 @@ export const quinnDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'quinn_v14',
         text: "*Quinn smiles—the first real smile you've seen.*\n\nShe knew that wealth is relational, not numerical.\n\nShe had a savings account, never more than a few thousand dollars. But she knew everyone on her block. People brought her casseroles when she was sick. She never ate dinner alone unless she wanted to.\n\nI had millions and ordered takeout to an empty apartment.",
-        emotion: 'warm_wistful'
+        emotion: 'warm_wistful',
+        skillReflection: [
+          { skill: 'financialLiteracy', minLevel: 5, altText: "*Quinn smiles—the first real smile you've seen.*\n\nYou understand money. I can tell by your questions. But my grandmother taught me something your financial literacy probably hasn't covered.\n\nWealth is relational, not numerical. She had thousands in savings—and everyone on her block. I had millions and ordered takeout alone.\n\nReal financial wisdom includes relationships in the ledger.", altEmotion: 'teaching_warm' },
+          { skill: 'emotionalIntelligence', minLevel: 5, altText: "*Quinn smiles—the first real smile you've seen.*\n\nYou read people well. You've been doing it with me this whole conversation.\n\nMy grandmother had that too. She knew wealth is relational. A few thousand dollars and everyone on her block. Never ate alone unless she wanted to.\n\nEmotional intelligence is its own kind of wealth. You already have it.", altEmotion: 'knowing_warm' }
+        ]
       }
     ],
     choices: [

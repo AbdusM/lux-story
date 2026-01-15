@@ -597,6 +597,10 @@ export const graceDialogueNodes: DialogueNode[] = [
         text: "You know what nobody teaches you? The real skill.\n\nIt's not the medications or the transfers or the wound care. That's trainable.\n\nIt's reading a room. Knowing when someone needs to talk and when they need silence. Noticing when \"I'm fine\" means \"I'm not fine.\"\n\nThis work is emotional labor. Constant calibration. And nobody sees it.",
         emotion: 'insistent',
         variation_id: 'invisible_v1',
+        skillReflection: [
+          { skill: 'emotionalIntelligence', minLevel: 5, altText: "You know what nobody teaches you? The real skill. But you've already got it—I can tell.\n\nIt's reading a room. Knowing when someone needs to talk and when they need silence. You do this naturally.\n\nMost people have to learn emotional calibration. You already have it. Now you need to decide what to do with that gift.", altEmotion: 'knowing_warm' },
+          { skill: 'communication', minLevel: 5, altText: "You know what nobody teaches you? The real skill.\n\nIt's reading a room. Knowing when someone needs words and when they need silence. You communicate well—I've noticed.\n\nBut this work takes communication deeper. Not just talking. Listening to what people can't say. Your skills are a foundation. This work builds on them.", altEmotion: 'mentoring' }
+        ],
         patternReflection: [
           { pattern: 'analytical', minLevel: 4, altText: "The real skill? Reading a room. Knowing when someone needs to talk and when they need silence.\n\nYou're analytical. You break things down. But this work is about feeling, and then responding. Constant calibration.\n\nNobody sees it. But you do.", altEmotion: 'knowing' }
         ]

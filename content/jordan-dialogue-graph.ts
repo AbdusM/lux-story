@@ -1816,7 +1816,11 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       {
         text: "You explore while helping. That's rare. Most people pick one or the other.\n\nCareer counselors have that combination. They're guides who help others find their way. Seeing potential before it blooms.\n\nSeven jobs taught me something: the best navigators are the ones who genuinely want to help people explore.",
         emotion: 'reflective',
-        variation_id: 'career_counselor_v1'
+        variation_id: 'career_counselor_v1',
+        skillReflection: [
+          { skill: 'mentorship', minLevel: 5, altText: "You explore while helping. And you mentor naturally—I can see it.\n\nCareer counselors have that gift. Guides who see potential before it blooms. Your mentorship instinct is already developed.\n\nSeven jobs taught me: the best navigators genuinely want to help people explore. You're already that kind of guide.", altEmotion: 'knowing_warm' },
+          { skill: 'emotionalIntelligence', minLevel: 5, altText: "You explore while helping. That's rare. And you read people well—I've noticed.\n\nCareer counselors need that emotional intelligence. Seeing potential others can't see yet. Helping without pushing.\n\nYour emotional intelligence makes you a natural guide. Seven jobs taught me: the best navigators feel their way forward. You already do.", altEmotion: 'appreciative' }
+        ]
       }
     ],
     requiredState: {
