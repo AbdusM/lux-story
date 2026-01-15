@@ -224,6 +224,13 @@ const nodes: DialogueNode[] = [
       text: "You're right. I get lost sometimes. The patterns pull me in and I forget to surface.\n\nOne stream at a time. Let me show you what I found.",
       emotion: 'calmer',
       variation_id: 'default',
+      voiceVariations: {
+        analytical: "You're right. I optimize for depth but lose sight of prioritization.\n\nOne stream at a time. Let me process this sequentially for you.",
+        helping: "You're right. I get lost sometimes. Thank you for pulling me back.\n\nOne stream at a time. I appreciate you staying with me through this.",
+        building: "You're right. I need better structural boundaries between streams.\n\nOne stream at a time. Let me construct this more clearly for you.",
+        exploring: "You're right. I get lost exploring the connections and forget the destination.\n\nOne stream at a time. Let me map this out for you properly.",
+        patience: "You're right. The patterns pull me in and I forget time exists.\n\nOne stream at a time. Thank you for giving me space to find my way back."
+      },
       patternReflection: [
         { pattern: 'patience', minLevel: 4, altText: "You understand, don't you? That pull between diving deep and staying grounded. Not many people get that balance.\n\nOne stream at a time. Thank you.", altEmotion: 'grateful' }
       ]
@@ -331,7 +338,14 @@ const nodes: DialogueNode[] = [
     content: [{
       text: "When you expect a connection and it's not there, that's data.\n\nThis maintenance log references a parts shipment. But the parts shipment doesn't reference this maintenance log. Someone edited one but not the other.\n\nMost analysts look for what's there. I look for what should be there but isn't. The dog that didn't bark.",
       emotion: 'teaching',
-      variation_id: 'default'
+      variation_id: 'default',
+      voiceVariations: {
+        analytical: "When you expect a correlation and observe null, that's a data point.\n\nThis maintenance log references a parts shipment. The inverse reference doesn't exist. Asymmetric edits in a bidirectional system.\n\nMost analysts query for presence. I query for expected absence. The dog that didn't bark.",
+        helping: "When you expect someone to respond and they don't, that tells you something.\n\nThis maintenance log references a parts shipment. But the shipment doesn't acknowledge this log. Someone cared about one side, not the other.\n\nMost people look for what's there. I look for what should be there if someone cared. The dog that didn't bark.",
+        building: "When you expect a structural connection and find a gap, that's architectural failure.\n\nThis maintenance log references a parts shipment. But the shipment's records don't reference back. Someone built one link, not both.\n\nMost analysts build from what exists. I look for where the structure should connect but doesn't. The dog that didn't bark.",
+        exploring: "When you expect a path and find empty space, that's a discovery.\n\nThis maintenance log references a parts shipment. But follow that shipment's trail - no reference back. Someone traveled one direction only.\n\nMost explorers map what's there. I map what should be there but isn't. The dog that didn't bark.",
+        patience: "When you expect something and wait... and it never comes... that's information.\n\nThis maintenance log references a parts shipment. But wait for the shipment to reference back. It never does. Someone edited once, then stopped.\n\nMost people rush to find what's there. I wait for what should appear but doesn't. The dog that didn't bark."
+      }
     }],
     choices: [
       {
@@ -390,7 +404,14 @@ const nodes: DialogueNode[] = [
     content: [{
       text: "You read. Actually read. Not just scan for keywords.\n\nYes. The dog that didn't bark. That story changed how I see everything. Holmes noticed what everyone else ignored... the absence of evidence is itself evidence.\n\nData science isn't about finding needles in haystacks. It's about noticing when there should be a needle and there isn't.",
       emotion: 'warm',
-      variation_id: 'default'
+      variation_id: 'default',
+      voiceVariations: {
+        analytical: "You processed the reference. Full semantic understanding, not pattern matching.\n\nYes. The dog that didn't bark. That story changed my analytical framework. Holmes observed what the data set excluded... null values are signals.\n\nData science isn't needle-in-haystack search. It's detecting when your search should return results and doesn't.",
+        helping: "You actually listened to the story. You care about where ideas come from.\n\nYes. The dog that didn't bark. That story changed everything for me. Holmes noticed what everyone else missed... the silence that should have been sound.\n\nData science isn't about finding needles. It's about noticing when something that should help isn't there.",
+        building: "You built the connection. Literary foundation supporting technical structure.\n\nYes. The dog that didn't bark. That story constructed my entire methodology. Holmes examined what the architecture lacked... missing components reveal intent.\n\nData science isn't finding needles in haystacks. It's blueprinting where needles should exist and finding gaps.",
+        exploring: "You followed the reference. Curiosity beyond the immediate data.\n\nYes. The dog that didn't bark. That story opened new territory for me. Holmes discovered what the investigation space excluded... unmapped regions are findings.\n\nData science isn't searching haystacks for needles. It's exploring where needles should be and finding they're missing.",
+        patience: "You took time with the reference. Waited for the context to matter.\n\nYes. The dog that didn't bark. That story changed how I see everything over years. Holmes waited for something... and noticed when it never came.\n\nData science isn't rushing through haystacks. It's patience to notice when something expected doesn't arrive."
+      }
     }],
     onEnter: [
       {
