@@ -121,7 +121,14 @@ export const danteDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'dante_silence_v1',
         text: "Traditional sales is a performance. You're right to be skeptical.\n\nBut here's what I learned: when I stopped performing and started listening, my close rate went up. Not because I got better at manipulation—because I got better at understanding.\n\nSilence isn't a technique. It's respect.",
-        emotion: 'earnest'
+        emotion: 'earnest',
+        voiceVariations: {
+          analytical: "Traditional sales is a performance. Your skepticism is statistically justified.\n\nBut here's the data: when I stopped optimizing talk time and started measuring listen rate, my close rate improved 40%. Not from better manipulation algorithms—from better pattern recognition of actual needs.\n\nSilence isn't a technique. It's respect for the signal-to-noise ratio.",
+          helping: "Traditional sales is a performance. You're right to question it.\n\nBut here's what I learned: when I stopped trying to impress and started caring what they needed, people trusted me more. Not because I got better at persuasion—because I got better at actually wanting to help.\n\nSilence isn't a technique. It's respect for what someone's trying to tell you.",
+          building: "Traditional sales is a performance. You're right to be skeptical.\n\nBut here's what I learned: when I stopped constructing pitches and started building understanding, relationships lasted longer. Not because I got better at convincing—because I got better at co-creating solutions.\n\nSilence isn't a technique. It's respect for what we're building together.",
+          exploring: "Traditional sales is a performance. You're right to question it.\n\nBut here's what I discovered: when I stopped mapping my agenda and started exploring theirs, conversations went deeper. Not because I got better at persuasion—because I got better at navigating what they actually need.\n\nSilence isn't a technique. It's respect for the territory they're showing you.",
+          patience: "Traditional sales is a performance. You're right to be skeptical.\n\nBut here's what I learned: when I stopped rushing to close and started giving time to understand, trust developed naturally. Not because I got better at manipulation—because I got better at waiting for the real need to surface.\n\nSilence isn't a technique. It's respect for the time truth takes."
+        }
       }
     ],
     choices: [
@@ -191,7 +198,14 @@ export const danteDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'dante_pause_exp_v1',
         text: "[Dante watches you, silent. The station hums around you both. Time stretches.]\n\n...There. Did you feel it? The moment when your brain stopped performing and started reflecting?\n\nThat's the space I'm trying to create in every conversation. That's where real decisions happen.",
-        emotion: 'quiet_satisfied'
+        emotion: 'quiet_satisfied',
+        voiceVariations: {
+          analytical: "[Dante watches you, silent. The station hums around you both. Time stretches.]\n\n...There. Did you process it? The moment when analysis stopped and meta-cognition began?\n\nThat's the state space I'm trying to reach in every conversation. That's where authentic optimization happens.",
+          helping: "[Dante watches you, silent. The station hums around you both. Time stretches.]\n\n...There. Did you feel it? The moment when trying stopped and truth began?\n\nThat's the safe space I'm trying to create in every conversation. That's where real care happens.",
+          building: "[Dante watches you, silent. The station hums around you both. Time stretches.]\n\n...There. Did you feel it? The moment when construction stopped and foundation became visible?\n\nThat's the ground I'm trying to establish in every conversation. That's where solid decisions build.",
+          exploring: "[Dante watches you, silent. The station hums around you both. Time stretches.]\n\n...There. Did you find it? The moment when navigation stopped and discovery began?\n\nThat's the territory I'm trying to reach in every conversation. That's where real paths reveal themselves.",
+          patience: "[Dante watches you, silent. The station hums around you both. Time stretches.]\n\n...There. Did you notice it? The moment when rushing stopped and presence began?\n\nThat's the duration I'm trying to honor in every conversation. That's where truth accumulates enough weight to settle."
+        }
       }
     ],
     choices: [
@@ -225,7 +239,14 @@ export const danteDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'dante_restraint_v1',
         text: "Exactly. I can close anyone. That's not bragging—it's a warning.\n\nI learned to sell before I learned ethics. Grew up reading people because I had to. By twenty, I could get anyone to buy anything.\n\nThat's when I realized: power without restraint isn't a gift. It's a liability.",
-        emotion: 'serious'
+        emotion: 'serious',
+        voiceVariations: {
+          analytical: "Exactly. I can close anyone. That's not bragging—it's predictive accuracy.\n\nI learned persuasion patterns before I learned ethical frameworks. Grew up analyzing people because survival required it. By twenty, I could model anyone's decision tree.\n\nThat's when I realized: capability without constraint isn't optimization. It's risk.",
+          helping: "Exactly. I can close anyone. That's not bragging—it's a confession.\n\nI learned to sell before I learned to care. Grew up reading people because I had to survive. By twenty, I could convince anyone of anything.\n\nThat's when I realized: power without caring isn't a gift. It's harm.",
+          building: "Exactly. I can close anyone. That's not bragging—it's acknowledging the infrastructure.\n\nI learned to build influence before I learned to build ethically. Grew up constructing persuasion because circumstances demanded it. By twenty, I could architect anyone's yes.\n\nThat's when I realized: power without foundation isn't strength. It's structural failure waiting to happen.",
+          exploring: "Exactly. I can close anyone. That's not bragging—it's mapping my own territory.\n\nI learned to navigate persuasion before I learned where I should go. Grew up reading people because I had to find my way. By twenty, I could guide anyone to any destination.\n\nThat's when I realized: power without direction isn't a gift. It's getting lost with greater efficiency.",
+          patience: "Exactly. I can close anyone. That's not bragging—it's a burden I've carried.\n\nI learned to sell fast before I learned to wait for truth. Grew up reading people because I had to. By twenty, I could rush anyone to any decision.\n\nThat's when I realized: power without patience isn't a gift. It's speed that breaks things."
+        }
       }
     ],
     choices: [
