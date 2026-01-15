@@ -4116,9 +4116,29 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_from_hollow',
         text: "I'm trying to build something real.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_hollow_wisdom',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'communication']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_hollow_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You are. What's real isn't titles or achievements - it's connection, presence, being seen and seeing others.\n\n[He gestures toward the platforms]\n\nReady to meet another traveler building something real?",
+        emotion: 'affirming_depth',
+        variation_id: 'beat_after_hollow_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
@@ -5061,12 +5081,32 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'return_after_deep_jordan',
         text: "[Nod thoughtfully]",
-        nextNodeId: 'samuel_hub_after_devon',
+        nextNodeId: 'samuel_beat_after_deep_jordan_reflection',
         pattern: 'patience',
         consequence: {
           characterId: 'samuel',
           trustChange: 1
         }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_deep_jordan_reflection',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You gave her the gift of sitting with uncertainty. Doubt isn't always the enemy - sometimes it's the compass.\n\n[He looks toward the platforms]\n\nOthers here are learning to navigate by that compass too.",
+        emotion: 'deep_knowing',
+        variation_id: 'beat_after_deep_jordan_reflection_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
       }
     ]
   },
