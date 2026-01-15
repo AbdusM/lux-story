@@ -116,7 +116,14 @@ export const kaiDialogueNodes: DialogueNode[] = [
         patternReflection: [
           { pattern: 'analytical', minLevel: 4, altText: "You get it. You see systems the way I do. Not just the outputs, but the logic failures hiding inside.\n\nMost people see a checkbox and think 'safety.' You see the gap.", altEmotion: 'impressed' },
           { pattern: 'building', minLevel: 4, altText: "You get it. You're already thinking about how to fix it, aren't you?\n\nMost people stop at 'this is broken.' You see what it could be.", altEmotion: 'hopeful' }
-        ]
+        ],
+        voiceVariations: {
+          analytical: "You see the logic error. Most people see a checkbox and think 'safety.' You see the gap between the policy and the practice.\n\nData collection vs. actual training. That distinction usually takes me twenty minutes to explain.",
+          helping: "You care about the people affected. Most people see a checkbox and think 'safety.' You see who gets hurt in the gap.\n\nThat empathy is rare. Most don't connect policy failures to real harm.",
+          building: "You're already designing the fix, aren't you? Most people see a checkbox and think 'safety.' You see what should be built instead.\n\nThe gap between policy and practice. Between 'completed' and 'capable.'",
+          exploring: "You're curious about the gap. Most people see a checkbox and think 'safety.' You want to understand what's missing.\n\nThat question - the space between completing training and being trained - most people never ask it.",
+          patience: "You took time to really look. Most people see a checkbox and think 'safety.' You waited to see the gap.\n\nThe difference between 'completing training' and 'being trained.' It takes patience to see that."
+        }
       }
     ],
     choices: [
@@ -146,7 +153,14 @@ export const kaiDialogueNodes: DialogueNode[] = [
         patternReflection: [
           { pattern: 'building', minLevel: 4, altText: "Redesign it. Yeah. I have a master's degree in exactly that.\n\nYou build things. You know what it's like to create something good that never gets used. VR safety simulation. Haptic feedback. Real scenarios.\n\nSitting on a hard drive. Too expensive.", altEmotion: 'vulnerable' },
           { pattern: 'exploring', minLevel: 4, altText: "Redesign it. I have a master's degree in exactly that. UAB, 2022.\n\nYou're curious about the gap, aren't you? Between what's possible and what gets deployed.\n\nMy capstone is sitting on a hard drive. Never deployed.", altEmotion: 'bitter_amusement' }
-        ]
+        ],
+        voiceVariations: {
+          analytical: "Redesign it. Yeah. I have a master's degree in exactly that. Instructional design.\n\nYou understand optimization. VR safety simulation. Haptic feedback. Real scenarios. Actual muscle memory.\n\nOptimal solution. Never deployed. Cost function said no.",
+          helping: "Redesign it. Yeah. That's what I studied. Instructional design. How to actually help people learn.\n\nYou care about the outcomes too. VR safety simulation. People could practice without dying.\n\nBut caring doesn't pay for deployment. It's sitting on a hard drive.",
+          building: "Redesign it. Yeah. I have a master's degree in exactly that.\n\nYou're a builder. You know this pain. VR safety simulation. Haptic feedback. Real scenarios. I built something that worked.\n\nIt's sitting on a hard drive. Never deployed. Too expensive to use.",
+          exploring: "Redesign it. Yeah. I have a master's degree in exactly that. UAB, 2022.\n\nYou're curious what's possible, aren't you? VR safety simulation. Haptic feedback. Real scenarios.\n\nWhole new world of training. Sitting on a hard drive. Never explored.",
+          patience: "Redesign it. Yeah. That's what I studied. Slowly, carefully. Instructional design.\n\nYou understand quality takes time. VR safety simulation. Haptic feedback. Real scenarios. Muscle memory.\n\nTwo years of work. Sitting on a hard drive. Never given the time to deploy."
+        }
       }
     ],
     choices: [
@@ -1920,7 +1934,14 @@ Available Components:
       {
         text: "That's it. That's the question.\n\nKeep asking it. Keep building. Even if you don't know what it is yet.\n\nIf you see Samuel... tell him I'm done with compliance. I'm in the business of reality now.",
         emotion: 'affirming',
-        variation_id: 'kai_response_v1'
+        variation_id: 'kai_response_v1',
+        voiceVariations: {
+          analytical: "That's the right question. The one that matters.\n\nKeep analyzing it. Keep optimizing for truth instead of checkboxes.\n\nIf you see Samuel... tell him I'm done with compliance engineering. I'm in the business of reality now.",
+          helping: "That's it. That's the question that helps.\n\nKeep asking it. Keep supporting people instead of systems.\n\nIf you see Samuel... tell him I'm done with compliance. I'm in the business of actually protecting people now.",
+          building: "That's it. That's the foundation.\n\nKeep building from that question. Even if you don't know the architecture yet.\n\nIf you see Samuel... tell him I'm done with compliance structures. I'm building for reality now.",
+          exploring: "That's it. That's the path worth exploring.\n\nKeep asking it. Keep discovering. Even if you don't know the destination yet.\n\nIf you see Samuel... tell him I'm done with compliance. I'm exploring reality now.",
+          patience: "That's it. That's the question. The one that takes time to answer.\n\nKeep asking it. Keep building slowly, carefully.\n\nIf you see Samuel... tell him I'm done with compliance deadlines. I'm in the business of reality now."
+        }
       }
     ],
     choices: [
