@@ -21,7 +21,7 @@ export const runtime = 'nodejs'
  */
 export async function GET(request: NextRequest) {
   // Authentication check - verify admin cookie
-  const authError = requireAdminAuth(request)
+  const authError = await requireAdminAuth(request)
   if (authError) return authError
 
   try {

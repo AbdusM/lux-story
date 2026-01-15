@@ -28,55 +28,25 @@ function getInternalBaseUrl(): string {
   return 'http://localhost:3005'
 }
 
-import { validateSession } from '@/lib/auth-utils'
-
-/**
- * Verify admin session token
- * SECURITY FIX: Previously compared raw password, now validates session token
- */
-function requireAdminAuth(request: NextRequest): NextResponse | null {
-  const sessionToken = request.cookies.get('admin_auth_token')?.value
-
-  if (!sessionToken) {
-    return NextResponse.json(
-      { error: 'Unauthorized - Admin access required' },
-      { status: 401 }
-    )
-  }
-
-  // Validate session token (not password comparison!)
-  const userId = validateSession(sessionToken)
-  if (!userId) {
-    return NextResponse.json(
-      { error: 'Session expired - Please log in again' },
-      { status: 401 }
-    )
-  }
-
-  return null // Auth passed
-}
+import { requireAdminAuth } from '@/lib/admin-supabase-client'
 
 export async function GET(request: NextRequest) {
-  // Authentication check - verify admin cookie
-  const authError = requireAdminAuth(request)
+  // Authentication check - verify user role
+  const authError = await requireAdminAuth(request)
   if (authError) return authError
+
   // Extract query parameters
   const { searchParams } = new URL(request.url)
   const level = searchParams.get('level') || 'all'
   const limit = searchParams.get('limit') || '50'
   const userId = searchParams.get('userId') // Single user lookup
 
+  // Get cookies to forward to internal API
+  const cookieHeader = request.headers.get('cookie') || ''
+
   // Single user lookup - optimized path
   if (userId) {
     try {
-      const adminToken = process.env.ADMIN_API_TOKEN
-      if (!adminToken) {
-        return NextResponse.json(
-          { error: 'Admin API not configured' },
-          { status: 500 }
-        )
-      }
-
       // Query urgency API for single user
       // SECURITY: Use hardcoded base URL, never trust request headers
       const baseUrl = getInternalBaseUrl()
@@ -84,7 +54,7 @@ export async function GET(request: NextRequest) {
 
       const response = await fetch(apiUrl, {
         headers: {
-          'Authorization': `Bearer ${adminToken}`,
+          'Cookie': cookieHeader, // Forward session cookies
           'Content-Type': 'application/json'
         }
       })
@@ -93,7 +63,7 @@ export async function GET(request: NextRequest) {
         const data = await response.json()
         return NextResponse.json({ user: data.user || data })
       } else {
-        // If API fails, return null user (don't try localStorage in server context)
+        // If API fails, return null user
         return NextResponse.json({
           user: null,
           timestamp: new Date().toISOString()
@@ -156,16 +126,6 @@ export async function GET(request: NextRequest) {
   }
 
   // Standard urgency flow: forward to Supabase API
-  const adminToken = process.env.ADMIN_API_TOKEN
-
-  if (!adminToken) {
-    return NextResponse.json(
-      { error: 'Admin API not configured' },
-      { status: 500 }
-    )
-  }
-
-  // Forward request to actual urgency API with server-side token
   try {
     // SECURITY: Use hardcoded base URL, never trust request headers
     const baseUrl = getInternalBaseUrl()
@@ -173,7 +133,7 @@ export async function GET(request: NextRequest) {
 
     const response = await fetch(apiUrl, {
       headers: {
-        'Authorization': `Bearer ${adminToken}`,
+        'Cookie': cookieHeader, // Forward session cookies
         'Content-Type': 'application/json'
       }
     })
@@ -194,20 +154,14 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  // Authentication check - verify admin cookie
-  const authError = requireAdminAuth(request)
+  // Authentication check - verify user role
+  const authError = await requireAdminAuth(request)
   if (authError) return authError
 
+  // Get cookies to forward to internal API
+  const cookieHeader = request.headers.get('cookie') || ''
+
   // Recalculate urgency scores
-  const adminToken = process.env.ADMIN_API_TOKEN
-
-  if (!adminToken) {
-    return NextResponse.json(
-      { error: 'Admin API not configured' },
-      { status: 500 }
-    )
-  }
-
   try {
     // SECURITY: Use hardcoded base URL, never trust request headers
     const baseUrl = getInternalBaseUrl()
@@ -216,7 +170,7 @@ export async function POST(request: NextRequest) {
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${adminToken}`,
+        'Cookie': cookieHeader, // Forward session cookies
         'Content-Type': 'application/json'
       }
     })

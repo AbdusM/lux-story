@@ -34,7 +34,7 @@ const statusConfig: Record<QuestStatus, {
   },
   unlocked: {
     icon: AlertCircle,
-    label: 'AVAILABLE',
+    label: '', // Removed redundant AVAILABLE label - visibility implies availability
     color: 'text-blue-400',
     borderColor: 'border-blue-500/40',
     glowColor: 'shadow-[0_0_15px_rgba(59,130,246,0.15)]'
@@ -130,8 +130,8 @@ function QuestCard({ quest, index, onSelect }: { quest: Quest; index: number; on
               {status.label}
             </span>
             <span className={cn(
-              "font-bold tracking-wide leading-tight",
-              quest.status === 'locked' ? 'text-slate-500 font-mono text-xs' : 'text-slate-100'
+              "font-bold tracking-wide leading-tight text-sm",
+              quest.status === 'locked' ? 'text-slate-500 font-mono' : 'text-slate-100'
             )}>
               {quest.title}
             </span>
@@ -149,7 +149,7 @@ function QuestCard({ quest, index, onSelect }: { quest: Quest; index: number; on
       {/* Description Body */}
       <div className="mt-3 pl-[34px] relative z-10">
         <p className={cn(
-          "text-xs leading-relaxed font-sans",
+          "text-sm leading-relaxed font-sans",
           quest.status === 'locked' ? 'text-slate-600 font-mono' : 'text-slate-400'
         )}>
           {quest.status === 'locked'

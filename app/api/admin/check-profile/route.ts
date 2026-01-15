@@ -14,7 +14,7 @@ export const runtime = 'nodejs'
  * Check if a profile exists for a given user
  */
 export async function GET(request: NextRequest) {
-  const authError = requireAdminAuth(request)
+  const authError = await requireAdminAuth(request)
   if (authError) return authError
 
   try {

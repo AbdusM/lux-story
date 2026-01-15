@@ -83,6 +83,11 @@ export class SyncQueue {
    * This is synchronous and instant - no network call
    */
   static addToQueue(action: Omit<QueuedAction, 'retries'>): void {
+    // BYPASS: Skip sync queue during God Mode operations to prevent database hammering
+    if (typeof window !== 'undefined' && (window as any).__GOD_MODE_ACTIVE) {
+      return // Don't queue actions when God Mode is manipulating state
+    }
+
     const queue = this.getQueue()
 
     // Prevent unbounded growth - drop oldest if at limit

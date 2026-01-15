@@ -45,7 +45,7 @@ export function SkillConstellationGraph({ skills, onOpenDetail }: SkillConstella
                 style={{ overflow: 'visible' }}
             >
                 {/* --- CONNECTIONS LAYER --- */}
-                <g className="links opacity-60">
+                <g className="links opacity-80">
                     {SKILL_CONNECTIONS.map(([sourceId, targetId]) => {
                         const source = getSkillState(sourceId)
                         const target = getSkillState(targetId)
@@ -71,11 +71,11 @@ export function SkillConstellationGraph({ skills, onOpenDetail }: SkillConstella
                                 strokeWidth={isStrong ? "0.3" : "0.1"}
                                 className={cn(
                                     "transition-all duration-500",
-                                    isStrong ? "opacity-60" : "opacity-20 dashed"
+                                    isStrong ? "opacity-80" : "opacity-40 dashed"
                                 )}
                                 strokeDasharray={isStrong ? "0" : "1 1"}
                                 initial={{ pathLength: 0, opacity: 0 }}
-                                animate={{ pathLength: 1, opacity: isStrong ? 0.6 : 0.2 }}
+                                animate={{ pathLength: 1, opacity: isStrong ? 0.8 : 0.4 }}
                             />
                         )
                     })}
@@ -105,7 +105,7 @@ export function SkillConstellationGraph({ skills, onOpenDetail }: SkillConstella
                                 onMouseLeave={() => setHoveredId(null)}
                                 className={cn(
                                     "transition-all duration-500 ease-out cursor-pointer group",
-                                    !isUnlocked && "opacity-40 grayscale hover:opacity-100 hover:grayscale-0"
+                                    !isUnlocked && "opacity-70 grayscale hover:opacity-100 hover:grayscale-0"
                                 )}
                             >
                                 {/* Hit Area */}

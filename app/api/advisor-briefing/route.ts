@@ -14,8 +14,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
 import { logger } from '@/lib/logger'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY
+
+// Rate limiter: 10 requests per hour (prevents Claude API abuse)
+const advisorBriefingLimiter = rateLimit({
+  interval: 60 * 60 * 1000, // 1 hour
+  uniqueTokenPerInterval: 500,
+})
 
 interface SkillSummary {
   skillName: string
@@ -184,7 +191,23 @@ Generate only the five sections as clean markdown. No preamble or conclusion. St
  * Generates strategic briefing using Claude (Sonnet 3.5)
  */
 export async function POST(request: NextRequest) {
-  // Parse request body first
+  // Rate limiting: 10 requests per hour
+  const ip = getClientIp(request)
+  try {
+    await advisorBriefingLimiter.check(ip, 10)
+  } catch {
+    return NextResponse.json(
+      { error: 'Too many briefing generation requests. Please try again in an hour.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': '3600' // 1 hour in seconds
+        }
+      }
+    )
+  }
+
+  // Parse request body
   const body: AdvisorBriefingRequest = await request.json()
   const { profile, skillsData } = body
 

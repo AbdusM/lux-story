@@ -2,6 +2,7 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
+import { GLASS_BUTTON } from "@/lib/ui-constants"
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-95",
@@ -17,7 +18,7 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         "ghost-dark": "text-slate-200 hover:bg-white/10 hover:text-white border border-transparent hover:border-white/10 transition-all duration-200",
-        glass: "bg-slate-900/30 backdrop-blur-md border border-white/5 text-slate-100 shadow-sm hover:bg-slate-900/50 hover:border-white/10 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300",
+        glass: GLASS_BUTTON,  // From lib/ui-constants.ts - single source of truth for glass styling
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

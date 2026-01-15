@@ -217,6 +217,127 @@ export const BREAKPOINTS = {
 } as const;
 
 // =============================================================================
+// TEXT SIZING & READABILITY
+// =============================================================================
+
+/**
+ * Typography scale - Use for consistent text sizing
+ * Avoid text-xs (12px) for body content - minimum text-sm (14px) for readability
+ */
+export const TEXT_SIZE = {
+  meta: 'text-xs',      // 12px - metadata, labels only
+  body: 'text-sm',      // 14px - body text, descriptions (minimum for readability)
+  base: 'text-base',    // 16px - default body
+  title: 'text-lg',     // 18px - card/section titles
+  heading: 'text-xl',   // 20px - page headings
+} as const;
+
+/**
+ * Max-widths for text containers to prevent truncation
+ * Use these instead of arbitrary values like max-w-[100px]
+ */
+export const TEXT_CONTAINER_WIDTH = {
+  compact: 'max-w-[180px]',     // Short labels, tags (increased from common 100px)
+  standard: 'max-w-[280px]',    // Default text containers
+  wide: 'max-w-[400px]',        // Long descriptions
+  full: 'max-w-full',           // No restriction
+} as const;
+
+/**
+ * IMPORTANT: Avoid `truncate` class unless absolutely necessary
+ * - Use multi-line with line-clamp-2 or line-clamp-3 instead
+ * - Only truncate when horizontal space is critical (breadcrumbs, nav)
+ */
+
+// =============================================================================
+// OPACITY & VISIBILITY STANDARDS
+// =============================================================================
+
+/**
+ * Opacity scale for visual hierarchy
+ * Avoid opacity-40 or lower for interactive elements
+ */
+export const OPACITY = {
+  disabled: 'opacity-50',        // Disabled state (minimum for visibility)
+  inactive: 'opacity-70',        // Inactive but visible elements
+  secondary: 'opacity-80',       // Secondary content
+  primary: 'opacity-100',        // Primary content
+} as const;
+
+/**
+ * Connection/line opacity for graphs and constellations
+ * Increased from common low values (20-40%) for better visibility
+ */
+export const CONNECTION_OPACITY = {
+  weak: 'opacity-40',           // Weak/dotted connections
+  normal: 'opacity-80',         // Standard connections
+  strong: 'opacity-100',        // Emphasized connections
+} as const;
+
+// =============================================================================
+// GLASS MORPHISM SYSTEM
+// =============================================================================
+
+/**
+ * Glass morphism opacity levels
+ * Use these instead of arbitrary opacity values
+ *
+ * Created as part of architectural fix for white button backgrounds (Jan 2026)
+ * See: /Users/abdusmuwwakkil/.claude/plans/humble-shimmying-hellman.md
+ */
+export const GLASS_OPACITY = {
+  subtle: 'bg-slate-900/30',        // 30% - Subtle glass effect
+  medium: 'bg-slate-900/60',        // 60% - Balanced glass
+  solid: 'bg-slate-900/85',         // 85% - Solid with slight transparency
+  opaque: 'bg-slate-900/95',        // 95% - Nearly opaque
+} as const;
+
+/**
+ * Reusable glass styling fragments
+ * Combine these for consistent glass morphism across components
+ */
+export const GLASS_STYLES = {
+  base: `${GLASS_OPACITY.solid} backdrop-blur-md border border-white/5`,
+  hover: 'hover:bg-slate-900/95 hover:border-white/10',
+  text: 'text-slate-100',
+  shadow: 'shadow-sm hover:shadow-lg',
+  transition: 'transition-all duration-300',
+} as const;
+
+/**
+ * Complete glass button styling (for Button component)
+ * Single source of truth - replaces hardcoded glass variant
+ */
+export const GLASS_BUTTON = `${GLASS_STYLES.base} ${GLASS_STYLES.text} ${GLASS_STYLES.shadow} ${GLASS_STYLES.hover} hover:-translate-y-0.5 ${GLASS_STYLES.transition}`;
+
+// =============================================================================
+// CHOICE CONTAINER HEIGHT (Layout Stability)
+// =============================================================================
+
+/**
+ * Fixed container heights for choice buttons
+ * Prevents layout jumping when button count changes (1 vs 2 vs 4)
+ *
+ * Strategy: Lock to fixed heights with mobile breakpoints
+ * - Small phones (< 400px): 220px (~2.9 rows visible)
+ * - Large phones (≥ 400px): 296px (~3.9 rows visible)
+ * - Tablet (≥ 640px): 198px (~2.75 rows visible)
+ *
+ * Benefits:
+ * - Container never changes height → no layout shift
+ * - Partial rows create "peek" effect → encourages scrolling
+ * - scrollbarGutter: 'stable' prevents scrollbar layout shift
+ *
+ * Created: Jan 14, 2026 - Container stability architectural fix
+ * @see /Users/abdusmuwwakkil/.claude/plans/humble-shimmying-hellman.md
+ */
+export const CHOICE_CONTAINER_HEIGHT = {
+  mobileSm: 'min-h-[220px] max-h-[220px]',         // Base: small phones (< 400px)
+  mobile: 'xs:min-h-[296px] xs:max-h-[296px]',    // ≥ 400px: larger phones
+  tablet: 'sm:min-h-[198px] sm:max-h-[198px]',    // ≥ 640px: tablets+
+} as const;
+
+// =============================================================================
 // HELPER TYPES
 // =============================================================================
 
@@ -225,3 +346,5 @@ export type ButtonSize = keyof typeof BUTTON_HEIGHT;
 export type SpacingMode = keyof typeof SPACING;
 export type UrgencyLevel = keyof typeof URGENCY_COLORS;
 export type SkillState = keyof typeof SKILL_STATE_COLORS;
+export type TextSize = keyof typeof TEXT_SIZE;
+export type TextContainerWidth = keyof typeof TEXT_CONTAINER_WIDTH;

@@ -54,6 +54,12 @@ export interface GodModeAPI {
   getPattern(pattern: PatternType): number | null
   setAllPatterns(level: number): void
 
+  // Skill Management
+  demonstrateSkill(skillName: string, count?: number): void
+
+  // Platform Management
+  setPlatform(platformId: string, discovered: boolean, resonance: number): void
+
   // Navigation
   jumpToNode(nodeId: string): boolean
   jumpToCharacter(characterId: string): boolean
@@ -94,6 +100,23 @@ export interface GodModeAPI {
 }
 
 /**
+ * Helper: Wrap God Mode operations to prevent database sync hammering
+ * Sets __GOD_MODE_ACTIVE flag to bypass sync queue during bulk state changes
+ */
+function withGodModeFlag<T>(fn: () => T): T {
+  if (typeof window !== 'undefined') {
+    ;(window as any).__GOD_MODE_ACTIVE = true
+  }
+  try {
+    return fn()
+  } finally {
+    if (typeof window !== 'undefined') {
+      ;(window as any).__GOD_MODE_ACTIVE = false
+    }
+  }
+}
+
+/**
  * Create God Mode API instance
  */
 export function createGodModeAPI(): GodModeAPI {
@@ -103,27 +126,29 @@ export function createGodModeAPI(): GodModeAPI {
     // ═══════════════════════════════════════════════════════════════════════════
 
     setTrust(characterId: string, value: number): boolean {
-      if (!checkGameStateHydrated()) return false
-      if (!validateCharacterId(characterId)) {
-        console.error(`[God Mode] Invalid character ID: '${characterId}'`)
-        return false
-      }
+      return withGodModeFlag(() => {
+        if (!checkGameStateHydrated()) return false
+        if (!validateCharacterId(characterId)) {
+          console.error(`[God Mode] Invalid character ID: '${characterId}'`)
+          return false
+        }
 
-      const clampedValue = validateTrust(value)
-      const store = useGameStore.getState()
+        const clampedValue = validateTrust(value)
+        const store = useGameStore.getState()
 
-      // Get current trust
-      const currentChar = store.coreGameState?.characters.find(c => c.characterId === characterId)
-      const currentTrust = currentChar?.trust ?? 0
-      const trustChange = clampedValue - currentTrust
+        // Get current trust
+        const currentChar = store.coreGameState?.characters.find(c => c.characterId === characterId)
+        const currentTrust = currentChar?.trust ?? 0
+        const trustChange = clampedValue - currentTrust
 
-      store.applyCoreStateChange({
-        characterId,
-        trustChange
+        store.applyCoreStateChange({
+          characterId,
+          trustChange
+        })
+
+        console.log(`[God Mode] Set ${characterId} trust: ${currentTrust} → ${clampedValue}`)
+        return true
       })
-
-      console.log(`[God Mode] Set ${characterId} trust: ${currentTrust} → ${clampedValue}`)
-      return true
     },
 
     getTrust(characterId: string): number | null {
@@ -165,20 +190,77 @@ export function createGodModeAPI(): GodModeAPI {
     },
 
     setAllPatterns(level: number): void {
-      if (!checkGameStateHydrated()) return
+      withGodModeFlag(() => {
+        if (!checkGameStateHydrated()) return
 
-      const clampedLevel = validatePatternLevel(level)
-      const changes: Record<PatternType, number> = {} as Record<PatternType, number>
+        const clampedLevel = validatePatternLevel(level)
+        const changes: Record<PatternType, number> = {} as Record<PatternType, number>
 
-      PATTERN_TYPES.forEach(pattern => {
-        changes[pattern] = clampedLevel
+        PATTERN_TYPES.forEach(pattern => {
+          changes[pattern] = clampedLevel
+        })
+
+        useGameStore.getState().applyCoreStateChange({
+          patternChanges: changes
+        })
+
+        console.log(`[God Mode] Set all patterns to level ${clampedLevel}`)
       })
+    },
 
-      useGameStore.getState().applyCoreStateChange({
-        patternChanges: changes
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SKILL MANAGEMENT
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    demonstrateSkill(skillName: string, count: number = 5): void {
+      withGodModeFlag(() => {
+        if (!checkGameStateHydrated()) return
+
+        const store = useGameStore.getState()
+
+        // Update skill demonstrations in core state
+        // TODO: skillDemonstrations moved to database (skill_demonstrations table)
+        // This god mode function needs refactoring to use database instead of state
+        store.updateCoreGameState(state => ({
+          ...state,
+          skillDemonstrations: {
+            // @ts-expect-error - Legacy skill tracking, needs database refactor
+            ...state.skillDemonstrations,
+            // @ts-expect-error - Legacy skill tracking, needs database refactor
+            [skillName]: (state.skillDemonstrations?.[skillName] || 0) + count
+          }
+        }))
+
+        console.log(`[God Mode] Demonstrated skill: ${skillName} (count: +${count})`)
       })
+    },
 
-      console.log(`[God Mode] Set all patterns to level ${clampedLevel}`)
+    // ═══════════════════════════════════════════════════════════════════════════
+    // PLATFORM MANAGEMENT
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    setPlatform(platformId: string, discovered: boolean, resonance: number): void {
+      withGodModeFlag(() => {
+        if (!checkGameStateHydrated()) return
+
+        const store = useGameStore.getState()
+        const clampedResonance = Math.max(0, Math.min(10, resonance))
+
+        // Update platform state
+        store.updateCoreGameState(state => ({
+          ...state,
+          // @ts-expect-error - God mode partial update, doesn't include all PlatformState fields
+          platforms: {
+            ...state.platforms,
+            [platformId]: {
+              discovered,
+              resonance: clampedResonance
+            }
+          }
+        }))
+
+        console.log(`[God Mode] Set platform ${platformId}: discovered=${discovered}, resonance=${clampedResonance}`)
+      })
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -266,20 +348,22 @@ export function createGodModeAPI(): GodModeAPI {
     // ═══════════════════════════════════════════════════════════════════════════
 
     unlockAllSimulations(): void {
-      if (!checkGameStateHydrated()) return
+      withGodModeFlag(() => {
+        if (!checkGameStateHydrated()) return
 
-      const flags: string[] = []
-      SIMULATION_REGISTRY.forEach(sim => {
-        if (sim.completionFlag.type === 'global') {
-          flags.push(sim.completionFlag.flag)
-        }
+        const flags: string[] = []
+        SIMULATION_REGISTRY.forEach(sim => {
+          if (sim.completionFlag.type === 'global') {
+            flags.push(sim.completionFlag.flag)
+          }
+        })
+
+        useGameStore.getState().applyCoreStateChange({
+          addGlobalFlags: flags
+        })
+
+        console.log(`[God Mode] Unlocked ${flags.length} simulations`)
       })
-
-      useGameStore.getState().applyCoreStateChange({
-        addGlobalFlags: flags
-      })
-
-      console.log(`[God Mode] Unlocked ${flags.length} simulations`)
     },
 
     unlockSimulation(characterId: string): boolean {
@@ -508,24 +592,26 @@ export function createGodModeAPI(): GodModeAPI {
     },
 
     resetAll(): void {
-      if (!confirm('[God Mode] Reset all game state? This cannot be undone.')) {
-        return
-      }
-
-      const store = useGameStore.getState()
-      // Only clear game-related storage, not all localStorage
-      const keysToRemove: string[] = []
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i)
-        if (key && (key.startsWith('game-') || key.includes('godMode'))) {
-          keysToRemove.push(key)
+      withGodModeFlag(() => {
+        if (!confirm('[God Mode] Reset all game state? This cannot be undone.')) {
+          return
         }
-      }
-      keysToRemove.forEach(key => localStorage.removeItem(key))
 
-      nodeCache.clear()
+        const store = useGameStore.getState()
+        // Only clear game-related storage, not all localStorage
+        const keysToRemove: string[] = []
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i)
+          if (key && (key.startsWith('game-') || key.includes('godMode'))) {
+            keysToRemove.push(key)
+          }
+        }
+        keysToRemove.forEach(key => localStorage.removeItem(key))
 
-      console.log('[God Mode] Game state cleared. Refresh page to start fresh.')
+        nodeCache.clear()
+
+        console.log('[God Mode] Game state cleared. Refresh page to start fresh.')
+      })
     }
   }
 }

@@ -104,8 +104,12 @@ import { synthEngine } from '@/lib/audio/synth-engine'
 import { HeroBadge } from '@/components/HeroBadge'
 import { StrategyReport } from '@/components/career/StrategyReport'
 import { GameMenu } from '@/components/GameMenu'
+import { UserMenu } from '@/components/auth/UserMenu'
 import { GameStateManager } from '@/lib/game-state-manager'
 import { useBackgroundSync } from '@/hooks/useBackgroundSync'
+import { useSettingsSync } from '@/hooks/useSettingsSync'
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
+import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
 import { StationState, useStationStore } from '@/lib/station-state'
 import { filterChoicesByLoad, CognitiveLoadLevel } from '@/lib/cognitive-load' // Fixed: Top-level import
 import { generateUserId } from '@/lib/safe-storage'
@@ -355,6 +359,13 @@ export default function StatefulGameInterface() {
   // Orb earning-SILENT during gameplay (discovery in Journal)
   const { earnOrb, earnBonusOrbs, hasNewOrbs, markOrbsViewed, getUnacknowledgedMilestone, acknowledgeMilestone, balance: orbBalance } = useOrbs()
 
+  // Settings sync - automatically sync settings to cloud when authenticated
+  const { pushNow: pushSettingsToCloud } = useSettingsSync()
+
+  // Keyboard shortcuts
+  const { registerHandler, shortcuts, updateShortcut, resetShortcuts } = useKeyboardShortcuts()
+  const [showShortcutsHelp, setShowShortcutsHelp] = useState(false)
+
   // Compute orb fill percentages for KOTOR-style locked choices
   const MAX_ORB_COUNT = 100
   const orbFillLevels = useMemo(() => ({
@@ -404,7 +415,7 @@ export default function StatefulGameInterface() {
     endingPattern: null,
     hasNewTrust: false,
     hasNewMeeting: false,
-    isMuted: false,
+    isMuted: typeof window !== 'undefined' ? localStorage.getItem('lux_audio_muted') === 'true' : false,
     isProcessing: false,
     activeInterrupt: null,
     patternVoice: null,
@@ -414,6 +425,15 @@ export default function StatefulGameInterface() {
     pendingGift: null,
     isReturningPlayer: false,
     // activeExperience: null
+  })
+
+  // Audio volume state (0-100, persisted to localStorage)
+  const [audioVolume, setAudioVolume] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('lux_audio_volume')
+      return stored ? parseInt(stored, 10) : 50
+    }
+    return 50
   })
 
   // 5. GOD MODE OVERRIDE-Access from zustand store (conditional render at end of component)
@@ -481,6 +501,66 @@ export default function StatefulGameInterface() {
       }
     }
   }, [])
+
+  // Register keyboard shortcut handlers
+  useEffect(() => {
+    // Navigation shortcuts
+    registerHandler('toggleJournal', () => {
+      setState(prev => ({ ...prev, showJournal: !prev.showJournal }))
+    })
+    registerHandler('toggleConstellation', () => {
+      setState(prev => ({ ...prev, showConstellation: !prev.showConstellation }))
+    })
+    registerHandler('toggleReport', () => {
+      setState(prev => ({ ...prev, showReport: !prev.showReport }))
+    })
+
+    // Action shortcuts
+    registerHandler('toggleMute', () => {
+      const newMuted = !state.isMuted
+      setState(prev => ({ ...prev, isMuted: newMuted }))
+      localStorage.setItem('lux_audio_muted', String(newMuted))
+      synthEngine.setMute(newMuted)
+      setAudioEnabled(!newMuted)
+      pushSettingsToCloud()
+    })
+    registerHandler('openSettings', () => {
+      window.location.href = '/profile'
+    })
+    registerHandler('openHelp', () => {
+      setShowShortcutsHelp(true)
+    })
+
+    // Choice selection shortcuts
+    registerHandler('selectChoice1', () => {
+      const button = document.querySelector('[data-choice-index="0"]') as HTMLButtonElement
+      button?.click()
+    })
+    registerHandler('selectChoice2', () => {
+      const button = document.querySelector('[data-choice-index="1"]') as HTMLButtonElement
+      button?.click()
+    })
+    registerHandler('selectChoice3', () => {
+      const button = document.querySelector('[data-choice-index="2"]') as HTMLButtonElement
+      button?.click()
+    })
+    registerHandler('selectChoice4', () => {
+      const button = document.querySelector('[data-choice-index="3"]') as HTMLButtonElement
+      button?.click()
+    })
+    registerHandler('focusChoices', () => {
+      const firstChoice = document.querySelector('[data-choice-index="0"]') as HTMLButtonElement
+      firstChoice?.focus()
+    })
+
+    // General shortcuts
+    registerHandler('escape', () => {
+      if (state.showJournal) setState(prev => ({ ...prev, showJournal: false }))
+      else if (state.showConstellation) setState(prev => ({ ...prev, showConstellation: false }))
+      else if (state.showReport) setState(prev => ({ ...prev, showReport: false }))
+      else if (showShortcutsHelp) setShowShortcutsHelp(false)
+    })
+  }, [registerHandler, state.isMuted, state.showJournal, state.showConstellation, state.showReport, showShortcutsHelp, pushSettingsToCloud, setAudioEnabled])
 
   // God Mode Refresh: Reload dialogue when refreshCounter changes (God Mode navigation)
   useEffect(() => {
@@ -3346,7 +3426,7 @@ export default function StatefulGameInterface() {
       className={currentState === 'station' ? 'cursor-default' : ''}
     >
       <div
-        className="relative z-10 flex flex-col min-h-[100dvh] w-full max-w-md mx-auto shadow-2xl border-x border-white/5 bg-black/10"
+        className="relative z-10 flex flex-col min-h-[100dvh] w-full max-w-xl mx-auto shadow-2xl border-x border-white/5 bg-black/10"
         style={{
           willChange: 'auto',
           contain: 'layout style paint',
@@ -3416,14 +3496,26 @@ export default function StatefulGameInterface() {
                     const newMuted = !state.isMuted
                     console.log(`[GameMenu] Toggling Mute to: ${newMuted} `)
                     setState(prev => ({ ...prev, isMuted: newMuted }))
+                    localStorage.setItem('lux_audio_muted', String(newMuted))
                     synthEngine.setMute(newMuted)
                     setAudioEnabled(!newMuted) // NEW: Kill the OGG tracks too
+                    pushSettingsToCloud() // Sync to cloud
+                  }}
+                  volume={audioVolume}
+                  onVolumeChange={(newVolume) => {
+                    setAudioVolume(newVolume)
+                    localStorage.setItem('lux_audio_volume', String(newVolume))
+                    // Note: synthEngine uses fixed master gain (0.5), no setVolume method
+                    pushSettingsToCloud() // Sync to cloud
                   }}
                   playerId={state.gameState?.playerId}
                 />
 
                 {/* Connection Status Indicator */}
                 <SyncStatusIndicator />
+
+                {/* User Authentication Menu */}
+                <UserMenu />
               </div>
             </div>
             {/* Character Info Row-extra vertical padding for mobile touch */}
@@ -3725,8 +3817,8 @@ export default function StatefulGameInterface() {
               className="flex-shrink-0 glass-panel max-w-4xl mx-auto px-3 sm:px-4 z-20"
               style={{
                 marginTop: '1.5rem',
-                // Safe area only-let content breathe closer to bottom
-                marginBottom: 'max(1rem, env(safe-area-inset-bottom, 16px))'
+                // Safe area padding to prevent content cutoff behind iOS home indicator
+                paddingBottom: 'max(16px, env(safe-area-inset-bottom))'
               }}
             >
               {/* Response label-clean, modern styling */}
@@ -3741,7 +3833,7 @@ export default function StatefulGameInterface() {
                 <div className="relative w-full">
                   <div
                     id="choices-scroll-container"
-                    className="max-h-[220px] sm:max-h-[260px] overflow-y-auto overflow-x-hidden overscroll-contain scroll-smooth w-full"
+                    className="w-full"
                     style={{
                       WebkitOverflowScrolling: 'touch',
                       scrollSnapType: 'y proximity',
@@ -3798,8 +3890,8 @@ export default function StatefulGameInterface() {
                         const original = state.availableChoices[index]
                         if (original) handleChoice(original)
                       }}
-                      // FIX: Ensure glass mode is ON for dark atmospheres to prevent white-on-white text
-                      glass={['dormant', 'awakening', 'alive'].includes(stationAtmosphere)}
+                      // FIX: Always use glass mode for dark theme (prevents white background issue)
+                      glass={true}
                       playerPatterns={state.gameState?.patterns}
                       cognitiveLoad={cognitiveLoad}
                     />
@@ -3915,6 +4007,15 @@ export default function StatefulGameInterface() {
         }
 
         {/* PatternOrb moved to Journal panel for cleaner main game view */}
+
+        {/* Keyboard Shortcuts Help Modal */}
+        <KeyboardShortcutsHelp
+          isOpen={showShortcutsHelp}
+          onClose={() => setShowShortcutsHelp(false)}
+          shortcuts={shortcuts}
+          onUpdateShortcut={updateShortcut}
+          onResetShortcuts={resetShortcuts}
+        />
       </div>
     </LivingAtmosphere>
   )

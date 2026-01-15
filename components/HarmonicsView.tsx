@@ -330,7 +330,7 @@ function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
                 {careerMatch && careerMatch.progress > 0 && (
                     <div className="mt-2 flex items-center justify-center gap-1.5 bg-slate-900/40 px-2 py-1 rounded-full border border-white/5 backdrop-blur-sm">
                         <Briefcase className="w-3.5 h-3.5 text-amber-500/80" />
-                        <span className={`text-xs truncate max-w-[100px] ${careerMatch.isUnlocked ? 'text-amber-300' : 'text-slate-400'}`}>
+                        <span className={`text-xs max-w-[180px] ${careerMatch.isUnlocked ? 'text-amber-300' : 'text-slate-400'}`}>
                             {careerMatch.careerHint}
                         </span>
                     </div>
@@ -338,7 +338,7 @@ function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
 
                 {/* Next unlock progress with explicit text */}
                 {orb.nextUnlock && (
-                    <div className="mt-2 w-full max-w-[120px]">
+                    <div className="mt-2 w-full max-w-[180px]">
                         <div className="h-0.5 bg-slate-700/30 rounded-full overflow-hidden">
                             <motion.div
                                 className="h-full rounded-full opacity-60"
@@ -348,7 +348,7 @@ function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
                                 transition={{ duration: 0.5 }}
                             />
                         </div>
-                        <p className="text-[10px] text-slate-500 mt-1 text-center truncate" title={orb.nextUnlock.name}>
+                        <p className="text-[10px] text-slate-500 mt-1 text-center" title={orb.nextUnlock.name}>
                             {orb.pointsToNext > 0 ? `${orb.pointsToNext} orbs to "${orb.nextUnlock.name}"` : `Unlocked: ${orb.nextUnlock.name}`}
                         </p>
                     </div>

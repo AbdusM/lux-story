@@ -1,19 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-client'
 import { auditLog } from '@/lib/audit-logger'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 /**
  * Admin Evidence API
  * Aggregates real Supabase data for Evidence Tab frameworks
  */
 
+// Rate limiter: 10 requests per minute (multiple parallel queries per request)
+const evidenceLimiter = rateLimit({
+  interval: 60 * 1000, // 1 minute
+  uniqueTokenPerInterval: 500,
+})
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ userId: string }> }
 ) {
-  // Authentication check - verify admin cookie
-  const authError = requireAdminAuth(request)
+  // Authentication check - verify user role
+  const authError = await requireAdminAuth(request)
   if (authError) return authError
+
+  // Rate limiting: 10 requests per minute (multiple queries per request)
+  const ip = getClientIp(request)
+  try {
+    await evidenceLimiter.check(ip, 10)
+  } catch {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': '60'
+        }
+      }
+    )
+  }
 
   const { userId } = await params
 
@@ -25,59 +48,75 @@ export async function GET(
     const supabase = getAdminSupabaseClient()
 
     // Parallel queries for all framework data
-    const [
-      profileResult,
-      skillDemosResult,
-      skillSummariesResult,
-      careerExplorationsResult,
-      relationshipsResult,
-      platformStatesResult
-    ] = await Promise.all([
-      // Player profile
-      supabase
-        .from('player_profiles')
-        .select('*')
-        .eq('user_id', userId)
-        .abortSignal(AbortSignal.timeout(10000))
-        .single(),
+    let profileResult, skillDemosResult, skillSummariesResult, careerExplorationsResult, relationshipsResult, platformStatesResult
+    try {
+      [
+        profileResult,
+        skillDemosResult,
+        skillSummariesResult,
+        careerExplorationsResult,
+        relationshipsResult,
+        platformStatesResult
+      ] = await Promise.all([
+        // Player profile
+        supabase
+          .from('player_profiles')
+          .select('*')
+          .eq('user_id', userId)
+          .abortSignal(AbortSignal.timeout(10000))
+          .single(),
 
-      // Skill demonstrations (with temporal data)
-      supabase
-        .from('skill_demonstrations')
-        .select('*')
-        .eq('user_id', userId)
-        .order('demonstrated_at', { ascending: true })
-        .abortSignal(AbortSignal.timeout(10000)),
+        // Skill demonstrations (with temporal data)
+        supabase
+          .from('skill_demonstrations')
+          .select('*')
+          .eq('user_id', userId)
+          .order('demonstrated_at', { ascending: true })
+          .abortSignal(AbortSignal.timeout(10000)),
 
-      // Skill summaries (rich context)
-      supabase
-        .from('skill_summaries')
-        .select('*')
-        .eq('user_id', userId)
-        .abortSignal(AbortSignal.timeout(10000)),
+        // Skill summaries (rich context)
+        supabase
+          .from('skill_summaries')
+          .select('*')
+          .eq('user_id', userId)
+          .abortSignal(AbortSignal.timeout(10000)),
 
-      // Career explorations
-      supabase
-        .from('career_explorations')
-        .select('*')
-        .eq('user_id', userId)
-        .order('match_score', { ascending: false })
-        .abortSignal(AbortSignal.timeout(10000)),
+        // Career explorations
+        supabase
+          .from('career_explorations')
+          .select('*')
+          .eq('user_id', userId)
+          .order('match_score', { ascending: false })
+          .abortSignal(AbortSignal.timeout(10000)),
 
-      // Relationships
-      supabase
-        .from('relationship_progress')
-        .select('*')
-        .eq('user_id', userId)
-        .abortSignal(AbortSignal.timeout(10000)),
+        // Relationships
+        supabase
+          .from('relationship_progress')
+          .select('*')
+          .eq('user_id', userId)
+          .abortSignal(AbortSignal.timeout(10000)),
 
-      // Platform states
-      supabase
-        .from('platform_states')
-        .select('*')
-        .eq('user_id', userId)
-        .abortSignal(AbortSignal.timeout(10000))
-    ])
+        // Platform states
+        supabase
+          .from('platform_states')
+          .select('*')
+          .eq('user_id', userId)
+          .abortSignal(AbortSignal.timeout(10000))
+      ])
+    } catch (err) {
+      // Check if timeout error
+      if (err instanceof Error && err.name === 'AbortError') {
+        console.error('[Admin:Evidence] Query timeout for user:', userId)
+        return NextResponse.json(
+          {
+            error: 'Request timed out. The database may be under heavy load. Please try again.',
+            userId
+          },
+          { status: 504 } // Gateway Timeout
+        )
+      }
+      throw err // Re-throw non-timeout errors
+    }
 
     const profile = profileResult.data
     const skillDemos = skillDemosResult.data || []

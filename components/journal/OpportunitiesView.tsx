@@ -176,6 +176,9 @@ function OpportunityCard({
                                 <span>Current: {currentLevel.toFixed(1)}</span>
                                 <span>{Math.round(progress)}%</span>
                             </div>
+                            <p className="text-[10px] text-slate-600 italic mt-2">
+                                Make {opportunity.unlockCondition.pattern}-aligned choices to increase this pattern
+                            </p>
                         </div>
                     )}
                 </div>

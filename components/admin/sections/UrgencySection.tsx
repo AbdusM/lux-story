@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { AlertTriangle, RefreshCw, ArrowRight } from 'lucide-react'
 import { getUrgencyClasses } from '@/lib/admin-urgency-classes'
+import { PermissionButton } from '@/components/admin/PermissionGate'
 import { formatAdminDate, type ViewMode } from '@/lib/admin-date-formatting'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
 import { InterventionTriggers } from '@/components/admin/InterventionTriggers'
@@ -115,15 +116,15 @@ export function UrgencySection({ userId, profile: _profile, adminViewMode }: Urg
                 Your intervention priority with transparent narrative justification
               </CardDescription>
             </div>
-            <Button
+            <PermissionButton
+              permission="recalculate_urgency"
               onClick={handleRecalculate}
               disabled={recalculating}
-              size="sm"
-              className="gap-2 min-h-[44px] w-full sm:w-auto"
+              className="gap-2 min-h-[44px] w-full sm:w-auto px-4 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/20 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <RefreshCw className={`w-4 h-4 ${recalculating ? 'animate-spin' : ''}`} />
               Recalculate
-            </Button>
+            </PermissionButton>
           </div>
         </CardHeader>
         <CardContent className="min-h-[280px]">
