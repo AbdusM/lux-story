@@ -629,7 +629,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
               </h3>
             )}
             <div className={`grid gap-3 p-2 w-full ${groupChoices.length >= 4 ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
-              {groupChoices.map((choice, localIndex) => {
+              {groupChoices.map((choice, _localIndex) => {
                 const currentGlobalIndex = globalIndex++
                 // Apply lock unless it's the mercy override
                 const isLocked = isChoiceLocked(choice, orbFillLevels) && choice !== mercyUnlockChoice

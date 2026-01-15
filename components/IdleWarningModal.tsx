@@ -14,7 +14,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { AlertTriangle, Clock, XCircle } from 'lucide-react'
+import { AlertTriangle, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { springs } from '@/lib/animations'
 

@@ -142,7 +142,7 @@ function createSupabaseServerClient(request: NextRequest) {
             value: cookie.value
           }))
         },
-        setAll(cookiesToSet) {
+        setAll(_cookiesToSet) {
           // Can't set cookies in API route GET requests
           // Middleware handles session refresh
         }

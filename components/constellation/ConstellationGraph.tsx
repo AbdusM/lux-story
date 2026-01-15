@@ -264,7 +264,7 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
 
                 {/* --- NODES LAYER (3D Orbs) --- */}
                 <g className="nodes">
-                    {characters.map((char, index) => {
+                    {characters.map((char, _index) => {
                         // Skip characters without valid positions (defensive guard)
                         if (char.position?.x === undefined || char.position?.y === undefined) return null
 

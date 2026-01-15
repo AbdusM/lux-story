@@ -14,6 +14,10 @@ import { useAccessibilityProfile } from '@/hooks/useAccessibilityProfile'
 import { useLargeTextMode } from '@/hooks/useLargeTextMode'
 import { useColorBlindMode } from '@/hooks/useColorBlindMode'
 import { useCognitiveLoad } from '@/hooks/useCognitiveLoad'
+import type { AccessibilityProfile } from '@/lib/accessibility-profiles'
+import type { TextSizePreset } from '@/lib/large-text-mode'
+import type { ColorBlindMode } from '@/lib/patterns'
+import type { CognitiveLoadLevel } from '@/lib/cognitive-load'
 import { useSettingsSync } from '@/hooks/useSettingsSync'
 import { useToast } from '@/components/ui/toast'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
@@ -372,7 +376,7 @@ export default function ProfilePage() {
                   </label>
                   <select
                     value={profile}
-                    onChange={(e) => { setProfile(e.target.value as any); syncWithToast() }}
+                    onChange={(e) => { setProfile(e.target.value as AccessibilityProfile); syncWithToast() }}
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50"
                   >
                     {Object.entries(profiles).map(([key, config]) => (
@@ -392,7 +396,7 @@ export default function ProfilePage() {
                     {['default', 'large', 'x-large', 'xx-large'].map((size) => (
                       <button
                         key={size}
-                        onClick={() => { setTextSize(size as any); syncWithToast() }}
+                        onClick={() => { setTextSize(size as TextSizePreset); syncWithToast() }}
                         className={cn(
                           'px-4 py-2 rounded-lg transition-all',
                           textSize === size
@@ -416,7 +420,7 @@ export default function ProfilePage() {
                     {['default', 'protanopia', 'deuteranopia', 'tritanopia', 'highContrast'].map((mode) => (
                       <button
                         key={mode}
-                        onClick={() => { setColorBlindMode(mode as any); syncWithToast() }}
+                        onClick={() => { setColorBlindMode(mode as ColorBlindMode); syncWithToast() }}
                         className={cn(
                           'px-4 py-2 rounded-lg transition-all text-sm',
                           colorBlindMode === mode
@@ -440,7 +444,7 @@ export default function ProfilePage() {
                     {['minimal', 'reduced', 'normal', 'detailed'].map((level) => (
                       <button
                         key={level}
-                        onClick={() => { setCognitiveLoad(level as any); syncWithToast() }}
+                        onClick={() => { setCognitiveLoad(level as CognitiveLoadLevel); syncWithToast() }}
                         className={cn(
                           'px-4 py-2 rounded-lg transition-all',
                           cognitiveLoad === level
