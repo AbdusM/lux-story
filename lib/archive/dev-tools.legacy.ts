@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Archived - imports updated for archive location
 import { useGameStore } from '../game-store'
 import { type PatternType } from '../patterns'

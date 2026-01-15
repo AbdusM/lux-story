@@ -16,7 +16,7 @@ import { safeStorage } from './safe-storage'
 import { logSync } from './real-time-monitor'
 import { ensureUserProfile } from './ensure-user-profile'
 import { logger } from './logger'
-import { parseSyncQueue, type QueuedAction as ValidatedQueuedAction } from './schemas'
+import { parseSyncQueue } from './schemas'
 
 const SYNC_QUEUE_KEY = 'lux-sync-queue'
 const STATIC_EXPORT_DETECTED_KEY = 'lux-static-export-detected'
@@ -82,7 +82,7 @@ export class SyncQueue {
    */
   static addToQueue(action: Omit<QueuedAction, 'retries'>): void {
     // BYPASS: Skip sync queue during God Mode operations to prevent database hammering
-    if (typeof window !== 'undefined' && (window as any).__GOD_MODE_ACTIVE) {
+    if (typeof window !== 'undefined' && window.__GOD_MODE_ACTIVE) {
       return // Don't queue actions when God Mode is manipulating state
     }
 

@@ -77,8 +77,8 @@ export function KeyboardShortcutsHelp({
 
   useState(() => {
     if (recordingKey) {
-      window.addEventListener('keydown', handleKeyPress as any)
-      return () => window.removeEventListener('keydown', handleKeyPress as any)
+      window.addEventListener('keydown', handleKeyPress as EventListener)
+      return () => window.removeEventListener('keydown', handleKeyPress as EventListener)
     }
   })
 

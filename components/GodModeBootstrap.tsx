@@ -36,7 +36,7 @@ export function GodModeBootstrap() {
     // Lazy load God Mode API to avoid bloating production bundle
     import('@/lib/dev-tools').then(({ createGodModeAPI }) => {
       // Expose to window
-      (window as any).godMode = createGodModeAPI()
+      window.godMode = createGodModeAPI()
 
       // Log welcome message
       const accessMode = process.env.NODE_ENV === 'development'
@@ -47,7 +47,7 @@ export function GodModeBootstrap() {
 
       console.warn(`⚠️ God Mode enabled (${accessMode}). Use window.godMode.* for testing.`)
       console.log('%c🎮 Available God Mode Commands:', 'font-weight: bold; font-size: 14px;')
-      console.log(Object.keys((window as any).godMode).sort().join(', '))
+      console.log(Object.keys(window.godMode!).sort().join(', '))
       console.log('\n%cExamples:', 'font-weight: bold;')
       console.log('  window.godMode.setTrust("maya", 10)')
       console.log('  window.godMode.setPattern("analytical", 9)')

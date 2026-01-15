@@ -432,7 +432,7 @@ function calculateConsistencyScore(skillDemos: SkillDemo[]): number {
   return Math.max(0, 1 - (stdDev / avgGap))
 }
 
-function calculateFocusScore(skillDemos: SkillDemo[]): number {
+function _calculateFocusScore(skillDemos: SkillDemo[]): number {
   const skillCounts = skillDemos.reduce((acc, demo) => {
     acc[demo.skill_name] = (acc[demo.skill_name] || 0) + 1
     return acc
