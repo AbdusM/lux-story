@@ -15,6 +15,7 @@ import {
   supabaseErrorResponse,
   handleApiError
 } from '@/lib/api/api-utils'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -23,11 +24,28 @@ export const runtime = 'nodejs'
 const OPERATION_GET = 'career-analytics.get'
 const OPERATION_POST = 'career-analytics.post'
 
+// Rate limiter: 30 requests per minute
+const careerAnalyticsLimiter = rateLimit({
+  interval: 60 * 1000, // 1 minute
+  uniqueTokenPerInterval: 500,
+})
+
 /**
  * GET /api/user/career-analytics?userId=X
  * Fetch career analytics for a user
  */
 export async function GET(request: NextRequest) {
+  // Rate limiting: 30 requests per minute
+  const ip = getClientIp(request)
+  try {
+    await careerAnalyticsLimiter.check(ip, 30)
+  } catch {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429 }
+    )
+  }
+
   try {
     const validation = extractAndValidateUserIdFromQuery(request, OPERATION_GET)
     if (!validation.valid) {

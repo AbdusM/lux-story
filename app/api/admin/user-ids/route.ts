@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
     } catch (err) {
       // Check if timeout error
       if (err instanceof Error && err.name === 'AbortError') {
-        console.error('[Admin:UserIds] Query timeout')
+        logger.error('Query timeout fetching user IDs', { operation: 'admin.user-ids' })
         return NextResponse.json(
           { error: 'Request timed out. The database may be under heavy load. Please try again.' },
           { status: 504 } // Gateway Timeout
@@ -73,10 +73,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (error) {
-      console.error('❌ [Admin:UserIds] Supabase error:', {
-        code: error.code,
-        message: error instanceof Error ? error.message : "Unknown error",
-      })
+      logger.error('Supabase error fetching user IDs', { operation: 'admin.user-ids', code: error.code })
       return NextResponse.json(
         { error: 'Failed to fetch user IDs' },
         { status: 500 }
@@ -95,10 +92,7 @@ export async function GET(request: NextRequest) {
       userIds
     })
   } catch (error) {
-    // Log detailed error server-side
-    console.error('[Admin:UserIds] Unexpected error:', error)
-
-    // Return generic error to client
+    logger.error('Unexpected error in user-ids endpoint', { operation: 'admin.user-ids' }, error instanceof Error ? error : undefined)
     return NextResponse.json(
       { error: 'An error occurred fetching user IDs' },
       { status: 500 }

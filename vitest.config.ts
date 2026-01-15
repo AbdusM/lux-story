@@ -14,7 +14,8 @@ export default defineConfig({
       '**/.{idea,git,cache,output,temp}/**',
       '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
       '**/tests/e2e/**', // Exclude E2E tests (run with Playwright, not Vitest)
-      '**/tests/browser-runtime/**' // Exclude browser runtime tests (run with Playwright)
+      '**/tests/browser-runtime/**', // Exclude browser runtime tests (run with Playwright)
+      '**/tests/visual/**' // Exclude visual tests (run with Playwright)
     ],
     coverage: {
       provider: 'v8',

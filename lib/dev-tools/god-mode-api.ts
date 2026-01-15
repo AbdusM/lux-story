@@ -102,16 +102,17 @@ export interface GodModeAPI {
 /**
  * Helper: Wrap God Mode operations to prevent database sync hammering
  * Sets __GOD_MODE_ACTIVE flag to bypass sync queue during bulk state changes
+ * (types from lib/types/browser-augmentation.d.ts)
  */
 function withGodModeFlag<T>(fn: () => T): T {
   if (typeof window !== 'undefined') {
-    ;(window as any).__GOD_MODE_ACTIVE = true
+    window.__GOD_MODE_ACTIVE = true
   }
   try {
     return fn()
   } finally {
     if (typeof window !== 'undefined') {
-      ;(window as any).__GOD_MODE_ACTIVE = false
+      window.__GOD_MODE_ACTIVE = false
     }
   }
 }

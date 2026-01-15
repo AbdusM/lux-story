@@ -152,6 +152,7 @@ import { TextProcessor } from '@/lib/text-processor'
 import { InGameSettings } from '@/components/InGameSettings'
 import { IdleWarningModal } from '@/components/IdleWarningModal'
 import { JourneySummary } from '@/components/JourneySummary'
+import { useToast } from '@/components/ui/toast'
 import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } from '@/lib/journey-narrative-generator'
 import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
 import { selectAmbientEvent, IDLE_CONFIG, type AmbientEvent } from '@/lib/ambient-events'
@@ -368,6 +369,9 @@ export default function StatefulGameInterface() {
   const { registerHandler, shortcuts, updateShortcut, resetShortcuts } = useKeyboardShortcuts()
   const [showShortcutsHelp, setShowShortcutsHelp] = useState(false)
 
+  // Toast notifications for keyboard hint
+  const toast = useToast()
+
   // Compute orb fill percentages for KOTOR-style locked choices
   const MAX_ORB_COUNT = 100
   const orbFillLevels = useMemo(() => ({
@@ -563,6 +567,25 @@ export default function StatefulGameInterface() {
       else if (showShortcutsHelp) setShowShortcutsHelp(false)
     })
   }, [registerHandler, state.isMuted, state.showJournal, state.showConstellation, state.showReport, showShortcutsHelp, pushSettingsToCloud, setAudioEnabled])
+
+  // Keyboard shortcut hint - show after 30 seconds of gameplay (only once)
+  useEffect(() => {
+    if (!state.hasStarted) return
+
+    // Check if already shown
+    const hintShown = localStorage.getItem('lux_keyboard_hint_shown')
+    if (hintShown === 'true') return
+
+    const timer = setTimeout(() => {
+      // Double-check it hasn't been shown (e.g., user opened shortcuts manually)
+      if (localStorage.getItem('lux_keyboard_hint_shown') !== 'true') {
+        toast.info('Press ? for keyboard shortcuts', 'Navigate faster with hotkeys')
+        localStorage.setItem('lux_keyboard_hint_shown', 'true')
+      }
+    }, 30000) // 30 seconds
+
+    return () => clearTimeout(timer)
+  }, [state.hasStarted, toast])
 
   // God Mode Refresh: Reload dialogue when refreshCounter changes (God Mode navigation)
   useEffect(() => {

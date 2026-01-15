@@ -129,7 +129,7 @@ async function main() {
     const stats: VoiceStats[] = []
 
     for (const char of CHARACTERS) {
-        // @ts-ignore - Some imports might be incomplete
+        // @ts-expect-error - Some imports might be incomplete
         const result = analyzeCharacter(char.name, char.nodes)
         stats.push(result)
 

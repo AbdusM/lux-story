@@ -16,6 +16,7 @@ import { safeStorage } from './safe-storage'
 import { logSync } from './real-time-monitor'
 import { ensureUserProfile } from './ensure-user-profile'
 import { logger } from './logger'
+import { parseSyncQueue, type QueuedAction as ValidatedQueuedAction } from './schemas'
 
 const SYNC_QUEUE_KEY = 'lux-sync-queue'
 const STATIC_EXPORT_DETECTED_KEY = 'lux-static-export-detected'
@@ -64,18 +65,15 @@ export interface QueuedAction {
 export class SyncQueue {
   /**
    * Get all queued actions from localStorage
+   * Uses Zod validation to ensure data integrity
    */
   static getQueue(): QueuedAction[] {
     const stored = safeStorage.getItem(SYNC_QUEUE_KEY)
     if (!stored) return []
 
-    try {
-      const queue = JSON.parse(stored)
-      return Array.isArray(queue) ? queue : []
-    } catch (error) {
-      console.error('[SyncQueue] Failed to parse queue:', error)
-      return []
-    }
+    // Use validated parsing which filters out invalid actions
+    const validatedQueue = parseSyncQueue(stored)
+    return validatedQueue as QueuedAction[]
   }
 
   /**

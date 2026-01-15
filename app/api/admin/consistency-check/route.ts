@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
     const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers()
 
     if (authError) {
-      console.error('❌ [Admin:ConsistencyCheck] Failed to fetch auth users:', authError)
+      logger.error('Failed to fetch auth users', { operation: 'admin.consistency-check.auth-users' }, authError instanceof Error ? authError : undefined)
       return NextResponse.json(
         { error: 'Failed to fetch auth users' },
         { status: 500 }
@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
       .abortSignal(AbortSignal.timeout(15000))
 
     if (profilesError) {
-      console.error('❌ [Admin:ConsistencyCheck] Failed to fetch profiles:', profilesError)
+      logger.error('Failed to fetch profiles', { operation: 'admin.consistency-check.profiles', code: profilesError.code })
       return NextResponse.json(
         { error: 'Failed to fetch profiles' },
         { status: 500 }
@@ -114,7 +114,7 @@ export async function GET(request: NextRequest) {
       .abortSignal(AbortSignal.timeout(15000))
 
     if (playerProfilesError) {
-      console.error('❌ [Admin:ConsistencyCheck] Failed to fetch player_profiles:', playerProfilesError)
+      logger.error('Failed to fetch player_profiles', { operation: 'admin.consistency-check.player-profiles', code: playerProfilesError.code })
       return NextResponse.json(
         { error: 'Failed to fetch player_profiles' },
         { status: 500 }
@@ -181,10 +181,10 @@ export async function GET(request: NextRequest) {
                 userId: authUser.id
               })
             } else {
-              console.error('Failed to auto-fix missing profile:', insertError)
+              logger.error('Failed to auto-fix missing profile', { operation: 'admin.consistency-check.fix', userId: authUser.id, code: insertError.code })
             }
           } catch (error) {
-            console.error('Exception during auto-fix:', error)
+            logger.error('Exception during auto-fix', { operation: 'admin.consistency-check.fix', userId: authUser.id }, error instanceof Error ? error : undefined)
           }
         }
       }
@@ -244,7 +244,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(report)
 
   } catch (error) {
-    console.error('[Admin:ConsistencyCheck] Unexpected error:', error)
+    logger.error('Unexpected error during consistency check', { operation: 'admin.consistency-check' }, error instanceof Error ? error : undefined)
     return NextResponse.json(
       { error: 'An error occurred during consistency check' },
       { status: 500 }

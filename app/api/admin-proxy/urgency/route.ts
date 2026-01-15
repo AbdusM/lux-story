@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logger } from '@/lib/logger'
 
 /**
  * Server-side proxy for urgency API
@@ -70,7 +71,7 @@ export async function GET(request: NextRequest) {
         })
       }
     } catch (error) {
-      console.error('Single user urgency fetch error:', error)
+      logger.error('Single user urgency fetch error', { operation: 'admin-proxy.urgency.single', userId }, error instanceof Error ? error : undefined)
       return NextResponse.json(
         { error: 'Failed to fetch user urgency data' },
         { status: 500 }
@@ -99,7 +100,7 @@ export async function GET(request: NextRequest) {
         .limit(200)
 
       if (error) {
-        console.error('Failed to fetch users from Supabase:', error)
+        logger.error('Failed to fetch users from Supabase', { operation: 'admin-proxy.urgency.all-students', code: error.code })
         return NextResponse.json({ students: [] })
       }
 
@@ -120,7 +121,7 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json({ students })
     } catch (error) {
-      console.error('Failed to fetch all students:', error)
+      logger.error('Failed to fetch all students', { operation: 'admin-proxy.urgency.all-students' }, error instanceof Error ? error : undefined)
       return NextResponse.json({ students: [] })
     }
   }
@@ -145,7 +146,7 @@ export async function GET(request: NextRequest) {
     const data = await response.json()
     return NextResponse.json(data)
   } catch (error) {
-    console.error('Admin proxy error:', error)
+    logger.error('Admin proxy error', { operation: 'admin-proxy.urgency.list', level, limit }, error instanceof Error ? error : undefined)
     return NextResponse.json(
       { error: 'Failed to fetch urgency data' },
       { status: 500 }
@@ -182,7 +183,7 @@ export async function POST(request: NextRequest) {
     const data = await response.json()
     return NextResponse.json(data)
   } catch (error) {
-    console.error('Recalculation proxy error:', error)
+    logger.error('Recalculation proxy error', { operation: 'admin-proxy.urgency.recalculate' }, error instanceof Error ? error : undefined)
     return NextResponse.json(
       { error: 'Recalculation failed' },
       { status: 500 }

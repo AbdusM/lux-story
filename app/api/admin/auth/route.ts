@@ -20,6 +20,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { rateLimit } from '@/lib/rate-limit'
 import { z } from 'zod'
 import { auditLog } from '@/lib/audit-logger'
+import { logger } from '@/lib/logger'
 import {
   verifyAdminPassword,
   createSession,
@@ -98,7 +99,7 @@ export async function POST(request: NextRequest) {
       )
     }
   } catch (error) {
-    console.error('[Admin Auth] Error:', error)
+    logger.error('Authentication error', { operation: 'admin.auth.login' }, error instanceof Error ? error : undefined)
     return NextResponse.json(
       { error: 'Authentication failed' },
       { status: 500 }

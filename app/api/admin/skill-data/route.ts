@@ -10,10 +10,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-client'
 import { auditLog } from '@/lib/audit-logger'
 import { logger } from '@/lib/logger'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
+
+// Rate limiter: 10 requests per minute
+const skillDataLimiter = rateLimit({
+  interval: 60 * 1000, // 1 minute
+  uniqueTokenPerInterval: 500,
+})
 
 /**
  * GET /api/admin/skill-data?userId=X
@@ -24,6 +31,17 @@ export async function GET(request: NextRequest) {
   const authError = await requireAdminAuth(request)
   if (authError) return authError
 
+  // Rate limiting: 10 requests per minute
+  const ip = getClientIp(request)
+  try {
+    await skillDataLimiter.check(ip, 10)
+  } catch {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429, headers: { 'Retry-After': '60' } }
+    )
+  }
+
   try {
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
@@ -31,7 +49,7 @@ export async function GET(request: NextRequest) {
     logger.debug('GET request', { operation: 'admin.skill-data', userId: userId || undefined })
 
     if (!userId) {
-      console.error('❌ [Admin:SkillData] Missing userId parameter')
+      logger.warn('Missing userId parameter', { operation: 'admin.skill-data' })
       return NextResponse.json(
         { error: 'Missing userId parameter' },
         { status: 400 }
@@ -63,7 +81,7 @@ export async function GET(request: NextRequest) {
       .abortSignal(AbortSignal.timeout(10000))
 
     if (careerError) {
-      console.warn('❌ [Admin Skill Data API] Career explorations error:', careerError)
+      logger.warn('Career explorations query error', { operation: 'admin.skill-data.career', userId, code: careerError.code })
     } else if (careerExplorations && careerExplorations.length > 0) {
       logger.debug('Found career explorations', { operation: 'admin.skill-data.career-explorations', userId, count: careerExplorations.length })
       // Merge career explorations into profile
@@ -73,11 +91,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (error) {
-      console.error('❌ [Admin:SkillData] Supabase error:', {
-        code: error.code,
-        message: error instanceof Error ? error.message : "Unknown error",
-        userId
-      })
+      logger.error('Supabase error fetching skill data', { operation: 'admin.skill-data', userId, code: error.code })
       return NextResponse.json(
         { error: 'Failed to fetch skill data' },
         { status: 500 }
@@ -108,10 +122,7 @@ export async function GET(request: NextRequest) {
       profile
     })
   } catch (error) {
-    // Log detailed error server-side
-    console.error('[Admin:SkillData] Unexpected error:', error)
-
-    // Return generic error to client
+    logger.error('Unexpected error in skill data endpoint', { operation: 'admin.skill-data' }, error instanceof Error ? error : undefined)
     return NextResponse.json(
       { error: 'An error occurred fetching skill data' },
       { status: 500 }
