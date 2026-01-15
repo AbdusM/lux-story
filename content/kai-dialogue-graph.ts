@@ -2180,6 +2180,96 @@ Which approach actually reduces injuries?`,
       variation_id: 'hub_return_v1'
     }],
     choices: []
+  },
+
+  // ============= TRUST RECOVERY =============
+  {
+    nodeId: 'kai_trust_recovery',
+    speaker: 'Kai',
+    requiredState: {
+      trust: { max: 3 }
+    },
+    content: [{
+      text: "You're back.\n\nI thought...\n\nNever mind what I thought.",
+      emotion: 'guarded',
+      variation_id: 'trust_recovery_v1',
+      voiceVariations: {
+        patience: "You're back.\n\nYou took your time. Assessed the situation.\n\nI thought... never mind what I thought.",
+        helping: "You're back.\n\nEven after I shut you out.\n\nI thought... never mind what I thought.",
+        analytical: "You're back.\n\nYou analyzed the risk. Decided to try again.\n\nI thought... never mind what I thought.",
+        building: "You're back.\n\nRebuilding from failure. I respect that.\n\nI thought... never mind what I thought.",
+        exploring: "You're back.\n\nStill curious. Even after I pushed you away.\n\nI thought... never mind what I thought."
+      }
+    }],
+    choices: [
+      {
+        choiceId: 'kai_recovery_acknowledge',
+        text: "I shouldn't have pushed. You were protecting something important.",
+        nextNodeId: 'kai_trust_restored',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 2,
+          addKnowledgeFlags: ['kai_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "I moved too fast. You needed space to process. I should have seen that.",
+          helping: "I shouldn't have pushed. You were protecting something important.",
+          analytical: "I misread the variables. You needed space. I pushed anyway.",
+          building: "I tried to force a connection. That's not how trust rebuilds.",
+          exploring: "I asked questions you weren't ready for. I'm sorry."
+        }
+      },
+      {
+        choiceId: 'kai_recovery_direct',
+        text: "Can we start over?",
+        nextNodeId: 'kai_trust_restored',
+        pattern: 'building',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'kai',
+          trustChange: 2,
+          addKnowledgeFlags: ['kai_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Can we try again? Take it slower this time?",
+          helping: "Can we start over? I want to understand.",
+          analytical: "Reset. Start from baseline. Can we do that?",
+          building: "Can we rebuild this? Start from a stable foundation?",
+          exploring: "Can we try a different approach? Start fresh?"
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'kai_arc']
+  },
+
+  {
+    nodeId: 'kai_trust_restored',
+    speaker: 'Kai',
+    content: [{
+      text: "Yeah.\n\nYeah, we can do that.\n\n[He adjusts his safety vest. A small tell.]\n\nI'm... I'm not good at this part. The talking part.\n\nBut I can try.",
+      emotion: 'relieved',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        patience: "Yeah.\n\nYeah, we can do that.\n\n[He adjusts his safety vest. A small tell.]\n\nYou took time to understand. That matters.\n\nI'm not good at this part. The talking part. But I can try.",
+        helping: "Yeah.\n\nYeah, we can do that.\n\n[He adjusts his safety vest. A small tell.]\n\nYou came back even after I shut down. That... that means something.\n\nI'm not good at this part. The talking part. But I can try.",
+        analytical: "Yeah.\n\nYeah, we can do that.\n\n[He adjusts his safety vest. A small tell.]\n\nYou assessed the failure points. Made corrections. That's solid methodology.\n\nI'm not good at this part. The talking part. But I can try.",
+        building: "Yeah.\n\nYeah, we can do that.\n\n[He adjusts his safety vest. A small tell.]\n\nRebuilding from damaged trust. It's harder than building new. But you're willing to do the work.\n\nI'm not good at this part. The talking part. But I can try.",
+        exploring: "Yeah.\n\nYeah, we can do that.\n\n[He adjusts his safety vest. A small tell.]\n\nYou keep asking questions. Even when I make it hard.\n\nI'm not good at this part. The talking part. But I can try."
+      }
+    }],
+    choices: [{
+      choiceId: 'kai_recovery_complete',
+      text: "(Continue)",
+      nextNodeId: 'kai_hub_return',
+      pattern: 'patience'
+    }],
+    tags: ['trust_recovery', 'kai_arc'],
+    onEnter: [{
+      characterId: 'kai',
+      addKnowledgeFlags: ['kai_trust_recovery_completed']
+    }]
   }
 ]
 

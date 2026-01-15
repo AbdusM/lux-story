@@ -672,7 +672,14 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "It's for... someone who's going through a rough time.\n\nSomeone I care about but can't seem to help. Every conversation is a failure cascade.\n\nI thought if I could map the optimal response paths, I could fix it. Debug the relationship, you know?",
         emotion: 'frustrated',
-        variation_id: 'father_hint_v1'
+        variation_id: 'father_hint_v1',
+        voiceVariations: {
+          helping: "It's for... someone who's going through a rough time.\n\nSomeone I care about but can't help. You probably understand - when caring isn't enough.\n\nI thought if I could optimize the conversation, I could fix it.",
+          analytical: "It's for... someone going through a rough time.\n\nEvery conversation is a failure cascade. Error rate approaching 100%.\n\nI thought mapping optimal response paths would solve it.",
+          building: "It's for... someone going through a rough time.\n\nSomeone I care about but can't reach. Every attempt fails.\n\nI thought if I could architect the right flow, I could fix it.",
+          exploring: "It's for... someone going through a rough time.\n\nYou're curious why I'm doing this, aren't you?\n\nI thought if I could map it, find the right path... I could help.",
+          patience: "It's for... someone going through a rough time.\n\nEvery conversation ends too fast, wrong.\n\nI thought if I could slow it down, map it out... I could fix it."
+        }
       }
     ],
     choices: [
@@ -1705,7 +1712,14 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "I've been so focused on fixing the conversation. I forgot we could have one.",
         emotion: 'grateful',
-        variation_id: 'grateful_insight_v1'
+        variation_id: 'grateful_insight_v1',
+        voiceVariations: {
+          patience: "You stayed with me through all that debugging. I've been so focused on fixing the conversation. I forgot we could have one.",
+          helping: "You saw what I couldn't. I've been so focused on fixing the conversation. I forgot we could have one.",
+          analytical: "You helped me see the logic error. I've been so focused on fixing the conversation. I forgot we could have one.",
+          building: "You helped me construct a solution I couldn't see. I've been so focused on fixing the conversation. I forgot we could have one.",
+          exploring: "Your questions led me here. I've been so focused on fixing the conversation. I forgot we could have one."
+        }
       }
     ],
     choices: [
@@ -2095,7 +2109,14 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "Yeah. He's in everything I build.\n\nThe way I label my variables. His naming convention for parts. The way I test things twice. His \"measure twice, cut once.\" Even this flowchart... it's his diagnostic method, just digitized.\n\nI never told him any of this. He thinks I left behind everything he taught me when I went to college.\n\nHe doesn't know he's the foundation of every system I design.",
         emotion: 'realization',
-        variation_id: 'father_teaching_v1'
+        variation_id: 'father_teaching_v1',
+        voiceVariations: {
+          patience: "You took the time to understand this. Yeah. He's in everything I build.\n\nThe way I label my variables. His naming convention for parts. The way I test things twice. His \"measure twice, cut once.\" Even this flowchart... it's his diagnostic method, just digitized.\n\nI never told him any of this. He thinks I left behind everything he taught me when I went to college.\n\nHe doesn't know he's the foundation of every system I design.",
+          helping: "You helped me see this. Yeah. He's in everything I build.\n\nThe way I label my variables. His naming convention for parts. The way I test things twice. His \"measure twice, cut once.\" Even this flowchart... it's his diagnostic method, just digitized.\n\nI never told him any of this. He thinks I left behind everything he taught me when I went to college.\n\nHe doesn't know he's the foundation of every system I design.",
+          analytical: "You helped me analyze what I couldn't see. Yeah. He's in everything I build.\n\nThe way I label my variables. His naming convention for parts. The way I test things twice. His \"measure twice, cut once.\" Even this flowchart... it's his diagnostic method, just digitized.\n\nI never told him any of this. He thinks I left behind everything he taught me when I went to college.\n\nHe doesn't know he's the foundation of every system I design.",
+          building: "You helped me build this bridge. Yeah. He's in everything I build.\n\nThe way I label my variables. His naming convention for parts. The way I test things twice. His \"measure twice, cut once.\" Even this flowchart... it's his diagnostic method, just digitized.\n\nI never told him any of this. He thinks I left behind everything he taught me when I went to college.\n\nHe doesn't know he's the foundation of every system I design.",
+          exploring: "Your curiosity led me here. Yeah. He's in everything I build.\n\nThe way I label my variables. His naming convention for parts. The way I test things twice. His \"measure twice, cut once.\" Even this flowchart... it's his diagnostic method, just digitized.\n\nI never told him any of this. He thinks I left behind everything he taught me when I went to college.\n\nHe doesn't know he's the foundation of every system I design."
+        }
       }
     ],
     choices: [

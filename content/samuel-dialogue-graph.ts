@@ -1118,7 +1118,19 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         text: "Every day I wonder if I chose right. Every traveler that finds their path here... I tell myself that's the answer.\n\nBut late nights, when the station's quiet? I hear her voice in the echo. Askin' why the people who needed me most weren't the ones in front of me.\n\nYou're the first person I've told that to. The station needed a conductor. But conductors still bleed.",
         emotion: 'vulnerable_resolved',
-        variation_id: 'reflection_v1'
+        variation_id: 'reflection_v1',
+        // E2-CHALLENGE: Opportunity to challenge his self-blame about Dorothy
+        interrupt: {
+          duration: 3500,
+          type: 'challenge',
+          action: 'Challenge that guilt',
+          targetNodeId: 'samuel_challenge_accepted',
+          consequence: {
+            characterId: 'samuel',
+            trustChange: 2,
+            addKnowledgeFlags: ['player_challenged_samuel_guilt']
+          }
+        }
       }
     ],
     choices: [
@@ -1130,6 +1142,60 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       }
     ],
     tags: ['vulnerability_arc', 'samuel_arc']
+  },
+
+  // ============= CHALLENGE INTERRUPT TARGET =============
+  {
+    nodeId: 'samuel_challenge_accepted',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "Wait. You pushed back on that.\n\n'The people who needed me most weren't the ones in front of me.'\n\nI've carried that for years. Like Dorothy needed me more than the travelers. But you heard something I didn't.\n\nMaybe... maybe the choice wasn't between her and them. Maybe it was between the person I was and the person I needed to become.",
+      emotion: 'breakthrough',
+      variation_id: 'challenge_accepted_v1',
+      voiceVariations: {
+        helping: "Wait. You challenged that.\n\nYou heard me blaming myself for choosing service over one person. But maybe that's not the right frame.\n\nMaybe Dorothy needed someone I couldn't be while staying the same. Maybe the station called the person I was becoming.",
+        analytical: "Wait. You caught the logic error.\n\n'People who needed me most' - I assumed Dorothy needed me more than thousands of travelers. But need isn't a zero-sum equation.\n\nMaybe the choice was between comfort and calling. Not between love and duty.",
+        building: "Wait. You're challenging the foundation I built that guilt on.\n\nI told myself I chose the station over Dorothy. But you see it differently.\n\nMaybe I chose growth over stasis. And maybe that's not betrayal.",
+        exploring: "Wait. You questioned the story I've been telling.\n\nI framed it as choosing strangers over family. But you're seeing other angles.\n\nMaybe the real choice was between who I was and who I could be.",
+        patience: "Wait. You didn't let me hide behind that guilt.\n\nI've been carrying it like penance. But you see something else.\n\nMaybe some choices aren't about right and wrong. Maybe they're about becoming."
+      }
+    }],
+    choices: [
+      {
+        choiceId: 'challenge_calling',
+        text: "You answered a calling. That doesn't make you wrong about Dorothy.",
+        nextNodeId: 'samuel_pause_after_backstory',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'challenge_both',
+        text: "You couldn't be both people. The station needed who you became.",
+        nextNodeId: 'samuel_pause_after_backstory',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'challenge_patience',
+        text: "[Let the realization settle]",
+        nextNodeId: 'samuel_pause_after_backstory',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['samuel_arc', 'challenge_interrupt', 'breakthrough']
   },
 
   // ============= MYSTERY REVEAL: Letter Sender (Trust 8) =============
@@ -2937,7 +3003,14 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         text: "We can keep talkin' about Maya if you want. There's value in sittin' with an experience.\n\nOr, if you're ready, there's other travelers around. Each one'll show you somethin' different.",
         emotion: 'offering_space',
-        variation_id: 'contemplation_offer_v1'
+        variation_id: 'contemplation_offer_v1',
+        voiceVariations: {
+          patience: "We can keep talkin' about Maya. You understand the value of not rushin' past an experience.\n\nOr, when you're ready, there's other travelers. Each one at their own pace.",
+          helping: "We can keep talkin' about Maya if you want. I see you're still holding what she shared.\n\nOr, if you're ready, there's other travelers. Each one needin' something different.",
+          analytical: "We can keep processing what happened with Maya. There's patterns worth examining.\n\nOr, if you're ready, there's other travelers. Each one'll add data to what you're learning.",
+          exploring: "We can keep talkin' about Maya. Or, if you're ready to see what else is here, there's other travelers.\n\nEach one'll show you somethin' different.",
+          building: "We can keep talkin' about Maya. Or, if you're ready to move forward, there's other travelers.\n\nEach one'll help you build understanding of this place."
+        }
       }
     ],
     choices: [
@@ -2972,7 +3045,14 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         text: "I saw you listening to what Maya wasn't saying. Most people hear the words - 'I'm pre-med, I have good grades' - and think they understand.\n\nYou heard the weight underneath the words.\n\nThe fear of disappointing her parents. The shame of wanting something different. The loneliness of succeeding at a path that isn't yours.",
         emotion: 'deep_knowing',
-        variation_id: 'deep_reflection_v1_pt1'
+        variation_id: 'deep_reflection_v1_pt1',
+        voiceVariations: {
+          helping: "I saw you listening to what Maya wasn't saying. Most people want to fix.\n\nYou just... held space for her struggle. Let her feel it without rushin' to solve it.\n\nThat's rare. That's the kind of listening that changes people.",
+          patience: "I saw you not rushing Maya. Most people hear 'pre-med' and move on.\n\nYou waited. You let the silence do its work.\n\nThat patience - that's what let her say what she really needed to say.",
+          analytical: "I saw you analyzing what Maya wasn't saying. Most people take words at face value.\n\nYou read the pattern underneath. The contradiction between her achievements and her emotion.\n\nThat's the kind of observation that reveals truth.",
+          exploring: "I saw you staying curious about Maya. Most people hear the surface story and stop.\n\nYou kept asking. Kept discovering what was underneath.\n\nThat curiosity - it's what helps people find their own answers.",
+          building: "I saw you helping Maya build clarity. Most people impose their own structure.\n\nYou let her construct her own understanding, one piece at a time.\n\nThat's how real insight gets built."
+        }
       }
     ],
     choices: [
@@ -3034,7 +3114,14 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         text: "The station shows me moments. Fragments. Your conversation with Maya, yes, but also... glimpses of what brought you here.\n\nEveryone who finds this place is standing at their own crossroads. You're not just helping Maya find her path. You're finding yours by walking beside her through her uncertainty.",
         emotion: 'mystical',
-        variation_id: 'station_truth_deep_v1'
+        variation_id: 'station_truth_deep_v1',
+        voiceVariations: {
+          exploring: "The station shows me moments. Fragments. I see your curiosity - how you explore every angle before settling on truth.\n\nEveryone who finds this place is searching. You're finding your path by staying curious about theirs.",
+          helping: "The station shows me moments. I see your heart - how you carry others' struggles alongside your own.\n\nEveryone who finds this place needs something. You're finding your path by helping them find theirs.",
+          patience: "The station shows me moments. I see your stillness - how you don't rush what needs time.\n\nEveryone who finds this place is between who they were and who they're becoming. You're finding your path by waiting with them.",
+          analytical: "The station shows me moments. I see your mind - how you analyze patterns others miss.\n\nEveryone who finds this place carries questions. You're finding your path by understanding theirs.",
+          building: "The station shows me moments. I see your hands - how you help others construct meaning.\n\nEveryone who finds this place is building something new. You're finding your path by helping them build theirs."
+        }
       }
     ],
     choices: [
@@ -7503,6 +7590,107 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       { characterId: 'samuel', addKnowledgeFlags: ['samuel_loyalty_accepted'] }
     ],
     choices: []
+  },
+
+  // ============= TRUST RECOVERY SYSTEM =============
+  {
+    nodeId: 'samuel_trust_recovery',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "You came back. Wasn't sure you would after how things went.\n\nI can be a hard man to know sometimes. The station taught me to see patterns, but people... people are more than patterns.\n\nYou came back anyway. That says somethin'.",
+      emotion: 'guarded',
+      variation_id: 'trust_recovery_v1',
+      voiceVariations: {
+        patience: "You came back. And you didn't rush it.\n\nI know I can be difficult. Ask too much. See too much. Most people don't have patience for that.\n\nBut you waited. That matters.",
+        helping: "You came back. After I pushed you away.\n\nI get protective of this place sometimes. Of the travelers. Forget that guides need grace too.\n\nYou saw past my walls. Thank you for that.",
+        analytical: "You came back. I've been processing why that surprised me.\n\nI operate in patterns. When trust breaks, people leave. That's the pattern.\n\nBut you challenged it. You came back.",
+        building: "You came back. Ready to rebuild what we started.\n\nI know I can be hard to reach sometimes. Build walls when I should build bridges.\n\nBut you kept building anyway. I respect that.",
+        exploring: "You came back. Still curious despite the friction.\n\nMost people leave when the station keeper gets too guarded. Too knowing.\n\nBut you stayed interested. That's... rare."
+      }
+    }],
+    requiredState: {
+      trust: { max: 3 }
+    },
+    choices: [
+      {
+        choiceId: 'recovery_understanding',
+        text: "The station matters to you. I understand that.",
+        nextNodeId: 'samuel_trust_restored',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2,
+          addKnowledgeFlags: ['samuel_trust_repair_attempted']
+        }
+      },
+      {
+        choiceId: 'recovery_patterns',
+        text: "Not all patterns hold. Sometimes people surprise you.",
+        nextNodeId: 'samuel_trust_restored',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2,
+          addKnowledgeFlags: ['samuel_trust_repair_attempted']
+        }
+      },
+      {
+        choiceId: 'recovery_patience',
+        text: "[Wait. Let him find his words.]",
+        nextNodeId: 'samuel_trust_restored',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2,
+          addKnowledgeFlags: ['samuel_trust_repair_attempted']
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'samuel_arc', 'repair']
+  },
+
+  {
+    nodeId: 'samuel_trust_restored',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "Alright then. Let's start again.\n\nI've been doin' this a long time. Sometimes I forget that bein' a guide don't mean havin' all the answers. Just means walkin' alongside folks while they find their own.\n\nYou reminded me of that. Thank you.",
+      emotion: 'warm',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        patience: "Alright then. Starting fresh.\n\nYou didn't force it. Just gave me time to see what I was doin'.\n\nThat patience - that's what good guides have. Maybe you're teachin' me something too.",
+        helping: "Alright then. Let's try again.\n\nYou came back not to fix me, but to understand me. That's different.\n\nMost people want the wise station keeper. You just wanted the person. I appreciate that.",
+        analytical: "Alright then. Recalibrating.\n\nYou challenged my assumptions about how trust works. Good data doesn't care about my expectations.\n\nNeither do good people, apparently.",
+        building: "Alright then. Rebuilding.\n\nYou kept constructing bridges even when I kept burnin' them down.\n\nThat persistence - that's how real connection gets built. One choice at a time.",
+        exploring: "Alright then. New territory.\n\nYou stayed curious even when I made it hard. That says somethin' about your character.\n\nLet's see where this goes."
+      }
+    }],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        trustChange: 1,
+        addKnowledgeFlags: ['samuel_trust_repaired']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_recovery',
+        text: "Tell me more about this place.",
+        nextNodeId: 'samuel_station_deep_explanation',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      },
+      {
+        choiceId: 'continue_from_recovery_travelers',
+        text: "Who should I meet next?",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'helping',
+        skills: ['collaboration']
+      }
+    ],
+    tags: ['trust_recovery', 'samuel_arc', 'fresh_start']
   }
 ]
 
