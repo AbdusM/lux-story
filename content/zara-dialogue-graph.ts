@@ -2954,6 +2954,89 @@ export const zaraDialogueNodes: DialogueNode[] = [
             variation_id: 'hub_return_v1'
         }],
         choices: []
+    },
+
+    // ============= TRUST RECOVERY =============
+    {
+        nodeId: 'zara_trust_recovery',
+        speaker: 'Zara El-Amin',
+        requiredState: {
+            trust: { max: 3 }
+        },
+        content: [
+            {
+                text: "[She's staring at a blank spreadsheet. Column headers. No data.]\n\nI ran the audit again.\n\nEvery dataset. Every model. Looking for the bias I missed.\n\nThe data looked clean.\n\nJust like it did three years ago.\n\nJust like it did before I signed the approval.\n\nBefore fourteen people paid for what I couldn't see.",
+                emotion: 'haunted_guilty',
+                variation_id: 'trust_recovery_v1',
+                voiceVariations: {
+                    patience: "[She's staring at a blank spreadsheet. Not rushing to fill it.]\n\nYou came back.\n\nI ran the audit again. Every dataset. Every model.\n\nThe data looked clean.\n\nJust like it did three years ago.\n\nJust like it did before I signed the approval.\n\nBefore fourteen people paid for what I couldn't see.",
+                    helping: "[She's staring at a blank spreadsheet alone. Column headers. No data.]\n\nYou came back. Even after I...\n\nI ran the audit again. Looking for the bias I missed.\n\nThe data looked clean.\n\nJust like it did before I signed.\n\nBefore fourteen people paid for what I couldn't see.",
+                    analytical: "[She's staring at a blank spreadsheet. The formulas all return errors.]\n\nYou came back. To verify the damage.\n\nI ran the audit again. Every query. Every correlation.\n\nThe data looked clean.\n\nJust like it did three years ago.\n\nJust like it did before I approved the deployment.\n\nBefore fourteen people paid for what I couldn't see.",
+                    building: "[She's staring at a blank spreadsheet. The structure empty.]\n\nYou came back. To reconstruct what I broke.\n\nI ran the audit again. Every model. Every pipeline.\n\nThe data looked clean.\n\nJust like it did before I signed.\n\nBefore fourteen people paid for what I couldn't see.",
+                    exploring: "[She's staring at a blank spreadsheet. No patterns to discover.]\n\nYou came back. Still looking.\n\nI ran the audit again. Searching for the bias I missed.\n\nThe data looked clean.\n\nJust like it did three years ago.\n\nJust like it did before I approved it.\n\nBefore fourteen people paid for what I couldn't see."
+                }
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'zara_recovery_fourteen',
+                text: "You can't audit yourself into forgiveness. But you can honor the fourteen by never missing it again.",
+                nextNodeId: 'zara_trust_restored',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'zara',
+                    trustChange: 2,
+                    addKnowledgeFlags: ['zara_trust_repaired']
+                }
+            },
+            {
+                choiceId: 'zara_recovery_data',
+                text: "The data isn't the problem. You're looking for bias in numbers when the bias is in the looking.",
+                nextNodeId: 'zara_trust_restored',
+                pattern: 'analytical',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'zara',
+                    trustChange: 2,
+                    addKnowledgeFlags: ['zara_trust_repaired']
+                }
+            },
+            {
+                choiceId: 'zara_recovery_silence',
+                text: "[Sit with her. Let the blank spreadsheet be what it is. Sometimes absence is the data.]",
+                nextNodeId: 'zara_trust_restored',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'zara',
+                    trustChange: 2,
+                    addKnowledgeFlags: ['zara_trust_repaired']
+                }
+            }
+        ],
+        tags: ['zara_arc', 'trust_recovery', 'vulnerability']
+    },
+
+    {
+        nodeId: 'zara_trust_restored',
+        speaker: 'Zara El-Amin',
+        content: [
+            {
+                text: "[She closes the spreadsheet. Looks at her hands instead.]\n\nNumbers don't lie.\n\nBut the people who gather them do.\n\nAnd the people who read them.\n\nAnd the people who carry them.\n\n[She looks at you.]\n\nThank you. For seeing what the data couldn't show.",
+                emotion: 'grateful_relieved',
+                variation_id: 'trust_restored_v1',
+                interaction: 'bloom'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'zara_restored_continue',
+                text: "(Continue)",
+                nextNodeId: 'zara_hub_return'
+            }
+        ],
+        tags: ['zara_arc', 'trust_recovery', 'restored']
     }
 ]
 

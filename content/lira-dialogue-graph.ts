@@ -2954,6 +2954,89 @@ Warning: Core Hum saturating mix.`,
             variation_id: 'hub_return_v1'
         }],
         choices: []
+    },
+
+    // ============= TRUST RECOVERY =============
+    {
+        nodeId: 'lira_trust_recovery',
+        speaker: 'Lira Vance',
+        requiredState: {
+            trust: { max: 3 }
+        },
+        content: [
+            {
+                text: "[She's sitting at the mixer. Headphones on. But no sound is playing.]\n\nI can't hear it anymore.\n\nNot the station. Not the music. Just... silence.\n\nNot the kind with pressure. Not the kind before the storm.\n\nJust absence.\n\nLike my grandmother's last melody. The notes scattered and gone.",
+                emotion: 'grieving_vulnerable',
+                variation_id: 'trust_recovery_v1',
+                voiceVariations: {
+                    patience: "[She's sitting at the mixer. Headphones on. Not rushing to fill the silence.]\n\nYou came back.\n\nI can't hear it anymore. Not the station. Not the music.\n\nJust... silence.\n\nNot the kind with pressure. Not the kind before the storm.\n\nJust absence.\n\nLike my grandmother's last melody. The notes scattered and gone.",
+                    helping: "[She's sitting at the mixer alone. Headphones on. But no sound is playing.]\n\nYou came back. Even though I...\n\nI can't hear it anymore. Not the station. Not the music.\n\nJust... silence.\n\nNot the kind with presence. Just absence.\n\nLike my grandmother's last melody. The notes scattered and gone.",
+                    analytical: "[She's sitting at the mixer. Headphones on. The waveforms flat.]\n\nYou came back. To analyze the damage.\n\nI can't hear it anymore. Not the frequencies. Not the texture.\n\nJust... silence.\n\nNot measured silence. Just absence.\n\nLike my grandmother's last melody. The notes scattered and gone.",
+                    building: "[She's sitting at the mixer. Headphones on. The project file empty.]\n\nYou came back. To rebuild what I broke.\n\nI can't hear it anymore. Not the layers. Not the composition.\n\nJust... silence.\n\nNot intentional space. Just absence.\n\nLike my grandmother's last melody. The notes scattered and gone.",
+                    exploring: "[She's sitting at the mixer. Headphones on. But there's nothing to discover.]\n\nYou came back. Still listening.\n\nI can't hear it anymore. Not the station. Not the undiscovered harmonics.\n\nJust... silence.\n\nNot mystery. Just absence.\n\nLike my grandmother's last melody. The notes scattered and gone."
+                }
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'lira_recovery_remember',
+                text: "The melody isn't gone. It's just trying to remember itself. Like you said.",
+                nextNodeId: 'lira_trust_restored',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'lira',
+                    trustChange: 2,
+                    addKnowledgeFlags: ['lira_trust_repaired']
+                }
+            },
+            {
+                choiceId: 'lira_recovery_listen',
+                text: "Take off the headphones. Listen to what's actually here, not what's missing.",
+                nextNodeId: 'lira_trust_restored',
+                pattern: 'analytical',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'lira',
+                    trustChange: 2,
+                    addKnowledgeFlags: ['lira_trust_repaired']
+                }
+            },
+            {
+                choiceId: 'lira_recovery_silence',
+                text: "[Sit with her. Let the silence be what it is. Present, not absent.]",
+                nextNodeId: 'lira_trust_restored',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'lira',
+                    trustChange: 2,
+                    addKnowledgeFlags: ['lira_trust_repaired']
+                }
+            }
+        ],
+        tags: ['lira_arc', 'trust_recovery', 'vulnerability']
+    },
+
+    {
+        nodeId: 'lira_trust_restored',
+        speaker: 'Lira Vance',
+        content: [
+            {
+                text: "[She takes off the headphones. Listens to the actual room.]\n\n...\n\n[A distant train whistle. The hum of the station. Your breathing.]\n\nOh.\n\nThere it is.\n\nThe sound was always there. I just... stopped listening.",
+                emotion: 'grateful_relieved',
+                variation_id: 'trust_restored_v1',
+                interaction: 'ripple'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'lira_restored_continue',
+                text: "(Continue)",
+                nextNodeId: 'lira_hub_return'
+            }
+        ],
+        tags: ['lira_arc', 'trust_recovery', 'restored']
     }
 ]
 
