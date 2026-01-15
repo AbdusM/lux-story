@@ -161,7 +161,14 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         text: "Yeah, pre-med at UAB. Second year. Organic chem is... it's fine. Actually no, it's killing me.\n\nBut my parents are so proud, so.",
         emotion: 'deflecting',
-        variation_id: 'studies_v2_clean'
+        variation_id: 'studies_v2_clean',
+        voiceVariations: {
+          analytical: "Yeah, pre-med at UAB. Second year. You're analyzing me, aren't you? Organic chem is... it's killing me.\n\nBut my parents are so proud. The math works for them, at least.",
+          helping: "Yeah, pre-med at UAB. Second year. You seem like someone who actually listens.\n\nOrganic chem is... it's killing me. But my parents are so proud, so. I don't get to complain.",
+          building: "Yeah, pre-med at UAB. Second year. You get it - trying to build something while everyone's watching.\n\nOrganic chem is... it's killing me. But my parents are so proud.",
+          exploring: "Yeah, pre-med at UAB. Second year. I can tell you're curious about what's really going on.\n\nOrganic chem is... it's killing me. But my parents are so proud, so.",
+          patience: "Yeah, pre-med at UAB. Second year. Thanks for not rushing me.\n\nOrganic chem is... it's killing me. But my parents are so proud, so."
+        }
       }
     ],
     requiredState: {
@@ -407,7 +414,19 @@ export const mayaDialogueNodes: DialogueNode[] = [
           { pattern: 'building', minLevel: 4, altText: "My dreams? Honestly I try not to think about them. It's easier to just... follow the path.\n\nBut you build things, don't you? You understand what it's like to have something you want to make, but can't.", altEmotion: 'vulnerable' },
           { pattern: 'patience', minLevel: 4, altText: "My dreams? I try not to think about them.\n\nYou're not rushing to fix me. That's... nice. Most people want to solve me like a problem.", altEmotion: 'grateful' },
           { pattern: 'exploring', minLevel: 4, altText: "My dreams? I try not to think about them. But you keep asking these questions that make me think anyway.\n\nDreams are stupid when they don't match what everyone expects.", altEmotion: 'conflicted' }
-        ]
+        ],
+        // E2-CHALLENGE: Opportunity to gently push back on her self-limiting belief
+        interrupt: {
+          duration: 3000,
+          type: 'challenge',
+          action: 'Challenge that belief',
+          targetNodeId: 'maya_challenge_accepted',
+          consequence: {
+            characterId: 'maya',
+            trustChange: 1,
+            addKnowledgeFlags: ['player_challenged_maya']
+          }
+        }
       }
     ],
     choices: [
@@ -474,6 +493,62 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       }
     ]
+  },
+
+  // ============= CHALLENGE INTERRUPT TARGET =============
+  {
+    nodeId: 'maya_challenge_accepted',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "Wait... you're right to call that out.\n\nI just said dreams are stupid. But that's not what I really believe. That's what I tell myself so it hurts less.\n\nThe truth? My dreams aren't stupid. They're just... scary. Because if I actually tried and failed...",
+        emotion: 'vulnerable',
+        variation_id: 'challenge_accepted_v1',
+        voiceVariations: {
+          analytical: "Wait... you caught that.\n\nI just called my own dreams stupid. That's defense mechanism 101, isn't it? Diminish it before it can hurt you.\n\nThe truth is scarier: my dreams aren't stupid. They're just risky. And I've been too afraid to try.",
+          helping: "Wait... you're right.\n\nI just called my dreams stupid. But you didn't let me get away with it.\n\nThe truth? My dreams scare me. Because they matter. And if I tried and failed...",
+          building: "Wait... you're right to push back.\n\nI said dreams are stupid. But you build things—you know that's a lie. Every builder has a vision that scares them.\n\nMine scares me because it's real. And real things can fail.",
+          exploring: "Wait... you caught that contradiction.\n\nI called my dreams stupid. But you're curious enough to see through it.\n\nThe truth? They're not stupid. They're terrifying. Because they actually matter.",
+          patience: "Wait...\n\nYou didn't let me deflect. Most people do.\n\nI called my dreams stupid. But you're right—that's fear talking. The real truth? They matter too much. That's what makes them scary."
+        }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'challenge_follow_up',
+        text: "What would happen if you actually tried?",
+        nextNodeId: 'maya_anxiety_reveal',
+        pattern: 'exploring',
+        skills: ['criticalThinking', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'challenge_support',
+        text: "Fear of failure isn't the same as failure.",
+        nextNodeId: 'maya_anxiety_reveal',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'challenge_patience',
+        text: "[Give her space to process what she just admitted]",
+        nextNodeId: 'maya_anxiety_reveal',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['maya_arc', 'challenge_interrupt']
   },
 
   // ============= ANXIETY PATH =============
@@ -1516,7 +1591,14 @@ STATUS: Signal fighting itself`,
     content: [{
       text: "I've been so scared. That telling them would break something. Their hearts. Their sacrifice. Our family.\n\nBut keeping this secret is breaking ME.\n\nYou're the first person who's heard all of it. Not the edited version. Not the \"I'm just exploring options\" version.\n\nThe real one. Where their perfect daughter died in a bathroom five years ago, and nobody noticed.",
       emotion: 'vulnerable_released',
-      variation_id: 'reflection_v1'
+      variation_id: 'reflection_v1',
+      voiceVariations: {
+        helping: "I've been so scared. That telling them would break something.\n\nBut keeping this secret is breaking ME.\n\nYou didn't try to fix me. You just... listened. That's why I could say it. The real version. Where their perfect daughter died in a bathroom five years ago.",
+        analytical: "I've been so scared. That telling them would break something.\n\nBut keeping this secret is breaking ME.\n\nYou see patterns, don't you? Well here's the pattern: I've been performing for five years. You're the first person who noticed the act.",
+        building: "I've been so scared. That telling them would break something.\n\nBut keeping this secret is breaking ME.\n\nYou understand building things. Well, I've been building a lie for five years. And you're the first person I've let see what's underneath.",
+        exploring: "I've been so scared. That telling them would break something.\n\nBut keeping this secret is breaking ME.\n\nYou wanted to understand. Really understand. And now you do. The real story. Not the edited version.",
+        patience: "I've been so scared. That telling them would break something.\n\nBut keeping this secret is breaking ME.\n\nYou gave me space to say it. That's rare. Most people rush past the hard parts. You waited."
+      }
     }],
     choices: [
       {
@@ -3845,6 +3927,112 @@ MISSION: Stabilize the wave form within safety limits.`,
       }
     ],
     tags: ['loyalty_experience', 'the_demo', 'partial']
+  },
+
+  // ============= TRUST RECOVERY SYSTEM =============
+  // Accessible when trust has been damaged but player wants to repair
+  {
+    nodeId: 'maya_trust_recovery',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "Look, I know things got weird between us. Maybe I was too closed off. Maybe you pushed too hard. I don't know.\n\nBut you came back. That means something.",
+        emotion: 'guarded',
+        variation_id: 'trust_recovery_v1',
+        voiceVariations: {
+          helping: "Look, I know things got weird between us. But you came back. Most people don't.\n\nThat means you actually care about getting this right. Don't you?",
+          analytical: "Look, I know things got weird between us. I've been thinking about why.\n\nYou came back though. That's data I can work with.",
+          building: "Look, I know things got weird. Building trust takes time, and we stumbled.\n\nBut you came back. That's the foundation for trying again.",
+          exploring: "Look, I know things got weird. But you're still curious. Still here.\n\nThat matters more than getting everything perfect the first time.",
+          patience: "Look, I know things got weird. But you didn't give up. You waited.\n\nMaybe we can start over. More carefully this time."
+        }
+      }
+    ],
+    requiredState: {
+      trust: { max: 3 }
+    },
+    choices: [
+      {
+        choiceId: 'recovery_apologize',
+        text: "I should have been more patient with you.",
+        nextNodeId: 'maya_trust_restored',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2,
+          addKnowledgeFlags: ['maya_trust_repair_attempted']
+        }
+      },
+      {
+        choiceId: 'recovery_understand',
+        text: "I think I understand better now. Let's try again.",
+        nextNodeId: 'maya_trust_restored',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2,
+          addKnowledgeFlags: ['maya_trust_repair_attempted']
+        }
+      },
+      {
+        choiceId: 'recovery_honest',
+        text: "We both made mistakes. That's human.",
+        nextNodeId: 'maya_trust_restored',
+        pattern: 'analytical',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2,
+          addKnowledgeFlags: ['maya_trust_repair_attempted']
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'maya_arc', 'repair']
+  },
+
+  {
+    nodeId: 'maya_trust_restored',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "Okay. Yeah. Let's try this again.\n\nI'm still working through a lot. But maybe... maybe that's okay. Maybe I don't have to have everything figured out before I let someone in.\n\nSo. Where were we?",
+        emotion: 'hopeful',
+        variation_id: 'trust_restored_v1',
+        voiceVariations: {
+          helping: "Okay. Yeah.\n\nI'm not used to people trying again after things get hard. Most people just... leave.\n\nThank you for staying. Where were we?",
+          analytical: "Okay. Yeah. Second attempt. New data.\n\nI'm still figuring things out. But I'm willing to share more if you're willing to listen differently.\n\nWhere were we?",
+          building: "Okay. Yeah. We're rebuilding.\n\nThis time with better foundations. I'll try to be more open. You try to be more patient.\n\nDeal? Good. Where were we?",
+          exploring: "Okay. Yeah. Round two.\n\nI'm curious where this goes now that we've cleared the air.\n\nWhere were we?",
+          patience: "Okay. Yeah.\n\nYou gave me space to process that. Most people don't wait.\n\nI think I'm ready to open up more. Where were we?"
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'maya',
+        trustChange: 1,
+        addKnowledgeFlags: ['maya_trust_repaired']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_recovery',
+        text: "Tell me about what you're really passionate about.",
+        nextNodeId: 'maya_robotics_passion',
+        pattern: 'exploring',
+        skills: ['curiosity', 'communication']
+      },
+      {
+        choiceId: 'continue_from_recovery_family',
+        text: "Help me understand your family situation.",
+        nextNodeId: 'maya_family_pressure',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['trust_recovery', 'maya_arc', 'fresh_start']
   }
 ]
 
