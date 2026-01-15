@@ -8192,7 +8192,27 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       emotion: 'serious',
       variation_id: 'arc2_warning_v1'
     }],
-    choices: [{ choiceId: 'samuel_hub_return_warned', text: "I understand.", nextNodeId: 'samuel_hub_initial' }]
+    choices: [{ choiceId: 'samuel_hub_return_warned', text: "I understand.", nextNodeId: 'samuel_beat_after_platform_warning' }]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_platform_warning',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Good. Some knowledge comes when you're ready, not before.\n\n[He looks back toward the main platforms]\n\nLet's focus on what you can carry.",
+        emotion: 'serious',
+        variation_id: 'beat_after_platform_warning_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
   },
 
   {
@@ -8203,7 +8223,27 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       emotion: 'resigned',
       variation_id: 'arc2_truth_v1'
     }],
-    choices: [{ choiceId: 'samuel_hub_return_truth', text: "Why hide it?", nextNodeId: 'samuel_hub_initial' }]
+    choices: [{ choiceId: 'samuel_hub_return_truth', text: "Why hide it?", nextNodeId: 'samuel_beat_after_platform_truth' }]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_platform_truth',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Because not everyone needs to see the paths that didn't happen. Some futures are meant to stay ghost stories.\n\n[He takes a breath]\n\nReady to focus on the future that is?",
+        emotion: 'resigned',
+        variation_id: 'beat_after_platform_truth_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
   },
 
   // ============= ARC 3: THE QUIET HOUR =============
@@ -8241,7 +8281,27 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       emotion: 'philosophical',
       variation_id: 'arc3_explain_v1'
     }],
-    choices: [{ choiceId: 'quiet_hour_end', text: "A pause in the chaos.", nextNodeId: 'samuel_hub_initial' }]
+    choices: [{ choiceId: 'quiet_hour_end', text: "A pause in the chaos.", nextNodeId: 'samuel_beat_after_quiet_hour' }]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_quiet_hour',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Exactly. A pause. Even machines need to breathe.\n\n[He looks steadier now]\n\nYou ready to continue?",
+        emotion: 'philosophical',
+        variation_id: 'beat_after_quiet_hour_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
   },
 
   // ============= PUZZLE REWARD: TIME LOOPS =============
@@ -8253,8 +8313,28 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       emotion: 'impressed',
       variation_id: 'puzzle_loop_v1'
     }],
-    choices: [{ choiceId: 'puzzle_loop_ack', text: "Practice makes perfect.", nextNodeId: 'samuel_hub_initial' }],
+    choices: [{ choiceId: 'puzzle_loop_ack', text: "Practice makes perfect.", nextNodeId: 'samuel_beat_after_time_loop' }],
     tags: ['puzzle_reward', 'legendary_info']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_time_loop',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "It does. And you're getting better at seeing the patterns.\n\n[He smiles slightly]\n\nYou ready to keep practicing?",
+        emotion: 'impressed',
+        variation_id: 'beat_after_time_loop_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
   },
 
   {
