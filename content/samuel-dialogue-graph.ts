@@ -1277,7 +1277,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'station_alive',
         text: "The station is... alive?",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_station_called',
         pattern: 'exploring',
         skills: ['creativity', 'criticalThinking'],
         consequence: {
@@ -1288,7 +1288,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'station_accept',
         text: "I think I understand. Some things don't need explaining.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_station_called',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -1298,6 +1298,27 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       }
     ],
     tags: ['mystery_reveal', 'station_nature', 'samuel_arc']
+  },
+
+  // ============= BEAT: After Station Called You =============
+  {
+    nodeId: 'samuel_beat_after_station_called',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Some truths are bigger than words, aren't they? The station chose you. And you chose to answer.\n\n[He looks toward the platforms]\n\nThere are others here tonight who were also called.",
+        emotion: 'knowing',
+        variation_id: 'beat_after_station_called_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
+      }
+    ]
   },
 
   // ============= PAUSE: After Backstory Revelation (Breathing Room) =============
@@ -2901,13 +2922,34 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'trust_as_map',
         text: "Connection is the map.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_connection_map',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
         }
+      }
+    ]
+  },
+
+  // ============= BEAT: After Connection is the Map =============
+  {
+    nodeId: 'samuel_beat_after_connection_map',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Exactly. Person to person. That's the only navigation that matters.\n\n[He nods toward the platforms]\n\nMore connections waiting to be made.",
+        emotion: 'warm',
+        variation_id: 'beat_after_connection_map_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
@@ -2928,7 +2970,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'witness_not_lead',
         text: "Witness, not lead.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_witness',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'leadership'],
         archetype: 'SHOW_UNDERSTANDING',
@@ -2936,6 +2978,27 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           characterId: 'samuel',
           trustChange: 2
         }
+      }
+    ]
+  },
+
+  // ============= BEAT: After Witness Not Lead =============
+  {
+    nodeId: 'samuel_beat_after_witness',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's right. We witness people becoming who they're meant to be. That's the work.\n\n[He looks toward the platforms]\n\nThere are others who need a witness tonight.",
+        emotion: 'satisfied',
+        variation_id: 'beat_after_witness_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
@@ -3128,9 +3191,30 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_deep',
         text: "[Sit with this truth]",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_crossroads',
         pattern: 'patience',
         archetype: 'STAY_SILENT'
+      }
+    ]
+  },
+
+  // ============= BEAT: After Crossroads Recognition =============
+  {
+    nodeId: 'samuel_beat_after_crossroads',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Your path and theirs - they're not separate. They're woven together in this moment.\n\n[He gestures outward]\n\nThere are more paths intersecting here tonight.",
+        emotion: 'gentle',
+        variation_id: 'beat_after_crossroads_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
@@ -3149,10 +3233,31 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'thank_you',
         text: "Thank you for seeing that.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_questions',
         pattern: 'patience',
         skills: ["emotionalIntelligence", "communication"],
         archetype: 'EXPRESS_GRATITUDE'
+      }
+    ]
+  },
+
+  // ============= BEAT: After Questions as Qualification =============
+  {
+    nodeId: 'samuel_beat_after_questions',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You're welcome. Those who can sit with questions - they're the ones who can guide others through uncertainty.\n\n[He nods toward the platforms]\n\nMore questions waiting. More people who need someone like you.",
+        emotion: 'affirming',
+        variation_id: 'beat_after_questions_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
