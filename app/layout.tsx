@@ -5,6 +5,7 @@ import { EnvironmentalEffects } from '@/components/EnvironmentalEffects'
 import { ServiceWorkerProvider } from '@/components/ServiceWorkerProvider'
 import { SVGFilterProvider } from '@/lib/svg-filters'
 import { GodModeBootstrap } from '@/components/GodModeBootstrap'
+import { ToastProvider } from '@/components/ui/toast'
 // Sentry config is auto-loaded by Next.js - don't import directly
 import './globals.css'
 import '../styles/accessibility.css'
@@ -107,13 +108,15 @@ export default function RootLayout({
         <ServiceWorkerProvider>
           <EnvironmentalEffects />
           <ErrorBoundary>
-            <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 environment-responsive"
-              style={{
-                backgroundColor: 'var(--bg-primary, inherit)',
-                color: 'var(--text-primary, inherit)'
-              }}>
-              {children}
-            </div>
+            <ToastProvider>
+              <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 environment-responsive"
+                style={{
+                  backgroundColor: 'var(--bg-primary, inherit)',
+                  color: 'var(--text-primary, inherit)'
+                }}>
+                {children}
+              </div>
+            </ToastProvider>
           </ErrorBoundary>
         </ServiceWorkerProvider>
       </body>

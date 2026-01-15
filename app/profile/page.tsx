@@ -5,7 +5,7 @@
 
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { Volume2, VolumeX, User, Eye, Brain, Palette, Monitor, LogOut, Cloud, CloudOff, Loader2, Download, Upload, Keyboard } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -15,6 +15,7 @@ import { useLargeTextMode } from '@/hooks/useLargeTextMode'
 import { useColorBlindMode } from '@/hooks/useColorBlindMode'
 import { useCognitiveLoad } from '@/hooks/useCognitiveLoad'
 import { useSettingsSync } from '@/hooks/useSettingsSync'
+import { useToast } from '@/components/ui/toast'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { loadLocalSettings } from '@/lib/settings-sync'
 import { CATEGORY_LABELS, formatKeyCombo } from '@/lib/keyboard-shortcuts'
@@ -69,7 +70,10 @@ export default function ProfilePage() {
   const [cognitiveLoad, setCognitiveLoad] = useCognitiveLoad()
 
   // Settings sync
-  const { isSyncing, lastSyncTime, pushNow } = useSettingsSync()
+  const { isSyncing, lastSyncTime, isOnline, pushNow } = useSettingsSync()
+
+  // Toast notifications
+  const toast = useToast()
 
   // Keyboard shortcuts
   const { shortcuts, resetShortcuts } = useKeyboardShortcuts()
@@ -84,18 +88,51 @@ export default function ProfilePage() {
     loadUser()
   }, [supabase.auth])
 
-  const handleToggleMute = () => {
+  const handleToggleMute = async () => {
     const newMuted = !isMuted
     setIsMuted(newMuted)
     localStorage.setItem('lux_audio_muted', String(newMuted))
-    pushNow() // Sync to cloud
+    const result = await pushNow()
+    if (result.success) {
+      toast.syncSuccess()
+    } else if (!isOnline) {
+      toast.offlineNotice()
+    }
   }
 
+  // Track user interactions vs initial mount
+  const hasInteracted = useRef(false)
+  const volumeChangeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
   const handleVolumeChange = (newVolume: number) => {
+    hasInteracted.current = true
     setAudioVolume(newVolume)
     localStorage.setItem('lux_audio_volume', String(newVolume))
-    pushNow() // Sync to cloud
+
+    // Debounce the sync and toast
+    if (volumeChangeTimer.current) {
+      clearTimeout(volumeChangeTimer.current)
+    }
+    volumeChangeTimer.current = setTimeout(async () => {
+      const result = await pushNow()
+      if (result.success) {
+        toast.syncSuccess()
+      } else if (!isOnline) {
+        toast.offlineNotice()
+      }
+    }, 800)
   }
+
+  // Sync and toast for accessibility changes
+  const syncWithToast = useCallback(async () => {
+    hasInteracted.current = true
+    const result = await pushNow()
+    if (result.success) {
+      toast.syncSuccess()
+    } else if (!isOnline) {
+      toast.offlineNotice()
+    }
+  }, [pushNow, isOnline, toast])
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -112,6 +149,7 @@ export default function ProfilePage() {
     link.download = `lux-story-settings-${new Date().toISOString().split('T')[0]}.json`
     link.click()
     URL.revokeObjectURL(url)
+    toast.success('Settings exported', 'Download started')
   }
 
   const handleImportSettings = () => {
@@ -147,11 +185,12 @@ export default function ProfilePage() {
           }
         })
 
-        // Reload page to apply settings
-        window.location.reload()
+        // Show success toast and reload page to apply settings
+        toast.success('Settings imported', 'Reloading to apply changes...')
+        setTimeout(() => window.location.reload(), 1500)
       } catch (error) {
         console.error('[Profile] Import error:', error)
-        alert('Failed to import settings. Please check the file format.')
+        toast.error('Import failed', 'Please check the file format.')
       }
     }
     input.click()
@@ -333,7 +372,7 @@ export default function ProfilePage() {
                   </label>
                   <select
                     value={profile}
-                    onChange={(e) => setProfile(e.target.value as any)}
+                    onChange={(e) => { setProfile(e.target.value as any); syncWithToast() }}
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50"
                   >
                     {Object.entries(profiles).map(([key, config]) => (
@@ -353,7 +392,7 @@ export default function ProfilePage() {
                     {['default', 'large', 'x-large', 'xx-large'].map((size) => (
                       <button
                         key={size}
-                        onClick={() => setTextSize(size as any)}
+                        onClick={() => { setTextSize(size as any); syncWithToast() }}
                         className={cn(
                           'px-4 py-2 rounded-lg transition-all',
                           textSize === size
@@ -377,7 +416,7 @@ export default function ProfilePage() {
                     {['default', 'protanopia', 'deuteranopia', 'tritanopia', 'highContrast'].map((mode) => (
                       <button
                         key={mode}
-                        onClick={() => setColorBlindMode(mode as any)}
+                        onClick={() => { setColorBlindMode(mode as any); syncWithToast() }}
                         className={cn(
                           'px-4 py-2 rounded-lg transition-all text-sm',
                           colorBlindMode === mode
@@ -401,7 +440,7 @@ export default function ProfilePage() {
                     {['minimal', 'reduced', 'normal', 'detailed'].map((level) => (
                       <button
                         key={level}
-                        onClick={() => setCognitiveLoad(level as any)}
+                        onClick={() => { setCognitiveLoad(level as any); syncWithToast() }}
                         className={cn(
                           'px-4 py-2 rounded-lg transition-all',
                           cognitiveLoad === level
