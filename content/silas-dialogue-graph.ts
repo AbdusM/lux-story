@@ -1439,6 +1439,96 @@ HINT: Sensors measure WHERE they're placed...`,
     choices: []
   },
 
+  // ============= TRUST RECOVERY =============
+  {
+    nodeId: 'silas_trust_recovery',
+    speaker: 'Silas',
+    requiredState: {
+      trust: { max: 3 }
+    },
+    content: [{
+      text: "[He's holding a broken sensor. Still trying to debug it.]\n\nYou came back.\n\n[He sets it down. Dirt under his fingernails. Honest work.]\n\nI spent years trusting dashboards over dirt. Data over ground truth.\n\nAnd I treated you the same way. Like you were a data point instead of... instead of earth I should have touched.\n\nThat was wrong. I'm sorry.",
+      emotion: 'regretful',
+      variation_id: 'trust_recovery_v1',
+      voiceVariations: {
+        patience: "[He's holding a broken sensor. Still trying to debug it.]\n\nYou came back.\n\nYou gave me time. Like good soil needs time.\n\n[He sets it down. Dirt under his fingernails. Honest work.]\n\nI spent years trusting dashboards over dirt. Data over ground truth.\n\nAnd I treated you the same way. Like you were a data point instead of... instead of earth I should have touched. That was wrong. I'm sorry.",
+        helping: "[He's holding a broken sensor. Still trying to debug it.]\n\nYou came back.\n\nEven after I couldn't see you for the systems.\n\n[He sets it down. Dirt under his fingernails. Honest work.]\n\nI spent years trusting dashboards over dirt. Data over ground truth.\n\nAnd I treated you the same way. Like you were a data point instead of... instead of earth I should have touched. That was wrong. I'm sorry.",
+        analytical: "[He's holding a broken sensor. Still trying to debug it.]\n\nYou came back.\n\nYou analyzed my failure mode. Correct diagnosis.\n\n[He sets it down. Dirt under his fingernails. Honest work.]\n\nI spent years trusting dashboards over dirt. Data over ground truth.\n\nAnd I treated you the same way. Like you were a data point instead of... instead of earth I should have touched. That was wrong. I'm sorry.",
+        building: "[He's holding a broken sensor. Still trying to debug it.]\n\nYou came back.\n\nRebuilding from dead soil. Takes courage.\n\n[He sets it down. Dirt under his fingernails. Honest work.]\n\nI spent years trusting dashboards over dirt. Data over ground truth.\n\nAnd I treated you the same way. Like you were a data point instead of... instead of earth I should have touched. That was wrong. I'm sorry.",
+        exploring: "[He's holding a broken sensor. Still trying to debug it.]\n\nYou came back.\n\nStill exploring even after I got lost in the data.\n\n[He sets it down. Dirt under his fingernails. Honest work.]\n\nI spent years trusting dashboards over dirt. Data over ground truth.\n\nAnd I treated you the same way. Like you were a data point instead of... instead of earth I should have touched. That was wrong. I'm sorry."
+      }
+    }],
+    choices: [
+      {
+        choiceId: 'silas_recovery_ground',
+        text: "Touch grass. Literally.",
+        nextNodeId: 'silas_trust_restored',
+        pattern: 'building',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 2,
+          addKnowledgeFlags: ['silas_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Take your time. Touch grass. Literally. Feel it.",
+          helping: "You need grounding. Touch grass. Literally.",
+          analytical: "Ground your system. Touch grass. Literally.",
+          building: "Build from the earth up. Touch grass. Literally.",
+          exploring: "Explore what's real. Touch grass. Literally."
+        }
+      },
+      {
+        choiceId: 'silas_recovery_truth',
+        text: "Sensors lie. People don't have to.",
+        nextNodeId: 'silas_trust_restored',
+        pattern: 'analytical',
+        skills: ['wisdom'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 2,
+          addKnowledgeFlags: ['silas_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Take your time learning this. Sensors lie. People don't have to.",
+          helping: "Trust people, not just data. Sensors lie. People don't have to.",
+          analytical: "Verify your sources. Sensors lie. People don't have to.",
+          building: "Build with honesty. Sensors lie. People don't have to.",
+          exploring: "Question the readings. Sensors lie. People don't have to."
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'silas_arc']
+  },
+
+  {
+    nodeId: 'silas_trust_restored',
+    speaker: 'Silas',
+    content: [{
+      text: "[He kneels. Actually puts his hands in the soil. Feels it.]\n\nYou're right.\n\nI came here thinking I'd optimize nature. Make it efficient. Predictable.\n\nBut nature doesn't optimize. It adapts. It's messy. Real.\n\n[He looks up at you. Dirt on his hands. Finally grounded.]\n\nYou're real too. Not a dashboard. Not a metric.\n\nThank you for that reminder. I'm sorry I needed it.",
+      emotion: 'grateful',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        patience: "[He kneels. Actually puts his hands in the soil. Feels it.]\n\nYou're right.\n\nYour patience taught me what dashboards never could.\n\nI came here thinking I'd optimize nature. Make it efficient. Predictable.\n\nBut nature doesn't optimize. It adapts. It's messy. Real.\n\n[He looks up at you. Dirt on his hands. Finally grounded.]\n\nYou're real too. Not a dashboard. Not a metric. Thank you. I'm sorry I needed it.",
+        helping: "[He kneels. Actually puts his hands in the soil. Feels it.]\n\nYou're right.\n\nYou helped me when my sensors failed.\n\nI came here thinking I'd optimize nature. Make it efficient. Predictable.\n\nBut nature doesn't optimize. It adapts. It's messy. Real.\n\n[He looks up at you. Dirt on his hands. Finally grounded.]\n\nYou're real too. Not a dashboard. Not a metric. Thank you. I'm sorry I needed it.",
+        analytical: "[He kneels. Actually puts his hands in the soil. Feels it.]\n\nYou're right.\n\nYou saw what my analysis missed.\n\nI came here thinking I'd optimize nature. Make it efficient. Predictable.\n\nBut nature doesn't optimize. It adapts. It's messy. Real.\n\n[He looks up at you. Dirt on his hands. Finally grounded.]\n\nYou're real too. Not a dashboard. Not a metric. Thank you. I'm sorry I needed it.",
+        building: "[He kneels. Actually puts his hands in the soil. Feels it.]\n\nYou're right.\n\nYou're building from real foundations.\n\nI came here thinking I'd optimize nature. Make it efficient. Predictable.\n\nBut nature doesn't optimize. It adapts. It's messy. Real.\n\n[He looks up at you. Dirt on his hands. Finally grounded.]\n\nYou're real too. Not a dashboard. Not a metric. Thank you. I'm sorry I needed it.",
+        exploring: "[He kneels. Actually puts his hands in the soil. Feels it.]\n\nYou're right.\n\nYou explored beyond the sensors.\n\nI came here thinking I'd optimize nature. Make it efficient. Predictable.\n\nBut nature doesn't optimize. It adapts. It's messy. Real.\n\n[He looks up at you. Dirt on his hands. Finally grounded.]\n\nYou're real too. Not a dashboard. Not a metric. Thank you. I'm sorry I needed it."
+      }
+    }],
+    choices: [{
+      choiceId: 'silas_recovery_complete',
+      text: "(Continue)",
+      nextNodeId: 'silas_hub_return',
+      pattern: 'patience'
+    }],
+    tags: ['trust_recovery', 'silas_arc'],
+    onEnter: [{
+      characterId: 'silas',
+      addKnowledgeFlags: ['silas_trust_recovery_completed']
+    }]
+  },
+
   // ============= DEEP DIVE: NETWORK DRIFT =============
   {
     nodeId: 'silas_deep_dive',

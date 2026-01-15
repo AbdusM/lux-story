@@ -1142,6 +1142,96 @@ export const danteDialogueNodes: DialogueNode[] = [
     tags: ['farewell']
   },
 
+  // ============= TRUST RECOVERY =============
+  {
+    nodeId: 'dante_trust_recovery',
+    speaker: 'Dante Moreau',
+    requiredState: {
+      trust: { max: 3 }
+    },
+    content: [{
+      text: "[He's practicing that pause. The one he talked about. But it's not working.]\n\nYou came back.\n\nI thought... well. I know how to read a room. And I read that one wrong.\n\n[Finally stops. Looks at you.]\n\nI spent my whole life learning to charm people. To read what they need and give it to them.\n\nBut I forgot to ask what YOU actually needed. I just... performed.\n\nThat's manipulation, not connection. And I'm sorry.",
+      emotion: 'vulnerable',
+      variation_id: 'trust_recovery_v1',
+      voiceVariations: {
+        patience: "[He's practicing that pause. The one he talked about. But it's not working.]\n\nYou came back.\n\nYou gave me time. Most people don't.\n\nI thought... well. I know how to read a room. And I read that one wrong.\n\n[Finally stops. Looks at you.]\n\nI spent my whole life learning to charm people. To read what they need and give it to them.\n\nBut I forgot to ask what YOU actually needed. I just... performed. That's manipulation, not connection. And I'm sorry.",
+        helping: "[He's practicing that pause. The one he talked about. But it's not working.]\n\nYou came back.\n\nEven after I used my charm like a shield instead of a bridge.\n\nI thought... well. I know how to read a room. And I read that one wrong.\n\n[Finally stops. Looks at you.]\n\nI spent my whole life learning to charm people. To read what they need and give it to them.\n\nBut I forgot to ask what YOU actually needed. I just... performed. That's manipulation, not connection. And I'm sorry.",
+        analytical: "[He's practicing that pause. The one he talked about. But it's not working.]\n\nYou came back.\n\nYou analyzed what I missed. The gap between performance and authenticity.\n\nI thought... well. I know how to read a room. And I read that one wrong.\n\n[Finally stops. Looks at you.]\n\nI spent my whole life learning to charm people. To read what they need and give it to them.\n\nBut I forgot to ask what YOU actually needed. I just... performed. That's manipulation, not connection. And I'm sorry.",
+        building: "[He's practicing that pause. The one he talked about. But it's not working.]\n\nYou came back.\n\nRebuilding after I performed instead of connecting.\n\nI thought... well. I know how to read a room. And I read that one wrong.\n\n[Finally stops. Looks at you.]\n\nI spent my whole life learning to charm people. To read what they need and give it to them.\n\nBut I forgot to ask what YOU actually needed. I just... performed. That's manipulation, not connection. And I'm sorry.",
+        exploring: "[He's practicing that pause. The one he talked about. But it's not working.]\n\nYou came back.\n\nStill curious even after I gave you the sales pitch instead of the truth.\n\nI thought... well. I know how to read a room. And I read that one wrong.\n\n[Finally stops. Looks at you.]\n\nI spent my whole life learning to charm people. To read what they need and give it to them.\n\nBut I forgot to ask what YOU actually needed. I just... performed. That's manipulation, not connection. And I'm sorry."
+      }
+    }],
+    choices: [
+      {
+        choiceId: 'dante_recovery_real',
+        text: "Show me the real you, not the performance.",
+        nextNodeId: 'dante_trust_restored',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'dante',
+          trustChange: 2,
+          addKnowledgeFlags: ['dante_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Take your time. Show me the real you, not the performance.",
+          helping: "I care about the person, not the pitch. Show me the real you.",
+          analytical: "Authenticity over optimization. Show me the real you, not the performance.",
+          building: "Build something real. Show me the real you, not the performance.",
+          exploring: "I want to explore the truth. Show me the real you, not the performance."
+        }
+      },
+      {
+        choiceId: 'dante_recovery_pause',
+        text: "Try that pause again. For real this time.",
+        nextNodeId: 'dante_trust_restored',
+        pattern: 'patience',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'dante',
+          trustChange: 2,
+          addKnowledgeFlags: ['dante_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Try that pause again. For real this time. I'll wait.",
+          helping: "You taught me about silence. Try that pause again. For real this time.",
+          analytical: "Apply your own methodology. Try that pause again. For real this time.",
+          building: "Build the silence. Try that pause again. For real this time.",
+          exploring: "Let's explore the quiet. Try that pause again. For real this time."
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'dante_arc']
+  },
+
+  {
+    nodeId: 'dante_trust_restored',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "[He stops talking. Actually pauses. Breathes.]\n\n...\n\n[When he speaks again, it's different. Slower. Real.]\n\nI grew up in New Orleans learning to perform. To give people what they wanted before they knew they wanted it.\n\nIt kept me safe. Fed. Successful.\n\nBut somewhere along the way, I forgot how to just... be.\n\n[He looks at you. No charm. Just tired honesty.]\n\nThank you. For wanting the real version.\n\nI'm sorry I was scared to show it.",
+      emotion: 'grateful_vulnerable',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        patience: "[He stops talking. Actually pauses. Breathes.]\n\n...\n\n[When he speaks again, it's different. Slower. Real.]\n\nYou waited for me to find the real words.\n\nI grew up in New Orleans learning to perform. To give people what they wanted before they knew they wanted it.\n\nIt kept me safe. Fed. Successful.\n\nBut somewhere along the way, I forgot how to just... be.\n\n[He looks at you. No charm. Just tired honesty.]\n\nThank you. For wanting the real version. I'm sorry I was scared to show it.",
+        helping: "[He stops talking. Actually pauses. Breathes.]\n\n...\n\n[When he speaks again, it's different. Slower. Real.]\n\nYou cared enough to want the truth.\n\nI grew up in New Orleans learning to perform. To give people what they wanted before they knew they wanted it.\n\nIt kept me safe. Fed. Successful.\n\nBut somewhere along the way, I forgot how to just... be.\n\n[He looks at you. No charm. Just tired honesty.]\n\nThank you. For wanting the real version. I'm sorry I was scared to show it.",
+        analytical: "[He stops talking. Actually pauses. Breathes.]\n\n...\n\n[When he speaks again, it's different. Slower. Real.]\n\nYou saw through the performance. That's rare.\n\nI grew up in New Orleans learning to perform. To give people what they wanted before they knew they wanted it.\n\nIt kept me safe. Fed. Successful.\n\nBut somewhere along the way, I forgot how to just... be.\n\n[He looks at you. No charm. Just tired honesty.]\n\nThank you. For wanting the real version. I'm sorry I was scared to show it.",
+        building: "[He stops talking. Actually pauses. Breathes.]\n\n...\n\n[When he speaks again, it's different. Slower. Real.]\n\nYou helped me build something authentic.\n\nI grew up in New Orleans learning to perform. To give people what they wanted before they knew they wanted it.\n\nIt kept me safe. Fed. Successful.\n\nBut somewhere along the way, I forgot how to just... be.\n\n[He looks at you. No charm. Just tired honesty.]\n\nThank you. For wanting the real version. I'm sorry I was scared to show it.",
+        exploring: "[He stops talking. Actually pauses. Breathes.]\n\n...\n\n[When he speaks again, it's different. Slower. Real.]\n\nYou explored past the charm to find the person.\n\nI grew up in New Orleans learning to perform. To give people what they wanted before they knew they wanted it.\n\nIt kept me safe. Fed. Successful.\n\nBut somewhere along the way, I forgot how to just... be.\n\n[He looks at you. No charm. Just tired honesty.]\n\nThank you. For wanting the real version. I'm sorry I was scared to show it."
+      }
+    }],
+    choices: [{
+      choiceId: 'dante_recovery_complete',
+      text: "(Continue)",
+      nextNodeId: 'dante_hub_return',
+      pattern: 'patience'
+    }],
+    tags: ['trust_recovery', 'dante_arc'],
+    onEnter: [{
+      characterId: 'dante',
+      addKnowledgeFlags: ['dante_trust_recovery_completed']
+    }]
+  },
+
   // ═══════════════════════════════════════════════════════════════
   // MISSING NODES - Added to fix broken navigation
   // ═══════════════════════════════════════════════════════════════

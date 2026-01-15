@@ -2485,6 +2485,89 @@ YOUR RESPONSE OPTIONS:
             variation_id: 'hub_return_v1'
         }],
         choices: []
+    },
+
+    // ============= TRUST RECOVERY =============
+    {
+        nodeId: 'asha_trust_recovery',
+        speaker: 'Asha Patel',
+        requiredState: {
+            trust: { max: 3 }
+        },
+        content: [
+            {
+                text: "[She's standing before the blank mural wall again. No tablet this time. Just her hands on the surface.]\n\nThe noise is quieter when you're gone.\n\nI thought that would feel like relief. Like clarity.\n\nBut it doesn't. It feels like erasure.\n\nLike the day they painted over my work and left me with a wall of nothing.",
+                emotion: 'regretful_vulnerable',
+                variation_id: 'trust_recovery_v1',
+                voiceVariations: {
+                    patience: "[She's standing before the blank mural wall. Not rushing to speak.]\n\nYou came back. And you didn't rush in with solutions.\n\nI thought that would feel like relief. Like clarity.\n\nBut it doesn't. It feels like erasure.\n\nLike the day they painted over my work and left me with a wall of nothing.",
+                    helping: "[She's standing before the blank mural wall. Alone.]\n\nYou came back. Even after I pushed you away.\n\nI thought solitude would feel like relief. Like clarity.\n\nBut it doesn't. It feels like erasure.\n\nLike the day they painted over my work and left me with a wall of nothing.",
+                    analytical: "[She's standing before the blank mural wall. The projection system is off.]\n\nYou came back. To assess the damage, I assume.\n\nI thought the quiet would feel like relief. Like clarity.\n\nBut it doesn't. It feels like erasure.\n\nLike the day they painted over my work and left me with a wall of nothing.",
+                    building: "[She's standing before the blank mural wall. No tools. No tablet.]\n\nYou came back. Ready to rebuild what I broke.\n\nI thought the blank wall would feel like relief. Like clarity.\n\nBut it doesn't. It feels like erasure.\n\nLike the day they painted over my work and left me with a wall of nothing.",
+                    exploring: "[She's standing before the blank mural wall. The possibilities flickering, then gone.]\n\nYou came back. Still curious, even after...\n\nI thought the quiet would feel like relief. Like clarity.\n\nBut it doesn't. It feels like erasure.\n\nLike the day they painted over my work and left me with a wall of nothing."
+                }
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'asha_recovery_vision',
+                text: "Erasure isn't clarity. You taught me that. Your vision still matters.",
+                nextNodeId: 'asha_trust_restored',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'asha',
+                    trustChange: 2,
+                    addKnowledgeFlags: ['asha_trust_repaired']
+                }
+            },
+            {
+                choiceId: 'asha_recovery_shield',
+                text: "You used the AI as a shield. Now you're using silence. But I'm still here.",
+                nextNodeId: 'asha_trust_restored',
+                pattern: 'analytical',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'asha',
+                    trustChange: 2,
+                    addKnowledgeFlags: ['asha_trust_repaired']
+                }
+            },
+            {
+                choiceId: 'asha_recovery_patience',
+                text: "[Stand with her. Let the wall speak its own truth.]",
+                nextNodeId: 'asha_trust_restored',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'asha',
+                    trustChange: 2,
+                    addKnowledgeFlags: ['asha_trust_repaired']
+                }
+            }
+        ],
+        tags: ['asha_arc', 'trust_recovery', 'vulnerability']
+    },
+
+    {
+        nodeId: 'asha_trust_restored',
+        speaker: 'Asha Patel',
+        content: [
+            {
+                text: "[She picks up the tablet. Opens a new canvas. Not the mural. Something smaller.]\n\nMy grandmother used to say: \"Conflict isn't a problem to solve. It's a signal to understand.\"\n\nI forgot that applies to my own noise too.\n\nThank you. For translating what I couldn't hear.",
+                emotion: 'grateful_relieved',
+                variation_id: 'trust_restored_v1',
+                interaction: 'bloom'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'asha_restored_continue',
+                text: "(Continue)",
+                nextNodeId: 'asha_hub_return'
+            }
+        ],
+        tags: ['asha_arc', 'trust_recovery', 'restored']
     }
 ]
 

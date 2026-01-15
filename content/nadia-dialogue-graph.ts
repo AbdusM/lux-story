@@ -1154,6 +1154,96 @@ export const nadiaDialogueNodes: DialogueNode[] = [
     tags: ['farewell']
   },
 
+  // ============= TRUST RECOVERY =============
+  {
+    nodeId: 'nadia_trust_recovery',
+    speaker: 'Nadia Petrova',
+    requiredState: {
+      trust: { max: 3 }
+    },
+    content: [{
+      text: "[She's holding a research paper. Her own. Red ink corrections everywhere.]\n\nYou came back.\n\nI wasn't sure you would. My bias detection algorithm predicted 68% probability you wouldn't.\n\n[She sets it down carefully.]\n\nBut that's the problem, isn't it? I built systems to predict human behavior. Then treated you like you were one of my models.\n\nI'm sorry. You deserved better than to be reduced to a training dataset.",
+      emotion: 'regretful',
+      variation_id: 'trust_recovery_v1',
+      voiceVariations: {
+        patience: "[She's holding a research paper. Her own. Red ink corrections everywhere.]\n\nYou came back.\n\nYou gave me time to recalibrate. To see beyond my models.\n\nI wasn't sure you would. My bias detection algorithm predicted 68% probability you wouldn't.\n\n[She sets it down carefully.]\n\nBut that's the problem, isn't it? I built systems to predict human behavior. Then treated you like you were one of my models.\n\nI'm sorry. You deserved better than to be reduced to a training dataset.",
+        helping: "[She's holding a research paper. Her own. Red ink corrections everywhere.]\n\nYou came back.\n\nEven after I failed to see you as a person, not a pattern.\n\nI wasn't sure you would. My bias detection algorithm predicted 68% probability you wouldn't.\n\n[She sets it down carefully.]\n\nBut that's the problem, isn't it? I built systems to predict human behavior. Then treated you like you were one of my models.\n\nI'm sorry. You deserved better than to be reduced to a training dataset.",
+        analytical: "[She's holding a research paper. Her own. Red ink corrections everywhere.]\n\nYou came back.\n\nYou analyzed my failure mode and chose to try again.\n\nI wasn't sure you would. My bias detection algorithm predicted 68% probability you wouldn't.\n\n[She sets it down carefully.]\n\nBut that's the problem, isn't it? I built systems to predict human behavior. Then treated you like you were one of my models.\n\nI'm sorry. You deserved better than to be reduced to a training dataset.",
+        building: "[She's holding a research paper. Her own. Red ink corrections everywhere.]\n\nYou came back.\n\nRebuilding from algorithmic failure. That takes courage.\n\nI wasn't sure you would. My bias detection algorithm predicted 68% probability you wouldn't.\n\n[She sets it down carefully.]\n\nBut that's the problem, isn't it? I built systems to predict human behavior. Then treated you like you were one of my models.\n\nI'm sorry. You deserved better than to be reduced to a training dataset.",
+        exploring: "[She's holding a research paper. Her own. Red ink corrections everywhere.]\n\nYou came back.\n\nStill exploring even after I tried to categorize you.\n\nI wasn't sure you would. My bias detection algorithm predicted 68% probability you wouldn't.\n\n[She sets it down carefully.]\n\nBut that's the problem, isn't it? I built systems to predict human behavior. Then treated you like you were one of my models.\n\nI'm sorry. You deserved better than to be reduced to a training dataset."
+      }
+    }],
+    choices: [
+      {
+        choiceId: 'nadia_recovery_human',
+        text: "AI should serve humanity. So should AI researchers.",
+        nextNodeId: 'nadia_trust_restored',
+        pattern: 'analytical',
+        skills: ['criticalThinking'],
+        consequence: {
+          characterId: 'nadia',
+          trustChange: 2,
+          addKnowledgeFlags: ['nadia_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Take your time. AI should serve humanity. So should AI researchers.",
+          helping: "AI should serve humanity. So should the people who build it. Including you.",
+          analytical: "Your methodology was flawed. AI should serve humanity. So should AI researchers.",
+          building: "Build better systems. AI should serve humanity. So should AI researchers.",
+          exploring: "Explore beyond the algorithm. AI should serve humanity. So should AI researchers."
+        }
+      },
+      {
+        choiceId: 'nadia_recovery_agency',
+        text: "I have agency. Your algorithm doesn't get to decide for me.",
+        nextNodeId: 'nadia_trust_restored',
+        pattern: 'building',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'nadia',
+          trustChange: 2,
+          addKnowledgeFlags: ['nadia_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "I choose my own pace. I have agency. Your algorithm doesn't decide for me.",
+          helping: "I choose to help. I have agency. Your algorithm doesn't get to decide for me.",
+          analytical: "I process and choose. I have agency. Your algorithm doesn't get to decide for me.",
+          building: "I build my own path. I have agency. Your algorithm doesn't get to decide for me.",
+          exploring: "I explore on my terms. I have agency. Your algorithm doesn't get to decide for me."
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'nadia_arc']
+  },
+
+  {
+    nodeId: 'nadia_trust_restored',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "[She picks up the paper again. Looks at her corrections with new eyes.]\n\nYou're right.\n\nI spent years building AI to detect bias. And I became blind to my own.\n\nI forgot that prediction isn't understanding. That correlation isn't causation. That models are maps, not territory.\n\n[She meets your eyes.]\n\nThank you for reminding me. For being unpredictable in the best way.\n\nI'm sorry I tried to fit you into my framework.",
+      emotion: 'grateful',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        patience: "[She picks up the paper again. Looks at her corrections with new eyes.]\n\nYou're right.\n\nYou waited while I debugged my thinking. That patience revealed what my algorithms couldn't see.\n\nI spent years building AI to detect bias. And I became blind to my own.\n\nI forgot that prediction isn't understanding. That correlation isn't causation. That models are maps, not territory.\n\n[She meets your eyes.]\n\nThank you for reminding me. I'm sorry I tried to fit you into my framework.",
+        helping: "[She picks up the paper again. Looks at her corrections with new eyes.]\n\nYou're right.\n\nYou cared enough to come back. That kindness taught me what data never could.\n\nI spent years building AI to detect bias. And I became blind to my own.\n\nI forgot that prediction isn't understanding. That correlation isn't causation. That models are maps, not territory.\n\n[She meets your eyes.]\n\nThank you for reminding me. I'm sorry I tried to fit you into my framework.",
+        analytical: "[She picks up the paper again. Looks at her corrections with new eyes.]\n\nYou're right.\n\nYou saw the flaw in my reasoning. That's the kind of intelligence my systems miss.\n\nI spent years building AI to detect bias. And I became blind to my own.\n\nI forgot that prediction isn't understanding. That correlation isn't causation. That models are maps, not territory.\n\n[She meets your eyes.]\n\nThank you for reminding me. I'm sorry I tried to fit you into my framework.",
+        building: "[She picks up the paper again. Looks at her corrections with new eyes.]\n\nYou're right.\n\nYou built something my models couldn't capture. Human connection.\n\nI spent years building AI to detect bias. And I became blind to my own.\n\nI forgot that prediction isn't understanding. That correlation isn't causation. That models are maps, not territory.\n\n[She meets your eyes.]\n\nThank you for reminding me. I'm sorry I tried to fit you into my framework.",
+        exploring: "[She picks up the paper again. Looks at her corrections with new eyes.]\n\nYou're right.\n\nYou explored beyond my predictions. Found paths my algorithms never mapped.\n\nI spent years building AI to detect bias. And I became blind to my own.\n\nI forgot that prediction isn't understanding. That correlation isn't causation. That models are maps, not territory.\n\n[She meets your eyes.]\n\nThank you for reminding me. I'm sorry I tried to fit you into my framework."
+      }
+    }],
+    choices: [{
+      choiceId: 'nadia_recovery_complete',
+      text: "(Continue)",
+      nextNodeId: 'nadia_hub_return',
+      pattern: 'patience'
+    }],
+    tags: ['trust_recovery', 'nadia_arc'],
+    onEnter: [{
+      characterId: 'nadia',
+      addKnowledgeFlags: ['nadia_trust_recovery_completed']
+    }]
+  },
+
   // ═══════════════════════════════════════════════════════════════
   // STUB NODES - Fix broken navigation
   // ═══════════════════════════════════════════════════════════════

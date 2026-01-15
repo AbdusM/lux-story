@@ -1069,6 +1069,96 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     tags: ['farewell']
   },
 
+  // ============= TRUST RECOVERY =============
+  {
+    nodeId: 'isaiah_trust_recovery',
+    speaker: 'Isaiah Greene',
+    requiredState: {
+      trust: { max: 3 }
+    },
+    content: [{
+      text: "[He's holding a donor report. Numbers that represent people he couldn't help.]\n\nYou came back.\n\nI wasn't sure you would. Wasn't sure you should.\n\n[He sets it down heavily.]\n\nI carry a lot of weight. Twelve years of kids I couldn't save. Donors I had to smile for. Systems that stay broken no matter how hard I work.\n\nAnd I put that weight on you. Made you carry my burnout.\n\nThat wasn't fair. I'm sorry.",
+      emotion: 'weary',
+      variation_id: 'trust_recovery_v1',
+      voiceVariations: {
+        patience: "[He's holding a donor report. Numbers that represent people he couldn't help.]\n\nYou came back.\n\nYou gave me time. That patience... it's a gift I stopped giving myself.\n\nI wasn't sure you would. Wasn't sure you should.\n\n[He sets it down heavily.]\n\nI carry a lot of weight. Twelve years of kids I couldn't save. Donors I had to smile for. Systems that stay broken no matter how hard I work.\n\nAnd I put that weight on you. Made you carry my burnout. That wasn't fair. I'm sorry.",
+        helping: "[He's holding a donor report. Numbers that represent people he couldn't help.]\n\nYou came back.\n\nEven after I couldn't help you the way you tried to help me.\n\nI wasn't sure you would. Wasn't sure you should.\n\n[He sets it down heavily.]\n\nI carry a lot of weight. Twelve years of kids I couldn't save. Donors I had to smile for. Systems that stay broken no matter how hard I work.\n\nAnd I put that weight on you. Made you carry my burnout. That wasn't fair. I'm sorry.",
+        analytical: "[He's holding a donor report. Numbers that represent people he couldn't help.]\n\nYou came back.\n\nYou assessed the situation and chose grace.\n\nI wasn't sure you would. Wasn't sure you should.\n\n[He sets it down heavily.]\n\nI carry a lot of weight. Twelve years of kids I couldn't save. Donors I had to smile for. Systems that stay broken no matter how hard I work.\n\nAnd I put that weight on you. Made you carry my burnout. That wasn't fair. I'm sorry.",
+        building: "[He's holding a donor report. Numbers that represent people he couldn't help.]\n\nYou came back.\n\nRebuilding after I tore down what you were trying to build.\n\nI wasn't sure you would. Wasn't sure you should.\n\n[He sets it down heavily.]\n\nI carry a lot of weight. Twelve years of kids I couldn't save. Donors I had to smile for. Systems that stay broken no matter how hard I work.\n\nAnd I put that weight on you. Made you carry my burnout. That wasn't fair. I'm sorry.",
+        exploring: "[He's holding a donor report. Numbers that represent people he couldn't help.]\n\nYou came back.\n\nStill exploring even after I showed you the darkness.\n\nI wasn't sure you would. Wasn't sure you should.\n\n[He sets it down heavily.]\n\nI carry a lot of weight. Twelve years of kids I couldn't save. Donors I had to smile for. Systems that stay broken no matter how hard I work.\n\nAnd I put that weight on you. Made you carry my burnout. That wasn't fair. I'm sorry."
+      }
+    }],
+    choices: [
+      {
+        choiceId: 'isaiah_recovery_together',
+        text: "You don't have to carry it alone.",
+        nextNodeId: 'isaiah_trust_restored',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'isaiah',
+          trustChange: 2,
+          addKnowledgeFlags: ['isaiah_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Take it slow. You don't have to carry it alone.",
+          helping: "You don't have to carry it alone. That's why I'm here.",
+          analytical: "Distributed load reduces failure. You don't have to carry it alone.",
+          building: "Build support systems. You don't have to carry it alone.",
+          exploring: "Let's explore together. You don't have to carry it alone."
+        }
+      },
+      {
+        choiceId: 'isaiah_recovery_systems',
+        text: "The system is broken. But you're not.",
+        nextNodeId: 'isaiah_trust_restored',
+        pattern: 'analytical',
+        skills: ['wisdom'],
+        consequence: {
+          characterId: 'isaiah',
+          trustChange: 2,
+          addKnowledgeFlags: ['isaiah_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Give yourself grace. The system is broken. But you're not.",
+          helping: "You're doing your best. The system is broken. But you're not.",
+          analytical: "Separate the variables. The system is broken. But you're not.",
+          building: "You can't rebuild everything at once. The system is broken. But you're not.",
+          exploring: "Examine the root cause. The system is broken. But you're not."
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'isaiah_arc']
+  },
+
+  {
+    nodeId: 'isaiah_trust_restored',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "[He takes a breath. First full breath you've seen him take.]\n\nYou're right.\n\nI've been fighting the same fight for twelve years. Trying to save everyone. Fix everything.\n\nAnd when I can't... I blame myself.\n\n[He looks at you with clearer eyes.]\n\nBut you're here. Still here. After I tried to push you away with my cynicism.\n\nMaybe... maybe that's what actually saves people. Not perfect programs or endless donors.\n\nJust showing up. Even when it's hard.\n\nThank you for showing up for me.",
+      emotion: 'grateful_lighter',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        patience: "[He takes a breath. First full breath you've seen him take.]\n\nYou're right.\n\nYour patience reminded me it's not a race.\n\nI've been fighting the same fight for twelve years. Trying to save everyone. Fix everything.\n\nAnd when I can't... I blame myself.\n\n[He looks at you with clearer eyes.]\n\nBut you're here. Still here. After I tried to push you away with my cynicism.\n\nMaybe that's what actually saves people. Just showing up. Even when it's hard.\n\nThank you for showing up for me.",
+        helping: "[He takes a breath. First full breath you've seen him take.]\n\nYou're right.\n\nYou showed me what care actually looks like.\n\nI've been fighting the same fight for twelve years. Trying to save everyone. Fix everything.\n\nAnd when I can't... I blame myself.\n\n[He looks at you with clearer eyes.]\n\nBut you're here. Still here. After I tried to push you away with my cynicism.\n\nMaybe that's what actually saves people. Just showing up. Even when it's hard.\n\nThank you for showing up for me.",
+        analytical: "[He takes a breath. First full breath you've seen him take.]\n\nYou're right.\n\nYou saw what I couldn't analyze my way to seeing.\n\nI've been fighting the same fight for twelve years. Trying to save everyone. Fix everything.\n\nAnd when I can't... I blame myself.\n\n[He looks at you with clearer eyes.]\n\nBut you're here. Still here. After I tried to push you away with my cynicism.\n\nMaybe that's what actually saves people. Just showing up. Even when it's hard.\n\nThank you for showing up for me.",
+        building: "[He takes a breath. First full breath you've seen him take.]\n\nYou're right.\n\nYou're building something I forgot existed. Hope.\n\nI've been fighting the same fight for twelve years. Trying to save everyone. Fix everything.\n\nAnd when I can't... I blame myself.\n\n[He looks at you with clearer eyes.]\n\nBut you're here. Still here. After I tried to push you away with my cynicism.\n\nMaybe that's what actually saves people. Just showing up. Even when it's hard.\n\nThank you for showing up for me.",
+        exploring: "[He takes a breath. First full breath you've seen him take.]\n\nYou're right.\n\nYou explored past my defenses to find the person.\n\nI've been fighting the same fight for twelve years. Trying to save everyone. Fix everything.\n\nAnd when I can't... I blame myself.\n\n[He looks at you with clearer eyes.]\n\nBut you're here. Still here. After I tried to push you away with my cynicism.\n\nMaybe that's what actually saves people. Just showing up. Even when it's hard.\n\nThank you for showing up for me."
+      }
+    }],
+    choices: [{
+      choiceId: 'isaiah_recovery_complete',
+      text: "(Continue)",
+      nextNodeId: 'isaiah_hub_return',
+      pattern: 'patience'
+    }],
+    tags: ['trust_recovery', 'isaiah_arc'],
+    onEnter: [{
+      characterId: 'isaiah',
+      addKnowledgeFlags: ['isaiah_trust_recovery_completed']
+    }]
+  },
+
   // ═══════════════════════════════════════════════════════════════
   // STUB NODES - Fix broken navigation (content TBD)
   // ═══════════════════════════════════════════════════════════════
