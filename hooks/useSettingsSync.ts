@@ -14,54 +14,105 @@ import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { syncSettings, pushSettingsToCloud, pullSettingsFromCloud } from '@/lib/settings-sync'
 
+export type SyncResult = {
+  success: boolean
+  message?: string
+}
+
 interface UseSettingsSyncReturn {
   isSyncing: boolean
   lastSyncTime: Date | null
-  syncNow: () => Promise<void>
-  pushNow: () => Promise<void>
-  pullNow: () => Promise<void>
+  lastSyncResult: SyncResult | null
+  isOnline: boolean
+  syncNow: () => Promise<SyncResult>
+  pushNow: () => Promise<SyncResult>
+  pullNow: () => Promise<SyncResult>
 }
 
 export function useSettingsSync(): UseSettingsSyncReturn {
   const [isSyncing, setIsSyncing] = useState(false)
   const [lastSyncTime, setLastSyncTime] = useState<Date | null>(null)
+  const [lastSyncResult, setLastSyncResult] = useState<SyncResult | null>(null)
+  const [isOnline, setIsOnline] = useState(true)
 
   const supabase = createClient()
 
+  // Check if user is authenticated (determines online/offline sync capability)
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setIsOnline(!!user)
+    }
+    checkAuthStatus()
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setIsOnline(!!session?.user)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [supabase.auth])
+
   // Manual full sync
-  const syncNow = useCallback(async () => {
+  const syncNow = useCallback(async (): Promise<SyncResult> => {
     setIsSyncing(true)
     try {
       await syncSettings()
+      const result: SyncResult = { success: true, message: 'Settings synchronized' }
       setLastSyncTime(new Date())
+      setLastSyncResult(result)
+      return result
     } catch (error) {
       console.error('[useSettingsSync] Sync error:', error)
+      const result: SyncResult = { success: false, message: 'Failed to sync settings' }
+      setLastSyncResult(result)
+      return result
     } finally {
       setIsSyncing(false)
     }
   }, [])
 
   // Push local to cloud
-  const pushNow = useCallback(async () => {
+  const pushNow = useCallback(async (): Promise<SyncResult> => {
     setIsSyncing(true)
     try {
-      await pushSettingsToCloud()
-      setLastSyncTime(new Date())
+      const success = await pushSettingsToCloud()
+      const result: SyncResult = success
+        ? { success: true, message: 'Settings synced to cloud' }
+        : { success: false, message: 'Not signed in - saved locally only' }
+      if (success) {
+        setLastSyncTime(new Date())
+      }
+      setLastSyncResult(result)
+      return result
     } catch (error) {
       console.error('[useSettingsSync] Push error:', error)
+      const result: SyncResult = { success: false, message: 'Failed to sync settings' }
+      setLastSyncResult(result)
+      return result
     } finally {
       setIsSyncing(false)
     }
   }, [])
 
   // Pull cloud to local
-  const pullNow = useCallback(async () => {
+  const pullNow = useCallback(async (): Promise<SyncResult> => {
     setIsSyncing(true)
     try {
-      await pullSettingsFromCloud()
-      setLastSyncTime(new Date())
+      const settings = await pullSettingsFromCloud()
+      const result: SyncResult = settings
+        ? { success: true, message: 'Settings loaded from cloud' }
+        : { success: false, message: 'No cloud settings found' }
+      if (settings) {
+        setLastSyncTime(new Date())
+      }
+      setLastSyncResult(result)
+      return result
     } catch (error) {
       console.error('[useSettingsSync] Pull error:', error)
+      const result: SyncResult = { success: false, message: 'Failed to load settings' }
+      setLastSyncResult(result)
+      return result
     } finally {
       setIsSyncing(false)
     }
@@ -119,6 +170,8 @@ export function useSettingsSync(): UseSettingsSyncReturn {
   return {
     isSyncing,
     lastSyncTime,
+    lastSyncResult,
+    isOnline,
     syncNow,
     pushNow,
     pullNow,
