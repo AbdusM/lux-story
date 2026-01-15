@@ -239,6 +239,61 @@ export interface DialogueContent {
   }>
 
   /**
+   * Voice variations - alternate NPC response text based on player's dominant pattern.
+   * Makes NPCs respond differently to WHO the player is becoming.
+   * If player has a dominant pattern (>= 5), uses that pattern's text variant.
+   *
+   * This is the BIDIRECTIONAL reflection system - NPCs see the player's patterns
+   * just like player choices adapt to their patterns.
+   *
+   * @example
+   * voiceVariations: {
+   *   analytical: "You're looking for the pattern, aren't you?",
+   *   helping: "You noticed something was off. Thank you for that.",
+   *   patience: "You're not rushing me. That's rare."
+   * }
+   */
+  voiceVariations?: Partial<Record<PatternType, string>>
+
+  /**
+   * Skill-reflective NPC responses.
+   * When player has demonstrated a skill (>= minLevel), NPC dialogue changes
+   * to acknowledge their competence. Makes skills VISIBLE.
+   *
+   * @example
+   * skillReflection: [{
+   *   skill: 'emotionalIntelligence',
+   *   minLevel: 5,
+   *   altText: "You read people well. I can tell.",
+   *   altEmotion: 'impressed'
+   * }]
+   */
+  skillReflection?: Array<{
+    skill: string
+    minLevel: number
+    altText: string
+    altEmotion?: string
+  }>
+
+  /**
+   * Nervous system-reflective NPC responses.
+   * NPC dialogue varies based on player's current nervous system state.
+   * Makes Polyvagal Theory VISIBLE in the narrative.
+   *
+   * @example
+   * nervousSystemReflection: [{
+   *   state: 'sympathetic',
+   *   altText: "You seem on edge. That's okay. Take your time.",
+   *   altEmotion: 'gentle'
+   * }]
+   */
+  nervousSystemReflection?: Array<{
+    state: 'ventral_vagal' | 'sympathetic' | 'dorsal_vagal'
+    altText: string
+    altEmotion?: string
+  }>
+
+  /**
    * Interrupt Window - ME2-style quick-time event during NPC speech
    *
    * Creates a brief window where player can act during NPC dialogue.

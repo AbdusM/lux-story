@@ -12,6 +12,7 @@ import type { PlayerPatterns } from './character-state'
 import type { SoundType } from './audio-feedback'
 import type { TemplateArchetype, VoiceCharacterId } from './voice-templates/template-types'
 import { resolveVoiceVariation } from './voice-templates/template-resolver'
+import type { DialogueContent } from './dialogue-graph'
 
 // Note: Using string for emotion to support compound emotions in dialogue content
 
@@ -1524,4 +1525,176 @@ export function getVulnerabilityRevelationEcho(
   if (!pool || pool.length === 0) return null
 
   return pool[Math.floor(Math.random() * pool.length)]
+}
+
+// ============================================
+// BIDIRECTIONAL REFLECTION SYSTEM
+// NPC responses adapt to WHO the player is becoming
+// ============================================
+
+/**
+ * Resolve NPC voiceVariations based on player's dominant pattern.
+ * This is the BIDIRECTIONAL system - NPCs see the player's patterns
+ * just like player choices adapt to their patterns.
+ *
+ * @param content - The dialogue content with optional voiceVariations
+ * @param patterns - Player's current pattern scores
+ * @returns Modified content with resolved text (or original if no variation applies)
+ */
+export function resolveContentVoiceVariation(
+  content: DialogueContent,
+  patterns: PlayerPatterns
+): DialogueContent {
+  if (!content.voiceVariations) return content
+
+  const dominantPattern = getDominantPattern(patterns)
+  if (dominantPattern && content.voiceVariations[dominantPattern]) {
+    return {
+      ...content,
+      text: content.voiceVariations[dominantPattern]!
+    }
+  }
+  return content
+}
+
+/**
+ * Apply skill reflection to dialogue content.
+ * When player has demonstrated a skill at sufficient level,
+ * NPC dialogue changes to acknowledge their competence.
+ *
+ * @param content - The dialogue content with optional skillReflection
+ * @param skillLevels - Player's demonstrated skill levels
+ * @returns Modified content (or original if no reflection applies)
+ */
+export function applySkillReflection(
+  content: DialogueContent,
+  skillLevels: Record<string, number>
+): DialogueContent {
+  if (!content.skillReflection || !skillLevels) return content
+
+  for (const reflection of content.skillReflection) {
+    const playerLevel = skillLevels[reflection.skill] || 0
+    if (playerLevel >= reflection.minLevel) {
+      return {
+        ...content,
+        text: reflection.altText,
+        emotion: reflection.altEmotion || content.emotion
+      }
+    }
+  }
+  return content
+}
+
+/**
+ * Apply nervous system reflection to dialogue content.
+ * NPC dialogue varies based on player's current nervous system state.
+ * Makes Polyvagal Theory VISIBLE in the narrative.
+ *
+ * @param content - The dialogue content with optional nervousSystemReflection
+ * @param nervousState - Player's current nervous system state
+ * @returns Modified content (or original if no reflection applies)
+ */
+export function applyNervousSystemReflection(
+  content: DialogueContent,
+  nervousState?: 'ventral_vagal' | 'sympathetic' | 'dorsal_vagal'
+): DialogueContent {
+  if (!content.nervousSystemReflection || !nervousState) return content
+
+  const reflection = content.nervousSystemReflection.find(
+    r => r.state === nervousState
+  )
+
+  if (reflection) {
+    return {
+      ...content,
+      text: reflection.altText,
+      emotion: reflection.altEmotion || content.emotion
+    }
+  }
+  return content
+}
+
+/**
+ * Skill recognition voice library.
+ * Character-specific dialogue when they notice player's demonstrated skills.
+ */
+export const SKILL_RECOGNITION_VOICES: Record<string, Record<string, string[]>> = {
+  emotionalIntelligence: {
+    samuel: [
+      "You read people well. That's a gift.",
+      "You see what's underneath the words, don't you?"
+    ],
+    maya: [
+      "You noticed something others would miss.",
+      "That's... perceptive. Most people don't see that."
+    ],
+    marcus: [
+      "You've got good instincts about people.",
+      "That kind of awareness is rare. It matters in healthcare."
+    ],
+    default: [
+      "You understand people.",
+      "That's real emotional intelligence."
+    ]
+  },
+  criticalThinking: {
+    samuel: [
+      "You ask the right questions.",
+      "You think things through. I can tell."
+    ],
+    maya: [
+      "You see the logic others miss.",
+      "That analytical approach... I respect it."
+    ],
+    rohan: [
+      "You question assumptions. Good.",
+      "That's the kind of thinking that changes things."
+    ],
+    default: [
+      "You think critically.",
+      "That's a valuable skill."
+    ]
+  },
+  resilience: {
+    samuel: [
+      "You don't break easy. I can see that.",
+      "Setbacks don't stop you, do they?"
+    ],
+    kai: [
+      "You bounce back. That's essential in this work.",
+      "I've seen people crumble under less. You didn't."
+    ],
+    default: [
+      "You're resilient.",
+      "That strength will serve you."
+    ]
+  }
+}
+
+/**
+ * Get skill recognition voice from a specific character.
+ * Returns character-specific acknowledgment of demonstrated skill.
+ *
+ * @param skill - The skill being recognized
+ * @param level - Player's level in that skill
+ * @param characterId - The character speaking
+ * @returns Recognition text and style, or null if level too low
+ */
+export function getSkillVoice(
+  skill: string,
+  level: number,
+  characterId: string
+): { text: string; style: 'noticing' | 'impressed' } | null {
+  if (level < 5) return null
+
+  const skillVoices = SKILL_RECOGNITION_VOICES[skill]
+  if (!skillVoices) return null
+
+  const characterVoices = skillVoices[characterId] || skillVoices.default
+  if (!characterVoices || characterVoices.length === 0) return null
+
+  return {
+    text: characterVoices[Math.floor(Math.random() * characterVoices.length)],
+    style: level >= 8 ? 'impressed' : 'noticing'
+  }
 }
