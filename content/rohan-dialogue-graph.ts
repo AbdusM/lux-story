@@ -2320,6 +2320,97 @@ WHERE IS THE 847ms COMING FROM?`,
     choices: []
   },
 
+  // ============= TRUST RECOVERY =============
+  {
+    nodeId: 'rohan_trust_recovery',
+    speaker: 'Rohan',
+    requiredState: {
+      trust: { max: 3 }
+    },
+    content: [{
+      text: "You're here.\n\nI thought you'd gone. Vanished into the buffer like a dropped frame.\n\n[He's not looking at you. Staring at code that isn't there.]\n\nI don't know how to... I'm better with machines than this.",
+      emotion: 'vulnerable',
+      variation_id: 'trust_recovery_v1',
+      richEffectContext: 'warning',
+      voiceVariations: {
+        patience: "You're here.\n\nYou took your time. Let the recursion unwind.\n\nI thought you'd gone. Vanished into the buffer like a dropped frame.\n\n[He's not looking at you. Staring at code that isn't there.]\n\nI don't know how to... I'm better with machines than this.",
+        helping: "You're here.\n\nEven after I shut down. Went into maintenance mode.\n\nI thought you'd gone. Vanished into the buffer like a dropped frame.\n\n[He's not looking at you. Staring at code that isn't there.]\n\nI don't know how to... I'm better with machines than this.",
+        analytical: "You're here.\n\nYou ran the diagnostics. Traced the error back to source.\n\nI thought you'd gone. Vanished into the buffer like a dropped frame.\n\n[He's not looking at you. Staring at code that isn't there.]\n\nI don't know how to... I'm better with machines than this.",
+        building: "You're here.\n\nRebuilding from corrupted state. Brave.\n\nI thought you'd gone. Vanished into the buffer like a dropped frame.\n\n[He's not looking at you. Staring at code that isn't there.]\n\nI don't know how to... I'm better with machines than this.",
+        exploring: "You're here.\n\nStill curious. Even after I became a ghost.\n\nI thought you'd gone. Vanished into the buffer like a dropped frame.\n\n[He's not looking at you. Staring at code that isn't there.]\n\nI don't know how to... I'm better with machines than this."
+      }
+    }],
+    choices: [
+      {
+        choiceId: 'rohan_recovery_understand',
+        text: "You didn't lose me. I'm right here.",
+        nextNodeId: 'rohan_trust_restored',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 2,
+          addKnowledgeFlags: ['rohan_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "I didn't leave. I was just waiting. You didn't lose me.",
+          helping: "You didn't lose me. I'm right here. I'm not going anywhere.",
+          analytical: "The connection persisted. I didn't drop. You didn't lose me.",
+          building: "Still here. Foundation intact. You didn't lose me.",
+          exploring: "I'm still exploring. Still here. You didn't lose me."
+        }
+      },
+      {
+        choiceId: 'rohan_recovery_patient',
+        text: "You don't have to be good at this. Just honest.",
+        nextNodeId: 'rohan_trust_restored',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 2,
+          addKnowledgeFlags: ['rohan_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Take your time. You don't have to be good at this. Just honest.",
+          helping: "You don't have to be perfect. You don't have to be good at this. Just honest.",
+          analytical: "Optimizing for honesty, not performance. You don't have to be good at this.",
+          building: "Build it slowly. You don't have to be good at this. Just honest.",
+          exploring: "No wrong answers here. You don't have to be good at this. Just honest."
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'rohan_arc']
+  },
+
+  {
+    nodeId: 'rohan_trust_restored',
+    speaker: 'Rohan',
+    content: [{
+      text: "[He finally looks at you. The light catches his glasses.]\n\nOkay.\n\nOkay, I... I can work with that.\n\n[A small exhale. Like closing a file after saving.]\n\nThe machine doesn't know how to apologize. But I do.\n\nI'm sorry.",
+      emotion: 'relieved',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        patience: "[He finally looks at you. The light catches his glasses.]\n\nOkay.\n\nYou waited. That matters more than code.\n\nOkay, I... I can work with that.\n\n[A small exhale. Like closing a file after saving.]\n\nThe machine doesn't know how to apologize. But I do. I'm sorry.",
+        helping: "[He finally looks at you. The light catches his glasses.]\n\nOkay.\n\nYou came back. That's... that's human in a way machines can't be.\n\nOkay, I... I can work with that.\n\n[A small exhale. Like closing a file after saving.]\n\nThe machine doesn't know how to apologize. But I do. I'm sorry.",
+        analytical: "[He finally looks at you. The light catches his glasses.]\n\nOkay.\n\nYou debugged the relationship. Found the breakpoint.\n\nOkay, I... I can work with that.\n\n[A small exhale. Like closing a file after saving.]\n\nThe machine doesn't know how to apologize. But I do. I'm sorry.",
+        building: "[He finally looks at you. The light catches his glasses.]\n\nOkay.\n\nYou're rebuilding with corrupted data. That takes courage.\n\nOkay, I... I can work with that.\n\n[A small exhale. Like closing a file after saving.]\n\nThe machine doesn't know how to apologize. But I do. I'm sorry.",
+        exploring: "[He finally looks at you. The light catches his glasses.]\n\nOkay.\n\nYou're still exploring, even in the dark.\n\nOkay, I... I can work with that.\n\n[A small exhale. Like closing a file after saving.]\n\nThe machine doesn't know how to apologize. But I do. I'm sorry."
+      }
+    }],
+    choices: [{
+      choiceId: 'rohan_recovery_complete',
+      text: "(Continue)",
+      nextNodeId: 'rohan_hub_return',
+      pattern: 'patience'
+    }],
+    tags: ['trust_recovery', 'rohan_arc'],
+    onEnter: [{
+      characterId: 'rohan',
+      addKnowledgeFlags: ['rohan_trust_recovery_completed']
+    }]
+  },
+
   // Platform Seven arrival - the mystical jump destination
   {
     nodeId: 'platform_seven_arrival',
