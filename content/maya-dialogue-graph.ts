@@ -1655,7 +1655,14 @@ STATUS: Signal fighting itself`,
       {
         text: "Wait. I never thought about it like that.\n\nMaybe there's room for both? Maybe I don't have to choose between healing and building.",
         emotion: 'hopeful',
-        variation_id: 'grateful_v1'
+        variation_id: 'grateful_v1',
+        voiceVariations: {
+          analytical: "Wait. You just... reframed the entire problem space.\n\nI was treating this as a binary choice. Healing XOR building.\n\nBut what if it's healing AND building? What if the constraint is false?",
+          helping: "Wait. You see me. Like, actually see me.\n\nNot just the pre-med student or the robotics girl. Both.\n\nMaybe there's room for both? Maybe I don't have to choose who to disappoint.",
+          building: "Wait. You're right. I'm building either way.\n\nWhether it's medical robots or patient outcomes. I'm a maker.\n\nMaybe I don't have to choose between healing and building. Maybe I combine them.",
+          exploring: "Wait. I never explored that possibility.\n\nI got stuck in the either/or. Pre-med or robotics.\n\nBut what if there's a third option I haven't discovered yet? What if both paths lead somewhere new?",
+          patience: "Wait. You didn't rush me to decide.\n\nYou let me sit with it. Feel the weight of both pulling at me.\n\nMaybe there's room for both? Maybe the answer takes time to emerge."
+        }
       }
     ],
     choices: [
@@ -1698,7 +1705,14 @@ STATUS: Signal fighting itself`,
       {
         text: "Wait. UAB has a biomedical engineering program.\n\nI could design surgical robots. Create prosthetics. Build devices that actually heal people.\n\nIt's like... having my cake and eating it too. Medicine AND robotics.\n\nOh my god why didn't I see this before?",
         emotion: 'excited',
-        variation_id: 'hybrid_v1'
+        variation_id: 'hybrid_v1',
+        voiceVariations: {
+          analytical: "Wait. UAB has a biomedical engineering program.\n\nThe optimization function was wrong. I was minimizing disappointment instead of maximizing potential.\n\nMedicine AND robotics. Both variables in the same equation.\n\nThe solution was there the whole time. I just wasn't looking at the right search space.",
+          helping: "Wait. UAB has a biomedical engineering program.\n\nI could help people AND build things. I don't have to choose which part of me to silence.\n\nMedicine AND robotics. I can be both daughters - theirs and mine.\n\nOh my god. You helped me see I don't have to abandon anyone. Including myself.",
+          building: "Wait. UAB has a biomedical engineering program.\n\nI could BUILD surgical robots. CREATE prosthetics. Construct devices that actually heal people.\n\nMedicine AND robotics. Not just studying - making.\n\nThis is it. This is what I'm supposed to build.",
+          exploring: "Wait. UAB has a biomedical engineering program.\n\nThere's a whole field I didn't even know existed. Biomedical engineering.\n\nMedicine AND robotics. It's not either/or - it's a third path I never discovered.\n\nHow did I miss this? How much else haven't I explored?",
+          patience: "Wait. UAB has a biomedical engineering program.\n\nI was rushing to decide. Pre-med or robotics. Now.\n\nBut the real answer needed time to surface. Medicine AND robotics.\n\nI just had to wait for the fog to clear."
+        }
       }
     ],
     choices: [
@@ -1729,7 +1743,14 @@ STATUS: Signal fighting itself`,
       {
         text: "Really? I've heard of Innovation Depot but never thought... could I actually do that? Start something here in Birmingham?\n\nIt's so far from what my parents expect.\n\nSo close to what I actually dream about.",
         emotion: 'curious',
-        variation_id: 'birmingham_v1'
+        variation_id: 'birmingham_v1',
+        voiceVariations: {
+          analytical: "Really? Innovation Depot. I've analyzed their startup success metrics.\n\nBut I never ran the algorithm on myself as the variable.\n\nIt's statistically improbable - my parents' expectations vs. my actual trajectory.\n\nBut the data on what makes me happy is... pretty clear.",
+          helping: "Really? I could actually help people from Birmingham?\n\nNot at some prestigious hospital far away. Here. Where I grew up.\n\nIt's so far from impressing my parents with credentials.\n\nSo close to actually making the impact I care about.",
+          building: "Really? Innovation Depot. I could BUILD something real here?\n\nNot just study. Not just prepare. Actually construct the future.\n\nIt's so far from the safe path my parents paved.\n\nSo close to what my hands actually want to make.",
+          exploring: "Really? There's a whole innovation ecosystem I didn't know Birmingham had?\n\nI've been so focused on the expected path, I never explored what's actually here.\n\nIt's so far from what I thought I was supposed to want.\n\nSo close to what I'm discovering I actually need.",
+          patience: "Really? I could stay in Birmingham? Not rush to prove myself somewhere else?\n\nBuild something slowly, sustainably. Put down roots.\n\nIt's so far from the race my parents are running.\n\nSo close to the pace I actually want to live."
+        }
       }
     ],
     choices: [
