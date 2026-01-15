@@ -14,6 +14,8 @@
 1. `5b255c9` - docs: add comprehensive dialogue reform master plan and implementation handoff
 2. `0a444fc` - feat: add bidirectional reflection system - NPCs respond to player patterns
 3. `198326d` - feat: add bidirectional NPC variations, challenge interrupts, trust recovery
+4. `c45f268` - docs: update implementation handoff with completion status
+5. `4bd1b57` - feat: expand bidirectional system with NPC variations, interrupts, trust recovery
 
 ### Phase Status:
 | Phase | Status | Notes |
@@ -26,12 +28,22 @@
 | Phase 5: Validation | ✅ COMPLETE | All tests pass, build succeeds |
 
 ### Key Additions:
-- **NPC Voice Variations:** maya_studies_response, maya_vulnerability_reflection, marcus_automation_lesson, marcus_burnout
-- **Challenge Interrupts:** maya_deflect_passion, devon_uab_systems_engineering (first 'challenge' type in game)
-- **Trust Recovery:** maya_trust_recovery, maya_trust_restored (repair damaged relationships)
-- **Architecture:** lib/consequence-echoes.ts now has resolveContentVoiceVariation, applySkillReflection, applyNervousSystemReflection
+- **NPC Voice Variations:**
+  - Maya: maya_studies_response, maya_vulnerability_reflection
+  - Marcus: marcus_automation_lesson, marcus_burnout
+  - Kai: kai_patience_response, kai_accident_hint
+  - Rohan: rohan_silence_for_david, rohan_technical_dismissal
+- **Challenge Interrupts (4 total):**
+  - maya_deflect_passion (challenge self-limiting beliefs)
+  - devon_uab_systems_engineering (challenge false dichotomy)
+  - marcus_vulnerability_arc (challenge self-blame)
+- **Trust Recovery (6 nodes):**
+  - Maya: maya_trust_recovery, maya_trust_restored
+  - Devon: devon_trust_recovery, devon_trust_restored
+  - Marcus: marcus_trust_recovery, marcus_trust_restored
+- **Architecture:** lib/consequence-echoes.ts has resolveContentVoiceVariation, applySkillReflection, applyNervousSystemReflection
 
-### Tests: 1127 passing | 7 skipped
+### Tests: 1127 passing | 7 skipped | 1658 dialogue nodes
 
 ---
 
