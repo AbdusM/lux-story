@@ -3816,11 +3816,7 @@ export default function StatefulGameInterface() {
           {!isEnding && (
             <footer
               className="flex-shrink-0 glass-panel max-w-4xl mx-auto px-3 sm:px-4 z-20"
-              style={{
-                marginTop: '1.5rem',
-                // Safe area padding to prevent content cutoff behind iOS home indicator
-                paddingBottom: 'max(16px, env(safe-area-inset-bottom))'
-              }}
+              style={{ marginTop: '1.5rem' }}
             >
               {/* Response label-clean, modern styling */}
               <div className="px-4 sm:px-6 pt-3 pb-1 text-center">
@@ -3829,7 +3825,7 @@ export default function StatefulGameInterface() {
                 </span>
               </div>
 
-              <div className="px-4 sm:px-6 pb-4 pt-2">
+              <div className="px-4 sm:px-6 pt-2" style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom, 8px))' }}>
                 {/* Scrollable choices container with scroll indicator */}
                 <div className="relative w-full">
                   <div
