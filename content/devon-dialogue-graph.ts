@@ -862,7 +862,14 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "Thank you. She was... she was the interpreter. Between me and dad. She translated my logic into warmth.\n\nAnd now that translation layer is gone.\n\nSo I built a system. To optimize our conversations. To help him.",
         emotion: 'raw',
-        variation_id: 'accepts_sympathy_v1'
+        variation_id: 'accepts_sympathy_v1',
+        voiceVariations: {
+          analytical: "Thank you. You see the architecture. She was the interpreter layer. Between my logic and his emotion.\n\nThe abstraction is gone now. Communication protocol broken.\n\nSo I built a system. Tried to programmatically optimize our conversations.",
+          helping: "Thank you for... for staying with that.\n\nShe was the bridge. Between me and dad. I could speak in code, she'd translate to care.\n\nWithout her, I don't know the language anymore.\n\nSo I built a system. Trying to automate what she did naturally.",
+          building: "Thank you. You understand construction. She was the infrastructure. Between me and dad. She built connections I couldn't engineer.\n\nNow the foundation's gone.\n\nSo I'm trying to rebuild it. Systematically. Through conversation optimization.",
+          exploring: "Thank you for listening. There's more here than I usually share.\n\nShe was my guide. Between me and dad. She knew paths I couldn't see.\n\nNow I'm lost without the map.\n\nSo I built a system. Trying to navigate what she understood intuitively.",
+          patience: "Thank you. For not rushing past this.\n\nShe was the buffer. Between me and dad. She gave both of us time to understand each other.\n\nWithout that space, everything feels urgent and wrong.\n\nSo I built a system. Trying to slow things down enough to connect."
+        }
       }
     ],
     choices: [
@@ -1311,7 +1318,14 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "The right problem isn't 'How do I fix my dad.'\n\nIt's 'How do I be present with my dad.'\n\nYou can't optimize connection. You show up. Be in the system instead of designing it.",
         emotion: 'understanding',
-        variation_id: 'realizes_v1'
+        variation_id: 'realizes_v1',
+        voiceVariations: {
+          analytical: "I've been debugging the wrong function. The right problem isn't 'How do I fix my dad.'\n\nIt's 'How do I be present with my dad.'\n\nYou can't optimize connection. Some variables can't be controlled - they have to be experienced.",
+          helping: "You helped me see. The right problem isn't 'How do I fix my dad.'\n\nIt's 'How do I be present with my dad.'\n\nConnection isn't something you engineer. It's something you give. Show up. Be there.",
+          building: "I've been trying to construct the wrong thing. The right problem isn't 'How do I fix my dad.'\n\nIt's 'How do I be present with my dad.'\n\nYou can't build connection like a system. You have to be IN the system instead of designing it.",
+          exploring: "You asked the questions that led me here. The right problem isn't 'How do I fix my dad.'\n\nIt's 'How do I be present with my dad.'\n\nConnection isn't something you map ahead of time. You discover it as you go. Show up. Stay curious.",
+          patience: "You gave me time to understand. The right problem isn't 'How do I fix my dad.'\n\nIt's 'How do I be present with my dad.'\n\nYou can't rush connection. You show up. Be in the moment instead of planning the next one."
+        }
       }
     ],
     choices: [
@@ -1692,7 +1706,14 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "What if... what if I stopped trying to optimize the conversation and just... asked him about the systems he's debugging at Marshall?",
         emotion: 'hopeful',
-        variation_id: 'realizes_bridge_v1'
+        variation_id: 'realizes_bridge_v1',
+        voiceVariations: {
+          analytical: "Wait. New hypothesis: What if I stopped trying to optimize the conversation parameters and just... queried his current work? Asked him about the systems he's debugging at Marshall?",
+          helping: "What if... what if I stopped trying to fix the conversation and just... connected? Asked him about his work? The systems he's debugging at Marshall?",
+          building: "What if... what if I stopped trying to construct the perfect conversation and just... built on what we both understand? Asked him about the systems he's debugging at Marshall?",
+          exploring: "What if... what if there's a simpler path I haven't tried? What if I just... asked him about the systems he's debugging at Marshall?",
+          patience: "What if... what if I stopped rushing to solve it and just... let the conversation happen? Asked him about the systems he's debugging at Marshall? Let it take time?"
+        }
       }
     ],
     choices: [
