@@ -4078,6 +4078,26 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub_systems',
         text: "[Continue]",
+        nextNodeId: 'samuel_beat_after_devon_systems',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_devon_systems',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Engineer wisdom applied to the heart. That's somethin' to remember.\n\n[He looks toward the other platforms]\n\nThere are more travelers if you're ready.",
+        emotion: 'warm',
+        variation_id: 'beat_after_devon_systems_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -4120,9 +4140,29 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'return_to_hub_devon_heart',
         text: "I'm glad I could help him see that.",
-        nextNodeId: 'samuel_hub_after_devon',
+        nextNodeId: 'samuel_beat_after_devon_heart',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_devon_heart',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Emotions as features, not bugs. I like that frame.\n\n[He smiles]\n\nNow, let me tell you about who else is here tonight.",
+        emotion: 'warm',
+        variation_id: 'beat_after_devon_heart_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
       }
     ]
   },
@@ -4411,7 +4451,27 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       }
     ],
     choices: [
-      { choiceId: 'continue_mirror', text: "[Continue]", nextNodeId: 'samuel_hub_after_devon' }
+      { choiceId: 'continue_mirror', text: "[Continue]", nextNodeId: 'samuel_beat_after_jordan_mirror' }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_jordan_mirror',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "An act of faith. In her, and in the truth that reflection reveals.\n\n[He stands, gesturing to the platforms]\n\nReady to meet another traveler?",
+        emotion: 'warm',
+        variation_id: 'beat_after_jordan_mirror_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
+      }
     ]
   },
   {
@@ -4439,7 +4499,27 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       }
     ],
     choices: [
-      { choiceId: 'continue_listened', text: "[Continue]", nextNodeId: 'samuel_hub_after_devon' }
+      { choiceId: 'continue_listened', text: "[Continue]", nextNodeId: 'samuel_beat_after_jordan_listened' }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_jordan_listened',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You gave her the room. That's what this station does too - makes space.\n\n[A quiet moment, then he looks up]\n\nSpeaking of which. There are others waiting.",
+        emotion: 'warm',
+        variation_id: 'beat_after_jordan_listened_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
+      }
     ]
   },
 
