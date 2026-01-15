@@ -4045,13 +4045,33 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_from_struggle',
         text: "Thank you for reflecting that back.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_struggle_transformation',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
           characterId: 'samuel',
           trustChange: 1
         }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_struggle_transformation',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You're welcome. Struggle becomes wisdom when we let it teach us - and you did. You let it soften you, not harden you.\n\n[He looks toward the platforms]\n\nReady to meet more travelers learning from their struggles?",
+        emotion: 'reverent',
+        variation_id: 'beat_after_struggle_transformation_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
@@ -4070,7 +4090,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_from_service',
         text: "I want to keep doing that.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_service_philosophy',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'leadership', 'communication']
       }
@@ -4164,6 +4184,26 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
   },
 
   {
+    nodeId: 'samuel_beat_after_service_philosophy',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "And you will. Because you understand what service really means - not obligation, but connection. That's what changes lives.\n\n[He gestures toward the platforms]\n\nReady to meet more travelers learning to serve?",
+        emotion: 'deep_teaching',
+        variation_id: 'beat_after_service_philosophy_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
     nodeId: 'samuel_honesty_mastery',
     speaker: 'Samuel Washington',
     content: [
@@ -4177,9 +4217,29 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_from_honesty',
         text: "I will.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_honesty_mastery',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'leadership']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_honesty_mastery',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Good. Honesty without cruelty, boundaries without walls - that's the work of a lifetime. And you're doing it.\n\n[He looks toward the platforms]\n\nReady to meet more travelers learning honesty?",
+        emotion: 'profound_recognition',
+        variation_id: 'beat_after_honesty_mastery_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
       }
     ]
   },
