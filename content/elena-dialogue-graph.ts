@@ -2595,6 +2595,96 @@ Your curiosity combined with analysis... that's exactly what they need.`,
       variation_id: 'hub_return_v1'
     }],
     choices: []
+  },
+
+  // ============= TRUST RECOVERY =============
+  {
+    nodeId: 'elena_trust_recovery',
+    speaker: 'Elena',
+    requiredState: {
+      trust: { max: 3 }
+    },
+    content: [{
+      text: "[She's surrounded by scattered papers. Correlation matrices. Pattern maps.]\n\nYou're back.\n\nI ran the numbers. 73% probability you wouldn't return after... after I spiraled.\n\n[She looks up. Tired eyes.]\n\nThe data said you'd leave. But you didn't.\n\nI'm trying to understand the outlier.",
+      emotion: 'confused_hopeful',
+      variation_id: 'trust_recovery_v1',
+      voiceVariations: {
+        patience: "[She's surrounded by scattered papers. Correlation matrices. Pattern maps.]\n\nYou're back.\n\nYou took your time. Let the data settle. I should have done the same.\n\nI ran the numbers. 73% probability you wouldn't return after... after I spiraled.\n\n[She looks up. Tired eyes.]\n\nThe data said you'd leave. But you didn't. I'm trying to understand the outlier.",
+        helping: "[She's surrounded by scattered papers. Correlation matrices. Pattern maps.]\n\nYou're back.\n\nEven after I pushed you away when you were trying to help.\n\nI ran the numbers. 73% probability you wouldn't return after... after I spiraled.\n\n[She looks up. Tired eyes.]\n\nThe data said you'd leave. But you didn't. I'm trying to understand the outlier.",
+        analytical: "[She's surrounded by scattered papers. Correlation matrices. Pattern maps.]\n\nYou're back.\n\nYou analyzed the pattern and found a path back.\n\nI ran the numbers. 73% probability you wouldn't return after... after I spiraled.\n\n[She looks up. Tired eyes.]\n\nThe data said you'd leave. But you didn't. I'm trying to understand the outlier.",
+        building: "[She's surrounded by scattered papers. Correlation matrices. Pattern maps.]\n\nYou're back.\n\nRebuilding from broken data. Brave.\n\nI ran the numbers. 73% probability you wouldn't return after... after I spiraled.\n\n[She looks up. Tired eyes.]\n\nThe data said you'd leave. But you didn't. I'm trying to understand the outlier.",
+        exploring: "[She's surrounded by scattered papers. Correlation matrices. Pattern maps.]\n\nYou're back.\n\nStill exploring even after I got lost in the noise.\n\nI ran the numbers. 73% probability you wouldn't return after... after I spiraled.\n\n[She looks up. Tired eyes.]\n\nThe data said you'd leave. But you didn't. I'm trying to understand the outlier."
+      }
+    }],
+    choices: [
+      {
+        choiceId: 'elena_recovery_not_data',
+        text: "I'm not data. I'm a person who came back.",
+        nextNodeId: 'elena_trust_restored',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'elena',
+          trustChange: 2,
+          addKnowledgeFlags: ['elena_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Take a breath. I'm not data. I'm a person who came back.",
+          helping: "I'm not data. I'm a person who came back because I care.",
+          analytical: "Data models human behavior but misses human choice. I'm not data. I came back.",
+          building: "You're building a model around the wrong variables. I'm not data. I'm a person.",
+          exploring: "Maybe the outlier is the point. I'm not data. I'm a person who came back."
+        }
+      },
+      {
+        choiceId: 'elena_recovery_update_model',
+        text: "Then update your model. People surprise the data sometimes.",
+        nextNodeId: 'elena_trust_restored',
+        pattern: 'analytical',
+        skills: ['criticalThinking'],
+        consequence: {
+          characterId: 'elena',
+          trustChange: 2,
+          addKnowledgeFlags: ['elena_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Give it time. Then update your model. People surprise the data.",
+          helping: "Update your model. People come back when they care. That's the pattern.",
+          analytical: "Then update your model. People surprise the data sometimes. That's valuable information.",
+          building: "Rebuild the model with this new data point. People surprise the data.",
+          exploring: "Explore the outlier. Then update your model. Surprises teach us."
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'elena_arc']
+  },
+
+  {
+    nodeId: 'elena_trust_restored',
+    speaker: 'Elena',
+    content: [{
+      text: "[She sets down her pen. For once, not reaching for another calculation.]\n\nYou're right.\n\nI got so focused on predicting behavior, I forgot... people aren't just probability distributions.\n\n[A small, genuine smile.]\n\nThank you. For being the outlier. For coming back.\n\nI'm sorry I lost sight of you in the data.",
+      emotion: 'grateful_clear',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        patience: "[She sets down her pen. For once, not reaching for another calculation.]\n\nYou're right.\n\nYou waited while I figured this out. That patience... it doesn't fit my models. But it's real.\n\nI got so focused on predicting behavior, I forgot... people aren't just probability distributions.\n\n[A small, genuine smile.]\n\nThank you. For being the outlier. For coming back. I'm sorry I lost sight of you in the data.",
+        helping: "[She sets down her pen. For once, not reaching for another calculation.]\n\nYou're right.\n\nYou cared enough to come back even when the data would say not to. That's... that's something my models can't capture.\n\nI got so focused on predicting behavior, I forgot... people aren't just probability distributions.\n\n[A small, genuine smile.]\n\nThank you. For being the outlier. For coming back. I'm sorry I lost sight of you in the data.",
+        analytical: "[She sets down her pen. For once, not reaching for another calculation.]\n\nYou're right.\n\nMy model was incomplete. It measured correlation but missed causation. Missed... connection.\n\nI got so focused on predicting behavior, I forgot... people aren't just probability distributions.\n\n[A small, genuine smile.]\n\nThank you. For being the outlier. For coming back. I'm sorry I lost sight of you in the data.",
+        building: "[She sets down her pen. For once, not reaching for another calculation.]\n\nYou're right.\n\nYou rebuilt what I broke. That's a data point worth keeping.\n\nI got so focused on predicting behavior, I forgot... people aren't just probability distributions.\n\n[A small, genuine smile.]\n\nThank you. For being the outlier. For coming back. I'm sorry I lost sight of you in the data.",
+        exploring: "[She sets down her pen. For once, not reaching for another calculation.]\n\nYou're right.\n\nYou explored beyond my predictions. Found something I couldn't model.\n\nI got so focused on predicting behavior, I forgot... people aren't just probability distributions.\n\n[A small, genuine smile.]\n\nThank you. For being the outlier. For coming back. I'm sorry I lost sight of you in the data."
+      }
+    }],
+    choices: [{
+      choiceId: 'elena_recovery_complete',
+      text: "(Continue)",
+      nextNodeId: 'elena_hub_return',
+      pattern: 'patience'
+    }],
+    tags: ['trust_recovery', 'elena_arc'],
+    onEnter: [{
+      characterId: 'elena',
+      addKnowledgeFlags: ['elena_trust_recovery_completed']
+    }]
   }
 ]
 

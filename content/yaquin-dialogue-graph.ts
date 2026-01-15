@@ -1844,6 +1844,96 @@ Which opening sells the VALUE of practical experience?`,
     choices: []
   },
 
+  // ============= TRUST RECOVERY =============
+  {
+    nodeId: 'yaquin_trust_recovery',
+    speaker: 'Yaquin',
+    requiredState: {
+      trust: { max: 3 }
+    },
+    content: [{
+      text: "You came back.\n\n[He's holding a notebook. Half the pages are filled with crossed-out lesson plans.]\n\nI thought I burned that bridge. My formal education might be lacking, but I know when I've messed up.\n\nI just... I'm not always sure how to fix it.",
+      emotion: 'regretful',
+      variation_id: 'trust_recovery_v1',
+      voiceVariations: {
+        patience: "You came back.\n\n[He's holding a notebook. Half the pages are filled with crossed-out lesson plans.]\n\nYou gave me time to process. That's more grace than I deserved.\n\nI thought I burned that bridge. My formal education might be lacking, but I know when I've messed up.\n\nI just... I'm not always sure how to fix it.",
+        helping: "You came back.\n\n[He's holding a notebook. Half the pages are filled with crossed-out lesson plans.]\n\nEven after I shut you out. You're still here.\n\nI thought I burned that bridge. My formal education might be lacking, but I know when I've messed up.\n\nI just... I'm not always sure how to fix it.",
+        analytical: "You came back.\n\n[He's holding a notebook. Half the pages are filled with crossed-out lesson plans.]\n\nYou analyzed the situation and decided to give me another chance.\n\nI thought I burned that bridge. My formal education might be lacking, but I know when I've messed up.\n\nI just... I'm not always sure how to fix it.",
+        building: "You came back.\n\n[He's holding a notebook. Half the pages are filled with crossed-out lesson plans.]\n\nRebuilding what I broke. That takes real skill.\n\nI thought I burned that bridge. My formal education might be lacking, but I know when I've messed up.\n\nI just... I'm not always sure how to fix it.",
+        exploring: "You came back.\n\n[He's holding a notebook. Half the pages are filled with crossed-out lesson plans.]\n\nStill curious even after I pushed you away.\n\nI thought I burned that bridge. My formal education might be lacking, but I know when I've messed up.\n\nI just... I'm not always sure how to fix it."
+      }
+    }],
+    choices: [
+      {
+        choiceId: 'yaquin_recovery_teach',
+        text: "You teach people every day. Teach me what happened.",
+        nextNodeId: 'yaquin_trust_restored',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 2,
+          addKnowledgeFlags: ['yaquin_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Take your time. You teach people every day. Teach me what happened.",
+          helping: "You teach people every day. You know how to explain. Teach me what happened.",
+          analytical: "Break it down like a lesson plan. You teach people. Teach me what happened.",
+          building: "Build the explanation. You teach people every day. Teach me what happened.",
+          exploring: "Walk me through it. You teach people. Teach me what happened."
+        }
+      },
+      {
+        choiceId: 'yaquin_recovery_practical',
+        text: "Practice is how you learn. Let's practice this.",
+        nextNodeId: 'yaquin_trust_restored',
+        pattern: 'building',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 2,
+          addKnowledgeFlags: ['yaquin_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Practice makes progress. Let's take this slow.",
+          helping: "You believe in practical learning. Let's practice this repair together.",
+          analytical: "Iteration improves outcomes. Let's practice this.",
+          building: "Practice is how you learn. Let's practice this.",
+          exploring: "Experiment with it. Let's practice this together."
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'yaquin_arc']
+  },
+
+  {
+    nodeId: 'yaquin_trust_restored',
+    speaker: 'Yaquin',
+    content: [{
+      text: "[He closes the notebook. Takes a breath.]\n\nOkay. Lesson plan: How to Apologize Without a Script.\n\n[A small, genuine smile.]\n\nStep 1: Acknowledge the damage. I hurt you. I was defensive when you were trying to connect.\n\nStep 2: Take responsibility. That's on me, not the circumstances.\n\nStep 3: Make it right. I'm here. I'm listening now.\n\nHow's my technique?",
+      emotion: 'hopeful',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        patience: "[He closes the notebook. Takes a breath.]\n\nYou gave me time to prepare. That helped.\n\nOkay. Lesson plan: How to Apologize Without a Script.\n\n[A small, genuine smile.]\n\nStep 1: Acknowledge the damage. I hurt you. I was defensive when you were trying to connect.\n\nStep 2: Take responsibility. That's on me, not the circumstances.\n\nStep 3: Make it right. I'm here. I'm listening now.\n\nHow's my technique?",
+        helping: "[He closes the notebook. Takes a breath.]\n\nYou showed me how to do this by doing it yourself. Coming back. That's teaching.\n\nOkay. Lesson plan: How to Apologize Without a Script.\n\n[A small, genuine smile.]\n\nStep 1: Acknowledge the damage. I hurt you. I was defensive when you were trying to connect.\n\nStep 2: Take responsibility. That's on me, not the circumstances.\n\nStep 3: Make it right. I'm here. I'm listening now.\n\nHow's my technique?",
+        analytical: "[He closes the notebook. Takes a breath.]\n\nYou helped me break it down into steps I could execute.\n\nOkay. Lesson plan: How to Apologize Without a Script.\n\n[A small, genuine smile.]\n\nStep 1: Acknowledge the damage. I hurt you. I was defensive when you were trying to connect.\n\nStep 2: Take responsibility. That's on me, not the circumstances.\n\nStep 3: Make it right. I'm here. I'm listening now.\n\nHow's my technique?",
+        building: "[He closes the notebook. Takes a breath.]\n\nYou helped me build this bridge, piece by piece.\n\nOkay. Lesson plan: How to Apologize Without a Script.\n\n[A small, genuine smile.]\n\nStep 1: Acknowledge the damage. I hurt you. I was defensive when you were trying to connect.\n\nStep 2: Take responsibility. That's on me, not the circumstances.\n\nStep 3: Make it right. I'm here. I'm listening now.\n\nHow's my technique?",
+        exploring: "[He closes the notebook. Takes a breath.]\n\nYou explored this space with me until I found the words.\n\nOkay. Lesson plan: How to Apologize Without a Script.\n\n[A small, genuine smile.]\n\nStep 1: Acknowledge the damage. I hurt you. I was defensive when you were trying to connect.\n\nStep 2: Take responsibility. That's on me, not the circumstances.\n\nStep 3: Make it right. I'm here. I'm listening now.\n\nHow's my technique?"
+      }
+    }],
+    choices: [{
+      choiceId: 'yaquin_recovery_complete',
+      text: "Perfect. A+.",
+      nextNodeId: 'yaquin_hub_return',
+      pattern: 'helping'
+    }],
+    tags: ['trust_recovery', 'yaquin_arc'],
+    onEnter: [{
+      characterId: 'yaquin',
+      addKnowledgeFlags: ['yaquin_trust_recovery_completed']
+    }]
+  },
+
   // ============= LOYALTY EXPERIENCE: THE LAUNCH =============
   // Endgame content (Trust ≥ 8) - First course publication crisis
   {

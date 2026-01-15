@@ -1965,6 +1965,96 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     choices: []
   },
 
+  // ============= TRUST RECOVERY =============
+  {
+    nodeId: 'jordan_trust_recovery',
+    speaker: 'Jordan Packard',
+    requiredState: {
+      trust: { max: 3 }
+    },
+    content: [{
+      text: "[She's holding a resume. Seven different job titles crossed out and rewritten.]\n\nYou came back.\n\nI thought... well. I've been through seven career changes. I know when someone's about to walk away.\n\n[She sets the resume down.]\n\nI tell my students to own their whole story. Then I couldn't do it myself when it mattered.\n\nThat's embarrassing. And unfair to you.",
+      emotion: 'regretful',
+      variation_id: 'trust_recovery_v1',
+      voiceVariations: {
+        patience: "[She's holding a resume. Seven different job titles crossed out and rewritten.]\n\nYou came back.\n\nYou gave me time. That's generous.\n\nI thought... well. I've been through seven career changes. I know when someone's about to walk away.\n\n[She sets the resume down.]\n\nI tell my students to own their whole story. Then I couldn't do it myself when it mattered.\n\nThat's embarrassing. And unfair to you.",
+        helping: "[She's holding a resume. Seven different job titles crossed out and rewritten.]\n\nYou came back.\n\nEven after I... I failed you as a mentor.\n\nI thought... well. I've been through seven career changes. I know when someone's about to walk away.\n\n[She sets the resume down.]\n\nI tell my students to own their whole story. Then I couldn't do it myself when it mattered.\n\nThat's embarrassing. And unfair to you.",
+        analytical: "[She's holding a resume. Seven different job titles crossed out and rewritten.]\n\nYou came back.\n\nYou assessed the situation and decided to try again.\n\nI thought... well. I've been through seven career changes. I know when someone's about to walk away.\n\n[She sets the resume down.]\n\nI tell my students to own their whole story. Then I couldn't do it myself when it mattered.\n\nThat's embarrassing. And unfair to you.",
+        building: "[She's holding a resume. Seven different job titles crossed out and rewritten.]\n\nYou came back.\n\nRebuilding trust I damaged. That takes guts.\n\nI thought... well. I've been through seven career changes. I know when someone's about to walk away.\n\n[She sets the resume down.]\n\nI tell my students to own their whole story. Then I couldn't do it myself when it mattered.\n\nThat's embarrassing. And unfair to you.",
+        exploring: "[She's holding a resume. Seven different job titles crossed out and rewritten.]\n\nYou came back.\n\nStill exploring even after I got lost.\n\nI thought... well. I've been through seven career changes. I know when someone's about to walk away.\n\n[She sets the resume down.]\n\nI tell my students to own their whole story. Then I couldn't do it myself when it mattered.\n\nThat's embarrassing. And unfair to you."
+      }
+    }],
+    choices: [
+      {
+        choiceId: 'jordan_recovery_practice',
+        text: "You're still practicing. That's the whole point.",
+        nextNodeId: 'jordan_trust_restored',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 2,
+          addKnowledgeFlags: ['jordan_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Take your time. You're still practicing. That's the whole point.",
+          helping: "You're still practicing. That's the whole point. You're human, not a finished product.",
+          analytical: "Iteration is the process. You're still practicing. That's the whole point.",
+          building: "You're still building yourself. Still practicing. That's the whole point.",
+          exploring: "You're still exploring your own story. Still practicing. That's the whole point."
+        }
+      },
+      {
+        choiceId: 'jordan_recovery_seven',
+        text: "Seven careers means you know how to start over. So start over here.",
+        nextNodeId: 'jordan_trust_restored',
+        pattern: 'building',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 2,
+          addKnowledgeFlags: ['jordan_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "You've done this seven times. One more time. Start over here.",
+          helping: "Seven careers means you know how to rebuild. So rebuild this. Start over here.",
+          analytical: "Seven iterations of self. Apply that methodology. Start over here.",
+          building: "Seven careers means you know how to start over. Build again. Right here.",
+          exploring: "Seven careers. Seven new beginnings. So start over here. Explore this."
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'jordan_arc']
+  },
+
+  {
+    nodeId: 'jordan_trust_restored',
+    speaker: 'Jordan Packard',
+    content: [{
+      text: "[She picks up the resume again. This time doesn't cross anything out.]\n\nYou're right.\n\nSeven careers. Seven times I started from zero. Seven times I felt like an impostor in the new role.\n\n[A quiet laugh.]\n\nAnd here I am, teaching people how to navigate transitions, still terrified I'm a fraud.\n\n[She looks at you directly.]\n\nThank you. For showing me I'm still learning too.\n\nI'm sorry I forgot that.",
+      emotion: 'grateful_humbled',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        patience: "[She picks up the resume again. This time doesn't cross anything out.]\n\nYou're right.\n\nYou waited for me to see it.\n\nSeven careers. Seven times I started from zero. Seven times I felt like an impostor in the new role.\n\n[A quiet laugh.]\n\nAnd here I am, teaching people how to navigate transitions, still terrified I'm a fraud.\n\n[She looks at you directly.]\n\nThank you. For showing me I'm still learning too. I'm sorry I forgot that.",
+        helping: "[She picks up the resume again. This time doesn't cross anything out.]\n\nYou're right.\n\nYou helped me when I couldn't help myself.\n\nSeven careers. Seven times I started from zero. Seven times I felt like an impostor in the new role.\n\n[A quiet laugh.]\n\nAnd here I am, teaching people how to navigate transitions, still terrified I'm a fraud.\n\n[She looks at you directly.]\n\nThank you. For showing me I'm still learning too. I'm sorry I forgot that.",
+        analytical: "[She picks up the resume again. This time doesn't cross anything out.]\n\nYou're right.\n\nYou analyzed what I couldn't see in myself.\n\nSeven careers. Seven times I started from zero. Seven times I felt like an impostor in the new role.\n\n[A quiet laugh.]\n\nAnd here I am, teaching people how to navigate transitions, still terrified I'm a fraud.\n\n[She looks at you directly.]\n\nThank you. For showing me I'm still learning too. I'm sorry I forgot that.",
+        building: "[She picks up the resume again. This time doesn't cross anything out.]\n\nYou're right.\n\nYou rebuilt what I tore down.\n\nSeven careers. Seven times I started from zero. Seven times I felt like an impostor in the new role.\n\n[A quiet laugh.]\n\nAnd here I am, teaching people how to navigate transitions, still terrified I'm a fraud.\n\n[She looks at you directly.]\n\nThank you. For showing me I'm still learning too. I'm sorry I forgot that.",
+        exploring: "[She picks up the resume again. This time doesn't cross anything out.]\n\nYou're right.\n\nYou explored the path back when I couldn't find it.\n\nSeven careers. Seven times I started from zero. Seven times I felt like an impostor in the new role.\n\n[A quiet laugh.]\n\nAnd here I am, teaching people how to navigate transitions, still terrified I'm a fraud.\n\n[She looks at you directly.]\n\nThank you. For showing me I'm still learning too. I'm sorry I forgot that."
+      }
+    }],
+    choices: [{
+      choiceId: 'jordan_recovery_complete',
+      text: "(Continue)",
+      nextNodeId: 'jordan_hub_return',
+      pattern: 'patience'
+    }],
+    tags: ['trust_recovery', 'jordan_arc'],
+    onEnter: [{
+      characterId: 'jordan',
+      addKnowledgeFlags: ['jordan_trust_recovery_completed']
+    }]
+  },
+
   // ============= DEEP DIVE: STRUCTURAL INTEGRITY =============
   {
     nodeId: 'jordan_deep_dive',
