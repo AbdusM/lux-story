@@ -2642,6 +2642,96 @@ ALTERNATIVES:
     choices: []
   },
 
+  // ============= TRUST RECOVERY =============
+  {
+    nodeId: 'quinn_trust_recovery',
+    speaker: 'Quinn Almeida',
+    requiredState: {
+      trust: { max: 3 }
+    },
+    content: [{
+      text: "[He's holding a spreadsheet. Red numbers everywhere.]\n\nYou came back.\n\nThe ROI on that decision is... questionable.\n\n[He sets it down. Tries to smile. Can't quite.]\n\nI've calculated risk my whole life. Assessed value. Maximized returns.\n\nBut I couldn't calculate how to not lose you when it mattered.\n\nTurns out some things can't be optimized.",
+      emotion: 'regretful',
+      variation_id: 'trust_recovery_v1',
+      voiceVariations: {
+        patience: "[He's holding a spreadsheet. Red numbers everywhere.]\n\nYou came back.\n\nYou gave me time to recalculate. I appreciate that.\n\nThe ROI on that decision is... questionable.\n\n[He sets it down. Tries to smile. Can't quite.]\n\nI've calculated risk my whole life. Assessed value. Maximized returns.\n\nBut I couldn't calculate how to not lose you when it mattered. Turns out some things can't be optimized.",
+        helping: "[He's holding a spreadsheet. Red numbers everywhere.]\n\nYou came back.\n\nEven after I treated you like a line item instead of a person.\n\nThe ROI on that decision is... questionable.\n\n[He sets it down. Tries to smile. Can't quite.]\n\nI've calculated risk my whole life. Assessed value. Maximized returns.\n\nBut I couldn't calculate how to not lose you when it mattered. Turns out some things can't be optimized.",
+        analytical: "[He's holding a spreadsheet. Red numbers everywhere.]\n\nYou came back.\n\nYou reassessed the variables. Made a different calculation.\n\nThe ROI on that decision is... questionable.\n\n[He sets it down. Tries to smile. Can't quite.]\n\nI've calculated risk my whole life. Assessed value. Maximized returns.\n\nBut I couldn't calculate how to not lose you when it mattered. Turns out some things can't be optimized.",
+        building: "[He's holding a spreadsheet. Red numbers everywhere.]\n\nYou came back.\n\nRebuilding from negative equity. Brave.\n\nThe ROI on that decision is... questionable.\n\n[He sets it down. Tries to smile. Can't quite.]\n\nI've calculated risk my whole life. Assessed value. Maximized returns.\n\nBut I couldn't calculate how to not lose you when it mattered. Turns out some things can't be optimized.",
+        exploring: "[He's holding a spreadsheet. Red numbers everywhere.]\n\nYou came back.\n\nStill curious even after I tried to quantify everything.\n\nThe ROI on that decision is... questionable.\n\n[He sets it down. Tries to smile. Can't quite.]\n\nI've calculated risk my whole life. Assessed value. Maximized returns.\n\nBut I couldn't calculate how to not lose you when it mattered. Turns out some things can't be optimized."
+      }
+    }],
+    choices: [
+      {
+        choiceId: 'quinn_recovery_human',
+        text: "I'm not an investment. I'm a person.",
+        nextNodeId: 'quinn_trust_restored',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'quinn',
+          trustChange: 2,
+          addKnowledgeFlags: ['quinn_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Take a breath. I'm not an investment. I'm a person.",
+          helping: "I'm not an investment. I'm a person. And people can't be optimized.",
+          analytical: "You're modeling the wrong system. I'm not an investment. I'm a person.",
+          building: "Stop calculating. I'm not an investment. I'm a person.",
+          exploring: "You're looking at the wrong metrics. I'm not an investment. I'm a person."
+        }
+      },
+      {
+        choiceId: 'quinn_recovery_worth',
+        text: "Some returns can't be measured in dollars.",
+        nextNodeId: 'quinn_trust_restored',
+        pattern: 'analytical',
+        skills: ['wisdom'],
+        consequence: {
+          characterId: 'quinn',
+          trustChange: 2,
+          addKnowledgeFlags: ['quinn_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Give it time. Some returns can't be measured in dollars.",
+          helping: "Some returns can't be measured in dollars. Like this. Right here.",
+          analytical: "Expand your metrics. Some returns can't be measured in dollars.",
+          building: "Build different measures. Some returns can't be measured in dollars.",
+          exploring: "Look beyond the spreadsheet. Some returns can't be measured in dollars."
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'quinn_arc']
+  },
+
+  {
+    nodeId: 'quinn_trust_restored',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "[He crumples the spreadsheet. Laughs.]\n\nYou're right.\n\nI made millions optimizing systems. Squeezing efficiency. Finding alpha.\n\nAnd then I came home to Birmingham with nothing but money and regret.\n\n[He looks at you.]\n\nYou... you're teaching me a different kind of value. One that doesn't compound quarterly.\n\nThank you for that. And I'm sorry I forgot it.",
+      emotion: 'grateful_humbled',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        patience: "[He crumples the spreadsheet. Laughs.]\n\nYou're right.\n\nYou waited for me to figure it out. That patience is... it's an asset I never learned to value.\n\nI made millions optimizing systems. Squeezing efficiency. Finding alpha.\n\nAnd then I came home to Birmingham with nothing but money and regret.\n\n[He looks at you.]\n\nYou're teaching me a different kind of value. Thank you. I'm sorry I forgot it.",
+        helping: "[He crumples the spreadsheet. Laughs.]\n\nYou're right.\n\nYou care about me as a person, not a portfolio. That's... that's rare.\n\nI made millions optimizing systems. Squeezing efficiency. Finding alpha.\n\nAnd then I came home to Birmingham with nothing but money and regret.\n\n[He looks at you.]\n\nYou're teaching me a different kind of value. Thank you. I'm sorry I forgot it.",
+        analytical: "[He crumples the spreadsheet. Laughs.]\n\nYou're right.\n\nYou see what the models miss. That's intelligence my algorithms never captured.\n\nI made millions optimizing systems. Squeezing efficiency. Finding alpha.\n\nAnd then I came home to Birmingham with nothing but money and regret.\n\n[He looks at you.]\n\nYou're teaching me a different kind of value. Thank you. I'm sorry I forgot it.",
+        building: "[He crumples the spreadsheet. Laughs.]\n\nYou're right.\n\nYou're building something that can't be traded or leveraged. That's real wealth.\n\nI made millions optimizing systems. Squeezing efficiency. Finding alpha.\n\nAnd then I came home to Birmingham with nothing but money and regret.\n\n[He looks at you.]\n\nYou're teaching me a different kind of value. Thank you. I'm sorry I forgot it.",
+        exploring: "[He crumples the spreadsheet. Laughs.]\n\nYou're right.\n\nYou explored beyond my spreadsheets. Found value I couldn't measure.\n\nI made millions optimizing systems. Squeezing efficiency. Finding alpha.\n\nAnd then I came home to Birmingham with nothing but money and regret.\n\n[He looks at you.]\n\nYou're teaching me a different kind of value. Thank you. I'm sorry I forgot it."
+      }
+    }],
+    choices: [{
+      choiceId: 'quinn_recovery_complete',
+      text: "(Continue)",
+      nextNodeId: 'quinn_hub_return',
+      pattern: 'patience'
+    }],
+    tags: ['trust_recovery', 'quinn_arc'],
+    onEnter: [{
+      characterId: 'quinn',
+      addKnowledgeFlags: ['quinn_trust_recovery_completed']
+    }]
+  },
+
   // ═══════════════════════════════════════════════════════════════
   // STUB NODES - Fix broken navigation
   // ═══════════════════════════════════════════════════════════════
