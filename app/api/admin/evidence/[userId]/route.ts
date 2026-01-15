@@ -2,11 +2,22 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-client'
 import { auditLog } from '@/lib/audit-logger'
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
+import { logger } from '@/lib/logger'
+import { createTimer } from '@/lib/api-timing'
 
 /**
  * Admin Evidence API
  * Aggregates real Supabase data for Evidence Tab frameworks
+ *
+ * Optimizations:
+ * - Column projection (only fetch needed fields)
+ * - Pre-indexed skill data maps for O(1) lookups
+ * - Response caching with 30s TTL
  */
+
+// Simple in-memory cache with TTL
+const evidenceCache = new Map<string, { data: unknown; timestamp: number }>()
+const CACHE_TTL_MS = 30 * 1000 // 30 seconds
 
 // Rate limiter: 10 requests per minute (multiple parallel queries per request)
 const evidenceLimiter = rateLimit({
@@ -44,10 +55,21 @@ export async function GET(
     return NextResponse.json({ error: 'User ID required' }, { status: 400 })
   }
 
+  // Check cache first
+  const cacheKey = `evidence:${userId}`
+  const cached = evidenceCache.get(cacheKey)
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
+    logger.debug('Evidence cache hit', { operation: 'admin.evidence', userId })
+    return NextResponse.json(cached.data, {
+      headers: { 'X-Cache': 'HIT', 'Cache-Control': 'private, max-age=30' }
+    })
+  }
+
   try {
     const supabase = getAdminSupabaseClient()
+    const queryTimer = createTimer('admin.evidence.queries', { userId })
 
-    // Parallel queries for all framework data
+    // Parallel queries with column projection (only fetch needed fields)
     let profileResult, skillDemosResult, skillSummariesResult, careerExplorationsResult, relationshipsResult, platformStatesResult
     try {
       [
@@ -58,55 +80,55 @@ export async function GET(
         relationshipsResult,
         platformStatesResult
       ] = await Promise.all([
-        // Player profile
+        // Player profile - only needed fields
         supabase
           .from('player_profiles')
-          .select('*')
+          .select('user_id, created_at, updated_at, last_activity')
           .eq('user_id', userId)
           .abortSignal(AbortSignal.timeout(10000))
           .single(),
 
-        // Skill demonstrations (with temporal data)
+        // Skill demonstrations - only needed fields
         supabase
           .from('skill_demonstrations')
-          .select('*')
+          .select('skill_name, scene_id, scene_description, demonstrated_at')
           .eq('user_id', userId)
           .order('demonstrated_at', { ascending: true })
           .abortSignal(AbortSignal.timeout(10000)),
 
-        // Skill summaries (rich context)
+        // Skill summaries - only needed fields
         supabase
           .from('skill_summaries')
-          .select('*')
+          .select('skill_name, latest_context, scenes_involved, scene_descriptions')
           .eq('user_id', userId)
           .abortSignal(AbortSignal.timeout(10000)),
 
-        // Career explorations
+        // Career explorations - only needed fields
         supabase
           .from('career_explorations')
-          .select('*')
+          .select('career_name, match_score, readiness_level, local_opportunities')
           .eq('user_id', userId)
           .order('match_score', { ascending: false })
           .abortSignal(AbortSignal.timeout(10000)),
 
-        // Relationships
+        // Relationships - only needed fields
         supabase
           .from('relationship_progress')
-          .select('*')
+          .select('character_name, trust_level, last_interaction, key_moments')
           .eq('user_id', userId)
           .abortSignal(AbortSignal.timeout(10000)),
 
-        // Platform states
+        // Platform states - only needed field
         supabase
           .from('platform_states')
-          .select('*')
+          .select('warmth')
           .eq('user_id', userId)
           .abortSignal(AbortSignal.timeout(10000))
       ])
     } catch (err) {
       // Check if timeout error
       if (err instanceof Error && err.name === 'AbortError') {
-        console.error('[Admin:Evidence] Query timeout for user:', userId)
+        logger.error('Query timeout', { operation: 'admin.evidence', userId })
         return NextResponse.json(
           {
             error: 'Request timed out. The database may be under heavy load. Please try again.',
@@ -118,6 +140,8 @@ export async function GET(
       throw err // Re-throw non-timeout errors
     }
 
+    const queryTiming = queryTimer.stop()
+
     const profile = profileResult.data
     const skillDemos = skillDemosResult.data || []
     const skillSummaries = skillSummariesResult.data || []
@@ -125,35 +149,49 @@ export async function GET(
     const relationships = relationshipsResult.data || []
     const platforms = platformStatesResult.data || []
 
-    // Framework 1: Skill Evidence
+    // Pre-index data for O(1) lookups (avoids O(n²) in skillBreakdown)
+    const demosBySkill = new Map<string, typeof skillDemos>()
+    const skillCounts = new Map<string, number>()
+    for (const demo of skillDemos) {
+      const skill = demo.skill_name
+      if (!demosBySkill.has(skill)) {
+        demosBySkill.set(skill, [])
+      }
+      demosBySkill.get(skill)!.push(demo)
+      skillCounts.set(skill, (skillCounts.get(skill) || 0) + 1)
+    }
+
+    const summaryBySkill = new Map<string, typeof skillSummaries[0]>()
+    for (const summary of skillSummaries) {
+      summaryBySkill.set(summary.skill_name, summary)
+    }
+
+    // Framework 1: Skill Evidence (optimized with pre-indexed maps)
+    const skillBreakdown = Array.from(skillCounts.entries()).map(([skill, count]) => {
+      const summary = summaryBySkill.get(skill)
+      const skillSpecificDemos = demosBySkill.get(skill) || []
+      // Get unique scene descriptions for this skill
+      const sceneDescriptions = Array.from(new Set(
+        skillSpecificDemos
+          .map(d => d.scene_description)
+          .filter(Boolean)
+      ))
+      return {
+        skill,
+        demonstrations: count,
+        lastContext: summary?.latest_context || 'No context available',
+        scenes: summary?.scenes_involved || [],
+        sceneDescriptions: sceneDescriptions.length > 0
+          ? sceneDescriptions
+          : (summary?.scene_descriptions || [])
+      }
+    })
+
     const skillEvidence = {
       hasRealData: skillDemos.length >= 10,
       totalDemonstrations: skillDemos.length,
-      uniqueSkills: new Set(skillDemos.map(d => d.skill_name)).size,
-      skillBreakdown: Object.entries(
-        skillDemos.reduce((acc, demo) => {
-          acc[demo.skill_name] = (acc[demo.skill_name] || 0) + 1
-          return acc
-        }, {} as Record<string, number>)
-      ).map(([skill, count]) => {
-        const summary = skillSummaries.find(s => s.skill_name === skill)
-        const skillSpecificDemos = skillDemos.filter(d => d.skill_name === skill)
-        // Get unique scene descriptions for this skill
-        const sceneDescriptions = Array.from(new Set(
-          skillSpecificDemos
-            .map(d => d.scene_description)
-            .filter(Boolean)
-        ))
-        return {
-          skill,
-          demonstrations: count,
-          lastContext: summary?.latest_context || 'No context available',
-          scenes: summary?.scenes_involved || [],
-          sceneDescriptions: sceneDescriptions.length > 0
-            ? sceneDescriptions
-            : (summary?.scene_descriptions || [])
-        }
-      })
+      uniqueSkills: skillCounts.size,
+      skillBreakdown
     }
 
     // Framework 2: Career Readiness
@@ -206,19 +244,14 @@ export async function GET(
       consistencyScore: calculateConsistencyScore(skillDemos)
     }
 
-    // Framework 6: Behavioral Consistency
+    // Framework 6: Behavioral Consistency (uses pre-computed skillCounts)
     const behavioralConsistency = {
       hasRealData: skillDemos.length >= 20,
-      topThreeSkills: Object.entries(
-        skillDemos.reduce((acc, demo) => {
-          acc[demo.skill_name] = (acc[demo.skill_name] || 0) + 1
-          return acc
-        }, {} as Record<string, number>)
-      )
-        .sort(([, a], [, b]) => (b as number) - (a as number))
+      topThreeSkills: Array.from(skillCounts.entries())
+        .sort(([, a], [, b]) => b - a)
         .slice(0, 3)
         .map(([skill, count]) => ({ skill, count })),
-      focusScore: calculateFocusScore(skillDemos),
+      focusScore: calculateFocusScoreFromMap(skillCounts, skillDemos.length),
       explorationScore: calculateExplorationScore(skillDemos),
       platformAlignment: platforms.filter(p => (p.warmth || 0) > 50).length
     }
@@ -226,7 +259,7 @@ export async function GET(
     // Audit log: Admin accessed student evidence data
     auditLog('view_evidence_data', 'admin', userId)
 
-    return NextResponse.json({
+    const responseData = {
       userId,
       frameworks: {
         skillEvidence,
@@ -239,12 +272,29 @@ export async function GET(
       metadata: {
         profileExists: !!profile,
         dataQuality: calculateDataQuality(skillDemos, careers, relationships),
-        lastUpdated: profile?.updated_at || new Date().toISOString()
+        lastUpdated: profile?.updated_at || new Date().toISOString(),
+        queryTimeMs: queryTiming.durationMs
       }
+    }
+
+    // Cache the response
+    evidenceCache.set(cacheKey, { data: responseData, timestamp: Date.now() })
+
+    // Cleanup old cache entries (keep cache size bounded)
+    if (evidenceCache.size > 100) {
+      const cutoff = Date.now() - CACHE_TTL_MS
+      for (const [key, entry] of evidenceCache.entries()) {
+        if (entry.timestamp < cutoff) {
+          evidenceCache.delete(key)
+        }
+      }
+    }
+
+    return NextResponse.json(responseData, {
+      headers: { 'X-Cache': 'MISS', 'Cache-Control': 'private, max-age=30' }
     })
   } catch (error) {
-    // Log detailed error server-side
-    console.error('[Admin:Evidence] Unexpected error:', error)
+    logger.error('Unexpected error in evidence endpoint', { operation: 'admin.evidence', userId }, error instanceof Error ? error : undefined)
 
     // Return generic error to client (don't expose details)
     return NextResponse.json(
@@ -394,6 +444,18 @@ function calculateFocusScore(skillDemos: SkillDemo[]): number {
     .reduce((sum, count) => sum + count, 0)
 
   return topThreeCount / skillDemos.length
+}
+
+// Optimized version using pre-computed skillCounts Map (O(k) instead of O(n))
+function calculateFocusScoreFromMap(skillCounts: Map<string, number>, totalDemos: number): number {
+  if (totalDemos === 0) return 0
+
+  const topThreeCount = Array.from(skillCounts.values())
+    .sort((a, b) => b - a)
+    .slice(0, 3)
+    .reduce((sum, count) => sum + count, 0)
+
+  return topThreeCount / totalDemos
 }
 
 function calculateExplorationScore(skillDemos: SkillDemo[]): number {

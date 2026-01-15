@@ -70,15 +70,30 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
   }, [coreGameState])
   const activeQuestsCount = quests.filter(q => q.status === 'active' || q.status === 'unlocked').length
 
-  // Escape key handler
+  // Keyboard navigation handler
   useEffect(() => {
     if (!isOpen) return
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Escape to close
+      if (e.key === 'Escape') {
+        onClose()
+        return
+      }
+
+      // Arrow keys for tab navigation
+      const tabIds: TabId[] = ['people', 'skills', 'quests']
+      const currentIndex = tabIds.indexOf(activeTab)
+
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault()
+        const direction = e.key === 'ArrowLeft' ? -1 : 1
+        const newIndex = (currentIndex + direction + tabIds.length) % tabIds.length
+        setActiveTab(tabIds[newIndex])
+      }
     }
-    window.addEventListener('keydown', handleEscape)
-    return () => window.removeEventListener('keydown', handleEscape)
-  }, [isOpen, onClose])
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose, activeTab])
 
   const handleOpenCharacterDetail = (character: CharacterWithState) => {
     setDetailItem({ type: 'character', item: character })

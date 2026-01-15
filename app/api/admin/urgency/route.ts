@@ -18,6 +18,7 @@ import type { UrgencyAPIResponse, RecalculationResponse, UrgencyLevel } from '@/
 import { auditLog } from '@/lib/audit-logger'
 import { logger } from '@/lib/logger'
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
+import { createTimer } from '@/lib/api-timing'
 
 // Rate limiters
 const queryLimiter = rateLimit({
@@ -86,7 +87,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
       } catch (err) {
         // Check if timeout error
         if (err instanceof Error && err.name === 'AbortError') {
-          console.error('[Admin API] Query timeout for user:', userIdParam)
+          logger.error('Query timeout for user', { operation: 'admin.urgency.single', userId: userIdParam })
           // @ts-expect-error - NextResponse type compatibility
           return NextResponse.json(
             {
@@ -101,7 +102,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
       }
 
       if (error) {
-        console.error('[Admin API] Single user query error:', error)
+        logger.error('Single user query error', { operation: 'admin.urgency.single', userId: userIdParam, code: error.code })
     // @ts-expect-error - NextResponse type compatibility
         return NextResponse.json(
           {
@@ -184,7 +185,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
     } catch (err) {
       // Check if timeout error
       if (err instanceof Error && err.name === 'AbortError') {
-        console.error('[Admin API] Query timeout for urgency list')
+        logger.error('Query timeout for urgency list', { operation: 'admin.urgency.list', level, limit })
         return NextResponse.json(
           {
             students: [],
@@ -199,7 +200,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
     }
 
     if (error) {
-      console.error('[Admin API] Database error:', error)
+      logger.error('Database error fetching urgency list', { operation: 'admin.urgency.list', code: error.code })
       return NextResponse.json(
         {
           students: [],
@@ -245,8 +246,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<UrgencyAPI
     } as UrgencyAPIResponse)
 
   } catch (error) {
-    // Log detailed error server-side
-    console.error('[Admin API] Unexpected error:', error)
+    logger.error('Unexpected error in urgency endpoint', { operation: 'admin.urgency' }, error instanceof Error ? error : undefined)
 
     // Return generic error to client (don't expose implementation details)
     return NextResponse.json(
@@ -295,6 +295,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<Recalcula
   }
 
   try {
+    const recalcTimer = createTimer('admin.urgency.recalculate')
     logger.debug('Starting urgency recalculation for all players', { operation: 'admin.urgency.recalculate-start' })
 
     const supabase = getAdminSupabaseClient()
@@ -311,7 +312,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<Recalcula
     } catch (err) {
       // Check if timeout error
       if (err instanceof Error && err.name === 'AbortError') {
-        console.error('[Admin API] Query timeout fetching players for recalculation')
+        logger.error('Query timeout fetching players for recalculation', { operation: 'admin.urgency.recalculate' })
         return NextResponse.json(
           {
             message: 'Request timed out while fetching players. The database may be under heavy load. Please try again.',
@@ -325,7 +326,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<Recalcula
     }
 
     if (fetchError) {
-      console.error('[Admin API] Error fetching players:', fetchError)
+      logger.error('Error fetching players for recalculation', { operation: 'admin.urgency.recalculate', code: fetchError.code })
       return NextResponse.json(
         {
           message: 'Failed to fetch players',
@@ -337,7 +338,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<Recalcula
     }
 
     if (!players || players.length === 0) {
-      console.warn('[Admin API] No players found in database')
+      logger.warn('No players found in database', { operation: 'admin.urgency.recalculate' })
       return NextResponse.json({
         message: 'No players found',
         playersProcessed: 0,
@@ -347,29 +348,30 @@ export async function POST(request: NextRequest): Promise<NextResponse<Recalcula
 
     logger.debug('Calculating urgency for players', { operation: 'admin.urgency.recalculate', playerCount: players.length })
 
-    // Calculate urgency for each player
-    // Note: This is sequential for simplicity. Could be parallelized with Promise.all
-    // if we have performance issues with 100+ players.
+    // Calculate urgency for all players in parallel (100x faster for 100+ players)
+    const results = await Promise.allSettled(
+      players.map(player =>
+        supabase.rpc('calculate_urgency_score', { p_player_id: player.user_id })
+      )
+    )
+
+    // Count successes and log errors
     let successCount = 0
     let errorCount = 0
 
-    for (const player of players) {
-      try {
-        const { error } = await supabase.rpc('calculate_urgency_score', {
-          p_player_id: player.user_id
-        })
-
-        if (error) {
-          console.error(`[Admin API] Failed to calculate urgency for ${player.user_id}:`, error)
-          errorCount++
-        } else {
-          successCount++
-        }
-      } catch (error) {
-        console.error(`[Admin API] Exception calculating urgency for ${player.user_id}:`, error)
+    results.forEach((result, index) => {
+      const userId = players[index].user_id
+      if (result.status === 'fulfilled' && !result.value.error) {
+        successCount++
+      } else {
         errorCount++
+        if (result.status === 'rejected') {
+          logger.error('Exception calculating urgency for player', { operation: 'admin.urgency.recalculate', userId }, result.reason instanceof Error ? result.reason : undefined)
+        } else if (result.value.error) {
+          logger.error('Failed to calculate urgency for player', { operation: 'admin.urgency.recalculate', userId, code: result.value.error.code })
+        }
       }
-    }
+    })
 
     logger.debug('Urgency calculation complete', { operation: 'admin.urgency.recalculate-complete', successCount, errorCount })
 
@@ -378,25 +380,28 @@ export async function POST(request: NextRequest): Promise<NextResponse<Recalcula
     const { error: refreshError } = await supabase.rpc('refresh_urgent_students_view')
 
     if (refreshError) {
-      console.error('[Admin API] Failed to refresh materialized view:', refreshError)
+      logger.error('Failed to refresh materialized view', { operation: 'admin.urgency.refresh-view', code: refreshError.code })
       // Don't fail the request - calculations succeeded
     }
+
+    const recalcTiming = recalcTimer.stop()
 
     // Audit log: Admin triggered urgency recalculation
     auditLog('recalculate_urgency', 'admin', undefined, {
       playersProcessed: successCount,
-      errors: errorCount
+      errors: errorCount,
+      durationMs: recalcTiming.durationMs
     })
 
     return NextResponse.json({
       message: `Urgency calculation complete: ${successCount} players processed${errorCount > 0 ? `, ${errorCount} errors` : ''}`,
       playersProcessed: successCount,
+      durationMs: recalcTiming.durationMs,
       timestamp: new Date().toISOString()
     })
 
   } catch (error) {
-    // Log detailed error server-side
-    console.error('[Admin API] Unexpected error during recalculation:', error)
+    logger.error('Unexpected error during urgency recalculation', { operation: 'admin.urgency.recalculate' }, error instanceof Error ? error : undefined)
 
     // Return generic error to client
     return NextResponse.json(

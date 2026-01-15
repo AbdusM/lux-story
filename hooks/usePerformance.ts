@@ -43,14 +43,12 @@ export function usePerformance(): PerformanceCapabilities {
     // Skip on server
     if (typeof window === 'undefined') return
 
-    // Get hardware info
+    // Get hardware info (types from lib/types/browser-augmentation.d.ts)
     const cores = navigator.hardwareConcurrency
-    // @ts-expect-error - deviceMemory is non-standard
-    const memory = navigator.deviceMemory as number | undefined
+    const memory = navigator.deviceMemory
 
-    // Check for data saver mode
-    // @ts-expect-error - connection is non-standard
-    const connection = navigator.connection as { saveData?: boolean } | undefined
+    // Check for data saver mode (Network Information API)
+    const connection = navigator.connection
     const saveData = connection?.saveData ?? false
 
     // Check for reduced motion preference
@@ -88,9 +86,8 @@ export function canUseBackdropFilter(): boolean {
     return false
   }
 
-  // Check for data saver
-  // @ts-expect-error - connection is non-standard
-  const connection = navigator.connection as { saveData?: boolean } | undefined
+  // Check for data saver (Network Information API)
+  const connection = navigator.connection
   if (connection?.saveData) {
     return false
   }

@@ -17,6 +17,7 @@ import {
   handleApiError,
   checkSupabaseConfigured
 } from '@/lib/api/api-utils'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -25,11 +26,28 @@ export const runtime = 'nodejs'
 const OPERATION_GET = 'skill-summaries.get'
 const OPERATION_POST = 'skill-summaries.post'
 
+// Rate limiter: 30 requests per minute
+const skillSummariesLimiter = rateLimit({
+  interval: 60 * 1000, // 1 minute
+  uniqueTokenPerInterval: 500,
+})
+
 /**
  * GET /api/user/skill-summaries?userId=X
  * Fetch all skill summaries for a user
  */
 export async function GET(request: NextRequest) {
+  // Rate limiting: 30 requests per minute
+  const ip = getClientIp(request)
+  try {
+    await skillSummariesLimiter.check(ip, 30)
+  } catch {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429 }
+    )
+  }
+
   try {
     const validation = extractAndValidateUserIdFromQuery(request, OPERATION_GET)
     if (!validation.valid) {

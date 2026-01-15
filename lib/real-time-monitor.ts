@@ -273,9 +273,9 @@ export const getUserSummary = (userId: string) => monitor.getUserSummary(userId)
 
 export const getRecentActivities = (limit?: number) => monitor.getRecentActivities(limit)
 
-// Make dashboard available globally for console debugging
+// Make dashboard available globally for console debugging (types from lib/types/browser-augmentation.d.ts)
 if (typeof window !== 'undefined') {
-  (window as unknown as Record<string, unknown>).userMonitor = {
+  window.userMonitor = {
     dashboard: printDashboard,
     summary: getUserSummary,
     recent: getRecentActivities,

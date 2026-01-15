@@ -15,7 +15,7 @@ console.log("---------------------------------------------------");
 // 1. Registry Check
 console.log("\n[1] Registry Lookup Check:");
 try {
-    // @ts-ignore - station_entry is added dynamically
+    // @ts-expect-error - station_entry is added dynamically
     const graph = getGraphForCharacter('station_entry', mockGameState);
     if (graph && graph.startNodeId === 'sector_0_entry') {
         console.log("✅ Registry correctly maps 'station_entry' to stationEntryGraph.");

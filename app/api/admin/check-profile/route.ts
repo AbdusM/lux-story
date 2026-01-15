@@ -5,9 +5,17 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminAuth, getAdminSupabaseClient } from '@/lib/admin-supabase-client'
+import { logger } from '@/lib/logger'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
+
+// Rate limiter: 10 requests per minute
+const checkProfileLimiter = rateLimit({
+  interval: 60 * 1000, // 1 minute
+  uniqueTokenPerInterval: 500,
+})
 
 /**
  * GET /api/admin/check-profile?userId=XXX
@@ -16,6 +24,17 @@ export const runtime = 'nodejs'
 export async function GET(request: NextRequest) {
   const authError = await requireAdminAuth(request)
   if (authError) return authError
+
+  // Rate limiting: 10 requests per minute
+  const ip = getClientIp(request)
+  try {
+    await checkProfileLimiter.check(ip, 10)
+  } catch {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429, headers: { 'Retry-After': '60' } }
+    )
+  }
 
   try {
     const userId = request.nextUrl.searchParams.get('userId')
@@ -37,7 +56,7 @@ export async function GET(request: NextRequest) {
       .single()
 
     if (error && error.code !== 'PGRST116') {
-      console.error('❌ [Admin:CheckProfile] Supabase error:', error)
+      logger.error('Supabase error checking profile', { operation: 'admin.check-profile', userId, code: error.code })
       return NextResponse.json(
         { error: 'Database error', details: error.message },
         { status: 500 }
@@ -65,7 +84,7 @@ export async function GET(request: NextRequest) {
       age_seconds: Math.floor((Date.now() - new Date(profile.created_at).getTime()) / 1000)
     })
   } catch (error) {
-    console.error('[Admin:CheckProfile] Unexpected error:', error)
+    logger.error('Unexpected error in check-profile endpoint', { operation: 'admin.check-profile' }, error instanceof Error ? error : undefined)
     return NextResponse.json(
       { error: 'Internal error', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }

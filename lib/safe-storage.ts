@@ -122,19 +122,20 @@ export function loadMetrics(userId: string): unknown {
 }
 
 import type { LocalPlayerData } from './database-service' // Import the defined interface
+import { parseLocalPlayerData } from './schemas/player-data'
 
 // Player data storage (for DatabaseService compatibility)
+// Uses Zod validation to ensure data integrity
 export function getStoredPlayerData(userId: string): Partial<LocalPlayerData> | null {
   const key = `lux-player-data-${userId}`
   const stored = safeStorage.getItem(key)
   if (!stored) return null
 
-  try {
-    return JSON.parse(stored) as Partial<LocalPlayerData>
-  } catch (error) {
-    console.warn('Failed to parse player data:', error)
-    return null
-  }
+  // Use validated parsing - returns null if invalid
+  // Note: Schema validates string timestamps (as stored in JSON), interface expects Date
+  // The cast is safe because the structure is validated, only Date/string differs
+  const validated = parseLocalPlayerData(stored)
+  return validated as Partial<LocalPlayerData> | null
 }
 
 export function savePlayerData(userId: string, data: unknown): boolean {

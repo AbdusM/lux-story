@@ -14,7 +14,7 @@ console.log("---------------------------------------------------");
 // 1. Registry Check
 console.log("\n[1] Registry Lookup Check:");
 try {
-    // @ts-ignore
+    // @ts-expect-error - grand_hall is added dynamically
     const graph = getGraphForCharacter('grand_hall', mockGameState);
     if (graph && graph.startNodeId === 'sector_1_hall') {
         console.log("✅ Registry correctly maps 'grand_hall' to grandHallGraph.");

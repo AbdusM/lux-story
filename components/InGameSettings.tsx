@@ -48,6 +48,18 @@ export function InGameSettings({ className }: InGameSettingsProps) {
 
   const [isOpen, setIsOpen] = useState(false)
   const [activeSection, setActiveSection] = useState<'main' | 'text' | 'color'>('main')
+  const [showPulse, setShowPulse] = useState(false)
+  const [showTooltip, setShowTooltip] = useState(false)
+
+  // Show pulse animation on first visit (once only)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hasSeenSettings = localStorage.getItem('lux_settings_discovered')
+      if (!hasSeenSettings) {
+        setShowPulse(true)
+      }
+    }
+  }, [])
 
   // Settings hooks
   const { textSize, setTextSize } = useLargeTextMode()
@@ -69,7 +81,12 @@ export function InGameSettings({ className }: InGameSettingsProps) {
   const togglePanel = useCallback(() => {
     setIsOpen(prev => !prev)
     setActiveSection('main') // Reset to main when reopening
-  }, [])
+    // Mark settings as discovered (stops pulse animation)
+    if (showPulse) {
+      localStorage.setItem('lux_settings_discovered', 'true')
+      setShowPulse(false)
+    }
+  }, [showPulse])
 
   // Handle text size change with sync
   const handleTextSizeChange = useCallback(async (value: typeof TEXT_SIZES[number]['id']) => {
@@ -125,35 +142,66 @@ export function InGameSettings({ className }: InGameSettingsProps) {
 
   return (
     <>
-      {/* Gear Button - Fixed position */}
-      <button
-        onClick={togglePanel}
-        className={cn(
-          'fixed z-50 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200',
-          'bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/10',
-          'shadow-lg shadow-black/20',
-          isOpen && 'bg-white/20',
-          className
-        )}
+      {/* Gear Button - Fixed position with tooltip */}
+      <div
+        className="fixed z-50"
         style={{
           right: '16px',
           bottom: 'max(16px, calc(env(safe-area-inset-bottom, 0px) + 8px))',
         }}
-        aria-label={isOpen ? 'Close settings' : 'Open quick settings'}
-        aria-expanded={isOpen}
-        aria-controls="in-game-settings-panel"
+        onMouseEnter={() => !isOpen && setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
       >
-        <motion.div
-          animate={{ rotate: isOpen ? 90 : 0 }}
-          transition={springs.snappy}
-        >
-          {isOpen ? (
-            <X className="w-5 h-5 text-white" />
-          ) : (
-            <Settings className="w-5 h-5 text-white/80" />
+        {/* Tooltip */}
+        <AnimatePresence>
+          {showTooltip && !isOpen && (
+            <motion.div
+              initial={{ opacity: 0, x: 8 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 8 }}
+              transition={springs.snappy}
+              className="absolute right-14 top-1/2 -translate-y-1/2 whitespace-nowrap px-3 py-1.5 rounded-lg bg-slate-800/95 text-xs text-white border border-white/10 shadow-lg"
+            >
+              Settings & Accessibility
+            </motion.div>
           )}
-        </motion.div>
-      </button>
+        </AnimatePresence>
+
+        {/* Pulse ring for first-time users */}
+        {showPulse && !prefersReducedMotion && (
+          <motion.div
+            className="absolute inset-0 rounded-full border-2 border-amber-400/60"
+            animate={{ scale: [1, 1.4, 1], opacity: [0.8, 0, 0.8] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        )}
+
+        <button
+          onClick={togglePanel}
+          className={cn(
+            'relative w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200',
+            'bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/10',
+            'shadow-lg shadow-black/20',
+            isOpen && 'bg-white/20',
+            showPulse && 'border-amber-400/30',
+            className
+          )}
+          aria-label={isOpen ? 'Close settings' : 'Open quick settings'}
+          aria-expanded={isOpen}
+          aria-controls="in-game-settings-panel"
+        >
+          <motion.div
+            animate={{ rotate: isOpen ? 90 : 0 }}
+            transition={springs.snappy}
+          >
+            {isOpen ? (
+              <X className="w-5 h-5 text-white" />
+            ) : (
+              <Settings className={cn('w-5 h-5', showPulse ? 'text-amber-400' : 'text-white/80')} />
+            )}
+          </motion.div>
+        </button>
+      </div>
 
       {/* Settings Panel */}
       <AnimatePresence>
