@@ -1322,7 +1322,19 @@ WARNING: Response time > 48h`,
       emotion: 'haunted',
       microAction: 'His hands clench, then slowly release.',
       variation_id: 'vulnerability_v1',
-      richEffectContext: 'error'
+      richEffectContext: 'error',
+      // E2-CHALLENGE: Opportunity to challenge his self-blame
+      interrupt: {
+        duration: 3500,
+        type: 'challenge',
+        action: 'Challenge his self-blame',
+        targetNodeId: 'marcus_challenge_accepted',
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1,
+          addKnowledgeFlags: ['player_challenged_marcus_guilt']
+        }
+      }
     }],
     requiredState: {
       trust: { min: 6 }
@@ -1369,6 +1381,61 @@ WARNING: Response time > 48h`,
     ],
     tags: ['vulnerability_arc', 'marcus_arc', 'emotional_core']
   },
+
+  // ============= CHALLENGE INTERRUPT TARGET =============
+  {
+    nodeId: 'marcus_challenge_accepted',
+    speaker: 'Marcus',
+    content: [{
+      text: "Wait. You pushed back on that.\n\n'Could not prevent what I could not authorize.' I've said that a thousand times. Like it absolves me.\n\nBut you heard something else. You heard me still blaming myself for someone else's decision.\n\nMaybe... maybe the guilt I carry isn't mine to carry. Maybe I've been holding it because no one else would.",
+      emotion: 'breakthrough',
+      variation_id: 'challenge_accepted_v1',
+      voiceVariations: {
+        helping: "Wait. You pushed back.\n\nYou heard me blaming myself for someone else's decision. Most people let me carry that. You didn't.\n\nMaybe this guilt... maybe it was never mine to hold.",
+        analytical: "Wait. You caught the logical flaw.\n\n'Could not prevent what I could not authorize.' That's not failure. That's systemic constraint. You see the difference.\n\nMaybe I've been carrying guilt for a system that failed, not for myself.",
+        building: "Wait. You challenged that.\n\nI've been building safeguards on top of guilt. But you're right—the foundation is wrong. The guilt isn't mine.\n\nMaybe I can rebuild from a healthier place.",
+        exploring: "Wait. You questioned that assumption.\n\nI've told that story the same way for years. You heard something I couldn't.\n\nMaybe the guilt I've been carrying belongs somewhere else.",
+        patience: "Wait. You didn't let that slide.\n\n'Could not prevent what I could not authorize.' I've hidden behind that phrase. You saw through it.\n\nMaybe... maybe it's time to let go of what wasn't mine to hold."
+      }
+    }],
+    choices: [
+      {
+        choiceId: 'challenge_follow_up',
+        text: "You did everything in your power. The failure was above you.",
+        nextNodeId: 'marcus_vulnerability_reflection',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'challenge_support',
+        text: "Carrying guilt that isn't yours doesn't honor those children. It just weighs you down.",
+        nextNodeId: 'marcus_vulnerability_reflection',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'challenge_patience',
+        text: "[Let the realization settle. He needs time with this.]",
+        nextNodeId: 'marcus_vulnerability_reflection',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['marcus_arc', 'challenge_interrupt', 'breakthrough']
+  },
+
   {
     nodeId: 'marcus_vulnerability_reflection',
     speaker: 'Marcus',
@@ -2864,6 +2931,107 @@ WARNING: Response time > 48h`,
       variation_id: 'hub_return_v1'
     }],
     choices: []
+  },
+
+  // ============= TRUST RECOVERY SYSTEM =============
+  {
+    nodeId: 'marcus_trust_recovery',
+    speaker: 'Marcus',
+    content: [{
+      text: "You returned. I did not expect that.\n\nI am difficult. I know this. My systems require precision. My trust requires time. Most people do not have patience for that.\n\nBut you came back. That suggests... resilience.",
+      emotion: 'guarded',
+      variation_id: 'trust_recovery_v1',
+      voiceVariations: {
+        patience: "You returned. And you did not rush.\n\nMost people want quick rapport. Quick trust. That is not how I operate.\n\nBut you waited. That is... appreciated.",
+        helping: "You returned. Despite how I behaved.\n\nI push people away when systems feel threatened. Protective protocol.\n\nBut you saw past the defenses. That matters.",
+        analytical: "You returned. I have been processing why.\n\nMy trust algorithms are complex. Most people fail the initial checks.\n\nBut you persisted. That is useful data.",
+        building: "You returned. To rebuild what we started.\n\nI construct walls when relationships destabilize. Security architecture.\n\nBut you are still building bridges. I respect that.",
+        exploring: "You returned. Curious despite the barriers.\n\nMost people leave when systems become opaque.\n\nBut you stayed interested. That is... unexpected."
+      }
+    }],
+    requiredState: {
+      trust: { max: 3 }
+    },
+    choices: [
+      {
+        choiceId: 'recovery_respect',
+        text: "Trust takes time. I understand that.",
+        nextNodeId: 'marcus_trust_restored',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 2,
+          addKnowledgeFlags: ['marcus_trust_repair_attempted']
+        }
+      },
+      {
+        choiceId: 'recovery_systems',
+        text: "Good systems have security measures. So do good people.",
+        nextNodeId: 'marcus_trust_restored',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 2,
+          addKnowledgeFlags: ['marcus_trust_repair_attempted']
+        }
+      },
+      {
+        choiceId: 'recovery_persistence',
+        text: "Important connections are worth the effort.",
+        nextNodeId: 'marcus_trust_restored',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 2,
+          addKnowledgeFlags: ['marcus_trust_repair_attempted']
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'marcus_arc', 'repair']
+  },
+
+  {
+    nodeId: 'marcus_trust_restored',
+    speaker: 'Marcus',
+    content: [{
+      text: "Very well. I will lower the firewall. Slightly.\n\nYou have demonstrated patience. That is rare. Most people want access without earning it.\n\nI am still cautious. But I am willing to proceed. One verified step at a time.",
+      emotion: 'cautious',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        patience: "Very well. Lowering defenses. Incrementally.\n\nYou did not rush. That earned you access.\n\nOne step at a time. That is how trust is built.",
+        helping: "Very well. I will try again.\n\nYou came back not to fix me, but to understand me.\n\nThat distinction matters. Thank you.",
+        analytical: "Very well. Adjusting trust parameters.\n\nYour persistence provided useful validation data.\n\nProceeding with cautious optimism.",
+        building: "Very well. Rebuilding the connection.\n\nYou kept building bridges even when I burned them.\n\nThat persistence... it means something.",
+        exploring: "Very well. Opening access.\n\nYour curiosity outlasted my defenses.\n\nLet us see where this leads."
+      }
+    }],
+    onEnter: [
+      {
+        characterId: 'marcus',
+        trustChange: 1,
+        addKnowledgeFlags: ['marcus_trust_repaired']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_recovery',
+        text: "Tell me about your work here.",
+        nextNodeId: 'marcus_automation_lesson',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      },
+      {
+        choiceId: 'continue_from_recovery_origin',
+        text: "What brought you to this station?",
+        nextNodeId: 'marcus_origin_story',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['trust_recovery', 'marcus_arc', 'fresh_start']
   }
 ]
 

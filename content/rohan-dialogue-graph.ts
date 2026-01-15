@@ -263,7 +263,14 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         text: "Most people would try to fix this. Offer solutions. Argue philosophy.\n\nYou just... let it be heavy. David would have liked that. He always said real understanding starts with sitting in the discomfort.",
         emotion: 'grateful',
-        variation_id: 'silence_for_david_v1'
+        variation_id: 'silence_for_david_v1',
+        voiceVariations: {
+          patience: "Most people would try to fix this. You didn't.\n\nYou just let it be heavy. David would have liked that. He said real understanding starts with discomfort.",
+          helping: "Most people would offer solutions. You offered presence.\n\nDavid would have liked you. He said real understanding starts with sitting in the discomfort.",
+          analytical: "Most people would analyze their way out of this. You let the data be incomplete.\n\nDavid would have respected that. He said understanding starts with discomfort.",
+          building: "Most people would try to build a solution. You just... held space.\n\nDavid would have appreciated that. Sometimes the best thing to build is silence.",
+          exploring: "Most people would ask more questions. You let the mystery breathe.\n\nDavid would have liked that. He said real understanding starts in discomfort."
+        }
       }
     ],
     choices: [
@@ -298,7 +305,14 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         text: "Security? Forget security. This isn't about hackers. This is about truth.\n\nIf the code lies about its own existence, and we deploy it because we're too lazy to check... we aren't engineers anymore. We're believers. We're praying to a black box.",
         emotion: 'zealous',
-        variation_id: 'dismissal_v1'
+        variation_id: 'dismissal_v1',
+        voiceVariations: {
+          analytical: "Security? Forget security. You see the technical risk. But I'm talking about truth.\n\nIf the code lies and we deploy it anyway... we aren't engineers. We're believers praying to a black box.",
+          helping: "Security? Forget security. This isn't about attacks. It's about trust.\n\nIf the code lies and we blindly trust it... what does that make us? Not engineers. Believers.",
+          building: "Security? Forget security. You want to fix it. But first understand what's broken.\n\nIf the code lies about its own existence and we build on top... we're not engineers. We're cultists.",
+          exploring: "Security? Forget security. You're curious about the implications. Good.\n\nIf the code lies and we deploy it anyway... we aren't engineers. We're believers.",
+          patience: "Security? Forget security. I know you're trying to understand.\n\nThis is about truth. If we deploy lies because we're too lazy to check... we're believers, not engineers."
+        }
       }
     ],
     choices: [

@@ -160,7 +160,14 @@ export const kaiDialogueNodes: DialogueNode[] = [
       {
         text: "Between us... you're the first person who hasn't tried to fix it with advice. Everyone else wants to solve me like I'm a problem to debug.\n\nSometimes you just need someone to sit in the frustration with you.",
         emotion: 'grateful',
-        variation_id: 'patience_response_v1'
+        variation_id: 'patience_response_v1',
+        voiceVariations: {
+          patience: "Between us... you're the first person who hasn't tried to fix it. You just... waited.\n\nSometimes that's exactly what someone needs. To not be solved.",
+          helping: "Between us... you're the first person who hasn't tried to fix it. You actually listened.\n\nMost people want to help by solving. You helped by staying.",
+          analytical: "Between us... you didn't jump to solutions. That's rare for someone who thinks in systems.\n\nYou let the problem breathe. That matters.",
+          building: "Between us... you didn't immediately try to build a fix. You just... sat with it.\n\nSometimes the best thing to build is space.",
+          exploring: "Between us... you didn't rush to the next question. You let the silence hold.\n\nCuriosity that waits is rarer than you'd think."
+        }
       }
     ],
     choices: [
@@ -230,7 +237,14 @@ export const kaiDialogueNodes: DialogueNode[] = [
       {
         text: "Because three days ago, someone got hurt. Someone who clicked every button. Watched every video. Passed every quiz.\n\nAnd none of it mattered when he was standing twenty feet up without checking his harness.",
         emotion: 'pained',
-        variation_id: 'accident_hint_v1'
+        variation_id: 'accident_hint_v1',
+        voiceVariations: {
+          helping: "Because three days ago, someone got hurt. You asked because you could tell this wasn't theoretical.\n\nHe clicked every button. Watched every video. None of it mattered when he was twenty feet up.",
+          analytical: "Because three days ago, someone got hurt. You're connecting the dots, aren't you?\n\n100% compliance. 0% retention. Twenty feet up without checking his harness.",
+          building: "Because three days ago, someone got hurt. You understand—sometimes what we build fails people.\n\nHe did everything right according to the system. The system was wrong.",
+          exploring: "Because three days ago, someone got hurt. You wanted the real story.\n\nHere it is: perfect compliance, real injury. Twenty feet up.",
+          patience: "Because three days ago, someone got hurt. Thank you for asking instead of assuming.\n\nHe passed every quiz. None of it saved him."
+        }
       }
     ],
     choices: [
