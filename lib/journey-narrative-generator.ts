@@ -12,6 +12,7 @@
 
 import type { GameState, SerializableGameState } from './character-state'
 import type { FutureSkills } from './game-store'
+import { getCharacterFullName } from '@/lib/character-names'
 
 /**
  * Skill demonstration record from gameplay
@@ -103,21 +104,7 @@ const PATTERN_NARRATIVES: Record<string, { name: string; description: string; me
   }
 }
 
-/**
- * Character name mappings
- */
-const CHARACTER_NAMES: Record<string, string> = {
-  samuel: 'Samuel Washington',
-  maya: 'Maya Chen',
-  devon: 'Devon Kumar',
-  jordan: 'Jordan Packard',
-  tess: 'Tess',
-  yaquin: 'Yaquin',
-  kai: 'Kai',
-  rohan: 'Rohan',
-  silas: 'Silas',
-  marcus: 'Marcus'
-}
+// Character names now imported from @/lib/character-names
 
 /**
  * Generate the opening paragraph based on journey context
@@ -161,7 +148,7 @@ function generateRelationshipReflections(gameState: GameState | SerializableGame
     const trust = character.trust || 0
     if (trust < 2) continue // Skip characters barely interacted with
 
-    const characterName = CHARACTER_NAMES[charId] || charId
+    const characterName = getCharacterFullName(charId)
     let narrativeText: string
 
     if (trust >= 8) {
