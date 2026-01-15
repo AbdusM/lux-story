@@ -174,6 +174,13 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 text: "Because they stop for lunch.\n\nThe algorithm was trained on drone data. Drones don't eat. Drones don't rest. Applying drone metrics to human drivers isn't just 'optimizing', it's breaking them.\n\nI need to clean this dataset before the rollout. Want to help?",
                 emotion: 'determined',
                 variation_id: 'bias_v1',
+                voiceVariations: {
+                    analytical: "Because they stop for lunch.\n\nThe algorithm was trained on drone telemetry. Drones don't consume fuel biologically. Drones don't require recovery periods. Applying non-human baselines to human operators isn't optimization, it's miscategorization.\n\nI need to correct this dataset before deployment. Want to assist with the analysis?",
+                    helping: "Because they stop for lunch.\n\nThe algorithm was trained on drone data. Drones don't need to eat. Don't need to rest. Don't have families waiting.\n\nApplying drone metrics to human drivers isn't optimizing, it's hurting them.\n\nI need to fix this before it harms real people. Want to help?",
+                    building: "Because they stop for lunch.\n\nThe algorithm was trained on drone infrastructure. Drones don't require biological maintenance. Drones don't need structural breaks.\n\nApplying drone architecture to human systems isn't just inefficient, it's fundamentally unstable.\n\nI need to rebuild this dataset before rollout. Want to help construct the fix?",
+                    exploring: "Because they stop for lunch.\n\nThe algorithm was trained on drone paths. Drones don't navigate hunger. Don't discover fatigue. Don't map human needs.\n\nApplying drone routes to human drivers isn't optimization, it's ignoring terrain.\n\nI need to chart what the algorithm missed before rollout. Want to help explore the gaps?",
+                    patience: "Because they stop for lunch.\n\nThe algorithm was trained on drone data. Drones don't pause. Don't accumulate exhaustion over shifts.\n\nApplying drone speed to human drivers isn't optimizing, it's forgetting humans need time.\n\nI need to slow this down before rollout. Want to help me take the time to do it right?"
+                },
                 patternReflection: [
                     { pattern: 'analytical', minLevel: 4, altText: "Because they stop for lunch.\n\nThe algorithm was trained on drone data. Drones don't eat. You see the logical flaw, don't you?\n\nApplying drone metrics to human drivers isn't optimization. It's a category error.\n\nI need to clean this dataset. You think systematically. Want to help?", altEmotion: 'energized' },
                     { pattern: 'helping', minLevel: 4, altText: "Because they stop for lunch.\n\nThe algorithm was trained on drone data. Drones don't rest. But humans need breaks.\n\nThis is going to hurt real drivers. Real families. I can see you care about that.\n\nWant to help me fix it?", altEmotion: 'urgent' }
@@ -321,7 +328,14 @@ export const zaraDialogueNodes: DialogueNode[] = [
             {
                 text: "Exactly. It's punishing safety. If we deployed this, drivers would speed through school zones just to valid their 'Efficiency Score'.\n\nData isn't neutral. It's just frozen human judgment.\n\nGood catch. I'll flag this for the Ethics Committee.",
                 emotion: 'approving',
-                variation_id: 'sim_success_v1'
+                variation_id: 'sim_success_v1',
+                voiceVariations: {
+                    analytical: "Exactly. It's penalizing safety protocols. If we deployed this, drivers would optimize for score maximization through school zones.\n\nData isn't objective. It's just crystallized human bias.\n\nGood analysis. I'll escalate this to the Ethics Committee.",
+                    helping: "Exactly. It's punishing people for being safe. If we deployed this, drivers would risk children's lives just to keep their jobs.\n\nData isn't neutral. It's just frozen human judgment about who matters.\n\nGood heart. I'll flag this for the Ethics Committee.",
+                    building: "Exactly. It's structurally rewarding unsafe behavior. If we deployed this, drivers would build speed through school zones just to validate their metrics.\n\nData isn't neutral foundation. It's just hardcoded human judgment.\n\nGood architecture thinking. I'll flag this for the Ethics Committee.",
+                    exploring: "Exactly. It's mapping danger as efficiency. If we deployed this, drivers would navigate through school zones faster just to improve their score.\n\nData isn't neutral territory. It's just charted human judgment.\n\nGood discovery. I'll flag this for the Ethics Committee.",
+                    patience: "Exactly. It's punishing slowness where slowness saves lives. If we deployed this, drivers would rush through school zones just to meet their quota.\n\nData isn't neutral. It's just frozen human judgment about what deserves time.\n\nGood patience. I'll flag this for the Ethics Committee."
+                }
             }
         ],
         onEnter: [
@@ -401,7 +415,14 @@ export const zaraDialogueNodes: DialogueNode[] = [
             {
                 text: "Most people in tech don't want to hear this. They want clean datasets and fast deployments. They don't want someone slowing them down with \"ethics concerns.\"\n\nYou're the first person today who hasn't said \"just ship it.\"\n\nSometimes I wonder if anyone cares. If it's just me in this basement, fighting invisible wars in spreadsheets.\n\nThank you. For making me feel like it matters.",
                 emotion: 'vulnerable_grateful',
-                variation_id: 'interrupt_encouragement_v1'
+                variation_id: 'interrupt_encouragement_v1',
+                voiceVariations: {
+                    analytical: "Most people in tech don't want to hear this. They want optimized datasets and efficient deployments. They don't want process delays for \"ethics validation.\"\n\nYou're the first person today who hasn't said \"just ship it.\"\n\nSometimes I wonder if the signal's getting through. If it's just me in this basement, debugging invisible logic errors in spreadsheets.\n\nThank you. For confirming the analysis matters.",
+                    helping: "Most people in tech don't want to hear this. They want clean results and fast shipping. They don't want someone caring about \"ethics concerns.\"\n\nYou're the first person today who hasn't said \"just ship it.\"\n\nSometimes I wonder if anyone else feels this. If it's just me in this basement, protecting invisible people in spreadsheets.\n\nThank you. For making me feel like the care matters.",
+                    building: "Most people in tech don't want to hear this. They want stable datasets and rapid deployments. They don't want someone adding \"ethics overhead.\"\n\nYou're the first person today who hasn't said \"just ship it.\"\n\nSometimes I wonder if the foundation holds. If it's just me in this basement, reinforcing invisible structures in spreadsheets.\n\nThank you. For making me feel like the work matters.",
+                    exploring: "Most people in tech don't want to hear this. They want charted datasets and fast deployments. They don't want someone questioning \"ethics territory.\"\n\nYou're the first person today who hasn't said \"just ship it.\"\n\nSometimes I wonder if anyone else sees this. If it's just me in this basement, mapping invisible harm in spreadsheets.\n\nThank you. For making me feel like the discovery matters.",
+                    patience: "Most people in tech don't want to hear this. They want instant datasets and fast deployments. They don't want someone taking time for \"ethics concerns.\"\n\nYou're the first person today who hasn't said \"just ship it.\"\n\nSometimes I wonder if anyone else waits. If it's just me in this basement, slowing down invisible rush in spreadsheets.\n\nThank you. For making me feel like the patience matters."
+                }
             }
         ],
         choices: [
