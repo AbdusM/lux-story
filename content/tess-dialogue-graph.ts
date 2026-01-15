@@ -2003,6 +2003,96 @@ Stakes: Trust, fairness, emotional safety for both students`,
     choices: []
   },
 
+  // ============= TRUST RECOVERY =============
+  {
+    nodeId: 'tess_trust_recovery',
+    speaker: 'Tess',
+    requiredState: {
+      trust: { max: 3 }
+    },
+    content: [{
+      text: "Hey.\n\n[She looks up from a crate of records.]\n\nI thought you might not come back.\n\nI don't... I'm not great at this part. The apology track. Usually I just let the music speak.",
+      emotion: 'vulnerable',
+      variation_id: 'trust_recovery_v1',
+      voiceVariations: {
+        patience: "Hey.\n\n[She looks up from a crate of records.]\n\nYou gave me time. I wasn't sure you'd come back.\n\nI don't... I'm not great at this part. The apology track. Usually I just let the music speak.",
+        helping: "Hey.\n\n[She looks up from a crate of records.]\n\nI thought I pushed you away for good.\n\nI don't... I'm not great at this part. The apology track. Usually I just let the music speak.",
+        analytical: "Hey.\n\n[She looks up from a crate of records.]\n\nYou assessed the damage and came back anyway. That says something.\n\nI don't... I'm not great at this part. The apology track. Usually I just let the music speak.",
+        building: "Hey.\n\n[She looks up from a crate of records.]\n\nYou're rebuilding something I damaged. That takes guts.\n\nI don't... I'm not great at this part. The apology track. Usually I just let the music speak.",
+        exploring: "Hey.\n\n[She looks up from a crate of records.]\n\nStill curious even after I shut you out. I respect that.\n\nI don't... I'm not great at this part. The apology track. Usually I just let the music speak."
+      }
+    }],
+    choices: [
+      {
+        choiceId: 'tess_recovery_listen',
+        text: "Then let it. I'm listening.",
+        nextNodeId: 'tess_trust_restored',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 2,
+          addKnowledgeFlags: ['tess_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Then let the music speak. I'm listening. Take your time.",
+          helping: "Then let it. I'm here. I'm listening.",
+          analytical: "Music as communication. I understand. Go ahead.",
+          building: "Build it however feels right. I'm listening.",
+          exploring: "Show me. I'm listening."
+        }
+      },
+      {
+        choiceId: 'tess_recovery_words',
+        text: "Try words. They work too.",
+        nextNodeId: 'tess_trust_restored',
+        pattern: 'helping',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 2,
+          addKnowledgeFlags: ['tess_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Words can work. When you're ready.",
+          helping: "Try words. They work too. I'm not going anywhere.",
+          analytical: "Verbal communication has value. Try it.",
+          building: "Build the sentence. It doesn't have to be perfect.",
+          exploring: "Give it a shot. See what happens."
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'tess_arc']
+  },
+
+  {
+    nodeId: 'tess_trust_restored',
+    speaker: 'Tess',
+    content: [{
+      text: "[She pulls a record from behind the counter. Worn sleeve. Nina Simone.]\n\nThis one. Track 4. \"I Wish I Knew How It Would Feel to Be Free.\"\n\nThat's... that's the apology.\n\n[She meets your eyes.]\n\nAnd also: I'm sorry. For real. With actual words.",
+      emotion: 'grateful',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        patience: "[She pulls a record from behind the counter. Worn sleeve. Nina Simone.]\n\nThis one. Track 4. \"I Wish I Knew How It Would Feel to Be Free.\"\n\nYou waited for me to find the right words. Most people don't.\n\nThat's... that's the apology.\n\n[She meets your eyes.]\n\nAnd also: I'm sorry. For real. With actual words.",
+        helping: "[She pulls a record from behind the counter. Worn sleeve. Nina Simone.]\n\nThis one. Track 4. \"I Wish I Knew How It Would Feel to Be Free.\"\n\nYou gave me space to be messy. That means everything.\n\nThat's... that's the apology.\n\n[She meets your eyes.]\n\nAnd also: I'm sorry. For real. With actual words.",
+        analytical: "[She pulls a record from behind the counter. Worn sleeve. Nina Simone.]\n\nThis one. Track 4. \"I Wish I Knew How It Would Feel to Be Free.\"\n\nYou understood the message even when the delivery was broken.\n\nThat's... that's the apology.\n\n[She meets your eyes.]\n\nAnd also: I'm sorry. For real. With actual words.",
+        building: "[She pulls a record from behind the counter. Worn sleeve. Nina Simone.]\n\nThis one. Track 4. \"I Wish I Knew How It Would Feel to Be Free.\"\n\nYou helped me rebuild this bridge. Thank you.\n\nThat's... that's the apology.\n\n[She meets your eyes.]\n\nAnd also: I'm sorry. For real. With actual words.",
+        exploring: "[She pulls a record from behind the counter. Worn sleeve. Nina Simone.]\n\nThis one. Track 4. \"I Wish I Knew How It Would Feel to Be Free.\"\n\nYou explored the space I couldn't articulate. That helped.\n\nThat's... that's the apology.\n\n[She meets your eyes.]\n\nAnd also: I'm sorry. For real. With actual words."
+      }
+    }],
+    choices: [{
+      choiceId: 'tess_recovery_complete',
+      text: "(Continue)",
+      nextNodeId: 'tess_hub_return',
+      pattern: 'patience'
+    }],
+    tags: ['trust_recovery', 'tess_arc'],
+    onEnter: [{
+      characterId: 'tess',
+      addKnowledgeFlags: ['tess_trust_recovery_completed']
+    }]
+  },
+
   // ============= BOTANY SIMULATION =============
   {
     nodeId: 'tess_botany_intro',

@@ -2116,6 +2116,96 @@ How do you design for genuine learning AND employability?`,
       variation_id: 'hub_return_v1'
     }],
     choices: []
+  },
+
+  // ============= TRUST RECOVERY =============
+  {
+    nodeId: 'alex_trust_recovery',
+    speaker: 'Alex',
+    requiredState: {
+      trust: { max: 3 }
+    },
+    content: [{
+      text: "[They're staring at a half-written documentation page. Cursor blinking.]\n\nHey.\n\nI wasn't sure you'd come back after I... after I shut down.\n\n[They close the laptop.]\n\nI've taught a lot of people. Burned out on a lot of people. Started seeing everyone as just another credential chaser.\n\nBut you weren't. And I treated you like you were.\n\nThat's on me.",
+      emotion: 'regretful_tired',
+      variation_id: 'trust_recovery_v1',
+      voiceVariations: {
+        patience: "[They're staring at a half-written documentation page. Cursor blinking.]\n\nHey.\n\nYou gave me space. I appreciate that.\n\nI wasn't sure you'd come back after I... after I shut down.\n\n[They close the laptop.]\n\nI've taught a lot of people. Burned out on a lot of people. Started seeing everyone as just another credential chaser.\n\nBut you weren't. And I treated you like you were. That's on me.",
+        helping: "[They're staring at a half-written documentation page. Cursor blinking.]\n\nHey.\n\nYou came back even after I pushed you away.\n\nI wasn't sure you'd come back after I... after I shut down.\n\n[They close the laptop.]\n\nI've taught a lot of people. Burned out on a lot of people. Started seeing everyone as just another credential chaser.\n\nBut you weren't. And I treated you like you were. That's on me.",
+        analytical: "[They're staring at a half-written documentation page. Cursor blinking.]\n\nHey.\n\nYou analyzed the situation and decided to try again.\n\nI wasn't sure you'd come back after I... after I shut down.\n\n[They close the laptop.]\n\nI've taught a lot of people. Burned out on a lot of people. Started seeing everyone as just another credential chaser.\n\nBut you weren't. And I treated you like you were. That's on me.",
+        building: "[They're staring at a half-written documentation page. Cursor blinking.]\n\nHey.\n\nYou're rebuilding something I damaged.\n\nI wasn't sure you'd come back after I... after I shut down.\n\n[They close the laptop.]\n\nI've taught a lot of people. Burned out on a lot of people. Started seeing everyone as just another credential chaser.\n\nBut you weren't. And I treated you like you were. That's on me.",
+        exploring: "[They're staring at a half-written documentation page. Cursor blinking.]\n\nHey.\n\nStill curious even after I became cynical.\n\nI wasn't sure you'd come back after I... after I shut down.\n\n[They close the laptop.]\n\nI've taught a lot of people. Burned out on a lot of people. Started seeing everyone as just another credential chaser.\n\nBut you weren't. And I treated you like you were. That's on me."
+      }
+    }],
+    choices: [
+      {
+        choiceId: 'alex_recovery_burnout',
+        text: "Burnout makes us see the worst in people. I get it.",
+        nextNodeId: 'alex_trust_restored',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 2,
+          addKnowledgeFlags: ['alex_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "Take your time. Burnout makes us see the worst in people. I get it.",
+          helping: "Burnout makes us see the worst in people. You're not a bad teacher. You're tired.",
+          analytical: "Burnout creates cognitive biases. Pattern recognition becomes cynicism. I get it.",
+          building: "Burnout breaks what we build. I get it. Let's rebuild.",
+          exploring: "Burnout narrows our perspective. I get it. Let's explore past it."
+        }
+      },
+      {
+        choiceId: 'alex_recovery_here',
+        text: "I'm here because I'm actually learning. Not credential chasing.",
+        nextNodeId: 'alex_trust_restored',
+        pattern: 'building',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'alex',
+          trustChange: 2,
+          addKnowledgeFlags: ['alex_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "I'm here for the learning. Not the credentials. Take your time seeing that.",
+          helping: "I'm here because I'm actually learning. Because you're a good teacher when you let yourself be.",
+          analytical: "I'm here for knowledge transfer, not credential accumulation. There's a difference.",
+          building: "I'm here to build understanding. Not chase certificates.",
+          exploring: "I'm here because I'm actually learning. Because you make me curious."
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'alex_arc']
+  },
+
+  {
+    nodeId: 'alex_trust_restored',
+    speaker: 'Alex',
+    content: [{
+      text: "[They take a breath. First genuine smile you've seen.]\n\nYeah.\n\nYou are learning. I can see it. You ask the kind of questions that mean you're thinking, not just checking boxes.\n\n[They reopen the laptop.]\n\nI'm sorry. For projecting my burnout onto you. For forgetting why I started teaching in the first place.\n\nThanks for... for not giving up on me.",
+      emotion: 'grateful_relieved',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        patience: "[They take a breath. First genuine smile you've seen.]\n\nYeah.\n\nYou are learning. And you take your time with it. That's rare. That's real.\n\n[They reopen the laptop.]\n\nI'm sorry. For projecting my burnout onto you. For forgetting why I started teaching in the first place.\n\nThanks for... for not giving up on me.",
+        helping: "[They take a breath. First genuine smile you've seen.]\n\nYeah.\n\nYou are learning. And you care about people, not just outcomes. That reminds me why teaching matters.\n\n[They reopen the laptop.]\n\nI'm sorry. For projecting my burnout onto you. For forgetting why I started teaching in the first place.\n\nThanks for... for not giving up on me.",
+        analytical: "[They take a breath. First genuine smile you've seen.]\n\nYeah.\n\nYou are learning. I can see it in how you analyze, how you connect concepts. That's genuine understanding.\n\n[They reopen the laptop.]\n\nI'm sorry. For projecting my burnout onto you. For forgetting why I started teaching in the first place.\n\nThanks for... for not giving up on me.",
+        building: "[They take a breath. First genuine smile you've seen.]\n\nYeah.\n\nYou are learning. Building something real, not just collecting certificates. That's what I wanted to teach.\n\n[They reopen the laptop.]\n\nI'm sorry. For projecting my burnout onto you. For forgetting why I started teaching in the first place.\n\nThanks for... for not giving up on me.",
+        exploring: "[They take a breath. First genuine smile you've seen.]\n\nYeah.\n\nYou are learning. Your curiosity is real. That's what teaching should feed.\n\n[They reopen the laptop.]\n\nI'm sorry. For projecting my burnout onto you. For forgetting why I started teaching in the first place.\n\nThanks for... for not giving up on me."
+      }
+    }],
+    choices: [{
+      choiceId: 'alex_recovery_complete',
+      text: "(Continue)",
+      nextNodeId: 'alex_hub_return',
+      pattern: 'patience'
+    }],
+    tags: ['trust_recovery', 'alex_arc'],
+    onEnter: [{
+      characterId: 'alex',
+      addKnowledgeFlags: ['alex_trust_recovery_completed']
+    }]
   }
 ];
 

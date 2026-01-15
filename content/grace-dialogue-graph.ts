@@ -1572,6 +1572,96 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     choices: []
   },
 
+  // ============= TRUST RECOVERY =============
+  {
+    nodeId: 'grace_trust_recovery',
+    speaker: 'Grace',
+    requiredState: {
+      trust: { max: 3 }
+    },
+    content: [{
+      text: "[She's holding a cup of tea. Still warm.]\n\nI made this for you.\n\nI wasn't sure you'd come back. I wasn't sure you should.\n\n[Quiet.]\n\nIn care work, we're taught to hold space for difficult feelings. But I forgot to hold space for yours when it mattered.\n\nI'm sorry.",
+      emotion: 'gentle',
+      variation_id: 'trust_recovery_v1',
+      voiceVariations: {
+        patience: "[She's holding a cup of tea. Still warm.]\n\nI made this for you. You take your time with things. I should have taken more time with you.\n\nI wasn't sure you'd come back. I wasn't sure you should.\n\n[Quiet.]\n\nIn care work, we're taught to hold space for difficult feelings. But I forgot to hold space for yours when it mattered.\n\nI'm sorry.",
+        helping: "[She's holding a cup of tea. Still warm.]\n\nI made this for you. Even after I failed to help when you needed it.\n\nI wasn't sure you'd come back. I wasn't sure you should.\n\n[Quiet.]\n\nIn care work, we're taught to hold space for difficult feelings. But I forgot to hold space for yours when it mattered.\n\nI'm sorry.",
+        analytical: "[She's holding a cup of tea. Still warm.]\n\nI made this for you. You're probably analyzing whether I mean it. That's fair.\n\nI wasn't sure you'd come back. I wasn't sure you should.\n\n[Quiet.]\n\nIn care work, we're taught to hold space for difficult feelings. But I forgot to hold space for yours when it mattered.\n\nI'm sorry.",
+        building: "[She's holding a cup of tea. Still warm.]\n\nI made this for you. Small gestures rebuild trust. I'm learning.\n\nI wasn't sure you'd come back. I wasn't sure you should.\n\n[Quiet.]\n\nIn care work, we're taught to hold space for difficult feelings. But I forgot to hold space for yours when it mattered.\n\nI'm sorry.",
+        exploring: "[She's holding a cup of tea. Still warm.]\n\nI made this for you. You're still here, still curious. That says something.\n\nI wasn't sure you'd come back. I wasn't sure you should.\n\n[Quiet.]\n\nIn care work, we're taught to hold space for difficult feelings. But I forgot to hold space for yours when it mattered.\n\nI'm sorry."
+      }
+    }],
+    choices: [
+      {
+        choiceId: 'grace_recovery_accept_tea',
+        text: "(Take the tea) Thank you. For this, and for saying that.",
+        nextNodeId: 'grace_trust_restored',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2,
+          addKnowledgeFlags: ['grace_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "(Take the tea slowly) Thank you. For this, and for saying that.",
+          helping: "(Take the tea) Thank you. For caring enough to try again.",
+          analytical: "(Take the tea) The gesture matters. Thank you for saying that.",
+          building: "(Take the tea) Small bridges matter. Thank you for this.",
+          exploring: "(Take the tea) I'm curious where this goes. Thank you for saying that."
+        }
+      },
+      {
+        choiceId: 'grace_recovery_presence',
+        text: "You're here now. That's what matters.",
+        nextNodeId: 'grace_trust_restored',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2,
+          addKnowledgeFlags: ['grace_trust_repaired']
+        },
+        voiceVariations: {
+          patience: "You're here now. Present. That's what matters.",
+          helping: "You're here now. Showing up is everything. That's what matters.",
+          analytical: "Past actions inform, but current presence matters. You're here now.",
+          building: "You're rebuilding with action, not just words. That's what matters.",
+          exploring: "Let's see where this goes. You're here now. That's what matters."
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'grace_arc']
+  },
+
+  {
+    nodeId: 'grace_trust_restored',
+    speaker: 'Grace',
+    content: [{
+      text: "[She sits beside you. The tea between you like a small fire.]\n\nPresence is the hardest skill to teach.\n\nYou have to hold your own weight AND make space for someone else. Most people never learn the balance.\n\n[She looks at you.]\n\nBut you're learning. And so am I.\n\nThank you for coming back.",
+      emotion: 'warm_grateful',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        patience: "[She sits beside you. The tea between you like a small fire.]\n\nPresence is the hardest skill to teach.\n\nYou have to hold your own weight AND make space for someone else. You understand that timing. That patience.\n\n[She looks at you.]\n\nBut you're learning. And so am I.\n\nThank you for coming back.",
+        helping: "[She sits beside you. The tea between you like a small fire.]\n\nPresence is the hardest skill to teach.\n\nYou have to hold your own weight AND make space for someone else. You do this naturally. That's a gift.\n\n[She looks at you.]\n\nBut you're learning. And so am I.\n\nThank you for coming back.",
+        analytical: "[She sits beside you. The tea between you like a small fire.]\n\nPresence is the hardest skill to teach.\n\nYou have to hold your own weight AND make space for someone else. It's a calculation you understand.\n\n[She looks at you.]\n\nBut you're learning. And so am I.\n\nThank you for coming back.",
+        building: "[She sits beside you. The tea between you like a small fire.]\n\nPresence is the hardest skill to teach.\n\nYou have to hold your own weight AND make space for someone else. You're building that balance.\n\n[She looks at you.]\n\nBut you're learning. And so am I.\n\nThank you for coming back.",
+        exploring: "[She sits beside you. The tea between you like a small fire.]\n\nPresence is the hardest skill to teach.\n\nYou have to hold your own weight AND make space for someone else. You explore that edge carefully.\n\n[She looks at you.]\n\nBut you're learning. And so am I.\n\nThank you for coming back."
+      }
+    }],
+    choices: [{
+      choiceId: 'grace_recovery_complete',
+      text: "(Continue)",
+      nextNodeId: 'grace_hub_return',
+      pattern: 'patience'
+    }],
+    tags: ['trust_recovery', 'grace_arc'],
+    onEnter: [{
+      characterId: 'grace',
+      addKnowledgeFlags: ['grace_trust_recovery_completed']
+    }]
+  },
+
   // ============= DEEP DIVE: CELLULAR SYNTHESIS =============
   {
     nodeId: 'grace_deep_dive',
