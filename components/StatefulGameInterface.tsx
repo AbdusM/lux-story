@@ -150,6 +150,7 @@ import { SectionErrorBoundary } from '@/components/LayeredErrorBoundaries'
 import { StationStatusBadge } from '@/components/StationStatusBadge'
 import { TextProcessor } from '@/lib/text-processor'
 import { InGameSettings } from '@/components/InGameSettings'
+import { IdleWarningModal } from '@/components/IdleWarningModal'
 import { JourneySummary } from '@/components/JourneySummary'
 import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } from '@/lib/journey-narrative-generator'
 import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
@@ -4007,6 +4008,18 @@ export default function StatefulGameInterface() {
 
         {/* In-Game Settings Gear - Quick accessibility access */}
         <InGameSettings />
+
+        {/* Idle Warning Modal - Prevents unexpected session loss */}
+        <IdleWarningModal
+          onTimeout={() => {
+            // Auto-save is already handled by the game
+            // Just show a gentle reminder that they can return anytime
+            console.log('[IdleWarning] Session timeout - state preserved')
+          }}
+          onContinue={() => {
+            console.log('[IdleWarning] User confirmed presence')
+          }}
+        />
 
         {/* Keyboard Shortcuts Help Modal */}
         <KeyboardShortcutsHelp
