@@ -161,6 +161,13 @@ export const liraDialogueNodes: DialogueNode[] = [
                 text: "The space between notes. Where the emotion lives.\n\nScoring a film about memory loss. Director wants 'Sadness'. AI generates minor keys. Slow tempos. Cliché.\n\nTrue sadness isn't slow music. It's a melody trying to be happy but... forgetting how.",
                 emotion: 'melancholic',
                 variation_id: 'silence_v2_minimal',
+                voiceVariations: {
+                    analytical: "The negative space. Where the signal actually transmits.\n\nScoring a film about memory loss. Director wants 'Sadness'. AI outputs minor keys. Predictable patterns.\n\nTrue sadness isn't slow frequency. It's a melody seeking major resolution but losing the pathway there.",
+                    helping: "The space between notes. Where care becomes sound.\n\nScoring a film about memory loss. Director wants 'Sadness'. AI generates minor keys. But that's not grief.\n\nTrue sadness isn't slow music. It's a melody trying to comfort but forgetting the words.",
+                    building: "The structural gaps. Where architecture becomes feeling.\n\nScoring a film about memory loss. Director wants 'Sadness'. AI constructs minor keys. Standard framework.\n\nTrue sadness isn't slow composition. It's a melody trying to build toward joy but losing the blueprint.",
+                    exploring: "The unmapped territory. Where discovery becomes emotion.\n\nScoring a film about memory loss. Director wants 'Sadness'. AI navigates to minor keys. Known paths.\n\nTrue sadness isn't slow music. It's a melody searching for happiness but losing the way back.",
+                    patience: "The waiting. Where time becomes feeling.\n\nScoring a film about memory loss. Director wants 'Sadness'. AI generates minor keys. Instant output.\n\nTrue sadness isn't slow music. It's a melody that used to know happiness but... time took it away."
+                },
                 patternReflection: [
                     { pattern: 'helping', minLevel: 4, altText: "The space between notes. Where the emotion lives.\n\nScoring a film about memory loss. Director wants 'Sadness'. But sadness isn't a minor key.\n\nYou understand. You're listening to what I'm *not* saying.", altEmotion: 'recognized' },
                     { pattern: 'analytical', minLevel: 4, altText: "The space between notes. Where the emotion lives.\n\nScoring a film about memory loss. AI generates minor keys. Pattern recognition without meaning.\n\nYou're analyzing this. Good. But analysis alone won't find the soul.", altEmotion: 'challenging' }
@@ -326,7 +333,14 @@ export const liraDialogueNodes: DialogueNode[] = [
             {
                 text: "'Beautiful failure.' Yes. That's exactly it.\n\nA perfectly played note is forgettable. A note that almost breaks, that trembles at the edge of control... that's what makes you feel something.\n\nYou understand this. Most people want the AI to be perfect. You understand that perfect is dead.",
                 emotion: 'recognized',
-                variation_id: 'beautiful_failure_v1'
+                variation_id: 'beautiful_failure_v1',
+                voiceVariations: {
+                    analytical: "'Beautiful failure.' Yes. Optimal description.\n\nA perfectly executed note carries no information. A note approaching failure threshold, oscillating at control boundaries... that's where signal becomes meaning.\n\nYou process this. Most people optimize for perfection. You understand that zero variance is zero life.",
+                    helping: "'Beautiful failure.' Yes. That's the care in it.\n\nA perfectly played note doesn't need anyone. A note that almost breaks, that needs support to stay whole... that's what creates connection.\n\nYou feel this. Most people want the AI to be flawless. You understand that vulnerability is what lets us help each other.",
+                    building: "'Beautiful failure.' Yes. Precise architecture.\n\nA perfectly built note has no character. A note that almost breaks, that trembles under the load... that's what makes structure visible.\n\nYou construct this way. Most people want the AI to be perfect. You understand that stress points are where buildings become art.",
+                    exploring: "'Beautiful failure.' Yes. Exactly the territory.\n\nA perfectly charted note reveals nothing new. A note that almost breaks, that discovers the edge of possible... that's where you find something.\n\nYou navigate this. Most people want the AI to be perfect. You understand that the interesting parts are where the map ends.",
+                    patience: "'Beautiful failure.' Yes. That's the time in it.\n\nA perfectly instant note has no history. A note that almost breaks, that carries years of almost-falling... that's what accumulates meaning.\n\nYou wait for this. Most people want the AI to be perfect. You understand that perfect things never lived long enough to break beautifully."
+                }
             }
         ],
         onEnter: [
@@ -383,7 +397,14 @@ export const liraDialogueNodes: DialogueNode[] = [
             {
                 text: "The AI trained on millions of songs. Pop. Film scores. Stock music. It learned patterns.\n\n'Sad' = minor key + slow tempo + piano.\n'Happy' = major key + faster + acoustic guitar.\n\nIt knows the shapes of emotion. But shapes aren't feelings. A teardrop shape isn't grief.\n\nGrief is what made the tear fall.",
                 emotion: 'teaching',
-                variation_id: 'shallow_dreams_v1'
+                variation_id: 'shallow_dreams_v1',
+                voiceVariations: {
+                    analytical: "The AI trained on millions of samples. Pop. Film scores. Stock libraries. It extracted correlations.\n\n'Sad' = minor key + slow tempo + piano.\n'Happy' = major key + faster + acoustic guitar.\n\nIt learned the statistical signatures of emotion. But correlation isn't causation. A teardrop shape isn't the loss that formed it.\n\nGrief is the function that output the tear.",
+                    helping: "The AI trained on millions of songs. Pop. Film scores. Everything people made to express feelings.\n\n'Sad' = minor key + slow tempo + piano.\n'Happy' = major key + faster + acoustic guitar.\n\nIt knows the language of emotion. But language isn't the feeling. A teardrop shape isn't the hurt.\n\nGrief is what needed to fall.",
+                    building: "The AI trained on millions of songs. Pop. Film scores. Stock music. It learned the architecture.\n\n'Sad' = minor key + slow tempo + piano.\n'Happy' = major key + faster + acoustic guitar.\n\nIt knows the structural templates of emotion. But blueprints aren't buildings. A teardrop shape isn't the weight that bent it.\n\nGrief is the load that made the tear fall.",
+                    exploring: "The AI trained on millions of songs. Pop. Film scores. Stock music. It mapped the territory.\n\n'Sad' = minor key + slow tempo + piano.\n'Happy' = major key + faster + acoustic guitar.\n\nIt knows the geography of emotion. But maps aren't journeys. A teardrop shape isn't the path that led there.\n\nGrief is what made someone walk until they fell.",
+                    patience: "The AI trained on millions of songs. Pop. Film scores. Stock music. It learned patterns instantly.\n\n'Sad' = minor key + slow tempo + piano.\n'Happy' = major key + faster + acoustic guitar.\n\nIt knows emotion's shortcuts. But shortcuts skip the journey. A teardrop shape isn't the years of holding back.\n\nGrief is what accumulated until it had to fall."
+                }
             }
         ],
         choices: [
