@@ -235,7 +235,14 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         text: "Understanding...\n\nThe machine can generate correct code. But it can't explain why it's correct. It can't teach. It can't pass down the intuition that lets you feel when something's wrong before you know why.\n\nDavid could do that. That's not replaceable.",
         emotion: 'hopeful',
-        variation_id: 'understanding_response_v1'
+        variation_id: 'understanding_response_v1',
+        voiceVariations: {
+          analytical: "Understanding. You see the distinction.\n\nThe machine can generate syntactically correct code. But it can't explain the logic. Can't trace causality. Can't pass down the reasoning that lets you predict edge cases.\n\nDavid could model that. That's not replaceable.",
+          helping: "Understanding. You care about what's lost.\n\nThe machine can generate code. But it can't mentor. Can't teach with patience. Can't pass down the wisdom that helps someone grow.\n\nDavid did that for everyone. That's not replaceable.",
+          building: "Understanding. You see what can't be automated.\n\nThe machine can generate code. But it can't architect wisdom. Can't build the foundation of intuition that lets you construct better solutions.\n\nDavid built that in people. That's not replaceable.",
+          exploring: "Understanding. You're curious about what makes it different.\n\nThe machine can generate code. But it can't explore why. Can't ask questions. Can't pass down the curiosity that leads to discovery.\n\nDavid explored with you. That's not replaceable.",
+          patience: "Understanding. You took time to see it.\n\nThe machine can generate code instantly. But it can't cultivate the slow-growing intuition that lets you feel wrongness before you prove it.\n\nDavid grew that in people. That's not replaceable."
+        }
       }
     ],
     choices: [
@@ -249,7 +256,14 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         text: "That's... that's true.\n\nI saw the bug in 3 seconds. The machine didn't see it at all. It generated code that looked perfect but would have corrupted memory on every third call.\n\nMaybe... maybe the value isn't in writing the code. Maybe it's in knowing when the code lies.",
         emotion: 'analytical_hope',
-        variation_id: 'bug_defense_v1'
+        variation_id: 'bug_defense_v1',
+        voiceVariations: {
+          analytical: "You're right. That's the distinction.\n\nI saw the bug in 3 seconds. Pattern matching, edge case analysis. The machine didn't see it at all.\n\nMaybe the value isn't in code generation. Maybe it's in validation. Knowing when the output is wrong.",
+          helping: "You saw that. Thank you.\n\nI caught the bug in 3 seconds. The machine didn't see it at all. It would have hurt users.\n\nMaybe the value isn't in writing code. Maybe it's in protecting people from code that lies.",
+          building: "That's... you're right.\n\nI caught the bug in 3 seconds. The machine generated code that looked perfect but would have broken everything.\n\nMaybe the value isn't in code construction. Maybe it's in quality assurance. Building trust, not just features.",
+          exploring: "You found it. The key question.\n\nI saw the bug in 3 seconds. The machine didn't see it at all. Why? What did I understand that it couldn't?\n\nMaybe the value isn't in writing code. Maybe it's in discovering what makes code trustworthy.",
+          patience: "That's... you waited for me to see it.\n\nI caught the bug in 3 seconds. Years of experience, intuition that can't be rushed. The machine can't develop that.\n\nMaybe the value isn't in fast code generation. Maybe it's in cultivated judgment."
+        }
       }
     ],
     choices: [
