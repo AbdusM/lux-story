@@ -1891,7 +1891,12 @@ Stakes: Trust, fairness, emotional safety for both students`,
       {
         text: "You know what I see in you? Someone who understands that real learning takes time.\n\nNot everyone gets that. Most people want quick fixes. Fast results. But you... you've got the patience.\n\nEducation specialists. The ones who create spaces where everyone can grow. They all have what you have. That rare combination of wanting to help and knowing it can't be rushed.",
         emotion: 'thoughtful',
-        variation_id: 'career_educator_v1'
+        variation_id: 'career_educator_v1',
+        patternReflection: [
+          { pattern: 'helping', minLevel: 5, altText: "You know what I see in you? Someone who helps people patiently.\n\nMost people want quick fixes. Fast results. But you... you help in ways that take time. That's rare.\n\nEducation specialists. The ones who create spaces where everyone grows. They all have what you have—that combination of wanting to help and knowing deep help can't be rushed.\n\nYour helping isn't a quick fix. It's a patient transformation. That's the kind the world needs.", altEmotion: 'warm_knowing' },
+          { pattern: 'patience', minLevel: 5, altText: "You know what I see in you? Patient understanding of how learning works.\n\nMost people want quick results. Instant transformation. But you... you've got the patience to let things unfold.\n\nEducation specialists who create real growth spaces—they all have your patience. That rare understanding that real learning can't be rushed.\n\nYour patience isn't passive waiting. It's active space-holding for growth. That's the foundation of great education.", altEmotion: 'thoughtful_warm' },
+          { pattern: 'building', minLevel: 5, altText: "You know what I see in you? Someone who builds learning experiences carefully.\n\nMost people want quick results. But you... you build with patience. Layer by layer.\n\nCurriculum developers, education architects—they all build like you do. Wanting to help while knowing it can't be rushed. Building bridges between knowledge and understanding.\n\nYour building isn't fast construction. It's patient architecture for growth.", altEmotion: 'knowing' }
+        ]
       }
     ],
     requiredState: {

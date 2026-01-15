@@ -1127,7 +1127,12 @@ export const alexDialogueNodes: DialogueNode[] = [
         emotion: 'balanced_wise',
         interaction: 'nod',
         variation_id: 'wisdom_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "You analyze systems. So analyze this optimization problem.\n\nCredentials are signaling. Learning is substance. You need both variables.\n\nNeed a job next month? Optimize for credentials. Play the game. But don't confuse survival strategy with actual learning.\n\nChase only signals, you end up hollow. Chase only substance, you might starve. The wisdom is knowing which optimization function to run when.", altEmotion: 'teaching_wise' },
+          { pattern: 'building', minLevel: 4, altText: "You're a builder. So understand what you're building on.\n\nCredentials are signaling. Learning is substance. You need both to build a career.\n\nNeed a job? Get credentials. Build the resume. But don't confuse survival construction with actual foundation.\n\nChase only signals, you build on sand. Chase only substance, you might never get funded. Wisdom is knowing when to build which layer.", altEmotion: 'balanced_wise' },
+          { pattern: 'patience', minLevel: 4, altText: "You're patient. That patience serves you here.\n\nCredentials are signaling. Learning is substance. Most people rush toward one.\n\nNeed a job next month? Get credentials quickly. Do what you must. But patiently, separately, pursue actual learning.\n\nChase only quick signals, you end hollow. Chase only slow substance, you might starve. Your patience lets you do both—just not simultaneously.", altEmotion: 'wise_calm' }
+        ]
       }
     ],
     choices: [
