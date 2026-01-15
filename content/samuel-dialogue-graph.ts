@@ -4384,9 +4384,29 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'return_to_hub_devon',
         text: "He's going to be okay.",
-        nextNodeId: 'samuel_hub_after_devon',
+        nextNodeId: 'samuel_beat_after_devon_systems_wisdom',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_devon_systems_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "He is. Because he learned the city's most important lesson: Systems thinking measures the gaps, but the soul lives in them.\n\n[He looks toward the platforms]\n\nOthers here are learning to balance head and heart too.",
+        emotion: 'wise',
+        variation_id: 'beat_after_devon_systems_wisdom_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'patience'
       }
     ]
   },
