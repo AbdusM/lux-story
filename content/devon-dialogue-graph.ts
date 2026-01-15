@@ -3752,6 +3752,107 @@ What communication approach balances these?`,
       }
     ],
     tags: ['loyalty_experience', 'the_outage', 'partial']
+  },
+
+  // ============= TRUST RECOVERY SYSTEM =============
+  {
+    nodeId: 'devon_trust_recovery',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "You came back. After... how things went last time.\n\nI pushed people away. It's what I do when systems feel unstable. Defensive subroutine.\n\nBut you didn't stay gone. That's... not in my decision tree.",
+      emotion: 'guarded',
+      variation_id: 'trust_recovery_v1',
+      voiceVariations: {
+        analytical: "You came back. I'm processing that.\n\nMy defensive routines pushed you away. Standard protocol when variables feel unstable.\n\nBut you're still here. That's unexpected data.",
+        helping: "You came back. After how I acted.\n\nI push people away when things get complicated. Protective mechanism.\n\nBut you didn't give up on me. That's... rare.",
+        building: "You came back. Even after I threw up walls.\n\nI build barriers when systems feel unstable. Defense architecture.\n\nBut you're still trying to connect. That matters.",
+        exploring: "You came back. I didn't expect that.\n\nI shut down when things get uncertain. Avoid the unknown variable.\n\nBut you stayed curious. That's... interesting.",
+        patience: "You came back. You waited.\n\nI push people away when I feel overwhelmed. Emergency shutdown.\n\nBut you didn't force it. You just... came back when I was ready."
+      }
+    }],
+    requiredState: {
+      trust: { max: 3 }
+    },
+    choices: [
+      {
+        choiceId: 'recovery_patience',
+        text: "Systems need time to stabilize. So do people.",
+        nextNodeId: 'devon_trust_restored',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2,
+          addKnowledgeFlags: ['devon_trust_repair_attempted']
+        }
+      },
+      {
+        choiceId: 'recovery_understand',
+        text: "I get it. Defense mechanisms exist for a reason.",
+        nextNodeId: 'devon_trust_restored',
+        pattern: 'analytical',
+        skills: ['emotionalIntelligence', 'systemsThinking'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2,
+          addKnowledgeFlags: ['devon_trust_repair_attempted']
+        }
+      },
+      {
+        choiceId: 'recovery_honest',
+        text: "I'm still here. That's what matters.",
+        nextNodeId: 'devon_trust_restored',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2,
+          addKnowledgeFlags: ['devon_trust_repair_attempted']
+        }
+      }
+    ],
+    tags: ['trust_recovery', 'devon_arc', 'repair']
+  },
+
+  {
+    nodeId: 'devon_trust_restored',
+    speaker: 'Devon Kumar',
+    content: [{
+      text: "Okay. Running a system restore.\n\nI'm not good at this. People. Connections. My brain wants to optimize everything, including relationships. That's not how it works.\n\nBut I'm learning. Maybe we can debug this together.",
+      emotion: 'hopeful',
+      variation_id: 'trust_restored_v1',
+      voiceVariations: {
+        analytical: "Okay. Initializing repair sequence.\n\nMy optimization algorithms don't work on relationships. I know that now.\n\nMaybe we can find a better approach. Together.",
+        helping: "Okay. Starting over.\n\nYou didn't treat me like a broken system to fix. You just... stayed.\n\nThat's teaching me something about connection.",
+        building: "Okay. Rebuilding.\n\nI tried to architect our interaction like a system. That was wrong.\n\nMaybe we build this differently. One conversation at a time.",
+        exploring: "Okay. New iteration.\n\nI closed off when things got uncertain. But you stayed curious.\n\nMaybe that's the approach—exploring instead of solving.",
+        patience: "Okay. Reset complete.\n\nYou gave me time. Didn't push. Didn't debug.\n\nThat's... that's what I needed. Thank you."
+      }
+    }],
+    onEnter: [
+      {
+        characterId: 'devon',
+        trustChange: 1,
+        addKnowledgeFlags: ['devon_trust_repaired']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_from_recovery',
+        text: "Tell me about the system you're building.",
+        nextNodeId: 'devon_explains_system',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      },
+      {
+        choiceId: 'continue_from_recovery_dad',
+        text: "How are things with your dad?",
+        nextNodeId: 'devon_father_hint',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence']
+      }
+    ],
+    tags: ['trust_recovery', 'devon_arc', 'fresh_start']
   }
 ]
 
