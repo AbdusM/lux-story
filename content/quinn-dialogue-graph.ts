@@ -132,6 +132,13 @@ export const quinnDialogueNodes: DialogueNode[] = [
         variation_id: 'quinn_v1',
         text: "What they miss?\n\nI once built an algorithm that predicted market movements with 73% accuracy. Made $14 million in eight months. The numbers were beautiful.\n\nThey didn't mention the 400 jobs my efficiency recommendations eliminated. The numbers called that 'optimization.'",
         emotion: 'bitter_reflective',
+        voiceVariations: {
+          analytical: "What they miss?\n\nI once built an algorithm—73% accuracy predicting market movements. $14 million in eight months. Statistically significant. Elegant logic.\n\n400 jobs eliminated by my efficiency model. The numbers classified that as 'optimization.' Cost-benefit analysis didn't include a variable for human cost.",
+          helping: "What they miss?\n\nI once built an algorithm that predicted market movements with 73% accuracy. Made $14 million in eight months.\n\n400 families lost their income because of my recommendations. The numbers don't capture a parent who can't afford their kid's medication. Numbers don't measure a family that falls apart under financial stress.",
+          building: "What they miss?\n\nI once built an algorithm that predicted market movements with 73% accuracy. Made $14 million in eight months. The architecture was elegant.\n\n400 jobs demolished by my efficiency framework. The numbers called that 'optimization.' I built wealth while destroying livelihoods.",
+          exploring: "What they miss?\n\nI once built an algorithm that predicted market movements with 73% accuracy. Made $14 million in eight months. Discovered a pattern.\n\n400 jobs vanished because of my exploration. The numbers mapped that as 'optimization.' I charted profit but ignored the territory of consequences.",
+          patience: "What they miss?\n\nI once built an algorithm that predicted market movements with 73% accuracy. Made $14 million in eight months. Fast returns.\n\n400 people lost careers they'd spent years building. The numbers called that 'optimization.' Instant profit, decades of damage."
+        },
         patternReflection: [
           { pattern: 'analytical', minLevel: 4, altText: "What they miss?\n\nI once built an algorithm that predicted market movements with 73% accuracy. Made $14 million in eight months. The numbers were beautiful.\n\nBut an algorithm optimizes for what you tell it to optimize for. I told it to maximize returns. It did. The human cost wasn't in the model.", altEmotion: 'regretful' },
           { pattern: 'helping', minLevel: 4, altText: "What they miss?\n\nI once built an algorithm that predicted market movements with 73% accuracy. Made $14 million in eight months.\n\n400 people lost their jobs because of my 'efficiency recommendations.' Numbers don't capture a family losing health insurance. Numbers don't capture a kid who can't afford college anymore because dad got 'optimized.'", altEmotion: 'guilt' }
@@ -177,6 +184,13 @@ export const quinnDialogueNodes: DialogueNode[] = [
         text: "Heavy.\n\n*Quinn looks at his hands for a moment.*\n\nI had a penthouse overlooking Central Park. A car service. A tailor who knew my measurements by heart. I was building wealth.\n\nBut I was also drinking alone at 2 AM, wondering why I felt like I was missing something everyone else seemed to have.",
         variation_id: 'quinn_v2',
         emotion: 'vulnerable',
+        voiceVariations: {
+          analytical: "Heavy.\n\n*Quinn examines his hands like data.*\n\nI had a penthouse overlooking Central Park. Optimal commute. Custom tailoring. Peak wealth accumulation metrics.\n\nBut the correlation between wealth and well-being broke down. Drinking alone at 2 AM, analyzing why the happiness function returned null.",
+          helping: "Heavy.\n\n*Quinn's voice softens.*\n\nI had a penthouse overlooking Central Park. Every luxury. A tailor who remembered me. I was building wealth.\n\nBut I was also drinking alone at 2 AM, realizing I had no one to call. No one who cared about me, just my portfolio.",
+          building: "Heavy.\n\n*Quinn looks at what he's built.*\n\nI had a penthouse overlooking Central Park. A car service. A tailor who knew my measurements. I was building wealth—stacking success.\n\nBut I was also drinking alone at 2 AM, wondering why the foundation felt hollow. Why nothing I constructed made me feel whole.",
+          exploring: "Heavy.\n\n*Quinn maps his past.*\n\nI had a penthouse overlooking Central Park. A car service. A tailor who knew my measurements. I was exploring wealth's territory.\n\nBut I was also drinking alone at 2 AM, lost despite all the markers of arrival. Missing something I couldn't chart.",
+          patience: "Heavy.\n\n*Quinn sits with it.*\n\nI had a penthouse overlooking Central Park. A car service. A tailor who knew my measurements. I was building wealth fast.\n\nBut I was also drinking alone at 2 AM, wondering why years of accumulation felt empty. Why speed left me nowhere."
+        },
         patternReflection: [
           { pattern: 'helping', minLevel: 5, altText: "Heavy.\n\n*Quinn's guard drops slightly.*\n\nI had everything the brochure promised. But I couldn't call anyone at 2 AM who wasn't paid to take my call. I was building wealth, but I wasn't building... anything that would last.", altEmotion: 'vulnerable' }
         ]
@@ -225,6 +239,13 @@ export const quinnDialogueNodes: DialogueNode[] = [
         variation_id: 'quinn_v2',
         text: "Birmingham.\n\n*Quinn's eyes drift to a faded photo on his desk.*\n\nMy grandmother never left. Born in Titusville, died in Titusville. Never made more than $40,000 a year. Happiest person I ever knew.\n\nI made more in a week than she made in a decade. But she had something I couldn't buy. I came back to figure out what that was.",
         emotion: 'nostalgic_searching',
+        voiceVariations: {
+          analytical: "Birmingham.\n\n*Quinn's eyes drift to a faded photo.*\n\nMy grandmother never left. Born in Titusville, died in Titusville. Never exceeded $40,000 annual income. Statistically highest life satisfaction I've measured.\n\nI made more in a week than she made in a decade. But she optimized for a variable I couldn't quantify. I came back to analyze what that was.",
+          helping: "Birmingham.\n\n*Quinn's eyes find a faded photo.*\n\nMy grandmother never left. Born in Titusville, died in Titusville. Never made more than $40,000 a year. Loved more people than I've ever known.\n\nI made more in a week than she made in a decade. But she gave something I couldn't buy. I came back to learn how to care like that.",
+          building: "Birmingham.\n\n*Quinn's eyes rest on a faded photo.*\n\nMy grandmother never left. Born in Titusville, died in Titusville. Never made more than $40,000 a year. Built the strongest foundation I ever witnessed.\n\nI made more in a week than she made in a decade. But she constructed something that lasted. I came back to rebuild what she had.",
+          exploring: "Birmingham.\n\n*Quinn's eyes drift to a faded photo.*\n\nMy grandmother never left. Born in Titusville, died in Titusville. Never chased markets. Happiest person I ever knew.\n\nI made more in a week than she made in a decade. But she discovered something I'm still searching for. I came back to find what she found.",
+          patience: "Birmingham.\n\n*Quinn's eyes rest on a faded photo.*\n\nMy grandmother never left. Born in Titusville, died in Titusville. Never made more than $40,000 a year. Lived 87 years of contentment.\n\nI made more in a week than she made in a decade. But she accumulated something I raced past. I came back to slow down and learn what time taught her."
+        },
         patternReflection: [
           { pattern: 'exploring', minLevel: 4, altText: "Birmingham.\n\nMy grandmother never left this city. Never chased the bigger markets, never 'optimized' her life. She just... lived it. Fully.\n\nI made more in a week than she made in a decade. But she knew something I didn't. I came back to learn what she knew.", altEmotion: 'curious_humble' }
         ]
