@@ -1,8 +1,18 @@
-# Antigravity Browser Extension Testing Handoff
+# Lux Story Web App Testing Handoff
 
-**For:** Gemini with Browser Automation (Playwright MCP)
+**For:** Gemini with Antigravity Browser Automation
 **Date:** January 15, 2026
-**Goal:** Comprehensive capability testing with resilient error handling
+**Target:** https://lux-story.vercel.app (or localhost:3000)
+**Goal:** Comprehensive UI/UX testing with resilient error handling
+
+---
+
+## What is Lux Story?
+
+A dialogue-driven career exploration game where players explore a magical train station, interact with 20 characters, and discover career paths through choices that reveal behavioral patterns.
+
+**Target Audience:** Birmingham youth ages 14-24
+**Platform:** Mobile-first web app
 
 ---
 
@@ -23,174 +33,239 @@ IF error occurs:
 
 ---
 
-## Error Logging Format
+## App URLs to Test
 
-For every issue encountered, log in this format:
+| Environment | URL |
+|-------------|-----|
+| Production | https://lux-story.vercel.app |
+| Local Dev | http://localhost:3000 |
+
+---
+
+## Key Routes to Test
+
+| Route | Purpose | Priority |
+|-------|---------|----------|
+| `/` | Main game interface | HIGH |
+| `/welcome` | Onboarding/intro | HIGH |
+| `/profile` | User settings & accessibility | HIGH |
+| `/admin` | Admin dashboard (needs auth) | MEDIUM |
+| `/student/insights` | Student view of progress | MEDIUM |
+| `/test-pixels` | Avatar sprite verification | LOW |
+| `/test-voices` | Character voice testing | LOW |
+
+---
+
+## Phase 1: Initial Load & Performance (5 min)
+
+- [ ] App loads without console errors
+- [ ] Initial render < 3 seconds
+- [ ] No layout shift during load
+- [ ] Mobile viewport renders correctly (resize to 375x667)
+
+**Check console:** `browser_console_messages`
+
+**Log any:**
+- JavaScript errors
+- Failed network requests
+- Slow resource loads
+
+---
+
+## Phase 2: Main Game Interface `/` (15 min)
+
+### 2.1 Core Elements
+- [ ] Dialogue container visible
+- [ ] Character avatar displays
+- [ ] Choice buttons appear after dialogue
+- [ ] Navigation elements (Journal, Constellation) accessible
+
+### 2.2 Dialogue Flow
+- [ ] Text appears with typing animation
+- [ ] Thinking indicator shows before responses
+- [ ] Dialogue progresses when choices made
+- [ ] No text overflow or truncation
+
+### 2.3 Choice Interaction
+- [ ] All choice buttons clickable
+- [ ] Hover states work
+- [ ] Selected choice triggers response
+- [ ] Pattern indicators show on choices (colored dots)
+
+### 2.4 Navigation
+- [ ] Journal button opens side panel
+- [ ] Constellation button opens character map
+- [ ] Back navigation works
+- [ ] No stuck states
+
+---
+
+## Phase 3: Character Interactions (20 min)
+
+### Characters to Test (Priority Order)
+
+**Tier 1 - Core (test all):**
+1. Samuel (Owl) - Hub character, station keeper
+2. Maya (Cat) - Tech innovator
+3. Marcus (Bear) - Medical tech
+4. Rohan (Raven) - Deep tech
+
+**Tier 2 - Secondary (test 2-3):**
+5. Devon (Deer) - Systems thinker
+6. Tess (Fox) - Education founder
+7. Quinn (Hedgehog) - Finance specialist
+
+### For Each Character Test:
+- [ ] Introduction dialogue loads
+- [ ] Character avatar displays correctly
+- [ ] Voice/typing style is distinct
+- [ ] Choices lead to different responses
+- [ ] Trust progression works (if testable)
+
+---
+
+## Phase 4: Journal & Constellation (10 min)
+
+### 4.1 Journal Panel
+- [ ] Opens from nav button
+- [ ] Shows player stats/patterns
+- [ ] Pattern orbs display (analytical, helping, building, patience, exploring)
+- [ ] Skill demonstrations listed
+- [ ] Closes properly
+
+### 4.2 Constellation View
+- [ ] Character nodes render
+- [ ] Connections between characters visible
+- [ ] Click on character shows details
+- [ ] Zoom/pan works (if applicable)
+- [ ] Keyboard navigation (arrow keys)
+
+---
+
+## Phase 5: Profile & Settings `/profile` (10 min)
+
+### 5.1 Tabs to Test
+- [ ] Account tab loads
+- [ ] Audio settings work
+- [ ] Accessibility options available
+- [ ] Keyboard shortcuts tab
+- [ ] Display settings
+
+### 5.2 Accessibility Features
+- [ ] Text size options (default, large, x-large, xx-large)
+- [ ] Color blind modes (protanopia, deuteranopia, tritanopia)
+- [ ] Reduced motion toggle
+- [ ] Cognitive load levels (minimal, reduced, normal, detailed)
+
+### 5.3 Persistence
+- [ ] Settings save to localStorage
+- [ ] Settings persist on reload
+
+---
+
+## Phase 6: Welcome/Onboarding `/welcome` (5 min)
+
+- [ ] Intro animation plays
+- [ ] "Continue as Guest" works
+- [ ] Sign in option available
+- [ ] Smooth transition to game
+- [ ] Accessibility profile selection (if present)
+
+---
+
+## Phase 7: Mobile Responsiveness (10 min)
+
+Test at these viewport sizes:
+
+| Device | Width | Height |
+|--------|-------|--------|
+| iPhone SE | 375 | 667 |
+| iPhone 14 | 390 | 844 |
+| iPad | 768 | 1024 |
+| Desktop | 1280 | 800 |
+
+### Check for each:
+- [ ] No horizontal scroll
+- [ ] Touch targets >= 44px
+- [ ] Text readable without zoom
+- [ ] Choice buttons not cut off at bottom
+- [ ] Safe area padding on mobile
+
+---
+
+## Phase 8: Keyboard & Accessibility (10 min)
+
+- [ ] Press `?` to open keyboard shortcuts
+- [ ] Tab navigation through choices
+- [ ] Enter to select choice
+- [ ] Escape to close modals
+- [ ] Arrow keys in Constellation
+- [ ] Focus indicators visible
+- [ ] Screen reader landmarks present
+
+---
+
+## Phase 9: Edge Cases & Error Handling (10 min)
+
+- [ ] Rapid clicking doesn't break state
+- [ ] Refreshing mid-dialogue recovers
+- [ ] Network offline shows appropriate state
+- [ ] Invalid routes show 404 or redirect
+- [ ] Long idle time triggers warning modal (5 min)
+
+---
+
+## Error Logging Format
 
 ```markdown
 ### Issue #[N]: [Short Description]
+- **Route:** /path
 - **Test:** What were you testing?
 - **Expected:** What should have happened?
 - **Actual:** What actually happened?
-- **Error Message:** (if any)
-- **Screenshot:** [filename or description]
+- **Console Error:** (if any)
+- **Screenshot:** [filename]
 - **Severity:** BLOCKER | HIGH | MEDIUM | LOW
-- **Status:** LOGGED | INVESTIGATING | RESOLVED
+- **Status:** LOGGED | RESOLVED
 ```
 
 ---
 
-## Testing Phases
+## Key Components to Document
 
-### Phase 1: Installation & Setup (5 min)
+If you find interesting patterns or behaviors, document:
 
-- [ ] Extension loads without errors
-- [ ] Extension icon appears in browser toolbar
-- [ ] Clicking icon opens popup/panel
-- [ ] Any onboarding flow completes
-- [ ] Check console for errors: `browser_console_messages`
-
-**If install fails:** Log error, try alternate installation method, continue.
-
-### Phase 2: Core UI Elements (10 min)
-
-For each UI element discovered:
-- [ ] Element is visible and accessible
-- [ ] Element responds to click/hover
-- [ ] Labels/text are readable
-- [ ] Icons render correctly
-
-**Approach:**
-1. Use `browser_snapshot` to get accessibility tree
-2. Systematically click each interactive element
-3. Log any that don't respond or error
-
-### Phase 3: Feature Discovery (15 min)
-
-**Goal:** Map all capabilities before deep testing
-
-1. Navigate through all menus/tabs/sections
-2. Document each feature found:
-   - Feature name
-   - Location (how to access)
-   - Apparent purpose
-   - Input fields/buttons available
-
-**Create a feature inventory:**
-
-| # | Feature | Location | Inputs | Status |
-|---|---------|----------|--------|--------|
-| 1 | [name]  | [path]   | [list] | FOUND  |
-
-### Phase 4: Systematic Feature Testing (30+ min)
-
-For EACH feature in inventory:
-
-#### Feature: [Name]
-
-**Test 1: Happy Path**
-- Input: [what you entered/clicked]
-- Expected: [what should happen]
-- Result: PASS | FAIL | PARTIAL
-- Notes: [observations]
-
-**Test 2: Edge Cases**
-- Empty input
-- Very long input
-- Special characters
-- Rapid repeated actions
-
-**Test 3: Error Handling**
-- Invalid input
-- Network offline (if applicable)
-- Interrupted action
-
-### Phase 5: Integration Testing (15 min)
-
-- [ ] Extension interacts with web pages correctly
-- [ ] Data persists across browser restart
-- [ ] Multiple tabs don't conflict
-- [ ] Extension works with different websites
-
-### Phase 6: Performance & Edge Cases (10 min)
-
-- [ ] Memory usage reasonable
-- [ ] No UI lag/freezing
-- [ ] Handles rapid interactions
-- [ ] Recovery from errors
+| Component | Location | Notes |
+|-----------|----------|-------|
+| `StatefulGameInterface` | Main game container | Core state management |
+| `ChatPacedDialogue` | Dialogue display | Typing animations |
+| `GameChoices` | Choice buttons | Pattern indicators |
+| `Journal` | Side panel | Player stats |
+| `ConstellationGraph` | Character map | SVG visualization |
+| `InGameSettings` | Gear icon menu | Quick settings |
+| `IdleWarningModal` | Timeout warning | 5-min idle detection |
 
 ---
 
-## Issue Tracking Template
-
-Use this running log throughout testing:
+## Final Report Template
 
 ```markdown
-## Issues Log
-
-### Issue #1: [Title]
-- **Test:** Phase 2 - Button click
-- **Expected:** Modal opens
-- **Actual:** Nothing happened
-- **Error:** None in console
-- **Screenshot:** issue-1-button.png
-- **Severity:** MEDIUM
-- **Status:** LOGGED
-
-### Issue #2: ...
-```
-
----
-
-## Resolution Phase
-
-After completing all phases, return to logged issues:
-
-1. **Sort by severity** (BLOCKER first)
-2. **For each issue:**
-   - Re-test to confirm still broken
-   - Try alternate approaches
-   - Check if related to other issues
-   - Document any workarounds found
-
----
-
-## Commands Reference (Playwright MCP)
-
-| Command | Purpose |
-|---------|---------|
-| `browser_navigate` | Go to URL |
-| `browser_snapshot` | Get accessibility tree (preferred over screenshot) |
-| `browser_click` | Click element by ref |
-| `browser_type` | Type into field |
-| `browser_press_key` | Press keyboard key |
-| `browser_console_messages` | Check for JS errors |
-| `browser_take_screenshot` | Visual capture |
-| `browser_tabs` | Manage tabs |
-| `browser_evaluate` | Run custom JS |
-
----
-
-## Reporting Template
-
-At end of session, compile:
-
-```markdown
-# Antigravity Testing Report - [Date]
+# Lux Story Testing Report - [Date]
 
 ## Summary
-- **Total Features Found:** X
-- **Features Tested:** X
+- **Routes Tested:** X/9
 - **Tests Passed:** X
 - **Tests Failed:** X
 - **Issues Logged:** X
-- **Issues Resolved:** X
 
-## Feature Status
+## Route Status
 
-| Feature | Tests | Pass | Fail | Notes |
-|---------|-------|------|------|-------|
-| ...     | ...   | ...  | ...  | ...   |
+| Route | Status | Issues |
+|-------|--------|--------|
+| / | PASS/FAIL | #1, #2 |
+| /welcome | PASS/FAIL | - |
+| /profile | PASS/FAIL | #3 |
+| ... | ... | ... |
 
 ## Open Issues (by severity)
 
@@ -203,38 +278,26 @@ At end of session, compile:
 ### MEDIUM
 - [list]
 
-### LOW
-- [list]
+## Performance Notes
+- Initial load time: Xs
+- Largest contentful paint: Xs
+- Console errors: X
 
 ## Recommendations
 1. [Priority fixes]
-2. [Improvements]
-3. [Questions for developer]
-
-## Next Steps
-- [ ] [action items]
+2. [UX improvements]
+3. [Accessibility gaps]
 ```
 
 ---
 
-## Quick Start Checklist
+## Quick Start
 
-1. [ ] Open browser with Playwright MCP
-2. [ ] Navigate to extension or install it
-3. [ ] Run `browser_snapshot` to see initial state
-4. [ ] Start Phase 1, logging any issues immediately
-5. [ ] Keep this document open as reference
-6. [ ] Don't stop for errors - log and continue
-7. [ ] Complete all phases before circling back
-8. [ ] Compile final report
+1. Navigate to https://lux-story.vercel.app
+2. Run `browser_snapshot` to see initial state
+3. Start Phase 1, log issues as you go
+4. Don't stop for errors - document and continue
+5. Complete all phases before circling back
+6. Compile final report
 
----
-
-## Notes
-
-- **Screenshot naming:** `phase[N]-[feature]-[issue].png`
-- **If completely blocked:** Note the blocker, skip to next phase
-- **Time box:** Don't spend >5 min on any single issue during testing
-- **Ask questions:** If unclear what a feature does, test it anyway and note observations
-
-Good luck! The goal is comprehensive coverage, not perfection on first pass.
+Good luck! Goal is comprehensive coverage, not perfection.
