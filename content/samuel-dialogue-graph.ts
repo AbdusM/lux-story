@@ -7282,12 +7282,32 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'building_affirm_continue',
         text: "Thanks, Samuel.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_beat_after_orb_building',
         pattern: 'patience',
         skills: ['communication']
       }
     ],
     tags: ['orb_gated', 'building', 'samuel_backstory', 'mastery_tier']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_orb_building',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Hold onto that feeling. When pieces click together, when what you made works - that's the real reward.\n\n[He gestures toward the platforms]\n\nReady to meet more builders finding their rhythm?",
+        emotion: 'warm',
+        variation_id: 'beat_after_orb_building_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
   },
 
   // Explorer Mastery
@@ -7375,12 +7395,32 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'exploring_affirm_continue',
         text: "I'll keep looking.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_beat_after_orb_exploring',
         pattern: 'exploring',
         skills: ['adaptability', 'communication']
       }
     ],
     tags: ['orb_gated', 'exploring', 'samuel_backstory', 'mastery_tier']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_orb_exploring',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Keep wondering. Keep looking. That's how you find what others miss.\n\n[He smiles slightly]\n\nReady to meet more travelers who never stopped asking 'why'?",
+        emotion: 'warm',
+        variation_id: 'beat_after_orb_exploring_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
   },
 
   // Patience Mastery
@@ -7472,12 +7512,32 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'patience_affirm_continue',
         text: "[Nod]",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_beat_after_orb_patience',
         pattern: 'patience',
         skills: ['communication']
       }
     ],
     tags: ['orb_gated', 'patience', 'samuel_backstory', 'mastery_tier']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_orb_patience',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Trust those instincts. They'll tell you when to wait and when to move.\n\n[He nods approvingly]\n\nReady to meet more travelers learning their own rhythm?",
+        emotion: 'warm',
+        variation_id: 'beat_after_orb_patience_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
   },
 
   // ============= MISSING NODES FIX =============
