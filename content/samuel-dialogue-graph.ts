@@ -7027,7 +7027,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'analytical_continue',
         text: "I'm still figuring that out.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_beat_after_orb_analytical',
         pattern: 'patience',
         skills: ['communication']
       }
@@ -7048,12 +7048,32 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'analytical_affirm_continue',
         text: "Thanks, Samuel.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_beat_after_orb_analytical',
         pattern: 'patience',
         skills: ['communication']
       }
     ],
     tags: ['orb_gated', 'analytical', 'samuel_backstory', 'mastery_tier']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_orb_analytical',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's the right question. Analysis without purpose is just noise.\n\n[He looks toward the platforms]\n\nReady to meet more travelers finding their purpose?",
+        emotion: 'knowing',
+        variation_id: 'beat_after_orb_analytical_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
   },
 
   // Helping Mastery
@@ -7145,12 +7165,32 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'helping_affirm_continue',
         text: "[Nod]",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_beat_after_orb_helping',
         pattern: 'patience',
         skills: ['communication']
       }
     ],
     tags: ['orb_gated', 'helping', 'samuel_backstory', 'mastery_tier']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_orb_helping',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You know it in your bones. The real help is presence, not answers.\n\n[He looks toward the platforms]\n\nReady to meet more travelers learning to be present?",
+        emotion: 'warm',
+        variation_id: 'beat_after_orb_helping_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
   },
 
   // Building Mastery
