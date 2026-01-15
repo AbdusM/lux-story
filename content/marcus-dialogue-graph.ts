@@ -1806,7 +1806,12 @@ WARNING: Response time > 48h`,
     content: [{
       text: "I learned it wrong, then right.\n\nWrong: I dumbed things down. Removed nuance until the message was meaningless. Management nodded, did nothing.\n\nRight: I learned to speak in stakes. Not 'the firewall has a vulnerability' but 'someone could access every patient's social security number in two hours.'\n\nSame truth. Different frame. Stakes people understand. Systems they do not.\n\nBut I learned this lesson after the breach. When it was too late.\n\nLearn it now. While it can still matter.",
       emotion: 'teaching',
-      variation_id: 'translation_v1'
+      variation_id: 'translation_v1',
+      patternReflection: [
+        { pattern: 'analytical', minLevel: 4, altText: "You analyze deeply. So you'll understand this translation problem.\n\nI learned wrong first: dumbed things down, removed nuance. Management nodded, did nothing.\n\nLearned right: speak in stakes. Not 'vulnerability' but 'someone could access every SSN in two hours.'\n\nAnalytical minds see the system. But you must translate that sight into consequences people fear. Stakes, not systems.", altEmotion: 'teaching' },
+        { pattern: 'helping', minLevel: 4, altText: "You care about impact. So this lesson matters.\n\nI learned wrong: simplified until meaningless. Management nodded, did nothing. No one helped.\n\nLearned right: speak in human stakes. Not technical facts but real consequences. 'Someone could access every patient's information.'\n\nIf you want to help, learn to translate system risks into human fears. That's when people act.", altEmotion: 'mentoring' },
+        { pattern: 'building', minLevel: 4, altText: "You're a builder. So understand this: builders must also translate.\n\nI learned wrong: explained the architecture. Management nodded, didn't fund fixes.\n\nLearned right: explain what breaks and what it costs. Not 'firewall vulnerability' but 'breach exposing every patient record.'\n\nBuild the solution. But also build the argument in terms decision-makers understand: stakes, not systems.", altEmotion: 'teaching' }
+      ]
     }],
     choices: [
       {
@@ -1825,7 +1830,12 @@ WARNING: Response time > 48h`,
     content: [{
       text: "Emotion. We miss emotion.\n\nSystems thinking is powerful. But humans do not operate on logic alone. Fear, pride, exhaustion. These shape decisions as much as data.\n\nThe manager who delayed the patch? Terrified of budget overruns. Exhausted from quarterly pressure. Acting on fear, not malice.\n\nI saw a technical problem. I should have seen a human one.\n\nSystems that ignore psychology fail. Build for humans, not processes. Processes cannot be afraid. Humans can.",
       emotion: 'wise',
-      variation_id: 'blindspot_v1'
+      variation_id: 'blindspot_v1',
+      patternReflection: [
+        { pattern: 'analytical', minLevel: 4, altText: "You analyze systems. So you might make my mistake.\n\nSystems thinking is powerful. But it misses emotion. Fear, pride, exhaustion—these shape decisions as much as logic.\n\nThe manager who delayed my patch? Acting on fear of budget overruns, not malice. I analyzed the technical system. Missed the human one.\n\nYour analytical mind is your strength. Don't let it become your blindspot. Systems ignore psychology at their peril.", altEmotion: 'teaching_warm' },
+        { pattern: 'helping', minLevel: 4, altText: "You lead with care. So you already understand what I learned too late.\n\nSystems thinking is powerful but incomplete. Humans operate on fear, pride, exhaustion—not just data.\n\nThe manager who delayed the patch? Terrified, exhausted, human. I saw a technical problem. You would have seen the human one.\n\nBuild for humans, not processes. Processes cannot be afraid. Humans can. Your empathy is the variable systems thinking misses.", altEmotion: 'knowing' },
+        { pattern: 'building', minLevel: 4, altText: "You're a builder. So build with this wisdom.\n\nSystems thinking is powerful. But systems that ignore human psychology fail. Fear, pride, exhaustion shape decisions as much as specifications.\n\nThe manager who delayed my patch? Not a broken process. A terrified human under quarterly pressure.\n\nBuild for humans, not abstract processes. Processes cannot be afraid. Humans can. Build systems that account for human fear, not just logical flows.", altEmotion: 'wise' }
+      ]
     }],
     choices: [
       {
@@ -1848,7 +1858,12 @@ WARNING: Response time > 48h`,
     content: [{
       text: "You want to build. To create. To make things exist.\n\nI understand that drive. It powered my early career.\n\nBut here is what builders often forget: destruction is faster than creation. What takes months to build can be destroyed in seconds.\n\nThe ransomware that hit the hospital? Took three months to infiltrate. Took eighteen hours to devastate.\n\nBuild with resilience in mind. Assume failure. Design for recovery. The best builders are also the best anticipators of destruction.",
       emotion: 'teaching',
-      variation_id: 'building_v1'
+      variation_id: 'building_v1',
+      patternReflection: [
+        { pattern: 'building', minLevel: 4, altText: "You're a builder. I see it in you—that drive to create, to make things exist.\n\nI had that drive. It powered my early career. But here's what builders forget: destruction is faster than creation.\n\nThree months to infiltrate. Eighteen hours to devastate.\n\nBuild with resilience in mind. Assume failure. Design for recovery. The best builders are also the best anticipators of destruction. Build like someone is trying to break what you make. Because someone is.", altEmotion: 'teaching_serious' },
+        { pattern: 'analytical', minLevel: 4, altText: "You analyze systems. So analyze this asymmetry.\n\nCreation: months. Destruction: seconds. This is not metaphor—it's mathematical reality.\n\nThe ransomware infiltrated over three months. Devastated in eighteen hours. Creation velocity versus destruction velocity: we lose.\n\nBuild analytically for resilience. Assume failure. Design for recovery. The best systems anticipate their own breaking points before attackers find them.", altEmotion: 'teaching' },
+        { pattern: 'patience', minLevel: 4, altText: "You're patient. That patience serves building.\n\nI was impatient early in my career. Built fast, iterated faster. Forgot that destruction is faster than creation.\n\nThree months to infiltrate slowly. Eighteen hours to destroy rapidly.\n\nPatience means building with resilience. Assuming failure. Designing for recovery. The best builders patiently anticipate destruction. Your patience is your advantage—use it to build what survives.", altEmotion: 'mentoring' }
+      ]
     }],
     requiredState: {
       patterns: {

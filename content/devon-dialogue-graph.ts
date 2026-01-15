@@ -2594,7 +2594,12 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         text: "Want to see how I actually work?\n\nStep one: Define the problem. Not the surface problem. The real one underneath.\n\nStep two: Map the system. All the pieces. All the connections.\n\nStep three: Find the leverage point. The one change that affects everything else.\n\nStep four: Test. Fail. Learn. Repeat.\n\nSimple, right? Except step one takes forever. Because people, including me, are terrible at knowing what the real problem is.",
         emotion: 'teaching',
-        variation_id: 'process_v1'
+        variation_id: 'process_v1',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "You think systematically. So you'll appreciate this process.\n\nStep one: Define the real problem underneath. Step two: Map the system—pieces, connections. Step three: Find the leverage point. Step four: Test, fail, learn, repeat.\n\nYou have the analytical mind for this. But step one is the trap—we're all terrible at knowing what the real problem is. Including me. Including you. Stay skeptical of your first answer.", altEmotion: 'teaching' },
+          { pattern: 'building', minLevel: 4, altText: "You're a builder. Here's my building process.\n\nStep one: Define the real problem (not the surface one). Step two: Map the entire system. Step three: Find the leverage point—the one change that affects everything. Step four: Build, test, fail, learn.\n\nSimple framework. But step one is deceptive—builders want to start building. Force yourself to define the real problem first. What are you actually building? Why?", altEmotion: 'mentoring' },
+          { pattern: 'patience', minLevel: 4, altText: "You're patient. That patience will save you here.\n\nStep one: Define the real problem underneath. Step two: Map the system. Step three: Find leverage. Step four: Test, fail, learn.\n\nStep one takes forever. Because we're all terrible at seeing the real problem. Your patience is your advantage—most people rush past step one. You can afford to wait until you know what you're actually solving.", altEmotion: 'teaching' }
+        ]
       }
     ],
     choices: [

@@ -453,7 +453,12 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         text: "Everything is a choice.\n\nWhen you write in assembly, you see the cost of every decision. A loop isn't magic. It's instructions. Memory isn't infinite. It's addresses.\n\nEvery abstraction you've ever used was someone's opinion about tradeoffs.\n\nThe frameworks hide those choices. The AI hides them even more.",
         emotion: 'teaching_intensity',
-        variation_id: 'david_lesson_v1'
+        variation_id: 'david_lesson_v1',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 4, altText: "You analyze systems. So you need to hear this.\n\nEverything is a choice. When you write in assembly, you see the cost of every decision. A loop: instructions. Memory: addresses. Nothing is magic.\n\nEvery abstraction you've ever used was someone's opinion about tradeoffs. Frameworks hide those choices. AI hides them more.\n\nYour analytical mind needs to see past the abstractions. Question the frameworks. See the choices.", altEmotion: 'teaching_intense' },
+          { pattern: 'building', minLevel: 4, altText: "You're a builder. So understand what you're building on.\n\nEverything is a choice. Assembly shows you the cost of every decision. A loop isn't magic—it's instructions you could write differently.\n\nEvery framework is someone's opinion about tradeoffs. You're building on their choices. The AI hides even those.\n\nBuild consciously. Know what choices the tools are making for you. Otherwise you're not building—you're assembling someone else's opinions.", altEmotion: 'teaching_fire' },
+          { pattern: 'patience', minLevel: 4, altText: "You're patient. Use that patience to see what's hidden.\n\nEverything is a choice. Assembly forces you to see the cost of every decision slowly. Loops, memory, all of it—explicit choices.\n\nFrameworks hide those choices for speed. AI hides them for convenience. But patient examination reveals them.\n\nYour patience is rare. Use it to understand what the abstractions are hiding. See the choices underneath.", altEmotion: 'teaching_knowing' }
+        ]
       }
     ],
     choices: [
@@ -897,7 +902,12 @@ export const rohanDialogueNodes: DialogueNode[] = [
       {
         text: "Year one: No computers.\n\nI'm serious. You learn Boolean logic with physical switches. You build a half-adder with relays. You understand what a bit is before you ever type 'int'.\n\nYear two: Assembly. Write a calculator. Write a text editor. Feel every byte.\n\nYear three: Finally, you get a framework. And by then, you'll hate it. Because you'll see all the choices it's making for you.",
         emotion: 'teaching_fire',
-        variation_id: 'curriculum_v1'
+        variation_id: 'curriculum_v1',
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "You're a builder. So you'll understand why I build from the ground up.\n\nYear one: No computers. Boolean logic with physical switches. Build a half-adder with relays. Understand bits before you type 'int'.\n\nYear two: Assembly. Build a calculator, text editor. Feel every byte.\n\nYear three: Frameworks. And by then you'll hate them—because you'll see all the choices they're making for you. Builders need to know what they're building on.", altEmotion: 'teaching_passionate' },
+          { pattern: 'analytical', minLevel: 4, altText: "You analyze deeply. So you'll appreciate this curriculum structure.\n\nYear one: Physical logic. Switches, relays, half-adders. Understand computation before abstractions.\n\nYear two: Assembly. Calculator, text editor, byte-level control. See the machine.\n\nYear three: Frameworks. And by then you'll analyze them critically—see all the choices they hide. Analytical minds need to see the foundation before the facade.", altEmotion: 'teaching_fire' },
+          { pattern: 'patience', minLevel: 4, altText: "You're patient. Good. This curriculum requires patience.\n\nYear one: No computers. Physical switches. Slow, deliberate understanding of Boolean logic. Build relays before code.\n\nYear two: Assembly. Slow construction of calculators, editors. Feel every byte.\n\nYear three: Frameworks. And your patience will have earned you the right to hate them—you'll see all the shortcuts they're taking. Patience builds mastery.", altEmotion: 'teaching_serious' }
+        ]
       }
     ],
     choices: [
