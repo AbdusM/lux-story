@@ -1637,7 +1637,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'return_to_purpose',
         text: "So you stayed to give others what you gave her.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_beat_after_daughter_path',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -1680,7 +1680,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'understand_letters',
         text: "So the station chose you to guide others.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_beat_after_letter_system',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -8401,6 +8401,111 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ]
   },
 
+  // ============= BEAT: After Daughter Path =============
+  {
+    nodeId: 'samuel_beat_after_daughter_path',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Watching her find her own way - that's what taught me what I'm supposed to do here.\n\n[He looks toward the platforms with quiet purpose]\n\nYou ready to find yours?",
+        emotion: 'paternal_pride',
+        variation_id: 'beat_after_daughter_path_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  // ============= BEAT: After Letter System =============
+  {
+    nodeId: 'samuel_beat_after_letter_system',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The station connects people who need to hear each other. Always has.\n\n[He smiles knowingly]\n\nReady to see who else the station connected tonight?",
+        emotion: 'mystical_acceptance',
+        variation_id: 'beat_after_letter_system_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  // ============= BEAT: After Admission =============
+  {
+    nodeId: 'samuel_beat_after_admission',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The question worth asking. Not who pulled you here, but whether you can pull back.\n\n[He meets your eyes steadily]\n\nYou ready to keep finding your own gravity?",
+        emotion: 'grave',
+        variation_id: 'beat_after_admission_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  // ============= BEAT: After Mystery Deflect =============
+  {
+    nodeId: 'samuel_beat_after_mystery_deflect',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Their stories are connected to yours. You'll see the pattern when you're ready.\n\n[He gestures toward the platforms]\n\nWant to keep listening?",
+        emotion: 'knowing',
+        variation_id: 'beat_after_mystery_deflect_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_return',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  // ============= BEAT: After Loyalty Declined =============
+  {
+    nodeId: 'samuel_beat_after_loyalty_declined',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Not everyone's ready to hold space for silence. That's wisdom too - knowing your limits.\n\n[He nods with understanding]\n\nYou ready to continue your own journey?",
+        emotion: 'understanding',
+        variation_id: 'beat_after_loyalty_declined_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_return',
+        pattern: 'patience'
+      }
+    ]
+  },
+
   {
     nodeId: 'samuel_letter_confrontation',
     speaker: 'Samuel (The Conductor)',
@@ -8440,7 +8545,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'sam_end_arc1',
         text: 'End Conversation',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_beat_after_admission',
         consequence: {
           addGlobalFlags: ['letter_mystery_solved'],
           trustChange: 2
@@ -8497,7 +8602,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'mystery_understood',
         text: "I'll keep that in mind.",
-        nextNodeId: 'samuel_hub_return',
+        nextNodeId: 'samuel_beat_after_mystery_deflect',
         pattern: 'patience'
       }
     ],
@@ -8760,7 +8865,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'return_to_hub',
         text: "Thank you for understanding.",
-        nextNodeId: 'samuel_hub_return'
+        nextNodeId: 'samuel_beat_after_loyalty_declined'
       }
     ]
   },
