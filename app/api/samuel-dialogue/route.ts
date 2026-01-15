@@ -199,7 +199,7 @@ export async function POST(request: NextRequest) {
   try {
     // 1. Validate API key
     if (!GEMINI_API_KEY) {
-      console.error('❌ [API:SamuelDialogue] GEMINI_API_KEY not configured')
+      logger.error('GEMINI_API_KEY not configured', { operation: 'api.samuel-dialogue' })
       return NextResponse.json(
         { error: 'GEMINI_API_KEY not configured in .env.local' },
         { status: 500 }
@@ -220,7 +220,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (!nodeId || !playerPersona) {
-      console.error('❌ [API:SamuelDialogue] Missing required fields')
+      logger.error('Missing required fields', { operation: 'api.samuel-dialogue', nodeId, hasPersona: !!playerPersona })
       return NextResponse.json(
         { error: 'Missing required fields: nodeId, playerPersona' },
         { status: 400 }
@@ -303,7 +303,7 @@ export async function POST(request: NextRequest) {
     let hasForbiddenPatterns = false
     for (const pattern of forbiddenPatterns) {
       if (pattern.test(dialogue)) {
-        console.warn('⚠️ [API:SamuelDialogue] Gamification detected:', { pattern: pattern.toString() })
+        logger.warn('Gamification pattern detected', { operation: 'api.samuel-dialogue', pattern: pattern.toString() })
         hasForbiddenPatterns = true
       }
     }
@@ -333,7 +333,8 @@ export async function POST(request: NextRequest) {
   } catch (error: unknown) {
     const errorTime = Date.now() - startTime
     const err = error as { message?: string }
-    console.error('❌ [API:SamuelDialogue] Error:', {
+    logger.error('Samuel dialogue generation failed', {
+      operation: 'api.samuel-dialogue',
       error: err.message,
       timeMs: errorTime
     })
