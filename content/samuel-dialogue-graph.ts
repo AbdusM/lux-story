@@ -8265,8 +8265,28 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       emotion: 'proud',
       variation_id: 'puzzle_origin_v1'
     }],
-    choices: [{ choiceId: 'origin_ack', text: "I'll build something good.", nextNodeId: 'samuel_hub_initial' }],
+    choices: [{ choiceId: 'origin_ack', text: "I'll build something good.", nextNodeId: 'samuel_beat_after_origin_reward' }],
     tags: ['puzzle_reward', 'legendary_info']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_origin_reward',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "I know you will. Every architect who's passed through here adds something.\n\n[He looks around the station with quiet pride]\n\nYou ready to keep building?",
+        emotion: 'proud',
+        variation_id: 'beat_after_origin_reward_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
   },
 
   {
@@ -8277,9 +8297,30 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       emotion: 'resigned_noble',
       variation_id: 'puzzle_burden_v1'
     }],
-    choices: [{ choiceId: 'burden_ack', text: "Thank you for holding the door.", nextNodeId: 'samuel_hub_initial' }],
+    choices: [{ choiceId: 'burden_ack', text: "Thank you for holding the door.", nextNodeId: 'samuel_beat_after_burden_reward' }],
     tags: ['puzzle_reward', 'legendary_info']
   },
+
+  {
+    nodeId: 'samuel_beat_after_burden_reward',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You're welcome. Not many understand what it means to hold the door.\n\n[He meets your eyes with quiet strength]\n\nYou ready to walk through it?",
+        emotion: 'resigned_noble',
+        variation_id: 'beat_after_burden_reward_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'patience'
+      }
+    ]
+  },
+
   {
     nodeId: 'samuel_letter_confrontation',
     speaker: 'Samuel (The Conductor)',
@@ -8751,12 +8792,32 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_from_recovery_travelers',
         text: "Who should I meet next?",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_beat_after_trust_restored',
         pattern: 'helping',
         skills: ['collaboration']
       }
     ],
-    tags: ['trust_recovery', 'samuel_arc', 'fresh_start']
+    tags: ['trust_recovery']
+  },
+
+  {
+    nodeId: 'samuel_beat_after_trust_restored',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Thank you for not giving up on this. Not everyone does.\n\n[He gestures toward the platforms]\n\nThere are others here tonight who could use that same patience.",
+        emotion: 'warm',
+        variation_id: 'beat_after_trust_restored_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
+      }
+    ]
   }
 ]
 
