@@ -291,7 +291,14 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         text: "87. Right.|Before the videos? Zero. Eight years doing the work. Nobody asking questions. Nobody learning from the mistakes I already made.|Now 87 people want to know what I know.",
         emotion: 'reflective',
         variation_id: 'encouraged_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        voiceVariations: {
+          analytical: "87. You're right.|Before the videos? Zero data points. Eight years of observations. No repository. No knowledge transfer.|Now 87 people requesting access to what I learned.",
+          helping: "87. Right.|Before the videos? Nobody to help. Eight years of mistakes I couldn't share. Couldn't spare others from the same pain.|Now 87 people I can support through what I already survived.",
+          building: "87. Right.|Before the videos? Nothing built from eight years. Just daily work. No structure. No legacy.|Now 87 people helping me construct something from what I know.",
+          exploring: "87. Right.|Before the videos? No map. Eight years exploring alone. Nobody to share discoveries with.|Now 87 people curious about the territory I already charted.",
+          patience: "87. Right.|Before the videos? Eight years. Slow accumulation. Nobody watching the process.|Now 87 people patient enough to learn what took me years to understand."
+        }
       },
       {
         text: "Maybe that's not shouting into void. Maybe that's building something.",
@@ -317,7 +324,14 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         text: "The dentists? Good question.|They watch but don't comment. Think they're embarrassed? Like admitting they don't know something basic.",
         emotion: 'curious',
         variation_id: 'explored_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        voiceVariations: {
+          analytical: "The dentists? Good hypothesis.|They watch but don't comment. Silent data consumption. Embarrassed to admit knowledge gaps in their own field?",
+          helping: "The dentists? You're curious about them too.|They watch but don't comment. Maybe ashamed? Like needing help exposes weakness?",
+          building: "The dentists? Good observation.|They watch but don't comment. Building knowledge secretly? Like admitting gaps undermines their expertise?",
+          exploring: "The dentists? Good question - one I haven't fully explored.|They watch but don't comment. Investigating silently? Embarrassed to reveal what they're discovering?",
+          patience: "The dentists? Thoughtful question.|They watch but don't comment. Taking time to process? Embarrassed to admit what they're slowly learning?"
+        }
       },
       {
         text: "Or maybe they see what I see. The gap between textbook and chair. What you're supposed to know versus what actually works.|That gap? Eight years of filling it. Maybe that's what they want.",
@@ -343,7 +357,14 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         text: "Build WITH them?|Never thought of it like that. Always felt like I teach, they learn. One direction.",
         emotion: 'surprised',
         variation_id: 'community_v1',
-        useChatPacing: true
+        useChatPacing: true,
+        voiceVariations: {
+          analytical: "Build WITH them?|Never modeled it that way. Always: I = data source, they = data consumers. Linear transfer.",
+          helping: "Build WITH them?|Never framed it like that. Always: I help, they receive. One-way support.",
+          building: "Build WITH them?|Never architected it that way. Always: I construct, they consume. Single-direction building.",
+          exploring: "Build WITH them?|Never mapped it that way. Always: I lead the expedition, they follow. One path forward.",
+          patience: "Build WITH them?|Never let it develop that way. Always: I teach now, they learn now. Immediate one-way flow."
+        }
       },
       {
         text: "But you're right. Some of them been doing this longer than me. Different clinics. Different problems. Different solutions.|What if the course isn't me telling them things but us figuring it out together?",
