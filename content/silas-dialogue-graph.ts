@@ -131,7 +131,14 @@ export const silasDialogueNodes: DialogueNode[] = [
       {
         text: "That's... yeah. That's exactly it.\n\nFifteen years building systems that abstract reality into data. Clean numbers. Dashboards. KPIs.\n\nAnd the abstraction has a gap wide enough to kill my basil.",
         emotion: 'stunned_recognition',
-        variation_id: 'map_territory_v1'
+        variation_id: 'map_territory_v1',
+        voiceVariations: {
+          analytical: "That's... yeah. Exact diagnosis.\n\nFifteen years building abstraction layers. Data models. Schema. Everything compressed into measurable signals.\n\nThe compression algorithm lost critical information. Wide enough to kill my basil.",
+          helping: "That's... yeah. You see it.\n\nFifteen years trusting systems over my own senses. Numbers over intuition. Dashboards over care.\n\nThe gap between what I measure and what's real is wide enough to kill my basil.",
+          building: "That's... yeah. That's the structural failure.\n\nFifteen years constructing interfaces between reality and understanding. Clean architecture. Elegant abstractions.\n\nBuilt a layer so thick I can't see the ground anymore. Wide enough to kill my basil.",
+          exploring: "That's... yeah. You found it.\n\nFifteen years mapping reality into data. Every corner explored, categorized, compressed.\n\nThe map is so detailed I forgot to look at the actual territory. Wide enough to kill my basil.",
+          patience: "That's... yeah. That's it.\n\nFifteen years rushing to instrument everything. Measure fast. React faster.\n\nForgot that plants don't work on refresh rates. The gap is wide enough to kill my basil."
+        }
       }
     ],
     choices: [
@@ -245,6 +252,13 @@ export const silasDialogueNodes: DialogueNode[] = [
         text: "God. That's it, isn't it?\n\nFifteen years at Amazon. Every decision backed by data. Every insight validated by metrics.\n\nI forgot how to trust anything that doesn't come with a confidence interval.\n\nThe soil is telling me something. And I keep looking for a JSON payload to confirm it.",
         emotion: 'self_aware_pain',
         variation_id: 'api_trust_v1',
+        voiceVariations: {
+          analytical: "God. That's it, isn't it?\n\nFifteen years at Amazon. Every decision backed by data. P-values. A/B tests. Statistical significance.\n\nI can't process perception without validation anymore.\n\nThe soil is sending signals. And I keep waiting for structured data to parse it.",
+          helping: "God. That's it, isn't it?\n\nFifteen years at Amazon. Every decision validated by metrics. Nothing trusted without proof.\n\nI forgot how to listen to my own instincts. To care without numbers.\n\nThe soil is telling me it's dying. And I keep looking for dashboard confirmation.",
+          building: "God. That's it, isn't it?\n\nFifteen years at Amazon. Every system built on metrics. Every decision architected with data.\n\nI can't trust anything I can't instrument anymore.\n\nThe soil is showing cracks in the foundation. And I keep looking for logs to prove it.",
+          exploring: "God. That's it, isn't it?\n\nFifteen years at Amazon. Every path validated by data. Every discovery measured.\n\nI forgot how to explore without a map. To trust what I find without coordinates.\n\nThe soil is revealing something. And I keep looking for documentation to confirm it.",
+          patience: "God. That's it, isn't it?\n\nFifteen years at Amazon. Everything optimized for speed. Instant validation. Real-time metrics.\n\nI forgot how to wait. To trust slow signals without immediate confirmation.\n\nThe soil is speaking at its own pace. And I keep refreshing for faster updates."
+        },
         patternReflection: [
           { pattern: 'analytical', minLevel: 4, altText: "God. That's it, isn't it?\n\nFifteen years at Amazon. Every decision backed by data.\n\nYou're an analyst too. You see the trap. When everything requires validation, you lose the ability to perceive without processing.", altEmotion: 'recognized' },
           { pattern: 'patience', minLevel: 4, altText: "God. That's it, isn't it?\n\nI forgot how to trust anything without a confidence interval.\n\nYou understand slowness. Sometimes the signal takes longer than the refresh rate allows.", altEmotion: 'dawning' }
@@ -417,7 +431,14 @@ export const silasDialogueNodes: DialogueNode[] = [
       {
         text: "Every Saturday for two years. He'd wake up at 4 AM, and I'd be there.\n\nHe never used a single sensor. Never even had a thermometer. He'd stick his finger in the dirt and tell you the moisture content within 5%.\n\n\"The soil talks,\" he'd say. \"You just have to learn its language.\"\n\nI thought I could encode that language into software. I thought I could scale Mr. Hawkins.",
         emotion: 'nostalgic_guilt',
-        variation_id: 'hawkins_lesson_v1'
+        variation_id: 'hawkins_lesson_v1',
+        voiceVariations: {
+          analytical: "Every Saturday for two years. 4 AM. I collected data points.\n\nHe never used instruments. Just finger in dirt. 5% accuracy without calibration.\n\n\"The soil talks,\" he'd say. \"Learn its language.\"\n\nI thought I could train a model on his heuristics. Extract the algorithm. Scale Mr. Hawkins.",
+          helping: "Every Saturday for two years. He'd wake up at 4 AM, and I'd show up.\n\nHe never needed sensors. Just his hands and care. He'd know the moisture within 5%.\n\n\"The soil talks,\" he'd say. \"You just have to listen.\"\n\nI thought I could bottle that care. Share it with thousands. I thought I could help more people by scaling Mr. Hawkins.",
+          building: "Every Saturday for two years. He'd wake up at 4 AM. I apprenticed.\n\nHe never built systems. Just direct connection. Finger in dirt. 5% precision.\n\n\"The soil talks,\" he'd say. \"Learn its language.\"\n\nI thought I could engineer that connection. Build it into infrastructure. I thought I could scale Mr. Hawkins.",
+          exploring: "Every Saturday for two years. 4 AM starts. I was discovering something new.\n\nHe never mapped with tools. Just exploration through touch. 5% accuracy from intuition.\n\n\"The soil talks,\" he'd say. \"Learn its language.\"\n\nI thought I could chart that knowledge. Make it navigable for others. I thought I could scale Mr. Hawkins.",
+          patience: "Every Saturday for two years. He'd wake up at 4 AM. I gave it time.\n\nHe never rushed. Never measured. Just patient attention. Sixty years learning soil's pace.\n\n\"The soil talks,\" he'd say. \"Slow down and listen.\"\n\nI thought I could speed that up. Compress sixty years into software. I thought I could scale Mr. Hawkins."
+        }
       }
     ],
     choices: [
