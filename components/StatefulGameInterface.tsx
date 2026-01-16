@@ -103,8 +103,7 @@ import { GameLogic } from '@/lib/game-logic'
 import { synthEngine } from '@/lib/audio/synth-engine'
 import { HeroBadge } from '@/components/HeroBadge'
 import { StrategyReport } from '@/components/career/StrategyReport'
-import { GameMenu } from '@/components/GameMenu'
-import { UserMenu } from '@/components/auth/UserMenu'
+import { UnifiedMenu } from '@/components/UnifiedMenu'
 import { GameStateManager } from '@/lib/game-state-manager'
 import { useBackgroundSync } from '@/hooks/useBackgroundSync'
 import { useSettingsSync } from '@/hooks/useSettingsSync'
@@ -149,7 +148,7 @@ import { ConstellationPanel } from '@/components/constellation'
 import { SectionErrorBoundary } from '@/components/LayeredErrorBoundaries'
 import { StationStatusBadge } from '@/components/StationStatusBadge'
 import { TextProcessor } from '@/lib/text-processor'
-import { InGameSettings } from '@/components/InGameSettings'
+// InGameSettings removed - consolidated into UnifiedMenu
 import { IdleWarningModal } from '@/components/IdleWarningModal'
 import { JourneySummary } from '@/components/JourneySummary'
 import { useToast } from '@/components/ui/toast'
@@ -3568,36 +3567,30 @@ export default function StatefulGameInterface() {
                   <Stars className="h-4 w-4" />
                 </Button>
 
-                {/* Header Controls-Now integrated in flow to prevent overlap */}
-                <GameMenu
+                {/* Unified Settings Menu - Consolidates game settings, accessibility, and account */}
+                <UnifiedMenu
                   onShowReport={() => setState(prev => ({ ...prev, showReport: true }))}
-                  onReturnToStation={currentState === 'dialogue' ? handleReturnToStation : undefined}
-                  onShowConstellation={() => setState(prev => ({ ...prev, showConstellation: true }))}
                   isMuted={state.isMuted}
                   onToggleMute={() => {
                     const newMuted = !state.isMuted
-                    console.log(`[GameMenu] Toggling Mute to: ${newMuted} `)
+                    console.log(`[UnifiedMenu] Toggling Mute to: ${newMuted}`)
                     setState(prev => ({ ...prev, isMuted: newMuted }))
                     localStorage.setItem('lux_audio_muted', String(newMuted))
                     synthEngine.setMute(newMuted)
-                    setAudioEnabled(!newMuted) // NEW: Kill the OGG tracks too
-                    pushSettingsToCloud() // Sync to cloud
+                    setAudioEnabled(!newMuted)
+                    pushSettingsToCloud()
                   }}
                   volume={audioVolume}
                   onVolumeChange={(newVolume) => {
                     setAudioVolume(newVolume)
                     localStorage.setItem('lux_audio_volume', String(newVolume))
-                    // Note: synthEngine uses fixed master gain (0.5), no setVolume method
-                    pushSettingsToCloud() // Sync to cloud
+                    pushSettingsToCloud()
                   }}
                   playerId={state.gameState?.playerId}
                 />
 
                 {/* Connection Status Indicator */}
                 <SyncStatusIndicator />
-
-                {/* User Authentication Menu */}
-                <UserMenu />
               </div>
             </div>
             {/* Character Info Row-extra vertical padding for mobile touch */}
@@ -4088,9 +4081,7 @@ export default function StatefulGameInterface() {
         }
 
         {/* PatternOrb moved to Journal panel for cleaner main game view */}
-
-        {/* In-Game Settings Gear - Quick accessibility access */}
-        <InGameSettings />
+        {/* InGameSettings removed - consolidated into UnifiedMenu in header */}
 
         {/* Idle Warning Modal - Prevents unexpected session loss */}
         <IdleWarningModal
