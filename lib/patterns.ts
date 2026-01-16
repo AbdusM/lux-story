@@ -342,3 +342,207 @@ export function getPatternSensation(pattern: PatternType): string {
   const sensations = PATTERN_SENSATIONS[pattern]
   return sensations[Math.floor(Math.random() * sensations.length)]
 }
+
+// ═══════════════════════════════════════════════════════════════════════════
+// VOICE VARIATION RESOLUTION
+// Makes NPCs respond differently based on who the player is becoming
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Player patterns type - matches game state patterns structure
+ */
+export interface PlayerPatterns {
+  analytical: number
+  patience: number
+  exploring: number
+  helping: number
+  building: number
+}
+
+/**
+ * Default threshold for "dominant" pattern detection
+ * A pattern must be >= this value to be considered dominant
+ */
+export const DOMINANT_PATTERN_THRESHOLD = 5
+
+/**
+ * Get the player's dominant pattern (if any)
+ * A pattern is dominant if it's >= threshold AND higher than all other patterns
+ *
+ * @param patterns - Player's current pattern levels
+ * @param threshold - Minimum level to be considered dominant (default: 5)
+ * @returns The dominant pattern type, or undefined if none qualifies
+ *
+ * @example
+ * getDominantPattern({ analytical: 7, patience: 3, exploring: 2, helping: 4, building: 1 }, 5)
+ * // Returns: 'analytical'
+ *
+ * @example
+ * getDominantPattern({ analytical: 4, patience: 4, exploring: 4, helping: 4, building: 4 }, 5)
+ * // Returns: undefined (none >= 5)
+ */
+export function getDominantPattern(
+  patterns: PlayerPatterns | Record<string, number>,
+  threshold: number = DOMINANT_PATTERN_THRESHOLD
+): PatternType | undefined {
+  let maxPattern: PatternType | undefined
+  let maxValue = threshold - 1 // Must exceed threshold - 1 (i.e., be >= threshold)
+
+  for (const patternType of PATTERN_TYPES) {
+    const value = patterns[patternType] ?? 0
+    if (value >= threshold && value > maxValue) {
+      maxValue = value
+      maxPattern = patternType
+    }
+  }
+
+  return maxPattern
+}
+
+/**
+ * Get all patterns that meet the threshold (for complex voice logic)
+ *
+ * @param patterns - Player's current pattern levels
+ * @param threshold - Minimum level to be considered (default: 5)
+ * @returns Array of pattern types that meet threshold, sorted by value descending
+ */
+export function getPatternsMeetingThreshold(
+  patterns: PlayerPatterns | Record<string, number>,
+  threshold: number = DOMINANT_PATTERN_THRESHOLD
+): PatternType[] {
+  return PATTERN_TYPES
+    .filter(pattern => (patterns[pattern] ?? 0) >= threshold)
+    .sort((a, b) => (patterns[b] ?? 0) - (patterns[a] ?? 0))
+}
+
+/**
+ * Result of voice variation resolution
+ */
+export interface VoiceVariationResult {
+  /** The resolved text (either varied or original) */
+  text: string
+  /** The emotion (preserved from original) */
+  emotion?: string
+  /** Whether a voice variation was applied */
+  wasVaried: boolean
+  /** Which pattern triggered the variation (if any) */
+  appliedPattern?: PatternType
+}
+
+/**
+ * Resolve voice variation for NPC dialogue content
+ *
+ * When a player has developed a dominant pattern (>= threshold), NPCs respond
+ * differently to acknowledge who the player is becoming. This creates the
+ * BIDIRECTIONAL reflection system - NPCs see the player's patterns.
+ *
+ * @param content - The DialogueContent with optional voiceVariations
+ * @param patterns - Player's current pattern levels
+ * @param threshold - Minimum level to trigger variation (default: 5)
+ * @returns Resolved text with emotion and variation metadata
+ *
+ * @example
+ * const content = {
+ *   text: "Tell me what you're thinking.",
+ *   emotion: 'curious',
+ *   voiceVariations: {
+ *     analytical: "You're looking for the pattern, aren't you?",
+ *     helping: "You noticed something was off. Thank you for that."
+ *   }
+ * }
+ *
+ * resolveContentVoiceVariation(content, { analytical: 7, ... })
+ * // Returns: { text: "You're looking for the pattern, aren't you?", emotion: 'curious', wasVaried: true, appliedPattern: 'analytical' }
+ */
+export function resolveContentVoiceVariation(
+  content: { text: string; emotion?: string; voiceVariations?: Partial<Record<PatternType, string>> },
+  patterns: PlayerPatterns | Record<string, number>,
+  threshold: number = DOMINANT_PATTERN_THRESHOLD
+): VoiceVariationResult {
+  // No voice variations defined - return original
+  if (!content.voiceVariations) {
+    return {
+      text: content.text,
+      emotion: content.emotion,
+      wasVaried: false
+    }
+  }
+
+  // Find dominant pattern
+  const dominantPattern = getDominantPattern(patterns, threshold)
+
+  // No dominant pattern - return original
+  if (!dominantPattern) {
+    return {
+      text: content.text,
+      emotion: content.emotion,
+      wasVaried: false
+    }
+  }
+
+  // Check if there's a variation for the dominant pattern
+  const variedText = content.voiceVariations[dominantPattern]
+
+  if (variedText) {
+    return {
+      text: variedText,
+      emotion: content.emotion, // Preserve original emotion
+      wasVaried: true,
+      appliedPattern: dominantPattern
+    }
+  }
+
+  // Dominant pattern exists but no variation for it - return original
+  return {
+    text: content.text,
+    emotion: content.emotion,
+    wasVaried: false
+  }
+}
+
+/**
+ * Resolve voice variation for player choice text
+ *
+ * When a player has developed a dominant pattern, their choice text adapts
+ * to reflect who they're becoming. This makes the player's voice consistent
+ * with their established patterns.
+ *
+ * @param choice - The ConditionalChoice with optional voiceVariations
+ * @param patterns - Player's current pattern levels
+ * @param threshold - Minimum level to trigger variation (default: 5)
+ * @returns Resolved choice text
+ *
+ * @example
+ * const choice = {
+ *   text: "Tell me more.",
+ *   voiceVariations: {
+ *     analytical: "Walk me through the details.",
+ *     helping: "That sounds hard. What happened?",
+ *     patience: "Take your time. I'm listening."
+ *   }
+ * }
+ *
+ * resolveChoiceVoiceVariation(choice, { patience: 6, ... })
+ * // Returns: "Take your time. I'm listening."
+ */
+export function resolveChoiceVoiceVariation(
+  choice: { text: string; voiceVariations?: Partial<Record<PatternType, string>> },
+  patterns: PlayerPatterns | Record<string, number>,
+  threshold: number = DOMINANT_PATTERN_THRESHOLD
+): string {
+  // No voice variations defined - return original
+  if (!choice.voiceVariations) {
+    return choice.text
+  }
+
+  // Find dominant pattern
+  const dominantPattern = getDominantPattern(patterns, threshold)
+
+  // No dominant pattern - return original
+  if (!dominantPattern) {
+    return choice.text
+  }
+
+  // Return varied text if available, otherwise original
+  return choice.voiceVariations[dominantPattern] ?? choice.text
+}

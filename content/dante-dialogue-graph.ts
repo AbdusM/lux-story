@@ -551,7 +551,9 @@ export const danteDialogueNodes: DialogueNode[] = [
         patternReflection: [
           { pattern: 'helping', minLevel: 5, altText: "[Dante's usual ease falters. He looks past you.]\n\nYou care about people genuinely. I see that. That's why I'm asking you this.\n\nI'm terrified I don't know how to be genuine anymore. Every interaction feels like a pitch. Even now—I'm tracking your responses, adjusting delivery.\n\nI've been performing so long... what if there's nothing real underneath?", altEmotion: 'vulnerable_scared' },
           { pattern: 'analytical', minLevel: 5, altText: "[Dante's usual ease falters. He looks past you.]\n\nYou analyze deeply. Maybe you can help me understand this.\n\nI can't tell where performance ends and authenticity begins. Even this conversation—I'm tracking responses, optimizing delivery.\n\nI've been performing so long the variable is lost. What if there's no authentic self underneath the optimization?", altEmotion: 'vulnerable_analytical' },
-          { pattern: 'patience', minLevel: 5, altText: "[Dante's usual ease falters. He looks past you.]\n\nYou're patient. You don't rush. That's why I'm telling you this.\n\nI'm terrified I've performed so long I don't know how to be genuine. Every interaction feels rehearsed, even this one.\n\nWhat if slowing down reveals there's nothing underneath? Just… layers of performance all the way down?", altEmotion: 'vulnerable_terrified' }
+          { pattern: 'patience', minLevel: 5, altText: "[Dante's usual ease falters. He looks past you.]\n\nYou're patient. You don't rush. That's why I'm telling you this.\n\nI'm terrified I've performed so long I don't know how to be genuine. Every interaction feels rehearsed, even this one.\n\nWhat if slowing down reveals there's nothing underneath? Just… layers of performance all the way down?", altEmotion: 'vulnerable_terrified' },
+          { pattern: 'exploring', minLevel: 5, altText: "[Dante's usual ease falters. He looks past you.]\n\nYou explore. You discover. Maybe you can help me navigate this.\n\nI'm terrified I've performed so long there's no authentic territory left to explore. Every interaction is a mapped route. Every response calculated.\n\nI've been charting other people's desires for so long... what if there's no unexplored self underneath? Just endless performance all the way down?", altEmotion: 'vulnerable_lost' },
+          { pattern: 'building', minLevel: 5, altText: "[Dante's usual ease falters. He looks past you.]\n\nYou build things. Real things. That's why I need to ask you this.\n\nI'm terrified I've built an entire identity out of performance. Every interaction constructed. Every moment architected for effect.\n\nI've been building facades so long... what if there's no foundation underneath? Just scaffolding all the way down?", altEmotion: 'vulnerable_hollow' }
         ]
       }
     ],
@@ -1967,7 +1969,39 @@ Which structure creates genuine persuasion without manipulation?`,
       text: "You're right.\n\nThe pitch isn't the structure. It's not the data. It's not even the call to action.\n\nIt's the truth. My truth. That I learned to read people to survive. That I feared that gift because I saw how it could be weaponized. That these kids deserve to learn influence as service, not manipulation.\n\nThat's... that\'s a pitch I can deliver without losing myself.\n\nThank you. For showing me that selling truth isn't a technique. It's just... being honest about what matters.\n\nI think I can do that now. Finally.",
       emotion: 'transformed_grateful',
       variation_id: 'phase3_success_v1',
-      richEffectContext: 'success'
+      richEffectContext: 'success',
+      patternReflection: [
+        {
+          pattern: 'analytical',
+          minLevel: 5,
+          altText: "You see systems clearly. Maybe that's why you helped me see this.\n\nThe pitch isn't the framework. It's the truth underneath.\n\nMy truth: I learned to read people to survive. I feared that gift. But these kids deserve to learn influence as service, not manipulation.\n\nThat's a pitch grounded in data—my lived experience. Thank you for showing me that selling truth is just being honest about what the analysis reveals.",
+          altEmotion: 'analytical_gratitude'
+        },
+        {
+          pattern: 'patience',
+          minLevel: 5,
+          altText: "You've been so patient with me. Through all my doubt.\n\nThe pitch isn't rushing to the close. It's taking time to be truthful.\n\nMy truth: I learned to read people. I feared that gift. These kids deserve better.\n\nThank you. For showing me that selling truth requires patience—with myself, with the process. I think I can do that now.",
+          altEmotion: 'patient_gratitude'
+        },
+        {
+          pattern: 'exploring',
+          minLevel: 5,
+          altText: "You helped me explore territory I was afraid of.\n\nThe pitch isn't the route I mapped. It's discovering my authentic path.\n\nMy truth: I learned to read people. I feared that gift could be weaponized. These kids deserve to learn influence as service.\n\nThank you. For showing me that selling truth is exploring what matters—and having the courage to share that discovery.",
+          altEmotion: 'explorer_gratitude'
+        },
+        {
+          pattern: 'helping',
+          minLevel: 5,
+          altText: "You helped me when I couldn't help myself.\n\nThe pitch isn't about me. It's about serving these kids.\n\nMy truth: I learned to read people. I feared that gift. But these kids deserve to learn influence that helps, not manipulates.\n\nThank you. For showing me that selling truth is just helping people understand what genuinely matters. I can do that now.",
+          altEmotion: 'helping_gratitude'
+        },
+        {
+          pattern: 'building',
+          minLevel: 5,
+          altText: "You helped me rebuild what I thought was broken.\n\nThe pitch isn't constructed—it's the foundation I've been standing on.\n\nMy truth: I learned to read people. I feared that gift. These kids deserve better than manipulation disguised as influence.\n\nThank you. For showing me that selling truth is building from authentic foundation—not constructing a facade. I can do that now.",
+          altEmotion: 'builder_gratitude'
+        }
+      ]
     }],
     choices: [
       {

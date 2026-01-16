@@ -300,7 +300,11 @@ export const graceDialogueNodes: DialogueNode[] = [
         emotion: 'matter_of_fact',
         variation_id: 'the_work_v1',
         patternReflection: [
-          { pattern: 'helping', minLevel: 4, altText: "Home health aide. Seven years.\n\nI go to people's houses. Help them with everything. Getting dressed. Eating. The things that get hard when bodies fail.\n\nYou understand. You've got that helper energy. You know some work is about more than tasks.", altEmotion: 'knowing' }
+          { pattern: 'helping', minLevel: 4, altText: "Home health aide. Seven years.\n\nI go to people's houses. Help them with everything. Getting dressed. Eating. The things that get hard when bodies fail.\n\nYou understand. You've got that helper energy. You know some work is about more than tasks.", altEmotion: 'knowing' },
+          { pattern: 'analytical', minLevel: 4, altText: "Home health aide. Seven years.\n\nI go to people's houses. Manage medications, track vitals, coordinate with doctors. The systematic side of care.\n\nYou're analytical. You see the systems behind the work. Most people just see tasks.", altEmotion: 'appreciative' },
+          { pattern: 'patience', minLevel: 4, altText: "Home health aide. Seven years.\n\nI go to people's houses. Sit with them. Move at their pace. Let them take the time they need.\n\nYou understand patience. This work requires it. Every single day.", altEmotion: 'knowing' },
+          { pattern: 'exploring', minLevel: 4, altText: "Home health aide. Seven years.\n\nI go into people's lives. Learn their stories. Discover what makes them who they are.\n\nYou're curious. You ask questions. That matters in this work.", altEmotion: 'appreciative' },
+          { pattern: 'building', minLevel: 4, altText: "Home health aide. Seven years.\n\nI go to people's houses. Build routines. Create structures that make hard days manageable.\n\nYou build things. You understand how structure supports people.", altEmotion: 'knowing' }
         ]
       }
     ],
@@ -602,7 +606,11 @@ export const graceDialogueNodes: DialogueNode[] = [
           { skill: 'communication', minLevel: 5, altText: "You know what nobody teaches you? The real skill.\n\nIt's reading a room. Knowing when someone needs words and when they need silence. You communicate well—I've noticed.\n\nBut this work takes communication deeper. Not just talking. Listening to what people can't say. Your skills are a foundation. This work builds on them.", altEmotion: 'mentoring' }
         ],
         patternReflection: [
-          { pattern: 'analytical', minLevel: 4, altText: "The real skill? Reading a room. Knowing when someone needs to talk and when they need silence.\n\nYou're analytical. You break things down. But this work is about feeling, and then responding. Constant calibration.\n\nNobody sees it. But you do.", altEmotion: 'knowing' }
+          { pattern: 'analytical', minLevel: 4, altText: "The real skill? Reading a room. Knowing when someone needs to talk and when they need silence.\n\nYou're analytical. You break things down. But this work is about feeling, and then responding. Constant calibration.\n\nNobody sees it. But you do.", altEmotion: 'knowing' },
+          { pattern: 'patience', minLevel: 4, altText: "The real skill? Waiting. Knowing when someone needs to talk and when they need silence.\n\nYou understand patience. Some people need an hour to say what's really wrong. This work is waiting. Constant presence.\n\nNobody sees it. But you do.", altEmotion: 'knowing' },
+          { pattern: 'exploring', minLevel: 4, altText: "The real skill? Discovering what each person needs. Every room is different.\n\nYou're curious. You pay attention. This work is exploration—learning each person's unspoken language.\n\nNobody sees that investigation. But you do.", altEmotion: 'knowing' },
+          { pattern: 'helping', minLevel: 4, altText: "The real skill? Caring beyond tasks. Knowing when someone needs comfort more than competence.\n\nYou understand helping. Real helping. This work is emotional labor, invisible and constant.\n\nNobody sees it. But you do.", altEmotion: 'kindred' },
+          { pattern: 'building', minLevel: 4, altText: "The real skill? Building trust. Creating safety one moment at a time.\n\nYou understand construction. This work is building—every day rebuilding the foundation of care.\n\nNobody sees that architecture. But you do.", altEmotion: 'knowing' }
         ]
       }
     ],
@@ -1351,7 +1359,39 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
         text: "Can I tell you something I've never told anyone?\n\nThree years ago... I almost quit. Not just the job. Everything.\n\nMrs. Patterson. The jazz singer I mentioned. She'd just passed. Third client that month. And my daughter's school called because I missed her recital. Again.\n\nI sat in my car in the parking lot for two hours. Couldn't go in. Couldn't go home.\n\nNobody sees what this costs. They see the angel. They don't see the woman who forgot her own mother's birthday because she was too busy remembering everyone else's medications.",
         emotion: 'raw_vulnerable',
         variation_id: 'vulnerability_v1',
-        richEffectContext: 'warning'
+        richEffectContext: 'warning',
+        patternReflection: [
+          {
+            pattern: 'analytical',
+            minLevel: 5,
+            altText: "You look at systems. Maybe you can see what I couldn't.\n\nThree years ago... the data was clear. Three client deaths that month. Missed my daughter's recital. The equation didn't balance.\n\nMrs. Patterson. The jazz singer. She'd just passed. Third loss in thirty days. The statistics said I should quit.\n\nI sat in my car calculating. Hours worked. Moments missed. The numbers said I was failing everyone.\n\nNobody sees the data. They see care. They don't see the woman who ran the analysis and realized she'd optimized for everyone else's needs but forgotten her own.",
+            altEmotion: 'analytical_breakdown'
+          },
+          {
+            pattern: 'helping',
+            minLevel: 5,
+            altText: "You help people. You'd understand this.\n\nThree years ago... I almost quit helping. Not just the job. Everything.\n\nMrs. Patterson passed. Third client that month. I'd helped them all - medications, dignity, comfort. And my daughter's school called because I missed her recital. I couldn't help her.\n\nI sat in my car for two hours. The helper who couldn't help her own family.\n\nNobody sees the cost of caring. They see the angel. They don't see the mother who forgot her own mother's birthday because she was too busy helping everyone else's mothers.",
+            altEmotion: 'helper_exhaustion'
+          },
+          {
+            pattern: 'building',
+            minLevel: 5,
+            altText: "You build things. You know what happens when foundations crack.\n\nThree years ago... everything I'd built started collapsing. Not just the job. My whole life's structure.\n\nMrs. Patterson. Jazz singer. She passed. Third client that month. Each loss was a piece of my foundation crumbling. And my daughter's school called - missed her recital. Again. The home foundation cracking too.\n\nI sat in my car for two hours. Watching both structures fail.\n\nNobody sees the architecture. They see the caregiver. They don't see the woman whose own infrastructure was collapsing while she was too busy building support for everyone else.",
+            altEmotion: 'builder_collapse'
+          },
+          {
+            pattern: 'patience',
+            minLevel: 5,
+            altText: "You're patient. You wait. I forgot how to wait for myself.\n\nThree years ago... I ran out of patience. Not for others. For me.\n\nMrs. Patterson passed. Third client that month. I'd given each of them time, presence, patience. And my daughter's school called - I'd run out of time for her recital. Again.\n\nI sat in my car for two hours. Too depleted to move.\n\nNobody sees the depletion. They see the patient caregiver. They don't see the woman who forgot her own mother's birthday because she'd spent all her patience on everyone else's parents.",
+            altEmotion: 'patience_depleted'
+          },
+          {
+            pattern: 'exploring',
+            minLevel: 5,
+            altText: "You explore paths. I forgot there were other paths.\n\nThree years ago... I almost quit. Not just the job. Everything. Because I couldn't see any other way forward.\n\nMrs. Patterson passed. Third client that month. Each loss closed a door. And my daughter's school called - missed her recital. Another path I couldn't take.\n\nI sat in my car for two hours. Every route I explored led to failure somewhere.\n\nNobody sees the closed doors. They see the dedicated caregiver. They don't see the woman who forgot her own mother's birthday because she was too lost to explore any path that included herself.",
+            altEmotion: 'exploration_trapped'
+          }
+        ]
       }
     ],
     requiredState: {

@@ -603,14 +603,33 @@ export default function StatefulGameInterface() {
     if (node) {
       logger.info('[God Mode Refresh] Reloading dialogue', { characterId, nodeId })
 
+      // Apply voice variation pipeline for consistency
+      const content = node.content[0]
+      const gamePatterns = state.gameState!.patterns
+      const skillLevels = state.gameState!.skillLevels
+      const charState = state.gameState!.characters.get(characterId)
+
+      // Apply pattern reflection first
+      const mergedPatternReflection = node.patternReflection || content.patternReflection
+      let reflected = applyPatternReflection(content.text, content.emotion, mergedPatternReflection, gamePatterns)
+
+      // Apply voice variations (NPC responds to player's dominant pattern)
+      const contentWithReflection = { ...content, text: reflected.text, emotion: reflected.emotion }
+      const voiceVaried = resolveContentVoiceVariation(contentWithReflection, gamePatterns)
+      const skillReflected = applySkillReflection(voiceVaried, skillLevels)
+      const fullyReflected = applyNervousSystemReflection(skillReflected, charState?.nervousSystemState)
+
+      // Update reflected with all bidirectional reflections
+      reflected = { text: fullyReflected.text, emotion: fullyReflected.emotion || reflected.emotion }
+
       setState(prev => ({
         ...prev,
         currentNode: node,
         currentGraph: graph,
         currentCharacterId: characterId,
-        currentContent: node.content[0].text,
-        currentDialogueContent: node.content[0],
-        availableChoices: StateConditionEvaluator.evaluateChoices(node, state.gameState!, characterId),
+        currentContent: reflected.text,
+        currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
+        availableChoices: StateConditionEvaluator.evaluateChoices(node, state.gameState!, characterId, state.gameState!.skillLevels),
         previousSpeaker: null
       }))
     }
@@ -675,7 +694,7 @@ export default function StatefulGameInterface() {
           currentCharacterId: 'samuel',
           currentContent: processedText, // Injected name
           currentDialogueContent: conductorNode.content[0],
-          availableChoices: StateConditionEvaluator.evaluateChoices(conductorNode, state.gameState!, 'samuel'),
+          availableChoices: StateConditionEvaluator.evaluateChoices(conductorNode, state.gameState!, 'samuel', state.gameState!.skillLevels),
           previousSpeaker: null
         }))
         return // Stop processing the direct jump
@@ -713,7 +732,7 @@ export default function StatefulGameInterface() {
           currentCharacterId: 'samuel',
           currentContent: processedText,
           currentDialogueContent: conductorNode.content[0],
-          availableChoices: StateConditionEvaluator.evaluateChoices(conductorNode, state.gameState!, 'samuel'),
+          availableChoices: StateConditionEvaluator.evaluateChoices(conductorNode, state.gameState!, 'samuel', state.gameState!.skillLevels),
           previousSpeaker: null
         }))
         return
@@ -735,15 +754,34 @@ export default function StatefulGameInterface() {
     if (targetNode) {
       logger.info('Navigating via Constellation', { target: requestedSceneId, resolvedNode: targetNode.nodeId })
 
+      // Apply voice variation pipeline for consistency
+      const content = targetNode.content[0]
+      const gamePatterns = state.gameState!.patterns
+      const skillLevels = state.gameState!.skillLevels
+      const charState = state.gameState!.characters.get(targetCharId)
+
+      // Apply pattern reflection first
+      const mergedPatternReflection = targetNode.patternReflection || content.patternReflection
+      let reflected = applyPatternReflection(content.text, content.emotion, mergedPatternReflection, gamePatterns)
+
+      // Apply voice variations (NPC responds to player's dominant pattern)
+      const contentWithReflection = { ...content, text: reflected.text, emotion: reflected.emotion }
+      const voiceVaried = resolveContentVoiceVariation(contentWithReflection, gamePatterns)
+      const skillReflected = applySkillReflection(voiceVaried, skillLevels)
+      const fullyReflected = applyNervousSystemReflection(skillReflected, charState?.nervousSystemState)
+
+      // Update reflected with all bidirectional reflections
+      reflected = { text: fullyReflected.text, emotion: fullyReflected.emotion || reflected.emotion }
+
       // Update State to Render New Scene
       setState(prev => ({
         ...prev,
         currentNode: targetNode!,
         currentGraph: graph,
         currentCharacterId: targetCharId,
-        currentContent: targetNode!.content[0].text, // simplified load
-        currentDialogueContent: targetNode!.content[0],
-        availableChoices: StateConditionEvaluator.evaluateChoices(targetNode!, state.gameState!, targetCharId),
+        currentContent: reflected.text,
+        currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
+        availableChoices: StateConditionEvaluator.evaluateChoices(targetNode!, state.gameState!, targetCharId, state.gameState!.skillLevels),
         previousSpeaker: null, // Reset speaker on jump
         consequenceEcho: null  // Clear echo from previous character
       }))
@@ -1080,7 +1118,7 @@ export default function StatefulGameInterface() {
       }
 
       let content = DialogueGraphNavigator.selectContent(currentNode, character.conversationHistory, gameState)
-      const regularChoices = StateConditionEvaluator.evaluateChoices(currentNode, gameState, actualCharacterId).filter(c => c.visible)
+      const regularChoices = StateConditionEvaluator.evaluateChoices(currentNode, gameState, actualCharacterId, gameState.skillLevels).filter(c => c.visible)
 
       // Add pattern-unlocked choices (special dialogue branches unlocked by pattern investment)
       const patternUnlockChoices = getPatternUnlockChoices(
@@ -2569,7 +2607,7 @@ export default function StatefulGameInterface() {
       }
 
       const content = DialogueGraphNavigator.selectContent(nextNode, targetCharacter.conversationHistory, newGameState)
-      const regularNewChoices = StateConditionEvaluator.evaluateChoices(nextNode, newGameState, targetCharacterId).filter(c => c.visible)
+      const regularNewChoices = StateConditionEvaluator.evaluateChoices(nextNode, newGameState, targetCharacterId, newGameState.skillLevels).filter(c => c.visible)
 
       // Add pattern-unlocked choices
       const patternUnlockNewChoices = getPatternUnlockChoices(
@@ -3039,7 +3077,7 @@ export default function StatefulGameInterface() {
     }
 
     const content = DialogueGraphNavigator.selectContent(targetNode, [], newGameState)
-    const regularInterruptChoices = StateConditionEvaluator.evaluateChoices(targetNode, newGameState, searchResult.characterId).filter(c => c.visible)
+    const regularInterruptChoices = StateConditionEvaluator.evaluateChoices(targetNode, newGameState, searchResult.characterId, newGameState.skillLevels).filter(c => c.visible)
 
     // Add pattern-unlocked choices for interrupt context
     const interruptCharState = newGameState.characters.get(searchResult.characterId)
@@ -3085,7 +3123,7 @@ export default function StatefulGameInterface() {
         const targetNode = searchResult.graph.nodes.get(interrupt.missedNodeId)
         if (targetNode) {
           const content = DialogueGraphNavigator.selectContent(targetNode, [], state.gameState)
-          const regularMissedChoices = StateConditionEvaluator.evaluateChoices(targetNode, state.gameState, searchResult.characterId).filter(c => c.visible)
+          const regularMissedChoices = StateConditionEvaluator.evaluateChoices(targetNode, state.gameState, searchResult.characterId, state.gameState.skillLevels).filter(c => c.visible)
 
           // Add pattern-unlocked choices
           const missedCharState = state.gameState.characters.get(searchResult.characterId)
@@ -3173,7 +3211,7 @@ export default function StatefulGameInterface() {
           const samuelChar = newGameState.characters.get('samuel') || GameStateUtils.createCharacterState('samuel')
           newGameState.characters.set('samuel', samuelChar)
           const content = DialogueGraphNavigator.selectContent(introNode, samuelChar.conversationHistory, newGameState)
-          const regularSamuelChoices = StateConditionEvaluator.evaluateChoices(introNode, newGameState, 'samuel').filter(c => c.visible)
+          const regularSamuelChoices = StateConditionEvaluator.evaluateChoices(introNode, newGameState, 'samuel', newGameState.skillLevels).filter(c => c.visible)
 
           // Add pattern-unlocked choices for Samuel
           const patternUnlockSamuelChoices = getPatternUnlockChoices(
@@ -3273,7 +3311,7 @@ export default function StatefulGameInterface() {
       newGameState.currentCharacterId = targetCharacterId
 
       const content = DialogueGraphNavigator.selectContent(targetNode, targetCharacter.conversationHistory, newGameState)
-      const regularNavChoices = StateConditionEvaluator.evaluateChoices(targetNode, newGameState, targetCharacterId).filter(c => c.visible)
+      const regularNavChoices = StateConditionEvaluator.evaluateChoices(targetNode, newGameState, targetCharacterId, newGameState.skillLevels).filter(c => c.visible)
 
       // Add pattern-unlocked choices
       const patternUnlockNavChoices = getPatternUnlockChoices(

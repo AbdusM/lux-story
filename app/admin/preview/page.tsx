@@ -118,7 +118,7 @@ function DialoguePreviewContent() {
     if (!selectedNode) return []
 
     const characterId = selectedGraph.replace('-revisit', '')
-    return StateConditionEvaluator.evaluateChoices(selectedNode, mockGameState, characterId)
+    return StateConditionEvaluator.evaluateChoices(selectedNode, mockGameState, characterId, mockGameState.skillLevels)
   }, [selectedNode, mockGameState, selectedGraph])
 
   // Auto-select first node if none selected

@@ -106,7 +106,11 @@ export const devonDialogueNodes: DialogueNode[] = [
         richEffectContext: 'warning',
         useChatPacing: true,
         patternReflection: [
-          { pattern: 'analytical', minLevel: 5, altText: "Technically speaking... run it. You've built systems like this. You know the beauty of a clean decision tree.\n\nBut this one... this one has high latency.", altEmotion: 'focused' }
+          { pattern: 'analytical', minLevel: 5, altText: "Technically speaking... run it. You've built systems like this. You know the beauty of a clean decision tree.\n\nBut this one... this one has high latency.", altEmotion: 'focused' },
+          { pattern: 'patience', minLevel: 5, altText: "Technically speaking... don't rush. Just watch. You understand waiting, don't you?\n\nThis decision tree needs time to reveal its flaw.", altEmotion: 'contemplative' },
+          { pattern: 'exploring', minLevel: 5, altText: "Technically speaking... explore it. Not just the branches—the gaps. The places where logic doesn't reach.\n\nThat's where the real bugs hide.", altEmotion: 'curious' },
+          { pattern: 'helping', minLevel: 5, altText: "Technically speaking... it's a conversation optimizer. Sounds cold, right?\n\nBut it's about connection. About not losing the people who matter.", altEmotion: 'vulnerable' },
+          { pattern: 'building', minLevel: 5, altText: "Technically speaking... I built this myself. Every branch, every condition.\n\nYou build things too, don't you? You know the cost of getting the architecture wrong.", altEmotion: 'focused' }
         ]
       }
     ],
@@ -1826,7 +1830,39 @@ export const devonDialogueNodes: DialogueNode[] = [
       emotion: 'hollowed',
       microAction: 'His fingers tap an invisible keyboard, a nervous habit.',
       variation_id: 'vulnerability_v1',
-      richEffectContext: 'error'
+      richEffectContext: 'error',
+      patternReflection: [
+        {
+          pattern: 'analytical',
+          minLevel: 5,
+          altText: "You think in systems. Maybe you understand this optimization failure.\n\nThe night mom died. Production outage. Critical system. I ran the analysis: server down = thousands affected. Dad's calls = personal emergency.\n\nI optimized for scale. Silenced both calls.\n\nThird call. Voicemail. \"Devon, your mother... she's... please come.\"\n\nI fixed the server. Lost the goodbye. Two hours I could have had. Instead I analyzed log files.\n\nThe analytical mind that calculated wrong. Some systems can't be measured in user impact.",
+          altEmotion: 'analytical_hollowed'
+        },
+        {
+          pattern: 'patience',
+          minLevel: 5,
+          altText: "You understand patience. Taking time for what matters.\n\nThe night mom died. Production outage. Critical system. I thought: fix this first, then go home. I had time.\n\nDad called. Twice. I silenced both. I'd call back after the fix.\n\nThird call. Voicemail. \"Devon, your mother... she's... please come.\"\n\nI waited too long. Fixed the server. Lost the goodbye. Two hours I should have taken.\n\nPatience for the wrong priority. I should have dropped everything immediately.",
+          altEmotion: 'regret_hollowed'
+        },
+        {
+          pattern: 'exploring',
+          minLevel: 5,
+          altText: "You explore problems. You dig into systems. I was too.\n\nThe night mom died. Production outage. I was exploring the logs, mapping the failure chain. Critical system.\n\nDad called. Twice. I silenced both. Deep in the debugging maze.\n\nThird call. Voicemail. \"Devon, your mother... she's... please come.\"\n\nI explored the wrong territory. Fixed the server. Lost the goodbye. Two hours of exploring code instead of being with her.\n\nThe explorer who got lost in the wrong problem.",
+          altEmotion: 'grief_hollowed'
+        },
+        {
+          pattern: 'helping',
+          minLevel: 5,
+          altText: "You help people. I thought I was helping people.\n\nThe night mom died. Production outage. Thousands of users affected. I had to help them. Critical system.\n\nDad called. Twice. I silenced both. I was helping.\n\nThird call. Voicemail. \"Devon, your mother... she's... please come.\"\n\nI helped strangers. Lost the chance to help the person who mattered most. Fixed the server. Lost the goodbye.\n\nTwo hours I could have spent with her. Instead I helped people I'll never meet.",
+          altEmotion: 'devastated_hollowed'
+        },
+        {
+          pattern: 'building',
+          minLevel: 5,
+          altText: "You build things. You fix systems. I was fixing a system.\n\nThe night mom died. Production outage. Critical infrastructure. I was the one who built it. I had to fix it.\n\nDad called. Twice. I silenced both. The system needed me.\n\nThird call. Voicemail. \"Devon, your mother... she's... please come.\"\n\nI fixed the server. Lost the goodbye. Two hours watching logs instead of holding her hand.\n\nThe builder who prioritized construction over connection.",
+          altEmotion: 'builder_hollowed'
+        }
+      ]
     }],
     requiredState: {
       trust: { min: 6 }
@@ -3549,7 +3585,39 @@ What communication approach balances these?`,
       text: "You're right.\n\nI've been trying to debug grief like it's a system error. But it's not broken. It's... human.\n\nShared work. Silence as data. Emotional connection as the output, not the input.\n\nThat's not a fix. It's a framework for being present.\n\nI think... I think I can do that.\n\nThank you. For seeing the system I couldn't see. The one that includes hearts, not just logic.",
       emotion: 'grateful_transformed',
       variation_id: 'phase3_success_v1',
-      richEffectContext: 'success'
+      richEffectContext: 'success',
+      patternReflection: [
+        {
+          pattern: 'analytical',
+          minLevel: 5,
+          altText: "You helped me see the analysis I was missing.\n\nI've been debugging grief like it's a system error. But you showed me the variables I excluded—hearts, presence, silence as meaningful data.\n\nShared work. Emotional connection as output. That's a complete system model.\n\nThank you. For showing me that analytical thinking works when it includes all the variables—even the human ones.",
+          altEmotion: 'analytical_gratitude'
+        },
+        {
+          pattern: 'patience',
+          minLevel: 5,
+          altText: "You've been so patient with me. While I tried to rush through grief.\n\nShared work. Silence that doesn't need filling. Emotional connection that takes time.\n\nThat's not a fix. It's patience as a framework for being present.\n\nThank you. For showing me that some systems can't be optimized—they need time to unfold.",
+          altEmotion: 'patient_gratitude'
+        },
+        {
+          pattern: 'exploring',
+          minLevel: 5,
+          altText: "You helped me explore territory I was avoiding.\n\nI've been trying to debug grief. But you showed me unexplored paths—shared work, meaningful silence, emotional connection.\n\nThat's not fixing. It's discovering a framework for presence.\n\nThank you. For helping me explore the system I couldn't map—the one that includes hearts alongside logic.",
+          altEmotion: 'explorer_gratitude'
+        },
+        {
+          pattern: 'helping',
+          minLevel: 5,
+          altText: "You helped me when I couldn't help my dad.\n\nShared work. Silence as presence. Emotional connection—not as input to optimize, but as the meaningful output.\n\nThat's not fixing him. It's being there for him.\n\nThank you. For showing me that helping sometimes means presence, not solutions.",
+          altEmotion: 'helping_gratitude'
+        },
+        {
+          pattern: 'building',
+          minLevel: 5,
+          altText: "You helped me build what I thought was broken.\n\nI've been trying to debug grief. But you showed me how to build connection—shared work, meaningful silence, emotional presence.\n\nThat's not a fix. It's a framework for constructing relationship.\n\nThank you. For showing me that building includes hearts, not just logic.",
+          altEmotion: 'builder_gratitude'
+        }
+      ]
     }],
     choices: [
       {

@@ -395,6 +395,38 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         useChatPacing: true
       }
     ],
+    patternReflection: [
+      {
+        pattern: 'analytical',
+        minLevel: 4,
+        altText: "Want to build a course. 'The Real Dental Assistant.' You think systematically - you'd understand the structure.|Reality. not theory. The data that matters. Calm crying kids. Mix paste.|<jitter>But the syllabus keeps adding history. Anatomy. Ethics. Losing focus.</jitter>",
+        altEmotion: 'anxious_focused'
+      },
+      {
+        pattern: 'helping',
+        minLevel: 4,
+        altText: "Want to build a course. Help people like me. You get that, right?|'The Real Dental Assistant.' Reality. not theory. The stuff that actually helps patients.|<jitter>But the syllabus keeps adding history. Anatomy. Ethics. Forgetting who I'm trying to help.</jitter>",
+        altEmotion: 'anxious_caring'
+      },
+      {
+        pattern: 'building',
+        minLevel: 4,
+        altText: "Want to build a course. You're a builder too - you see it.|'The Real Dental Assistant.' Construct something real. Calm crying kids. Mix paste. Anticipate doctor needs.|<jitter>But the syllabus keeps adding history. Anatomy. Ethics. The foundation keeps shifting.</jitter>",
+        altEmotion: 'anxious_determined'
+      },
+      {
+        pattern: 'patience',
+        minLevel: 4,
+        altText: "Want to build a course. You don't rush me - I appreciate that.|'The Real Dental Assistant.' Reality. not theory. Things that take time to learn right.|<jitter>But the syllabus keeps adding history. Anatomy. Ethics. Can't slow down enough to think.</jitter>",
+        altEmotion: 'anxious_grateful'
+      },
+      {
+        pattern: 'exploring',
+        minLevel: 4,
+        altText: "Want to build a course. You ask good questions - helps me think.|'The Real Dental Assistant.' Reality. not theory. Discover what actually works.|<jitter>But the syllabus keeps adding history. Anatomy. Ethics. Lost in the possibilities.</jitter>",
+        altEmotion: 'anxious_curious'
+      }
+    ],
     choices: [
       {
         choiceId: 'yaquin_help_edit',
@@ -800,7 +832,9 @@ Which opening sells the VALUE of practical experience?`,
         patternReflection: [
           { pattern: 'helping', minLevel: 5, altText: "Can tell you something? You help people. You understand.\n\nMy father came from Manila. 1989. Three jobs. Four kids through college. Engineer, pharmacist, accountant.\n\nMe: dental assistant.\n\nTold him I wasn't going to dental school. He looked at me like I'd died. Said: 'You had same chances. Why you waste them?'\n\nStill hear his voice. Every time I help someone learn. Am I helping or wasting chances he gave me?", altEmotion: 'vulnerable_shame' },
           { pattern: 'building', minLevel: 5, altText: "Can tell you something? You're builder. You understand making something from nothing.\n\nMy father built new life. Manila to America. Three jobs. Four kids through college.\n\nSister: engineer. Brother: pharmacist. Sister: accountant. Me: dental assistant.\n\nTold him I'm building course instead of dental career. He said: 'Why you waste chances?'\n\nIs building online course wasting what he built for me?", altEmotion: 'vulnerable_conflicted' },
-          { pattern: 'patience', minLevel: 5, altText: "Can tell you something? You're patient listener. Maybe you understand.\n\nMy father waited thirty years. Manila to America. Three jobs. Saved everything. Four kids through college.\n\nThree took traditional path. Me... dental assistant. Not dentist.\n\nTold him my choice. He didn't speak for month. Finally said: 'Why you waste chances?'\n\nHis patience gave me options. My choice feels like betrayal of that patience.", altEmotion: 'vulnerable_grief' }
+          { pattern: 'patience', minLevel: 5, altText: "Can tell you something? You're patient listener. Maybe you understand.\n\nMy father waited thirty years. Manila to America. Three jobs. Saved everything. Four kids through college.\n\nThree took traditional path. Me... dental assistant. Not dentist.\n\nTold him my choice. He didn't speak for month. Finally said: 'Why you waste chances?'\n\nHis patience gave me options. My choice feels like betrayal of that patience.", altEmotion: 'vulnerable_grief' },
+          { pattern: 'analytical', minLevel: 5, altText: "Can tell you something? You analyze things. Maybe you understand this math.\n\nMy father: three jobs. All earnings divided by four kids. Engineer, pharmacist, accountant. All returned investment.\n\nMe: dental assistant. Not dentist. Lower salary. Lower status.\n\nTold him my choice. He ran the numbers. Said: 'You had same chances. Why you waste them?'\n\nAnalytically, he's right. I had the resources. I chose different equation. The math says I failed him.", altEmotion: 'vulnerable_analytical_shame' },
+          { pattern: 'exploring', minLevel: 5, altText: "Can tell you something? You explore options. Maybe you understand my path.\n\nMy father explored new country. Manila to America. Mapped route for four kids. Engineer, pharmacist, accountant.\n\nMe: I explored different territory. Dental assistant instead of dentist. Teaching instead of practicing.\n\nTold him I'm exploring online education. He said: 'Why you waste chances?'\n\nHis exploration gave me opportunities. My exploration feels like getting lost from his map.", altEmotion: 'vulnerable_explorer_shame' }
         ]
       }
     ],

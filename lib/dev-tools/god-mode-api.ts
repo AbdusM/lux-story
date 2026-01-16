@@ -214,26 +214,13 @@ export function createGodModeAPI(): GodModeAPI {
     // ═══════════════════════════════════════════════════════════════════════════
 
     demonstrateSkill(skillName: string, count: number = 5): void {
-      withGodModeFlag(() => {
-        if (!checkGameStateHydrated()) return
-
-        const store = useGameStore.getState()
-
-        // Update skill demonstrations in core state
-        // TODO: skillDemonstrations moved to database (skill_demonstrations table)
-        // This god mode function needs refactoring to use database instead of state
-        store.updateCoreGameState(state => ({
-          ...state,
-          skillDemonstrations: {
-            // @ts-expect-error - Legacy skill tracking, needs database refactor
-            ...state.skillDemonstrations,
-            // @ts-expect-error - Legacy skill tracking, needs database refactor
-            [skillName]: (state.skillDemonstrations?.[skillName] || 0) + count
-          }
-        }))
-
-        console.log(`[God Mode] Demonstrated skill: ${skillName} (count: +${count})`)
-      })
+      // DEPRECATED: Skill demonstrations moved to database (skill_demonstrations table)
+      // Use the Skills Dashboard at /admin/skills to manage skill data
+      console.warn(
+        `[God Mode] demonstrateSkill() is deprecated. ` +
+        `Skill tracking moved to database. ` +
+        `Requested: ${skillName} (count: ${count})`
+      )
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -247,18 +234,25 @@ export function createGodModeAPI(): GodModeAPI {
         const store = useGameStore.getState()
         const clampedResonance = Math.max(0, Math.min(10, resonance))
 
-        // Update platform state
-        store.updateCoreGameState(state => ({
-          ...state,
-          // @ts-expect-error - God mode partial update, doesn't include all PlatformState fields
-          platforms: {
-            ...state.platforms,
-            [platformId]: {
-              discovered,
-              resonance: clampedResonance
+        // Update platform state (merge with existing to preserve all fields)
+        store.updateCoreGameState(state => {
+          const existingPlatform = state.platforms[platformId] || {
+            id: platformId,
+            warmth: 0,
+            accessible: true
+          }
+          return {
+            ...state,
+            platforms: {
+              ...state.platforms,
+              [platformId]: {
+                ...existingPlatform,
+                discovered,
+                resonance: clampedResonance
+              }
             }
           }
-        }))
+        })
 
         console.log(`[God Mode] Set platform ${platformId}: discovered=${discovered}, resonance=${clampedResonance}`)
       })

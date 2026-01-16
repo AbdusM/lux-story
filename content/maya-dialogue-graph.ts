@@ -298,7 +298,11 @@ export const mayaDialogueNodes: DialogueNode[] = [
         emotion: 'conflicted',
         variation_id: 'family_intro_v2_interactive',
         patternReflection: [
-          { pattern: 'helping', minLevel: 5, altText: "My parents came here with nothing. And I mean *nothing*.\n\nYou know that look people get when they're terrified of losing ground? That's them every day.\n\nNow they have a house, a restaurant... and a daughter who's supposed to be the proof it was all worth it.", altEmotion: 'vulnerable' }
+          { pattern: 'helping', minLevel: 5, altText: "My parents came here with nothing. And I mean *nothing*.\n\nYou know that look people get when they're terrified of losing ground? That's them every day.\n\nNow they have a house, a restaurant... and a daughter who's supposed to be the proof it was all worth it.", altEmotion: 'vulnerable' },
+          { pattern: 'analytical', minLevel: 5, altText: "My parents came here with nothing. You can probably calculate the odds they beat.\n\nNow they have a house in Hoover. A restaurant with good metrics. And a daughter whose success is the final variable in their equation.\n\nCrown jewel. That's what expected outputs look like.", altEmotion: 'matter_of_fact' },
+          { pattern: 'patience', minLevel: 5, altText: "My parents came here with nothing. They waited years for everything they have.\n\nNow? A house. A restaurant. A daughter who's supposed to prove the waiting was worth it.\n\nThey're still waiting. For me to become the final piece.", altEmotion: 'heavy' },
+          { pattern: 'exploring', minLevel: 5, altText: "My parents came here with nothing. Everything was new, uncertain, worth exploring.\n\nNow? Now they have a house, a restaurant... and a daughter who's supposed to follow a map they drew without asking me.\n\nCrown jewel. Jewelry doesn't get to choose.", altEmotion: 'conflicted' },
+          { pattern: 'building', minLevel: 5, altText: "My parents came here with nothing. They built everything from scratch.\n\nNow? House. Restaurant. And a daughter who's supposed to be the capstone of what they constructed.\n\nCrown jewel. The final piece of their architecture.", altEmotion: 'weighted' }
         ]
       }
     ],
@@ -1290,6 +1294,18 @@ STATUS: Signal fighting itself`,
         minLevel: 5,
         altText: "You get what it's like to make things, right? That pull to create stuff with your hands?\n\nI got accepted to UAB's biomedical engineering program. I could transfer.\n\nBut there's also pre-med. The path my parents have been picturing since I was like... ten.",
         altEmotion: 'kindred_anxious'
+      },
+      {
+        pattern: 'patience',
+        minLevel: 5,
+        altText: "You take your time with things. You don't rush. I've noticed.\n\nMaybe that's what I need to do? Just... sit with this?\n\nI got accepted to UAB's biomedical engineering program. I could transfer. But there's also pre-med - the one my parents have been waiting for.",
+        altEmotion: 'reflective_anxious'
+      },
+      {
+        pattern: 'exploring',
+        minLevel: 5,
+        altText: "You explore things before deciding. I see how you think.\n\nMaybe there's something I haven't explored yet?\n\nI got accepted to UAB's biomedical engineering program. I could transfer. But there's also pre-med - the path my parents mapped out forever ago.",
+        altEmotion: 'curious_anxious'
       }
     ],
     requiredState: {

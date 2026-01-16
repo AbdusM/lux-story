@@ -1108,7 +1108,39 @@ HINT: Sensors measure WHERE they're placed...`,
         text: "There's something I never told anyone.\n\nThe day before Mr. Hawkins died... I was supposed to visit. Bring him the first harvest from my farm. Show him I'd learned something.\n\nI cancelled. Had a \"critical system update\" to run. Told myself I'd go next week.\n\nThere wasn't a next week.\n\nHe died alone in his garden. And I was staring at a dashboard. Making sure my sensors were calibrated.\n\nI never got to say thank you. Never got to show him that his sixty years of wisdom had found a home in someone.",
         emotion: 'grief_regret',
         variation_id: 'vulnerability_v1',
-        richEffectContext: 'warning'
+        richEffectContext: 'warning',
+        patternReflection: [
+          {
+            pattern: 'analytical',
+            minLevel: 5,
+            altText: "You analyze patterns. Maybe you can understand this failure mode.\n\nThe day before Mr. Hawkins died... I was supposed to visit. Bring him the first harvest. Show him I'd learned something.\n\nI cancelled. Had a \"critical system update\" to run. The data said it was urgent. The algorithm prioritized the system over the human.\n\nThere wasn't a next week.\n\nHe died alone in his garden. And I was optimizing sensor calibration. Treating presence as a lower-priority task.\n\nI never got to say thank you. The analytical mind can measure everything except what matters.",
+            altEmotion: 'analytical_grief'
+          },
+          {
+            pattern: 'patience',
+            minLevel: 5,
+            altText: "You understand patience. The cost of rushing.\n\nThe day before Mr. Hawkins died... I was supposed to visit. Bring him the first harvest. Show him I'd learned something.\n\nI cancelled. Had a \"critical system update.\" Couldn't wait. Had to fix it immediately.\n\nMr. Hawkins taught me that plants don't work on sprint cycles. But I forgot people don't either.\n\nThere wasn't a next week.\n\nHe died alone in his garden. And I was rushing through a dashboard update that could have waited.\n\nI never got to say thank you. Because I forgot that some things can't be rescheduled.",
+            altEmotion: 'regretful'
+          },
+          {
+            pattern: 'exploring',
+            minLevel: 5,
+            altText: "You explore. You discover. Maybe you can map this blind spot I had.\n\nThe day before Mr. Hawkins died... I was supposed to visit. Bring him the first harvest. Show him I'd learned something.\n\nI cancelled. Had a \"critical system update.\" New territory to explore in the codebase. A bug I was curious about.\n\nThe curiosity that should have led me to his garden led me to a screen instead.\n\nThere wasn't a next week.\n\nHe died alone in his garden. And I was exploring the wrong territory. Mapping systems instead of sitting with my mentor.\n\nI never got to say thank you. The explorer who forgot the most important destination.",
+            altEmotion: 'grief_regret'
+          },
+          {
+            pattern: 'helping',
+            minLevel: 5,
+            altText: "You help people. You care. Maybe you can understand what I failed to do.\n\nThe day before Mr. Hawkins died... I was supposed to visit. Bring him the first harvest. Show him I'd learned something.\n\nI cancelled. Had a \"critical system update.\" Told myself the farm needed it. That I was helping future crops.\n\nBut Mr. Hawkins needed me. Not my optimized system. Just me. Present.\n\nThere wasn't a next week.\n\nHe died alone in his garden. And I was helping sensors instead of the human who taught me everything.\n\nI never got to say thank you. I chose to help systems instead of the person who mattered.",
+            altEmotion: 'guilt'
+          },
+          {
+            pattern: 'building',
+            minLevel: 5,
+            altText: "You build things. You understand construction. Maybe you can see what I tore down.\n\nThe day before Mr. Hawkins died... I was supposed to visit. Bring him the first harvest. Show him I'd learned something.\n\nI cancelled. Had a \"critical system update.\" The infrastructure needed maintenance. The architecture needed fixing.\n\nI was building systems. But I destroyed the most important structure: the relationship with my mentor.\n\nThere wasn't a next week.\n\nHe died alone in his garden. And I was building dashboards instead of showing up for the man who built my foundation.\n\nI never got to say thank you. The builder who forgot that people are the most important thing we construct.",
+            altEmotion: 'devastated'
+          }
+        ]
       }
     ],
     requiredState: {

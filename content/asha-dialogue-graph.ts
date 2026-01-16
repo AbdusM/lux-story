@@ -1001,7 +1001,39 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 emotion: 'bitter_vulnerable',
                 variation_id: 'vulnerability_v1',
                 richEffectContext: 'warning',
-                useChatPacing: true
+                useChatPacing: true,
+                patternReflection: [
+                    {
+                        pattern: 'analytical',
+                        minLevel: 5,
+                        altText: "You analyze things. Maybe you'll see the pattern I couldn't.\n\nTwo years ago. Major commission. City hall. I analyzed every demographic, every cultural touchpoint. Data-driven vision of Birmingham where everyone belonged.\n\nThey painted over it in three days. \"Too political.\" The data was right, but the decision-makers weren't ready for what the data showed.\n\nReplaced it with a skyline. No people. No variables to worry about.\n\nThat's when I started using AI. Because when the algorithm fails, it's a technical problem. When I fail, it's... personal.",
+                        altEmotion: 'analytical_pain'
+                    },
+                    {
+                        pattern: 'helping',
+                        minLevel: 5,
+                        altText: "You care about people. That's why this will hurt to hear.\n\nTwo years ago, I got my first major commission. City hall. I painted a vision where everyone - everyone - belonged. Because I wanted to help people see themselves in their city.\n\nThey painted over it in three days. Said it was \"too political.\" Someone said it looked \"too diverse.\"\n\nReplaced it with chrome towers. Beautiful. Empty. No one to help.\n\nThat's when I started using AI. Because when the algorithm fails at helping people, it doesn't feel like I failed them.",
+                        altEmotion: 'helping_grief'
+                    },
+                    {
+                        pattern: 'building',
+                        minLevel: 5,
+                        altText: "You build things. You know what it's like to see your work destroyed.\n\nTwo years ago. City hall commission. Six weeks of building - every brushstroke, every layer, constructing a vision of Birmingham where everyone belonged.\n\nThey tore it down in three days. Painted over. \"Not what we envisioned.\"\n\nReplaced it with a generic skyline. Something built by committee. Safe. Soulless.\n\nThat's when I started using AI. Because when the algorithm's work gets rejected, it's not my foundation they're demolishing.",
+                        altEmotion: 'builder_devastation'
+                    },
+                    {
+                        pattern: 'patience',
+                        minLevel: 5,
+                        altText: "You take your time. You don't rush. I wish I'd had that patience.\n\nTwo years ago. City hall commission. Six weeks of careful, patient work. Every detail considered. A vision that took time to build.\n\nThey painted over it in three days. No patience for complexity. No time to understand what I'd built.\n\nReplaced it instantly. Quick. Easy. Requiring no one to wait or think.\n\nThat's when I started using AI. Because at least the algorithm is patient with my failures. People aren't.",
+                        altEmotion: 'impatience_trauma'
+                    },
+                    {
+                        pattern: 'exploring',
+                        minLevel: 5,
+                        altText: "You explore possibilities. You'd understand this.\n\nTwo years ago. City hall. First major commission. I explored every way to show Birmingham's future - all the possibilities, all the paths forward.\n\nThey painted over it in three days. \"Too political.\" They didn't want exploration. They wanted confirmation.\n\nReplaced it with a skyline. One narrow vision. No other paths to discover.\n\nThat's when I started using AI. Because when the algorithm's explorations fail, it's the tech's limitation. Not my imagination being rejected.",
+                        altEmotion: 'exploration_crushed'
+                    }
+                ]
             }
         ],
         requiredState: {
