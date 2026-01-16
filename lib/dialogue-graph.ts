@@ -12,7 +12,7 @@ import {
 } from './character-state'
 import { FutureSkills } from './2030-skills-system'
 import { PatternType } from './patterns'
-import { isComboUnlocked } from './skill-combo-detector'
+import { isComboUnlocked } from './pattern-combos'
 // Note: Emotions use string type to support compound emotions like 'anxious_hopeful'
 // Use isValidEmotion() from lib/emotions.ts for runtime validation of core emotions
 
@@ -596,17 +596,11 @@ export class StateConditionEvaluator {
       }
     }
 
-    // Evaluate skill combo conditions
-    // Requires specific skill combos to be unlocked (from lib/skill-combos.ts)
+    // Evaluate pattern combo conditions
+    // Requires specific pattern combos to be unlocked (from lib/pattern-combos.ts)
     if (condition.requiredCombos !== undefined && condition.requiredCombos.length > 0) {
-      // If no skill levels provided, combos cannot be checked - fail the condition
-      if (!skillLevels) {
-        console.warn(`Combo condition requires skillLevels but not provided`)
-        return false
-      }
-
       for (const comboId of condition.requiredCombos) {
-        if (!isComboUnlocked(comboId, skillLevels)) {
+        if (!isComboUnlocked(comboId, gameState.patterns)) {
           return false
         }
       }
@@ -758,7 +752,7 @@ export class DialogueGraphNavigator {
 
       // Check if we meet the conditions for this node
       const characterId = this.getCharacterIdFromNode(nextNode)
-      if (StateConditionEvaluator.evaluate(nextNode.requiredState, gameState, characterId)) {
+      if (StateConditionEvaluator.evaluate(nextNode.requiredState, gameState, characterId, gameState.skillLevels)) {
         availableNodes.push(nextNode)
       }
     }
@@ -798,7 +792,7 @@ export class DialogueGraphNavigator {
       // We use finding the first one to allow priority override (assuming content is ordered by priority)
       // or just filtering. Let's find matches.
       const conditionalMatches = node.content.filter(c =>
-        c.condition && StateConditionEvaluator.evaluate(c.condition, state, this.getCharacterIdFromNode(node))
+        c.condition && StateConditionEvaluator.evaluate(c.condition, state, this.getCharacterIdFromNode(node), state.skillLevels)
       )
 
       if (conditionalMatches.length > 0) {

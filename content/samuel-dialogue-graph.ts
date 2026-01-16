@@ -1352,7 +1352,11 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         emotion: 'warm',
         variation_id: 'purpose_v1_combined',
         patternReflection: [
-          { pattern: 'helping', minLevel: 4, altText: "I wanted to help folks figure out their own path. Not hand 'em answers.that never works. But help 'em find the right questions?\n\nYou understand that, don't you? It's why you listen the way you do.", altEmotion: 'knowing' }
+          { pattern: 'helping', minLevel: 4, altText: "I wanted to help folks figure out their own path. Not hand 'em answers—that never works. But help 'em find the right questions?\n\nYou understand that, don't you? It's why you listen the way you do.", altEmotion: 'knowing' },
+          { pattern: 'analytical', minLevel: 4, altText: "I wanted to help folks figure out their own path. You can't give someone the answer—they have to process it themselves.\n\nBut help 'em find the right questions? Guide the analysis? That I can do.", altEmotion: 'warm' },
+          { pattern: 'patience', minLevel: 4, altText: "I wanted to help folks figure out their own path. Takes time, y'know? Can't rush someone's journey.\n\nBut stay with 'em while they work it out? Give 'em space to think? That I can do.", altEmotion: 'wise' },
+          { pattern: 'exploring', minLevel: 4, altText: "I wanted to help folks figure out their own path. Everyone's got their own trail to blaze.\n\nHelp 'em see what's possible? Point out paths they didn't know existed? That I can do.", altEmotion: 'warm' },
+          { pattern: 'building', minLevel: 4, altText: "I wanted to help folks figure out their own path. Can't build someone else's life for 'em.\n\nBut help 'em lay the foundation? Give 'em tools for construction? That I can do.", altEmotion: 'knowing' }
         ]
       }
     ],
@@ -2631,7 +2635,39 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         text: "Hey, welcome back. I can tell that conversation went deep - Maya has that effect on people who really listen to her.\n\nHow you feelin' about what just happened?",
         emotion: 'warm_observant',
-        variation_id: 'reflection_gateway_v3_clean'
+        variation_id: 'reflection_gateway_v3_clean',
+        patternReflection: [
+          {
+            pattern: 'analytical',
+            minLevel: 5,
+            altText: "Hey, welcome back. Watched you work through that with Maya - methodical, careful. You were trackin' patterns in what she said, weren't you?\n\nHow you feelin' about what just happened?",
+            altEmotion: 'knowing'
+          },
+          {
+            pattern: 'helping',
+            minLevel: 5,
+            altText: "Hey, welcome back. Could feel how much you cared about gettin' it right for Maya. That empathy - it's real, and she felt it.\n\nHow you feelin' about what just happened?",
+            altEmotion: 'warm'
+          },
+          {
+            pattern: 'patience',
+            minLevel: 5,
+            altText: "Hey, welcome back. You gave her space to think. Didn't rush her. That patience - rare thing these days. Maya noticed.\n\nHow you feelin' about what just happened?",
+            altEmotion: 'appreciative'
+          },
+          {
+            pattern: 'exploring',
+            minLevel: 5,
+            altText: "Hey, welcome back. Saw you askin' questions, diggin' deeper. That curiosity - it helped Maya see angles she wasn't seein'.\n\nHow you feelin' about what just happened?",
+            altEmotion: 'knowing'
+          },
+          {
+            pattern: 'building',
+            minLevel: 5,
+            altText: "Hey, welcome back. You weren't just talkin' - you were buildin' something with her. Practical help, real solutions. She needed that.\n\nHow you feelin' about what just happened?",
+            altEmotion: 'affirming'
+          }
+        ]
       }
     ],
     requiredState: {
@@ -4357,7 +4393,39 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         text: "I saw Devon leaving Platform 3. He wasn't looking at his phone or checking schematics. He was just... walking. Present.\n\nThat's a significant shift for a young man who tries to optimize every second. How did you navigate that conversation?",
         emotion: 'observant',
-        variation_id: 'devon_gateway_v1'
+        variation_id: 'devon_gateway_v1',
+        patternReflection: [
+          {
+            pattern: 'analytical',
+            minLevel: 5,
+            altText: "I saw Devon leaving Platform 3. He wasn't running systems analysis in his head - he was processing something deeper. You spoke his language, helped him see emotions as data worth understanding.\n\nHow did you navigate that conversation?",
+            altEmotion: 'knowing'
+          },
+          {
+            pattern: 'helping',
+            minLevel: 5,
+            altText: "I saw Devon leaving Platform 3. He had this... softness about him. You helped him feel safe enough to acknowledge what he was carrying. That's rare with someone like him.\n\nHow did you navigate that conversation?",
+            altEmotion: 'warm'
+          },
+          {
+            pattern: 'patience',
+            minLevel: 5,
+            altText: "I saw Devon leaving Platform 3. He wasn't in a rush for once. You gave him time to arrive at his own realizations instead of pushin' solutions. That patience unlocked something.\n\nHow did you navigate that conversation?",
+            altEmotion: 'appreciative'
+          },
+          {
+            pattern: 'exploring',
+            minLevel: 5,
+            altText: "I saw Devon leaving Platform 3. He looked like someone who'd discovered a new way of seeing. Your questions opened doors he didn't know existed.\n\nHow did you navigate that conversation?",
+            altEmotion: 'observant'
+          },
+          {
+            pattern: 'building',
+            minLevel: 5,
+            altText: "I saw Devon leaving Platform 3. You gave him frameworks for integrating head and heart - practical tools, not just philosophy. He walked away with something he can build on.\n\nHow did you navigate that conversation?",
+            altEmotion: 'affirming'
+          }
+        ]
       }
     ],
     requiredState: {
@@ -4640,7 +4708,39 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         text: "Marcus just walked past. He looked... lighter. He said the patient made it.\n\nBut more than that, he said you saw the engineering in his work. That you understood the weight of the machine.\n\nHow was it, stepping into that kind of pressure?",
         emotion: 'respectful',
-        variation_id: 'marcus_gateway_v1'
+        variation_id: 'marcus_gateway_v1',
+        patternReflection: [
+          {
+            pattern: 'analytical',
+            minLevel: 5,
+            altText: "Marcus just walked past. He looked... lighter. Said you broke down the problem like an engineer - saw the system, understood the constraints. That precision helped him think clearly under pressure.\n\nHow was it, stepping into that kind of pressure?",
+            altEmotion: 'knowing'
+          },
+          {
+            pattern: 'helping',
+            minLevel: 5,
+            altText: "Marcus just walked past. He looked... lighter. Said you felt the weight of what was at stake - not just the technical challenge, but the life in the balance. Your care steadied him.\n\nHow was it, stepping into that kind of pressure?",
+            altEmotion: 'warm'
+          },
+          {
+            pattern: 'patience',
+            minLevel: 5,
+            altText: "Marcus just walked past. He looked... lighter. Said you didn't rush him when he needed to think. Gave him space to process the crisis at his own speed. That calm helped.\n\nHow was it, stepping into that kind of pressure?",
+            altEmotion: 'appreciative'
+          },
+          {
+            pattern: 'exploring',
+            minLevel: 5,
+            altText: "Marcus just walked past. He looked... lighter. Said your questions helped him see options he was missing in the moment. Your curiosity cut through the tunnel vision.\n\nHow was it, stepping into that kind of pressure?",
+            altEmotion: 'observant'
+          },
+          {
+            pattern: 'building',
+            minLevel: 5,
+            altText: "Marcus just walked past. He looked... lighter. Said you helped him construct a plan under fire - gave him frameworks to build on when everything was chaos.\n\nHow was it, stepping into that kind of pressure?",
+            altEmotion: 'affirming'
+          }
+        ]
       }
     ],
     requiredState: {
@@ -4720,7 +4820,39 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         text: "Tess just left. She wasn't pacing anymore. She looked... focused. Like she finally had a map.\n\nStarting something new is terrifying. Most people wait for permission. It seems she decided not to wait.",
         emotion: 'proud',
-        variation_id: 'tess_gateway_v1'
+        variation_id: 'tess_gateway_v1',
+        patternReflection: [
+          {
+            pattern: 'analytical',
+            minLevel: 5,
+            altText: "Tess just left. She wasn't pacing anymore. She had spreadsheets and timelines - you helped her turn passion into process. Map the risk before taking it.\n\nStarting something new is terrifying. You showed her the data that makes courage rational.",
+            altEmotion: 'knowing'
+          },
+          {
+            pattern: 'helping',
+            minLevel: 5,
+            altText: "Tess just left. She wasn't pacing anymore. You believed in her when she'd forgotten how to believe in herself. That support gave her permission she was waiting for.\n\nStarting something new is terrifying. Your faith made it possible.",
+            altEmotion: 'warm'
+          },
+          {
+            pattern: 'patience',
+            minLevel: 5,
+            altText: "Tess just left. She wasn't pacing anymore. You helped her see that sustainable change doesn't need to happen overnight. One step at a time.\n\nStarting something new is terrifying. You taught her that slow can still be forward.",
+            altEmotion: 'appreciative'
+          },
+          {
+            pattern: 'exploring',
+            minLevel: 5,
+            altText: "Tess just left. She wasn't pacing anymore. Your questions helped her discover possibilities she couldn't see through the fear. New paths emerged.\n\nStarting something new is terrifying. You showed her there were more options than she realized.",
+            altEmotion: 'observant'
+          },
+          {
+            pattern: 'building',
+            minLevel: 5,
+            altText: "Tess just left. She wasn't pacing anymore. You gave her the tools and frameworks to construct something real. Not just dreams - actionable plans.\n\nStarting something new is terrifying. You showed her how to build despite the fear.",
+            altEmotion: 'affirming'
+          }
+        ]
       }
     ],
     requiredState: {
@@ -4845,7 +4977,39 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         text: "You're back. I saw Jordan heading into that classroom earlier - she looked different than when she arrived. Less frantic. More grounded.\n\nSeven jobs in seven years. Most people would call that instability. But I've learned the station measures something deeper than résumés. How did her journey look to you?",
         emotion: 'observant',
-        variation_id: 'jordan_gateway_v1'
+        variation_id: 'jordan_gateway_v1',
+        patternReflection: [
+          {
+            pattern: 'analytical',
+            minLevel: 5,
+            altText: "You're back. I saw Jordan leaving - she looked different. You helped her see the pattern in what looked like chaos. Seven jobs wasn't failure - it was data collection.\n\nHow did her journey look to you?",
+            altEmotion: 'knowing'
+          },
+          {
+            pattern: 'helping',
+            minLevel: 5,
+            altText: "You're back. I saw Jordan leaving - she looked different. You saw past the résumé to the person who was hurting. That empathy helped her stop running from herself.\n\nHow did her journey look to you?",
+            altEmotion: 'warm'
+          },
+          {
+            pattern: 'patience',
+            minLevel: 5,
+            altText: "You're back. I saw Jordan leaving - she looked different. You gave her permission to stop rushing toward the 'right' answer. Sometimes we need time to wander before we find our way.\n\nHow did her journey look to you?",
+            altEmotion: 'appreciative'
+          },
+          {
+            pattern: 'exploring',
+            minLevel: 5,
+            altText: "You're back. I saw Jordan leaving - she looked different. You helped her reframe exploration as discovery, not failure. Seven different paths mean seven different lessons learned.\n\nHow did her journey look to you?",
+            altEmotion: 'observant'
+          },
+          {
+            pattern: 'building',
+            minLevel: 5,
+            altText: "You're back. I saw Jordan leaving - she looked different. You showed her how to build on what she'd learned instead of starting over each time. Construction, not destruction.\n\nHow did her journey look to you?",
+            altEmotion: 'affirming'
+          }
+        ]
       }
     ],
     requiredState: {

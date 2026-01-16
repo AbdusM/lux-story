@@ -1726,6 +1726,32 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       emotion: 'vulnerable_honest',
       variation_id: 'impostor_v1'
     }],
+    patternReflection: [
+      {
+        pattern: 'analytical',
+        minLevel: 5,
+        altText: "You ask really good questions. You see patterns I don't even notice in myself.\n\nCan I tell you something I don't tell anyone?\n\nEvery day, I help people find their paths. I analyze their skills, match them with possibilities. And every single day, a voice says: 'Who are you to guide anyone? You can't even figure out your own path.'\n\nImpostor syndrome. The career navigator who can't navigate their own career.\n\nBut maybe that analytical distance you have - maybe that's why you see things I can't. Because I know what it's like to be lost.",
+        altEmotion: 'vulnerable_thoughtful'
+      },
+      {
+        pattern: 'patience',
+        minLevel: 5,
+        altText: "You don't rush me to the point. You wait. That's rare.\n\nCan I tell you something I don't tell anyone?\n\nEvery day, I help people find their paths. I give them time to discover themselves. And every single day, a voice says: 'Who are you to guide anyone? You're still figuring yourself out.'\n\nImpostor syndrome. The career navigator who can't navigate their own career.\n\nBut maybe that patience - maybe that's the key. I don't guide people despite being lost. I guide them BECAUSE I understand the journey takes time.",
+        altEmotion: 'vulnerable_grateful'
+      },
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: "You're a builder. You see potential and construct paths forward.\n\nCan I tell you something I don't tell anyone?\n\nEvery day, I help people build their careers. I help them construct meaning from scattered experiences. And every single day, a voice says: 'Who are you to build anything? Your own foundation keeps shifting.'\n\nImpostor syndrome. The career navigator who can't navigate their own career.\n\nBut maybe that's why I'm good at this. Because I know what it's like to rebuild. To construct meaning from chaos.",
+        altEmotion: 'vulnerable_determined'
+      },
+      {
+        pattern: 'exploring',
+        minLevel: 5,
+        altText: "You're curious. You explore instead of assuming you know.\n\nCan I tell you something I don't tell anyone?\n\nEvery day, I help people explore their options. I map out possibilities they haven't seen. And every single day, a voice says: 'Who are you to guide anyone? You're still wandering yourself.'\n\nImpostor syndrome. The career navigator who can't navigate their own career.\n\nBut maybe that's exactly why. I don't guide people despite being lost. I guide them BECAUSE I understand what it's like to explore without a map.",
+        altEmotion: 'vulnerable_hopeful'
+      }
+    ],
     requiredState: {
       patterns: { helping: { min: 50 } }
     },

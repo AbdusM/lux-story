@@ -1283,7 +1283,39 @@ export const rohanDialogueNodes: DialogueNode[] = [
         emotion: 'bitter_grief',
         microAction: 'His jaw tightens.',
         variation_id: 'vulnerability_v1',
-        richEffectContext: 'warning'
+        richEffectContext: 'warning',
+        patternReflection: [
+          {
+            pattern: 'analytical',
+            minLevel: 5,
+            altText: "You analyze systems. Maybe you understand this.\n\nI had friends. A girlfriend. A whole life outside the server room.\n\nThen I found it. Bias in the hiring algorithm. Fortune 500 scale. Automated discrimination based on names, zip codes.\n\nI ran the analysis. Showed them the data. My manager: \"that's just how the data works.\" My friends: \"you're being difficult.\"\n\nThey wanted me to ignore what the analysis showed. I couldn't. The analytical mind that cost me everything I cared about.",
+            altEmotion: 'analytical_isolation'
+          },
+          {
+            pattern: 'patience',
+            minLevel: 5,
+            altText: "You take your time with decisions. I didn't have that luxury.\n\nI had friends. A girlfriend. A whole life outside the server room.\n\nI found bias in the algorithm. Discrimination at scale. I could have waited. Gathered more evidence. Built consensus slowly.\n\nInstead I reported it immediately. My manager dismissed it. My friends said I'd destroy their careers if I went public.\n\nPatience might have kept them. But patience would have let the harm continue. I chose speed over relationships.",
+            altEmotion: 'regret_isolation'
+          },
+          {
+            pattern: 'exploring',
+            minLevel: 5,
+            altText: "You explore. You discover. Maybe you know this territory.\n\nI had friends. A girlfriend. A whole life outside the server room.\n\nThen I explored the algorithm. Found bias buried in the code. Discrimination based on names, zip codes.\n\nI showed my discovery. My manager: \"that's just how the data works.\" My friends: \"you're being difficult.\"\n\nThe explorer who found something nobody wanted discovered. Curiosity that cost me everyone I cared about.",
+            altEmotion: 'bitter_grief'
+          },
+          {
+            pattern: 'helping',
+            minLevel: 5,
+            altText: "You help people. I tried to help people I'd never meet.\n\nI had friends. A girlfriend. A whole life outside the server room.\n\nI found bias in the algorithm. Thousands of people being discriminated against. I wanted to help them.\n\nMy manager said \"that's just how the data works.\" My friends said I'd destroy their careers if I went public.\n\nI chose to help strangers over helping the people I loved. I'm still not sure if that makes me good or just alone.",
+            altEmotion: 'conflicted_grief'
+          },
+          {
+            pattern: 'building',
+            minLevel: 5,
+            altText: "You build things. I tried to build justice.\n\nI had friends. A girlfriend. A whole life outside the server room.\n\nI found bias in the algorithm they'd built. Discrimination encoded into production systems. I wanted to rebuild it right.\n\nMy manager: \"that's just how the data works.\" My friends: \"you'd destroy careers if you went public.\"\n\nI tried to build something better. But I destroyed my relationships instead. The builder who tore down his own foundation.",
+            altEmotion: 'builder_isolation'
+          }
+        ]
       }
     ],
     requiredState: {

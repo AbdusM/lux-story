@@ -719,6 +719,30 @@ RACHEL: What am I missing?
         minLevel: 5,
         altText: "Community. Yes. People are lonely. Headphones isolate.\n\nYou see it clearly. Connection. Belonging. That's what you've been pointing at in every conversation.\n\nNot selling plastic. Selling what people actually need.",
         altEmotion: 'inspired'
+      },
+      {
+        pattern: 'analytical',
+        minLevel: 5,
+        altText: "Community. The data's clear—isolation is epidemic. Headphones, screens, algorithms.\n\nYou analyzed the gap. Connection is the underserved market.\n\nNot selling plastic. Selling a solution to a measurable problem.",
+        altEmotion: 'focused'
+      },
+      {
+        pattern: 'patience',
+        minLevel: 5,
+        altText: "Community. Takes time to build. Can't rush belonging.\n\nYou understand that. Real connection doesn't happen in one transaction.\n\nNot selling plastic. Selling relationships that grow.",
+        altEmotion: 'warm'
+      },
+      {
+        pattern: 'exploring',
+        minLevel: 5,
+        altText: "Community. A whole territory to discover. People exploring music together.\n\nYou saw the possibility. New pathways through shared listening.\n\nNot selling plastic. Selling journeys taken together.",
+        altEmotion: 'excited'
+      },
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: "Community. Infrastructure for belonging. Weekly sessions, monthly clubs.\n\nYou see the architecture. Systems that support connection.\n\nNot selling plastic. Building a third place.",
+        altEmotion: 'inspired'
       }
     ]
   },
@@ -762,6 +786,30 @@ RACHEL: What am I missing?
         minLevel: 5,
         altText: "Experience. Can't stream this.\n\nYou're a builder. You see structures. Possibility in the bones of a thing.\n\nThe business isn't records. It's what we build around them.",
         altEmotion: 'kindred'
+      },
+      {
+        pattern: 'analytical',
+        minLevel: 5,
+        altText: "Experience. Can't stream this.\n\nYou see the data clearly—algorithms optimize for engagement, not meaning. Human curation fills that gap.\n\nThe business isn't records. It's competitive advantage through irreplicability.",
+        altEmotion: 'focused'
+      },
+      {
+        pattern: 'patience',
+        minLevel: 5,
+        altText: "Experience. Can't stream this.\n\nYou understand—discovery takes time. The ritual of browsing, listening, waiting for the right moment.\n\nThe business isn't records. It's space to slow down.",
+        altEmotion: 'warm'
+      },
+      {
+        pattern: 'exploring',
+        minLevel: 5,
+        altText: "Experience. Can't stream this.\n\nYou're an explorer. You know discovery can't be automated. The joy of finding something unexpected.\n\nThe business isn't records. It's guided exploration.",
+        altEmotion: 'excited'
+      },
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: "Experience. Can't stream this.\n\nYou see it—people need guides, not algorithms. Someone who cares what they discover.\n\nThe business isn't records. It's human connection in the recommendation.",
+        altEmotion: 'inspired'
       }
     ]
   },
@@ -915,7 +963,39 @@ RACHEL: What am I missing?
       emotion: 'grief_anger',
       microAction: 'She grips the record sleeve tighter.',
       variation_id: 'vulnerability_v1',
-      richEffectContext: 'warning'
+      richEffectContext: 'warning',
+      patternReflection: [
+        {
+          pattern: 'analytical',
+          minLevel: 5,
+          altText: "You analyze things carefully. Maybe you can make sense of this.\n\nElena. My business partner. We built this place together. Three years in: corporate offer. Six figures. Security. The numbers made sense.\n\nShe said: \"Come with me. We can do this again later.\"\n\nI ran the analysis. The data said follow the money. But the meaning said stay.\n\nShe left. Took half the startup capital. Legally hers. Analytically sound.\n\nBut it felt like she took half my belief too. Some things can't be calculated in spreadsheets.",
+          altEmotion: 'analytical_grief'
+        },
+        {
+          pattern: 'patience',
+          minLevel: 5,
+          altText: "You're patient. You understand waiting for the right moment.\n\nElena. My business partner. We built this place together. Three years in: corporate offer. Six figures.\n\nShe said: \"Come with me. We can do this again later.\"\n\nLater. That's the word that broke us. She wanted to wait for the right time. I knew this WAS the right time.\n\nShe left. Took half the startup capital. And half my belief that patience always wins.\n\nSometimes later never comes. I chose now. She chose someday.",
+          altEmotion: 'grief_anger'
+        },
+        {
+          pattern: 'exploring',
+          minLevel: 5,
+          altText: "You explore. You discover. Maybe you understand this divergence.\n\nElena. My business partner. We explored this dream together. Every shelf, every playlist. Three years of discovery.\n\nCorporate offer. Six figures. She said: \"Come with me. We can explore corporate later.\"\n\nI'd already explored that path. This shop was the uncharted territory I wanted.\n\nShe left. Took half the startup capital. Chose the mapped road over the unknown.\n\nFelt like she took half my curiosity too. We were explorers who chose different directions.",
+          altEmotion: 'grief_disappointment'
+        },
+        {
+          pattern: 'helping',
+          minLevel: 5,
+          altText: "You help people. We wanted to help people too.\n\nElena. My business partner. We built this place to help our community. A gathering space. Culture. Connection.\n\nCorporate offer. Six figures. She said: \"Come with me. Help more people with better resources.\"\n\nI wanted to help people here. Now. In this neighborhood.\n\nShe left. Took half the startup capital. Chose helping at scale over helping at home.\n\nFelt like she took half my belief that small help matters too.",
+          altEmotion: 'grief_abandoned'
+        },
+        {
+          pattern: 'building',
+          minLevel: 5,
+          altText: "You build things. We built this together.\n\nElena. My business partner. Every shelf we installed. Every playlist we curated. Three years of construction.\n\nCorporate offer. Six figures. She said: \"Come with me. We can build again later.\"\n\nI said: \"This IS what we built. This is now.\"\n\nShe left. Took half the startup capital. Left me to rebuild alone what we constructed together.\n\nFelt like she took half the foundation. The builder who abandoned the project mid-construction.",
+          altEmotion: 'grief_betrayed'
+        }
+      ]
     }],
     requiredState: {
       trust: { min: 6 }

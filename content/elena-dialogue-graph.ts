@@ -122,6 +122,38 @@ const nodes: DialogueNode[] = [
       emotion: 'raw',
       variation_id: 'elena_fear_reveal_v1'
     }],
+    patternReflection: [
+      {
+        pattern: 'analytical',
+        minLevel: 5,
+        altText: "...\n\nI'm afraid of being right.\n\nYou see patterns too. You understand - sometimes the data points to something you don't want to believe. If the contradiction is real... if someone manipulated the archives... everything I've trusted is compromised.\n\nYou knew to ask that. You think like I do.",
+        altEmotion: 'vulnerable_understood'
+      },
+      {
+        pattern: 'helping',
+        minLevel: 5,
+        altText: "...\n\nI'm afraid of being right.\n\nYou care about people, not just answers. That's why you asked. If the contradiction is real... if someone manipulated the archives... it means people were hurt. Lied to. Including me.\n\nHow did you know I needed someone to ask that?",
+        altEmotion: 'vulnerable_grateful'
+      },
+      {
+        pattern: 'patience',
+        minLevel: 5,
+        altText: "...\n\nI'm afraid of being right.\n\nYou waited for me to arrive there myself. Didn't rush. If the contradiction is real... if someone manipulated the archives... then everything I've built my career on is compromised.\n\nYou gave me time to see it. How did you know I needed that?",
+        altEmotion: 'vulnerable_relieved'
+      },
+      {
+        pattern: 'exploring',
+        minLevel: 5,
+        altText: "...\n\nI'm afraid of being right.\n\nYou're curious like me. You follow threads even when you're not sure where they lead. If the contradiction is real... if someone manipulated the archives... it opens questions I'm terrified to explore.\n\nYou saw it too. That's why you asked.",
+        altEmotion: 'vulnerable_kindred'
+      },
+      {
+        pattern: 'building',
+        minLevel: 5,
+        altText: "...\n\nI'm afraid of being right.\n\nYou understand foundations. What happens when you discover cracks. If the contradiction is real... if someone manipulated the archives... everything I've built here rests on compromised ground.\n\nHow did you know to check the foundation?",
+        altEmotion: 'vulnerable_shaken'
+      }
+    ],
     choices: [
       {
         choiceId: 'elena_fear_response',
@@ -236,7 +268,11 @@ const nodes: DialogueNode[] = [
         patience: "You're right. The patterns pull me in and I forget time exists.\n\nOne stream at a time. Thank you for giving me space to find my way back."
       },
       patternReflection: [
-        { pattern: 'patience', minLevel: 4, altText: "You understand, don't you? That pull between diving deep and staying grounded. Not many people get that balance.\n\nOne stream at a time. Thank you.", altEmotion: 'grateful' }
+        { pattern: 'patience', minLevel: 4, altText: "You understand, don't you? That pull between diving deep and staying grounded. Not many people get that balance.\n\nOne stream at a time. Thank you.", altEmotion: 'grateful' },
+        { pattern: 'analytical', minLevel: 4, altText: "You understand cognitive overload, don't you? Too many variables at once leads to processing failures.\n\nOne stream at a time. Let me sequence this properly for you.", altEmotion: 'appreciative' },
+        { pattern: 'exploring', minLevel: 4, altText: "You understand the pull, don't you? Every thread leads to ten more. The curiosity is endless.\n\nBut you helped me surface. One stream at a time. Thank you.", altEmotion: 'grateful' },
+        { pattern: 'helping', minLevel: 4, altText: "You understood what I needed before I said it. That's rare.\n\nOne stream at a time. You brought me back. Thank you.", altEmotion: 'touched' },
+        { pattern: 'building', minLevel: 4, altText: "You see it, don't you? Too many streams means no solid foundation. Can't build on chaos.\n\nOne stream at a time. Let me structure this for you.", altEmotion: 'focused' }
       ]
     }],
     choices: [
@@ -305,7 +341,11 @@ const nodes: DialogueNode[] = [
       emotion: 'intrigued',
       variation_id: 'default',
       patternReflection: [
-        { pattern: 'analytical', minLevel: 4, altText: "You see it too, don't you? The way questions about process reveal more than questions about results.\n\nPatterns aren't in the data. They're in the spaces between. You understand.", altEmotion: 'kindred' }
+        { pattern: 'analytical', minLevel: 4, altText: "You see it too, don't you? The way questions about process reveal more than questions about results.\n\nPatterns aren't in the data. They're in the spaces between. You understand.", altEmotion: 'kindred' },
+        { pattern: 'patience', minLevel: 4, altText: "You asked how I see, not what I found. Most people rush to conclusions.\n\nPatterns aren't in the data. They're in the spaces between. You gave me room to explain.", altEmotion: 'appreciative' },
+        { pattern: 'exploring', minLevel: 4, altText: "You asked about the journey, not the destination. That's how explorers think.\n\nPatterns aren't in the data. They're in the spaces between. You already know that, don't you?", altEmotion: 'kindred' },
+        { pattern: 'helping', minLevel: 4, altText: "You asked about my process. Most people just want the answer to use.\n\nYou wanted to understand. That tells me something about you.", altEmotion: 'grateful' },
+        { pattern: 'building', minLevel: 4, altText: "You asked about architecture, not output. The way things connect matters more than what they contain.\n\nPatterns aren't in the data. They're in the structural gaps. You build things—you know this.", altEmotion: 'kindred' }
       ]
     }],
     onEnter: [
@@ -381,7 +421,11 @@ const nodes: DialogueNode[] = [
       emotion: 'impressed',
       variation_id: 'default',
       patternReflection: [
-        { pattern: 'analytical', minLevel: 5, altText: "You think like a pattern researcher. Most people accept clean data as reliable. You see it as suspicious.\n\nThese timestamps are all exactly five minutes apart. Someone manufactured this. You already knew that, didn't you?", altEmotion: 'kindred_impressed' }
+        { pattern: 'analytical', minLevel: 5, altText: "You think like a pattern researcher. Most people accept clean data as reliable. You see it as suspicious.\n\nThese timestamps are all exactly five minutes apart. Someone manufactured this. You already knew that, didn't you?", altEmotion: 'kindred_impressed' },
+        { pattern: 'patience', minLevel: 5, altText: "You didn't rush to trust it. Most people see clean data and move on. You waited. Watched.\n\nTimestamps exactly five minutes apart. Too perfect. Someone manufactured this.", altEmotion: 'impressed' },
+        { pattern: 'exploring', minLevel: 5, altText: "You looked deeper instead of accepting the surface. That's rare.\n\nTimestamps exactly five minutes apart. No human variation. You saw a trail where others saw a wall.", altEmotion: 'intrigued' },
+        { pattern: 'helping', minLevel: 5, altText: "You see it because you care. Clean data means someone cleaned up after themselves. Covering tracks.\n\nTimestamps exactly five minutes apart. Someone hid something. And hiding things hurts people.", altEmotion: 'somber' },
+        { pattern: 'building', minLevel: 5, altText: "You recognize construction when you see it. Real data grows. This data was built.\n\nTimestamps exactly five minutes apart. That's not organic. That's architecture. Someone blueprinted a lie.", altEmotion: 'kindred' }
       ]
     }],
     choices: [

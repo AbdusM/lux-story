@@ -862,7 +862,11 @@ export const kaiDialogueNodes: DialogueNode[] = [
         emotion: 'resolved',
         variation_id: 'not_hopeless_v1',
         patternReflection: [
-          { pattern: 'helping', minLevel: 4, altText: "Not hopeless. Just honest.\n\nThe caring jobs aren't going anywhere. Healthcare. Teaching. Elder care. You can't automate sitting with someone who's scared.\n\nThe question is whether people can get to those jobs. Right now, the bridge is broken. That's why I'm building better bridges.", altEmotion: 'determined' }
+          { pattern: 'helping', minLevel: 4, altText: "Not hopeless. Just honest.\n\nThe caring jobs aren't going anywhere. Healthcare. Teaching. Elder care. You can't automate sitting with someone who's scared.\n\nThe question is whether people can get to those jobs. Right now, the bridge is broken. That's why I'm building better bridges.", altEmotion: 'determined' },
+          { pattern: 'analytical', minLevel: 4, altText: "Not hopeless. The data says otherwise.\n\nHealthcare, construction, education—these sectors show growth. The question is labor market friction: can workers access these opportunities?\n\nThe bridge is broken. I'm engineering better bridges.", altEmotion: 'focused' },
+          { pattern: 'patience', minLevel: 4, altText: "Not hopeless. Just slow.\n\nChange takes time. The jobs are changing, not vanishing. Healthcare still needs presence. Education still needs patience.\n\nBuilding bridges takes time. I've learned to wait while working.", altEmotion: 'calm_determined' },
+          { pattern: 'exploring', minLevel: 4, altText: "Not hopeless. Just different than expected.\n\nThe landscape is shifting. Healthcare, construction, education—new paths are opening while old ones close.\n\nThe bridge is broken. I'm exploring how to build better ones.", altEmotion: 'curious' },
+          { pattern: 'building', minLevel: 4, altText: "Not hopeless. Just under construction.\n\nHealthcare, construction, education—these need builders. Physical builders. System builders. Bridge builders.\n\nThe old bridges are broken. I'm building new ones. One simulation at a time.", altEmotion: 'determined' }
         ]
       }
     ],
@@ -1645,7 +1649,39 @@ Available Components:
         emotion: 'devastated',
         microAction: 'Their hands grip the edge of the table.',
         variation_id: 'vulnerability_v1',
-        richEffectContext: 'error'
+        richEffectContext: 'error',
+        patternReflection: [
+          {
+            pattern: 'analytical',
+            minLevel: 5,
+            altText: "You analyze systems. Maybe you can understand where my analysis failed.\n\nBuilding 7. I designed the safety training. Forty-two slides. Perfect compliance scores. The inspection data said we were safe.\n\nThree months later: Miguel Rodriguez, father of two, fell four stories.\n\nThe harness clip I trained him on wasn't rated for that angle. I analyzed the requirements. I didn't analyze the edge cases.\n\nMy training passed inspection. Miguel didn't pass the fall. The analytical mind that missed the one variable that mattered.",
+            altEmotion: 'analytical_devastation'
+          },
+          {
+            pattern: 'patience',
+            minLevel: 5,
+            altText: "You take your time. You're thorough. I wasn't.\n\nBuilding 7. I rushed the training design. Deadline pressure. Forty-two slides in three weeks. Perfect compliance scores. Inspection passed.\n\nThree months later: Miguel Rodriguez fell four stories.\n\nThe harness clip wasn't rated for that angle. If I'd taken more time. If I'd been more patient with the details.\n\nMy training passed inspection. Miguel didn't pass the fall. Patience could have saved him.",
+            altEmotion: 'regret_devastation'
+          },
+          {
+            pattern: 'exploring',
+            minLevel: 5,
+            altText: "You explore. You discover edge cases. I didn't.\n\nBuilding 7. I designed the safety training. Forty-two slides. I explored the standard scenarios. Inspection passed with flying colors.\n\nThree months later: Miguel Rodriguez fell four stories.\n\nThe harness clip I trained him on wasn't rated for that angle. An edge case I never explored. Territory I didn't map.\n\nMy training passed inspection. Miguel didn't pass the fall. The explorer who didn't chart the dangerous terrain.",
+            altEmotion: 'guilt_devastation'
+          },
+          {
+            pattern: 'helping',
+            minLevel: 5,
+            altText: "You help people. I tried to help people.\n\nBuilding 7. I designed the safety training to protect the crew. Forty-two slides. I wanted to keep them safe. Inspection passed.\n\nThree months later: Miguel Rodriguez, father of two, fell four stories.\n\nThe harness clip I trained him on wasn't rated for that angle. I tried to help. I got him killed instead.\n\nMy training passed inspection. Miguel didn't pass the fall. The helper who failed when it mattered most.",
+            altEmotion: 'devastated_guilt'
+          },
+          {
+            pattern: 'building',
+            minLevel: 5,
+            altText: "You build things. You construct systems. So did I.\n\nBuilding 7. I built the safety training for that crew. Forty-two slides. Perfect architecture. Compliance scores green. Inspection passed.\n\nThree months later: Miguel Rodriguez fell four stories.\n\nThe harness clip I trained him on wasn't rated for that angle. I built a system with a fatal flaw.\n\nMy training passed inspection. Miguel didn't pass the fall. The builder whose construction killed someone.",
+            altEmotion: 'builder_devastation'
+          }
+        ]
       }
     ],
     requiredState: {

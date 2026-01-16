@@ -23,12 +23,6 @@ export interface ComboProgress {
   unlockedAt?: number // Timestamp when unlocked (if tracked)
 }
 
-export interface UnlockedCombo {
-  combo: SkillCombo
-  unlocks: SkillComboUnlock[]
-  unlockedAt: number
-}
-
 /**
  * Detect all unlocked combos based on current skill levels
  *
@@ -117,80 +111,6 @@ export function getAllComboProgress(skillLevels: Record<string, number>): ComboP
       if (!a.isUnlocked && b.isUnlocked) return 1
       return b.overall - a.overall
     })
-}
-
-/**
- * Get combos that are "nearly unlocked" (80%+ progress but not yet complete)
- *
- * @param skillLevels - Record of skill names to levels (0-1 scale)
- * @returns Array of nearly-unlocked combo progress
- */
-export function getNearlyUnlockedCombos(skillLevels: Record<string, number>): ComboProgress[] {
-  return getAllComboProgress(skillLevels)
-    .filter(cp => !cp.isUnlocked && cp.overall >= 80)
-}
-
-/**
- * Get the dialogue unlocks available based on current combos
- *
- * @param skillLevels - Record of skill names to levels (0-1 scale)
- * @returns Array of dialogue IDs that are unlocked
- */
-export function getUnlockedDialogueIds(skillLevels: Record<string, number>): string[] {
-  const unlockedCombos = detectUnlockedCombos(skillLevels)
-
-  const dialogueIds: string[] = []
-  unlockedCombos.forEach(combo => {
-    combo.unlocks.forEach(unlock => {
-      if (unlock.type === 'dialogue') {
-        dialogueIds.push(unlock.id)
-      }
-    })
-  })
-
-  return [...new Set(dialogueIds)]
-}
-
-/**
- * Get all career unlocks from current combos
- *
- * @param skillLevels - Record of skill names to levels (0-1 scale)
- * @returns Array of career unlock descriptions
- */
-export function getUnlockedCareerPaths(skillLevels: Record<string, number>): SkillComboUnlock[] {
-  const unlockedCombos = detectUnlockedCombos(skillLevels)
-
-  const careers: SkillComboUnlock[] = []
-  unlockedCombos.forEach(combo => {
-    combo.unlocks.forEach(unlock => {
-      if (unlock.type === 'career') {
-        careers.push(unlock)
-      }
-    })
-  })
-
-  return careers
-}
-
-/**
- * Get all achievement unlocks from current combos
- *
- * @param skillLevels - Record of skill names to levels (0-1 scale)
- * @returns Array of achievement unlocks
- */
-export function getUnlockedAchievements(skillLevels: Record<string, number>): SkillComboUnlock[] {
-  const unlockedCombos = detectUnlockedCombos(skillLevels)
-
-  const achievements: SkillComboUnlock[] = []
-  unlockedCombos.forEach(combo => {
-    combo.unlocks.forEach(unlock => {
-      if (unlock.type === 'achievement') {
-        achievements.push(unlock)
-      }
-    })
-  })
-
-  return achievements
 }
 
 /**

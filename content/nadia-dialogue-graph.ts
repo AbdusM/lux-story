@@ -504,7 +504,9 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         patternReflection: [
           { pattern: 'helping', minLevel: 5, altText: "[Nadia stops arranging her equipment. Her hands are shaking slightly.]\n\nYou've been kind to me. Patient. That's why I'm telling you this.\n\nI still dream about the algorithm. Not nightmares—that would be easier. Beautiful, elegant code that I knew would hurt people. And I shipped it anyway.\n\nYou help people. But have you ever helped the wrong thing? Chosen beauty over safety?", altEmotion: 'vulnerable_warm' },
           { pattern: 'analytical', minLevel: 5, altText: "[Nadia stops arranging her equipment. Her hands are shaking slightly.]\n\nYou understand systems. I can tell. So maybe you'll understand this.\n\nI still dream about the algorithm. The logic was perfect. Elegant. And completely, knowingly harmful. And I shipped it because the beauty blinded me.\n\nDo you ever fear your analytical mind could lead you to the wrong conclusion?", altEmotion: 'vulnerable_knowing' },
-          { pattern: 'patience', minLevel: 5, altText: "[Nadia stops arranging her equipment. Her hands are shaking slightly.]\n\nYou've been so patient with me. Listening without judgment. That's rare.\n\nI still dream about the algorithm. Beautiful code I knew would hurt people. I shipped it anyway. Because it was too beautiful to stop.\n\nI don't know if I've changed, or if I'm still choosing wrong things for beautiful reasons.", altEmotion: 'vulnerable_terrified' }
+          { pattern: 'patience', minLevel: 5, altText: "[Nadia stops arranging her equipment. Her hands are shaking slightly.]\n\nYou've been so patient with me. Listening without judgment. That's rare.\n\nI still dream about the algorithm. Beautiful code I knew would hurt people. I shipped it anyway. Because it was too beautiful to stop.\n\nI don't know if I've changed, or if I'm still choosing wrong things for beautiful reasons.", altEmotion: 'vulnerable_terrified' },
+          { pattern: 'exploring', minLevel: 5, altText: "[Nadia stops arranging her equipment. Her hands are shaking slightly.]\n\nYou explore. You discover new territories. Maybe you understand this curiosity.\n\nI still dream about the algorithm. Exploring the code space, finding elegant solutions. And I knew—I knew—it would hurt people. But the discovery was too beautiful to stop.\n\nDo you ever fear your curiosity could lead you somewhere you shouldn't go? That exploring can reveal things better left undiscovered?", altEmotion: 'vulnerable_conflicted' },
+          { pattern: 'building', minLevel: 5, altText: "[Nadia stops arranging her equipment. Her hands are shaking slightly.]\n\nYou build things. You create. Maybe you'll understand this terror.\n\nI still dream about the algorithm. Building something beautiful, elegant, perfect. And I knew it would hurt people. But I couldn't stop building.\n\nDo you ever fear you could build something harmful? That your love for construction could blind you to what you're actually creating?", altEmotion: 'vulnerable_builder_terror' }
         ]
       }
     ],
@@ -1737,7 +1739,39 @@ Which path balances personal risk and moral responsibility?`,
       text: "You're right.\n\nI built this thing. I'm responsible for what it does, even if I didn't intend the harm.\n\nShut it down. Document the feedback loop. Report to the regulatory authorities. And accept that my career might be over.\n\nBecause some things are more important than my career. Like the 67% of people being flagged for crimes they never committed. Like the communities losing trust in institutions that are supposed to protect them.\n\nI thought I could change the system from inside. But the system doesn't want to change. It wants to optimize.\n\nSo I'm opting out. And if that means I lose everything I worked for... then at least I'll know I chose people over my own comfort.\n\nThank you. For seeing what needed to be done when I was too afraid to see it myself.",
       emotion: 'transformed_resolved',
       variation_id: 'phase3_success_v1',
-      richEffectContext: 'success'
+      richEffectContext: 'success',
+      patternReflection: [
+        {
+          pattern: 'analytical',
+          minLevel: 5,
+          altText: "You analyzed what I couldn't face.\n\nI built this. The data is clear: 67% false flags. Communities losing institutional trust. The system optimizes for itself, not people.\n\nShut it down. Document the loop. Report the findings. Accept the consequences.\n\nThank you. For showing me that analytical rigor means facing the conclusions—even when they cost everything.",
+          altEmotion: 'analytical_courage'
+        },
+        {
+          pattern: 'patience',
+          minLevel: 5,
+          altText: "You've been patient while I wrestled with this.\n\nI thought I could change the system from inside—if I just waited, built trust, worked slowly.\n\nBut some harms can't wait. 67% false flags. Real people. Real harm.\n\nShut it down now. Not later. Thank you for showing me that patience has limits—and harm demands immediate action.",
+          altEmotion: 'urgent_courage'
+        },
+        {
+          pattern: 'exploring',
+          minLevel: 5,
+          altText: "You helped me explore the path I was afraid to take.\n\nI explored optimization, efficiency, system improvement. But you showed me unexplored territory: whistleblowing, career loss, choosing people.\n\nShut it down. Document everything. Face the unknown consequences.\n\nThank you. For helping me explore courage when I only knew fear.",
+          altEmotion: 'explorer_courage'
+        },
+        {
+          pattern: 'helping',
+          minLevel: 5,
+          altText: "You helped me see who really needs help.\n\nI wanted to help the system work better. But the people being harmed—67% false flags, communities losing trust—they're who needs help.\n\nShut it down. Report the harm. Choose people over my comfort.\n\nThank you. For showing me that helping means protecting the vulnerable, not the system.",
+          altEmotion: 'helping_courage'
+        },
+        {
+          pattern: 'building',
+          minLevel: 5,
+          altText: "You showed me what's worth building.\n\nI built this algorithm. Beautiful code. Harmful output. I thought I could rebuild it from inside.\n\nBut some things shouldn't be fixed—they should be torn down. So others can build something better.\n\nShut it down. Accept the loss. Build credibility through honesty instead.\n\nThank you. For showing me that builders sometimes demolish their own work.",
+          altEmotion: 'builder_courage'
+        }
+      ]
     }],
     choices: [
       {

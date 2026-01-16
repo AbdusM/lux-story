@@ -562,7 +562,11 @@ const nodes: DialogueNode[] = [
       emotion: 'engaged',
       variation_id: 'trust_v1',
       patternReflection: [
-        { pattern: 'analytical', minLevel: 4, altText: "You think systematically. Good. Trust IS a system.\n\nResponse time, consistency, accuracy. These create baseline trust. But deep trust requires something more: vulnerability reciprocated.\n\nYou understand metrics. But do you understand what they cannot measure?", altEmotion: 'knowing' }
+        { pattern: 'analytical', minLevel: 4, altText: "You think systematically. Good. Trust IS a system.\n\nResponse time, consistency, accuracy. These create baseline trust. But deep trust requires something more: vulnerability reciprocated.\n\nYou understand metrics. But do you understand what they cannot measure?", altEmotion: 'knowing' },
+        { pattern: 'patience', minLevel: 4, altText: "Trust takes time. You seem to understand that.\n\nBaseline trust comes from consistency. Deep trust? That requires patience—waiting while someone decides if you're safe.\n\nIn healthcare, the best diagnoses came from patients who finally trusted enough to tell the truth.", altEmotion: 'reflective' },
+        { pattern: 'exploring', minLevel: 4, altText: "You're curious about trust. That's the first step.\n\nTrust isn't found—it's explored. You build it through questions asked carefully, boundaries respected, curiosity balanced with restraint.\n\nI measure trust by who returns. That tells me everything.", altEmotion: 'knowing' },
+        { pattern: 'helping', minLevel: 4, altText: "Trust is about care. You sense that, don't you?\n\nThe metrics matter—response time, consistency. But deep trust? That comes from people feeling cared for, not processed.\n\nIn healthcare, patients trusted us when they felt we saw them as people, not cases.", altEmotion: 'warm' },
+        { pattern: 'building', minLevel: 4, altText: "Trust is infrastructure. You build it, layer by layer.\n\nResponse time, consistency, accuracy—that's the foundation. Deep trust is the structure built on top: vulnerability reciprocated, mistakes admitted, care demonstrated.\n\nI measure trust by what people build on it.", altEmotion: 'knowing' }
       ]
     }],
     choices: [
@@ -1330,6 +1334,38 @@ WARNING: Response time > 48h`,
       microAction: 'His hands clench, then slowly release.',
       variation_id: 'vulnerability_v1',
       richEffectContext: 'error',
+      patternReflection: [
+        {
+          pattern: 'analytical',
+          minLevel: 5,
+          altText: "You analyze systems. Perhaps you can understand the variables I could not control.\n\nChildren's Hospital. Ransomware attack. I was lead security. I saw the phishing attempt three days before. I ran the analysis. Flagged the threat. Management: \"patch can wait until quarterly audit.\"\n\nLife support systems. Eighteen hours offline. Three children did not survive.\n\nI had the data. I had the analysis. I did not have the authority. The analytical mind that saw the danger but could not prevent it.",
+          altEmotion: 'analytical_haunted'
+        },
+        {
+          pattern: 'patience',
+          minLevel: 5,
+          altText: "You understand patience. The cost of waiting.\n\nChildren's Hospital. Ransomware attack. Lead security. I saw the phishing attempt three days before. I flagged it. Management: \"wait until quarterly audit.\"\n\nThree days. I was patient. I followed protocol. I waited for authorization.\n\nLife support systems. Eighteen hours offline. Three children did not survive the wait.\n\nPatience killed them. I should have acted without permission.",
+          altEmotion: 'regret_haunted'
+        },
+        {
+          pattern: 'exploring',
+          minLevel: 5,
+          altText: "You explore. You discover threats. I discovered one too.\n\nChildren's Hospital. Ransomware attack. Lead security. I explored the logs three days before. Found the phishing attempt. I showed them what I'd discovered. Management: \"wait until quarterly audit.\"\n\nLife support systems. Eighteen hours offline. Three children did not survive.\n\nI explored the threat. I mapped the danger. But I couldn't navigate the bureaucracy fast enough. The explorer who found the danger but couldn't prevent it.",
+          altEmotion: 'grief_haunted'
+        },
+        {
+          pattern: 'helping',
+          minLevel: 5,
+          altText: "You help people. I tried to help people.\n\nChildren's Hospital. I was there to protect them. Lead security. I saw the phishing attempt three days before. I wanted to help. I flagged it. Management: \"wait until quarterly audit.\"\n\nLife support systems. Eighteen hours offline. Three children did not survive.\n\nI was supposed to help. To protect. I could not prevent what I could not authorize. The helper who failed when children needed him most.",
+          altEmotion: 'devastated_haunted'
+        },
+        {
+          pattern: 'building',
+          minLevel: 5,
+          altText: "You build systems. I built security systems.\n\nChildren's Hospital. Ransomware attack. Lead security. I built the detection system. It worked. Saw the phishing attempt three days before. I flagged it. Management: \"patch can wait until quarterly audit.\"\n\nLife support systems. Eighteen hours offline. Three children did not survive.\n\nI built the warning system. It warned. But I couldn't build the authority to act. The builder whose construction worked perfectly—and failed completely.",
+          altEmotion: 'builder_haunted'
+        }
+      ],
       // E2-CHALLENGE: Opportunity to challenge his self-blame
       interrupt: {
         duration: 3500,

@@ -451,7 +451,39 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 text: "You asked why I do this. Why I spend nights in basements hunting for bias in datasets.\n\nThree years ago. I was a junior analyst at a healthcare company. We built a triage algorithm. It ranked patients by \"urgency.\" The dataset looked clean.\n\nI signed off on it. We deployed to twelve hospitals.\n\nSix months later, the study came back. The algorithm was systematically deprioritizing patients from low-income zip codes. Classifying them as \"low urgency\" even with the same symptoms.\n\nWe thought we were making healthcare more efficient. We were making it more biased.\n\nFourteen patients. Delayed treatment. Three didn't make it.\n\nAnd I signed the deployment approval.",
                 emotion: 'haunted_guilty',
                 variation_id: 'vulnerability_v1',
-                richEffectContext: 'warning'
+                richEffectContext: 'warning',
+                patternReflection: [
+                    {
+                        pattern: 'analytical',
+                        minLevel: 5,
+                        altText: "You analyze systems. Maybe you can understand where my analysis failed.\n\nThree years ago. Junior analyst at a healthcare company. We built a triage algorithm. Ranked patients by urgency. The data looked clean. All tests passed.\n\nI ran the validation. Numbers looked good. Statistical significance achieved. I signed off.\n\nSix months later: the algorithm was systematically deprioritizing low-income zip codes. Same symptoms, different urgency classification.\n\nWe optimized for efficiency. We encoded inequality.\n\nFourteen patients. Delayed treatment. Three didn't make it.\n\nI analyzed everything except the bias I couldn't see. The analytical mind that trusted clean data without questioning who was excluded from the training set.",
+                        altEmotion: 'analytical_horror'
+                    },
+                    {
+                        pattern: 'patience',
+                        minLevel: 5,
+                        altText: "You understand patience. The cost of rushing.\n\nThree years ago. Junior analyst. We built a triage algorithm. Fast development cycle. Ship it quickly.\n\nThe dataset looked clean. I had questions. But the deadline was tight. \"We can validate post-deployment,\" they said.\n\nI signed off. Twelve hospitals. Six months later: systematically deprioritizing low-income patients.\n\nFourteen patients. Delayed treatment. Three didn't make it.\n\nI rushed. I didn't take the time to ask the hard questions. To sit with the data long enough to see what it was hiding.\n\nPatience could have saved them. I chose speed instead.",
+                        altEmotion: 'regretful_guilt'
+                    },
+                    {
+                        pattern: 'exploring',
+                        minLevel: 5,
+                        altText: "You explore. You dig. Maybe you would have found what I missed.\n\nThree years ago. Junior analyst at a healthcare company. Triage algorithm. The dataset looked clean on the surface.\n\nI explored the validation metrics. I explored the accuracy rates. But I didn't explore the demographic distribution. Didn't map who the algorithm was actually seeing.\n\nSigned off. Twelve hospitals deployed.\n\nSix months later: the algorithm was deprioritizing low-income zip codes. The territory I never explored.\n\nFourteen patients. Delayed treatment. Three didn't make it.\n\nI explored the wrong landscape. Charted the metrics but missed the people. The explorer who didn't look deep enough.",
+                        altEmotion: 'haunted_guilty'
+                    },
+                    {
+                        pattern: 'helping',
+                        minLevel: 5,
+                        altText: "You help people. You care. Maybe you can understand how helping can harm.\n\nThree years ago. Junior analyst. We wanted to help. Make healthcare triage more efficient. Save more lives through better prioritization.\n\nThe algorithm looked promising. I thought I was helping hospitals serve more patients faster.\n\nI signed off. Twelve hospitals. We deployed our solution.\n\nSix months later: systematically deprioritizing low-income patients. Our \"efficiency\" was selective about who deserved urgent care.\n\nFourteen patients. Delayed treatment. Three didn't make it.\n\nI wanted to help. But I helped the system exclude the most vulnerable. The helper who caused harm through blind compassion.",
+                        altEmotion: 'devastated'
+                    },
+                    {
+                        pattern: 'building',
+                        minLevel: 5,
+                        altText: "You build things. You understand construction. Maybe you can see what I built wrong.\n\nThree years ago. Junior analyst. We built a triage algorithm. Beautiful architecture. Elegant classification logic. The system was clean.\n\nI built the validation framework. All tests green. I signed off on the build.\n\nTwelve hospitals. We deployed our infrastructure.\n\nSix months later: the foundation was rotten. Systematically deprioritizing low-income zip codes. The algorithm I built was structurally biased.\n\nFourteen patients. Delayed treatment. Three didn't make it.\n\nI built efficiency. But I built it on inequality. The builder who constructed harm into the architecture.",
+                        altEmotion: 'guilt_shame'
+                    }
+                ]
             }
         ],
         requiredState: {
@@ -609,7 +641,11 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 emotion: 'determined',
                 variation_id: 'step_three_v1',
                 patternReflection: [
-                    { pattern: 'analytical', minLevel: 4, altText: "Step three: Test the failures.\n\nYou think like this too, don't you? Looking for where the model breaks, not just where it works.\n\nWhen errors cluster around certain demographics. That's not noise. That's signal.\n\nYou'd be good at this work. You already ask the right questions.", altEmotion: 'knowing' }
+                    { pattern: 'analytical', minLevel: 4, altText: "Step three: Test the failures.\n\nYou think like this too, don't you? Looking for where the model breaks, not just where it works.\n\nWhen errors cluster around certain demographics. That's not noise. That's signal.\n\nYou'd be good at this work. You already ask the right questions.", altEmotion: 'knowing' },
+                    { pattern: 'patience', minLevel: 4, altText: "Step three: Test the failures. Take your time with them.\n\nYou understand waiting—watching patterns emerge over time. Rushing past the error analysis misses everything.\n\nThe 15% who suffer? They deserve someone who'll slow down and see them.", altEmotion: 'determined' },
+                    { pattern: 'exploring', minLevel: 4, altText: "Step three: Test the failures. Explore where things go wrong.\n\nYou're curious enough to dig into the uncomfortable places. Most people accept '85% accuracy' and move on.\n\nYou'd want to know who's in that 15%. That's the right instinct.", altEmotion: 'knowing' },
+                    { pattern: 'helping', minLevel: 4, altText: "Step three: Test the failures. Ask who gets hurt.\n\nYou care about the impact, not just the metrics. When errors cluster around certain people, that's not statistics—that's harm.\n\nStep four is about voice. You already have that instinct.", altEmotion: 'warm' },
+                    { pattern: 'building', minLevel: 4, altText: "Step three: Test the failures. Check the foundation.\n\nYou build things—you know the importance of stress-testing. When the structure fails, who's underneath?\n\nAn 85% accuracy rate means 15% are on unstable ground. You'd check before building higher.", altEmotion: 'knowing' }
                 ]
             }
         ],
@@ -914,7 +950,11 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 emotion: 'analytical',
                 variation_id: 'detection_v1',
                 patternReflection: [
-                    { pattern: 'analytical', minLevel: 5, altText: "You already know most of this, don't you?\n\nDisparate impact. Feature importance. Counterfactual testing.\n\nBut here's where it gets interesting. The technical detection is actually the easy part. The hard part is what to do with what you find. That's philosophy, not statistics.\n\nAnd I think you get that.", altEmotion: 'respectful' }
+                    { pattern: 'analytical', minLevel: 5, altText: "You already know most of this, don't you?\n\nDisparate impact. Feature importance. Counterfactual testing.\n\nBut here's where it gets interesting. The technical detection is actually the easy part. The hard part is what to do with what you find. That's philosophy, not statistics.\n\nAnd I think you get that.", altEmotion: 'respectful' },
+                    { pattern: 'patience', minLevel: 5, altText: "Detection takes time. These methods aren't instant.\n\nYou understand patience—running the analysis properly, sitting with the uncomfortable results.\n\nThe easy part is finding the bias. The hard part is what comes after. That takes even more patience.", altEmotion: 'knowing' },
+                    { pattern: 'exploring', minLevel: 5, altText: "You're curious about the methods. Good.\n\nDisparate impact, feature importance, counterfactual testing—each one opens new questions.\n\nBut the real exploration happens when you ask: what do we do with what we find? That's uncharted territory.", altEmotion: 'engaged' },
+                    { pattern: 'helping', minLevel: 5, altText: "You want to help. I can see it.\n\nThese methods—disparate impact, counterfactual testing—they're tools for protecting people.\n\nBut the hardest part isn't detection. It's advocacy. Convincing people to act on what you find.", altEmotion: 'warm' },
+                    { pattern: 'building', minLevel: 5, altText: "You think like a builder. These methods are foundation work.\n\nDisparate impact, feature importance, counterfactual testing—you can't build fair systems without them.\n\nBut the real construction is what comes after detection. Building something better.", altEmotion: 'knowing' }
                 ]
             }
         ],

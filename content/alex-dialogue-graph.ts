@@ -1667,7 +1667,39 @@ export const alexDialogueNodes: DialogueNode[] = [
         emotion: 'haunted_guilty',
         variation_id: 'vulnerability_v1',
         richEffectContext: 'warning',
-        useChatPacing: true
+        useChatPacing: true,
+        patternReflection: [
+          {
+            pattern: 'analytical',
+            minLevel: 5,
+            altText: "You think in systems. You'd understand this.\n\nMaria. Single mom. Cashed out 401k for bootcamp. The data said it was a safe bet - 87% placement rate, we told her.\n\nSix months later: zero callbacks. The statistics didn't account for ageism, childcare conflicts, networking gaps.\n\nHer last message: \"The numbers made it sound so certain.\"\n\nThey did. Because I believed the data without questioning what it was measuring.",
+            altEmotion: 'analytical_guilt'
+          },
+          {
+            pattern: 'helping',
+            minLevel: 5,
+            altText: "You care about people. That's why I'm telling you this.\n\nMaria. Single mom. Cashed out 401k for bootcamp. I told her she was doing the right thing - because I wanted to help her change her life.\n\nSix months after graduation. Zero callbacks. Moved back with parents. Gave up on tech.\n\nHer last message: \"You made it sound so possible.\"\n\nI did. Because I thought helping meant being optimistic. I was wrong.",
+            altEmotion: 'caring_guilt'
+          },
+          {
+            pattern: 'building',
+            minLevel: 5,
+            altText: "You build things. You understand investment.\n\nMaria. Single mom. Cashed out 401k - her entire foundation - for bootcamp. I told her she was building toward something real.\n\nSix months later. Zero callbacks. Everything she'd built toward... collapsed.\n\nHer last message: \"You made it sound like solid ground.\"\n\nI did. Because I'd built my career on that ground. Didn't realize it wasn't stable for everyone.",
+            altEmotion: 'builder_guilt'
+          },
+          {
+            pattern: 'patience',
+            minLevel: 5,
+            altText: "You wait. You don't rush. I didn't give Maria that.\n\nSingle mom. Cashed out 401k for bootcamp. I told her the fast track was possible - six months to a new career.\n\nSix months after graduation. Zero callbacks. She needed time I told her she didn't have.\n\nHer last message: \"You made it sound like the quick path was the only path.\"\n\nI did. Because I was impatient. For her success. For my numbers.",
+            altEmotion: 'regretful'
+          },
+          {
+            pattern: 'exploring',
+            minLevel: 5,
+            altText: "You explore before committing. Maria didn't get that chance.\n\nSingle mom. Cashed out 401k for bootcamp. I sold her a single path - my path - as the only way forward.\n\nSix months later. Zero callbacks. No other options explored. All her resources committed to one route that failed.\n\nHer last message: \"You made it sound like there was only one door.\"\n\nI did. Because I hadn't explored other doors myself. Just the one I walked through.",
+            altEmotion: 'exploration_guilt'
+          }
+        ]
       }
     ],
     choices: [

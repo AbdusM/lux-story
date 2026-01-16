@@ -1371,7 +1371,39 @@ export const liraDialogueNodes: DialogueNode[] = [
                 text: "Can I tell you something? About why I chose this project?\n\nMy grandmother was a pianist. Concert level. She could play Chopin from memory at seventy.\n\nThen she started forgetting. Not the music at first. Just names, faces. But then... piece by piece...\n\nThe last time I visited, she sat at the piano. Her hands moved to a melody I'd never heard. She was trying to play something. Trying so hard. But the notes kept... scattering.\n\nThat's what forgetting sounds like. A song trying to remember itself.\n\nThat's what I'm trying to capture. Not sadness. Memory unraveling.",
                 emotion: 'grieving_vulnerable',
                 variation_id: 'vulnerability_v1',
-                richEffectContext: 'warning'
+                richEffectContext: 'warning',
+                patternReflection: [
+                    {
+                        pattern: 'analytical',
+                        minLevel: 5,
+                        altText: "You analyze patterns. Maybe you can understand this pattern.\n\nMy grandmother was a pianist. Concert level. Chopin, Bach, Debussy - perfect recall at seventy.\n\nThen the neural pathways started degrading. Not the music at first. Just names, faces. Pattern recognition failing. But then... piece by piece...\n\nThe last time I visited, she sat at the piano. Her motor memory intact but the melody incomplete. Trying to reconstruct something her brain could no longer hold.\n\nThat's the data of forgetting. A neural network trying to remember its own architecture.\n\nThat's what I'm trying to capture. Not emotion. The mathematics of memory decay.",
+                        altEmotion: 'analytical_grief'
+                    },
+                    {
+                        pattern: 'helping',
+                        minLevel: 5,
+                        altText: "You care about people. You'd understand why this matters.\n\nMy grandmother was a pianist. Concert level. She brought joy through music for seventy years.\n\nThen she started forgetting. Not the music at first. Just the people she'd played for. But then... piece by piece...\n\nThe last time I visited, she sat at the piano. Trying so hard to give the gift she'd always given. But the notes kept failing her.\n\nThat's what forgetting takes. Not just memory. The ability to help, to give, to share yourself.\n\nThat's what I'm trying to capture. What it feels like to lose the ability to give what you once gave so freely.",
+                        altEmotion: 'empathy_grief'
+                    },
+                    {
+                        pattern: 'building',
+                        minLevel: 5,
+                        altText: "You build things. You understand what it means to watch something you built fall apart.\n\nMy grandmother was a pianist. Concert level. She'd built a lifetime of mastery - seventy years of technique and memory.\n\nThen the foundation started crumbling. Not the music at first. Just names, faces. But then... piece by piece, everything she'd constructed...\n\nThe last time I visited, she sat at the piano. Her hands knew the architecture, but the structure was collapsing. Trying to rebuild a melody from fragments.\n\nThat's what forgetting dismantles. Everything you've built.\n\nThat's what I'm trying to capture. A life's work unbuilding itself.",
+                        altEmotion: 'builder_grief'
+                    },
+                    {
+                        pattern: 'patience',
+                        minLevel: 5,
+                        altText: "You're patient. You wait. She ran out of time.\n\nMy grandmother was a pianist. Concert level. She'd taken seventy years to perfect her art.\n\nThen time started taking it back. Not the music at first. Just names, faces. But then... piece by piece, all those patient years of practice...\n\nThe last time I visited, she sat at the piano. No time left to relearn what she'd forgotten. Trying to play something she once knew, but time had erased it.\n\nThat's what forgetting steals. Time. The patient accumulation of a lifetime.\n\nThat's what I'm trying to capture. A lifetime of patience, unraveling.",
+                        altEmotion: 'temporal_grief'
+                    },
+                    {
+                        pattern: 'exploring',
+                        minLevel: 5,
+                        altText: "You explore. You discover. She kept losing what she'd discovered.\n\nMy grandmother was a pianist. Concert level. She'd explored every corner of classical repertoire - seventy years of musical discovery.\n\nThen she started forgetting. Not the music at first. Just names, faces. But then... piece by piece, all the territory she'd mapped...\n\nThe last time I visited, she sat at the piano. Lost in music that was once familiar. Trying to find her way back to melodies she'd discovered decades ago.\n\nThat's what forgetting erases. The map. All the paths you've explored.\n\nThat's what I'm trying to capture. A lifetime of discovery, becoming unknown again.",
+                        altEmotion: 'explorer_grief'
+                    }
+                ]
             }
         ],
         requiredState: {

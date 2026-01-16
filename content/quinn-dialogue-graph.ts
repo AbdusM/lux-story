@@ -192,7 +192,11 @@ export const quinnDialogueNodes: DialogueNode[] = [
           patience: "Heavy.\n\n*Quinn sits with it.*\n\nI had a penthouse overlooking Central Park. A car service. A tailor who knew my measurements. I was building wealth fast.\n\nBut I was also drinking alone at 2 AM, wondering why years of accumulation felt empty. Why speed left me nowhere."
         },
         patternReflection: [
-          { pattern: 'helping', minLevel: 5, altText: "Heavy.\n\n*Quinn's guard drops slightly.*\n\nI had everything the brochure promised. But I couldn't call anyone at 2 AM who wasn't paid to take my call. I was building wealth, but I wasn't building... anything that would last.", altEmotion: 'vulnerable' }
+          { pattern: 'helping', minLevel: 5, altText: "Heavy.\n\n*Quinn's guard drops slightly.*\n\nI had everything the brochure promised. But I couldn't call anyone at 2 AM who wasn't paid to take my call. I was building wealth, but I wasn't building... anything that would last.", altEmotion: 'vulnerable' },
+          { pattern: 'analytical', minLevel: 5, altText: "Heavy.\n\nI had a penthouse, optimal metrics across every financial benchmark. But the happiness correlation inverted.\n\nDrinking alone at 2 AM, analyzing why the model failed. Wealth accumulated; meaning returned null.", altEmotion: 'matter_of_fact' },
+          { pattern: 'patience', minLevel: 5, altText: "Heavy.\n\nI had everything speed could buy. Penthouse. Car service. Instant gratification.\n\nBut I was also drinking alone at 2 AM, finally slow enough to realize I'd raced past everything that mattered.", altEmotion: 'reflective' },
+          { pattern: 'exploring', minLevel: 5, altText: "Heavy.\n\nI had explored every territory wealth could open. Penthouse views. Exclusive circles.\n\nBut at 2 AM, drinking alone, I realized I'd mapped the wrong continent entirely.", altEmotion: 'searching' },
+          { pattern: 'building', minLevel: 5, altText: "Heavy.\n\nI built everything the plan required. Penthouse. Portfolio. Perfect on paper.\n\nBut at 2 AM, drinking alone, I realized the structure was hollow. I'd built walls, not a home.", altEmotion: 'honest' }
         ]
       }
     ],
@@ -247,7 +251,11 @@ export const quinnDialogueNodes: DialogueNode[] = [
           patience: "Birmingham.\n\n*Quinn's eyes rest on a faded photo.*\n\nMy grandmother never left. Born in Titusville, died in Titusville. Never made more than $40,000 a year. Lived 87 years of contentment.\n\nI made more in a week than she made in a decade. But she accumulated something I raced past. I came back to slow down and learn what time taught her."
         },
         patternReflection: [
-          { pattern: 'exploring', minLevel: 4, altText: "Birmingham.\n\nMy grandmother never left this city. Never chased the bigger markets, never 'optimized' her life. She just... lived it. Fully.\n\nI made more in a week than she made in a decade. But she knew something I didn't. I came back to learn what she knew.", altEmotion: 'curious_humble' }
+          { pattern: 'exploring', minLevel: 4, altText: "Birmingham.\n\nMy grandmother never left this city. Never chased the bigger markets, never 'optimized' her life. She just... lived it. Fully.\n\nI made more in a week than she made in a decade. But she knew something I didn't. I came back to learn what she knew.", altEmotion: 'curious_humble' },
+          { pattern: 'analytical', minLevel: 4, altText: "Birmingham.\n\nMy grandmother's data: $40k annual income, zero mobility, 87 years of life satisfaction. The metrics don't compute.\n\nI made more in a week than she made in a decade. But her formula worked. I came back to reverse-engineer it.", altEmotion: 'puzzled_respectful' },
+          { pattern: 'patience', minLevel: 4, altText: "Birmingham.\n\nMy grandmother never rushed anywhere. Born here, died here. Took 87 years to live a full life.\n\nI made more in a week than she made in a decade. But she had time for everyone. I came back to learn what slowness taught her.", altEmotion: 'reflective' },
+          { pattern: 'helping', minLevel: 4, altText: "Birmingham.\n\nMy grandmother spent her life caring for others. Neighbors, family, church. Never accumulated much except love.\n\nI made more in a week than she made in a decade. But people showed up when she needed them. I came back to learn how she built that.", altEmotion: 'tender' },
+          { pattern: 'building', minLevel: 4, altText: "Birmingham.\n\nMy grandmother built something without money. Community. Trust. A legacy that outlived her savings.\n\nI made more in a week than she made in a decade. But what I built was fragile. Hers still stands. I came back to learn her architecture.", altEmotion: 'humble' }
         ]
       }
     ],
@@ -298,7 +306,11 @@ export const quinnDialogueNodes: DialogueNode[] = [
         text: "*Quinn studies you for a long moment.*\n\nMost people rush to fill silence with advice. You didn't.\n\nThat's rare. Especially in finance, where everyone's got a hot take and no one listens.",
         emotion: 'appreciative',
         patternReflection: [
-          { pattern: 'patience', minLevel: 4, altText: "*Quinn's posture relaxes slightly.*\n\nYou know how to hold space. That's not a skill they teach in business school.\n\nWhen I was on Wall Street, every second of silence felt like lost opportunity. Now I know—some of the best decisions come from the spaces between words.", altEmotion: 'warm_reflective' }
+          { pattern: 'patience', minLevel: 4, altText: "*Quinn's posture relaxes slightly.*\n\nYou know how to hold space. That's not a skill they teach in business school.\n\nWhen I was on Wall Street, every second of silence felt like lost opportunity. Now I know—some of the best decisions come from the spaces between words.", altEmotion: 'warm_reflective' },
+          { pattern: 'analytical', minLevel: 4, altText: "*Quinn observes you carefully.*\n\nYou're analyzing, not filling. Collecting data instead of projecting it.\n\nOn Wall Street, everyone talked past each other. The ones who listened saw the patterns others missed.", altEmotion: 'appreciative' },
+          { pattern: 'exploring', minLevel: 4, altText: "*Quinn's expression shifts.*\n\nYou're curious enough to wait. To see what unfolds without forcing it.\n\nMost people want answers immediately. Explorers know the best discoveries come from patience.", altEmotion: 'warm' },
+          { pattern: 'helping', minLevel: 4, altText: "*Quinn's guard lowers.*\n\nYou gave me space. That's care disguised as nothing.\n\nIn finance, everyone wants to help by giving advice. You helped by just... being here.", altEmotion: 'touched' },
+          { pattern: 'building', minLevel: 4, altText: "*Quinn nods slowly.*\n\nSilence is foundation work. You can't build trust on noise.\n\nThe best structures need quiet moments. You seem to understand that.", altEmotion: 'respectful' }
         ]
       }
     ],
@@ -608,7 +620,10 @@ export const quinnDialogueNodes: DialogueNode[] = [
         variation_id: 'quinn_v11',
         patternReflection: [
           { pattern: 'helping', minLevel: 6, altText: "*Quinn's hands are shaking slightly as he holds the clipping.*\n\nOne of those 400 people was Marcus. My cousin. The one who used to help me with homework when I was a kid.\n\nI destroyed his career with an algorithm. He trusted me, and I turned him into a number.", altEmotion: 'grief' },
-          { pattern: 'analytical', minLevel: 6, altText: "*Quinn's voice is flat, controlled.*\n\nI ran the numbers 47 times. Looking for a way the model was wrong. It wasn't wrong. It was exactly right.\n\nMarcus was inefficient by every metric that mattered. The model said cut him. I said cut him.\n\nI was the one who was wrong.", altEmotion: 'shame' }
+          { pattern: 'analytical', minLevel: 6, altText: "*Quinn's voice is flat, controlled.*\n\nI ran the numbers 47 times. Looking for a way the model was wrong. It wasn't wrong. It was exactly right.\n\nMarcus was inefficient by every metric that mattered. The model said cut him. I said cut him.\n\nI was the one who was wrong.", altEmotion: 'shame' },
+          { pattern: 'patience', minLevel: 6, altText: "*Quinn's breathing is slow, deliberate. He's been carrying this a long time.*\n\nYou take your time with decisions. I should have too.\n\nI rushed the optimization. 'Move fast, maximize efficiency.' Didn't pause to ask who the efficiency was for.\n\nMarcus lost his job. And I lost years wondering if patience would have found a different answer.", altEmotion: 'regret' },
+          { pattern: 'exploring', minLevel: 6, altText: "*Quinn traces the edge of the clipping. Mapping old territory.*\n\nYou explore options. I stopped exploring.\n\nI found one path—'optimize labor costs'—and I followed it. Didn't explore alternatives. Didn't map what else was possible.\n\nMarcus was collateral to my lack of curiosity. The explorer who only charted one route.", altEmotion: 'shame_regret' },
+          { pattern: 'building', minLevel: 6, altText: "*Quinn's hands are trembling. The clipping is worn from years of holding.*\n\nYou build things. I built something that destroyed.\n\nI built an algorithm. Clean code. Elegant logic. And it dismantled 400 careers. Including Marcus's.\n\nI've been trying to rebuild what I tore down. But you can't rebuild trust with efficiency metrics.", altEmotion: 'builder_shame' }
         ]
       }
     ],
@@ -1791,7 +1806,11 @@ export const quinnDialogueNodes: DialogueNode[] = [
         text: "*Quinn pauses, slightly surprised.*\n\nMost people want the simulation. The teaching. They want what I can do for them.\n\nYou want to know who I am first. That's... that's the right instinct.",
         emotion: 'touched',
         patternReflection: [
-          { pattern: 'helping', minLevel: 4, altText: "*Quinn's expression softens.*\n\nYou care about people before their credentials. That's rare in any industry, but especially in finance.\n\nAsk me anything. I'm an open book today.", altEmotion: 'warm' }
+          { pattern: 'helping', minLevel: 4, altText: "*Quinn's expression softens.*\n\nYou care about people before their credentials. That's rare in any industry, but especially in finance.\n\nAsk me anything. I'm an open book today.", altEmotion: 'warm' },
+          { pattern: 'analytical', minLevel: 4, altText: "*Quinn tilts his head.*\n\nMost people optimize for immediate utility. You're gathering context first.\n\nThat's actually the smarter approach. Understanding the person behind the knowledge.", altEmotion: 'intrigued' },
+          { pattern: 'patience', minLevel: 4, altText: "*Quinn's pace slows.*\n\nYou're not rushing to the value. You're taking time to understand.\n\nIn my world, everyone wanted the shortcut. You want the full journey.", altEmotion: 'appreciative' },
+          { pattern: 'exploring', minLevel: 4, altText: "*Quinn's eyes light up slightly.*\n\nYou're curious about the person, not just the skills. Most people skip straight to 'what can you teach me?'\n\nI like that. Discovery over transaction.", altEmotion: 'warm' },
+          { pattern: 'building', minLevel: 4, altText: "*Quinn nods slowly.*\n\nYou're laying foundation before construction. Understanding me before building on my expertise.\n\nThat's how you build relationships that last.", altEmotion: 'respectful' }
         ]
       }
     ],
