@@ -20,6 +20,7 @@ import { SimulationsArchive } from "./SimulationsArchive"
 import { SimulationGodView } from "./journal/SimulationGodView"
 import { OpportunitiesView } from "./journal/OpportunitiesView"
 import { CareerRecommendationsView } from "./journal/CareerRecommendationsView"
+import { SkillCombosView } from "./journal/SkillCombosView"
 import { OrbDetailPanel } from "./OrbDetailPanel"
 import { CognitionView } from "./CognitionView"
 import { PatternType } from "@/lib/patterns"
@@ -32,7 +33,7 @@ interface JournalProps {
   onClose: () => void
 }
 
-type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'toolkit' | 'simulations' | 'cognition' | 'analysis' | 'god_mode' | 'opportunities' | 'careers'
+type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'toolkit' | 'simulations' | 'cognition' | 'analysis' | 'god_mode' | 'opportunities' | 'careers' | 'combos'
 
 const tabContentVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -78,6 +79,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const hasCognitionData = skills.length > 0 && !viewedTabs.has('cognition')
   const hasNewOpportunities = !viewedTabs.has('opportunities') // Simple new indicator for now
   const hasNewCareers = skills.length > 0 && !viewedTabs.has('careers') // Show badge when skills exist
+  const hasNewCombos = skills.length > 0 && !viewedTabs.has('combos') // Show badge when skills exist
 
   // Mark tab as viewed when selected
   const handleTabSelect = (tabId: TabId) => {
@@ -102,7 +104,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     analysis: hasAnalysisData,
     god_mode: false,
     opportunities: hasNewOpportunities,
-    careers: hasNewCareers
+    careers: hasNewCareers,
+    combos: hasNewCombos
   }
 
 
@@ -121,6 +124,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     { id: 'essence', label: 'Essence', icon: Compass },
     { id: 'mastery', label: 'Mastery', icon: Crown },
     { id: 'careers', label: 'Careers', icon: TrendingUp },
+    { id: 'combos', label: 'Combos', icon: Zap },
     { id: 'opportunities', label: 'Opportunities', icon: Building2 },
     { id: 'mind', label: 'Mind', icon: TrendingUp },
     { id: 'toolkit', label: 'Toolkit', icon: Cpu },
@@ -305,6 +309,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                     {activeTab === 'analysis' && <NarrativeAnalysisDisplay />}
                     {activeTab === 'opportunities' && <OpportunitiesView />}
                     {activeTab === 'careers' && <CareerRecommendationsView />}
+                    {activeTab === 'combos' && <SkillCombosView />}
                     {activeTab === 'god_mode' && <SimulationGodView onClose={onClose} />}
                   </motion.div>
                 )}
