@@ -2758,6 +2758,43 @@ ALTERNATIVES:
   },
 
   // ═══════════════════════════════════════════════════════════════
+  // SKILL COMBO UNLOCK - Financial Mentor
+  // ═══════════════════════════════════════════════════════════════
+  {
+    nodeId: 'quinn_wealth_wisdom',
+    requiredState: {
+      requiredCombos: ['financial_mentor']
+    },
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "You know what makes a real mentor in finance?\n\nIt's not the biggest portfolio or the fastest trades. It's knowing that wealth without relationships is just numbers on a screen. And that relationships without wisdom become codependency.\n\nA financial mentor has to see both—the math AND the person. Financial literacy opens the door. But emotional intelligence teaches you when to stop knocking.",
+      emotion: 'sincere',
+      variation_id: 'wealth_wisdom_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'quinn_mentor_apply',
+        text: "How do you balance both in advising others?",
+        nextNodeId: 'quinn_mentor_balance',
+        pattern: 'helping',
+        skills: ['financialLiteracy', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'quinn',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'quinn_mentor_teach',
+        text: "That's what you're doing here, isn't it?",
+        nextNodeId: 'quinn_mentor_action',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      }
+    ],
+    tags: ['skill_combo_unlock', 'financial_mentor', 'quinn_wisdom']
+  },
+
+  // ═══════════════════════════════════════════════════════════════
   // STUB NODES - Fix broken navigation
   // ═══════════════════════════════════════════════════════════════
 
@@ -2779,7 +2816,9 @@ ALTERNATIVES:
   { nodeId: 'quinn_teaching_offer', speaker: 'Quinn Rivera', content: [{ text: "I could teach you more. Financial literacy isn't taught because it's dangerous—to the people who profit from confusion.", emotion: 'serious', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "I'd like to learn.", nextNodeId: 'quinn_hub_return', pattern: 'exploring' }], tags: ['stub'] },
   { nodeId: 'quinn_titusville_history', speaker: 'Quinn Rivera', content: [{ text: "Titusville. Where I grew up. First Black neighborhood in Birmingham. History in every street. That's what I'm fighting for.", emotion: 'proud', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Fighting for history.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] },
   { nodeId: 'quinn_what_changed', speaker: 'Quinn Rivera', content: [{ text: "What changed me? Seeing the spreadsheets. The actual numbers showing how wealth flows away from people who need it most.", emotion: 'troubled', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "The numbers don't lie.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'quinn_why_understand', speaker: 'Quinn Rivera', content: [{ text: "Understanding why matters more than knowing what. The what changes. The why reveals the system underneath.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Seeing the system.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] }
+  { nodeId: 'quinn_why_understand', speaker: 'Quinn Rivera', content: [{ text: "Understanding why matters more than knowing what. The what changes. The why reveals the system underneath.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Seeing the system.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] },
+  { nodeId: 'quinn_mentor_balance', speaker: 'Quinn Almeida', content: [{ text: "I listen more than I advise. Financial numbers are just one language. People speak in hopes and fears too. A good mentor translates between both.", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Both languages matter.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] },
+  { nodeId: 'quinn_mentor_action', speaker: 'Quinn Almeida', content: [{ text: "That's exactly what I'm doing. Teaching the numbers, yes. But also showing you that behind every number is a person who deserves respect.", emotion: 'confident', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "People over numbers.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] }
 ]
 
 // Entry points for navigation

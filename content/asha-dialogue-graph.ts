@@ -2598,6 +2598,38 @@ YOUR RESPONSE OPTIONS:
             }
         ],
         tags: ['asha_arc', 'trust_recovery', 'restored']
+    },
+
+    // ===== SKILL COMBO UNLOCK NODE: Cultural Bridge =====
+    // Requires: cultural_bridge combo (emotionalIntelligence + communication)
+    {
+        nodeId: 'asha_mediation_master',
+        speaker: 'Asha Patel',
+        requiredState: {
+            requiredCombos: ['cultural_bridge']
+        },
+        content: [{
+            text: "You know what my grandmother taught me that took years to understand?\n\nConflict lives in the spaces between people. In the words we can't quite say. In the cultures we carry without naming them.\n\nWhen you learn to speak to someone's heart—not just their mind—when you honor where they come from while holding space for where they're going... that's when resolution becomes real.\n\nIt's not about winning the argument. It's about building the bridge strong enough for both of you.",
+            emotion: 'warm',
+            variation_id: 'mediation_master_v1'
+        }],
+        choices: [
+            {
+                choiceId: 'mediation_deepen_practice',
+                text: "How do you learn to read those unspoken spaces?",
+                nextNodeId: 'asha_artistic_process',
+                pattern: 'exploring',
+                skills: ['emotionalIntelligence', 'communication']
+            },
+            {
+                choiceId: 'mediation_apply_bridge',
+                text: "I want to build bridges like that too.",
+                nextNodeId: 'asha_hub_return',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence', 'communication']
+            }
+        ],
+        tags: ['skill_combo_unlock', 'cultural_bridge', 'asha_wisdom']
     }
 ]
 

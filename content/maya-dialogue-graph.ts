@@ -4062,6 +4062,45 @@ MISSION: Stabilize the wave form within safety limits.`,
       }
     ],
     tags: ['trust_recovery', 'maya_arc', 'fresh_start']
+  },
+
+  {
+    nodeId: 'maya_rohan_crossover',
+    speaker: 'Maya Chen',
+    requiredState: {
+      requiredCombos: ['innovation_catalyst']
+    },
+    content: [
+      {
+        text: "I've been thinking about what Rohan said—about how the best ideas come from weird intersections.\n\nI used to think innovation meant choosing between being technical OR creative. But that's not it at all.\n\nIt's about being both. And knowing when to switch between them. That's the real skill—not the tools or the code, but the rhythm of creative thinking combined with technical rigor.\n\nI feel like I'm actually starting to understand how to build things that matter now.",
+        emotion: 'inspired',
+        variation_id: 'innovation_catalyst_v1',
+        voiceVariations: {
+          analytical: "The data is interesting here. Rohan's insight about intersectional thinking—it's actually a known pattern in innovation research. The best breakthroughs happen at the collision of different disciplines.\n\nI'm starting to see how my technical skills and creative instincts aren't contradictions. They're a toolkit. And knowing which tool to use when—that's the real mastery.",
+          building: "Rohan made me realize something: the things I want to build aren't just code projects. They're solutions at the intersection of what's possible and what matters.\n\nTechnical skill gives you the power. Creative thinking gives you the direction. Together? That's how you actually build things that change things.",
+          helping: "What struck me about Rohan's perspective is how it centers on impact. Not just being clever, but being clever in service of something that helps people.\n\nI've spent so much energy proving I'm capable. But capability means nothing if you don't use it to actually help. The innovation catalyst isn't about being the smartest. It's about being purposefully creative.",
+          exploring: "Rohan's way of thinking opened up something new. The intersection of creativity and technical depth—I want to explore that space more.\n\nIt's not about choosing between art and science. It's about discovering what happens at the boundary where they meet. That's where the real innovation lives.",
+          patience: "Rohan helped me understand that the best ideas need time. Not just to code, but to think.\n\nCreative breakthroughs mixed with technical rigor—that can't be rushed. You need the patience to let ideas develop, test them methodically, refine them.\n\nI'm learning to sit with uncertainty while I build."
+        }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'innovation_continue_passion',
+        text: "I want to tell you more about what I want to build.",
+        nextNodeId: 'maya_robotics_passion',
+        pattern: 'exploring',
+        skills: ['creativity', 'technicalLiteracy', 'visionaryThinking']
+      },
+      {
+        choiceId: 'innovation_face_pressure',
+        text: "How do I balance this with what my parents expect?",
+        nextNodeId: 'maya_family_pressure',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      }
+    ],
+    tags: ['skill_combo_unlock', 'innovation_catalyst', 'maya_wisdom']
   }
 ]
 

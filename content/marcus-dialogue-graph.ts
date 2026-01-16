@@ -3069,6 +3069,38 @@ WARNING: Response time > 48h`,
       }
     ],
     tags: ['trust_recovery', 'marcus_arc', 'fresh_start']
+  },
+
+  // ===== SKILL COMBO UNLOCK NODE: Technical Storyteller =====
+  // Requires: technical_storyteller combo (technicalLiteracy + communication)
+  {
+    nodeId: 'marcus_translation_master',
+    speaker: 'Marcus Chen',
+    requiredState: {
+      requiredCombos: ['technical_storyteller']
+    },
+    content: [{
+      text: "You know what separates good healthcare from great healthcare?\n\nIt's not just knowing the medicine. It's being able to explain it so a scared patient at 3 AM actually understands what's happening to them.\n\nYou've got both—the technical depth and the human touch. That's rare.\n\nIn this field, you'll be the one translating between the machines and the humans. That's a superpower.",
+      emotion: 'admiring',
+      variation_id: 'translation_master_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'translation_how',
+        text: "How did you learn to explain complex things simply?",
+        nextNodeId: 'marcus_patient_story',
+        pattern: 'exploring',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'translation_apply',
+        text: "I want to be that bridge for people.",
+        nextNodeId: 'marcus_hub',
+        pattern: 'helping',
+        skills: ['communication', 'technicalLiteracy']
+      }
+    ],
+    tags: ['skill_combo_unlock', 'technical_storyteller', 'marcus_wisdom']
   }
 ]
 

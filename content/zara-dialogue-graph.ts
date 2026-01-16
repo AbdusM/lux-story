@@ -3067,6 +3067,38 @@ export const zaraDialogueNodes: DialogueNode[] = [
             }
         ],
         tags: ['zara_arc', 'trust_recovery', 'restored']
+    },
+
+    // ===== SKILL COMBO UNLOCK NODE: Ethical Analyst =====
+    // Requires: ethical_analyst combo (criticalThinking + ethicalReasoning)
+    {
+        nodeId: 'zara_deep_ethics',
+        speaker: 'Zara El-Amin',
+        requiredState: {
+            requiredCombos: ['ethical_analyst']
+        },
+        content: [{
+            text: "You've got something rare.\n\nYou don't just question the data. You question who it serves.\n\nThat's the marriage that actually changes things—rigor without cruelty, moral clarity without self-righteousness. You analyze systems AND you understand the humans inside them.\n\nThat's an ethical analyst. Not a rule-follower pretending to be principled. Someone who actually sees the whole picture.",
+            emotion: 'thoughtful',
+            variation_id: 'deep_ethics_v1'
+        }],
+        choices: [
+            {
+                choiceId: 'ethics_how_learn',
+                text: "How do you keep the analysis and the ethics balanced?",
+                nextNodeId: 'zara_ethics_advocacy',
+                pattern: 'exploring',
+                skills: ['criticalThinking', 'ethicalReasoning']
+            },
+            {
+                choiceId: 'ethics_apply_framework',
+                text: "I want to build audits that actually protect people.",
+                nextNodeId: 'zara_deep_dive',
+                pattern: 'building',
+                skills: ['systemsThinking', 'ethicalReasoning']
+            }
+        ],
+        tags: ['skill_combo_unlock', 'ethical_analyst', 'zara_wisdom']
     }
 ]
 

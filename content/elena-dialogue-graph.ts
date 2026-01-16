@@ -2710,6 +2710,38 @@ Your curiosity combined with analysis... that's exactly what they need.`,
       characterId: 'elena',
       addKnowledgeFlags: ['elena_trust_recovery_completed']
     }]
+  },
+
+  // ===== SKILL COMBO UNLOCK NODE: Data Storyteller =====
+  // Requires: data_storyteller combo (dataLiteracy + communication)
+  {
+    nodeId: 'elena_deep_synthesis',
+    speaker: 'Elena',
+    requiredState: {
+      requiredCombos: ['data_storyteller']
+    },
+    content: [{
+      text: "[She leans forward, eyes bright with discovery.]\n\nYou know what I've learned?\n\nData without narrative is just noise. Numbers sitting in the dark. But when you find the pattern—the story hidden in the margins—that's when information becomes insight.\n\nThe best researchers aren't just analysts. They're translators. They take the invisible patterns and make them human.\n\nThat's what separates archivists from storytellers. The ability to see the data, understand the data, and then... communicate what it means.",
+      emotion: 'contemplative',
+      variation_id: 'deep_synthesis_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'synthesis_learn_process',
+        text: "How do you learn to see the story in the data?",
+        nextNodeId: 'elena_missing_pages',
+        pattern: 'exploring',
+        skills: ['dataLiteracy', 'criticalThinking']
+      },
+      {
+        choiceId: 'synthesis_apply',
+        text: "That's how you communicate your research.",
+        nextNodeId: 'elena_hub_return',
+        pattern: 'analytical',
+        skills: ['dataLiteracy', 'communication']
+      }
+    ],
+    tags: ['skill_combo_unlock', 'data_storyteller', 'elena_wisdom']
   }
 ]
 
