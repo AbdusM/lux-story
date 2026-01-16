@@ -191,6 +191,10 @@ export interface StateCondition {
 
   // Mystery conditions (for mystery-gated content)
   mysteries?: Partial<MysteryState>
+
+  // Skill Combo conditions (for combo-gated content)
+  // Requires specific skill combos to be unlocked (see lib/skill-combos.ts)
+  requiredCombos?: string[]
 }
 
 /**

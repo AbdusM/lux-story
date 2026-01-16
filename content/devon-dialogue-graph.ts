@@ -3904,6 +3904,38 @@ What communication approach balances these?`,
       }
     ],
     tags: ['trust_recovery', 'devon_arc', 'fresh_start']
+  },
+
+  // ===== SKILL COMBO UNLOCK NODE: Strategic Empathy =====
+  // Requires: strategic_empathy combo (systemsThinking + emotionalIntelligence)
+  {
+    nodeId: 'devon_deep_insight',
+    speaker: 'Devon Kumar',
+    requiredState: {
+      requiredCombos: ['strategic_empathy']
+    },
+    content: [{
+      text: "You know what I've realized?\n\nSystems aren't cold. They're not just logic and efficiency. Every system has people in it, and those people have feelings, fears, dreams.\n\nWhen I started seeing systems through both lenses—the structural AND the emotional—everything changed.\n\nThe best systems don't optimize against human nature. They work with it.",
+      emotion: 'insightful',
+      variation_id: 'deep_insight_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'insight_explore_more',
+        text: "How did you learn to see both sides?",
+        nextNodeId: 'devon_explains_system',
+        pattern: 'exploring',
+        skills: ['systemsThinking']
+      },
+      {
+        choiceId: 'insight_apply',
+        text: "I want to think about systems like that too.",
+        nextNodeId: 'devon_hub',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'emotionalIntelligence']
+      }
+    ],
+    tags: ['skill_combo_unlock', 'strategic_empathy', 'devon_wisdom']
   }
 ]
 

@@ -9003,6 +9003,38 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         pattern: 'patience'
       }
     ]
+  },
+
+  // ===== SKILL COMBO UNLOCK NODE: Holistic Systems Thinker =====
+  // Requires: holistic_systems_thinker combo (systemsThinking + empathy + technicalLiteracy)
+  {
+    nodeId: 'samuel_wisdom_complete',
+    speaker: 'Samuel Washington',
+    requiredState: {
+      requiredCombos: ['holistic_systems_thinker']
+    },
+    content: [{
+      text: "Now you're beginning to see what I've tried to understand all these years.\n\nA system isn't just gears and logic. It's people. It's rules written into stone and hearts breaking against them. It's the engineer who codes the safety check—and the nurse who overrides it because a patient's suffering.\n\nYou've learned to think in complexity. To see how technical choices ripple through lives. To hold both the blueprint and the human cost in your mind at the same time.\n\nThat's the rarest kind of wisdom. Not head knowledge or heart knowledge. Both, dancing together.\n\nFolks like you don't just solve problems. You heal systems. And that's what the world needs most.",
+      emotion: 'profound',
+      variation_id: 'wisdom_complete_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'wisdom_reflect',
+        text: "This is bigger than any single career path, isn't it?",
+        nextNodeId: 'samuel_hub_return',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'empathy', 'technicalLiteracy']
+      },
+      {
+        choiceId: 'wisdom_onward',
+        text: "Then let me go build something that matters.",
+        nextNodeId: 'samuel_introduction',
+        pattern: 'building',
+        skills: ['systemsThinking', 'empathy', 'technicalLiteracy']
+      }
+    ],
+    tags: ['skill_combo_unlock', 'holistic_systems_thinker', 'samuel_final_wisdom']
   }
 ]
 

@@ -3067,6 +3067,45 @@ Warning: Core Hum saturating mix.`,
             }
         ],
         tags: ['lira_arc', 'trust_recovery', 'restored']
+    },
+
+    {
+        nodeId: 'lira_creative_mastery',
+        speaker: 'Lira Vance',
+        requiredState: { requiredCombos: ['adaptive_creator'] },
+        content: [
+            {
+                text: "[She's at the mixer, but she's different now. Relaxed. Energized.]\n\nYou know what I've learned? The best creators aren't rigid. They adapt.\n\nYou start with your grandmother's cassette—a memory, a foundation. But then you layer it with AI prompts that capture what she felt. Then you adjust based on what the station whispers. Then you rebuild based on what the listener needs.\n\nIt's not about perfection. It's about responsive creation. Creativity that listens.\n\nThat's what separates a craftsperson from a real artist. The willingness to let the work evolve. To be adaptable without losing your voice.",
+                emotion: 'excited',
+                variation_id: 'creative_mastery_v1',
+                richEffectContext: 'success'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'mastery_continue_craft',
+                text: "So the adaptation isn't a compromise—it's the craft itself.",
+                nextNodeId: 'lira_hub_return',
+                pattern: 'building',
+                skills: ['creativity'],
+                consequence: {
+                    characterId: 'lira',
+                    trustChange: 1
+                }
+            },
+            {
+                choiceId: 'mastery_continue_listening',
+                text: "That's why you listen so carefully. You're adapting to every voice in the room.",
+                nextNodeId: 'lira_hub_return',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'lira',
+                    trustChange: 1
+                }
+            }
+        ],
+        tags: ['skill_combo_unlock', 'adaptive_creator', 'lira_wisdom']
     }
 ]
 

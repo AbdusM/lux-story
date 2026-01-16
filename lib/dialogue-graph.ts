@@ -12,6 +12,7 @@ import {
 } from './character-state'
 import { FutureSkills } from './2030-skills-system'
 import { PatternType } from './patterns'
+import { isComboUnlocked } from './skill-combo-detector'
 // Note: Emotions use string type to support compound emotions like 'anxious_hopeful'
 // Use isValidEmotion() from lib/emotions.ts for runtime validation of core emotions
 
@@ -484,7 +485,8 @@ export class StateConditionEvaluator {
   static evaluate(
     condition: StateCondition | undefined,
     gameState: GameState,
-    characterId?: string
+    characterId?: string,
+    skillLevels?: Record<string, number>
   ): boolean {
     // No condition means always true
     if (!condition) {
@@ -594,6 +596,22 @@ export class StateConditionEvaluator {
       }
     }
 
+    // Evaluate skill combo conditions
+    // Requires specific skill combos to be unlocked (from lib/skill-combos.ts)
+    if (condition.requiredCombos !== undefined && condition.requiredCombos.length > 0) {
+      // If no skill levels provided, combos cannot be checked - fail the condition
+      if (!skillLevels) {
+        console.warn(`Combo condition requires skillLevels but not provided`)
+        return false
+      }
+
+      for (const comboId of condition.requiredCombos) {
+        if (!isComboUnlocked(comboId, skillLevels)) {
+          return false
+        }
+      }
+    }
+
     // All conditions passed
     return true
   }
@@ -601,18 +619,21 @@ export class StateConditionEvaluator {
   /**
    * Evaluate all choices for a node and determine visibility/availability
    * INCLUDES AUTO-FALLBACK SAFETY: If no choices visible, shows all as fallback
+   *
+   * @param skillLevels - Optional skill levels for combo-gated content (from Zustand store)
    */
   static evaluateChoices(
     node: DialogueNode,
     gameState: GameState,
-    characterId?: string
+    characterId?: string,
+    skillLevels?: Record<string, number>
   ): EvaluatedChoice[] {
     const evaluated = node.choices.map(choice => {
       // Check if choice should be visible
-      const visible = this.evaluate(choice.visibleCondition, gameState, characterId)
+      const visible = this.evaluate(choice.visibleCondition, gameState, characterId, skillLevels)
 
       // Check if choice should be enabled (only matters if visible)
-      const enabled = visible && this.evaluate(choice.enabledCondition, gameState, characterId)
+      const enabled = visible && this.evaluate(choice.enabledCondition, gameState, characterId, skillLevels)
 
       // Generate reason if disabled but visible
       let reason: string | undefined

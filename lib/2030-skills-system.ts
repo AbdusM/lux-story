@@ -604,3 +604,186 @@ export function getFutureSkillsSystem(): FutureSkillsSystem {
   }
   return futureSkillsSystem
 }
+
+/**
+ * Career paths data - exported for direct access
+ * These align with Birmingham's economic landscape and growth sectors
+ */
+export const BIRMINGHAM_CAREER_PATHS: CareerPath2030[] = [
+  {
+    id: 'healthcare-tech',
+    name: 'Healthcare Technology Specialist',
+    description: 'Bridge healthcare and technology to improve patient outcomes',
+    requiredSkills: ['digitalLiteracy', 'communication', 'problemSolving', 'emotionalIntelligence'],
+    skillLevels: { digitalLiteracy: 0.8, communication: 0.7, problemSolving: 0.8, emotionalIntelligence: 0.9 },
+    birminghamRelevance: 0.9,
+    growthProjection: 'high',
+    salaryRange: [55000, 85000],
+    educationPath: ['UAB Health Informatics', 'Jeff State Medical Technology', 'Bootcamp + Certification'],
+    localOpportunities: ['UAB Hospital', 'Children\'s Hospital', 'St. Vincent\'s', 'Innovation Depot Health Tech']
+  },
+  {
+    id: 'sustainable-construction',
+    name: 'Sustainable Construction Manager',
+    description: 'Lead green building projects and sustainable development',
+    requiredSkills: ['leadership', 'problemSolving', 'adaptability', 'communication'],
+    skillLevels: { leadership: 0.8, problemSolving: 0.9, adaptability: 0.7, communication: 0.6 },
+    birminghamRelevance: 0.8,
+    growthProjection: 'high',
+    salaryRange: [60000, 95000],
+    educationPath: ['Jeff State Construction Management', 'UAB Civil Engineering', 'Trade School + Leadership'],
+    localOpportunities: ['Brasfield & Gorrie', 'Hoar Construction', 'City of Birmingham', 'Alabama Power']
+  },
+  {
+    id: 'data-analyst-community',
+    name: 'Community Data Analyst',
+    description: 'Use data to solve community problems and drive social impact',
+    requiredSkills: ['criticalThinking', 'digitalLiteracy', 'communication', 'culturalCompetence'],
+    skillLevels: { criticalThinking: 0.9, digitalLiteracy: 0.8, communication: 0.7, culturalCompetence: 0.8 },
+    birminghamRelevance: 0.9,
+    growthProjection: 'high',
+    salaryRange: [50000, 80000],
+    educationPath: ['UAB Data Science', 'Jeff State Computer Science', 'Bootcamp + Community Focus'],
+    localOpportunities: ['City of Birmingham', 'United Way', 'Innovation Depot', 'UAB Research']
+  },
+  {
+    id: 'creative-entrepreneur',
+    name: 'Creative Entrepreneur',
+    description: 'Build creative businesses that serve Birmingham\'s growing arts scene',
+    requiredSkills: ['creativity', 'leadership', 'adaptability', 'financialLiteracy'],
+    skillLevels: { creativity: 0.9, leadership: 0.7, adaptability: 0.8, financialLiteracy: 0.6 },
+    birminghamRelevance: 0.7,
+    growthProjection: 'medium',
+    salaryRange: [35000, 120000],
+    educationPath: ['Birmingham-Southern Business', 'Jeff State Entrepreneurship', 'Self-Directed Learning'],
+    localOpportunities: ['Sidewalk Film', 'Birmingham Museum of Art', 'Local Studios', 'Food Truck Scene']
+  },
+  {
+    id: 'cybersecurity-specialist',
+    name: 'Cybersecurity Specialist',
+    description: 'Protect organizations from digital threats and ensure data security',
+    requiredSkills: ['digitalLiteracy', 'criticalThinking', 'problemSolving', 'adaptability'],
+    skillLevels: { digitalLiteracy: 0.9, criticalThinking: 0.8, problemSolving: 0.9, adaptability: 0.7 },
+    birminghamRelevance: 0.8,
+    growthProjection: 'high',
+    salaryRange: [65000, 110000],
+    educationPath: ['UAB Computer Science', 'Jeff State IT Security', 'Certification Programs'],
+    localOpportunities: ['Regions Bank', 'Alabama Power', 'UAB IT', 'Local Tech Companies']
+  },
+  {
+    id: 'learning-experience-architect',
+    name: 'Learning Experience Architect',
+    description: 'Design structured learning journeys and emotional feedback loops to guide human development',
+    requiredSkills: ['instructionalDesign', 'emotionalIntelligence', 'mentorship', 'systemsThinking'],
+    skillLevels: { instructionalDesign: 0.9, emotionalIntelligence: 0.9, mentorship: 0.8, systemsThinking: 0.7 },
+    birminghamRelevance: 0.9,
+    growthProjection: 'high',
+    salaryRange: [65000, 105000],
+    educationPath: ['UAB Instructional Design', 'Psychology + EdTech', 'Human Systems Engineering'],
+    localOpportunities: ['Innovation Depot EdTech', 'UAB Learning System', 'Corporate L&D', 'Community Education Design']
+  },
+  {
+    id: 'advanced-logistics',
+    name: 'Advanced Logistics & Manufacturing',
+    description: 'Manage complex resource flows, supply chains, and critical infrastructure maintenance',
+    requiredSkills: ['systemsThinking', 'triage', 'adaptability', 'technicalLiteracy'],
+    skillLevels: { systemsThinking: 0.9, triage: 0.8, adaptability: 0.8, technicalLiteracy: 0.9 },
+    birminghamRelevance: 0.9,
+    growthProjection: 'high',
+    salaryRange: [45000, 95000],
+    educationPath: ['Jeff State Manufacturing', 'Supply Chain Certs', 'Apprenticeship'],
+    localOpportunities: ['Mercedes-Benz USI', 'Amazon Logistics', 'Bham Distribution Hubs', 'Advanced Manufacturing Center']
+  }
+]
+
+/**
+ * Calculate career matches from game store skills
+ * This is the CANONICAL way to get career recommendations - uses game store skills directly
+ *
+ * @param skills - Partial FutureSkills from game store (0-1 scale)
+ *                 Accepts partial because game-store.ts may have a subset of skills
+ * @returns Sorted array of career matches with evidence and gaps
+ */
+export function calculateCareerMatchesFromSkills(skills: Partial<FutureSkills> | Record<string, number>): {
+  name: string
+  matchScore: number
+  evidenceForMatch: string[]
+  requiredSkills: Record<string, { current: number; required: number; gap: number }>
+  salaryRange: [number, number]
+  educationPaths: string[]
+  localOpportunities: string[]
+  readiness: 'near_ready' | 'developing' | 'exploring'
+}[] {
+  // Cast to Record for easier string indexing
+  const skillsRecord = skills as Record<string, number>
+
+  return BIRMINGHAM_CAREER_PATHS
+    .map(career => {
+      // Calculate match score
+      const matchScore = career.requiredSkills.reduce((sum, skillName) => {
+        const skillValue = skillsRecord[skillName] ?? 0
+        return sum + skillValue
+      }, 0) / career.requiredSkills.length
+
+      // Build required skills with gaps
+      const requiredSkillsMap: Record<string, { current: number; required: number; gap: number }> = {}
+      career.requiredSkills.forEach(skillName => {
+        const current = skillsRecord[skillName] ?? 0
+        const required = career.skillLevels[skillName as keyof FutureSkills] ?? 0.6
+        requiredSkillsMap[skillName] = {
+          current,
+          required,
+          gap: Math.max(0, required - current)
+        }
+      })
+
+      // Generate evidence for match
+      const evidenceForMatch: string[] = []
+      career.requiredSkills.forEach(skillName => {
+        const skillValue = skillsRecord[skillName] ?? 0
+        if (skillValue > 0.1) {
+          const skillLabel = skillName.replace(/([A-Z])/g, ' $1').toLowerCase().trim()
+          if (skillValue >= 0.7) {
+            evidenceForMatch.push(`Strong ${skillLabel} demonstrated`)
+          } else if (skillValue >= 0.4) {
+            evidenceForMatch.push(`Developing ${skillLabel} skills`)
+          } else {
+            evidenceForMatch.push(`Beginning ${skillLabel} journey`)
+          }
+        }
+      })
+
+      // Determine readiness
+      let readiness: 'near_ready' | 'developing' | 'exploring'
+      if (matchScore >= 0.6) {
+        readiness = 'near_ready'
+      } else if (matchScore >= 0.3) {
+        readiness = 'developing'
+      } else {
+        readiness = 'exploring'
+      }
+
+      return {
+        name: career.name,
+        matchScore,
+        evidenceForMatch,
+        requiredSkills: requiredSkillsMap,
+        salaryRange: career.salaryRange,
+        educationPaths: career.educationPath,
+        localOpportunities: career.localOpportunities,
+        readiness
+      }
+    })
+    .sort((a, b) => b.matchScore - a.matchScore)
+    .slice(0, 6)
+}
+
+/**
+ * Count total skill demonstrations from game store skills
+ * A skill is considered "demonstrated" if it's above the default 0 threshold
+ *
+ * @param skills - Partial FutureSkills or any skill record
+ */
+export function countSkillDemonstrations(skills: Partial<FutureSkills> | Record<string, number>): number {
+  return Object.values(skills).filter(v => typeof v === 'number' && v > 0).length
+}

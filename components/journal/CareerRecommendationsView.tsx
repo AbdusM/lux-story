@@ -1,38 +1,44 @@
 import React, { useMemo, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Compass, Target, TrendingUp, Sparkles } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import { CareerCard } from './CareerCard'
-import { createSkillTracker, type CareerMatch } from '@/lib/skill-tracker'
-import { generateUserId } from '@/lib/safe-storage'
+import { calculateCareerMatchesFromSkills, countSkillDemonstrations } from '@/lib/2030-skills-system'
+import { useGameSelectors } from '@/lib/game-store'
 
 /**
  * CareerRecommendationsView - Layer 4 of Progressive Skill Revelation
  *
  * Shows players how their demonstrated skills map to Birmingham career pathways
- * with evidence-based recommendations from the SkillTracker system.
+ * with evidence-based recommendations using GAME STORE SKILLS DIRECTLY.
+ *
+ * FIXED: Previously used SkillTracker with generateUserId() which caused:
+ * - UUID mismatch between game state and tracker
+ * - Empty demonstrations array (wrong localStorage key)
+ * - All skills showing 0.5 defaults forever
+ *
+ * Now reads directly from game store (single source of truth).
  */
 export function CareerRecommendationsView() {
   const prefersReducedMotion = useReducedMotion()
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
 
-  // Get user ID from safe storage (generates or retrieves consistent ID)
-  const userId = useMemo(() => generateUserId(), [])
+  // Get skills directly from game store (SINGLE SOURCE OF TRUTH)
+  const skills = useGameSelectors.useSkills()
 
-  // Get career matches from skill tracker
+  // Calculate career matches from game store skills
   const { careerMatches, totalDemonstrations } = useMemo(() => {
-    const tracker = createSkillTracker(userId)
-    const profile = tracker.exportSkillProfile()
+    const matches = calculateCareerMatchesFromSkills(skills)
+    const demonstrations = countSkillDemonstrations(skills)
     return {
-      careerMatches: profile.careerMatches,
-      totalDemonstrations: profile.totalDemonstrations
+      careerMatches: matches,
+      totalDemonstrations: demonstrations
     }
-  }, [userId])
+  }, [skills])
 
   // Count by readiness level
   const readinessCounts = useMemo(() => {
     const counts = { near_ready: 0, developing: 0, exploring: 0 }
-    careerMatches.forEach((career: CareerMatch) => {
+    careerMatches.forEach(career => {
       counts[career.readiness]++
     })
     return counts
@@ -124,7 +130,7 @@ export function CareerRecommendationsView() {
           // Career cards
           <>
             <div className="space-y-3">
-              {careerMatches.map((career: CareerMatch, index: number) => (
+              {careerMatches.map((career, index) => (
                 <CareerCard
                   key={career.name}
                   career={career}
