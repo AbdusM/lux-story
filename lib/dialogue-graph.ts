@@ -486,7 +486,7 @@ export class StateConditionEvaluator {
     condition: StateCondition | undefined,
     gameState: GameState,
     characterId?: string,
-    skillLevels?: Record<string, number>
+    _skillLevels?: Record<string, number>
   ): boolean {
     // No condition means always true
     if (!condition) {

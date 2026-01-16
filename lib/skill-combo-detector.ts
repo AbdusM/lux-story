@@ -5,7 +5,7 @@
  * demonstrated skill levels. Provides progress tracking for incomplete combos.
  */
 
-import { SKILL_COMBOS, type SkillCombo, type SkillComboUnlock } from './skill-combos'
+import { SKILL_COMBOS, type SkillCombo } from './skill-combos'
 
 export interface ComboSkillProgress {
   skill: string
