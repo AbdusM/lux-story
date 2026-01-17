@@ -1034,48 +1034,51 @@ export default function StatefulGameInterface() {
         // P1: SKILL DECAY INTEGRATION (Claim 14)
         // Check for "use it or lose it" atrophy if session has advanced
         // This MUST happen after session checks to ensure 'lastUsedSession' logic is valid
+        // FIX: Defer to microtask to keep init responsive
         if (gameState && gameState.skillLevels && gameState.skillUsage) {
           const activeState = gameState // Capture for closure safety
-          try {
-            const decayResult = calculateSkillDecay(
-              activeState.skillLevels,
-              activeState.skillUsage,
-              activeState.episodeNumber
-            )
+          Promise.resolve().then(() => {
+            try {
+              const decayResult = calculateSkillDecay(
+                activeState.skillLevels,
+                activeState.skillUsage,
+                activeState.episodeNumber
+              )
 
-            // Detect if anything decayed
-            const decayedSkills = Object.keys(activeState.skillLevels).filter(
-              id => (activeState.skillLevels[id] || 0) > (decayResult[id] || 0)
-            )
+              // Detect if anything decayed
+              const decayedSkills = Object.keys(activeState.skillLevels).filter(
+                id => (activeState.skillLevels[id] || 0) > (decayResult[id] || 0)
+              )
 
-            if (decayedSkills.length > 0) {
-              logger.info('Skill Decay Detected', { skills: decayedSkills })
+              if (decayedSkills.length > 0) {
+                logger.info('Skill Decay Detected', { skills: decayedSkills })
 
-              // 1. Apply changes state
-              gameState = {
-                ...gameState,
-                skillLevels: decayResult
+                // 1. Apply changes state
+                const updatedState = {
+                  ...activeState,
+                  skillLevels: decayResult
+                }
+                GameStateManager.saveGameState(updatedState)
+                zustandStore.setCoreGameState(GameStateUtils.serialize(updatedState))
+
+                // 2. Trigger DIEGETIC notification (Ambient "Intrusive Thought")
+                // Pick one random skill to narrate so we don't spam
+                const targetSkillId = decayedSkills[Math.floor(Math.random() * decayedSkills.length)]
+                const narrative = getSkillDecayNarrative(targetSkillId)
+
+                // 3. Inject into Ambient System immediately
+                // Map to StationState's AmbientEvent format
+                useStationStore.getState().triggerAmbientEvent({
+                  id: `decay_${targetSkillId}_${Date.now()}`,
+                  text: narrative,
+                  intensity: 'subtle', // Internal thoughts are subtle
+                  duration: 8000
+                })
               }
-              GameStateManager.saveGameState(gameState)
-              zustandStore.setCoreGameState(GameStateUtils.serialize(gameState))
-
-              // 2. Trigger DIEGETIC notification (Ambient "Intrusive Thought")
-              // Pick one random skill to narrate so we don't spam
-              const targetSkillId = decayedSkills[Math.floor(Math.random() * decayedSkills.length)]
-              const narrative = getSkillDecayNarrative(targetSkillId)
-
-              // 3. Inject into Ambient System immediately
-              // Map to StationState's AmbientEvent format
-              useStationStore.getState().triggerAmbientEvent({
-                id: `decay_${targetSkillId}_${Date.now()}`,
-                text: narrative,
-                intensity: 'subtle', // Internal thoughts are subtle
-                duration: 8000
-              })
+            } catch (e) {
+              logger.warn('Failed to calculate skill decay', { error: e })
             }
-          } catch (e) {
-            logger.warn('Failed to calculate skill decay', { error: e })
-          }
+          })
         }
       }
 
