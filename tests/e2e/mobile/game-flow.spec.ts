@@ -4,7 +4,7 @@
  * Target audience: Ages 14-24 Birmingham youth on phones
  */
 
-import { test, expect } from '@playwright/test'
+import { test, expect } from '../fixtures/game-state-fixtures'
 
 const MOBILE_VIEWPORTS = [
   { name: 'iPhone SE', width: 375, height: 667 },
@@ -16,22 +16,11 @@ for (const viewport of MOBILE_VIEWPORTS) {
   test.describe(`Game Flow on ${viewport.name} (${viewport.width}×${viewport.height})`, () => {
     test.beforeEach(async ({ page }) => {
       await page.setViewportSize({ width: viewport.width, height: viewport.height })
-      await page.goto('/')
-      await page.waitForLoadState('networkidle')
     })
 
-    test('Complete dialogue → choice → state update cycle', async ({ page }) => {
-      // Clear any existing state
-      await page.evaluate(() => localStorage.removeItem('grand-central-terminus-save'))
-      await page.reload()
-      await page.waitForLoadState('networkidle')
-
-      // Enter the station
-      const enterButton = page.getByRole('button', { name: /enter.*station/i })
-      if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-        await enterButton.click()
-        await page.waitForLoadState('networkidle')
-      }
+    test('Complete dialogue → choice → state update cycle', async ({ page, freshGame }) => {
+      // FIX: Use freshGame fixture instead of manual navigation
+      // State is already seeded, game interface should be ready
 
       // Wait for game interface
       await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
@@ -86,27 +75,8 @@ for (const viewport of MOBILE_VIEWPORTS) {
       expect(savedState.state).toBeDefined()
     })
 
-    test('Choices stack vertically without overflow', async ({ page }) => {
-      // Seed state with a node that has multiple choices
-      await page.evaluate(() => {
-        const state = {
-          state: {
-            currentNodeId: 'samuel_introduction',
-            hasStarted: true,
-            showIntro: false,
-            patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
-            globalFlags: [],
-            knowledgeFlags: [],
-            characters: [],
-            visitedScenes: []
-          },
-          version: 1
-        }
-        localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
-      })
-
-      await page.reload()
-      await page.waitForLoadState('networkidle')
+    test('Choices stack vertically without overflow', async ({ page, freshGame }) => {
+      // FIX: Use freshGame fixture - samuel_introduction has multiple choices
 
       // Wait for game interface and choices
       await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
@@ -139,13 +109,8 @@ for (const viewport of MOBILE_VIEWPORTS) {
       }
     })
 
-    test('Dialogue card is readable and properly sized', async ({ page }) => {
-      // Enter the game
-      const enterButton = page.getByRole('button', { name: /enter.*station/i })
-      if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-        await enterButton.click()
-        await page.waitForLoadState('networkidle')
-      }
+    test('Dialogue card is readable and properly sized', async ({ page, freshGame }) => {
+      // FIX: Use freshGame fixture
 
       // Wait for dialogue card
       const dialogueCard = page.getByTestId('dialogue-card')
@@ -163,13 +128,8 @@ for (const viewport of MOBILE_VIEWPORTS) {
       }
     })
 
-    test('Navigation buttons are accessible', async ({ page }) => {
-      // Enter the game
-      const enterButton = page.getByRole('button', { name: /enter.*station/i })
-      if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-        await enterButton.click()
-        await page.waitForLoadState('networkidle')
-      }
+    test('Navigation buttons are accessible', async ({ page, freshGame }) => {
+      // FIX: Use freshGame fixture
 
       await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
@@ -197,13 +157,8 @@ for (const viewport of MOBILE_VIEWPORTS) {
       }
     })
 
-    test('Multiple rapid taps do not cause errors', async ({ page }) => {
-      // Enter the game
-      const enterButton = page.getByRole('button', { name: /enter.*station/i })
-      if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-        await enterButton.click()
-        await page.waitForLoadState('networkidle')
-      }
+    test('Multiple rapid taps do not cause errors', async ({ page, freshGame }) => {
+      // FIX: Use freshGame fixture
 
       await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
@@ -225,7 +180,7 @@ for (const viewport of MOBILE_VIEWPORTS) {
       // (Playwright would show these in console)
     })
 
-    test('Portrait orientation layout is correct', async ({ page }) => {
+    test('Portrait orientation layout is correct', async ({ page, freshGame }) => {
       // Verify viewport is in portrait (height > width)
       const viewportSize = page.viewportSize()
       expect(viewportSize).not.toBeNull()
@@ -233,12 +188,7 @@ for (const viewport of MOBILE_VIEWPORTS) {
         expect(viewportSize.height).toBeGreaterThan(viewportSize.width)
       }
 
-      // Enter the game
-      const enterButton = page.getByRole('button', { name: /enter.*station/i })
-      if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-        await enterButton.click()
-        await page.waitForLoadState('networkidle')
-      }
+      // FIX: Use freshGame fixture
 
       await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
