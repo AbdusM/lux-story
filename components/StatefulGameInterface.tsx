@@ -1311,7 +1311,8 @@ export default function StatefulGameInterface() {
     } catch (error) {
       logger.error('Init error', {
         message: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined
+        stack: error instanceof Error ? error.stack : undefined,
+        operation: 'game-interface.init-failed'
       })
       setState(prev => ({
         ...prev,
@@ -1320,7 +1321,8 @@ export default function StatefulGameInterface() {
           message: error instanceof Error ? error.message : 'Failed to initialize game. Please refresh the page.',
           severity: 'error' as const
         },
-        isLoading: false
+        isLoading: false,
+        hasStarted: true  // FIX: Allow UI to render error state instead of infinite spinner
       }))
     }
   }, [])
