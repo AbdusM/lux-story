@@ -704,6 +704,29 @@ export class SyncQueue {
   }
 }
 
+/**
+ * Process queue with microtask deferral to prevent blocking UI
+ *
+ * @param defer - Whether to defer processing to a microtask (default: true)
+ * @param db - Optional database service for processing actions
+ * @returns Promise resolving to SyncResult
+ */
+export async function processQueueDeferred(
+  defer: boolean = true,
+  db?: Record<string, (...args: unknown[]) => Promise<unknown>>
+): Promise<SyncResult> {
+  if (defer) {
+    return new Promise((resolve) => {
+      queueMicrotask(async () => {
+        const result = await SyncQueue.processQueue(db)
+        resolve(result)
+      })
+    })
+  } else {
+    return SyncQueue.processQueue(db)
+  }
+}
+
 export interface SyncResult {
   success: boolean
   processed: number

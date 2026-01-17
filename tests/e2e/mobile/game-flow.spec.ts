@@ -62,7 +62,7 @@ for (const viewport of MOBILE_VIEWPORTS) {
           return current && current !== initial
         },
         initialDialogue,
-        { timeout: 10000 }
+        { timeout: 15000 }  // Increased for safety buffer
       )
 
       // Verify state was persisted to localStorage

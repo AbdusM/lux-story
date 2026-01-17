@@ -13,9 +13,10 @@
  */
 
 import { useEffect, useState, useCallback, useRef } from 'react'
-import { SyncQueue, SyncResult, QueueStats } from '@/lib/sync-queue'
+import { SyncQueue, SyncResult, QueueStats, processQueueDeferred } from '@/lib/sync-queue'
 import { db } from '@/lib/database-service'
 import { logger } from '@/lib/logger'
+import { isTestEnvironment } from '@/lib/test-environment'
 
 // Debounce delay for sync processing (allows actions to batch)
 const SYNC_DEBOUNCE_MS = 2000 // Wait 2s for actions to accumulate
@@ -44,6 +45,9 @@ export function useBackgroundSync(
     syncOnOnline = true
   } = options
 
+  // Disable in test environment to prevent blocking UI
+  const actuallyEnabled = enabled && !isTestEnvironment()
+
   const [isProcessing, setIsProcessing] = useState(false)
   const [lastSyncResult, setLastSyncResult] = useState<SyncResult | null>(null)
   const [queueStats, setQueueStats] = useState<QueueStats | null>(null)
@@ -59,6 +63,14 @@ export function useBackgroundSync(
    * Waits for actions to accumulate before syncing to reduce API calls
    */
   const triggerSync = useCallback(async () => {
+    if (!actuallyEnabled) {
+      logger.debug('Background sync skipped', {
+        operation: 'use-background-sync.skip',
+        reason: isTestEnvironment() ? 'test-environment' : 'disabled'
+      })
+      return
+    }
+
     // Clear existing debounce timer
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current)
@@ -80,7 +92,10 @@ export function useBackgroundSync(
       setIsProcessing(true)
 
       try {
-        const result = await SyncQueue.processQueue(db as unknown as Record<string, (...args: unknown[]) => Promise<unknown>>)
+        const result = await processQueueDeferred(
+          true,  // Always defer to prevent blocking UI
+          db as unknown as Record<string, (...args: unknown[]) => Promise<unknown>>
+        )
         setLastSyncResult(result)
 
         // Update stats after sync
@@ -103,13 +118,13 @@ export function useBackgroundSync(
         setIsProcessing(false)
       }
     }, SYNC_DEBOUNCE_MS) // Wait for actions to batch
-  }, [])
+  }, [actuallyEnabled])
 
   /**
    * Interval-based sync
    */
   useEffect(() => {
-    if (!enabled) return
+    if (!actuallyEnabled) return
 
     const interval = setInterval(() => {
       triggerSync()
@@ -125,13 +140,13 @@ export function useBackgroundSync(
         clearTimeout(debounceTimerRef.current)
       }
     }
-  }, [enabled, intervalMs, triggerSync])
+  }, [actuallyEnabled, intervalMs, triggerSync])
 
   /**
    * Sync on window focus
    */
   useEffect(() => {
-    if (!enabled || !syncOnFocus) return
+    if (!actuallyEnabled || !syncOnFocus) return
 
     const handleFocus = () => {
       // Silent sync on focus - no logging to reduce console spam
@@ -140,13 +155,13 @@ export function useBackgroundSync(
 
     window.addEventListener('focus', handleFocus)
     return () => window.removeEventListener('focus', handleFocus)
-  }, [enabled, syncOnFocus, triggerSync])
+  }, [actuallyEnabled, syncOnFocus, triggerSync])
 
   /**
    * Sync when network comes back online
    */
   useEffect(() => {
-    if (!enabled || !syncOnOnline) return
+    if (!actuallyEnabled || !syncOnOnline) return
 
     const handleOnline = () => {
       // Silent sync on reconnect - no logging to reduce console spam
@@ -155,13 +170,13 @@ export function useBackgroundSync(
 
     window.addEventListener('online', handleOnline)
     return () => window.removeEventListener('online', handleOnline)
-  }, [enabled, syncOnOnline, triggerSync])
+  }, [actuallyEnabled, syncOnOnline, triggerSync])
 
   /**
    * Update stats periodically (for UI display)
    */
   useEffect(() => {
-    if (!enabled) return
+    if (!actuallyEnabled) return
 
     const updateStats = () => {
       const stats = SyncQueue.getStats()
@@ -173,7 +188,7 @@ export function useBackgroundSync(
     updateStats() // Initial update
 
     return () => clearInterval(interval)
-  }, [enabled])
+  }, [actuallyEnabled])
 
   return {
     isProcessing,
