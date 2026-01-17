@@ -977,7 +977,11 @@ export default function StatefulGameInterface() {
 
       // Ensure player profile exists in database BEFORE any skill tracking
       // This prevents foreign key violations (error 23503)
+      // FIX: Added 5-second timeout to prevent infinite hang on slow networks
       if (isSupabaseConfigured()) {
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 5000) // 5-second timeout
+
         try {
           await fetch('/api/user/profile', {
             method: 'POST',
@@ -985,11 +989,21 @@ export default function StatefulGameInterface() {
             body: JSON.stringify({
               user_id: gameState.playerId,
               created_at: new Date().toISOString()
-            })
+            }),
+            signal: controller.signal
           })
+          clearTimeout(timeoutId)
           logger.debug('Player profile ensured', { operation: 'game-interface.profile', playerId: gameState.playerId })
         } catch (error) {
-          logger.warn('⚠️ Failed to ensure player profile (will fallback to API route check):', { error })
+          clearTimeout(timeoutId)
+          if (error instanceof Error && error.name === 'AbortError') {
+            logger.warn('Profile endpoint timeout (5s), continuing with local state', {
+              operation: 'game-interface.profile-timeout',
+              playerId: gameState.playerId
+            })
+          } else {
+            logger.warn('⚠️ Failed to ensure player profile (will fallback to API route check):', { error })
+          }
         }
       }
 
