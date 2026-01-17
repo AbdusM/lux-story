@@ -273,13 +273,18 @@ async function seedGameState(page: Page, state: any): Promise<void> {
   }, state)
 
   await page.reload()
-  await page.waitForLoadState('domcontentloaded')
+  await page.waitForLoadState('networkidle')
 
   // Click through the welcome screen if it appears
   const continueButton = page.getByRole('button', { name: 'Continue Journey' })
-  if (await continueButton.isVisible({ timeout: 3000 }).catch(() => false)) {
+  if (await continueButton.isVisible({ timeout: 5000 }).catch(() => false)) {
     await continueButton.click()
-    await page.waitForSelector('[data-testid="game-interface"]', { timeout: 15000 })
+    await page.waitForLoadState('networkidle')
+    // Wait for game interface with longer timeout for iPad
+    await page.waitForSelector('[data-testid="game-interface"]', { timeout: 20000 })
+  } else {
+    // If no continue button, game interface should already be visible
+    await page.waitForSelector('[data-testid="game-interface"]', { timeout: 20000 })
   }
 }
 
