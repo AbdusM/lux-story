@@ -130,27 +130,18 @@ test.describe('Touch Target Validation', () => {
     }
   })
 
-  test('Cluster filter chips meet 44px minimum', async ({ page }) => {
+  test('Cluster filter chips meet 44px minimum', async ({ page, seedState }) => {
     // Seed state with demonstrated skills
-    await page.evaluate(() => {
-      const state = {
-        state: {
-          currentNodeId: 'samuel_introduction',
-          hasStarted: true,
-          showIntro: false,
-          patterns: { analytical: 3, building: 2, helping: 0, patience: 0, exploring: 0 },
-          globalFlags: [],
-          knowledgeFlags: [],
-          characters: [],
-          visitedScenes: []
-        },
-        version: 1
-      }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+    await seedState({
+      currentNodeId: 'samuel_introduction',
+      hasStarted: true,
+      showIntro: false,
+      patterns: { analytical: 3, building: 2, helping: 0, patience: 0, exploring: 0 },
+      globalFlags: [],
+      knowledgeFlags: [],
+      characters: [],
+      visitedScenes: []
     })
-
-    await page.reload()
-    await page.waitForLoadState('networkidle')
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 

@@ -7,8 +7,8 @@ import { test, expect } from '../fixtures/game-state-fixtures'
 
 test.describe('Prism (Journal) on Mobile', () => {
   test.beforeEach(async ({ page }) => {
-    // iPhone 14 Pro viewport
-    await page.setViewportSize({ width: 390, height: 844 })
+    // Viewport is set by Playwright project config (iPhone SE, iPhone 14, iPad, etc.)
+    // Don't override it here - let the project device config handle viewport sizing
   })
 
   test('opens Prism and navigates tabs', async ({ page, freshGame }) => {
@@ -18,7 +18,8 @@ test.describe('Prism (Journal) on Mobile', () => {
 
     // Open Prism
     await prismTrigger.click()
-    await expect(page.getByText('The Prism')).toBeVisible()
+    // Use heading role to avoid strict mode violation (multiple "The Prism" elements)
+    await expect(page.getByRole('heading', { name: 'The Prism' })).toBeVisible()
 
     // Navigate to a few tabs
     const harmonicsTab = page.getByRole('button', { name: /harmonics/i })
@@ -44,14 +45,15 @@ test.describe('Prism (Journal) on Mobile', () => {
   test('closes Prism with close button', async ({ page, freshGame }) => {
     const prismTrigger = page.getByRole('button', { name: /journal|prism/i })
     await prismTrigger.click()
-    await expect(page.getByText('The Prism')).toBeVisible()
+    // Use heading role to avoid strict mode violation
+    await expect(page.getByRole('heading', { name: 'The Prism' })).toBeVisible()
 
     // Close button
     const closeButton = page.getByRole('button', { name: /close prism/i })
     await closeButton.click()
 
     // Prism should be closed
-    await expect(page.getByText('The Prism')).not.toBeVisible()
+    await expect(page.getByRole('heading', { name: 'The Prism' })).not.toBeVisible()
   })
 })
 
@@ -72,7 +74,8 @@ test.describe('UnifiedMenu on Mobile', () => {
     await expect(page.getByRole('dialog', { name: /settings/i })).toBeVisible()
 
     // Audio section should be visible by default
-    await expect(page.getByText(/audio/i)).toBeVisible()
+    // Use heading to avoid strict mode violation (multiple "Audio" elements)
+    await expect(page.getByRole('heading', { name: /audio/i })).toBeVisible()
 
     // Expand accessibility section
     const accessibilityToggle = page.getByRole('button', { name: /accessibility/i })

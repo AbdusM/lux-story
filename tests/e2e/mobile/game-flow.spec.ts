@@ -14,13 +14,19 @@ const MOBILE_VIEWPORTS = [
 
 for (const viewport of MOBILE_VIEWPORTS) {
   test.describe(`Game Flow on ${viewport.name} (${viewport.width}×${viewport.height})`, () => {
-    test.beforeEach(async ({ page }) => {
+    test('Complete dialogue → choice → state update cycle', async ({ page, seedState }) => {
+      // Set viewport first, then seed state to ensure proper initialization
       await page.setViewportSize({ width: viewport.width, height: viewport.height })
-    })
-
-    test('Complete dialogue → choice → state update cycle', async ({ page, freshGame }) => {
-      // FIX: Use freshGame fixture instead of manual navigation
-      // State is already seeded, game interface should be ready
+      await seedState({
+        currentNodeId: 'samuel_introduction',
+        hasStarted: true,
+        showIntro: false,
+        patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
+        globalFlags: [],
+        knowledgeFlags: [],
+        characters: [],
+        visitedScenes: []
+      })
 
       // Wait for game interface
       await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
@@ -76,8 +82,19 @@ for (const viewport of MOBILE_VIEWPORTS) {
       expect(savedState.currentNodeId).toBeDefined()
     })
 
-    test('Choices stack vertically without overflow', async ({ page, freshGame }) => {
-      // FIX: Use freshGame fixture - samuel_introduction has multiple choices
+    test('Choices stack vertically without overflow', async ({ page, seedState }) => {
+      // Set viewport first, then seed state
+      await page.setViewportSize({ width: viewport.width, height: viewport.height })
+      await seedState({
+        currentNodeId: 'samuel_introduction',
+        hasStarted: true,
+        showIntro: false,
+        patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
+        globalFlags: [],
+        knowledgeFlags: [],
+        characters: [],
+        visitedScenes: []
+      })
 
       // Wait for game interface and choices
       await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
@@ -110,8 +127,22 @@ for (const viewport of MOBILE_VIEWPORTS) {
       }
     })
 
-    test('Dialogue card is readable and properly sized', async ({ page, freshGame }) => {
-      // FIX: Use freshGame fixture
+    test('Dialogue card is readable and properly sized', async ({ page, seedState }) => {
+      // Set viewport first, then seed state
+      await page.setViewportSize({ width: viewport.width, height: viewport.height })
+      await seedState({
+        currentNodeId: 'samuel_introduction',
+        hasStarted: true,
+        showIntro: false,
+        patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
+        globalFlags: [],
+        knowledgeFlags: [],
+        characters: [],
+        visitedScenes: []
+      })
+
+      // Wait for game interface first
+      await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
       // Wait for dialogue card
       const dialogueCard = page.getByTestId('dialogue-card')
@@ -129,8 +160,19 @@ for (const viewport of MOBILE_VIEWPORTS) {
       }
     })
 
-    test('Navigation buttons are accessible', async ({ page, freshGame }) => {
-      // FIX: Use freshGame fixture
+    test('Navigation buttons are accessible', async ({ page, seedState }) => {
+      // Set viewport first, then seed state
+      await page.setViewportSize({ width: viewport.width, height: viewport.height })
+      await seedState({
+        currentNodeId: 'samuel_introduction',
+        hasStarted: true,
+        showIntro: false,
+        patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
+        globalFlags: [],
+        knowledgeFlags: [],
+        characters: [],
+        visitedScenes: []
+      })
 
       await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
@@ -158,8 +200,19 @@ for (const viewport of MOBILE_VIEWPORTS) {
       }
     })
 
-    test('Multiple rapid taps do not cause errors', async ({ page, freshGame }) => {
-      // FIX: Use freshGame fixture
+    test('Multiple rapid taps do not cause errors', async ({ page, seedState }) => {
+      // Set viewport first, then seed state
+      await page.setViewportSize({ width: viewport.width, height: viewport.height })
+      await seedState({
+        currentNodeId: 'samuel_introduction',
+        hasStarted: true,
+        showIntro: false,
+        patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
+        globalFlags: [],
+        knowledgeFlags: [],
+        characters: [],
+        visitedScenes: []
+      })
 
       await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
@@ -181,15 +234,26 @@ for (const viewport of MOBILE_VIEWPORTS) {
       // (Playwright would show these in console)
     })
 
-    test('Portrait orientation layout is correct', async ({ page, freshGame }) => {
+    test('Portrait orientation layout is correct', async ({ page, seedState }) => {
+      // Set viewport first, then seed state
+      await page.setViewportSize({ width: viewport.width, height: viewport.height })
+      await seedState({
+        currentNodeId: 'samuel_introduction',
+        hasStarted: true,
+        showIntro: false,
+        patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
+        globalFlags: [],
+        knowledgeFlags: [],
+        characters: [],
+        visitedScenes: []
+      })
+
       // Verify viewport is in portrait (height > width)
       const viewportSize = page.viewportSize()
       expect(viewportSize).not.toBeNull()
       if (viewportSize) {
         expect(viewportSize.height).toBeGreaterThan(viewportSize.width)
       }
-
-      // FIX: Use freshGame fixture
 
       await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 

@@ -59,8 +59,22 @@ test.describe('Safe Area Boundaries', () => {
     }
   })
 
-  test('Dialogue content clears iPhone notch at top (Pro Max)', async ({ page, freshGame }) => {
+  test('Dialogue content clears iPhone notch at top (Pro Max)', async ({ page, seedState }) => {
+    // Set viewport first, then seed state
     await page.setViewportSize({ width: 430, height: 932 })
+    await seedState({
+      currentNodeId: 'samuel_introduction',
+      hasStarted: true,
+      showIntro: false,
+      patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
+      globalFlags: [],
+      knowledgeFlags: [],
+      characters: [],
+      visitedScenes: []
+    })
+
+    // Wait for game interface first
+    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Wait for dialogue card
     const dialogueCard = page.getByTestId('dialogue-card')
@@ -75,8 +89,22 @@ test.describe('Safe Area Boundaries', () => {
     }
   })
 
-  test('Dialogue content clears status bar on standard iPhone', async ({ page, freshGame }) => {
+  test('Dialogue content clears status bar on standard iPhone', async ({ page, seedState }) => {
+    // Set viewport first, then seed state
     await page.setViewportSize({ width: 390, height: 844 })
+    await seedState({
+      currentNodeId: 'samuel_introduction',
+      hasStarted: true,
+      showIntro: false,
+      patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
+      globalFlags: [],
+      knowledgeFlags: [],
+      characters: [],
+      visitedScenes: []
+    })
+
+    // Wait for game interface first
+    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Wait for dialogue card
     const dialogueCard = page.getByTestId('dialogue-card')
@@ -163,9 +191,20 @@ test.describe('Safe Area Boundaries', () => {
     }
   })
 
-  test('Content does not get cut off at rounded corners (Pro Max)', async ({ page, freshGame }) => {
+  test('Content does not get cut off at rounded corners (Pro Max)', async ({ page, seedState }) => {
     // iPhone 14 Pro Max has significant corner radius
+    // Set viewport first, then seed state
     await page.setViewportSize({ width: 430, height: 932 })
+    await seedState({
+      currentNodeId: 'samuel_introduction',
+      hasStarted: true,
+      showIntro: false,
+      patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
+      globalFlags: [],
+      knowledgeFlags: [],
+      characters: [],
+      visitedScenes: []
+    })
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
@@ -209,8 +248,19 @@ test.describe('Safe Area Boundaries', () => {
     }
   })
 
-  test('Fixed navigation remains in safe area during scroll', async ({ page, freshGame }) => {
+  test('Fixed navigation remains in safe area during scroll', async ({ page, seedState }) => {
+    // Set viewport first, then seed state
     await page.setViewportSize({ width: 390, height: 844 })
+    await seedState({
+      currentNodeId: 'samuel_introduction',
+      hasStarted: true,
+      showIntro: false,
+      patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
+      globalFlags: [],
+      knowledgeFlags: [],
+      characters: [],
+      visitedScenes: []
+    })
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 

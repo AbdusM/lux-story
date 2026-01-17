@@ -4,7 +4,7 @@
  * Target: Ages 14-24 on mid-range devices with potentially slow connections
  */
 
-import { test, expect } from '@playwright/test'
+import { test, expect } from '../fixtures/game-state-fixtures'
 
 test.describe('Mobile Performance', () => {
   test.beforeEach(async ({ page }) => {
@@ -32,11 +32,8 @@ test.describe('Mobile Performance', () => {
     }
   })
 
-  test('Game interface loads within 3s', async ({ page }) => {
+  test('Game interface loads within 3s', async ({ page, freshGame }) => {
     const startTime = Date.now()
-
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
 
     // Wait for game interface to be visible
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
@@ -46,17 +43,7 @@ test.describe('Mobile Performance', () => {
     console.log(`Game interface load time: ${loadTime}ms`)
   })
 
-  test('Dialogue renders within 1s after choice selection', async ({ page }) => {
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
-
+  test('Dialogue renders within 1s after choice selection', async ({ page, freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Wait for initial dialogue
@@ -86,17 +73,7 @@ test.describe('Mobile Performance', () => {
     console.log(`Dialogue render time: ${renderTime}ms`)
   })
 
-  test('Smooth animation frame rate during dialogue transition', async ({ page }) => {
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
-
+  test('Smooth animation frame rate during dialogue transition', async ({ page, freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Measure FPS during a 1-second period
@@ -122,17 +99,7 @@ test.describe('Mobile Performance', () => {
     console.log(`Average FPS: ${avgFPS.toFixed(1)}`)
   })
 
-  test('Memory usage remains stable after multiple choices', async ({ page }) => {
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
-
+  test('Memory usage remains stable after multiple choices', async ({ page, freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Get initial memory usage
@@ -180,17 +147,7 @@ test.describe('Mobile Performance', () => {
     }
   })
 
-  test('localStorage operations are fast (<50ms)', async ({ page }) => {
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
-
+  test('localStorage operations are fast (<50ms)', async ({ page, freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Make a choice and measure localStorage save time
@@ -224,17 +181,7 @@ test.describe('Mobile Performance', () => {
     console.log(`localStorage save time: ${saveTime.toFixed(2)}ms`)
   })
 
-  test('No memory leaks in dialogue loop (10 cycles)', async ({ page }) => {
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
-
+  test('No memory leaks in dialogue loop (10 cycles)', async ({ page, freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Get baseline memory
@@ -284,17 +231,7 @@ test.describe('Mobile Performance', () => {
     }
   })
 
-  test('Panel animations are smooth (>50 FPS)', async ({ page }) => {
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
-
+  test('Panel animations are smooth (>50 FPS)', async ({ page, freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Measure FPS during panel animation
