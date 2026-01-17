@@ -975,6 +975,19 @@ export default function StatefulGameInterface() {
 
       const zustandStore = useGameStore.getState()
 
+      // FIX: Atomic state update helper to prevent Zustand/localStorage desync
+      const atomicStateUpdate = (updates: Partial<GameState>): GameState => {
+        try {
+          const newState = { ...gameState, ...updates }
+          GameStateManager.saveGameState(newState)
+          zustandStore.setCoreGameState(GameStateUtils.serialize(newState))
+          return newState
+        } catch (e) {
+          logger.error('Failed to update game state atomically', { error: e })
+          throw e
+        }
+      }
+
       // Ensure player profile exists in database BEFORE any skill tracking
       // This prevents foreign key violations (error 23503)
       // FIX: Added 5-second timeout to prevent infinite hang on slow networks
@@ -1024,12 +1037,9 @@ export default function StatefulGameInterface() {
           checkInFeedback = { message: "New messages available" }
         }
 
-        gameState = { ...gameState, ...updates }
-
         // Save immediately to persist the decremented counters
         // This ensures if they refresh right away, we don't count it again (lastSaved will be now)
-        GameStateManager.saveGameState(gameState)
-        zustandStore.setCoreGameState(GameStateUtils.serialize(gameState)) // Sync store
+        gameState = atomicStateUpdate(updates)
 
         // P1: SKILL DECAY INTEGRATION (Claim 14)
         // Check for "use it or lose it" atrophy if session has advanced
@@ -1053,13 +1063,18 @@ export default function StatefulGameInterface() {
               if (decayedSkills.length > 0) {
                 logger.info('Skill Decay Detected', { skills: decayedSkills })
 
-                // 1. Apply changes state
-                const updatedState = {
-                  ...activeState,
-                  skillLevels: decayResult
+                // 1. Apply changes state atomically
+                try {
+                  const updatedState = {
+                    ...activeState,
+                    skillLevels: decayResult
+                  }
+                  GameStateManager.saveGameState(updatedState)
+                  zustandStore.setCoreGameState(GameStateUtils.serialize(updatedState))
+                } catch (e) {
+                  logger.error('Failed to save skill decay state', { error: e })
+                  return // Early exit if save fails
                 }
-                GameStateManager.saveGameState(updatedState)
-                zustandStore.setCoreGameState(GameStateUtils.serialize(updatedState))
 
                 // 2. Trigger DIEGETIC notification (Ambient "Intrusive Thought")
                 // Pick one random skill to narrate so we don't spam
