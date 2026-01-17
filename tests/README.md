@@ -42,6 +42,31 @@ npm run test:e2e -- --update-snapshots
 | `mobile-iphone-14` | Mobile tests (390×844) | Parallel (2 workers) |
 | `mobile-galaxy-s21` | Mobile tests (360×800) | Parallel (2 workers) |
 
+### Validator Suite (Unit Tests)
+
+Run content & registry validators independently:
+
+```bash
+npm run test:validators
+```
+
+| Test File | Purpose |
+|-----------|---------|
+| `tests/lib/dialogue-validators.test.ts` | Gating, unreachable nodes, pattern unlocks |
+| `tests/lib/simulation-validators.test.ts` | Registry alignment, entry nodes, phase/difficulty |
+| `tests/lib/simulation-id-drift.test.ts` | Canonical ID map consistency |
+| `tests/lib/simulation-entry-nodes.test.ts` | Entry node existence in real graphs |
+| `tests/lib/choice-generator.test.ts` | Dynamic choice guardrails |
+
+### Docs Sync Checks
+
+```bash
+npm run validate-simulations-doc
+```
+
+Validates simulation IDs in `docs/reference/data-dictionary/06-simulations.md`
+against `content/simulation-registry.ts`.
+
 ---
 
 ## 📝 Writing a New Test

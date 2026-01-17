@@ -213,16 +213,21 @@ export function UnifiedMenu({
                   {/* Volume Slider */}
                   {onVolumeChange && (
                     <div className="mb-3">
-                      <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
+                      <label htmlFor="volume-slider" className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
                         <span>Volume</span>
                         <span className="text-amber-400 font-medium">{volume}%</span>
-                      </div>
+                      </label>
                       <input
+                        id="volume-slider"
                         type="range"
                         min="0"
                         max="100"
                         value={volume}
                         onChange={(e) => onVolumeChange(parseInt(e.target.value, 10))}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-valuenow={volume}
+                        aria-label="Volume level"
                         className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500"
                         style={{
                           background: `linear-gradient(to right, rgb(245 158 11) 0%, rgb(245 158 11) ${volume}%, rgb(51 65 85) ${volume}%, rgb(51 65 85) 100%)`
@@ -235,6 +240,9 @@ export function UnifiedMenu({
                   {onToggleMute && (
                     <button
                       onClick={onToggleMute}
+                      role="switch"
+                      aria-checked={isMuted}
+                      aria-label={isMuted ? 'Unmute audio' : 'Mute audio'}
                       className={cn(
                         "w-full flex items-center justify-between p-2.5 rounded-lg transition-colors",
                         isMuted ? "bg-red-500/10 text-red-400" : "bg-white/5 text-slate-300 hover:bg-white/10"
@@ -242,9 +250,9 @@ export function UnifiedMenu({
                     >
                       <span className="text-sm">{isMuted ? 'Audio Muted' : 'Mute Audio'}</span>
                       {isMuted ? (
-                        <VolumeX className="w-4 h-4" />
+                        <VolumeX className="w-4 h-4" aria-hidden="true" />
                       ) : (
-                        <Volume2 className="w-4 h-4" />
+                        <Volume2 className="w-4 h-4" aria-hidden="true" />
                       )}
                     </button>
                   )}
@@ -324,6 +332,9 @@ export function UnifiedMenu({
                           <button
                             onClick={toggleReducedMotion}
                             className="w-full flex items-center justify-between p-2.5 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+                            role="switch"
+                            aria-checked={reducedMotion}
+                            aria-label="Reduce motion animations"
                           >
                             <span className="text-sm text-slate-300">Reduce Motion</span>
                             <div
@@ -331,6 +342,7 @@ export function UnifiedMenu({
                                 'w-9 h-5 rounded-full transition-colors relative',
                                 reducedMotion ? 'bg-purple-500' : 'bg-slate-600'
                               )}
+                              aria-hidden="true"
                             >
                               <div
                                 className={cn(
@@ -362,7 +374,7 @@ export function UnifiedMenu({
                    PROFILE SECTION
                    ══════════════════════════════════════════════════════════════ */}
                 <div className="p-3 border-b border-white/5 space-y-1">
-                  {onShowReport && (
+                  {onShowReport ? (
                     <button
                       onClick={() => {
                         onShowReport()
@@ -373,9 +385,14 @@ export function UnifiedMenu({
                       <FileText className="w-4 h-4 text-amber-400" />
                       <span className="text-sm text-slate-300">Career Profile</span>
                     </button>
+                  ) : (
+                    <div className="flex items-center gap-3 p-2.5 rounded-lg bg-white/5 opacity-50">
+                      <FileText className="w-4 h-4 text-slate-500" />
+                      <span className="text-sm text-slate-500">Career Profile (unavailable)</span>
+                    </div>
                   )}
 
-                  {playerId && (
+                  {playerId ? (
                     <Link
                       href={`/admin/${playerId}`}
                       onClick={() => setIsOpen(false)}
@@ -384,6 +401,11 @@ export function UnifiedMenu({
                       <Brain className="w-4 h-4 text-emerald-400" />
                       <span className="text-sm text-slate-300">Clinical Audit</span>
                     </Link>
+                  ) : (
+                    <div className="flex items-center gap-3 p-2.5 rounded-lg bg-white/5 opacity-50">
+                      <Brain className="w-4 h-4 text-slate-500" />
+                      <span className="text-sm text-slate-500">Clinical Audit (start game first)</span>
+                    </div>
                   )}
 
                   <button

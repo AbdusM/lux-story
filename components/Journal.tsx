@@ -35,10 +35,18 @@ interface JournalProps {
 
 type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'toolkit' | 'simulations' | 'cognition' | 'analysis' | 'god_mode' | 'opportunities' | 'careers' | 'combos'
 
+// Tab content variants - respects prefers-reduced-motion via Framer Motion's global setting
+// but we also pass explicit reduced variants for clarity
 const tabContentVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
   exit: { opacity: 0, y: -20, transition: { duration: 0.2 } }
+} as const
+
+const tabContentVariantsReduced = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.15 } },
+  exit: { opacity: 0, transition: { duration: 0.1 } }
 } as const
 
 export function Journal({ isOpen, onClose }: JournalProps) {
@@ -293,7 +301,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                   // --- STANDARD TABS ---
                   <motion.div
                     key={activeTab}
-                    variants={tabContentVariants}
+                    variants={prefersReducedMotion ? tabContentVariantsReduced : tabContentVariants}
                     initial="hidden"
                     animate="visible"
                     exit="exit"

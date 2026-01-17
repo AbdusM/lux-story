@@ -28,10 +28,10 @@ export interface SimulationMeta {
  * All simulations in the game
  * Order: Core characters first, then by narrative importance
  */
-export const SIMULATION_REGISTRY: SimulationMeta[] = [
+const RAW_SIMULATION_REGISTRY: SimulationMeta[] = [
   // === CORE CHARACTERS ===
   {
-    id: 'maya_pitch',
+    id: 'maya_servo_debugger',
     characterId: 'maya',
     title: 'The Pitch',
     subtitle: 'Innovation Showcase',
@@ -42,7 +42,7 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
     icon: 'briefcase'
   },
   {
-    id: 'grace_comfort',
+    id: 'grace_diagnostics',
     characterId: 'grace',
     title: 'Patient Comfort',
     subtitle: 'Home Health Visit',
@@ -53,7 +53,7 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
     icon: 'heart'
   },
   {
-    id: 'tess_classroom',
+    id: 'tess_botany',
     characterId: 'tess',
     title: 'The Classroom',
     subtitle: 'Teaching Moment',
@@ -64,7 +64,7 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
     icon: 'book'
   },
   {
-    id: 'alex_logistics',
+    id: 'alex_negotiation',
     characterId: 'alex',
     title: 'The Logistics Puzzle',
     subtitle: 'Supply Chain Crisis',
@@ -76,7 +76,7 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
     icon: 'compass'
   },
   {
-    id: 'yaquin_review',
+    id: 'yaquin_timeline',
     characterId: 'yaquin',
     title: 'The Review',
     subtitle: 'EdTech Demo',
@@ -89,7 +89,7 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
 
   // Devon's system debugging simulation
   {
-    id: 'devon_system',
+    id: 'devon_logic',
     characterId: 'devon',
     title: 'The System',
     subtitle: 'Logic Debugging',
@@ -101,7 +101,7 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
   },
   // Jordan's UX negotiation simulation
   {
-    id: 'jordan_launch',
+    id: 'jordan_structural',
     characterId: 'jordan',
     title: 'Launch Crisis',
     subtitle: 'Product Negotiation',
@@ -113,7 +113,7 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
   },
   // Marcus's code automation simulation
   {
-    id: 'marcus_automation',
+    id: 'marcus_triage',
     characterId: 'marcus',
     title: 'The Automation',
     subtitle: 'Code Evolution',
@@ -127,40 +127,40 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
 
   // === SECONDARY CHARACTERS ===
   {
-    id: 'kai_drill',
+    id: 'kai_blueprint',
     characterId: 'kai',
     title: 'The Safety Drill',
     subtitle: 'Emergency Protocol',
     description: 'Experience Kai\'s world of safety protocols when a routine drill becomes unexpectedly real.',
     theme: 'Preparation Meets Crisis',
     completionFlag: { type: 'tag', flag: 'simulation_complete' },
-    entryNodeId: 'kai_safety_drill_intro',
+    entryNodeId: 'kai_simulation_setup',
     icon: 'shield'
   },
   {
-    id: 'rohan_ghost',
+    id: 'rohan_nav',
     characterId: 'rohan',
     title: 'The Ghost',
     subtitle: 'System Anomaly',
     description: 'Dive deep into the station\'s systems with Rohan to trace a mysterious anomaly to its source.',
     theme: 'Truth in the Machine',
     completionFlag: { type: 'tag', flag: 'simulation_complete' },
-    entryNodeId: 'rohan_ghost_intro',
+    entryNodeId: 'rohan_simulation_setup',
     icon: 'code'
   },
   {
-    id: 'silas_drought',
+    id: 'silas_soil',
     characterId: 'silas',
     title: 'The Drought',
     subtitle: 'Manufacturing Crisis',
     description: 'Face a critical resource shortage with Silas that tests leadership under pressure.',
     theme: 'Scarcity and Innovation',
     completionFlag: { type: 'tag', flag: 'simulation_complete' },
-    entryNodeId: 'silas_drought_intro',
+    entryNodeId: 'silas_simulation_start',
     icon: 'wrench'
   },
   {
-    id: 'elena_search',
+    id: 'elena_market',
     characterId: 'elena',
     title: 'The Search',
     subtitle: 'Pattern Analysis',
@@ -168,13 +168,13 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
     theme: 'Signal vs. Noise',
     aiTool: 'Perplexity',
     completionFlag: { type: 'global', flag: 'elena_arc_complete' },
-    entryNodeId: 'elena_perplexity_intro',
+    entryNodeId: 'elena_simulation_perplexity',
     icon: 'search'
   },
 
   // === EXTENDED CHARACTERS ===
   {
-    id: 'asha_canvas',
+    id: 'asha_mural',
     characterId: 'asha',
     title: 'The Canvas',
     subtitle: 'Visual Creation',
@@ -182,11 +182,11 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
     theme: 'Human Touch in AI Art',
     aiTool: 'Stable Diffusion',
     completionFlag: { type: 'global', flag: 'asha_arc_complete' },
-    entryNodeId: 'asha_visual_canvas_intro',
+    entryNodeId: 'asha_simulation_setup',
     icon: 'palette'
   },
   {
-    id: 'lira_studio',
+    id: 'lira_audio',
     characterId: 'lira',
     title: 'The Studio',
     subtitle: 'Sound Design',
@@ -194,11 +194,11 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
     theme: 'Memory in Sound',
     aiTool: 'Suno/Udio',
     completionFlag: { type: 'knowledge', flag: 'lira_composition_complete' },
-    entryNodeId: 'lira_audio_studio_intro',
+    entryNodeId: 'lira_simulation_setup',
     icon: 'mic'
   },
   {
-    id: 'zara_analysis',
+    id: 'zara_audit',
     characterId: 'zara',
     title: 'The Analysis',
     subtitle: 'Data Ethics',
@@ -206,11 +206,11 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
     theme: 'Truth in Data',
     aiTool: 'Excel/Data Tools',
     completionFlag: { type: 'global', flag: 'zara_arc_complete' },
-    entryNodeId: 'zara_data_analysis_intro',
+    entryNodeId: 'zara_simulation_setup',
     icon: 'palette'
   },
   {
-    id: 'samuel_listener',
+    id: 'samuel_ops',
     characterId: 'samuel',
     title: 'The Listener\'s Log',
     subtitle: 'Station Wisdom',
@@ -218,7 +218,7 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
     theme: 'The Power of Listening',
     aiTool: 'HubSpot (metaphor)',
     completionFlag: { type: 'global', flag: 'samuel_listener_complete' },
-    entryNodeId: 'samuel_listener_intro',
+    entryNodeId: 'samuel_simulation_crm',
     icon: 'users'
   },
 
@@ -269,6 +269,18 @@ export const SIMULATION_REGISTRY: SimulationMeta[] = [
   }
 ]
 
+export const SIMULATION_REGISTRY: SimulationMeta[] = RAW_SIMULATION_REGISTRY.map(sim => {
+  const entry = SIMULATION_ID_MAP[sim.characterId]
+  if (!entry || !entry.libId) {
+    return sim
+  }
+
+  return {
+    ...sim,
+    id: entry.libId
+  }
+})
+
 /**
  * Get simulation by ID
  */
@@ -289,3 +301,40 @@ export function getSimulationByCharacter(characterId: CharacterId): SimulationMe
 export function getSimulationsForCharacters(characterIds: CharacterId[]): SimulationMeta[] {
   return SIMULATION_REGISTRY.filter(s => characterIds.includes(s.characterId))
 }
+
+// ═══════════════════════════════════════════════════════════════════════════
+// RUNTIME VALIDATION
+// ═══════════════════════════════════════════════════════════════════════════
+
+import { SIMULATION_ID_MAP } from './simulation-id-map'
+
+/**
+ * Validate that all simulation IDs in this registry match the canonical map.
+ * Called at module load time in development to catch drift early.
+ */
+function validateLibRegistryIds(): void {
+  if (process.env.NODE_ENV === 'production') return // Skip in production
+
+  const errors: string[] = []
+
+  for (const sim of SIMULATION_REGISTRY) {
+    const expectedId = SIMULATION_ID_MAP[sim.characterId]?.libId
+    if (!expectedId) {
+      // Character not in map — might be intentional (e.g., new character)
+      continue
+    }
+    if (sim.id !== expectedId) {
+      errors.push(
+        `[lib/simulation-registry] ID mismatch for ${sim.characterId}: ` +
+        `expected "${expectedId}" (from SIMULATION_ID_MAP), got "${sim.id}"`
+      )
+    }
+  }
+
+  if (errors.length > 0) {
+    console.warn('⚠️ Simulation ID drift detected:\n' + errors.join('\n'))
+  }
+}
+
+// Run validation on module load (dev only)
+validateLibRegistryIds()

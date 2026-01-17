@@ -178,6 +178,16 @@ export const isaiahDialogueNodes: DialogueNode[] = [
           building: "[Long silence. Isaiah's foundation trembles.]\n\nNobody, for a long time. I thought needing support meant my construction was weak. Ministry training, you know? You're supposed to be the load-bearing wall.\n\nNow I have a therapist. Took me until last year to add that reinforcement. Strongest structural decision in a decade.\n\nBut a lot of people in this work don't build that support. They just... collapse. Abandon the site. Or worse, stay standing but hollow inside.",
           exploring: "[Long silence. Isaiah finds his words.]\n\nNobody, for a long time. I thought needing support meant I was lost. Ministry training, you know? You're supposed to be the guide.\n\nNow I have a therapist. Took me until last year to accept I needed navigation too. Best path I've found in a decade.\n\nBut a lot of people in this work don't discover that. They just... lose their way. Leave the field. Or worse, stay but wander without direction.",
           patience: "[Long silence. Isaiah takes his time.]\n\nNobody, for a long time. I thought needing support meant I was too slow to recover. Ministry training, you know? You're supposed to bounce back fast.\n\nNow I have a therapist. Took me until last year—too many years—to go. Best thing I've waited for in a decade.\n\nBut a lot of people in this work don't give themselves that time. They just... burn out faster. Leave. Or worse, stay but stop feeling anything."
+        },
+        interrupt: {
+          duration: 3500,
+          type: 'silence',
+          action: 'Stay with him. Let the weight breathe before moving on.',
+          targetNodeId: 'isaiah_interrupt_acknowledged',
+          consequence: {
+            characterId: 'isaiah',
+            trustChange: 2
+          }
         }
       }
     ],
@@ -202,6 +212,28 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['isaiah_arc', 'vulnerability', 'growth']
+  },
+  {
+    nodeId: 'isaiah_interrupt_acknowledged',
+    speaker: 'Isaiah Greene',
+    content: [{
+      text: "Thank you for not rushing me.\n\nMost people want the fix. You gave me a minute to be honest.",
+      emotion: 'grateful',
+      variation_id: 'isaiah_interrupt_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'isaiah_interrupt_continue',
+        text: "What did therapy help you understand?",
+        nextNodeId: 'isaiah_therapy_insight',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'isaiah',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['interrupt_target', 'emotional_moment', 'isaiah_arc']
   },
 
   // ============= BURNOUT =============

@@ -1428,6 +1428,282 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
       }
     ],
     growthArcs: []
+  },
+
+  // ============================================
+  // QUINN - The Financier
+  // ============================================
+  quinn: {
+    characterId: 'quinn',
+    vulnerabilities: [
+      {
+        id: 'quinn_isolation',
+        topic: 'isolation',
+        displayName: 'Wealth Without Connection',
+        description: 'Quinn struggles with loneliness despite financial success.',
+        triggerPhrases: ['lonely', 'empty', 'wealth', 'success', 'meaning'],
+        discoveryConditions: {
+          trustMin: 4,
+          patternRequirements: [{ pattern: 'helping', min: 2 }]
+        },
+        responses: {
+          earlyTrust: 'Success is loud. The quiet is... different.',
+          midTrust: 'You can buy access, but you cannot buy closeness.',
+          highTrust: 'I built a life that looked perfect, and it felt hollow. I did not know who to call at 2 AM.'
+        },
+        rewards: {
+          knowledgeFlag: 'knows_quinn_isolation',
+          trustBonus: 2
+        }
+      }
+    ],
+    strengths: [
+      {
+        id: 'quinn_strategic_finance',
+        domain: 'strategy',
+        displayName: 'Long View',
+        description: 'Quinn sees consequences beyond the next quarter.',
+        demonstrationTopics: ['risk', 'strategy', 'tradeoff', 'impact'],
+        helpDialogue: {
+          offerHelp: 'Zoom out. The long view changes the decision.',
+          successFeedback: 'That is a better risk profile.',
+          recognitionResponse: 'Short-term wins are easy. Durable wins are rare.'
+        }
+      }
+    ],
+    growthArcs: []
+  },
+
+  // ============================================
+  // DANTE - The Closer
+  // ============================================
+  dante: {
+    characterId: 'dante',
+    vulnerabilities: [
+      {
+        id: 'dante_performance_fear',
+        topic: 'performance_identity',
+        displayName: 'All Persona, No Person',
+        description: 'Dante fears he has performed so long he no longer knows himself.',
+        triggerPhrases: ['perform', 'mask', 'real', 'genuine', 'authentic'],
+        discoveryConditions: {
+          trustMin: 4,
+          patternRequirements: [{ pattern: 'patience', min: 2 }]
+        },
+        responses: {
+          earlyTrust: 'I am good at being what people need.',
+          midTrust: 'Sometimes I cannot tell where the act ends.',
+          highTrust: 'I am scared there is nothing underneath the charm.'
+        },
+        rewards: {
+          knowledgeFlag: 'knows_dante_performance',
+          trustBonus: 2
+        }
+      }
+    ],
+    strengths: [
+      {
+        id: 'dante_mirroring',
+        domain: 'communication',
+        displayName: 'Reflective Listening',
+        description: 'Dante can surface what people mean beneath what they say.',
+        demonstrationTopics: ['listen', 'mirror', 'clarify', 'connect'],
+        helpDialogue: {
+          offerHelp: 'Let me reflect that back to you.',
+          successFeedback: 'That is it. That is what I meant.',
+          recognitionResponse: 'Silence helps people hear themselves.'
+        }
+      }
+    ],
+    growthArcs: []
+  },
+
+  // ============================================
+  // NADIA - The Ethicist
+  // ============================================
+  nadia: {
+    characterId: 'nadia',
+    vulnerabilities: [
+      {
+        id: 'nadia_haunted',
+        topic: 'harm',
+        displayName: 'Haunted By Impact',
+        description: 'Nadia carries the harm her work enabled.',
+        triggerPhrases: ['harm', 'bias', 'regret', 'haunted', 'responsible'],
+        discoveryConditions: {
+          trustMin: 4,
+          patternRequirements: [{ pattern: 'analytical', min: 2 }]
+        },
+        responses: {
+          earlyTrust: 'Every model has side effects.',
+          midTrust: 'I keep replaying what I shipped.',
+          highTrust: 'I can trace the harm from my code to real people. That does not leave you.'
+        },
+        rewards: {
+          knowledgeFlag: 'knows_nadia_haunted',
+          trustBonus: 2
+        }
+      }
+    ],
+    strengths: [
+      {
+        id: 'nadia_audit',
+        domain: 'ethics',
+        displayName: 'Bias Audit',
+        description: 'Nadia can spot harm before it scales.',
+        demonstrationTopics: ['audit', 'bias', 'risk', 'safety'],
+        helpDialogue: {
+          offerHelp: 'Pause. We need to audit this before it ships.',
+          successFeedback: 'That would have caused harm. Good catch.',
+          recognitionResponse: 'Prevention is quieter than repair.'
+        }
+      }
+    ],
+    growthArcs: []
+  },
+
+  // ============================================
+  // ISAIAH - The Fundraiser
+  // ============================================
+  isaiah: {
+    characterId: 'isaiah',
+    vulnerabilities: [
+      {
+        id: 'isaiah_burnout',
+        topic: 'burnout',
+        displayName: 'The Cost of Caring',
+        description: 'Isaiah has carried too much for too long.',
+        triggerPhrases: ['burnout', 'exhausted', 'tired', 'cost', 'heavy'],
+        discoveryConditions: {
+          trustMin: 3,
+          patternRequirements: [{ pattern: 'helping', min: 2 }]
+        },
+        responses: {
+          earlyTrust: 'I can handle it.',
+          midTrust: 'Some days I do not know if I can keep going.',
+          highTrust: 'I am afraid the work will take everything and still not be enough.'
+        },
+        rewards: {
+          knowledgeFlag: 'knows_isaiah_burnout',
+          trustBonus: 2
+        }
+      }
+    ],
+    strengths: [
+      {
+        id: 'isaiah_bridge',
+        domain: 'community',
+        displayName: 'Bridge Builder',
+        description: 'Isaiah connects people who can help each other.',
+        demonstrationTopics: ['connect', 'introduce', 'mentor', 'support'],
+        helpDialogue: {
+          offerHelp: 'I can make an introduction.',
+          successFeedback: 'They can help each other now.',
+          recognitionResponse: 'Community is built one link at a time.'
+        }
+      }
+    ],
+    growthArcs: []
+  },
+
+  jordan: {
+    characterId: 'jordan',
+    vulnerabilities: [
+      {
+        id: 'jordan_imposter_syndrome',
+        name: 'Imposter Syndrome',
+        description: 'Jordan questions whether their success is deserved or just luck',
+        triggerPhrases: ['lucky', 'deserve', 'earned', 'real talent', 'just got breaks'],
+        discoveryConditions: {
+          trustMin: 5
+        },
+        responses: {
+          earlyTrust: 'Jordan shrugs off the comment, but their smile falters.',
+          midTrust: '"Sometimes I wonder if I\'m just good at faking it."',
+          highTrust: '"Every morning I wake up waiting for someone to realize I don\'t belong here."'
+        },
+        rewards: {
+          patternBoost: { pattern: 'empathy', amount: 3 },
+          knowledgeUnlock: 'jordan_self_doubt'
+        }
+      }
+    ],
+    strengths: [
+      {
+        id: 'jordan_connector',
+        name: 'Natural Connector',
+        description: 'Jordan sees potential partnerships others miss',
+        helpDialogue: {
+          offerHelp: 'You know who you should talk to about this?',
+          successFeedback: 'See? I knew you two would click.',
+          recognitionResponse: 'Connecting people is what makes this place work.'
+        }
+      },
+      {
+        id: 'jordan_optimism',
+        name: 'Relentless Optimism',
+        description: 'Jordan finds silver linings even in setbacks',
+        revealConditions: {
+          trustMin: 3
+        },
+        helpDialogue: {
+          offerHelp: 'Okay, that didn\'t work. But here\'s what we learned...',
+          successFeedback: 'Every failure is just data for the next attempt.',
+          recognitionResponse: 'Giving up was never really an option for me.'
+        }
+      }
+    ],
+    growthArcs: []
+  },
+
+  kai: {
+    characterId: 'kai',
+    vulnerabilities: [
+      {
+        id: 'kai_burnout',
+        name: 'Creative Burnout',
+        description: 'Kai pushes too hard and loses touch with why they started',
+        triggerPhrases: ['tired', 'burnt out', 'exhausted', 'too much', 'never stop'],
+        discoveryConditions: {
+          trustMin: 4
+        },
+        responses: {
+          earlyTrust: 'Kai\'s energy dims for just a moment.',
+          midTrust: '"I can\'t remember the last time I made something just for fun."',
+          highTrust: '"I\'m terrified that if I stop, I\'ll never start again."'
+        },
+        rewards: {
+          patternBoost: { pattern: 'creativity', amount: 3 },
+          knowledgeUnlock: 'kai_creative_fear'
+        }
+      }
+    ],
+    strengths: [
+      {
+        id: 'kai_innovation',
+        name: 'Relentless Innovation',
+        description: 'Kai approaches every problem as a design challenge',
+        helpDialogue: {
+          offerHelp: 'What if we tried something completely different?',
+          successFeedback: 'Breaking patterns is how new ones emerge.',
+          recognitionResponse: 'The best solutions are the ones nobody expected.'
+        }
+      },
+      {
+        id: 'kai_aesthetic_vision',
+        name: 'Aesthetic Vision',
+        description: 'Kai sees beauty in unexpected places',
+        revealConditions: {
+          trustMin: 3
+        },
+        helpDialogue: {
+          offerHelp: 'Look at it this way instead...',
+          successFeedback: 'Sometimes you just need a new perspective.',
+          recognitionResponse: 'Beauty is everywhere if you know how to look.'
+        }
+      }
+    ],
+    growthArcs: []
   }
 }
 

@@ -23,7 +23,7 @@ Simulations are immersive interactive experiences where players help characters 
 ### Core Characters (9 simulations)
 
 #### 1. Maya - The Pitch (Innovation Showcase)
-- **ID:** `maya_pitch` / `maya_servo_debugger`
+- **ID:** `maya_servo_debugger`
 - **Type:** `system_architecture`
 - **Icon:** 💼 briefcase / wrench
 - **Theme:** Authenticity vs. Expectation
@@ -36,7 +36,7 @@ Simulations are immersive interactive experiences where players help characters 
 ---
 
 #### 2. Grace - Patient Comfort (Home Health Visit)
-- **ID:** `grace_comfort` / `grace_diagnostics`
+- **ID:** `grace_diagnostics`
 - **Type:** `dashboard_triage` (medical variant)
 - **Icon:** ❤️ heart / activity
 - **Theme:** Care Beyond Protocol
@@ -49,7 +49,7 @@ Simulations are immersive interactive experiences where players help characters 
 ---
 
 #### 3. Tess - The Classroom (Teaching Moment)
-- **ID:** `tess_classroom` / `tess_botany`
+- **ID:** `tess_botany`
 - **Type:** `botany_grid` (cellular automata)
 - **Icon:** 📚 book / sprout
 - **Theme:** Purpose Through Sacrifice
@@ -62,7 +62,7 @@ Simulations are immersive interactive experiences where players help characters 
 ---
 
 #### 4. Alex - The Logistics Puzzle (Supply Chain Crisis)
-- **ID:** `alex_logistics` / `alex_negotiation`
+- **ID:** `alex_negotiation`
 - **Type:** `chat_negotiation` (influence vector)
 - **Icon:** 🧭 compass / users
 - **Theme:** Order From Chaos
@@ -76,7 +76,7 @@ Simulations are immersive interactive experiences where players help characters 
 ---
 
 #### 5. Yaquin - The Review (EdTech Demo)
-- **ID:** `yaquin_review` / `yaquin_timeline`
+- **ID:** `yaquin_timeline`
 - **Type:** `historical_timeline`
 - **Icon:** ⚡ zap / book
 - **Theme:** Vision vs. Reality
@@ -89,7 +89,7 @@ Simulations are immersive interactive experiences where players help characters 
 ---
 
 #### 6. Devon - The System (Logic Debugging)
-- **ID:** `devon_system` / `devon_logic`
+- **ID:** `devon_logic`
 - **Type:** `conversation_tree`
 - **Icon:** 💻 code / network
 - **Theme:** Logic vs. Emotion
@@ -102,7 +102,7 @@ Simulations are immersive interactive experiences where players help characters 
 ---
 
 #### 7. Jordan - Launch Crisis (Product Negotiation)
-- **ID:** `jordan_launch` / `jordan_structural`
+- **ID:** `jordan_structural`
 - **Type:** `architect_3d`
 - **Icon:** 👥 users / drafting-compass
 - **Theme:** Compromise vs. Conviction
@@ -115,7 +115,7 @@ Simulations are immersive interactive experiences where players help characters 
 ---
 
 #### 8. Marcus - The Automation (Code Evolution)
-- **ID:** `marcus_automation` / `marcus_triage`
+- **ID:** `marcus_triage`
 - **Type:** `dashboard_triage`
 - **Icon:** 💻 code / activity
 - **Theme:** Human Touch vs. Efficiency
@@ -129,7 +129,7 @@ Simulations are immersive interactive experiences where players help characters 
 ---
 
 #### 9. Samuel - The Listener's Log (Station Wisdom)
-- **ID:** `samuel_listener` / `samuel_ops`
+- **ID:** `samuel_ops`
 - **Type:** `conductor_interface`
 - **Icon:** 👥 users / train-front
 - **Theme:** The Power of Listening
@@ -145,7 +145,7 @@ Simulations are immersive interactive experiences where players help characters 
 ### Secondary Characters (7 simulations)
 
 #### 10. Kai - The Safety Drill (Emergency Protocol)
-- **ID:** `kai_drill` / `kai_blueprint`
+- **ID:** `kai_blueprint`
 - **Type:** `visual_canvas` (blueprint_editor)
 - **Icon:** 🛡️ shield / draftjs
 - **Theme:** Preparation Meets Crisis
@@ -158,7 +158,7 @@ Simulations are immersive interactive experiences where players help characters 
 ---
 
 #### 11. Rohan - The Ghost (System Anomaly)
-- **ID:** `rohan_ghost` / `rohan_nav`
+- **ID:** `rohan_nav`
 - **Type:** `visual_canvas`
 - **Icon:** 💻 code / compass
 - **Theme:** Truth in the Machine
@@ -171,7 +171,7 @@ Simulations are immersive interactive experiences where players help characters 
 ---
 
 #### 12. Silas - The Drought (Manufacturing Crisis)
-- **ID:** `silas_drought` / `silas_soil`
+- **ID:** `silas_soil`
 - **Type:** `dashboard_triage`
 - **Icon:** 🔧 wrench / sprout
 - **Theme:** Scarcity and Innovation
@@ -184,7 +184,7 @@ Simulations are immersive interactive experiences where players help characters 
 ---
 
 #### 13. Elena - The Search (Pattern Analysis)
-- **ID:** `elena_search` / `elena_market`
+- **ID:** `elena_market`
 - **Type:** `market_visualizer` (ticker)
 - **Icon:** 🔍 search / trending-up
 - **Theme:** Signal vs. Noise
@@ -227,7 +227,7 @@ Simulations are immersive interactive experiences where players help characters 
 ### Extended Characters (4 simulations)
 
 #### 16. Asha - The Canvas (Visual Creation)
-- **ID:** `asha_canvas` / `asha_mural`
+- **ID:** `asha_mural`
 - **Type:** `visual_canvas` (art canvas)
 - **Icon:** 🎨 palette
 - **Theme:** Human Touch in AI Art
@@ -241,7 +241,7 @@ Simulations are immersive interactive experiences where players help characters 
 ---
 
 #### 17. Lira - The Studio (Sound Design)
-- **ID:** `lira_studio` / `lira_audio`
+- **ID:** `lira_audio`
 - **Type:** `audio_studio` (synesthesia engine)
 - **Icon:** 🎤 mic / music
 - **Theme:** Memory in Sound
@@ -256,7 +256,7 @@ Simulations are immersive interactive experiences where players help characters 
 ---
 
 #### 18. Zara - The Analysis (Data Ethics)
-- **ID:** `zara_analysis` / `zara_audit`
+- **ID:** `zara_audit`
 - **Type:** `data_audit`
 - **Icon:** 🎨 palette / database
 - **Theme:** Truth in Data
@@ -442,7 +442,7 @@ interface SimulationUnlockRequirements {
 import { SIMULATION_REGISTRY, getSimulationById, getSimulationByCharacter } from '@/lib/simulation-registry'
 
 // Get specific simulation
-const mayaSim = getSimulationById('maya_pitch')
+const mayaSim = getSimulationById('maya_servo_debugger')
 console.log(mayaSim.title) // "The Pitch"
 console.log(mayaSim.theme) // "Authenticity vs. Expectation"
 

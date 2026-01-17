@@ -258,8 +258,8 @@ const buttonVariants = {
     opacity: 1,
     transition: { duration: 0.15, ease: [0.25, 0.1, 0.25, 1] as const } // easeOut cubic-bezier
   },
-  tap: { scale: 0.98 },
-  hover: { scale: 1.0 } // REMOVED SCALE: 1.01 -> 1.0
+  // REMOVED: tap and hover variants - Button's active:scale-95 provides tap feedback
+  // whileTap on motion.div was intercepting touch events and blocking scroll
 }
 
 const shakeVariant = {
@@ -405,13 +405,13 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
     <div className="w-full">
       <motion.div
         variants={combinedVariants}
-        // whileHover="hover" // REMOVED: No generic hover scale
-        whileTap="tap"
+        // REMOVED: whileHover and whileTap - they intercept touch events and block scroll
+        // Button's active:scale-95 provides sufficient tap feedback
         animate={_animateState} // ISP FIX: Prop moved to motion.div
         custom={index}
         className="w-full"
         data-choice-index={index}
-        style={{ scrollSnapAlign: 'start' }}
+        // REMOVED: scrollSnapAlign - fights with touch gestures, causes sticky scroll
       >
         <Button
           onClick={() => onChoice(choice)}
@@ -470,6 +470,10 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
               : 'border-emerald-200/50 shadow-emerald-100'),
           )}
           style={{
+            // Prevent text selection and callout during scroll gestures
+            WebkitTouchCallout: 'none',
+            WebkitUserSelect: 'none',
+            userSelect: 'none',
             // Marquee gradient CSS variables (doesn't conflict with background)
             ...((() => {
               const pattern = choice.pattern
@@ -488,7 +492,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
           title={playerPatterns && choice.pattern ? (getPatternHintText(choice.pattern, playerPatterns) || undefined) : undefined}
         >
           {showPatternIcon && choice.pattern && (
-            <div className="mr-3 opacity-90">
+            <div className="mr-3 opacity-90 relative z-[1]">
               {choice.pattern === 'analytical' && <Microscope className="w-4 h-4 text-blue-500" />}
               {choice.pattern === 'patience' && <Brain className="w-4 h-4 text-green-500" />}
               {choice.pattern === 'exploring' && <Compass className="w-4 h-4 text-purple-500" />}
@@ -496,7 +500,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
               {choice.pattern === 'building' && <Hammer className="w-4 h-4 text-amber-500" />}
             </div>
           )}
-          <span className="flex-1 line-clamp-4">
+          <span className="flex-1 line-clamp-4 relative z-[1]">
             {cognitiveLoad ? truncateTextForLoad(choice.text, cognitiveLoad) : choice.text}
           </span>
         </Button>
@@ -604,14 +608,14 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
 
     return (
       <motion.div
-        className={cn(
-          "space-y-8",
-          // Fixed container heights for layout stability (prevents jumping when button count changes)
-          CHOICE_CONTAINER_HEIGHT.mobileSm,  // 220px on small phones (< 400px)
-          CHOICE_CONTAINER_HEIGHT.mobile,    // 296px on larger phones (≥ 400px)
-          CHOICE_CONTAINER_HEIGHT.tablet,    // 198px on tablets+ (≥ 640px)
-          "overflow-y-auto overflow-x-hidden"
-        )}
+      className={cn(
+        "space-y-8 max-w-full",
+        // Height caps: allow shrink with fewer choices, keep headroom for mobile chrome
+        CHOICE_CONTAINER_HEIGHT.mobileSm,  // ~4 buttons on small phones (< 400px)
+        CHOICE_CONTAINER_HEIGHT.mobile,    // ~4.5–5 buttons on larger phones (≥ 400px)
+        CHOICE_CONTAINER_HEIGHT.tablet,    // ~4 buttons on tablets+ (≥ 640px)
+        "overflow-y-auto overflow-x-hidden pb-6"
+      )}
         style={{ scrollbarGutter: 'stable' }}  // Prevent layout shift when scrollbar appears
         ref={containerRef}
         role="listbox"
@@ -665,13 +669,13 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     <motion.div
       ref={containerRef}
       className={cn(
-        "grid gap-3 p-2 w-full",
+        "grid gap-3 p-2 w-full max-w-full",
         useGrid ? "md:grid-cols-2" : "grid-cols-1",
-        // Fixed container heights for layout stability (prevents jumping when button count changes)
-        CHOICE_CONTAINER_HEIGHT.mobileSm,  // 220px on small phones (< 400px)
-        CHOICE_CONTAINER_HEIGHT.mobile,    // 296px on larger phones (≥ 400px)
-        CHOICE_CONTAINER_HEIGHT.tablet,    // 198px on tablets+ (≥ 640px)
-        "overflow-y-auto overflow-x-hidden"
+        // Height caps: allow shrink with fewer choices, keep headroom for mobile chrome
+        CHOICE_CONTAINER_HEIGHT.mobileSm,  // ~4 buttons on small phones (< 400px)
+        CHOICE_CONTAINER_HEIGHT.mobile,    // ~4.5–5 buttons on larger phones (≥ 400px)
+        CHOICE_CONTAINER_HEIGHT.tablet,    // ~4 buttons on tablets+ (≥ 640px)
+        "overflow-y-auto overflow-x-hidden pb-6"
       )}
       style={{ scrollbarGutter: 'stable' }}  // Prevent layout shift when scrollbar appears
       data-testid="game-choices"

@@ -193,12 +193,27 @@ export class ChoiceGenerator {
     }
 
     // Layer 3: Semantic Similarity Filtering (only if enabled)
+    // GUARDRAIL: Never reduce choice count below MIN_CHOICE_COUNT when original has 3+ choices
+    const MIN_CHOICE_COUNT = 2
+    const originalCount = choices.length
+
     if (process.env.ENABLE_SEMANTIC_SIMILARITY !== 'false' && choices.length > 1) {
       logger.debug('Applying semantic similarity filter', { operation: 'choice-generator.semantic-filter', choiceCount: choices.length })
       const threshold = parseFloat(process.env.CHOICE_SIMILARITY_THRESHOLD || '0.85')
 
       try {
         const filteredChoices = filterSimilarChoicesSimple(choices, threshold)
+
+        // GUARDRAIL: If filtering would reduce below MIN_CHOICE_COUNT, keep original
+        if (originalCount >= 3 && filteredChoices.length < MIN_CHOICE_COUNT) {
+          logger.debug('Semantic filter would reduce below minimum, keeping original', {
+            operation: 'choice-generator.semantic-guardrail',
+            original: originalCount,
+            filtered: filteredChoices.length,
+            minRequired: MIN_CHOICE_COUNT
+          })
+          return choices
+        }
 
         if (filteredChoices.length < choices.length) {
           logger.debug('Semantic filter applied', { operation: 'choice-generator.semantic-result', before: choices.length, after: filteredChoices.length })
