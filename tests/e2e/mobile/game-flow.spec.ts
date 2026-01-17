@@ -198,8 +198,8 @@ for (const viewport of MOBILE_VIEWPORTS) {
       const interfaceBox = await gameInterface.boundingBox()
       expect(interfaceBox).not.toBeNull()
       if (interfaceBox && viewportSize) {
-        // Interface should be close to full viewport height
-        expect(interfaceBox.height).toBeGreaterThan(viewportSize.height * 0.8)
+        // Interface should fill available space (accounting for header ~120px + footer ~140-187px)
+        expect(interfaceBox.height).toBeGreaterThan(viewportSize.height * 0.5)
       }
     })
   })

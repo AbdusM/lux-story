@@ -3676,7 +3676,7 @@ export default function StatefulGameInterface() {
           style={{ WebkitOverflowScrolling: 'touch' }}
           data-testid="game-interface"
         >
-          <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4 md:pt-8 lg:pt-12 pb-6 sm:pb-8">
+          <div className="max-w-4xl mx-auto px-3 sm:px-4 py-3 sm:py-4 md:pt-8 lg:pt-12 pb-4 sm:pb-6">
             {/* Dialogue container-STABLE: no animations to prevent layout shifts */}
             <div key="dialogue-wrapper">
               <Card
@@ -3703,7 +3703,7 @@ export default function StatefulGameInterface() {
                 }
               >
                 <CardContent
-                  className="p-5 sm:p-8 md:p-10 h-[45vh] sm:h-[50vh] overflow-y-auto"
+                  className="p-3 sm:p-5 md:p-8 h-[50vh] sm:h-[55vh] overflow-y-auto"
                   style={{ WebkitOverflowScrolling: 'touch', scrollbarGutter: 'stable' }}
                   // Note: Removed text-center for narration-left-align is easier to read (eye hunts for line starts when centered)
                   data-testid="dialogue-content"
