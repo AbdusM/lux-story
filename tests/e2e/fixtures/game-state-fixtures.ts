@@ -265,6 +265,9 @@ async function seedGameState(page: Page, state: any): Promise<void> {
     // Clear existing state
     localStorage.clear()
 
+    // Mark as test environment
+    window.__PLAYWRIGHT__ = true
+
     // Set new state
     localStorage.setItem('grand-central-terminus-save', JSON.stringify(stateToSeed))
   }, state)
