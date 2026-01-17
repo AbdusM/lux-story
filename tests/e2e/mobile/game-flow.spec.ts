@@ -72,7 +72,8 @@ for (const viewport of MOBILE_VIEWPORTS) {
       })
 
       expect(savedState).toBeDefined()
-      expect(savedState.state).toBeDefined()
+      expect(savedState.playerId).toBeDefined()
+      expect(savedState.currentNodeId).toBeDefined()
     })
 
     test('Choices stack vertically without overflow', async ({ page, freshGame }) => {
