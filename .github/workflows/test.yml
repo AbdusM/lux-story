@@ -41,6 +41,16 @@ jobs:
       - name: Run tests
         run: npm run test:run
 
+      - name: Generate coverage matrix
+        run: npm run generate-coverage-matrix
+
+      - name: Verify coverage matrix is up to date
+        run: |
+          git diff --exit-code -- docs/03_PROCESS/18-dialogue-menu-simulations-matrix.csv docs/03_PROCESS/18-dialogue-menu-simulations-matrix.md
+
+      - name: Validate simulations data dictionary
+        run: npm run validate-simulations-doc
+
       - name: Generate coverage report
         run: npm run test:coverage
         continue-on-error: true

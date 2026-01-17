@@ -786,7 +786,7 @@ Each engine serves a distinct purpose without overlap.
 ---
 
 **Document Control:**
-- Location: `/docs/02_REFERENCE/data-dictionary/`
+- Location: `/docs/reference/data-dictionary/`
 - Related: `03-patterns.md` (pattern definitions), `02-skills.md` (skill associations)
 - Status: Manual Documentation (not auto-generated)
 

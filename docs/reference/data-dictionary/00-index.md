@@ -375,13 +375,13 @@ npx tsc --noEmit
 
 ```bash
 # Open patterns documentation
-code docs/02_REFERENCE/data-dictionary/03-patterns.md
+code docs/reference/data-dictionary/03-patterns.md
 
 # Open skills documentation
-code docs/02_REFERENCE/data-dictionary/02-skills.md
+code docs/reference/data-dictionary/02-skills.md
 
 # Open entire folder
-code docs/02_REFERENCE/data-dictionary/
+code docs/reference/data-dictionary/
 ```
 
 ### Data Validation
@@ -418,7 +418,7 @@ A successful data dictionary achieves:
 4. **Maintainability** - Auto-generation reduces burden 50%+
 5. **Usefulness** - Regularly referenced by team
 
-**Key Indicator:** "What emotions are valid?" → "Check `/docs/02_REFERENCE/data-dictionary/01-emotions.md`"
+**Key Indicator:** "What emotions are valid?" → "Check `/docs/reference/data-dictionary/01-emotions.md`"
 
 ---
 
@@ -438,8 +438,8 @@ A successful data dictionary achieves:
 ---
 
 **Document Control:**
-- Location: `/docs/02_REFERENCE/data-dictionary/`
-- Parent: `/docs/02_REFERENCE/` (Reference documentation folder)
+- Location: `/docs/reference/data-dictionary/`
+- Parent: `/docs/reference/` (Reference documentation folder)
 - Related: `/docs/01_MECHANICS/` (Game mechanics documentation)
 
 **Last Updated:** January 13, 2026

@@ -167,6 +167,40 @@ test.describe('Safe Area Boundaries', () => {
     }
   })
 
+  test('Choices stay above mobile browser chrome (bottom bar)', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+
+    await page.goto('/')
+    await page.waitForLoadState('networkidle')
+
+    // Enter the game
+    const enterButton = page.getByRole('button', { name: /enter.*station/i })
+    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
+      await enterButton.click()
+      await page.waitForLoadState('networkidle')
+    }
+
+    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
+
+    const choices = page.locator('[data-testid="choice-button"]')
+    await expect(choices.first()).toBeVisible({ timeout: 5000 })
+
+    // Simulate Chrome bottom bar (~56px) by reducing viewport height
+    const bottomChromeHeight = 56
+    await page.setViewportSize({ width: 390, height: 844 - bottomChromeHeight })
+
+    const lastChoice = choices.last()
+    await lastChoice.scrollIntoViewIfNeeded()
+    const box = await lastChoice.boundingBox()
+    expect(box).not.toBeNull()
+    if (box) {
+      const viewport = page.viewportSize()
+      const viewportHeight = viewport?.height ?? 788
+      const bottomEdge = box.y + box.height
+      expect(bottomEdge).toBeLessThanOrEqual(viewportHeight)
+    }
+  })
+
   test('Content does not get cut off at rounded corners (Pro Max)', async ({ page }) => {
     // iPhone 14 Pro Max has significant corner radius
     await page.setViewportSize({ width: 430, height: 932 })

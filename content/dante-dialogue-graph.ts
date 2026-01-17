@@ -505,7 +505,17 @@ export const danteDialogueNodes: DialogueNode[] = [
           { pattern: 'helping', minLevel: 4, altText: "You want the real version or the one I tell at networking events?\n\n...You help people. So you'll get the real version.\n\nGrew up poor. New Orleans. Learned charm was currency. By fifteen I was making people feel important for survival.\n\nRose fast in sales. But somewhere I became all persona, no person. Came to Birmingham to figure out who I am when I'm not performing.", altEmotion: 'vulnerable_warm' },
           { pattern: 'analytical', minLevel: 4, altText: "You want the real version or the one I tell at networking events?\n\n...You analyze. So here's the unoptimized truth.\n\nNew Orleans. Poor. Learned charm was survival currency. By fifteen: small hustles, all legal, all effective. Sales career trajectory: rapid ascent.\n\nBut at some point the optimization became the identity. All caricature, no core. Birmingham: attempt to debug the system. Find the authentic variable underneath.", altEmotion: 'vulnerable_analytical' },
           { pattern: 'patience', minLevel: 4, altText: "You want the real version or the one I tell at networking events?\n\n...You're patient. So I'll take time with the real version.\n\nNew Orleans. Poor. Learned charm young. Rose fast in sales. But somewhere I became a performance—all persona, no person.\n\nBirmingham: starting over. Taking time to figure out who I am when I'm not rushing toward the next sale.", altEmotion: 'vulnerable_reflective' }
-        ]
+        ],
+        interrupt: {
+          duration: 3500,
+          type: 'silence',
+          action: 'Let the truth hang. He is not asking for a fix.',
+          targetNodeId: 'dante_interrupt_acknowledged',
+          consequence: {
+            characterId: 'dante',
+            trustChange: 2
+          }
+        }
       }
     ],
     choices: [
@@ -537,6 +547,28 @@ export const danteDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['dante_arc', 'backstory', 'vulnerability']
+  },
+  {
+    nodeId: 'dante_interrupt_acknowledged',
+    speaker: 'Dante Moreau',
+    content: [{
+      text: "Most people fill that silence with advice. You didn't.\n\nThat's the kind of restraint I keep talking about. It lets me tell the real story.",
+      emotion: 'grateful',
+      variation_id: 'dante_interrupt_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'dante_interrupt_continue',
+        text: "Who are you beneath the charm?",
+        nextNodeId: 'dante_beneath_charm',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'dante',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['interrupt_target', 'emotional_moment', 'dante_arc']
   },
 
   // ============= VULNERABILITY ARC =============

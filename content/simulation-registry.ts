@@ -1,11 +1,15 @@
-
 import { SimulationDefaultContext, SimulationType } from '@/components/game/simulations/types'
 import { SimulationPhase, SimulationDifficulty } from '@/lib/dialogue-graph'
+import { SIMULATION_ID_MAP } from '@/lib/simulation-id-map'
+import type { CharacterId } from '@/lib/graph-registry'
 
 // ISP: The "Context Factory"
 // This registry defines the "Pure Form" of each simulation, independent of the dialogue node.
 // It serves as the Truth for God Mode and a template for the actual game.
 // Extended for 3-Phase System (Jan 2026)
+//
+// IMPORTANT: IDs are sourced from SIMULATION_ID_MAP to prevent drift.
+// If you need to add a new simulation, add it to lib/simulation-id-map.ts first.
 
 export type SimulationDefinition = {
     id: string
@@ -23,7 +27,7 @@ export type SimulationDefinition = {
     defaultContext: SimulationDefaultContext
 }
 
-export const SIMULATION_REGISTRY: SimulationDefinition[] = [
+const RAW_SIMULATION_REGISTRY: SimulationDefinition[] = [
     // --- CORE GAMEPLAY ---
     // 1. MAYA (Reference Standard)
     {
@@ -476,3 +480,52 @@ export const SIMULATION_REGISTRY: SimulationDefinition[] = [
         }
     }
 ]
+
+export const SIMULATION_REGISTRY: SimulationDefinition[] = RAW_SIMULATION_REGISTRY.map(sim => {
+    const entry = SIMULATION_ID_MAP[sim.characterId as CharacterId]
+    if (!entry || !entry.contentId) {
+        return sim
+    }
+
+    return {
+        ...sim,
+        id: entry.contentId,
+        phase: entry.phase,
+        difficulty: entry.difficulty
+    }
+})
+
+// ═══════════════════════════════════════════════════════════════════════════
+// RUNTIME VALIDATION
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Validate that all simulation IDs in this registry match the canonical map.
+ * Called at module load time in development to catch drift early.
+ */
+function validateContentRegistryIds(): void {
+    if (process.env.NODE_ENV === 'production') return // Skip in production
+
+    const errors: string[] = []
+
+    for (const sim of SIMULATION_REGISTRY) {
+        const expectedId = SIMULATION_ID_MAP[sim.characterId as keyof typeof SIMULATION_ID_MAP]?.contentId
+        if (!expectedId) {
+            // Character not in map — might be intentional (e.g., new character)
+            continue
+        }
+        if (sim.id !== expectedId) {
+            errors.push(
+                `[content/simulation-registry] ID mismatch for ${sim.characterId}: ` +
+                `expected "${expectedId}" (from SIMULATION_ID_MAP), got "${sim.id}"`
+            )
+        }
+    }
+
+    if (errors.length > 0) {
+        console.warn('⚠️ Simulation ID drift detected:\n' + errors.join('\n'))
+    }
+}
+
+// Run validation on module load (dev only)
+validateContentRegistryIds()

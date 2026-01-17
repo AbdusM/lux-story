@@ -197,7 +197,17 @@ export const quinnDialogueNodes: DialogueNode[] = [
           { pattern: 'patience', minLevel: 5, altText: "Heavy.\n\nI had everything speed could buy. Penthouse. Car service. Instant gratification.\n\nBut I was also drinking alone at 2 AM, finally slow enough to realize I'd raced past everything that mattered.", altEmotion: 'reflective' },
           { pattern: 'exploring', minLevel: 5, altText: "Heavy.\n\nI had explored every territory wealth could open. Penthouse views. Exclusive circles.\n\nBut at 2 AM, drinking alone, I realized I'd mapped the wrong continent entirely.", altEmotion: 'searching' },
           { pattern: 'building', minLevel: 5, altText: "Heavy.\n\nI built everything the plan required. Penthouse. Portfolio. Perfect on paper.\n\nBut at 2 AM, drinking alone, I realized the structure was hollow. I'd built walls, not a home.", altEmotion: 'honest' }
-        ]
+        ],
+        interrupt: {
+          duration: 3500,
+          type: 'silence',
+          action: 'Let him sit in the emptiness for a beat. No fixes yet.',
+          targetNodeId: 'quinn_interrupt_acknowledged',
+          consequence: {
+            characterId: 'quinn',
+            trustChange: 2
+          }
+        }
       }
     ],
     choices: [
@@ -232,6 +242,28 @@ export const quinnDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['quinn_arc', 'vulnerability', 'finance']
+  },
+  {
+    nodeId: 'quinn_interrupt_acknowledged',
+    speaker: 'Quinn Almeida',
+    content: [{
+      text: "You didn't try to reframe it. You just let the silence land.\n\nMost people rush to fix the feeling. You didn't. That meant more than you think.",
+      emotion: 'grateful',
+      variation_id: 'quinn_interrupt_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'quinn_interrupt_continue',
+        text: "You were lonely.",
+        nextNodeId: 'quinn_loneliness',
+        pattern: 'helping',
+        consequence: {
+          characterId: 'quinn',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['interrupt_target', 'emotional_moment', 'quinn_arc']
   },
 
   // ============= BIRMINGHAM RETURN PATH =============

@@ -15,6 +15,7 @@
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:validators": "vitest run tests/lib/dialogue-validators.test.ts tests/lib/simulation-validators.test.ts tests/lib/simulation-id-drift.test.ts tests/lib/simulation-entry-nodes.test.ts tests/lib/choice-generator.test.ts",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
@@ -39,8 +40,11 @@
     "analyze-chat-master": "node scripts/gemini-chat-interface-master-analyzer.js",
     "analyze-skills-dashboard": "node scripts/gemini-skills-dashboard-analyzer.js",
     "audit-config": "npx tsx scripts/audit-configuration.ts",
+    "generate-coverage-matrix": "npx tsx scripts/generate-coverage-matrix.ts",
+    "report-entry-nodes": "npx tsx scripts/report-entry-nodes.ts",
     "precommit": "npm run check-typewriter && npm run lint",
-    "health-check": "curl http://localhost:3003/api/health && curl http://localhost:3003/api/health/db"
+    "health-check": "curl http://localhost:3003/api/health && curl http://localhost:3003/api/health/db",
+    "validate-simulations-doc": "npx tsx scripts/validate-simulations-doc.ts"
   },
   "keywords": [
     "career-exploration",

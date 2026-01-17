@@ -56,7 +56,27 @@ export default defineConfig({
 
   // Configure projects for feature-based parallelization
   projects: [
-    // Desktop projects (feature-based)
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SMOKE TESTS - Fast CI gate (run first, fail fast)
+    // ═══════════════════════════════════════════════════════════════════════════
+    {
+      name: 'smoke',
+      testMatch: [
+        '**/characters/character-smoke.spec.ts',
+        '**/simulations/simulation-smoke.spec.ts',
+        '**/user-flows/homepage.spec.ts'
+      ],
+      fullyParallel: true,
+      workers: process.env.CI ? 1 : 2,
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: true,
+      },
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // DESKTOP PROJECTS (feature-based)
+    // ═══════════════════════════════════════════════════════════════════════════
     {
       name: 'auth',
       testDir: './tests/e2e/admin',

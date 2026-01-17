@@ -1103,7 +1103,17 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       {
         variation_id: 'nadia_both_v1',
         text: "[Nadia stares at you. Then laughs—a real laugh, surprised out of her.]\n\nBoth. Vigilance.\n\nI never thought of it that way. The person who could ship harmful code and the person who's haunted by it—same person. The haunting is what keeps me careful.\n\nIf I ever stop being haunted... that's when I should worry.\n\nThank you. Genuinely. That reframe helps.",
-        emotion: 'moved'
+        emotion: 'moved',
+        interrupt: {
+          duration: 3200,
+          type: 'silence',
+          action: 'Hold the quiet. Let her feel the relief land.',
+          targetNodeId: 'nadia_interrupt_acknowledged',
+          consequence: {
+            characterId: 'nadia',
+            trustChange: 2
+          }
+        }
       }
     ],
     onEnter: [
@@ -1128,6 +1138,28 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       }
     ],
     tags: ['nadia_arc', 'healing', 'growth']
+  },
+  {
+    nodeId: 'nadia_interrupt_acknowledged',
+    speaker: 'Nadia Petrova',
+    content: [{
+      text: "You gave me space to hear myself.\n\nThat pause matters more than the answer sometimes.",
+      emotion: 'grateful',
+      variation_id: 'nadia_interrupt_v1'
+    }],
+    choices: [
+      {
+        choiceId: 'nadia_interrupt_continue',
+        text: "How do you practice that vigilance?",
+        nextNodeId: 'nadia_vigilance_methods',
+        pattern: 'building',
+        consequence: {
+          characterId: 'nadia',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['interrupt_target', 'emotional_moment', 'nadia_arc']
   },
 
   // ═══════════════════════════════════════════════════════════════

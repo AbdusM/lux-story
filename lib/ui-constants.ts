@@ -308,33 +308,27 @@ export const GLASS_STYLES = {
  * Complete glass button styling (for Button component)
  * Single source of truth - replaces hardcoded glass variant
  */
-export const GLASS_BUTTON = `${GLASS_STYLES.base} ${GLASS_STYLES.text} ${GLASS_STYLES.shadow} ${GLASS_STYLES.hover} hover:-translate-y-0.5 ${GLASS_STYLES.transition}`;
+// REMOVED: hover:-translate-y-0.5 - causes 2px jump on mobile when touch interpreted as hover
+export const GLASS_BUTTON = `${GLASS_STYLES.base} ${GLASS_STYLES.text} ${GLASS_STYLES.shadow} ${GLASS_STYLES.hover} ${GLASS_STYLES.transition}`;
 
 // =============================================================================
 // CHOICE CONTAINER HEIGHT (Layout Stability)
 // =============================================================================
 
 /**
- * Fixed container heights for choice buttons
- * Prevents layout jumping when button count changes (1 vs 2 vs 4)
+ * Container heights for choice buttons
  *
- * Strategy: Lock to fixed heights with mobile breakpoints
- * - Small phones (< 400px): 220px (~2.9 rows visible)
- * - Large phones (≥ 400px): 296px (~3.9 rows visible)
- * - Tablet (≥ 640px): 198px (~2.75 rows visible)
+ * Updated Jan 16, 2026 - Mobile scroll fix:
+ * - Removed min-h constraints to allow shrinking with fewer choices
+ * - Dialed back max-h to preserve vertical room under mobile browser chrome
+ * - 4 buttons ≈ 252px (60px each + 3px gaps) → leave headroom for padding/safe-area
  *
- * Benefits:
- * - Container never changes height → no layout shift
- * - Partial rows create "peek" effect → encourages scrolling
- * - scrollbarGutter: 'stable' prevents scrollbar layout shift
- *
- * Created: Jan 14, 2026 - Container stability architectural fix
  * @see /Users/abdusmuwwakkil/.claude/plans/humble-shimmying-hellman.md
  */
 export const CHOICE_CONTAINER_HEIGHT = {
-  mobileSm: 'min-h-[220px] max-h-[220px]',         // Base: small phones (< 400px)
-  mobile: 'xs:min-h-[296px] xs:max-h-[296px]',    // ≥ 400px: larger phones
-  tablet: 'sm:min-h-[198px] sm:max-h-[198px]',    // ≥ 640px: tablets+
+  mobileSm: 'max-h-[240px]',          // ~4 buttons on small phones
+  mobile: 'xs:max-h-[280px]',         // ~4.5–5 buttons on larger phones (≥ 400px)
+  tablet: 'sm:max-h-[240px]',         // ~4 buttons on tablet (≥ 640px)
 } as const;
 
 // =============================================================================

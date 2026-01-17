@@ -80,12 +80,15 @@ export class StoryEngine {
     // Apply dynamic choices if game state is provided
     if (gameState && baseScene.choices) {
       try {
+        // Use actual playerId from game state instead of hardcoded value
+        const playerId = gameState.playerId || 'anonymous'
+
         const dynamicChoices = await generateDynamicChoices(baseScene, gameState, {
           performanceLevel: this.getPerformanceLevel(gameState),
           platformContext: this.getPlatformContext(baseScene, gameState),
           characterContext: this.getCharacterContext(baseScene, gameState),
           enableLiveAugmentation: true,
-          playerId: 'player-main', // In production, this would come from authentication
+          playerId, // Use actual player ID from game state
           liveAugmentationChance: 0.33
         })
 

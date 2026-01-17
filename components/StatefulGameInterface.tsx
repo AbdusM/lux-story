@@ -3889,20 +3889,22 @@ export default function StatefulGameInterface() {
         < AnimatePresence mode="wait" >
           {!isEnding && (
             <footer
-              className="flex-shrink-0 glass-panel max-w-4xl mx-auto px-3 sm:px-4 z-20"
+              className="flex-shrink-0 glass-panel max-w-4xl mx-auto w-full px-3 sm:px-4 z-20"
               style={{
-                marginTop: '1.5rem',
-                paddingBottom: 'max(16px, env(safe-area-inset-bottom, 8px))'
+                marginTop: '0.75rem',
+                // Chrome mobile has 48-56px bottom bar that's NOT in safe-area-inset
+                // Use larger fixed padding to ensure visibility on all browsers
+                paddingBottom: 'max(64px, env(safe-area-inset-bottom, 64px))'
               }}
             >
-              {/* Response label-clean, modern styling */}
-              <div className="px-4 sm:px-6 pt-3 pb-1 text-center">
-                <span className="text-[11px] font-medium text-slate-500 uppercase tracking-[0.1em]">
+              {/* Response label - compact on mobile */}
+              <div className="px-4 sm:px-6 pt-2 pb-0.5 text-center">
+                <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 uppercase tracking-[0.1em]">
                   Your Response
                 </span>
               </div>
 
-              <div className="px-4 sm:px-6 pt-2 pb-2">
+              <div className="px-4 sm:px-6 pt-1 pb-2">
                 {/* Scrollable choices container with scroll indicator */}
                 <div className="relative w-full">
                   <div
@@ -3910,7 +3912,7 @@ export default function StatefulGameInterface() {
                     className="w-full"
                     style={{
                       WebkitOverflowScrolling: 'touch',
-                      scrollSnapType: 'y proximity',
+                      // REMOVED: scrollSnapType - fights with touch gestures, causes sticky scroll
                       touchAction: 'pan-y',
                     }}
                     onScroll={(e) => {
