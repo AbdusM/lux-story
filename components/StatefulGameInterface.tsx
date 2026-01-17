@@ -1094,16 +1094,34 @@ export default function StatefulGameInterface() {
 
       if (!currentNode) {
         const searchResult = findCharacterForNode(nodeId, gameState)
-        if (searchResult) {
+        if (searchResult && searchResult.graph.nodes.has(nodeId)) {
           actualCharacterId = searchResult.characterId
           actualGraph = searchResult.graph
-          currentNode = actualGraph.nodes.get(nodeId)!
-        } else {
-          const safe = getSafeStart()
-          actualCharacterId = safe.characterId
-          actualGraph = safe.graph
-          currentNode = actualGraph.nodes.get(actualGraph.startNodeId)!
+          currentNode = searchResult.graph.nodes.get(nodeId)
         }
+      }
+
+      // FIX: Final safety check with proper error handling
+      if (!currentNode) {
+        const safe = getSafeStart()
+        const safeNode = safe.graph.nodes.get(safe.graph.startNodeId)
+
+        if (!safeNode) {
+          throw new Error(
+            `[CRITICAL] Cannot find safe start node. ` +
+            `Requested: ${nodeId}, Safe start: ${safe.graph.startNodeId}`
+          )
+        }
+
+        actualCharacterId = safe.characterId
+        actualGraph = safe.graph
+        currentNode = safeNode
+
+        logger.warn('Recovered to safe start node', {
+          operation: 'game-interface.safe-start-recovery',
+          originalNode: nodeId,
+          recoveryNode: safeNode.nodeId
+        })
       }
 
       gameState.currentNodeId = currentNode.nodeId
