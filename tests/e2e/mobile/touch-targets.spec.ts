@@ -5,30 +5,20 @@
  * https://developer.apple.com/design/human-interface-guidelines/layout
  */
 
-import { test, expect } from '@playwright/test'
+import { test, expect } from '../fixtures/game-state-fixtures'
 
 const MINIMUM_TOUCH_TARGET = 44 // Apple HIG recommendation
 
 test.describe('Touch Target Validation', () => {
   test.beforeEach(async ({ page }) => {
-    // Test on smallest viewport (worst case)
-    await page.setViewportSize({ width: 375, height: 667 }) // iPhone SE
+    // Viewport is set by Playwright project config (iPhone SE, iPhone 14, iPad, etc.)
+    // Don't override it here - let the project device config handle viewport sizing
     await page.goto('/')
     await page.waitForLoadState('networkidle')
   })
 
-  test('Choice buttons meet 44px minimum', async ({ page }) => {
-    // Clear state and enter game
-    await page.evaluate(() => localStorage.removeItem('grand-central-terminus-save'))
-    await page.reload()
-    await page.waitForLoadState('networkidle')
-
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
-
+  test('Choice buttons meet 44px minimum', async ({ page, freshGame }) => {
+    // Use freshGame fixture to ensure game state is properly initialized
     // Wait for game interface and choices
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
     const choices = page.locator('[data-testid="choice-button"]')
@@ -48,14 +38,7 @@ test.describe('Touch Target Validation', () => {
     }
   })
 
-  test('Navigation buttons meet 44px minimum', async ({ page }) => {
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
-
+  test('Navigation buttons meet 44px minimum', async ({ page, freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Check Journal button
@@ -94,14 +77,7 @@ test.describe('Touch Target Validation', () => {
     }
   })
 
-  test('Constellation panel close button meets 44px minimum', async ({ page }) => {
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
-
+  test('Constellation panel close button meets 44px minimum', async ({ page, freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Open constellation panel
@@ -124,14 +100,7 @@ test.describe('Touch Target Validation', () => {
     }
   })
 
-  test('Constellation tab buttons meet 44px minimum', async ({ page }) => {
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
-
+  test('Constellation tab buttons meet 44px minimum', async ({ page, freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Open constellation panel
@@ -218,14 +187,7 @@ test.describe('Touch Target Validation', () => {
     }
   })
 
-  test('Journal panel close button meets 44px minimum', async ({ page }) => {
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
-
+  test('Journal panel close button meets 44px minimum', async ({ page, freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Open journal panel

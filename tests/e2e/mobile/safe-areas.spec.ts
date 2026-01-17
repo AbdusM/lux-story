@@ -4,22 +4,12 @@
  * Reference: https://webkit.org/blog/7929/designing-websites-for-iphone-x/
  */
 
-import { test, expect } from '@playwright/test'
+import { test, expect } from '../fixtures/game-state-fixtures'
 
 test.describe('Safe Area Boundaries', () => {
-  test('Bottom navigation clears iPhone notch/home indicator (Pro Max)', async ({ page }) => {
+  test('Bottom navigation clears iPhone notch/home indicator (Pro Max)', async ({ page, freshGame }) => {
     // iPhone 14 Pro Max has largest safe area insets
     await page.setViewportSize({ width: 430, height: 932 })
-
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
@@ -49,19 +39,9 @@ test.describe('Safe Area Boundaries', () => {
     }
   })
 
-  test('Bottom navigation clears iPhone home indicator (standard models)', async ({ page }) => {
+  test('Bottom navigation clears iPhone home indicator (standard models)', async ({ page, freshGame }) => {
     // iPhone 14 standard (smaller safe area than Pro Max)
     await page.setViewportSize({ width: 390, height: 844 })
-
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
@@ -79,18 +59,8 @@ test.describe('Safe Area Boundaries', () => {
     }
   })
 
-  test('Dialogue content clears iPhone notch at top (Pro Max)', async ({ page }) => {
+  test('Dialogue content clears iPhone notch at top (Pro Max)', async ({ page, freshGame }) => {
     await page.setViewportSize({ width: 430, height: 932 })
-
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
 
     // Wait for dialogue card
     const dialogueCard = page.getByTestId('dialogue-card')
@@ -105,18 +75,8 @@ test.describe('Safe Area Boundaries', () => {
     }
   })
 
-  test('Dialogue content clears status bar on standard iPhone', async ({ page }) => {
+  test('Dialogue content clears status bar on standard iPhone', async ({ page, freshGame }) => {
     await page.setViewportSize({ width: 390, height: 844 })
-
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
 
     // Wait for dialogue card
     const dialogueCard = page.getByTestId('dialogue-card')
@@ -131,20 +91,21 @@ test.describe('Safe Area Boundaries', () => {
     }
   })
 
-  test('Choice buttons remain visible with keyboard on iOS', async ({ page }) => {
+  test('Choice buttons remain visible with keyboard on iOS', async ({ page, seedState }) => {
     // Simulate scenario where on-screen keyboard appears
     // On iOS, viewport height reduces when keyboard is shown
+    // Set viewport first, then seed state
     await page.setViewportSize({ width: 375, height: 667 })
-
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
+    await seedState({
+      currentNodeId: 'samuel_introduction',
+      hasStarted: true,
+      showIntro: false,
+      patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
+      globalFlags: [],
+      knowledgeFlags: [],
+      characters: [],
+      visitedScenes: []
+    })
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
@@ -167,18 +128,19 @@ test.describe('Safe Area Boundaries', () => {
     }
   })
 
-  test('Choices stay above mobile browser chrome (bottom bar)', async ({ page }) => {
+  test('Choices stay above mobile browser chrome (bottom bar)', async ({ page, seedState }) => {
+    // Set viewport first, then seed state
     await page.setViewportSize({ width: 390, height: 844 })
-
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
+    await seedState({
+      currentNodeId: 'samuel_introduction',
+      hasStarted: true,
+      showIntro: false,
+      patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
+      globalFlags: [],
+      knowledgeFlags: [],
+      characters: [],
+      visitedScenes: []
+    })
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
@@ -201,19 +163,9 @@ test.describe('Safe Area Boundaries', () => {
     }
   })
 
-  test('Content does not get cut off at rounded corners (Pro Max)', async ({ page }) => {
+  test('Content does not get cut off at rounded corners (Pro Max)', async ({ page, freshGame }) => {
     // iPhone 14 Pro Max has significant corner radius
     await page.setViewportSize({ width: 430, height: 932 })
-
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
@@ -229,18 +181,8 @@ test.describe('Safe Area Boundaries', () => {
     }
   })
 
-  test('Modal dialogs respect safe areas', async ({ page }) => {
+  test('Modal dialogs respect safe areas', async ({ page, freshGame }) => {
     await page.setViewportSize({ width: 430, height: 932 }) // Pro Max
-
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
@@ -267,18 +209,8 @@ test.describe('Safe Area Boundaries', () => {
     }
   })
 
-  test('Fixed navigation remains in safe area during scroll', async ({ page }) => {
+  test('Fixed navigation remains in safe area during scroll', async ({ page, freshGame }) => {
     await page.setViewportSize({ width: 390, height: 844 })
-
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    // Enter the game
-    const enterButton = page.getByRole('button', { name: /enter.*station/i })
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
-    }
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
