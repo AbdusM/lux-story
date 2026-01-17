@@ -8,8 +8,8 @@ import { test, expect } from '@playwright/test'
 
 test.describe('Mobile Performance', () => {
   test.beforeEach(async ({ page }) => {
-    // Test on iPhone SE (worst-case performance scenario)
-    await page.setViewportSize({ width: 375, height: 667 })
+    // Viewport is set by Playwright project config (iPhone SE, iPhone 14, iPad, etc.)
+    // Don't override it here - let the project device config handle viewport sizing
   })
 
   test('First Contentful Paint < 2s on initial load', async ({ page }) => {

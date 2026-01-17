@@ -57,8 +57,8 @@ test.describe('Prism (Journal) on Mobile', () => {
 
 test.describe('UnifiedMenu on Mobile', () => {
   test.beforeEach(async ({ page }) => {
-    // iPhone SE viewport (small)
-    await page.setViewportSize({ width: 375, height: 667 })
+    // Viewport is set by Playwright project config (iPhone SE, iPhone 14, iPad, etc.)
+    // Don't override it here - let the project device config handle viewport sizing
   })
 
   test('opens settings menu and toggles sections', async ({ page, freshGame }) => {
