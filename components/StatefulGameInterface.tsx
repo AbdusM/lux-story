@@ -93,6 +93,7 @@ import { InterruptButton } from '@/components/game/InterruptButton'
 import type { RichTextEffect } from '@/components/RichTextRenderer'
 import { AtmosphericIntro } from '@/components/AtmosphericIntro'
 import { LivingAtmosphere } from '@/components/LivingAtmosphere' // ISP: Living Interface
+import { EnvironmentalEffects } from '@/components/EnvironmentalEffects'
 import { calculateAmbientContext, ATMOSPHERES } from '@/content/ambient-descriptions'
 import { PatternOrb } from '@/components/PatternOrb'
 import { GooeyPatternOrbs, patternScoresToWeights } from '@/components/GooeyPatternOrbs'
@@ -3335,6 +3336,8 @@ export default function StatefulGameInterface() {
       emotion={currentEmotion === 'neutral' ? 'calm' : currentEmotion}
       className={currentState === 'station' ? 'cursor-default' : ''}
     >
+      {/* Environmental body class manager - applies pattern/character atmosphere to <body> */}
+      <EnvironmentalEffects gameState={state.gameState} />
       <div
         className="relative z-10 flex flex-col min-h-[100dvh] w-full max-w-md mx-auto shadow-2xl border-x border-white/5 bg-black/10"
         style={{
