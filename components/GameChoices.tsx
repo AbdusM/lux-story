@@ -2,9 +2,10 @@
 
 import { memo, useState, useEffect, useCallback, useRef } from 'react'
 import { Button } from '@/components/ui/button'
-import { motion } from 'framer-motion'
-import { springs, stagger } from '@/lib/animations'
+import { motion, AnimatePresence } from 'framer-motion'
+import { springs, stagger, signatureChoice } from '@/lib/animations'
 import { Lock, Microscope, Brain, Compass, Heart, Hammer } from 'lucide-react'
+import { useChoiceCommitment } from '@/hooks/useChoiceCommitment'
 import { type PatternType, PATTERN_METADATA, isValidPattern } from '@/lib/patterns'
 import { type GravityResult } from '@/lib/narrative-gravity'
 import { getPatternPreviewStyles, getPatternHintText } from '@/lib/pattern-derivatives'
@@ -157,6 +158,12 @@ interface Choice {
   /** ISP: Narrative Gravity Weight */ // Added missing property documentation
   ispGravity?: number
   gravity?: GravityResult
+  /** TICKET-003: Narrative lock message (relationship framing) */
+  narrativeLockMessage?: string
+  /** Current progress toward unlock */
+  lockProgress?: number
+  /** Action hint for unlocking */
+  lockActionHint?: string
 }
 
 /**
@@ -329,7 +336,7 @@ function getLockMessage(choice: Choice): string {
 }
 
 // Memoized choice button component
-const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, isLocked, glass, showPatternIcon, playerPatterns, cognitiveLoad }: {
+const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, isLocked, glass, showPatternIcon, playerPatterns, cognitiveLoad, selectedChoiceId, animationState }: {
   choice: Choice
   index: number
   onChoice: (choice: Choice) => void
@@ -341,6 +348,10 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
   /** D-007: Player patterns for subtle preview glow */
   playerPatterns?: PlayerPatterns
   cognitiveLoad?: CognitiveLoadLevel
+  /** Signature animation: ID of selected choice */
+  selectedChoiceId?: string | null
+  /** Signature animation: current animation state */
+  animationState?: string
 }) => {
   // MAGNETIC EFFECT REMOVED for stability and "less disjointed" feel
   // const magnetic = useMagneticElement(...)
@@ -373,8 +384,34 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
       opacity: 0.7,
       scale: 0.98,
       grayscale: 0.5
+    },
+    // SIGNATURE CHOICE ANIMATION variants
+    tapped: {
+      scale: 0.95,
+      transition: { duration: 0.1 }
+    },
+    committed: {
+      scale: 1,
+      boxShadow: "0px 0px 20px rgba(59, 130, 246, 0.4)",
+      transition: { duration: 0.2 }
+    },
+    flyUp: {
+      y: -100,
+      opacity: 0,
+      scale: 0.9,
+      transition: signatureChoice.flyUpSpring
+    },
+    fadeOut: {
+      opacity: 0,
+      scale: 0.95,
+      transition: { duration: 0.15 }
     }
   }
+
+  // Determine if this choice is part of signature animation
+  const choiceId = choice.id || choice.text
+  const isSelectedForAnimation = selectedChoiceId === choiceId
+  const isOtherDuringAnimation = selectedChoiceId && !isSelectedForAnimation
 
   // Determine which animation state to use
   // Stagger uses "visible" as base state, then apply feedback or focus
@@ -389,8 +426,28 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
     if (choice.gravity.effect === 'repel') _animateState = "repelled"
   }
 
-  // Locked choice styling
+  // SIGNATURE ANIMATION overrides everything except locked
+  if (!isLocked && animationState && selectedChoiceId) {
+    if (isSelectedForAnimation) {
+      // This choice is selected - animate based on current state
+      if (animationState === 'tapped') _animateState = 'tapped'
+      else if (animationState === 'fading-others' || animationState === 'anticipation') _animateState = 'tapped'
+      else if (animationState === 'committed') _animateState = 'committed'
+      else if (animationState === 'flying-up') _animateState = 'flyUp'
+    } else if (isOtherDuringAnimation) {
+      // Other choices fade out
+      if (['fading-others', 'anticipation', 'committed', 'flying-up'].includes(animationState)) {
+        _animateState = 'fadeOut'
+      }
+    }
+  }
+
+  // TICKET-003: Locked choice styling with narrative framing
   if (isLocked) {
+    // Use narrative message if available, otherwise fall back to pattern requirement
+    const lockDisplayMessage = choice.narrativeLockMessage || getLockMessage(choice)
+    const hasNarrativeMessage = !!choice.narrativeLockMessage
+
     return (
       <div className="w-full">
         <motion.div
@@ -405,22 +462,52 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
               w-full min-h-[56px] sm:min-h-[52px] h-auto px-4 sm:px-6 py-4 sm:py-3
               text-base sm:text-sm font-medium text-left
               rounded-[14px]
-              flex items-center gap-3
+              flex flex-col gap-2
               cursor-not-allowed
               ${glass
                 ? 'text-slate-500 border border-slate-700/50 bg-slate-900/40'
                 : 'text-stone-400 border border-stone-200 bg-stone-50'
               }
             `}
-            aria-label={`Locked choice: ${choice.text}. Requires ${getLockMessage(choice)}`}
+            aria-label={`Locked choice: ${choice.text}. ${lockDisplayMessage}`}
             role="button"
             aria-disabled="true"
+            title={choice.lockActionHint ? `Tip: ${choice.lockActionHint}` : undefined}
           >
-            <Lock className={`w-4 h-4 flex-shrink-0 ${glass ? 'text-slate-500' : 'text-stone-400'}`} />
-            <span className="flex-1 line-clamp-2">{choice.text}</span>
-            <span className={`text-xs flex-shrink-0 whitespace-nowrap ${glass ? 'text-slate-500' : 'text-stone-400'}`}>
-              {getLockMessage(choice)}
-            </span>
+            {/* Choice text with lock icon */}
+            <div className="flex items-center gap-3">
+              <Lock className={`w-4 h-4 flex-shrink-0 ${glass ? 'text-slate-500' : 'text-stone-400'}`} />
+              <span className="flex-1 line-clamp-2 grayscale">{choice.text}</span>
+            </div>
+
+            {/* Narrative lock message */}
+            <div className={`text-xs pl-7 ${glass ? 'text-slate-400' : 'text-stone-500'}`}>
+              {hasNarrativeMessage ? (
+                <span className="italic">{lockDisplayMessage}</span>
+              ) : (
+                <span>Requires: {lockDisplayMessage}</span>
+              )}
+            </div>
+
+            {/* Progress bar and action hint (if narrative message) */}
+            {hasNarrativeMessage && choice.requiredOrbFill && (
+              <div className="flex items-center gap-2 pl-7">
+                {/* Mini progress bar */}
+                <div className={`flex-1 h-1 rounded-full overflow-hidden ${glass ? 'bg-slate-800' : 'bg-stone-200'}`}>
+                  <div
+                    className={`h-full transition-all duration-300 ${
+                      glass ? 'bg-slate-600' : 'bg-stone-400'
+                    }`}
+                    style={{
+                      width: `${Math.min(100, ((choice.lockProgress || 0) / choice.requiredOrbFill.threshold) * 100)}%`
+                    }}
+                  />
+                </div>
+                <span className={`text-[10px] ${glass ? 'text-slate-500' : 'text-stone-400'}`}>
+                  {choice.lockProgress || 0}/{choice.requiredOrbFill.threshold}
+                </span>
+              </div>
+            )}
           </div>
         </motion.div>
       </div>
@@ -571,6 +658,27 @@ const groupChoices = (choices: Choice[]) => {
 export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevels, glass = false, playerPatterns, cognitiveLoad = 'normal' }: GameChoicesProps) => {
   const { focusedIndex, containerRef } = useKeyboardNavigation(choices, isProcessing, onChoice)
 
+  // SIGNATURE CHOICE ANIMATION (Directive B: 30% Budget)
+  const {
+    animationState,
+    selectedChoiceId,
+    isCommitting,
+    commitChoice,
+    shouldDimScreen
+  } = useChoiceCommitment()
+
+  // Wrapped choice handler with signature animation
+  const handleChoiceWithAnimation = useCallback((choice: Choice) => {
+    if (isProcessing || isCommitting) return
+
+    // Use choice.id if available, otherwise fall back to text
+    const choiceId = choice.id || choice.text
+
+    commitChoice(choiceId, () => {
+      onChoice(choice)
+    })
+  }, [isProcessing, isCommitting, commitChoice, onChoice])
+
   // ABILITY CHECK: Pattern Preview (P0)
   // FIX: Access coreGameState directly and avoid inline default array to prevent infinite loop
   const unlockedAbilities = useGameStore(state => state.coreGameState?.unlockedAbilities)
@@ -594,6 +702,22 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   // 1-3 choices: single column, 4+ choices: 2 columns (pairs work better)
   const useGrid = sortedChoices.length >= 4
   const useGrouping = sortedChoices.length > 6 // Group only if many choices (6+) to avoid clutter
+
+  // Screen dim overlay component for signature animation
+  const ScreenDimOverlay = () => (
+    <AnimatePresence>
+      {shouldDimScreen && (
+        <motion.div
+          className="fixed inset-0 bg-black pointer-events-none z-10"
+          variants={signatureChoice.dimOverlay}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          aria-hidden="true"
+        />
+      )}
+    </AnimatePresence>
+  )
 
   if (useGrouping) {
     const groups = groupChoices(sortedChoices)
@@ -620,7 +744,9 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     }
 
     return (
-      <motion.div
+      <>
+        <ScreenDimOverlay />
+        <motion.div
         className="space-y-8"
         ref={containerRef}
         role="listbox"
@@ -648,14 +774,16 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
                     key={`${title}-${localIndex}`}
                     choice={choice}
                     index={currentGlobalIndex}
-                    onChoice={onChoice}
-                    isProcessing={isProcessing}
+                    onChoice={handleChoiceWithAnimation}
+                    isProcessing={isProcessing || isCommitting}
                     isFocused={focusedIndex === currentGlobalIndex}
                     isLocked={isLocked}
                     glass={glass}
                     showPatternIcon={hasPatternPreview}
                     playerPatterns={playerPatterns}
                     cognitiveLoad={cognitiveLoad}
+                    selectedChoiceId={selectedChoiceId}
+                    animationState={animationState}
                   />
                 )
               })}
@@ -663,13 +791,16 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
           </div>
         ))}
       </motion.div>
+      </>
     )
   }
 
   return (
-    <motion.div
-      ref={containerRef}
-      className={`grid gap-3 p-2 w-full ${useGrid ? 'md:grid-cols-2' : 'grid-cols-1'}`}
+    <>
+      <ScreenDimOverlay />
+      <motion.div
+        ref={containerRef}
+        className={`grid gap-3 p-2 w-full ${useGrid ? 'md:grid-cols-2' : 'grid-cols-1'}`}
       data-testid="game-choices"
       role="listbox"
       aria-label="Choose your response"
@@ -699,19 +830,22 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
               key={index}
               choice={choice}
               index={index}
-              onChoice={onChoice}
-              isProcessing={isProcessing}
+              onChoice={handleChoiceWithAnimation}
+              isProcessing={isProcessing || isCommitting}
               isFocused={focusedIndex === index}
               isLocked={isLocked}
               glass={glass}
               showPatternIcon={hasPatternPreview}
               playerPatterns={playerPatterns}
               cognitiveLoad={cognitiveLoad}
+              selectedChoiceId={selectedChoiceId}
+              animationState={animationState}
             />
           )
         })
       })()}
     </motion.div>
+    </>
   )
 })
 
