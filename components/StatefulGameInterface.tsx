@@ -93,6 +93,7 @@ import { InterruptButton } from '@/components/game/InterruptButton'
 import type { RichTextEffect } from '@/components/RichTextRenderer'
 import { AtmosphericIntro } from '@/components/AtmosphericIntro'
 import { LivingAtmosphere } from '@/components/LivingAtmosphere' // ISP: Living Interface
+import { EnvironmentalEffects } from '@/components/EnvironmentalEffects'
 import { calculateAmbientContext, ATMOSPHERES } from '@/content/ambient-descriptions'
 import { PatternOrb } from '@/components/PatternOrb'
 import { GooeyPatternOrbs, patternScoresToWeights } from '@/components/GooeyPatternOrbs'
@@ -208,6 +209,7 @@ import { queueGiftForChoice, queueGiftsForArcComplete, tickGiftCounters, getRead
 // ProgressToast removed-Journal glow effect replaces it
 import { selectAnnouncement } from '@/lib/platform-announcements'
 import { checkSessionBoundary, incrementBoundaryCounter, getTotalNodesVisited, type SessionAnnouncement } from '@/lib/session-structure'
+import { setupPlayTimeTracking } from '@/lib/session-tracker'
 import { SessionBoundaryAnnouncement } from '@/components/SessionBoundaryAnnouncement'
 import { IdentityCeremony } from '@/components/IdentityCeremony'
 import { JourneyComplete } from '@/components/JourneyComplete'
@@ -476,6 +478,7 @@ export default function StatefulGameInterface() {
 
   // Refs & Sync
   const skillTrackerRef = useRef<SkillTracker | null>(null)
+  const pendingSaveRef = useRef<NodeJS.Timeout | null>(null) // Deferred save for pagehide flush
 
   // Share prompts disabled-too obtrusive
   const isProcessingChoiceRef = useRef(false) // Race condition guard
@@ -491,6 +494,26 @@ export default function StatefulGameInterface() {
   useEffect(() => {
     contentLoadTimestampRef.current = Date.now()
   }, [state.currentContent])
+
+  // Page unload save durability - wire session tracking
+  useEffect(() => {
+    const cleanup = setupPlayTimeTracking()
+    return cleanup
+  }, [])
+
+  // Flush deferred saves on page hide (tab close, navigation)
+  useEffect(() => {
+    const flushSave = () => {
+      if (pendingSaveRef.current && state.gameState) {
+        clearTimeout(pendingSaveRef.current)
+        GameStateManager.saveGameState(state.gameState)
+        pendingSaveRef.current = null
+      }
+    }
+    window.addEventListener('pagehide', flushSave)
+    return () => window.removeEventListener('pagehide', flushSave)
+  }, [state.gameState])
+
   // 3. LOAD GAME ID
   useEffect(() => {
     // Check for save
@@ -3559,6 +3582,8 @@ export default function StatefulGameInterface() {
       emotion={currentEmotion === 'neutral' ? 'calm' : currentEmotion}
       className={currentState === 'station' ? 'cursor-default' : ''}
     >
+      {/* Environmental body class manager - applies pattern/character atmosphere to <body> */}
+      <EnvironmentalEffects gameState={state.gameState} />
       <div
         className="relative z-10 flex flex-col min-h-[100dvh] w-full max-w-xl mx-auto shadow-2xl border-x border-white/5 bg-black/10"
         style={{
@@ -3704,8 +3729,8 @@ export default function StatefulGameInterface() {
                 }
               >
                 <CardContent
-                  className="p-3 sm:p-5 md:p-8 h-[50vh] sm:h-[55vh] overflow-y-auto"
-                  style={{ WebkitOverflowScrolling: 'touch', scrollbarGutter: 'stable' }}
+                  className="p-5 sm:p-8 md:p-10"
+                  // SINGLE SCROLL REFACTOR: Removed h-[45vh] and overflow-y-auto - main scrolls now
                   // Note: Removed text-center for narration-left-align is easier to read (eye hunts for line starts when centered)
                   data-testid="dialogue-content"
                   data-speaker={state.currentNode?.speaker || ''}
@@ -3942,11 +3967,10 @@ export default function StatefulGameInterface() {
         < AnimatePresence mode="wait" >
           {!isEnding && (
             <footer
-              className="flex-shrink-0 glass-panel max-w-4xl mx-auto w-full px-3 sm:px-4 z-20"
+              className="flex-shrink-0 sticky bottom-0 glass-panel max-w-4xl mx-auto w-full px-3 sm:px-4 z-20"
               style={{
-                marginTop: '0.75rem',
+                // SINGLE SCROLL REFACTOR: Sticky footer with safe area padding
                 // Chrome mobile has 48-56px bottom bar that's NOT in safe-area-inset
-                // Use larger fixed padding to ensure visibility on all browsers
                 paddingBottom: 'max(64px, env(safe-area-inset-bottom, 64px))'
               }}
             >
@@ -3960,22 +3984,11 @@ export default function StatefulGameInterface() {
               <div className="px-4 sm:px-6 pt-1 pb-2">
                 {/* Scrollable choices container with scroll indicator */}
                 <div className="relative w-full">
+                  {/* SINGLE SCROLL REFACTOR: Removed nested scroll - choices expand naturally */}
+                  {/* For >3 choices, TICKET-002 will add bottom sheet */}
                   <div
-                    id="choices-scroll-container"
+                    id="choices-container"
                     className="w-full"
-                    style={{
-                      WebkitOverflowScrolling: 'touch',
-                      // REMOVED: scrollSnapType - fights with touch gestures, causes sticky scroll
-                      touchAction: 'pan-y',
-                    }}
-                    onScroll={(e) => {
-                      const target = e.target as HTMLElement
-                      const indicator = document.getElementById('scroll-indicator')
-                      if (indicator) {
-                        const isAtBottom = target.scrollHeight - target.scrollTop <= target.clientHeight + 10
-                        indicator.style.opacity = isAtBottom ? '0' : '1'
-                      }
-                    }}
                   >
                     <GameChoices
                       choices={(() => {

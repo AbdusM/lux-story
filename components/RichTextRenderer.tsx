@@ -153,8 +153,8 @@ export function RichTextRenderer({
 
           // ISP FIX: Enforce a visual floor to prevent "clumping" of paragraphs
           // The CSS fade duration is 200ms. If delay < 300ms, paragraphs appear simultaneously.
-          // We enforce 350ms minimum to ensure each paragraph has a distinct "beat".
-          const delay = Math.max(calculatedDelay, 350)
+          // Reduced floor from 350ms to 100ms for snappier feel per user feedback.
+          const delay = Math.max(calculatedDelay, 100)
 
           if (currentChunk < chunks.length) {
             setTimeout(revealNextChunk, delay)

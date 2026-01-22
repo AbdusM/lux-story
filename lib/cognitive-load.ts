@@ -156,9 +156,14 @@ export function filterChoicesByLoad(
  * Truncate text based on cognitive load level
  */
 export function truncateTextForLoad(
-  text: string,
+  text: string | undefined | null,
   level: CognitiveLoadLevel
 ): string {
+  // ISP: Diegetic Fallback - Maintains structural integrity of UI containers
+  if (!text || typeof text !== 'string') {
+    return '[ SIGNAL LOST ]'
+  }
+
   const config = COGNITIVE_LOAD_CONFIG[level]
 
   if (text.length <= config.maxTextLength) {

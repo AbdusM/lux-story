@@ -436,12 +436,41 @@ Deprecated code preserved for reference:
 - `docs/01_MECHANICS/21-infinite-canvas-feature-catalog.md` - Full feature catalog
 
 ### Recently Completed (January 2026)
-- **Skill Revelation System COMPLETE (Jan 15)** - All 5 layers complete: invisible tracking, NPC acknowledgment (20 nodes), journey summary, career mapping UI (3 components), and skill combos (12 combos, 2 lib modules). Full plan: `docs/03_PROCESS/plans/15JAN26_SKILL_REVELATION_SYSTEM.md`
-- **Career Mapping UI (Jan 15)** - Created CareerRecommendationsView, CareerCard, and SkillGapBar components. Shows top 5 career matches with evidence, skill gaps, Birmingham employers.
-- **Skill Combos System (Jan 15)** - 12 skill combos across 3 tiers with progress tracking, unlock detection, and character hints. Combos unlock careers, dialogues, and achievements.
-- **Skill Revelation System Layer 2 (Jan 15)** - Added `skillReflection` arrays to 20 teaching nodes across all character tiers. NPCs now acknowledge demonstrated skills with personalized dialogue.
-- **Phase 2 Beat Nodes (Jan 15)** - 64/64 acknowledgment beat nodes complete. Prevents "DVD menu reset" feeling at hub transitions.
-- **Phase 3 Pattern Reflections (Jan 15)** - Strategic coverage complete with 145 pattern reflections (up from 113).
+
+**UX Transformation (Jan 22)**
+- Single scroll surface (ChatGPT-style flow)
+- Signature choice animation with haptics
+- Bottom sheet for >3 choices
+- Pull-to-dismiss on modals
+- Bottom tabs in Journal (thumb zone)
+- Reader mode toggle (mono ↔ sans-serif)
+- Living Station Frame (breathing, emotion glow, mastery dissolution)
+- Parallax star field with gyroscope
+
+**Backlog Features (Jan 22)**
+- Star Walking navigation with haptic feedback
+- Waiting Room patience mechanic (30/60/120s reveals)
+- Pattern Resonance Paths (15 hidden connections)
+- Constellation smart zoom + snap-to-node
+- Evidence schema for B2B value capture
+- Neural Deck copy with haptic feedback
+
+**New Files (Jan 22):**
+- `hooks/useWaitingRoom.ts` - Timer-based patience reveals
+- `hooks/useReaderMode.ts` - Font accessibility toggle
+- `hooks/useCopyToClipboard.ts` - Enhanced clipboard
+- `hooks/useDeviceOrientation.ts` - Gyroscope for parallax
+- `lib/waiting-room-content.ts` - Patience content definitions
+- `lib/constellation/pattern-resonance-paths.ts` - Hidden connections
+- `components/ui/WaitingRoomIndicator.tsx` - Visual feedback
+
+**Skill Revelation System (Jan 15)**
+- All 5 layers complete: invisible tracking, NPC acknowledgment (20 nodes), journey summary, career mapping UI (3 components), and skill combos (12 combos, 2 lib modules)
+- Career Mapping UI with CareerRecommendationsView, CareerCard, and SkillGapBar components
+- 12 skill combos across 3 tiers with progress tracking, unlock detection, and character hints
+- 64/64 acknowledgment beat nodes complete
+- 145 pattern reflections (up from 113)
+
 - **Simulation Implementation (Jan 13)** - 5 characters with complete 3-phase simulations (Devon, Jordan, Dante, Nadia, Isaiah) - 60 nodes, ~2,154 lines
 - **Emotion System Expansion (Jan 13)** - Added 2 primary emotions (`afraid`, `peace`), validated all 1,612 emotion references (100% pass rate)
 - **Content Gap Analysis (Jan 13)** - Comprehensive audit of all 20 characters across 4 core systems (documented in `CONTENT_GAP_ANALYSIS_2026JAN.md`)
