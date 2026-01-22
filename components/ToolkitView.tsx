@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { AI_TOOLS, AITool } from '@/lib/ai-tools'
 import { useGameSelectors } from '@/lib/game-store'
-import { Lock, Cpu, Code, PenTool, Image, Database, Mic, Video, Share2, Briefcase, Sparkles, Terminal, Shield } from 'lucide-react'
+import { useCopyToClipboard } from '@/hooks/useCopyToClipboard'
+import { Lock, Cpu, Code, PenTool, Image, Database, Mic, Video, Share2, Briefcase, Sparkles, Terminal, Shield, Check, Copy } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export function ToolkitView() {
@@ -209,12 +210,10 @@ function ToolSchematic({ tool, isUnlocked, index }: { tool: AITool, isUnlocked: 
 }
 
 function GoldenPromptSchematic({ prompt }: { prompt: NonNullable<AITool['goldenPrompt']> }) {
-    const [copied, setCopied] = useState(false)
+    const { copied, copy } = useCopyToClipboard()
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(prompt.content)
-        setCopied(true)
-        setTimeout(() => setCopied(false), 2000)
+        copy(prompt.content)
     }
 
     return (
@@ -229,9 +228,24 @@ function GoldenPromptSchematic({ prompt }: { prompt: NonNullable<AITool['goldenP
                 </div>
                 <button
                     onClick={handleCopy}
-                    className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-400/70 hover:text-amber-200 transition-colors"
+                    className={cn(
+                        "flex items-center gap-1.5 px-2 py-1 rounded text-xs font-bold uppercase tracking-wider transition-all",
+                        copied
+                            ? "bg-emerald-500/20 text-emerald-400"
+                            : "text-amber-400/70 hover:text-amber-200 hover:bg-amber-500/10"
+                    )}
                 >
-                    {copied ? "COPIED" : "EXTRACT"}
+                    {copied ? (
+                        <>
+                            <Check className="w-3 h-3" />
+                            COPIED
+                        </>
+                    ) : (
+                        <>
+                            <Copy className="w-3 h-3" />
+                            COPY
+                        </>
+                    )}
                 </button>
             </div>
 

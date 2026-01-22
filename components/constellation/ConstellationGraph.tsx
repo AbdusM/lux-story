@@ -5,6 +5,10 @@ import { cn } from '@/lib/utils'
 import type { CharacterWithState } from '@/hooks/useConstellationData'
 import { CHARACTER_CONNECTIONS, CHARACTER_COLORS } from '@/lib/constellation/character-positions'
 import { CHARACTER_RELATIONSHIP_WEB } from '@/lib/character-relationships'
+import { hapticFeedback } from '@/lib/haptic-feedback'
+import { getVisibleResonancePaths, type ResonancePath } from '@/lib/constellation/pattern-resonance-paths'
+import { useGameStore } from '@/lib/game-store'
+import type { PatternType } from '@/lib/patterns'
 
 interface ConstellationGraphProps {
     characters: CharacterWithState[]
@@ -14,11 +18,155 @@ interface ConstellationGraphProps {
     height?: number
 }
 
+// Smart zoom constants
+const MIN_ZOOM = 1
+const MAX_ZOOM = 2.5
+const ZOOM_STEP = 0.5
+const SNAP_DISTANCE = 15 // SVG units - distance for magnetic snap
+
 export function ConstellationGraph({ characters, onOpenDetail, onTravel }: ConstellationGraphProps) {
     const [hoveredId, setHoveredId] = useState<string | null>(null)
     const [selectedId, setSelectedId] = useState<string | null>(null)
     const [focusedIndex, setFocusedIndex] = useState<number>(0)
     const nodeRefs = useRef<Map<string, SVGGElement>>(new Map())
+
+    // Get player's pattern levels for resonance paths
+    const patterns = useGameStore(state => state.patterns)
+    const visibleResonancePaths = useMemo(() => {
+        const patternLevels: Record<PatternType, number> = {
+            analytical: patterns.analytical || 0,
+            patience: patterns.patience || 0,
+            exploring: patterns.exploring || 0,
+            helping: patterns.helping || 0,
+            building: patterns.building || 0,
+        }
+        return getVisibleResonancePaths(patternLevels)
+    }, [patterns])
+
+    // Smart zoom state
+    const [zoom, setZoom] = useState(1)
+    const [panOffset, setPanOffset] = useState({ x: 0, y: 0 })
+    const svgRef = useRef<SVGSVGElement>(null)
+    const lastTapRef = useRef<{ time: number; x: number; y: number } | null>(null)
+
+    // Find nearest character to a point for snap-to-node
+    const findNearestCharacter = useCallback((svgX: number, svgY: number): CharacterWithState | null => {
+        let nearest: CharacterWithState | null = null
+        let minDist = SNAP_DISTANCE
+
+        for (const char of characters) {
+            if (!char.position) continue
+            const dx = char.position.x - svgX
+            const dy = char.position.y - svgY
+            const dist = Math.sqrt(dx * dx + dy * dy)
+            if (dist < minDist) {
+                minDist = dist
+                nearest = char
+            }
+        }
+        return nearest
+    }, [characters])
+
+    // Convert screen coordinates to SVG coordinates
+    const screenToSvg = useCallback((screenX: number, screenY: number): { x: number; y: number } | null => {
+        const svg = svgRef.current
+        if (!svg) return null
+
+        const rect = svg.getBoundingClientRect()
+        const viewBox = svg.viewBox.baseVal
+
+        // Calculate scale factors
+        const scaleX = viewBox.width / rect.width
+        const scaleY = viewBox.height / rect.height
+
+        // Convert to SVG coordinates
+        const svgX = (screenX - rect.left) * scaleX - panOffset.x / zoom
+        const svgY = (screenY - rect.top) * scaleY - panOffset.y / zoom
+
+        return { x: svgX, y: svgY }
+    }, [panOffset, zoom])
+
+    // Smart zoom: Double tap to zoom in on nearest character
+    const handleDoubleTap = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+        const clientX = 'touches' in e ? e.touches[0]?.clientX ?? 0 : e.clientX
+        const clientY = 'touches' in e ? e.touches[0]?.clientY ?? 0 : e.clientY
+
+        const svgCoords = screenToSvg(clientX, clientY)
+        if (!svgCoords) return
+
+        // Find nearest character
+        const nearest = findNearestCharacter(svgCoords.x, svgCoords.y)
+
+        if (zoom < MAX_ZOOM) {
+            // Zoom in, center on nearest character if found
+            const newZoom = Math.min(MAX_ZOOM, zoom + ZOOM_STEP)
+            setZoom(newZoom)
+
+            if (nearest?.position) {
+                // Pan to center on the character
+                setPanOffset({
+                    x: (50 - nearest.position.x) * (newZoom - 1) * 2,
+                    y: (50 - nearest.position.y) * (newZoom - 1) * 2,
+                })
+                setSelectedId(nearest.id)
+                hapticFeedback.medium()
+            } else {
+                hapticFeedback.light()
+            }
+        } else {
+            // Reset zoom
+            setZoom(MIN_ZOOM)
+            setPanOffset({ x: 0, y: 0 })
+            hapticFeedback.light()
+        }
+    }, [zoom, screenToSvg, findNearestCharacter])
+
+    // Handle background click for smart snap
+    const handleBackgroundClick = useCallback((e: React.MouseEvent) => {
+        const now = Date.now()
+        const lastTap = lastTapRef.current
+
+        // Check for double tap (within 300ms)
+        if (lastTap && now - lastTap.time < 300 &&
+            Math.abs(e.clientX - lastTap.x) < 30 &&
+            Math.abs(e.clientY - lastTap.y) < 30) {
+            handleDoubleTap(e)
+            lastTapRef.current = null
+            return
+        }
+
+        lastTapRef.current = { time: now, x: e.clientX, y: e.clientY }
+
+        // Single click: Check for snap-to-node
+        const svgCoords = screenToSvg(e.clientX, e.clientY)
+        if (!svgCoords) return
+
+        const nearest = findNearestCharacter(svgCoords.x, svgCoords.y)
+        if (nearest) {
+            // Magnetic snap with haptic
+            setSelectedId(nearest.id)
+            hapticFeedback.light()
+        } else {
+            // Clicked empty space - deselect
+            setSelectedId(null)
+        }
+    }, [handleDoubleTap, screenToSvg, findNearestCharacter])
+
+    // Zoom controls
+    const handleZoomIn = useCallback(() => {
+        const newZoom = Math.min(MAX_ZOOM, zoom + ZOOM_STEP)
+        setZoom(newZoom)
+        hapticFeedback.light()
+    }, [zoom])
+
+    const handleZoomOut = useCallback(() => {
+        const newZoom = Math.max(MIN_ZOOM, zoom - ZOOM_STEP)
+        setZoom(newZoom)
+        if (newZoom === MIN_ZOOM) {
+            setPanOffset({ x: 0, y: 0 })
+        }
+        hapticFeedback.light()
+    }, [zoom])
 
     // Helper to get character state (since we need to look up connection targets)
     const getCharState = (id: string) => characters.find(c => c.id === id)
@@ -39,24 +187,21 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
     }, [characters])
 
     // Interaction Handlers
-    const handleNodeClick = (char: CharacterWithState) => {
-        // ALLOW CLICKING UNMET CHARACTERS (Star Walking allows discovery)
-        // if (!char.hasMet) return // REMOVED
+    const handleNodeClick = (e: React.MouseEvent, char: CharacterWithState) => {
+        e.stopPropagation() // Prevent background click handler
 
         const isSelected = selectedId === char.id
 
         // If already selected and we have a travel handler, travel there (Double Tap behavior)
         if (isSelected && onTravel) {
             onTravel(char.id)
+            hapticFeedback.heavy()
             return
         }
 
         setSelectedId(isSelected ? null : char.id)
         if (!isSelected) {
-            // Small haptic if available
-            if (typeof navigator !== 'undefined' && navigator.vibrate) {
-                navigator.vibrate(5)
-            }
+            hapticFeedback.light()
         }
     }
 
@@ -158,11 +303,53 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
             {/* Grid overlay for 'Holographic' feel */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
 
+            {/* Zoom Controls */}
+            <div className="absolute top-2 right-2 z-20 flex flex-col gap-1">
+                <button
+                    onClick={handleZoomIn}
+                    disabled={zoom >= MAX_ZOOM}
+                    className={cn(
+                        "w-8 h-8 rounded-md flex items-center justify-center text-sm font-bold transition-all",
+                        "bg-slate-800/80 border border-slate-700 text-slate-300",
+                        zoom >= MAX_ZOOM ? "opacity-30 cursor-not-allowed" : "hover:bg-slate-700 hover:text-white active:scale-95"
+                    )}
+                    aria-label="Zoom in"
+                >
+                    +
+                </button>
+                <button
+                    onClick={handleZoomOut}
+                    disabled={zoom <= MIN_ZOOM}
+                    className={cn(
+                        "w-8 h-8 rounded-md flex items-center justify-center text-sm font-bold transition-all",
+                        "bg-slate-800/80 border border-slate-700 text-slate-300",
+                        zoom <= MIN_ZOOM ? "opacity-30 cursor-not-allowed" : "hover:bg-slate-700 hover:text-white active:scale-95"
+                    )}
+                    aria-label="Zoom out"
+                >
+                    −
+                </button>
+            </div>
+
+            {/* Zoom Level Indicator */}
+            {zoom > 1 && (
+                <div className="absolute top-2 left-2 z-20 px-2 py-1 bg-slate-800/80 rounded text-[10px] text-slate-400 font-mono">
+                    {Math.round(zoom * 100)}%
+                </div>
+            )}
+
             {/* SVG Container */}
             <svg
+                ref={svgRef}
                 viewBox="0 0 100 100"
                 className="w-full h-full max-w-[600px] max-h-[600px] touch-none select-none relative z-10"
-                style={{ overflow: 'visible' }}
+                style={{
+                    overflow: 'visible',
+                    transform: `scale(${zoom}) translate(${panOffset.x / zoom}px, ${panOffset.y / zoom}px)`,
+                    transformOrigin: 'center center',
+                    transition: 'transform 0.3s ease-out',
+                }}
+                onClick={handleBackgroundClick}
                 role="img"
                 aria-label="Character relationship network graph"
             >
@@ -260,6 +447,56 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
                             />
                         )
                     })}
+
+                    {/* Pattern Resonance Paths (hidden connections revealed by pattern alignment) */}
+                    {visibleResonancePaths.map((path) => {
+                        const from = getCharState(path.fromCharacterId)
+                        const to = getCharState(path.toCharacterId)
+                        if (!from || !to) return null
+                        // Skip if positions undefined
+                        if (from.position?.x === undefined || to.position?.x === undefined) return null
+                        // Only show if both characters have been met
+                        if (!from.hasMet || !to.hasMet) return null
+
+                        const isConnectedToHover = hoveredId === path.fromCharacterId || hoveredId === path.toCharacterId
+                        const isDimmed = hoveredId !== null && !isConnectedToHover
+
+                        return (
+                            <g key={`resonance-${path.id}`}>
+                                {/* Glow effect for resonance path */}
+                                <line
+                                    x1={from.position.x}
+                                    y1={from.position.y}
+                                    x2={to.position.x}
+                                    y2={to.position.y}
+                                    stroke={path.style.color}
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    className={cn(
+                                        "transition-all duration-700",
+                                        isDimmed ? "opacity-0" : "opacity-10"
+                                    )}
+                                    style={{ filter: 'blur(2px)' }}
+                                />
+                                {/* Main resonance line */}
+                                <line
+                                    x1={from.position.x}
+                                    y1={from.position.y}
+                                    x2={to.position.x}
+                                    y2={to.position.y}
+                                    stroke={path.style.color}
+                                    strokeWidth={isConnectedToHover ? "0.5" : "0.35"}
+                                    strokeDasharray={path.style.dashArray || '3 2'}
+                                    strokeLinecap="round"
+                                    className={cn(
+                                        "transition-all duration-500",
+                                        isDimmed ? "opacity-5" : isConnectedToHover ? "opacity-90" : (path.style.opacity || 0.6).toString()
+                                    )}
+                                    style={{ opacity: isDimmed ? 0.05 : isConnectedToHover ? 0.9 : (path.style.opacity || 0.6) }}
+                                />
+                            </g>
+                        )
+                    })}
                 </g>
 
                 {/* --- NODES LAYER (3D Orbs) --- */}
@@ -292,7 +529,7 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
                                     }
                                 }}
                                 transform={`translate(${char.position.x},${char.position.y})`}
-                                onClick={() => handleNodeClick(char)}
+                                onClick={(e) => handleNodeClick(e, char)}
                                 onDoubleClick={() => handleNodeDoubleClick(char)}
                                 onMouseEnter={() => setHoveredId(char.id)}
                                 onMouseLeave={() => setHoveredId(null)}

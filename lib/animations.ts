@@ -252,3 +252,120 @@ export function getReducedMotionPreference(): boolean {
   if (typeof window === 'undefined') return false
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
+
+// =============================================================================
+// SIGNATURE CHOICE ANIMATION (Directive B: 30% Budget)
+// =============================================================================
+
+/**
+ * The Signature Choice Animation - The ONE interaction we make PERFECT
+ *
+ * Sequence:
+ * 1. User taps choice
+ * 2. Choice card scales to 0.95 + light haptic
+ * 3. Other choices fade out (opacity 0, 150ms)
+ * 4. Screen dims slightly (5% darker)
+ * 5. 300ms pause (anticipation)
+ * 6. Heavy haptic
+ * 7. Selected choice animates up into transcript
+ * 8. Silence (2 beats)
+ * 9. Typing indicator appears
+ * 10. NPC response streams in
+ */
+
+export const signatureChoice = {
+  /** Timing constants */
+  timing: {
+    /** Initial tap feedback */
+    tapScale: 0.95,
+    /** Duration for other choices to fade */
+    fadeOutDuration: 0.15,
+    /** Pause duration for anticipation (seconds) */
+    anticipationPause: 0.3,
+    /** Duration for choice to fly up to transcript */
+    flyUpDuration: 0.4,
+    /** Silence before typing indicator (seconds) */
+    silenceBeats: 0.6,
+  },
+
+  /** Spring for the fly-up animation */
+  flyUpSpring: {
+    type: 'spring',
+    stiffness: 200,
+    damping: 20,
+  } as Transition,
+
+  /** Variants for the selected choice */
+  selectedVariants: {
+    initial: { scale: 1, opacity: 1 },
+    tapped: {
+      scale: 0.95,
+      transition: { duration: 0.1 },
+    },
+    committed: {
+      scale: 1,
+      opacity: 1,
+      backgroundColor: 'rgba(59, 130, 246, 0.2)', // User message blue tint
+      transition: { duration: 0.2 },
+    },
+    flyUp: {
+      y: -200, // Will be calculated dynamically
+      opacity: 0,
+      scale: 0.9,
+      transition: {
+        type: 'spring',
+        stiffness: 200,
+        damping: 20,
+      },
+    },
+  } as Variants,
+
+  /** Variants for non-selected choices */
+  otherChoicesVariants: {
+    visible: { opacity: 1, scale: 1 },
+    fadeOut: {
+      opacity: 0,
+      scale: 0.95,
+      transition: { duration: 0.15 },
+    },
+  } as Variants,
+
+  /** Screen dim overlay */
+  dimOverlay: {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 0.05, // 5% darker
+      transition: { duration: 0.15 },
+    },
+    exit: {
+      opacity: 0,
+      transition: { duration: 0.3 },
+    },
+  } as Variants,
+}
+
+/**
+ * Haptic feedback patterns for choice commitment
+ */
+export const haptics = {
+  /** Light tap on selection (10ms) */
+  lightTap: () => {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate(10)
+    }
+  },
+
+  /** Heavy thud on commit */
+  heavyThud: () => {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate([0, 50, 100])
+    }
+  },
+
+  /** Success pattern */
+  success: () => {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate([0, 30, 50, 30])
+    }
+  },
+}
