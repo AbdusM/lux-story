@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion'
 import { X, Users, Sparkles, Compass } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { springs, backdrop, panelFromRight } from '@/lib/animations'
+import { springs, backdrop, panelFromRight, haptics } from '@/lib/animations'
 import { useConstellationData, type CharacterWithState, type SkillWithState } from '@/hooks/useConstellationData'
 import { getQuestsWithStatus, type Quest } from '@/lib/quest-system'
 import { useGameSelectors, useGameStore } from '@/lib/game-store'
@@ -137,7 +137,10 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={{ left: 0, right: 0.2 }}
               onDragEnd={(_, info) => {
-                if (info.offset.x > 100) onClose()
+                if (info.offset.x > 100) {
+                  haptics.lightTap()
+                  onClose()
+                }
               }}
               className="fixed right-2 top-2 bottom-2 left-2 sm:left-auto sm:w-full max-w-lg glass-panel-solid !rounded-2xl border border-white/10 shadow-2xl z-sticky flex flex-col overflow-hidden"
               style={{

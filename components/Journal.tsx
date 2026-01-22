@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
+import { usePullToDismiss, pullToDismissPresets } from "@/hooks/usePullToDismiss"
 import { Users, Zap, Compass, TrendingUp, X, Crown, Cpu, Play, Sparkles, AlertTriangle, Brain, Building2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useConstellationData } from "@/hooks/useConstellationData"
@@ -46,6 +47,12 @@ export function Journal({ isOpen, onClose }: JournalProps) {
 
   // Accessibility
   const prefersReducedMotion = useReducedMotion()
+
+  // Sprint 2: Pull-to-dismiss physics
+  const { dragProps, onDragEnd } = usePullToDismiss({
+    ...pullToDismissPresets.leftPanel,
+    onDismiss: onClose,
+  })
 
   // Data hooks
   const { skills } = useConstellationData()
@@ -136,18 +143,23 @@ export function Journal({ isOpen, onClose }: JournalProps) {
             exit={{ opacity: 0 }}
             onClick={onClose}
           />
-          {/* Panel */}
+          {/* Panel - with pull-to-dismiss */}
           <motion.div
             className="!fixed left-2 top-2 bottom-2 right-2 sm:right-auto sm:w-full max-w-md glass-panel-solid !rounded-2xl border border-white/10 shadow-2xl z-sticky flex flex-col overflow-hidden"
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            {...dragProps}
+            onDragEnd={onDragEnd}
           >
-            {/* ... (Header & Tabs unchanged) ... */}
+            {/* Drag handle indicator - hints swipe-to-dismiss */}
+            <div className="flex justify-center py-2 sm:hidden" aria-hidden="true">
+              <div className="w-10 h-1 rounded-full bg-white/20" />
+            </div>
 
             {/* Header */}
-            <div className="p-4 sm:p-6 border-b border-white/5 bg-transparent">
+            <div className="p-4 sm:p-6 sm:pt-6 pt-2 border-b border-white/5 bg-transparent">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <PlayerAvatar size="lg" />

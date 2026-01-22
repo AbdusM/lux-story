@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { Brain, ChevronDown, ChevronUp, Activity, TrendingUp } from "lucide-react"
+import { NarrativeEmptyState } from '@/components/ui/NarrativeEmptyState'
 import {
   useCognitiveDomains,
   useDomainProgress,
@@ -59,12 +60,12 @@ export function CognitionView() {
   // Empty state
   if (engagement.totalDemonstrations === 0) {
     return (
-      <div className="p-4 space-y-4 min-h-[500px] flex flex-col items-center justify-center text-center">
-        <Brain className="w-8 h-8 text-slate-600" />
-        <div className="space-y-1">
-          <p className="text-sm text-slate-400">Your cognitive profile is waiting to emerge</p>
-          <p className="text-xs text-slate-500">Make choices in conversations to reveal your strengths</p>
-        </div>
+      <div className="p-4 min-h-[500px] flex items-center justify-center">
+        <NarrativeEmptyState
+          type="skills"
+          message="Your cognitive profile is waiting to emerge"
+          subtitle="Make choices in conversations to reveal your strengths"
+        />
       </div>
     )
   }

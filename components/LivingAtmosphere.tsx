@@ -17,6 +17,8 @@ import { motion, useReducedMotion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import type { CharacterId } from "@/lib/graph-registry"
 import { useStationStore } from "@/lib/station-state"
+import { useGameSelectors } from "@/lib/game-store"
+import { getPatternColor } from "@/lib/patterns"
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // CONSTANTS & TYPES
@@ -136,9 +138,47 @@ export function LivingAtmosphere({
     className,
     children
 }: LivingAtmosphereProps) {
+    const prefersReducedMotion = useReducedMotion()
+
     // P5: Subscribe to station atmosphere
     const atmosphere = useStationStore((state) => state.atmosphere)
     const [_visibleAtmosphere, _setVisibleAtmosphere] = React.useState<string | null>(atmosphere)
+
+    // Sprint 2: Living Station Frame - Access game state for frame effects
+    const coreGameState = useGameSelectors.useCoreGameState()
+
+    // Memoize patterns and characters to prevent dependency warnings
+    const patterns = React.useMemo(() =>
+        coreGameState?.patterns || { analytical: 0, patience: 0, exploring: 0, helping: 0, building: 0 },
+        [coreGameState?.patterns]
+    )
+    const characters = React.useMemo(() =>
+        coreGameState?.characters || [],
+        [coreGameState?.characters]
+    )
+
+    // Calculate dominant pattern for frame color
+    const dominantPattern = React.useMemo(() => {
+        const entries = Object.entries(patterns) as [string, number][]
+        const sorted = entries.sort((a, b) => b[1] - a[1])
+        return sorted[0]?.[0] || 'patience'
+    }, [patterns])
+
+    // Calculate average trust for frame opacity
+    const averageTrust = React.useMemo(() => {
+        if (characters.length === 0) return 0
+        const total = characters.reduce((sum, char) => sum + (char.trust || 0), 0)
+        return total / characters.length
+    }, [characters])
+
+    // Frame breathing when patience > 7
+    const shouldBreathe = patterns.patience > 7 && !prefersReducedMotion
+
+    // Frame opacity based on trust (0.3 at 0 trust, 0.9 at 10 trust)
+    const frameOpacity = 0.3 + (averageTrust / 10) * 0.6
+
+    // Frame border color based on dominant pattern
+    const frameBorderColor = getPatternColor(dominantPattern as 'analytical' | 'patience' | 'exploring' | 'helping' | 'building')
 
     // Resolve base color hue
     const baseHue = React.useMemo(() => {
@@ -209,6 +249,27 @@ export function LivingAtmosphere({
 
             {/* 5. Vignette (Focus attention) */}
             <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)] pointer-events-none" />
+
+            {/* 6. Living Station Frame (Sprint 2) */}
+            {/* Frame IS The Station - it reflects game state */}
+            <motion.div
+                className="absolute inset-2 sm:inset-4 z-0 rounded-2xl pointer-events-none"
+                style={{
+                    border: `1px solid ${frameBorderColor}`,
+                    opacity: frameOpacity,
+                    boxShadow: `0 0 30px ${frameBorderColor}20, inset 0 0 60px ${frameBorderColor}10`,
+                }}
+                animate={shouldBreathe ? {
+                    scale: [1, 1.002, 1],
+                    opacity: [frameOpacity, frameOpacity * 1.1, frameOpacity],
+                } : {}}
+                transition={shouldBreathe ? {
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                } : {}}
+                aria-hidden="true"
+            />
 
             {/* Content Layer */}
             <div className="relative z-10 w-full h-full">

@@ -5,6 +5,7 @@ import { CheckCircle2, Circle, Lock, ChevronRight, Users, Compass, RefreshCw, Al
 import { cn } from '@/lib/utils'
 import { springs } from '@/lib/animations'
 import { Quest, QuestStatus } from '@/lib/quest-system'
+import { NarrativeEmptyState } from '@/components/ui/NarrativeEmptyState'
 
 interface QuestsViewProps {
   quests: Quest[]
@@ -222,11 +223,8 @@ export function QuestsView({ quests, onSelectQuest }: QuestsViewProps) {
         </AnimatePresence>
 
         {quests.length === 0 && (
-          <div className="text-center py-12 border border-dashed border-slate-800 rounded-sm bg-slate-900/20">
-            <Compass className="w-8 h-8 text-slate-700 mx-auto mb-3 animate-pulse" />
-            <p className="text-xs text-slate-500 font-mono uppercase tracking-widest">
-              Data Stream Empty
-            </p>
+          <div className="border border-dashed border-slate-800 rounded-sm bg-slate-900/20">
+            <NarrativeEmptyState type="quests" className="min-h-[180px]" />
           </div>
         )}
       </div>

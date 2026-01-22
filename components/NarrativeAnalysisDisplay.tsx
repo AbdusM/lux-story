@@ -18,6 +18,7 @@ import {
 import { cn } from '@/lib/utils'
 import { getPatternColor } from '@/lib/patterns'
 import { CareerValuesRadar } from './CareerValuesRadar'
+import { NarrativeEmptyState } from '@/components/ui/NarrativeEmptyState'
 
 /**
  * Player Analysis Display Component
@@ -221,7 +222,7 @@ export function NarrativeAnalysisDisplay() {
                   Strongest Connections
                 </h4>
                 {relationshipsData.topBonds.length === 0 ? (
-                  <p className="text-xs text-slate-500">No bonds formed yet...</p>
+                  <NarrativeEmptyState type="characters" className="min-h-[120px]" />
                 ) : (
                   relationshipsData.topBonds.map((char, i) => (
                     <div

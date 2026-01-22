@@ -2,6 +2,7 @@ import { EvaluatedChoice } from './dialogue-graph'
 import { PatternType } from './patterns'
 import { UIChoice } from './ui-types'
 import { ExperienceChoice } from './experience-engine'
+import { generateNarrativeLockMessage } from './narrative-locks'
 
 /**
  * OrbFillLevels: Needed for locking logic
@@ -67,6 +68,24 @@ export function adaptToUIChoice(
     // Mercy overrides locking
     const finalLocked = isLocked && !isMercy
 
+    // TICKET-003: Generate narrative lock message
+    let narrativeLockMessage: string | undefined
+    let lockProgress: number | undefined
+    let lockActionHint: string | undefined
+
+    if (finalLocked && req) {
+        const currentLevel = orbFillLevels[req.pattern as PatternType] ?? 0
+        const narrative = generateNarrativeLockMessage(
+            req.pattern,
+            undefined, // TODO: Pass characterId when available
+            currentLevel,
+            req.threshold
+        )
+        narrativeLockMessage = narrative.message
+        lockProgress = currentLevel
+        lockActionHint = narrative.actionHint
+    }
+
     return {
         id: choice.choiceId,
         text: choice.text,
@@ -76,7 +95,10 @@ export function adaptToUIChoice(
         interaction: choice.interaction,
         isLocked: finalLocked,
         lockReason: finalLocked ? reason : undefined,
-        requiredOrbFill: req
+        requiredOrbFill: req,
+        narrativeLockMessage,
+        lockProgress,
+        lockActionHint
     }
 }
 

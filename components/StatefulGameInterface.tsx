@@ -3477,8 +3477,8 @@ export default function StatefulGameInterface() {
                 }
               >
                 <CardContent
-                  className="p-5 sm:p-8 md:p-10 h-[45vh] sm:h-[50vh] overflow-y-auto"
-                  style={{ WebkitOverflowScrolling: 'touch', scrollbarGutter: 'stable' }}
+                  className="p-5 sm:p-8 md:p-10"
+                  // SINGLE SCROLL REFACTOR: Removed h-[45vh] and overflow-y-auto - main scrolls now
                   // Note: Removed text-center for narration-left-align is easier to read (eye hunts for line starts when centered)
                   data-testid="dialogue-content"
                   data-speaker={state.currentNode?.speaker || ''}
@@ -3715,11 +3715,10 @@ export default function StatefulGameInterface() {
         < AnimatePresence mode="wait" >
           {!isEnding && (
             <footer
-              className="flex-shrink-0 glass-panel max-w-4xl mx-auto px-3 sm:px-4 z-20"
+              className="flex-shrink-0 sticky bottom-0 glass-panel max-w-4xl mx-auto px-3 sm:px-4 z-20"
               style={{
-                marginTop: '1.5rem',
-                // Safe area only-let content breathe closer to bottom
-                marginBottom: 'max(1rem, env(safe-area-inset-bottom, 16px))'
+                // SINGLE SCROLL REFACTOR: Sticky footer with safe area padding
+                paddingBottom: 'max(16px, env(safe-area-inset-bottom))'
               }}
             >
               {/* Response label-clean, modern styling */}
@@ -3732,22 +3731,11 @@ export default function StatefulGameInterface() {
               <div className="px-4 sm:px-6 pb-4 pt-2">
                 {/* Scrollable choices container with scroll indicator */}
                 <div className="relative w-full">
+                  {/* SINGLE SCROLL REFACTOR: Removed nested scroll - choices expand naturally */}
+                  {/* For >3 choices, TICKET-002 will add bottom sheet */}
                   <div
-                    id="choices-scroll-container"
-                    className="max-h-[220px] sm:max-h-[260px] overflow-y-auto overflow-x-hidden overscroll-contain scroll-smooth w-full"
-                    style={{
-                      WebkitOverflowScrolling: 'touch',
-                      scrollSnapType: 'y proximity',
-                      touchAction: 'pan-y',
-                    }}
-                    onScroll={(e) => {
-                      const target = e.target as HTMLElement
-                      const indicator = document.getElementById('scroll-indicator')
-                      if (indicator) {
-                        const isAtBottom = target.scrollHeight - target.scrollTop <= target.clientHeight + 10
-                        indicator.style.opacity = isAtBottom ? '0' : '1'
-                      }
-                    }}
+                    id="choices-container"
+                    className="w-full"
                   >
                     <GameChoices
                       choices={(() => {

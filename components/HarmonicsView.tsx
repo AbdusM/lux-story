@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import { motion, AnimatePresence, useReducedMotion, useSpring, useTransform } from 'framer-motion'
 import { Users, Activity, Compass, History, ChevronUp, ChevronDown, Briefcase, Microscope, Brain, Heart, Hammer } from 'lucide-react'
+import { NarrativeEmptyState } from '@/components/ui/NarrativeEmptyState'
 import { RelationshipWeb } from "./RelationshipWeb"
 import { usePatternUnlocks, type OrbState } from '@/hooks/usePatternUnlocks'
 import { useGameSelectors } from '@/lib/game-store'
@@ -44,12 +45,8 @@ export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
     // Null guard
     if (!patternOrbs || patternOrbs.length === 0) {
         return (
-            <div className="p-4 space-y-4 min-h-[500px] flex flex-col items-center justify-center text-center">
-                <Compass className="w-8 h-8 text-slate-600 animate-pulse" />
-                <div className="space-y-1">
-                    <p className="text-sm text-slate-400">Your patterns are waiting to emerge</p>
-                    <p className="text-xs text-slate-500">Make choices in conversations to reveal them</p>
-                </div>
+            <div className="p-4 min-h-[500px] flex items-center justify-center">
+                <NarrativeEmptyState type="patterns" />
             </div>
         )
     }

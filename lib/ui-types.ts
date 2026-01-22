@@ -40,4 +40,13 @@ export interface UIChoice {
         pattern: PatternType
         threshold: number
     }
+
+    // --- TICKET-003: Narrative Lock Framing ---
+    // Human-readable lock message that frames gates as relationships
+    // Example: "Maya needs to trust your logic more"
+    narrativeLockMessage?: string
+    // Current progress toward unlock (0-threshold scale)
+    lockProgress?: number
+    // Optional action hint for unlocking
+    lockActionHint?: string
 }

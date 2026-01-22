@@ -6,6 +6,7 @@ import { useConstellationData } from "@/hooks/useConstellationData"
 import { usePatternUnlocks } from "@/hooks/usePatternUnlocks"
 import { SKILL_CLUSTERS, type SkillCluster } from "@/lib/constellation/skill-positions"
 import { Sparkles, Lock } from "lucide-react"
+import { NarrativeEmptyState } from '@/components/ui/NarrativeEmptyState'
 
 /**
  * Essence Sigil (The Soul Radar)
@@ -247,12 +248,8 @@ export function EssenceSigil() {
                 </div>
 
                 {allUnlocks.length === 0 ? (
-                    <div className="py-6 border border-dashed border-slate-700 rounded-xl flex flex-col items-center text-center px-4">
-                        <Lock className={`w-6 h-6 mb-2 text-slate-500 opacity-60 ${prefersReducedMotion ? '' : 'animate-pulse'}`} />
-                        <p className="text-sm text-slate-400">No abilities unlocked yet</p>
-                        <p className="text-xs mt-1 text-slate-500">
-                            Make choices to fill your pattern orbs
-                        </p>
+                    <div className="border border-dashed border-slate-700 rounded-xl">
+                        <NarrativeEmptyState type="skills" className="min-h-[150px]" />
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 gap-2">
