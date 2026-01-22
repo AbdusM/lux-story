@@ -348,8 +348,8 @@ export class LiveChoiceEngine {
   }
 }
 
-// Singleton instance
-let liveChoiceEngine: LiveChoiceEngine | null = null
+// Singleton instance (unused, class manages its own instance)
+const _liveChoiceEngine: LiveChoiceEngine | null = null
 
 export function getLiveChoiceEngine(): LiveChoiceEngine {
   return LiveChoiceEngine.getInstance()

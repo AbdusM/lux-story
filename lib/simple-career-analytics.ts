@@ -10,26 +10,32 @@
 import { queueCareerAnalyticsSync } from './sync-queue'
 import { safeStorage } from './safe-storage'
 import { logger } from './logger'
+import { z } from 'zod'
+
+// Diamond Safe Schema (reserved for future use)
+const _SimpleBirminghamOpportunitySchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  organization: z.string(),
+  type: z.enum(['internship', 'job_shadow', 'career_program', 'volunteer']),
+  careerArea: z.string(),
+  link: z.string().optional()
+})
+
+const SimpleCareerMetricsSchema = z.object({
+  sectionsViewed: z.array(z.string()),
+  careerInterests: z.array(z.string()),
+  birminghamOpportunities: z.array(z.string()),
+  timeSpent: z.number(),
+  choicesMade: z.number(),
+  platformsExplored: z.array(z.string()),
+  localAffinity: z.number()
+})
 
 // Essential interfaces only
-export interface SimpleCareerMetrics {
-  sectionsViewed: string[]
-  careerInterests: string[]
-  birminghamOpportunities: string[]
-  timeSpent: number
-  choicesMade: number
-  platformsExplored: string[]
-  localAffinity: number // New: Birmingham connectivity score
-}
+export interface SimpleCareerMetrics extends z.infer<typeof SimpleCareerMetricsSchema> { }
 
-export interface SimpleBirminghamOpportunity {
-  id: string
-  name: string
-  organization: string
-  type: 'internship' | 'job_shadow' | 'career_program' | 'volunteer'
-  careerArea: string
-  link?: string
-}
+export interface SimpleBirminghamOpportunity extends z.infer<typeof SimpleBirminghamOpportunitySchema> { }
 
 // Core Birmingham opportunities (simplified from 26 to essential ones)
 export const BIRMINGHAM_OPPORTUNITIES: SimpleBirminghamOpportunity[] = [
@@ -125,20 +131,20 @@ export class SimpleCareerAnalytics {
   }
 
   /**
-   * Load metrics from localStorage (fallback)
+   * Load metrics from localStorage (fallback) - Diamond Safe
    */
   private loadFromLocalStorage(userId: string): void {
     const key = `career_analytics_${userId}`
-    const stored = safeStorage.getItem(key)
 
-    if (stored) {
-      try {
-        const data = JSON.parse(stored)
-        this.metrics.set(userId, data)
-        logger.debug('Loaded from localStorage', { operation: 'simple-career-analytics.load', userId })
-      } catch (error) {
-        console.error('[SimpleCareerAnalytics] Failed to parse localStorage data:', error)
-      }
+    // Diamond Safe: Validate schema on read
+    const validatedMetrics = safeStorage.getValidatedItem(key, SimpleCareerMetricsSchema)
+
+    if (validatedMetrics) {
+      this.metrics.set(userId, validatedMetrics)
+      logger.debug('Loaded from localStorage', { operation: 'simple-career-analytics.load', userId })
+    } else {
+      // If invalid or missing, we just don't set it (map remains empty or gets rehydrated from Supabase)
+      logger.info('No valid local metrics found', { operation: 'simple-career-analytics.load-miss', userId })
     }
   }
 

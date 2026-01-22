@@ -44,7 +44,8 @@ export interface PatternCombo {
  * Calculate primary pattern for a combo
  * Uses highest threshold requirement; alphabetical if tied
  */
-function calculatePrimaryPattern(requirements: Partial<Record<PatternType, number>>): PatternType {
+// Reserved for future combo enhancement
+function _calculatePrimaryPattern(requirements: Partial<Record<PatternType, number>>): PatternType {
   const entries = Object.entries(requirements) as [PatternType, number][]
 
   if (entries.length === 0) {

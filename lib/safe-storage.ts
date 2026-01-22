@@ -3,7 +3,7 @@
  * Fixes localStorage undefined errors in server-side rendering
  */
 
-import { z, ZodType } from 'zod'
+import { ZodType } from 'zod'
 
 // Safe localStorage wrapper that works in both client and server
 export const safeStorage = {
