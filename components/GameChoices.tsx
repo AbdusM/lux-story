@@ -142,6 +142,8 @@ interface OrbRequirement {
 }
 
 interface Choice {
+  /** Unique identifier for the choice (used by adapters) */
+  id?: string
   text: string
   next?: string
   consequence?: string
