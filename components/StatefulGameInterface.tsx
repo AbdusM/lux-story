@@ -202,6 +202,7 @@ import { queueGiftForChoice, queueGiftsForArcComplete, tickGiftCounters, getRead
 // ProgressToast removed-Journal glow effect replaces it
 import { selectAnnouncement } from '@/lib/platform-announcements'
 import { checkSessionBoundary, incrementBoundaryCounter, getTotalNodesVisited, type SessionAnnouncement } from '@/lib/session-structure'
+import { setupPlayTimeTracking } from '@/lib/session-tracker'
 import { SessionBoundaryAnnouncement } from '@/components/SessionBoundaryAnnouncement'
 import { IdentityCeremony } from '@/components/IdentityCeremony'
 import { JourneyComplete } from '@/components/JourneyComplete'
@@ -448,6 +449,7 @@ export default function StatefulGameInterface() {
 
   // Refs & Sync
   const skillTrackerRef = useRef<SkillTracker | null>(null)
+  const pendingSaveRef = useRef<NodeJS.Timeout | null>(null) // Deferred save for pagehide flush
 
   // Share prompts disabled-too obtrusive
   const isProcessingChoiceRef = useRef(false) // Race condition guard
@@ -463,6 +465,26 @@ export default function StatefulGameInterface() {
   useEffect(() => {
     contentLoadTimestampRef.current = Date.now()
   }, [state.currentContent])
+
+  // Page unload save durability - wire session tracking
+  useEffect(() => {
+    const cleanup = setupPlayTimeTracking()
+    return cleanup
+  }, [])
+
+  // Flush deferred saves on page hide (tab close, navigation)
+  useEffect(() => {
+    const flushSave = () => {
+      if (pendingSaveRef.current && state.gameState) {
+        clearTimeout(pendingSaveRef.current)
+        GameStateManager.saveGameState(state.gameState)
+        pendingSaveRef.current = null
+      }
+    }
+    window.addEventListener('pagehide', flushSave)
+    return () => window.removeEventListener('pagehide', flushSave)
+  }, [state.gameState])
+
   // 3. LOAD GAME ID
   useEffect(() => {
     // Check for save

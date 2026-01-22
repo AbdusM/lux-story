@@ -7,6 +7,8 @@
 
 import type { Choice } from './story-engine'
 import { logger } from './logger'
+import { safeStorage } from './safe-storage'
+import { z } from 'zod'
 
 // Live Choice Engine now uses Next.js API routes for secure server-side generation
 // No direct API configuration needed - handled by /api/live-choices route
@@ -40,45 +42,113 @@ export interface ReviewQueueEntry {
   createdAt: number
 }
 
+// Diamond Safe Schema Definition
+const LiveChoiceResponseSchema = z.object({
+  text: z.string().min(1), // Crucial: Must be non-empty to pass truncateTextForLoad
+  justification: z.string(),
+  confidenceScore: z.number(),
+  generatedAt: z.number()
+})
+
+// Diamond Safe Schema Definition
+const OrbRequirementSchema = z.object({
+  pattern: z.enum(['analytical', 'patience', 'exploring', 'helping', 'building']),
+  threshold: z.number()
+})
+
+const ChoiceSchema = z.object({
+  text: z.string().min(1), // Enforce non-empty string. This prevents the "undefined" crash.
+  consequence: z.string().optional().default(''),
+  nextScene: z.string().optional(),
+  stateChanges: z.unknown().optional(),
+  requiredOrbFill: OrbRequirementSchema.optional()
+}).passthrough() // Allow extra fields like 'id', 'pattern'
+
+const ReviewQueueEntrySchema = z.object({
+  id: z.string(),
+  sceneId: z.string(),
+  playerId: z.string().optional(),
+  request: z.object({
+    sceneContext: z.string(),
+    pattern: z.string(),
+    playerPersona: z.string(),
+    existingChoices: z.array(z.string()),
+    sceneId: z.string(),
+    playerId: z.string().optional(),
+  }),
+  response: z.object({
+    text: z.string(),
+    justification: z.string(),
+    confidenceScore: z.number(),
+    generatedAt: z.number(),
+  }),
+  status: z.enum(['pending', 'approved', 'rejected', 'edited']),
+  reviewedBy: z.string().optional(),
+  reviewedAt: z.number().optional(),
+  editedText: z.string().optional(),
+  createdAt: z.number(),
+})
+
 /**
  * Core Live Choice Engine
  * Handles real-time choice generation with Gemini API
  */
 export class LiveChoiceEngine {
-  private reviewQueue: ReviewQueueEntry[] = []
-  private approvedChoices: Map<string, Choice[]> = new Map()
+  private static instance: LiveChoiceEngine
+  private reviewQueue: ReviewQueueEntry[]
+  // ...
 
-  constructor() {
+  private approvedChoices: (Choice & { pattern: string; sceneId: string })[]
+
+  private constructor() {
+    this.approvedChoices = []
+    this.reviewQueue = []
+
+    // Load persisted state with Diamond Safe Validation
     this.loadApprovedChoices()
+    this.loadReviewQueue()
+  }
+
+  public static getInstance(): LiveChoiceEngine {
+    if (!LiveChoiceEngine.instance) {
+      LiveChoiceEngine.instance = new LiveChoiceEngine()
+    }
+    return LiveChoiceEngine.instance
   }
 
   /**
-   * Load previously approved choices from storage
+   * Reset the singleton instance for testing.
+   * Allows tests to start with fresh state.
+   */
+  public static resetInstance(): void {
+    LiveChoiceEngine.instance = undefined as unknown as LiveChoiceEngine
+  }
+
+  /**
+   * Loads choices from storage with strict schema validation.
+   * Uses 'v2' key to implicitly migrate/reset corrupted legacy data.
    */
   private loadApprovedChoices() {
-    try {
-      if (typeof window !== 'undefined') {
-        const stored = localStorage.getItem('lux-story-approved-choices')
-        if (stored) {
-          const data = JSON.parse(stored)
-          this.approvedChoices = new Map(Object.entries(data))
-        }
-      }
-    } catch (error) {
-      console.warn('Failed to load approved choices:', error)
+    if (typeof window === 'undefined') return
+
+    const validatedChoices = safeStorage.getValidatedItem(
+      'lux-story-approved-choices-v2', // Diamond Safe: Versioned Key
+      z.array(ChoiceSchema.extend({ pattern: z.string(), sceneId: z.string() }))
+    )
+
+    if (validatedChoices) {
+      this.approvedChoices = validatedChoices as unknown as (Choice & { pattern: string; sceneId: string })[]
+    } else {
+      logger.info('LiveChoiceEngine: Clean slate initialized (No previous valid choices found for approved choices)')
+      this.approvedChoices = []
     }
   }
 
   /**
-   * Save approved choices to storage
+   * Save approved choices to storage (Diamond Safe v2)
    */
   private saveApprovedChoices() {
-    try {
-      const data = Object.fromEntries(this.approvedChoices)
-      localStorage.setItem('lux-story-approved-choices', JSON.stringify(data))
-    } catch (error) {
-      console.warn('Failed to save approved choices:', error)
-    }
+    safeStorage.setItem('lux-story-approved-choices-v2', JSON.stringify(this.approvedChoices))
   }
 
   // Prompt engineering is now handled server-side in /api/live-choices
@@ -100,16 +170,33 @@ export class LiveChoiceEngine {
       })
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
+        // Safe check for JSON response even on error
+        const contentType = response.headers.get('content-type')
+        let errorData = { error: `HTTP ${response.status}` }
+
+        if (contentType && contentType.includes('application/json')) {
+          errorData = await response.json().catch(() => ({ error: 'Unknown JSON error' }))
+        }
+
         console.error('❌ API Error:', errorData.error)
         throw new Error(`API request failed: ${response.status} - ${errorData.error}`)
       }
 
       const generatedData = await response.json()
 
-      logger.debug('Choice generated successfully', { operation: 'live-choice-engine.success', text: generatedData.text.substring(0, 50), confidence: generatedData.confidenceScore })
+      // Runtime Validation of API Response (Diamond Safe Ingress)
+      const validation = LiveChoiceResponseSchema.safeParse(generatedData)
 
-      return generatedData
+      if (!validation.success) {
+        console.error('❌ API returned invalid data:', validation.error)
+        return null
+      }
+
+      const validatedData = validation.data
+
+      logger.debug('Choice generated successfully', { operation: 'live-choice-engine.success', text: validatedData.text.substring(0, 50), confidence: validatedData.confidenceScore })
+
+      return validatedData
 
     } catch (error) {
       console.error('Live choice generation failed:', error)
@@ -149,23 +236,32 @@ export class LiveChoiceEngine {
     entry.reviewedAt = Date.now()
     entry.editedText = editedText
 
-    // Add to approved choices cache
+    // Add to approved choices cache - ARRAY BASED
     const finalText = editedText || entry.response.text
-    const cacheKey = `${entry.request.pattern}-${entry.sceneId}`
 
-    if (!this.approvedChoices.has(cacheKey)) {
-      this.approvedChoices.set(cacheKey, [])
-    }
+    // Check for duplicates to avoid array bloat
+    const existingIndex = this.approvedChoices.findIndex(c =>
+      c.sceneId === entry.sceneId &&
+      c.pattern === entry.request.pattern &&
+      c.text === finalText
+    )
 
-    const choices = this.approvedChoices.get(cacheKey)!
-    choices.push({
+    const newChoice = {
       text: finalText,
       consequence: `${entry.request.pattern}_ai_generated`,
       nextScene: 'next', // Will be overridden by story engine
       stateChanges: {
         patterns: { [entry.request.pattern]: 1 }
-      }
-    })
+      },
+      pattern: entry.request.pattern,
+      sceneId: entry.sceneId
+    }
+
+    if (existingIndex >= 0) {
+      this.approvedChoices[existingIndex] = newChoice
+    } else {
+      this.approvedChoices.push(newChoice)
+    }
 
     this.saveApprovedChoices()
     this.saveReviewQueue()
@@ -200,32 +296,34 @@ export class LiveChoiceEngine {
    * Get approved choices for a pattern/scene
    */
   getApprovedChoices(pattern: string, sceneId: string): Choice[] {
-    const cacheKey = `${pattern}-${sceneId}`
-    return this.approvedChoices.get(cacheKey) || []
+    // Array-based filter
+    return this.approvedChoices.filter(c =>
+      c.pattern === pattern && c.sceneId === sceneId
+    )
   }
 
   /**
-   * Save review queue to storage
+   * Save review queue to storage (Diamond Safe v2)
    */
   private saveReviewQueue() {
-    try {
-      localStorage.setItem('lux-story-review-queue', JSON.stringify(this.reviewQueue))
-    } catch (error) {
-      console.warn('Failed to save review queue:', error)
-    }
+    safeStorage.setItem('lux-story-review-queue-v2', JSON.stringify(this.reviewQueue))
   }
 
   /**
-   * Load review queue from storage
+   * Load review queue from storage (Diamond Safe v2)
    */
   private loadReviewQueue() {
-    try {
-      const stored = localStorage.getItem('lux-story-review-queue')
-      if (stored) {
-        this.reviewQueue = JSON.parse(stored)
-      }
-    } catch (error) {
-      console.warn('Failed to load review queue:', error)
+    if (typeof window === 'undefined') return
+
+    const validatedQueue = safeStorage.getValidatedItem(
+      'lux-story-review-queue-v2',
+      z.array(ReviewQueueEntrySchema)
+    )
+
+    if (validatedQueue) {
+      this.reviewQueue = validatedQueue as ReviewQueueEntry[]
+    } else {
+      this.reviewQueue = []
     }
   }
 
@@ -237,8 +335,7 @@ export class LiveChoiceEngine {
     const pending = this.reviewQueue.filter(e => e.status === 'pending').length
     const approved = this.reviewQueue.filter(e => e.status === 'approved' || e.status === 'edited').length
     const rejected = this.reviewQueue.filter(e => e.status === 'rejected').length
-    const approvedChoicesCount = Array.from(this.approvedChoices.values())
-      .reduce((sum, choices) => sum + choices.length, 0)
+    const approvedChoicesCount = this.approvedChoices.length
 
     return {
       totalGenerated: total,
@@ -255,8 +352,5 @@ export class LiveChoiceEngine {
 let liveChoiceEngine: LiveChoiceEngine | null = null
 
 export function getLiveChoiceEngine(): LiveChoiceEngine {
-  if (!liveChoiceEngine) {
-    liveChoiceEngine = new LiveChoiceEngine()
-  }
-  return liveChoiceEngine
+  return LiveChoiceEngine.getInstance()
 }
