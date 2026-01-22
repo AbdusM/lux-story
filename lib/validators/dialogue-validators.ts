@@ -7,7 +7,7 @@
 
 import { DialogueGraph, DialogueNode, StateConditionEvaluator } from '../dialogue-graph'
 import { CHARACTER_PATTERN_AFFINITIES } from '../pattern-affinity'
-import { GameState } from '../character-state'
+import { GameState, GameStateUtils } from '../character-state'
 
 // ═══════════════════════════════════════════════════════════════════════════
 // TYPES
@@ -214,37 +214,9 @@ export function validateDialogueGraph(
 /**
  * Create a minimal GameState for validation purposes.
  */
-function createMinimalGameState(characterId: string): GameState {
-  return {
-    playerId: 'validator',
-    currentNodeId: '',
-    visitedNodes: new Set(),
-    characters: new Map([[characterId, {
-      characterId,
-      trust: 0,
-      conversationHistory: [],
-      relationshipStatus: 'stranger',
-      knowledgeFlags: new Set(),
-      tags: new Set(),
-      visitedPatternUnlocks: new Set()
-    }]]),
-    globalFlags: new Set(),
-    patterns: {
-      analytical: 0,
-      patience: 0,
-      exploring: 0,
-      helping: 0,
-      building: 0
-    },
-    skillLevels: {},
-    mysteries: {
-      stationPurpose: 'unknown',
-      samuelSecret: 'unknown',
-      playerIdentity: 'unknown'
-    },
-    sessionBoundariesCrossed: 0,
-    performanceLevel: 0.5
-  }
+function createMinimalGameState(_characterId: string): GameState {
+  // Use the canonical GameState factory for proper type safety
+  return GameStateUtils.createNewGameState('validator')
 }
 
 /**

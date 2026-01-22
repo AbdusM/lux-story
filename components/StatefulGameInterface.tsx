@@ -978,7 +978,8 @@ export default function StatefulGameInterface() {
       // FIX: Atomic state update helper to prevent Zustand/localStorage desync
       const atomicStateUpdate = (updates: Partial<GameState>): GameState => {
         try {
-          const newState = { ...gameState, ...updates }
+          // Type assertion safe: gameState has all required props, updates only overrides some
+          const newState = { ...gameState, ...updates } as GameState
           GameStateManager.saveGameState(newState)
           zustandStore.setCoreGameState(GameStateUtils.serialize(newState))
           return newState

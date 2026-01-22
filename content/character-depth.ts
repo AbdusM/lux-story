@@ -15,8 +15,9 @@
  */
 export interface CharacterVulnerability {
   id: string
-  topic: string                     // Internal identifier
-  displayName: string               // Human-readable name
+  topic?: string                    // Internal identifier (legacy)
+  name?: string                     // Display name (preferred)
+  displayName?: string              // Human-readable name (legacy)
   description: string               // What this vulnerability is about
 
   // How to discover this vulnerability
@@ -39,10 +40,15 @@ export interface CharacterVulnerability {
 
   // What discovering this unlocks
   rewards: {
-    knowledgeFlag: string           // Flag set when discovered
+    knowledgeFlag?: string          // Flag set when discovered
+    knowledgeUnlock?: string        // Alternative flag name
     unlockedDialogueNodes?: string[] // New dialogue paths
     trustBonus?: number             // One-time trust increase
     thoughtId?: string              // Thought cabinet entry
+    patternBoost?: {                // Pattern reward for discovery
+      pattern: string
+      amount: number
+    }
   }
 }
 
@@ -51,12 +57,13 @@ export interface CharacterVulnerability {
  */
 export interface CharacterStrength {
   id: string
-  domain: string                    // Internal identifier
-  displayName: string               // Human-readable name
+  domain?: string                   // Internal identifier (legacy)
+  name?: string                     // Display name (preferred)
+  displayName?: string              // Human-readable name (legacy)
   description: string               // What this strength is about
 
   // Topics where this strength manifests
-  demonstrationTopics: string[]
+  demonstrationTopics?: string[]
 
   // How the strength is revealed
   revealConditions?: {
@@ -65,7 +72,7 @@ export interface CharacterStrength {
   }
 
   // What the character says when using their strength
-  helpDialogue: {
+  helpDialogue?: {
     offerHelp: string               // When offering their expertise
     successFeedback: string         // When their help works
     recognitionResponse: string     // When player acknowledges their strength
@@ -1857,15 +1864,17 @@ export function getDiscoveryHints(
   const hints: string[] = []
 
   for (const vuln of profile.vulnerabilities) {
-    // Skip if already discovered
-    if (context.knowledgeFlags.has(vuln.rewards.knowledgeFlag)) continue
+    // Skip if already discovered (check both flag name variants)
+    const flagName = vuln.rewards.knowledgeFlag || vuln.rewards.knowledgeUnlock
+    if (flagName && context.knowledgeFlags.has(flagName)) continue
 
     // Check if we're close to discovering
     const trustGap = vuln.discoveryConditions.trustMin - context.trust
 
     if (trustGap <= 2 && trustGap > 0) {
-      // Close enough to hint
-      hints.push(`There's something ${vuln.displayName.toLowerCase()} she's not saying...`)
+      // Close enough to hint (use name or displayName)
+      const vulnName = vuln.name || vuln.displayName || 'hidden'
+      hints.push(`There's something ${vulnName.toLowerCase()} she's not saying...`)
     }
   }
 
