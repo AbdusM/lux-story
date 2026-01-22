@@ -8,6 +8,7 @@ import { useGameStore } from '@/lib/game-store'
 import { CHARACTER_NODES, type CharacterId, type CharacterNodeData } from '@/lib/constellation/character-positions'
 import { SKILL_NODES, getSkillState, type SkillState, type SkillNodeData } from '@/lib/constellation/skill-positions'
 import { CHARACTER_RELATIONSHIP_WEB } from '@/lib/character-relationships'
+import { TRUST_STATE_THRESHOLDS } from '@/lib/constants'
 
 export interface CharacterWithState extends CharacterNodeData {
   trust: number
@@ -38,8 +39,8 @@ export interface ConstellationData {
 // Get trust state based on trust value
 function getTrustState(trust: number): CharacterWithState['trustState'] {
   if (trust === 0) return 'unmet'
-  if (trust <= 3) return 'met'
-  if (trust <= 7) return 'connected'
+  if (trust <= TRUST_STATE_THRESHOLDS.met) return 'met'
+  if (trust <= TRUST_STATE_THRESHOLDS.connected) return 'connected'
   return 'trusted'
 }
 

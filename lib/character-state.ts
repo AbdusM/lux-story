@@ -132,8 +132,6 @@ export interface GameState {
   patternEvolutionHistory?: PatternEvolutionHistory
 
   // D-061: Story Arcs - multi-session narrative threads
-  // D-061: Story Arcs - multi-session narrative threads
-  // D-061: Story Arcs - multi-session narrative threads
   storyArcState?: StoryArcState
 
   // D-014: Skill Tracking (Claim 14)

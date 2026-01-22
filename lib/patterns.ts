@@ -6,6 +6,11 @@
  * All other files MUST import from here.
  */
 
+import { DOMINANT_PATTERN_THRESHOLD } from './constants'
+
+// Re-export for backwards compatibility
+export { DOMINANT_PATTERN_THRESHOLD }
+
 /**
  * Valid pattern types - the 5 decision-making approaches
  */
@@ -299,6 +304,62 @@ export function isValidPattern(pattern: string): pattern is PatternType {
 }
 
 /**
+ * Safely get a pattern value from a record, with validation
+ * Returns 0 for invalid patterns instead of throwing
+ *
+ * @example getPatternValue(patterns, 'analytical') => 5
+ * @example getPatternValue(patterns, 'invalid') => 0 (logs warning in dev)
+ */
+export function getPatternValue(
+  patterns: Record<string, number> | PlayerPatterns | null | undefined,
+  pattern: string
+): number {
+  if (!patterns) return 0
+
+  if (!isValidPattern(pattern)) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(`[Patterns] Invalid pattern key: "${pattern}"`)
+    }
+    return 0
+  }
+
+  return patterns[pattern] ?? 0
+}
+
+/**
+ * Type-safe conversion of unknown object to pattern record
+ * Validates and fills in missing patterns with 0
+ *
+ * @example asPatternRecord({ analytical: 5, patience: 3 }) => { analytical: 5, patience: 3, exploring: 0, helping: 0, building: 0 }
+ */
+export function asPatternRecord(
+  patterns: unknown
+): Record<PatternType, number> {
+  const result: Record<PatternType, number> = {
+    analytical: 0,
+    patience: 0,
+    exploring: 0,
+    helping: 0,
+    building: 0,
+  }
+
+  if (!patterns || typeof patterns !== 'object') {
+    return result
+  }
+
+  const record = patterns as Record<string, unknown>
+
+  for (const pattern of PATTERN_TYPES) {
+    const value = record[pattern]
+    if (typeof value === 'number' && !isNaN(value)) {
+      result[pattern] = value
+    }
+  }
+
+  return result
+}
+
+/**
  * Pattern Sensations - Subtle feedback when player leans into a pattern
  * These are atmospheric, not informational. The station notices you.
  */
@@ -358,12 +419,6 @@ export interface PlayerPatterns {
   helping: number
   building: number
 }
-
-/**
- * Default threshold for "dominant" pattern detection
- * A pattern must be >= this value to be considered dominant
- */
-export const DOMINANT_PATTERN_THRESHOLD = 5
 
 /**
  * Get the player's dominant pattern (if any)

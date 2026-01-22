@@ -72,6 +72,19 @@ export const TRUST_THRESHOLDS = {
   bonded: 10
 } as const
 
+/**
+ * Trust state thresholds for constellation/relationship UI visualization
+ * Used to determine visual states like node glow, connection intensity
+ */
+export const TRUST_STATE_THRESHOLDS = {
+  /** Minimum trust to show as "met" (vs "unmet") */
+  met: 3,
+  /** Minimum trust to show as "connected" */
+  connected: 7,
+  /** Minimum trust for deep/intense relationship visuals */
+  deep: 8,
+} as const
+
 // ═══════════════════════════════════════════════════════════════════════════
 // VULNERABILITY SYSTEM (E2-061 to E2-065)
 // ═══════════════════════════════════════════════════════════════════════════

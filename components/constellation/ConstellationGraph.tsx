@@ -9,6 +9,7 @@ import { hapticFeedback } from '@/lib/haptic-feedback'
 import { getVisibleResonancePaths, type ResonancePath } from '@/lib/constellation/pattern-resonance-paths'
 import { useGameStore } from '@/lib/game-store'
 import type { PatternType } from '@/lib/patterns'
+import { TRUST_THRESHOLDS, TRUST_STATE_THRESHOLDS } from '@/lib/constants'
 
 interface ConstellationGraphProps {
     characters: CharacterWithState[]
@@ -713,10 +714,10 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
                                     </span>
                                 </div>
                                 <span className="text-[9px] text-slate-500">
-                                    {selectedChar.trust < 6
-                                        ? `${6 - selectedChar.trust} to deeper connection`
-                                        : selectedChar.trust < 8
-                                            ? `${8 - selectedChar.trust} to loyalty`
+                                    {selectedChar.trust < TRUST_THRESHOLDS.trusted
+                                        ? `${TRUST_THRESHOLDS.trusted - selectedChar.trust} to deeper connection`
+                                        : selectedChar.trust < TRUST_STATE_THRESHOLDS.deep
+                                            ? `${TRUST_STATE_THRESHOLDS.deep - selectedChar.trust} to loyalty`
                                             : 'Trusted ally'}
                                 </span>
                             </div>

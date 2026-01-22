@@ -1976,7 +1976,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'revisit_leave',
         text: "I'll let you get back to it.",
-        nextNodeId: samuelEntryPoints.MAYA_REFLECTION_GATEWAY, // Return to hub
+        nextNodeId: samuelEntryPoints.DEVON_REFLECTION_GATEWAY, // Return to hub
         pattern: 'patience'
       }
     ],
@@ -3998,7 +3998,7 @@ What communication approach balances these?`,
       {
         choiceId: 'insight_apply',
         text: "I want to think about systems like that too.",
-        nextNodeId: 'devon_hub',
+        nextNodeId: 'devon_hub_return',
         pattern: 'analytical',
         skills: ['systemsThinking', 'emotionalIntelligence']
       }

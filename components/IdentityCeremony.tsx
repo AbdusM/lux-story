@@ -15,21 +15,13 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { PatternType } from '@/lib/patterns'
+import { PatternType, getPatternColor } from '@/lib/patterns'
 import { formatIdentityName } from '@/lib/identity-system'
 
 interface IdentityCeremonyProps {
   pattern: PatternType | null
   isVisible: boolean
   onComplete: () => void
-}
-
-const PATTERN_COLORS: Record<PatternType, string> = {
-  analytical: '#6366f1', // Indigo
-  patience: '#8b5cf6',   // Violet
-  exploring: '#f59e0b',  // Amber
-  helping: '#ef4444',    // Red
-  building: '#22c55e'    // Green
 }
 
 const PATTERN_ICONS: Record<PatternType, string> = {
@@ -43,7 +35,7 @@ const PATTERN_ICONS: Record<PatternType, string> = {
 export function IdentityCeremony({ pattern, isVisible, onComplete }: IdentityCeremonyProps) {
   if (!pattern) return null
 
-  const color = PATTERN_COLORS[pattern]
+  const color = getPatternColor(pattern)
   const icon = PATTERN_ICONS[pattern]
   const name = formatIdentityName(pattern)
 

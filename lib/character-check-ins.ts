@@ -52,12 +52,8 @@ export class CheckInQueue {
             if (activeFlags.has(def.triggerFlag)) {
                 // Check if already queued or completed (we need a way to track completion... 
                 // usually we check if the flag exists, but here the flag IS the trigger.
-                // We need to check if we've already "consumed" this check-in.
-                // For now, let's assume if it's not in the queue, we add it. 
-                // BUT wait, if we finished it, it won't be in the queue either.
-                // FIX: We need a distinctive flag for "Check-In Completed" or check conversation history.
-
-                // Simpler approach: Check if character has the specific 'revisit_welcome' node in history
+                // Check if we've already consumed this check-in by looking at conversation history
+                // This avoids needing a separate "completed" flag
                 const charState = gameState.characters.get(def.characterId)
                 const hasVisitedRevisit = charState?.conversationHistory.includes(def.dialogueNodeId)
                 const isQueued = newQueue.some(p => p.characterId === def.characterId)

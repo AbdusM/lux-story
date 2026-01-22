@@ -3131,7 +3131,7 @@ WARNING: Response time > 48h`,
       {
         choiceId: 'translation_apply',
         text: "I want to be that bridge for people.",
-        nextNodeId: 'marcus_hub',
+        nextNodeId: 'marcus_hub_return',
         pattern: 'helping',
         skills: ['communication', 'technicalLiteracy']
       }

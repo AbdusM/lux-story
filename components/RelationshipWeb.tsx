@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
 import { X, Quote } from 'lucide-react'
+import { TRUST_STATE_THRESHOLDS } from '@/lib/constants'
 
 // Force Simulation Types
 type SimulationNode = D3.SimulationNodeDatum & GraphNode
@@ -148,7 +149,7 @@ export function RelationshipWeb({ width = 800, height = 600, className }: Relati
                                             {/* Status Ring */}
                                             <div
                                                 className="absolute -inset-1 rounded-full opacity-70 group-hover:opacity-100 transition-opacity blur-[2px]"
-                                                style={{ backgroundColor: node.trust >= 8 ? '#fcd34d' : '#94a3b8' }}
+                                                style={{ backgroundColor: node.trust >= TRUST_STATE_THRESHOLDS.deep ? '#fcd34d' : '#94a3b8' }}
                                             />
 
                                             <Avatar className="w-12 h-12 border-2 border-slate-900 bg-slate-800">

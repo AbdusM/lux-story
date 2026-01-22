@@ -8,6 +8,7 @@ import {
   GameStateUtils,
   StateChange
 } from './character-state'
+import { getPatternValue } from './patterns'
 import { SimulationConfig } from '@/components/game/simulations/types'
 import { updateAmbientMusic } from './audio-feedback'
 
@@ -1152,8 +1153,8 @@ export const useGameSelectors = {
   usePatternValue: (pattern: keyof PatternTracking) =>
     useGameStore((state) => {
       // Derive from coreGameState for core patterns
-      if (state.coreGameState?.patterns && pattern in state.coreGameState.patterns) {
-        return (state.coreGameState.patterns as unknown as Record<string, number>)[pattern] || 0
+      if (state.coreGameState?.patterns) {
+        return getPatternValue(state.coreGameState.patterns, pattern)
       }
       return state.patterns[pattern]
     }),

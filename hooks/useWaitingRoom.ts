@@ -21,6 +21,9 @@ import {
 import { useGameStore } from '@/lib/game-store'
 import type { PatternType } from '@/lib/patterns'
 
+/** Waiting room reveal thresholds in seconds */
+const WAITING_ROOM_THRESHOLDS = [30, 60, 120] as const
+
 interface UseWaitingRoomOptions {
   /** The character/location ID to track */
   characterId: string | null
@@ -136,8 +139,7 @@ export function useWaitingRoom({
     }
 
     // Start breathing when approaching a threshold
-    const thresholds = [30, 60, 120]
-    const nearThreshold = thresholds.some(t =>
+    const nearThreshold = WAITING_ROOM_THRESHOLDS.some(t =>
       elapsedSeconds >= t - 10 &&
       elapsedSeconds < t &&
       !revealedIds.has(`${characterId}_${t}s`)
@@ -150,8 +152,7 @@ export function useWaitingRoom({
   const calculateProgress = useCallback(() => {
     if (!characterId) return { progress: 0, secondsToNext: null }
 
-    const thresholds = [30, 60, 120]
-    const unrevealed = thresholds.filter(t => {
+    const unrevealed = WAITING_ROOM_THRESHOLDS.filter(t => {
       // Check if this threshold's content hasn't been revealed yet
       const content = getRevealsForTime(characterId, t, revealedIds)
       return content.length > 0 || !revealedIds.has(`${characterId}_${t}s`)

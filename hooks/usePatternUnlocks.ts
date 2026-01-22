@@ -13,7 +13,7 @@
 
 import { useMemo } from 'react'
 import { useOrbs } from '@/hooks/useOrbs'
-import { type PatternType, PATTERN_METADATA } from '@/lib/patterns'
+import { type PatternType, PATTERN_METADATA, PATTERN_TYPES } from '@/lib/patterns'
 import {
   type PatternUnlock,
   type OrbFillTier,
@@ -28,6 +28,7 @@ import {
   getPatternTagline,
   orbCountToFillPercent,
 } from '@/lib/pattern-unlocks'
+import { MAX_ORB_COUNT } from '@/lib/constants'
 
 /**
  * State for a single pattern orb
@@ -72,17 +73,12 @@ export interface UsePatternUnlocksReturn {
   // Note: This would need session tracking to implement fully
 }
 
-// Maximum orb count for 100% fill
-const MAX_ORB_COUNT = 100
-
 export function usePatternUnlocks(): UsePatternUnlocksReturn {
   const { balance, patternsWithNewOrbs } = useOrbs()
 
   // Build orb state for each pattern
   const orbs = useMemo((): OrbState[] => {
-    const patterns: PatternType[] = ['analytical', 'patience', 'exploring', 'helping', 'building']
-
-    return patterns.map(pattern => {
+    return PATTERN_TYPES.map(pattern => {
       const metadata = PATTERN_METADATA[pattern]
       const orbCount = balance[pattern]
       const fillPercent = orbCountToFillPercent(orbCount, MAX_ORB_COUNT)
