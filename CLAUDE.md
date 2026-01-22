@@ -296,6 +296,36 @@ Deprecated code preserved for reference:
 - `docs/01_MECHANICS/21-infinite-canvas-feature-catalog.md` - Full feature catalog
 
 ### Recently Completed (January 2026)
+
+**UX Transformation (Jan 22)**
+- Single scroll surface (ChatGPT-style flow)
+- Signature choice animation with haptics
+- Bottom sheet for >3 choices
+- Pull-to-dismiss on modals
+- Bottom tabs in Journal (thumb zone)
+- Reader mode toggle (mono ↔ sans-serif)
+- Living Station Frame (breathing, emotion glow, mastery dissolution)
+- Parallax star field with gyroscope
+
+**Backlog Features (Jan 22)**
+- Star Walking navigation with haptic feedback
+- Waiting Room patience mechanic (30/60/120s reveals)
+- Pattern Resonance Paths (15 hidden connections)
+- Constellation smart zoom + snap-to-node
+- Evidence schema for B2B value capture
+- Neural Deck copy with haptic feedback
+
+**New Files:**
+- `hooks/useWaitingRoom.ts` - Timer-based patience reveals
+- `hooks/useReaderMode.ts` - Font accessibility toggle
+- `hooks/useCopyToClipboard.ts` - Enhanced clipboard
+- `hooks/useDeviceOrientation.ts` - Gyroscope for parallax
+- `lib/waiting-room-content.ts` - Patience content definitions
+- `lib/constellation/pattern-resonance-paths.ts` - Hidden connections
+- `components/ui/WaitingRoomIndicator.tsx` - Visual feedback
+
+---
+
 - **Simulation Implementation (Jan 13)** - 5 characters with complete 3-phase simulations (Devon, Jordan, Dante, Nadia, Isaiah) - 60 nodes, ~2,154 lines
 - **Emotion System Expansion (Jan 13)** - Added 2 primary emotions (`afraid`, `peace`), validated all 1,612 emotion references (100% pass rate)
 - **Content Gap Analysis (Jan 13)** - Comprehensive audit of all 20 characters across 4 core systems (documented in `CONTENT_GAP_ANALYSIS_2026JAN.md`)
