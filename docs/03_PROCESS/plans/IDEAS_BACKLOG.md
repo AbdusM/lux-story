@@ -158,33 +158,17 @@ Start with **Option A** (Constellation as Navigation) - it already exists and pr
 **Category:** Navigation / UX Enhancement
 **Risk Tier:** 1 (Low)
 **ISP Cluster:** E (Panel-as-World)
+**Status:** ✅ COMPLETED (January 22, 2026)
 
 ### Concept
 Constellation IS the navigation system. Click a star (character) = travel directly there. No separate "select character" - the visual map becomes the control.
 
-### Philosophy Alignment
+### Implementation
+- Single-click selects, double-click travels
+- Haptic feedback (heavyThud) on travel initiation
+- Works for both met and unmet characters (Star Walking allows discovery)
 
-| Commandment | Alignment | Notes |
-|-------------|-----------|-------|
-| Feel Comes First | **Strong** | Visual navigation feels explorative |
-| Show Don't Tell | **Strong** | Map IS the interface |
-| Friction is Failure | **Strong** | One click = one action |
-| Never Break What Works | **Strong** | Uses existing constellation panel |
-| Honest Architecture | **Strong** | Repurposes, doesn't rebuild |
-| Juice is Not Optional | **Medium** | Need satisfying travel animation |
-
-### Considerations
-- **Already partially exists**: Constellation panel shows character network
-- **Enhancement needed**: Click star → transition animation → arrive at character
-- **Double-click exists**: Currently opens detail modal - could change to single-click navigate
-- **Return path**: Star Walking back to Samuel (center star) for hub return
-
-### Decision Framework
-- Low risk, high reward
-- Validates IDEA 002 Option A before building movement engine
-- Test: Do players naturally try to click stars to navigate?
-
-**Priority:** Soon
+**Priority:** DONE
 **Effort:** Low (animation + click handler change)
 
 ---
@@ -195,33 +179,25 @@ Constellation IS the navigation system. Click a star (character) = travel direct
 **Category:** Replayability / Pattern System
 **Risk Tier:** 2 (Medium)
 **ISP Cluster:** A (Spatial Metaphor Deepening)
+**Status:** ✅ COMPLETED (January 22, 2026)
 
 ### Concept
 Your dominant pattern reveals hidden connections on the constellation. Analytical players see different character relationship lines than Helping players. Creates natural replayability through pattern-divergent discovery.
 
-### Philosophy Alignment
+### Implementation
+- 15 resonance paths across all 5 patterns (3 per pattern at thresholds 6, 7, 8)
+- Paths render as glowing dashed lines with pattern-specific colors
+- Only visible when both characters have been met AND pattern threshold reached
+- Examples:
+  - Analytical 6+: Maya → Rohan ("Both approach problems through systematic analysis")
+  - Helping 7+: Grace → Asha ("Operations and mediation - both smooth the path for others")
+  - Building 8+: Devon → Maya ("Hardware and software - different materials, same builder spirit")
 
-| Commandment | Alignment | Notes |
-|-------------|-----------|-------|
-| Feel Comes First | **Strong** | Discovery feeling for pattern alignment |
-| Show Don't Tell | **Strong** | Visual paths reveal pattern affinity |
-| Emotion Over Mechanics | **Strong** | Feels like the station "knows" you |
-| Friction is Failure | **Medium** | Must not confuse what's hidden vs visible |
-| Never Break What Works | **Strong** | Adds to constellation, doesn't replace |
-| Kill Your Darlings | **Strong** | Creates replay value |
+**Files:**
+- `lib/constellation/pattern-resonance-paths.ts` - Path definitions and utilities
+- `components/constellation/ConstellationGraph.tsx` - Rendering integration
 
-### Considerations
-- **Technical**: Add pattern-gated connection lines to constellation
-- **Example**: Analytical 6+ reveals hidden Maya→Nadia→Quinn pathway
-- **Example**: Helping 6+ reveals hidden Grace→Asha→Isaiah pathway
-- **Risk**: Players may feel they're "missing" content - frame as discovery, not restriction
-
-### Decision Framework
-- Medium effort, high long-term value
-- Prerequisite: Stable pattern tracking (exists)
-- Test: Does pattern-gated content feel rewarding or frustrating?
-
-**Priority:** Future
+**Priority:** DONE
 **Effort:** Medium (new constellation lines + gating logic)
 
 ---
@@ -232,34 +208,26 @@ Your dominant pattern reveals hidden connections on the constellation. Analytica
 **Category:** Pattern Integration / Hidden Content
 **Risk Tier:** 1-2 (Low-Medium)
 **ISP Cluster:** Combining Opposites (Movement + Stillness)
+**Status:** ✅ COMPLETED (January 22, 2026)
 
 ### Concept
 Lingering at locations unlocks hidden content. Rewards patience pattern organically. Contradicts assumption that "movement = progress" - stillness has power.
 
-### Philosophy Alignment
+### Implementation
+- Timer-based content unlocks at 30s, 60s, 120s thresholds
+- Content types: ambient, memory, whisper, insight
+- Each reveal grants patience pattern XP (0.5, 1.0, 1.5)
+- Visual indicator: Breathing glow when approaching threshold
+- Content for Samuel hub, Maya, Devon, Marcus, Rohan, Tess, Jordan
+- Some reveals are one-shot (play once per session)
+- Some add knowledge flags for deeper integration
 
-| Commandment | Alignment | Notes |
-|-------------|-----------|-------|
-| Feel Comes First | **Strong** | Rewards contemplative players |
-| Respect Player Intelligence | **Strong** | Trusts players to discover through stillness |
-| Emotion Over Mechanics | **Strong** | Patience FEELS rewarded |
-| Show Don't Tell | **Strong** | Content reveals through waiting |
-| Friction is Failure | **Caution** | Must not feel like loading screens |
-| Kill Your Darlings | **Question** | Niche appeal? |
+**Files:**
+- `lib/waiting-room-content.ts` - Content definitions
+- `hooks/useWaitingRoom.ts` - Timer and reveal logic
+- `components/ui/WaitingRoomIndicator.tsx` - Visual feedback
 
-### Considerations
-- **Implementation**: Timer-based content unlocks (30s, 60s, 120s)
-- **Content**: Hidden dialogue, ambient world details, character backstory
-- **UI**: Subtle visual cue that "something is happening" (breathing glow?)
-- **Reference**: Death Stranding's contemplation rewards
-- **Edge case**: Must not punish impatient players - bonus content only
-
-### Decision Framework
-- Test with patience-pattern-heavy players first
-- Must feel like discovery, not punishment for rushing
-- Content should be meaningful but not essential
-
-**Priority:** Future
+**Priority:** DONE
 **Effort:** Low-Medium (timer logic + hidden content nodes)
 
 ---
@@ -417,4 +385,4 @@ All 20 characters now have **5/5 pattern coverage**:
 
 ---
 
-**Last Updated:** January 8, 2026
+**Last Updated:** January 22, 2026
