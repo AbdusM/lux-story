@@ -3,6 +3,8 @@
  * Fixes localStorage undefined errors in server-side rendering
  */
 
+import { z, ZodType } from 'zod'
+
 // Safe localStorage wrapper that works in both client and server
 export const safeStorage = {
   getItem(key: string): string | null {
@@ -11,6 +13,30 @@ export const safeStorage = {
       return localStorage.getItem(key)
     } catch (error) {
       console.warn('localStorage.getItem failed:', error)
+      return null
+    }
+  },
+
+  /**
+   * Diamond Safe Retrieval: Validates data against a schema on read.
+   * Logs errors (Observability) and returns null if corrupt (Stability).
+   */
+  getValidatedItem<T>(key: string, schema: ZodType<T>): T | null {
+    const raw = this.getItem(key)
+    if (!raw) return null
+
+    try {
+      const parsed = JSON.parse(raw)
+      const result = schema.safeParse(parsed)
+
+      if (!result.success) {
+        console.error(`[SafeStorage] Validation Failed for key '${key}':`, result.error.issues)
+        return null
+      }
+
+      return result.data
+    } catch (error) {
+      console.error(`[SafeStorage] JSON Parse Failed for key '${key}':`, error)
       return null
     }
   },
@@ -54,7 +80,7 @@ function uuidv4(): string {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
     return crypto.randomUUID()
   }
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = Math.random() * 16 | 0
     const v = c === 'x' ? r : (r & 0x3 | 0x8)
     return v.toString(16)
@@ -69,21 +95,21 @@ export function generateUserId(): string {
   }
 
   let existingId = safeStorage.getItem('lux-player-id')
-  
+
   // Validate existing ID format (must be UUID)
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-  
+
   if (!existingId || !uuidRegex.test(existingId)) {
     // Create new UUID if missing or invalid
     existingId = uuidv4()
     safeStorage.setItem('lux-player-id', existingId)
-    
+
     // If we replaced an invalid ID, we should prolly log/warn, but for now just fixing it is enough
     if (existingId) {
-       console.warn('Replaced invalid/missing User ID with new UUID')
+      console.warn('Replaced invalid/missing User ID with new UUID')
     }
   }
-  
+
   return existingId
 }
 
