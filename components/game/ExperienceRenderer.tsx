@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react'
-import { Button } from '@/components/ui/button'
 import { ExperienceEngine, ActiveExperienceState } from '@/lib/experience-engine'
 import { GameState } from '@/lib/character-state'
-import { cn } from '@/lib/utils'
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { Clock } from 'lucide-react'

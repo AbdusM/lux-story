@@ -1,6 +1,5 @@
 import { EvaluatedChoice } from './dialogue-graph'
 import { PatternType } from './patterns'
-import { GravityResult } from './narrative-gravity'
 import { UIChoice } from './ui-types'
 import { ExperienceChoice } from './experience-engine'
 
@@ -39,14 +38,6 @@ interface ChoiceWithOrbRequirement {
     requiredOrbFill?: OrbFillRequirement
 }
 
-// Default pattern metadata for labels
-const PATTERN_LABELS: Record<PatternType, string> = {
-    analytical: 'Analytical',
-    helping: 'Helping',
-    building: 'Building',
-    patience: 'Patience',
-    exploring: 'Exploring'
-}
 
 /**
  * ADAPTER: Logic Layer -> Presentation Layer

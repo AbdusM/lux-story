@@ -12,7 +12,8 @@ import { CHARACTER_IDS, DIALOGUE_GRAPHS, findCharacterForNode, type CharacterId 
 import { type DialogueNode } from '@/lib/dialogue-graph'
 import { PATTERN_TYPES, type PatternType } from '@/lib/patterns'
 import { SIMULATION_REGISTRY } from '@/lib/simulation-registry'
-import { THOUGHT_REGISTRY } from '@/content/thoughts'
+// THOUGHT_REGISTRY reserved for future thought system integration
+import '@/content/thoughts'
 import type { SerializableGameState } from '@/lib/character-state'
 
 // Extract character type from SerializableGameState
@@ -506,7 +507,7 @@ export function createGodModeAPI(): GodModeAPI {
         return
       }
 
-      const store = useGameStore.getState()
+      const _store = useGameStore.getState()
       // Only clear game-related storage, not all localStorage
       const keysToRemove: string[] = []
       for (let i = 0; i < localStorage.length; i++) {

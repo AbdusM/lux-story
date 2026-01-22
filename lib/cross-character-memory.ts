@@ -13,85 +13,86 @@
 import type { CharacterId } from './graph-registry'
 import type { GameState } from './character-state'
 import type { ConsequenceEcho } from './consequence-echoes'
+import { z } from 'zod'
+import { safeStorage } from './safe-storage'
 
-/**
- * A cross-character echo - one character references another character's
- * relationship with the player.
- */
+// Diamond Safe Schemas
+// Note: ConsequenceEchoSchema reserved for future strict validation
+const _ConsequenceEchoSchema = z.object({
+  text: z.string(),
+}).passthrough()
+
+const CrossCharacterEchoSchema = z.object({
+  sourceCharacter: z.string(), // CharacterId
+  sourceFlag: z.string(),
+  targetCharacter: z.string(), // CharacterId
+  delay: z.number(),
+  echo: z.any(), // Allowing loose validation for the inner echo object for now to avoid circular deps or complex schema
+  requiredPattern: z.object({ pattern: z.string(), minLevel: z.number() }).optional(),
+  requiredTrust: z.number().optional()
+})
+
+const PendingEchoSchema = z.object({
+  echo: CrossCharacterEchoSchema,
+  remainingDelay: z.number(),
+  triggeredAt: z.number()
+})
+
+const CrossCharacterEchoQueueStateSchema = z.object({
+  pending: z.array(PendingEchoSchema),
+  delivered: z.array(z.string())
+})
+
+export type PendingEcho = z.infer<typeof PendingEchoSchema>
+export type CrossCharacterEchoQueueState = z.infer<typeof CrossCharacterEchoQueueStateSchema>
+
+// ... (Interface definitions can infer from Zod or stay as is. Keeping explicit for now)
 export interface CrossCharacterEcho {
-  /** Character who completed the arc */
   sourceCharacter: CharacterId
-  /** Flag that triggers this echo (e.g., 'maya_arc_complete') */
   sourceFlag: string
-  /** Character who delivers the echo */
   targetCharacter: CharacterId
-  /** Interactions before surfacing (0 = immediate, 1+ = delayed) */
   delay: number
-  /** The actual echo content */
   echo: ConsequenceEcho
-  /** Optional: Only show if player has this pattern */
   requiredPattern?: { pattern: string; minLevel: number }
-  /** Optional: Only show if trust with target is at least this */
   requiredTrust?: number
 }
 
-/**
- * Pending echo in the queue - tracks remaining delay
- */
-interface PendingEcho {
-  echo: CrossCharacterEcho
-  remainingDelay: number
-  triggeredAt: number // timestamp
-}
-
-/**
- * Cross-character echo queue state
- * Stored in localStorage alongside game state
- */
-export interface CrossCharacterEchoQueueState {
-  pending: PendingEcho[]
-  delivered: string[] // sourceFlag + targetCharacter combos already shown
-}
+// ... 
 
 const STORAGE_KEY = 'lux-cross-character-echoes'
 
 /**
- * Load echo queue from storage
+ * Load echo queue from storage (Diamond Safe)
  */
 export function loadEchoQueue(): CrossCharacterEchoQueueState {
   if (typeof window === 'undefined') {
     return { pending: [], delivered: [] }
   }
 
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored) {
-      return JSON.parse(stored)
-    }
-  } catch (e) {
-    console.warn('[CrossCharacterMemory] Failed to load echo queue:', e)
+  const validated = safeStorage.getValidatedItem(STORAGE_KEY, CrossCharacterEchoQueueStateSchema)
+
+  if (validated) {
+    // Cast back to specific types if Zod inference is too loose (e.g. string vs CharacterId)
+    return validated as unknown as CrossCharacterEchoQueueState
   }
 
   return { pending: [], delivered: [] }
 }
 
 /**
- * Save echo queue to storage
+ * Save echo queue to storage (Diamond Safe)
  */
 export function saveEchoQueue(queue: CrossCharacterEchoQueueState): void {
-  if (typeof window === 'undefined') return
-
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(queue))
-  } catch (e) {
-    console.warn('[CrossCharacterMemory] Failed to save echo queue:', e)
-  }
+  safeStorage.setItem(STORAGE_KEY, JSON.stringify(queue))
 }
 
 /**
  * Check if an echo has already been delivered
  */
-function echoKey(echo: CrossCharacterEcho): string {
+/**
+ * Check if an echo has already been delivered
+ */
+function echoKey(echo: { sourceFlag: string; targetCharacter: string }): string {
   return `${echo.sourceFlag}:${echo.targetCharacter}`
 }
 
@@ -154,10 +155,10 @@ export function getAndUpdateEchosForCharacter(
 
     if (isForThisCharacter && pending.remainingDelay <= 0) {
       // Check conditions
-      const meetsConditions = checkEchoConditions(pending.echo, gameState)
+      const meetsConditions = checkEchoConditions(pending.echo as unknown as CrossCharacterEcho, gameState)
 
       if (meetsConditions) {
-        readyEchoes.push(pending.echo.echo)
+        readyEchoes.push(pending.echo.echo as ConsequenceEcho)
         newDelivered.push(echoKey(pending.echo))
         console.log(`[CrossCharacterMemory] Delivering echo from ${pending.echo.sourceCharacter} via ${characterId}`)
       } else {
