@@ -343,7 +343,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You noticed the others. That's good.means you're payin' attention.\n\nEvery person on that train's got their own story, their own reason for being here. Some know it. Some don't yet. That's what this place helps with.\n\nI'm Samuel. Been here a while. And you... you look like you see more than most. That's gonna serve you well.",
+        text: "You noticed the others. That's good. Means you're payin' attention.\n\nEvery person on that train's got their own story, their own reason for being here. Some know it. Some don't yet. That's what this place helps with.\n\nI'm Samuel. Been here a while. And you... you look like you see more than most. That's gonna serve you well.",
         emotion: 'warm',
         variation_id: 'intro_noticed_v1'
       }

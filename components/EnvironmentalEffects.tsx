@@ -1,35 +1,31 @@
 "use client"
 
 import { useEffect } from 'react'
-import { GameStateManager } from '@/lib/game-state-manager'
+import { GameState } from '@/lib/character-state'
 
-export function EnvironmentalEffects() {
+export function EnvironmentalEffects({ gameState }: { gameState: GameState | null }) {
 
   useEffect(() => {
-    const updateEnvironmentalClasses = () => {
-      // Use loadGameState as fallback since we are outside React context tree root
-      // This is a "Game Juice" component that runs on interval, so reading LS is acceptable
-      const state = GameStateManager.loadGameState()
-      if (!state) return
+    if (!gameState) return
 
+    const updateEnvironmentalClasses = () => {
       const body = document.body
 
       // Clear previous environmental classes
-      // Using a safer regex approach for class removal
+      // Using a regex approach for class removal
       body.className = body.className
         .split(' ')
         .filter(c => !c.match(/^(platform-|time-|resonance-|.*-environment|.*-high|character-|theatre-|station-|shadow-|particles-|objects-)/))
         .join(' ')
 
-      // Note: State accessors changed from GrandCentralState structure to GameState structure
-      // Many environmental features (Time Speed, Platforms) were specific to GrandCentralState
-      // and are not fully present in the core GameState.
-      // We will map what we can (Patterns, Trust) and stub the rest to prevent crashes.
-
       // Map Patterns
-      const patterns = state.patterns || {}
-      const dominantPatternKey = Object.entries(patterns).reduce((a, b) => a[1] > b[1] ? a : b)[0]
-      const dominantPatternValue = patterns[dominantPatternKey as keyof typeof patterns] || 0
+      const patterns = gameState.patterns || {}
+      // Safe logic for empty patterns
+      const dominantPatternKey = Object.keys(patterns).length > 0
+        ? Object.entries(patterns).reduce((a, b) => a[1] > b[1] ? a : b)[0]
+        : null
+
+      const dominantPatternValue = dominantPatternKey ? (patterns[dominantPatternKey as keyof typeof patterns] || 0) : 0
 
       if (dominantPatternValue > 5) {
         body.classList.add(`${dominantPatternKey}-environment`)
@@ -46,18 +42,18 @@ export function EnvironmentalEffects() {
       }
 
       // Fox Theatre character atmosphere
-      // Derive active character from relationships (highest trust level)
-      // GameState uses Map, so we iterate differently
       let activeCharacter = 'samuel' // Default
       let highestTrust = 0
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      state.characters.forEach((char: any) => {
-        if (char.trust > highestTrust) {
-          highestTrust = char.trust
-          activeCharacter = char.characterId
-        }
-      })
+      if (gameState.characters && Array.isArray(gameState.characters)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        gameState.characters.forEach((char: any) => {
+          if (char.trust > highestTrust) {
+            highestTrust = char.trust
+            activeCharacter = char.characterId
+          }
+        })
+      }
 
       body.classList.add('character-atmosphere')
       body.classList.add(`character-${activeCharacter}`)
@@ -77,13 +73,8 @@ export function EnvironmentalEffects() {
       }
     }
 
-    // Update on state changes - now polling for simplicity, ideally would subscribe
-    // But since this is purely cosmetic CSS on body, polling 1s is fine and consistent with previous
-    const interval = setInterval(updateEnvironmentalClasses, 1000)
-    updateEnvironmentalClasses() // Initial update
-
-    return () => clearInterval(interval)
-  }, [])
+    updateEnvironmentalClasses()
+  }, [gameState])
 
   return null // This component only manages body classes
 }

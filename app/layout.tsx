@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Crimson_Pro, Space_Mono, Roboto_Slab } from 'next/font/google'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
-import { EnvironmentalEffects } from '@/components/EnvironmentalEffects'
+
 import { ServiceWorkerProvider } from '@/components/ServiceWorkerProvider'
 import { SVGFilterProvider } from '@/lib/svg-filters'
 import { GodModeBootstrap } from '@/components/GodModeBootstrap'
@@ -105,7 +105,7 @@ export default function RootLayout({
         {/* God Mode API - Development only */}
         <GodModeBootstrap />
         <ServiceWorkerProvider>
-          <EnvironmentalEffects />
+
           <ErrorBoundary>
             <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 environment-responsive"
               style={{

@@ -196,7 +196,15 @@ export function HarmonicsView({ onOrbSelect }: HarmonicsViewProps) {
     )
 }
 
-function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
+const areOrbsEqual = (prev: { orb: OrbState }, next: { orb: OrbState }) => {
+    return prev.orb.pattern === next.orb.pattern &&
+        prev.orb.fillPercent === next.orb.fillPercent &&
+        prev.orb.hasNewGrowth === next.orb.hasNewGrowth &&
+        prev.orb.pointsToNext === next.orb.pointsToNext &&
+        prev.orb.orbCount === next.orb.orbCount
+}
+
+const HarmonicOrb = React.memo(function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
     orb: OrbState
     index: number
     onSelect?: (p: PatternType) => void
@@ -356,7 +364,7 @@ function HarmonicOrb({ orb, index, onSelect, careerMatch }: {
             </div>
         </div>
     )
-}
+}, areOrbsEqual)
 
 function PatternIcon({ pattern, className, style }: { pattern: string; className?: string; style?: React.CSSProperties }) {
     switch (pattern) {

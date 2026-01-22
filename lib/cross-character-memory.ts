@@ -17,11 +17,6 @@ import { z } from 'zod'
 import { safeStorage } from './safe-storage'
 
 // Diamond Safe Schemas
-// Note: ConsequenceEchoSchema reserved for future strict validation
-const _ConsequenceEchoSchema = z.object({
-  text: z.string(),
-}).passthrough()
-
 const CrossCharacterEchoSchema = z.object({
   sourceCharacter: z.string(), // CharacterId
   sourceFlag: z.string(),

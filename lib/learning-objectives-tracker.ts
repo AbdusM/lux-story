@@ -4,6 +4,9 @@
  * Supports Kolb's Learning Cycle and evidence-based assessment
  */
 
+import { z } from 'zod'
+import { safeStorage } from './safe-storage'
+
 export interface LearningObjective {
   id: string
   title: string
@@ -15,15 +18,18 @@ export interface LearningObjective {
   choiceId?: string // Specific choice that addresses this objective
 }
 
-export interface LearningObjectiveEngagement {
-  objectiveId: string
-  nodeId: string
-  choiceId?: string
-  engagedAt: number
-  engagementType: 'viewed' | 'chose' | 'completed'
-  relatedSkills: string[]
-  relatedPatterns?: string[]
-}
+// Diamond Safe Schemas
+const LearningObjectiveEngagementSchema = z.object({
+  objectiveId: z.string(),
+  nodeId: z.string(),
+  choiceId: z.string().optional(),
+  engagedAt: z.number(),
+  engagementType: z.enum(['viewed', 'chose', 'completed']),
+  relatedSkills: z.array(z.string()),
+  relatedPatterns: z.array(z.string()).optional()
+})
+
+export type LearningObjectiveEngagement = z.infer<typeof LearningObjectiveEngagementSchema>
 
 export class LearningObjectivesTracker {
   private engagements: LearningObjectiveEngagement[] = []
@@ -135,7 +141,7 @@ export class LearningObjectivesTracker {
 
     try {
       const key = `learning_objectives_${this.userId}`
-      localStorage.setItem(key, JSON.stringify(this.engagements))
+      safeStorage.setItem(key, JSON.stringify(this.engagements))
       return true
     } catch (error) {
       console.error('[LearningObjectivesTracker] Failed to save:', error)
@@ -151,9 +157,14 @@ export class LearningObjectivesTracker {
 
     try {
       const key = `learning_objectives_${this.userId}`
-      const stored = localStorage.getItem(key)
-      if (stored) {
-        this.engagements = JSON.parse(stored)
+      const validatedEngagements = safeStorage.getValidatedItem(
+        key,
+        z.array(LearningObjectiveEngagementSchema)
+      )
+      if (validatedEngagements) {
+        this.engagements = validatedEngagements
+      } else {
+        this.engagements = []
       }
     } catch (error) {
       console.error('[LearningObjectivesTracker] Failed to load:', error)
