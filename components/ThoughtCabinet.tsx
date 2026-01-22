@@ -1,8 +1,11 @@
 "use client"
 
 import { useGameSelectors } from "@/lib/game-store"
-import { motion, useReducedMotion } from "framer-motion"
-import { Brain, Eye, HelpCircle } from "lucide-react"
+import { motion, useReducedMotion, useInView } from "framer-motion"
+import { Brain, Eye } from "lucide-react"
+import { useRef } from "react"
+import { springs } from "@/lib/animations"
+import { NarrativeEmptyState } from "@/components/ui/NarrativeEmptyState"
 
 // Mystery display configuration
 const MYSTERY_CONFIG = {
@@ -63,9 +66,6 @@ const MYSTERY_CONFIG = {
  * Mobile First: Swipeable cards or compact grid.
  */
 export function ThoughtCabinet() {
-    // Accessibility
-    const prefersReducedMotion = useReducedMotion()
-
     // Use selector that derives from coreGameState (single source of truth)
     const thoughts = useGameSelectors.useThoughts()
     const mysteries = useGameSelectors.useMysteries()
@@ -125,12 +125,13 @@ export function ThoughtCabinet() {
                 {/* Grid */}
                 <div className="grid grid-cols-1 gap-4">
                     {sortedThoughts.length === 0 ? (
-                        <div className="py-8 border border-dashed border-slate-700 rounded-xl flex flex-col items-center text-center px-4">
-                            <HelpCircle className={`w-8 h-8 mb-3 text-slate-500 opacity-60 ${prefersReducedMotion ? '' : 'animate-pulse'}`} />
-                            <p className="text-sm text-slate-300">Your mind is clear.</p>
-                            <p className="text-xs mt-2 text-slate-500">
-                                Moments of insight will collect here as you explore.
-                            </p>
+                        <div className="border border-dashed border-slate-700 rounded-xl">
+                            <NarrativeEmptyState
+                                type="scanning"
+                                message="Your mind is clear."
+                                subtitle="Moments of insight will collect here as you explore."
+                                className="min-h-[150px]"
+                            />
                         </div>
                     ) : (
                         sortedThoughts.map((thought) => (
@@ -209,6 +210,9 @@ function MysteryNode({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function ThoughtNode({ thought }: { thought: any }) {
     const isInternalized = thought.status === 'internalized'
+    const prefersReducedMotion = useReducedMotion()
+    const progressRef = useRef<HTMLDivElement>(null)
+    const isInView = useInView(progressRef, { once: true, amount: 0.5 })
 
     return (
         <motion.div
@@ -222,13 +226,23 @@ function ThoughtNode({ thought }: { thought: any }) {
                 }
             `}
         >
-            {/* Progress Bar Background */}
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-slate-800">
+            {/* Progress Bar Background - Animated fill */}
+            <div ref={progressRef} className="absolute bottom-0 left-0 right-0 h-1.5 bg-slate-800/50">
                 <motion.div
-                    className={`h-full ${isInternalized ? 'bg-amber-500' : 'bg-blue-500'}`}
+                    className={`h-full relative ${isInternalized ? 'bg-amber-500' : 'bg-blue-500'}`}
                     initial={{ width: 0 }}
-                    animate={{ width: `${thought.progress}%` }}
-                />
+                    animate={isInView ? { width: `${thought.progress}%` } : { width: 0 }}
+                    transition={prefersReducedMotion ? { duration: 0 } : { ...springs.smooth, delay: 0.2 }}
+                >
+                    {/* Glow effect at progress tip */}
+                    {!prefersReducedMotion && thought.progress > 0 && thought.progress < 100 && (
+                        <motion.div
+                            className={`absolute right-0 top-0 bottom-0 w-4 ${isInternalized ? 'bg-gradient-to-r from-transparent to-amber-400' : 'bg-gradient-to-r from-transparent to-blue-400'}`}
+                            animate={{ opacity: [0.5, 1, 0.5] }}
+                            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                        />
+                    )}
+                </motion.div>
             </div>
 
             <div className="flex items-start gap-4">

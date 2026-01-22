@@ -104,12 +104,20 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
   ]
 
   // Navigation Logic (Star Walking)
-  const setCurrentScene = useGameStore(state => state.setCurrentScene) // Handle travel action (called by button or double-click from Graph)
+  const setCurrentScene = useGameStore(state => state.setCurrentScene)
+
+  // Handle travel action (called by button or double-click from Graph)
   const handleTravel = (characterId: string) => {
-    // Logic: Travel to the character's 'hub' or 'intro' node
-    // We now just send the characterId, and StatefulGameInterface smart-resolves the entry node
-    setCurrentScene(characterId)
-    onClose() // Close the panel after traveling
+    // Haptic feedback for travel initiation
+    haptics.heavyThud()
+
+    // Brief delay for feedback before closing
+    setTimeout(() => {
+      // Logic: Travel to the character's 'hub' or 'intro' node
+      // We now just send the characterId, and StatefulGameInterface smart-resolves the entry node
+      setCurrentScene(characterId)
+      onClose() // Close the panel after traveling
+    }, 100) // Small delay for haptic to register
   }
 
   return (

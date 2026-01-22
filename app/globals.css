@@ -1509,3 +1509,48 @@ main {
 [data-animation-mood]:not([data-animation-mood="neutral"]):not([data-animation-mood="cautious"]) .glass-panel {
   box-shadow: 0 0 20px var(--animation-glow-color);
 }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   READER MODE - Accessibility font toggle
+   Sprint 4: Switch between mono (terminal aesthetic) and sans-serif (easier reading)
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Default: Monospace mode (terminal aesthetic) */
+:root,
+.reader-mode-mono {
+  --reader-font-body: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --reader-font-dialogue: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --reader-letter-spacing: 0em;
+  --reader-line-height: 1.6;
+}
+
+/* Sans-serif mode (easier reading, dyslexia-friendly) */
+.reader-mode-sans {
+  --reader-font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --reader-font-dialogue: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --reader-letter-spacing: 0.01em;
+  --reader-line-height: 1.7;
+}
+
+/* Apply reader mode fonts to dialogue and narrative text */
+.reader-mode-sans .dialogue-text,
+.reader-mode-sans .narrative-text,
+.reader-mode-sans [data-reader-target="true"] {
+  font-family: var(--reader-font-dialogue);
+  letter-spacing: var(--reader-letter-spacing);
+  line-height: var(--reader-line-height);
+}
+
+/* Slightly larger text in sans mode for readability */
+.reader-mode-sans .dialogue-text {
+  font-size: 1.05em;
+}
+
+/* Reader mode toggle button styling */
+.reader-mode-toggle {
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.reader-mode-toggle:active {
+  transform: scale(0.95);
+}

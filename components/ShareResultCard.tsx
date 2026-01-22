@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { generateShareCard, formatShareText, type ShareCardType, type ShareCardData } from '@/lib/share-result-generator'
 import { webShare } from '@/lib/web-share'
+import { useCopyToClipboard } from '@/hooks/useCopyToClipboard'
 
 interface ShareResultCardProps {
   achievementType: ShareCardType
@@ -28,7 +29,7 @@ const modalVariants = {
 }
 
 export function ShareResultCard({ achievementType, data, onShare, onDismiss }: ShareResultCardProps) {
-  const [copied, setCopied] = React.useState(false)
+  const { copied, copy } = useCopyToClipboard({ onSuccess: onShare })
   const [includeHashtags, setIncludeHashtags] = React.useState(false)
   
   const shareText = React.useMemo(() => {
@@ -76,16 +77,7 @@ export function ShareResultCard({ achievementType, data, onShare, onDismiss }: S
   }
 
   const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(formattedText)
-      setCopied(true)
-      setTimeout(() => {
-        setCopied(false)
-        onShare()
-      }, 1500)
-    } catch (error) {
-      console.error('Copy failed:', error)
-    }
+    await copy(formattedText)
   }
 
   return (
