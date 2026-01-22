@@ -12,8 +12,8 @@ import { safeStorage } from './safe-storage'
 import { logger } from './logger'
 import { z } from 'zod'
 
-// Diamond Safe Schema (reserved for future use)
-const _SimpleBirminghamOpportunitySchema = z.object({
+// Diamond Safe Schema (exported for validation)
+export const SimpleBirminghamOpportunitySchema = z.object({
   id: z.string(),
   name: z.string(),
   organization: z.string(),

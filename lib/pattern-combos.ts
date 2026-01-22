@@ -41,27 +41,6 @@ export interface PatternCombo {
 }
 
 /**
- * Calculate primary pattern for a combo
- * Uses highest threshold requirement; alphabetical if tied
- */
-// Reserved for future combo enhancement
-function _calculatePrimaryPattern(requirements: Partial<Record<PatternType, number>>): PatternType {
-  const entries = Object.entries(requirements) as [PatternType, number][]
-
-  if (entries.length === 0) {
-    throw new Error('Combo must have at least one requirement')
-  }
-
-  // Sort by threshold desc, then alphabetically
-  entries.sort((a, b) => {
-    if (b[1] !== a[1]) return b[1] - a[1]  // Highest threshold first
-    return a[0].localeCompare(b[0])         // Alphabetical if tied
-  })
-
-  return entries[0][0]
-}
-
-/**
  * All pattern combos in the system
  * Each combo links specific pattern combinations to career paths
  */
