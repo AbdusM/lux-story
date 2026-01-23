@@ -42,31 +42,45 @@ interface GameStateFixtures {
 
   /**
    * Seed custom state - Generic state seeding utility
+   * Accepts partial game state with legacy field support for migration
    */
-  seedState: (state: Partial<GameState>) => Promise<void>
+  seedState: (state: Record<string, unknown>) => Promise<void>
 }
 
 /**
- * Minimal game state template
+ * Minimal game state template - matches SerializableGameState
  */
 const createFreshGameState = () => ({
-  state: {
-    currentSceneId: 'samuel_introduction',
-    hasStarted: true,
-    showIntro: false,
-    patterns: {
-      analytical: 0,
-      building: 0,
-      helping: 0,
-      patience: 0,
-      exploring: 0
-    },
-    characters: new Map(),
-    globalFlags: [],
-    knowledgeFlags: [],
-    visitedScenes: ['samuel_introduction']
+  saveVersion: '1.0',
+  playerId: `test-${Date.now()}`,
+  currentNodeId: 'samuel_introduction',
+  currentCharacterId: 'samuel',
+  patterns: {
+    analytical: 0,
+    building: 0,
+    helping: 0,
+    patience: 0,
+    exploring: 0
   },
-  version: 1
+  characters: [],
+  globalFlags: [],
+  lastSaved: Date.now(),
+  thoughts: [],
+  episodeNumber: 1,
+  sessionStartTime: Date.now(),
+  sessionBoundariesCrossed: 0,
+  platforms: {},
+  careerValues: { directImpact: 0, systemsThinking: 0, dataInsights: 0, futureBuilding: 0, independence: 0 },
+  mysteries: { letterSender: 'unknown', platformSeven: 'stable', samuelsPast: 'hidden', stationNature: 'unknown' },
+  time: { currentDisplay: '23:47', minutesRemaining: 13, flowRate: 1.0, isStopped: false },
+  quietHour: { potential: true, experienced: [] },
+  overdensity: 0.3,
+  items: { letter: 'kept', discoveredPaths: [] },
+  pendingCheckIns: [],
+  unlockedAbilities: [],
+  archivistState: { collectedRecords: [], verifiedLore: [], sensoryCalibration: {} },
+  skillLevels: {},
+  skillUsage: []
 })
 
 /**
@@ -74,184 +88,197 @@ const createFreshGameState = () => ({
  * Represents a player who has completed 2 character arcs
  */
 const createJourneyCompleteState = () => ({
-  state: {
-    currentSceneId: 'station_hub',
-    hasStarted: true,
-    showIntro: false,
-    patterns: {
-      analytical: 3,
-      building: 2,
-      helping: 4,
-      patience: 2,
-      exploring: 3
-    },
-    characters: new Map([
-      ['maya', {
-        characterId: 'maya',
-        trust: 5,
-        lastInteractionTimestamp: Date.now() - 3600000, // 1 hour ago
-        encounterCount: 8,
-        currentNodeId: 'maya_pattern_reflection_analytical_3'
-      }],
-      ['marcus', {
-        characterId: 'marcus',
-        trust: 4,
-        lastInteractionTimestamp: Date.now() - 7200000, // 2 hours ago
-        encounterCount: 6,
-        currentNodeId: 'marcus_trust_4'
-      }],
-      ['samuel', {
-        characterId: 'samuel',
-        trust: 3,
-        lastInteractionTimestamp: Date.now() - 1800000, // 30 min ago
-        encounterCount: 12,
-        currentNodeId: 'samuel_hub_wisdom'
-      }]
-    ]),
-    globalFlags: [
-      'first_journey_complete',
-      'met_maya',
-      'met_marcus',
-      'met_samuel',
-      'analytical_threshold_reached',
-      'helping_threshold_reached'
-    ],
-    knowledgeFlags: [
-      'maya_family_pressure',
-      'marcus_healthcare_mission',
-      'samuel_conductor_role'
-    ],
-    visitedScenes: [
-      'samuel_introduction',
-      'station_hub',
-      'maya_introduction',
-      'maya_tech_discussion',
-      'marcus_introduction',
-      'marcus_healthcare_vision'
-    ],
-    demonstratedSkills: [
-      'active_listening',
-      'systems_thinking',
-      'empathy',
-      'analytical_reasoning',
-      'problem_solving',
-      'patience'
-    ]
+  saveVersion: '1.0',
+  playerId: `test-journey-${Date.now()}`,
+  currentNodeId: 'samuel_hub_wisdom',
+  currentCharacterId: 'samuel',
+  patterns: {
+    analytical: 3,
+    building: 2,
+    helping: 4,
+    patience: 2,
+    exploring: 3
   },
-  version: 1
+  characters: [
+    {
+      characterId: 'maya',
+      trust: 5,
+      anxiety: 50,
+      nervousSystemState: 'regulated',
+      lastReaction: null,
+      knowledgeFlags: ['maya_family_pressure'],
+      relationshipStatus: 'acquaintance',
+      conversationHistory: []
+    },
+    {
+      characterId: 'marcus',
+      trust: 4,
+      anxiety: 60,
+      nervousSystemState: 'regulated',
+      lastReaction: null,
+      knowledgeFlags: ['marcus_healthcare_mission'],
+      relationshipStatus: 'acquaintance',
+      conversationHistory: []
+    },
+    {
+      characterId: 'samuel',
+      trust: 3,
+      anxiety: 70,
+      nervousSystemState: 'regulated',
+      lastReaction: null,
+      knowledgeFlags: ['samuel_conductor_role'],
+      relationshipStatus: 'acquaintance',
+      conversationHistory: []
+    }
+  ],
+  globalFlags: [
+    'first_journey_complete',
+    'met_maya',
+    'met_marcus',
+    'met_samuel',
+    'analytical_threshold_reached',
+    'helping_threshold_reached'
+  ],
+  lastSaved: Date.now(),
+  thoughts: [],
+  episodeNumber: 2,
+  sessionStartTime: Date.now(),
+  sessionBoundariesCrossed: 1,
+  platforms: {},
+  careerValues: { directImpact: 0, systemsThinking: 0, dataInsights: 0, futureBuilding: 0, independence: 0 },
+  mysteries: { letterSender: 'unknown', platformSeven: 'stable', samuelsPast: 'hidden', stationNature: 'unknown' },
+  time: { currentDisplay: '23:47', minutesRemaining: 13, flowRate: 1.0, isStopped: false },
+  quietHour: { potential: true, experienced: [] },
+  overdensity: 0.3,
+  items: { letter: 'kept', discoveredPaths: [] },
+  pendingCheckIns: [],
+  unlockedAbilities: [],
+  archivistState: { collectedRecords: [], verifiedLore: [], sensoryCalibration: {} },
+  skillLevels: { active_listening: 1, systems_thinking: 1, empathy: 1 },
+  skillUsage: []
 })
 
 /**
  * State with demonstrated skills for constellation
  */
 const createDemonstratedSkillsState = () => ({
-  state: {
-    currentSceneId: 'station_hub',
-    hasStarted: true,
-    showIntro: false,
-    patterns: {
-      analytical: 4,
-      building: 3,
-      helping: 3,
-      patience: 2,
-      exploring: 4
-    },
-    characters: new Map([
-      ['maya', {
-        characterId: 'maya',
-        trust: 4,
-        lastInteractionTimestamp: Date.now() - 3600000,
-        encounterCount: 5,
-        currentNodeId: 'maya_pattern_reflection_analytical_3'
-      }],
-      ['devon', {
-        characterId: 'devon',
-        trust: 3,
-        lastInteractionTimestamp: Date.now() - 5400000,
-        encounterCount: 4,
-        currentNodeId: 'devon_systems_thinking'
-      }]
-    ]),
-    globalFlags: [
-      'constellation_unlocked',
-      'skills_revealed',
-      'met_maya',
-      'met_devon',
-      'analytical_threshold_reached'
-    ],
-    knowledgeFlags: [
-      'maya_tech_innovator',
-      'devon_systems_engineer'
-    ],
-    visitedScenes: [
-      'samuel_introduction',
-      'station_hub',
-      'maya_introduction',
-      'devon_introduction'
-    ],
-    demonstratedSkills: [
-      'systems_thinking',
-      'analytical_reasoning',
-      'creative_problem_solving',
-      'technical_communication',
-      'pattern_recognition',
-      'active_listening',
-      'empathy'
-    ]
+  saveVersion: '1.0',
+  playerId: `test-skills-${Date.now()}`,
+  currentNodeId: 'samuel_hub_wisdom',
+  currentCharacterId: 'samuel',
+  patterns: {
+    analytical: 4,
+    building: 3,
+    helping: 3,
+    patience: 2,
+    exploring: 4
   },
-  version: 1
+  characters: [
+    {
+      characterId: 'maya',
+      trust: 4,
+      anxiety: 60,
+      nervousSystemState: 'regulated',
+      lastReaction: null,
+      knowledgeFlags: ['maya_tech_innovator'],
+      relationshipStatus: 'acquaintance',
+      conversationHistory: []
+    },
+    {
+      characterId: 'devon',
+      trust: 3,
+      anxiety: 70,
+      nervousSystemState: 'regulated',
+      lastReaction: null,
+      knowledgeFlags: ['devon_systems_engineer'],
+      relationshipStatus: 'acquaintance',
+      conversationHistory: []
+    }
+  ],
+  globalFlags: [
+    'constellation_unlocked',
+    'skills_revealed',
+    'met_maya',
+    'met_devon',
+    'analytical_threshold_reached'
+  ],
+  lastSaved: Date.now(),
+  thoughts: [],
+  episodeNumber: 1,
+  sessionStartTime: Date.now(),
+  sessionBoundariesCrossed: 0,
+  platforms: {},
+  careerValues: { directImpact: 0, systemsThinking: 0, dataInsights: 0, futureBuilding: 0, independence: 0 },
+  mysteries: { letterSender: 'unknown', platformSeven: 'stable', samuelsPast: 'hidden', stationNature: 'unknown' },
+  time: { currentDisplay: '23:47', minutesRemaining: 13, flowRate: 1.0, isStopped: false },
+  quietHour: { potential: true, experienced: [] },
+  overdensity: 0.3,
+  items: { letter: 'kept', discoveredPaths: [] },
+  pendingCheckIns: [],
+  unlockedAbilities: [],
+  archivistState: { collectedRecords: [], verifiedLore: [], sensoryCalibration: {} },
+  skillLevels: {
+    systems_thinking: 2,
+    analytical_reasoning: 2,
+    creative_problem_solving: 1,
+    technical_communication: 1,
+    pattern_recognition: 1,
+    active_listening: 1,
+    empathy: 1
+  },
+  skillUsage: []
 })
 
 /**
  * High trust with Maya - Vulnerability arc accessible
  */
 const createHighTrustState = () => ({
-  state: {
-    currentSceneId: 'maya_vulnerability_setup',
-    hasStarted: true,
-    showIntro: false,
-    patterns: {
-      analytical: 5,
-      building: 3,
-      helping: 4,
-      patience: 3,
-      exploring: 2
-    },
-    characters: new Map([
-      ['maya', {
-        characterId: 'maya',
-        trust: 6, // Vulnerability threshold
-        lastInteractionTimestamp: Date.now() - 1800000,
-        encounterCount: 10,
-        currentNodeId: 'maya_trust_6'
-      }]
-    ]),
-    globalFlags: [
-      'met_maya',
-      'maya_trust_high',
-      'vulnerability_arc_accessible',
-      'analytical_threshold_reached'
-    ],
-    knowledgeFlags: [
-      'maya_family_pressure',
-      'maya_tech_background',
-      'maya_personal_story'
-    ],
-    visitedScenes: [
-      'samuel_introduction',
-      'station_hub',
-      'maya_introduction',
-      'maya_tech_discussion',
-      'maya_deep_conversation'
-    ],
-    demonstratedSkills: [
-      'active_listening',
-      'empathy',
-      'analytical_reasoning',
-      'systems_thinking'
-    ]
+  saveVersion: '1.0',
+  playerId: `test-hightrust-${Date.now()}`,
+  currentNodeId: 'maya_vulnerability_arc',
+  currentCharacterId: 'maya',
+  patterns: {
+    analytical: 5,
+    building: 3,
+    helping: 4,
+    patience: 3,
+    exploring: 2
   },
-  version: 1
+  characters: [
+    {
+      characterId: 'maya',
+      trust: 6, // Vulnerability threshold
+      anxiety: 40,
+      nervousSystemState: 'regulated',
+      lastReaction: null,
+      knowledgeFlags: ['maya_family_pressure', 'maya_tech_background', 'maya_personal_story'],
+      relationshipStatus: 'confidant',
+      conversationHistory: []
+    }
+  ],
+  globalFlags: [
+    'met_maya',
+    'maya_trust_high',
+    'vulnerability_arc_accessible',
+    'analytical_threshold_reached'
+  ],
+  lastSaved: Date.now(),
+  thoughts: [],
+  episodeNumber: 1,
+  sessionStartTime: Date.now(),
+  sessionBoundariesCrossed: 0,
+  platforms: {},
+  careerValues: { directImpact: 0, systemsThinking: 0, dataInsights: 0, futureBuilding: 0, independence: 0 },
+  mysteries: { letterSender: 'unknown', platformSeven: 'stable', samuelsPast: 'hidden', stationNature: 'unknown' },
+  time: { currentDisplay: '23:47', minutesRemaining: 13, flowRate: 1.0, isStopped: false },
+  quietHour: { potential: true, experienced: [] },
+  overdensity: 0.3,
+  items: { letter: 'kept', discoveredPaths: [] },
+  pendingCheckIns: [],
+  unlockedAbilities: [],
+  archivistState: { collectedRecords: [], verifiedLore: [], sensoryCalibration: {} },
+  skillLevels: { active_listening: 2, empathy: 2, analytical_reasoning: 1, systems_thinking: 1 },
+  skillUsage: []
 })
 
 /**
@@ -317,14 +344,29 @@ export const test = base.extend<GameStateFixtures>({
   },
 
   seedState: async ({ page }, use) => {
-    const seedFn = async (customState: Partial<GameState>) => {
+    const seedFn = async (customState: Record<string, unknown>) => {
       const baseState = createFreshGameState()
+      // Map legacy field names to new structure
+      const mappedState = { ...customState }
+      if ('currentSceneId' in mappedState) {
+        // @ts-ignore - legacy field migration
+        mappedState.currentNodeId = mappedState.currentSceneId
+        // @ts-ignore
+        delete mappedState.currentSceneId
+      }
+      // Remove legacy fields that don't exist in SerializableGameState
+      // @ts-ignore
+      delete mappedState.hasStarted
+      // @ts-ignore
+      delete mappedState.showIntro
+      // @ts-ignore
+      delete mappedState.visitedScenes
+      // @ts-ignore
+      delete mappedState.knowledgeFlags
+
       const mergedState = {
         ...baseState,
-        state: {
-          ...baseState.state,
-          ...customState
-        }
+        ...mappedState
       }
       await seedGameState(page, mergedState)
     }

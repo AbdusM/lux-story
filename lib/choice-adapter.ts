@@ -1,5 +1,5 @@
 import { EvaluatedChoice } from './dialogue-graph'
-import { PatternType } from './patterns'
+import { PatternType, isValidPattern } from './patterns'
 import { UIChoice } from './ui-types'
 import { ExperienceChoice } from './experience-engine'
 import { generateNarrativeLockMessage } from './narrative-locks'
@@ -73,8 +73,8 @@ export function adaptToUIChoice(
     let lockProgress: number | undefined
     let lockActionHint: string | undefined
 
-    if (finalLocked && req) {
-        const currentLevel = orbFillLevels[req.pattern as PatternType] ?? 0
+    if (finalLocked && req && isValidPattern(req.pattern)) {
+        const currentLevel = orbFillLevels[req.pattern] ?? 0
         const narrative = generateNarrativeLockMessage(
             req.pattern,
             undefined, // TODO: Pass characterId when available
@@ -150,7 +150,11 @@ function calculateLockStatus(choice: ChoiceWithOrbRequirement, levels: OrbFillLe
     // Orb Requirement Check
     if (choice.requiredOrbFill) {
         const { pattern, threshold } = choice.requiredOrbFill
-        const currentLevel = levels[pattern as PatternType] ?? 0
+        if (!isValidPattern(pattern)) {
+            // Invalid pattern - don't lock
+            return { isLocked: false }
+        }
+        const currentLevel = levels[pattern] ?? 0
 
         if (currentLevel < threshold) {
             return {
