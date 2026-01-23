@@ -4,6 +4,7 @@
  */
 
 import { logger } from './logger'
+import { PERFORMANCE_BUDGETS } from './constants'
 
 interface PerformanceMetrics {
   // Core Web Vitals
@@ -208,7 +209,7 @@ class PerformanceMonitor {
         entries.forEach((entry: PerformanceEntry) => {
           if (entry.name === 'first-meaningful-paint') {
             this.metrics.fmp = entry.startTime
-            this.logMetric('FMP', entry.startTime, 1800) // 1.8s budget
+            this.logMetric('FMP', entry.startTime, PERFORMANCE_BUDGETS.FMP_MS)
           }
         })
       })
@@ -229,7 +230,7 @@ class PerformanceMonitor {
         entries.forEach((entry: PerformanceEntry) => {
           if (entry.name === 'speed-index') {
             this.metrics.si = (entry as unknown as { value: number }).value
-            this.logMetric('SI', (entry as unknown as { value: number }).value, 3000) // 3s budget
+            this.logMetric('SI', (entry as unknown as { value: number }).value, PERFORMANCE_BUDGETS.SI_MS)
           }
         })
       })
@@ -278,7 +279,7 @@ class PerformanceMonitor {
       const updateMemoryUsage = () => {
         const memory = (performance as unknown as { memory: { usedJSHeapSize: number } }).memory
         this.metrics.memoryUsage = memory.usedJSHeapSize / 1024 / 1024 // MB
-        this.logMetric('Memory Usage', this.metrics.memoryUsage, 100) // 100MB budget (more realistic for React app)
+        this.logMetric('Memory Usage', this.metrics.memoryUsage, PERFORMANCE_BUDGETS.MEMORY_MB)
       }
 
       updateMemoryUsage()

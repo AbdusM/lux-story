@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { CheckCircle2, AlertTriangle, Lightbulb, ChevronRight, ArrowRight } from 'lucide-react'
 import type { SkillProfile, CareerMatch } from '@/lib/skill-profile-adapter'
+import { GameErrorBoundary } from '@/components/GameErrorBoundary'
 
 // Type definitions for career data (extending from imported types)
 interface SkillRequirement {
@@ -114,6 +115,7 @@ export function CareersSection({ userId, profile, adminViewMode }: CareersSectio
   }
 
   return (
+    <GameErrorBoundary componentName="CareersSection">
     <div className="space-y-4">
       {/* NARRATIVE BRIDGE: Skills → Careers */}
       <div className="bg-blue-50 border-l-4 border-blue-400 p-4 sm:p-6 rounded-r">
@@ -414,5 +416,6 @@ export function CareersSection({ userId, profile, adminViewMode }: CareersSectio
         </Button>
       </Link>
     </div>
+    </GameErrorBoundary>
   )
 }

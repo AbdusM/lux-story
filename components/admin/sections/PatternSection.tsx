@@ -9,6 +9,7 @@ import type { PatternProfile } from '@/lib/pattern-profile-adapter'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
 import { formatPatternName, getPatternDescription } from '@/lib/patterns'
 import { SkillAcquisitionTimeline } from '@/components/admin/SkillAcquisitionTimeline'
+import { GameErrorBoundary } from '@/components/GameErrorBoundary'
 
 interface PatternSectionProps {
   userId: string
@@ -107,6 +108,7 @@ export function PatternSection({ userId, profile: _profile, adminViewMode }: Pat
   const { summaries, decisionStyle, diversityScore, skillCorrelations, totalDemonstrations } = patternProfile
 
   return (
+    <GameErrorBoundary componentName="PatternSection">
     <div className="space-y-6">
       {/* Pattern Overview Card */}
       <Card className="shadow-md border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50">
@@ -306,5 +308,6 @@ export function PatternSection({ userId, profile: _profile, adminViewMode }: Pat
         </CardContent>
       </Card>
     </div>
+    </GameErrorBoundary>
   )
 }

@@ -9,6 +9,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertCircle, RefreshCw, ArrowRight } from 'lucide-react'
 import { SamuelQuotesSection } from './SamuelQuotesSection'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
+import { GameErrorBoundary } from '@/components/GameErrorBoundary'
 
 interface SkillEvidence {
   uniqueSkills: number
@@ -140,6 +141,7 @@ export function EvidenceSection({ userId, profile, adminViewMode }: EvidenceSect
   }, [userId])
 
   return (
+    <GameErrorBoundary componentName="EvidenceSection">
     <div className="space-y-4">
       {/* DATA SOURCE INDICATOR - Sticky positioning */}
       <div className="sticky top-0 z-10">
@@ -548,5 +550,6 @@ export function EvidenceSection({ userId, profile, adminViewMode }: EvidenceSect
         </Button>
       </Link>
     </div>
+    </GameErrorBoundary>
   )
 }

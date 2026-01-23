@@ -1,8 +1,8 @@
 import { findCharacterForNode, isValidCharacterId, CHARACTER_IDS } from './graph-registry'
 import { ActiveThought, THOUGHT_REGISTRY } from '@/content/thoughts'
 import { calculateResonantTrustChange } from './pattern-affinity'
-import { PatternType, isValidPattern } from './patterns'
-import { INITIAL_TRUST, TRUST_THRESHOLDS, NARRATIVE_CONSTANTS as GLOBAL_NARRATIVE_CONSTANTS } from './constants'
+import { PatternType, isValidPattern, asPatternRecord } from './patterns'
+import { INITIAL_TRUST, TRUST_THRESHOLDS, NARRATIVE_CONSTANTS as GLOBAL_NARRATIVE_CONSTANTS, NEUTRAL_ANXIETY } from './constants'
 import { NervousSystemState, determineNervousSystemState, ChemicalReaction } from './emotions'
 import { calculateReaction } from './chemistry'
 import { ArchivistState } from './lore-system'
@@ -443,14 +443,14 @@ export class GameStateUtils {
         updatedNervousSystemState = determineNervousSystemState(
           updatedAnxiety,
           updatedTrust,
-          newState.patterns as unknown as Record<string, number>,
+          asPatternRecord(newState.patterns),
           newState.globalFlags
         )
 
         // ISP UPDATE: The Chemistry Engine
         updatedLastReaction = calculateReaction(
           updatedNervousSystemState,
-          newState.patterns as unknown as Record<string, number>,
+          asPatternRecord(newState.patterns),
           updatedTrust
         )
 
@@ -697,9 +697,6 @@ export class GameStateUtils {
    * For unmet characters, use neutral anxiety (50) instead of panic (100)
    */
   static createCharacterState(characterId: string): CharacterState {
-    // Neutral anxiety for unmet characters (will update on first interaction)
-    const NEUTRAL_ANXIETY = 50
-
     return {
       characterId,
       trust: NARRATIVE_CONSTANTS.DEFAULT_TRUST,
@@ -793,7 +790,7 @@ export class GameStateUtils {
             nervousSystemState: char.nervousSystemState ?? determineNervousSystemState(
               (10 - char.trust) * 10,
               char.trust,
-              serialized.patterns as unknown as Record<string, number>,
+              asPatternRecord(serialized.patterns),
               new Set(serialized.globalFlags) // Re-apply simulation effects on load
             ),
             lastReaction: char.lastReaction || null,

@@ -201,6 +201,33 @@ export const THINKING_INDICATOR_DURATION = 800
 export const CHOICE_HANDLER_TIMEOUT_MS = 10000
 
 // ═══════════════════════════════════════════════════════════════════════════
+// CHARACTER STATE
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Neutral anxiety level for unmet characters (0-100 scale)
+ * This is the default anxiety value before any interaction
+ */
+export const NEUTRAL_ANXIETY = 50
+
+// ═══════════════════════════════════════════════════════════════════════════
+// PERFORMANCE BUDGETS
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Performance budget thresholds for Web Vitals monitoring
+ * Based on Core Web Vitals and app-specific metrics
+ */
+export const PERFORMANCE_BUDGETS = {
+  /** First Meaningful Paint budget (ms) */
+  FMP_MS: 1800,
+  /** Speed Index budget (ms) */
+  SI_MS: 3000,
+  /** Memory usage limit (MB) - realistic for React SPA */
+  MEMORY_MB: 100,
+} as const
+
+// ═══════════════════════════════════════════════════════════════════════════
 // AGGREGATE EXPORT
 // ═══════════════════════════════════════════════════════════════════════════
 

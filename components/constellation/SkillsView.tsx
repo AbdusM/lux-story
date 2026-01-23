@@ -7,6 +7,7 @@ import { stagger, springs } from '@/lib/animations'
 import type { SkillWithState } from '@/hooks/useConstellationData'
 import { SKILL_CONNECTIONS, SKILL_CLUSTERS } from '@/lib/constellation/skill-positions'
 import { ClusterFilterChips, type ClusterFilter } from './ClusterFilterChips'
+import { GameErrorBoundary } from '@/components/GameErrorBoundary'
 
 interface SkillsViewProps {
   skills: SkillWithState[]
@@ -91,6 +92,7 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
   )
 
   return (
+    <GameErrorBoundary componentName="SkillsView">
     <div className="h-full flex flex-col bg-slate-900">
       {/* Cluster Filter Chips */}
       <div className="flex-shrink-0 border-b border-slate-800">
@@ -307,5 +309,6 @@ export function SkillsView({ skills, onOpenDetail }: SkillsViewProps) {
         </motion.svg>
       </div>
     </div>
+    </GameErrorBoundary>
   )
 }

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, CheckCircle2, Terminal } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { GameErrorBoundary } from '@/components/GameErrorBoundary'
 
 // Import shared types
 import { SimulationConfig, SimulationResult } from './simulations/types'
@@ -122,6 +123,7 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
     // --- INLINE MODE RENDERER ---
     if (simulation.mode === 'inline') {
         return (
+            <GameErrorBoundary componentName="SimulationRenderer">
             <div
                 data-testid="simulation-interface"
                 data-simulation-type={simulation.type}
@@ -155,11 +157,13 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                     )}
                 </AnimatePresence>
             </div>
+            </GameErrorBoundary>
         )
     }
 
     // --- FULLSCREEN MODE RENDERER (Original God Mode) ---
     return (
+        <GameErrorBoundary componentName="SimulationRenderer">
         <div
             data-testid="simulation-interface"
             data-simulation-type={simulation.type}
@@ -228,5 +232,6 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                 )}
             </AnimatePresence>
         </div>
+        </GameErrorBoundary>
     )
 }

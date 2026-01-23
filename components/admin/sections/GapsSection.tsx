@@ -11,6 +11,7 @@ import { AlertTriangle, ArrowRight } from 'lucide-react'
 import { SparklineTrend } from '@/components/admin/SparklineTrend'
 import { formatAdminDateWithLabel, type ViewMode } from '@/lib/admin-date-formatting'
 import type { SkillProfile, SkillGap } from '@/lib/skill-profile-adapter'
+import { GameErrorBoundary } from '@/components/GameErrorBoundary'
 
 interface SkillSummary {
   skill_name: string
@@ -65,6 +66,7 @@ export function GapsSection({ userId, profile, adminViewMode }: GapsSectionProps
   }, [userId])
 
   return (
+    <GameErrorBoundary componentName="GapsSection">
     <div className="space-y-4">
       {/* NARRATIVE BRIDGE: Careers → Gaps */}
       {evidenceData?.careerExploration && (
@@ -294,5 +296,6 @@ export function GapsSection({ userId, profile, adminViewMode }: GapsSectionProps
         </Button>
       </Link>
     </div>
+    </GameErrorBoundary>
   )
 }

@@ -15,6 +15,7 @@ import { formatSkillName, getRecencyIndicator } from '@/lib/admin-dashboard-help
 import { formatAdminDate, type ViewMode } from '@/lib/admin-date-formatting'
 import { springs } from '@/lib/animations'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
+import { GameErrorBoundary } from '@/components/GameErrorBoundary'
 
 interface SkillsSectionProps {
   userId: string
@@ -86,6 +87,7 @@ export function SkillsSection({ userId, profile, adminViewMode }: SkillsSectionP
   const visiblePatterns = sortedPatterns.slice(0, skillsToShow)
 
   return (
+    <GameErrorBoundary componentName="SkillsSection">
     <div className="space-y-4">
       {/* Narrative Bridge */}
       <div className="bg-purple-50 border-l-4 border-purple-400 p-4 sm:p-6 rounded-r">
@@ -384,6 +386,7 @@ export function SkillsSection({ userId, profile, adminViewMode }: SkillsSectionP
         </Button>
       </Link>
     </div>
+    </GameErrorBoundary>
   )
 }
 

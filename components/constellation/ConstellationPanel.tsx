@@ -12,6 +12,7 @@ import { PeopleView } from './PeopleView'
 import { SkillsView } from './SkillsView'
 import { QuestsView } from './QuestsView'
 import { DetailModal } from './DetailModal'
+import { GameErrorBoundary } from '@/components/GameErrorBoundary'
 
 interface ConstellationPanelProps {
   isOpen: boolean
@@ -136,6 +137,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
   }
 
   return (
+    <GameErrorBoundary componentName="ConstellationPanel">
     <LazyMotion features={domAnimation}>
       <AnimatePresence>
         {isOpen && (
@@ -309,5 +311,6 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
         )}
       </AnimatePresence>
     </LazyMotion>
+    </GameErrorBoundary>
   )
 }

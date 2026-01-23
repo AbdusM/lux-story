@@ -10,6 +10,7 @@ import { getVisibleResonancePaths, type ResonancePath } from '@/lib/constellatio
 import { useGameStore } from '@/lib/game-store'
 import type { PatternType } from '@/lib/patterns'
 import { TRUST_THRESHOLDS, TRUST_STATE_THRESHOLDS } from '@/lib/constants'
+import { GameErrorBoundary } from '@/components/GameErrorBoundary'
 
 interface ConstellationGraphProps {
     characters: CharacterWithState[]
@@ -297,6 +298,7 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
     const focusedChar = visibleCharacters[focusedIndex]
 
     return (
+        <GameErrorBoundary componentName="ConstellationGraph">
         <div className="relative w-full h-full flex items-center justify-center bg-slate-900 overflow-hidden rounded-xl border border-white/10 shadow-inner">
             {/* Clean Radial Gradient Background */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black opacity-80" />
@@ -772,5 +774,6 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
                 </p>
             </div>
         </div>
+        </GameErrorBoundary>
     )
 }
