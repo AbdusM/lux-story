@@ -138,7 +138,7 @@ describe('EnvironmentalEffects', () => {
           { characterId: 'maya', trust: 5 },
           { characterId: 'devon', trust: 3 },
           { characterId: 'marcus', trust: 7 }
-        ] as GameState['characters']
+        ] as unknown as GameState['characters']
       })
 
       render(<EnvironmentalEffects gameState={gameState} />)
@@ -150,7 +150,7 @@ describe('EnvironmentalEffects', () => {
 
     it('defaults to samuel when no characters have trust', () => {
       const gameState = createTestGameState({
-        characters: []
+        characters: [] as unknown as GameState['characters']
       })
 
       render(<EnvironmentalEffects gameState={gameState} />)
@@ -197,13 +197,13 @@ describe('EnvironmentalEffects', () => {
 
     it('removes old character classes when highest trust changes', () => {
       const mayaState = createTestGameState({
-        characters: [{ characterId: 'maya', trust: 7 }] as GameState['characters']
+        characters: [{ characterId: 'maya', trust: 7 }] as unknown as GameState['characters']
       })
       const devonState = createTestGameState({
         characters: [
           { characterId: 'maya', trust: 3 },
           { characterId: 'devon', trust: 8 }
-        ] as GameState['characters']
+        ] as unknown as GameState['characters']
       })
 
       const { rerender } = render(<EnvironmentalEffects gameState={mayaState} />)

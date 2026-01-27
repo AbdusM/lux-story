@@ -35,7 +35,7 @@ test.describe('Game Engine Logic (Browser Runtime)', () => {
         // 2. THE INJECTION BRIDGE
         // We execute logic INSIDE the browser context
         const result = await page.evaluate(async () => {
-            // @ts-expect-error - Accessing internal modules if exposed, or recreating state flow
+            // Accessing internal modules if exposed, or recreating state flow
             // Since we can't easily import TS modules in page.evaluate without compilation,
             // we will rely on the global 'window' if we exposed the engine, OR
             // we simulate the state transitions using the logic we know is essentially JSON processing.
