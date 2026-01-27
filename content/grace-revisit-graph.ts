@@ -14,7 +14,7 @@ import {
  * Samuel Entry Point Constant
  * Used to link back to Samuel without circular imports
  */
-const SAMUEL_HUB_AFTER_GRACE = 'samuel_hub_after_grace'
+const SAMUEL_HUB_AFTER_GRACE = 'TRAVEL_PENDING'
 
 export const graceRevisitNodes: DialogueNode[] = [
     // ============= WELCOME BACK (Entry Point) =============
@@ -50,7 +50,7 @@ I was just thinking about you. About... how we met.{{player_sat_quietly: Most pe
             {
                 choiceId: 'grace_revisit_ask_state',
                 text: "You look... lighter.",
-                nextNodeId: 'grace_revisit_list',
+                nextNodeId: 'grace_revisit_update',
                 // pattern: 'observing', // Invalid pattern
                 skills: ['emotionalIntelligence']
             }

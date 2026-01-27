@@ -19,7 +19,6 @@ import {
   hasWaitingRoomContent,
 } from '@/lib/waiting-room-content'
 import { useGameStore } from '@/lib/game-store'
-import type { PatternType } from '@/lib/patterns'
 
 /** Waiting room reveal thresholds in seconds */
 const WAITING_ROOM_THRESHOLDS = [30, 60, 120] as const
@@ -58,7 +57,7 @@ export function useWaitingRoom({
   resetTimer: () => void
 } {
   const prefersReducedMotion = useReducedMotion()
-  const updatePatterns = useGameStore(state => state.updatePatterns)
+  const applyCoreStateChange = useGameStore(state => state.applyCoreStateChange)
 
   // Track revealed IDs across the session
   const [revealedIds, setRevealedIds] = useState<Set<string>>(new Set())
@@ -103,11 +102,13 @@ export function useWaitingRoom({
             // Add to revealed content
             setRevealedContent(prev => [...prev, reveal])
 
-            // Apply pattern reward
+            // Apply pattern reward via core state (Phase 2.1: atomic sync)
             if (reveal.patternReward) {
-              updatePatterns({
-                [reveal.patternReward.pattern]: reveal.patternReward.amount,
-              } as Partial<Record<PatternType, number>>)
+              applyCoreStateChange({
+                patternChanges: {
+                  [reveal.patternReward.pattern]: reveal.patternReward.amount,
+                }
+              })
             }
 
             // Trigger callback
@@ -129,7 +130,7 @@ export function useWaitingRoom({
         clearInterval(timerRef.current)
       }
     }
-  }, [enabled, characterId, revealedIds, updatePatterns, onReveal])
+  }, [enabled, characterId, revealedIds, applyCoreStateChange, onReveal])
 
   // Breathing animation for anticipation
   useEffect(() => {

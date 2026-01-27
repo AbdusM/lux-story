@@ -23,6 +23,7 @@
     "qa": "npx tsx scripts/run-qa.ts",
     "qa:quick": "npm run type-check && npm run test:run",
     "validate-graphs": "npx tsx scripts/validate-dialogue-graphs.ts",
+    "validate-content": "npx tsx scripts/validate-content-integrity.ts",
     "analyze-text-density": "npx tsx scripts/analyze-text-density.ts",
     "validate-skills": "npx tsx scripts/validate-skills-system.ts",
     "validate-env": "npx tsx scripts/validate-env.ts",

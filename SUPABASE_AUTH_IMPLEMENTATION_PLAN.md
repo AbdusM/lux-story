@@ -2,6 +2,7 @@
 
 ## Overview
 Implement role-based access control for God Mode using Supabase Auth.
+This plan is adapted for the current codebase state (Next.js 15, `@supabase/ssr` already present).
 
 **Auth Methods:**
 - ✅ Google OAuth (primary - educators have Gmail)
@@ -15,7 +16,7 @@ Implement role-based access control for God Mode using Supabase Auth.
 
 ---
 
-## Phase 1: Supabase Setup (30 minutes)
+## Phase 1: Database Setup (30 minutes)
 
 ### 1.1 Enable Auth Providers in Supabase Dashboard
 
@@ -58,8 +59,8 @@ CREATE TABLE IF NOT EXISTS public.profiles (
 );
 
 -- 2. Create index for faster role lookups
-CREATE INDEX idx_profiles_role ON public.profiles(role);
-CREATE INDEX idx_profiles_email ON public.profiles(email);
+CREATE INDEX IF NOT EXISTS idx_profiles_role ON public.profiles(role);
+CREATE INDEX IF NOT EXISTS idx_profiles_email ON public.profiles(email);
 
 -- 3. Enable Row Level Security
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
@@ -113,6 +114,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
+-- Drop trigger first to avoid conflicts on re-run
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
@@ -126,73 +129,24 @@ CREATE TRIGGER on_auth_user_created
 
 ---
 
-## Phase 2: Client Setup (1 hour)
+## Phase 2: Codebase Cleanup (15 minutes)
 
-### 2.1 Install Dependencies
-
-```bash
-npm install @supabase/supabase-js @supabase/auth-helpers-nextjs
-```
-
-### 2.2 Environment Variables
-
-**File**: `.env.local` (create if doesn't exist)
+### 2.1 Dependencies
+The project currently has both `@supabase/auth-helpers-nextjs` and `@supabase/ssr`. We will consolidate.
 
 ```bash
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-
-# Get these from: Supabase Dashboard → Settings → API
+npm uninstall @supabase/auth-helpers-nextjs
+npm install @supabase/ssr
 ```
 
-**File**: `.env.example` (update)
+### 2.2 Verify Existing Files
+*Checked: 2026-01-27*
+- `lib/supabase/client.ts`: ✅ Correctly uses `createBrowserClient`.
+- `lib/supabase/server.ts`: ✅ Correctly uses `createServerClient` and awaits `cookies()` (Next.js 15 compatible).
+- `lib/supabase/middleware.ts`: ✅ Correctly implements session refreshing.
+- `middleware.ts`: ✅ Correctly calls `updateSession`.
 
-```bash
-# Add to existing file:
-
-# Supabase Auth (required for user login and God Mode access control)
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key
-```
-
-### 2.3 Create Supabase Client
-
-**File**: `lib/supabase/client.ts` (NEW)
-
-```typescript
-import { createBrowserClient } from '@supabase/ssr'
-
-export function createClient() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-}
-```
-
-**File**: `lib/supabase/server.ts` (NEW)
-
-```typescript
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
-import { cookies } from 'next/headers'
-
-export function createClient() {
-  const cookieStore = cookies()
-
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value
-        },
-      },
-    }
-  )
-}
-```
+**Action**: No file creation needed for Supabase clients. Proceed to Auth UI.
 
 ---
 
@@ -327,7 +281,8 @@ export async function GET(request: Request) {
   const code = requestUrl.searchParams.get('code')
 
   if (code) {
-    const supabase = createClient()
+    // Note: createClient() is async in our codebase (Next.js 15)
+    const supabase = await createClient()
     await supabase.auth.exchangeCodeForSession(code)
   }
 
@@ -447,12 +402,7 @@ export function GodModeBootstrap() {
     // Lazy load God Mode API
     import('@/lib/dev-tools').then(({ createGodModeAPI }) => {
       (window as any).godMode = createGodModeAPI()
-
-      const roleLabel = process.env.NODE_ENV === 'development' ? 'Dev Mode' : 'Educator Access'
-      console.warn(`⚠️ God Mode enabled (${roleLabel})`)
-      console.log('%c🎮 Available Commands:', 'font-weight: bold; font-size: 14px;')
-      console.log(Object.keys((window as any).godMode).sort().join(', '))
-      console.log('\nType window.godMode for full API')
+      // ... logging ...
     }).catch(err => {
       console.error('[God Mode] Failed to load:', err)
     })
@@ -466,27 +416,7 @@ export function GodModeBootstrap() {
 
 **File**: `components/Journal.tsx`
 
-```typescript
-import { useUserRole } from '@/hooks/useUserRole'
-
-export function Journal({ isOpen, onClose }: JournalProps) {
-  const { isEducator, loading } = useUserRole()
-
-  // ... existing code ...
-
-  // Show God Mode tab if:
-  // 1. Development mode (always)
-  // 2. Production with educator/admin role
-  const showGodMode = process.env.NODE_ENV === 'development' ||
-    (!loading && isEducator)
-
-  const tabs = showGodMode
-    ? [...baseTabs, { id: 'god_mode', label: 'GOD MODE', icon: AlertTriangle }]
-    : baseTabs
-
-  // ... rest of component ...
-}
-```
+Update to use `useUserRole` instead of checking URL params for the God Mode tab visibility.
 
 ---
 
@@ -495,323 +425,71 @@ export function Journal({ isOpen, onClose }: JournalProps) {
 ### 5.1 User Menu Component
 
 **File**: `components/auth/UserMenu.tsx` (NEW)
-
-```typescript
-'use client'
-
-import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
-import { useUserRole } from '@/hooks/useUserRole'
-import { Button } from '@/components/ui/button'
-import { LoginModal } from './LoginModal'
-import { User, LogOut, Shield } from 'lucide-react'
-import Link from 'next/link'
-
-export function UserMenu() {
-  const { user, isAdmin, loading } = useUserRole()
-  const [showLoginModal, setShowLoginModal] = useState(false)
-  const supabase = createClient()
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    window.location.reload()
-  }
-
-  if (loading) {
-    return <div className="h-9 w-9 animate-pulse bg-white/10 rounded-md" />
-  }
-
-  if (!user) {
-    return (
-      <>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setShowLoginModal(true)}
-          className="h-9 w-9 p-0"
-        >
-          <User className="h-4 w-4" />
-        </Button>
-        <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
-      </>
-    )
-  }
-
-  return (
-    <div className="flex items-center gap-2">
-      {isAdmin && (
-        <Link href="/admin">
-          <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
-            <Shield className="h-4 w-4" />
-          </Button>
-        </Link>
-      )}
-      <Button variant="ghost" size="sm" onClick={handleSignOut} className="h-9 w-9 p-0">
-        <LogOut className="h-4 w-4" />
-      </Button>
-    </div>
-  )
-}
-```
+*Standard dropdown implementation using shadcn/ui or simple buttons.*
 
 ### 5.2 Admin Dashboard
 
 **File**: `app/admin/page.tsx` (NEW)
-
-```typescript
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
-import { UserManagementTable } from '@/components/admin/UserManagementTable'
-
-export default async function AdminPage() {
-  const supabase = createClient()
-
-  // Check if user is admin
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/')
-  }
-
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('user_id', user.id)
-    .single()
-
-  if (profile?.role !== 'admin') {
-    redirect('/')
-  }
-
-  // Fetch all users
-  const { data: users } = await supabase
-    .from('profiles')
-    .select('*')
-    .order('created_at', { ascending: false })
-
-  return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">User Management</h1>
-      <UserManagementTable users={users || []} />
-    </div>
-  )
-}
-```
-
 **File**: `components/admin/UserManagementTable.tsx` (NEW)
 
-```typescript
-'use client'
-
-import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
-import { Button } from '@/components/ui/button'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-
-type Profile = {
-  user_id: string
-  email: string
-  full_name: string | null
-  role: string
-  created_at: string
-}
-
-export function UserManagementTable({ users: initialUsers }: { users: Profile[] }) {
-  const [users, setUsers] = useState(initialUsers)
-  const [loading, setLoading] = useState<string | null>(null)
-  const supabase = createClient()
-
-  const updateRole = async (userId: string, newRole: string) => {
-    setLoading(userId)
-
-    const { error } = await supabase
-      .from('profiles')
-      .update({ role: newRole })
-      .eq('user_id', userId)
-
-    if (!error) {
-      setUsers(users.map(u =>
-        u.user_id === userId ? { ...u, role: newRole } : u
-      ))
-    }
-
-    setLoading(null)
-  }
-
-  return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Email</TableHead>
-          <TableHead>Name</TableHead>
-          <TableHead>Role</TableHead>
-          <TableHead>Joined</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {users.map((user) => (
-          <TableRow key={user.user_id}>
-            <TableCell>{user.email}</TableCell>
-            <TableCell>{user.full_name || '-'}</TableCell>
-            <TableCell>
-              <span className={`px-2 py-1 rounded text-xs ${
-                user.role === 'admin' ? 'bg-red-100 text-red-800' :
-                user.role === 'educator' ? 'bg-blue-100 text-blue-800' :
-                'bg-gray-100 text-gray-800'
-              }`}>
-                {user.role}
-              </span>
-            </TableCell>
-            <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
-            <TableCell>
-              <div className="flex gap-2">
-                {user.role !== 'educator' && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => updateRole(user.user_id, 'educator')}
-                    disabled={loading === user.user_id}
-                  >
-                    Make Educator
-                  </Button>
-                )}
-                {user.role !== 'student' && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => updateRole(user.user_id, 'student')}
-                    disabled={loading === user.user_id}
-                  >
-                    Make Student
-                  </Button>
-                )}
-              </div>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  )
-}
-```
+*Implementation details unchanged from previous version, but ensure `createClient()` is awaited in Server Components.*
 
 ---
 
-## Phase 6: Add Login Button to UI (15 minutes)
+## Phase 6: Integration (15 minutes)
 
 **File**: `components/StatefulGameInterface.tsx`
 
-Update the header to include UserMenu:
+Insert `UserMenu` into the header. Note: This file is a large monolith. Search for the "Header Controls" section (usually `div className="absolute top-4 right-4 ..."` or similar).
+
+---
+
+## Phase 7: Automated Testing (NEW)
+
+### 7.1 Setup
+
+Ensure `playwright.config.ts` is configured for local web server.
+
+### 7.2 Auth Test Spec
+
+**File**: `tests/e2e/auth.spec.ts` (NEW)
 
 ```typescript
-import { UserMenu } from '@/components/auth/UserMenu'
+import { test, expect } from '@playwright/test';
 
-// In the header section (around line 3380):
-<div className="flex items-center gap-2">
-  <UserMenu /> {/* Add this */}
+test('auth flow - magic link UI', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: /user/i }).click(); // Open login modal
+  
+  const emailInput = page.getByPlaceholder('your-email@example.com');
+  await expect(emailInput).toBeVisible();
+  
+  await emailInput.fill('test@example.com');
+  await page.getByRole('button', { name: /send magic link/i }).click();
+  
+  await expect(page.getByText(/check your email/i)).toBeVisible();
+});
 
-  {/* Existing buttons */}
-  <Button onClick={() => setState(prev => ({ ...prev, showJournal: true }))}>
-    <BookOpen className="h-4 w-4" />
-  </Button>
-  {/* ... rest of buttons ... */}
-</div>
+// Note: Full E2E auth testing often requires a specific Supabase test helper or specialized mock. 
+// For now, we verify the UI exists.
 ```
 
 ---
 
-## Testing Checklist
+## Phase 8: Future Scope (Cloud Save)
 
-### Local Testing
+**Note:** This plan **only** covers Access Control (RBAC). It does **not** implement:
+1.  Saving game state (Zustand) to Supabase.
+2.  Syncing progress across devices.
 
-```bash
-# 1. Install dependencies
-npm install @supabase/supabase-js @supabase/auth-helpers-nextjs @supabase/ssr
-
-# 2. Set up .env.local with Supabase credentials
-
-# 3. Start dev server
-npm run dev
-
-# 4. Test login flow
-- Click user icon → Login modal opens
-- Click "Continue with Google" → Google OAuth flow
-- Or enter email → Magic link sent
-
-# 5. Test role check
-- Sign up → Check profiles table → Should be 'student' role
-- Update to 'educator' manually in Supabase
-- Refresh page → God Mode tab should appear
-
-# 6. Test admin dashboard
-- Update your profile to 'admin' role
-- Visit /admin → Should see user management table
-- Change another user's role → Should update
-```
-
-### Production Testing
-
-```bash
-# 1. Deploy to Vercel
-vercel --prod
-
-# 2. Update Google OAuth redirect URL
-- Add production URL to Google Console
-- https://your-app.vercel.app/auth/callback
-
-# 3. Test auth flow
-- Visit production site
-- Sign in with Google
-- Check Supabase profiles table
-
-# 4. Promote yourself to admin
-- Run SQL: UPDATE profiles SET role = 'admin' WHERE email = 'your@email.com'
-
-# 5. Test role assignment
-- Visit /admin
-- Assign educator role to test user
-- Sign in as that user → Should have God Mode
-```
+Game state remains in `localStorage` for now.
+**Future Phase:** Create `lib/game-persistence-cloud.ts` to sync `game-store` with a new `save_states` table in Supabase.
 
 ---
 
-## Migration from URL Parameter
-
-**Step 1**: Deploy auth system
-**Step 2**: Keep URL parameter active for 1 week (both work)
-**Step 3**: Email educators: "Please create accounts"
-**Step 4**: Remove URL parameter check after everyone migrated
-
----
-
-## Estimated Time
-
-| Phase | Task | Time |
-|-------|------|------|
-| 1 | Supabase setup | 30 min |
-| 2 | Client setup | 1 hour |
-| 3 | Auth UI | 2 hours |
-| 4 | Update God Mode | 30 min |
-| 5 | Admin dashboard | 2 hours |
-| 6 | Add login button | 15 min |
-| **Total** | | **~6 hours** |
-
----
-
-## Security Benefits
-
-✅ **Proper authentication** - Google OAuth + Magic Link
-✅ **Role-based access** - Student/Educator/Admin permissions
-✅ **Audit trail** - Track who's using God Mode
-✅ **RLS policies** - Database-level security
-✅ **No URL guessing** - Students can't discover access method
-✅ **Scalable** - Easy to add more roles/permissions later
-
+## Summary of Changes from v1 Plan
+1.  **Next.js 15 Compliance**: Explicitly noted `await cookies()` and async `createClient()` usage.
+2.  **Existing Code**: Leverage `lib/supabase/*` files that already exist; skip redundant creation.
+3.  **Dependency Clean**: Remove deprecated `auth-helpers`.
+4.  **Testing**: Added Phase 7.
+5.  **Scope**: Clarified Cloud Save exclusion.
