@@ -323,11 +323,11 @@ fix: Resolve trust calculation bug
 
 ## State Architecture
 
-See `lib/STATE_ARCHITECTURE.md` for full documentation.
+See `docs/01_MECHANICS/02-state-architecture.md` for summary and links.
 
 ### Core State (`lib/character-state.ts`)
 - `GameState` - Master state container
-- `GameStateUtils.applyStateChange()` - Immutable state transformations
+- `GameStateUtils.applyStateChange()` - State transformations (immutable by convention, not enforced by freeze)
 
 ### Type Validation
 - `lib/patterns.ts` - `isValidPattern()`, `PatternType`
@@ -340,6 +340,13 @@ All magic numbers centralized:
 - Identity threshold: `IDENTITY_THRESHOLD=5`
 - Internalization bonus: `INTERNALIZE_BONUS=0.20`
 
+### Architecture (External Review)
+- [Persistence Model](docs/architecture/01-persistence-model.md) — All storage layers, keys, audit commands
+- [Architecture Decisions](docs/architecture/02-architecture-decisions.md) — 6 ADRs with rationale
+- [Data Model](docs/architecture/03-data-model.md) — Supabase schema, RLS, PII classification
+- [Technical Debt](docs/architecture/04-technical-debt.md) — 10 items with owners + triggers
+- [Security](docs/architecture/05-security.md) — Threat model, auth, localStorage risks
+
 ### Archived Code (`lib/archive/`)
 Deprecated code preserved for reference:
 - `game-state.legacy.ts` - Sprint 1 state system
@@ -350,7 +357,7 @@ Deprecated code preserved for reference:
 ## Current Status (January 15, 2026)
 
 ### Feature Catalog
-- **Total Features Documented:** 572 (in INFINITE_CANVAS_FEATURE_CATALOG.md)
+- **Total Features Documented:** 572 (in INFINITE_CANVAS_FEATURE_CATALOG.md — Vision/Ideation, not spec)
 - **Implementation Status:** ~20% complete, ~6% partial, ~30% planned, ~44% future/moonshot
 - **Tests:** 1,120 passing (44 test files, 100% pass rate)
 - **Dialogue Nodes:** 1,757 total (validated via emotion tests)
@@ -433,7 +440,7 @@ Deprecated code preserved for reference:
 - `docs/03_PROCESS/META_COGNITIVE_SYSTEMS_AUDIT.md` - Pattern/skill/emotion coverage
 - `docs/03_PROCESS/10-system-coverage.md` - System coverage audit
 - `docs/03_PROCESS/11-feature-progress-tracker.md` - All 572 features mapped
-- `docs/01_MECHANICS/21-infinite-canvas-feature-catalog.md` - Full feature catalog
+- `docs/01_MECHANICS/21-infinite-canvas-feature-catalog.md` - Full feature catalog (Vision/Ideation, not spec)
 
 ### Recently Completed (January 2026)
 
