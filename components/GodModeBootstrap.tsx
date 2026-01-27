@@ -8,8 +8,7 @@ import { useUserRole } from '@/hooks/useUserRole'
  *
  * Lazy-loads God Mode API based on user role:
  * - Development: Always enabled
- * - Production: Only for educator/admin roles
- * - Fallback: URL parameter ?godmode=true (for non-authenticated educators)
+ * - Production: Educator/admin roles only
  *
  * Client component wrapper for Next.js server component layout
  */
@@ -22,12 +21,9 @@ export function GodModeBootstrap() {
     // Load God Mode if:
     // 1. Development mode (always)
     // 2. Production with educator/admin role (authenticated)
-    // 3. Production with ?godmode=true URL parameter (fallback for non-authenticated educators)
-    const hasGodModeParam = typeof window !== 'undefined' && window.location.search.includes('godmode=true')
     const shouldLoadGodMode =
       process.env.NODE_ENV === 'development' ||
-      isEducator ||
-      hasGodModeParam
+      isEducator
 
     if (!shouldLoadGodMode) {
       return
@@ -41,9 +37,7 @@ export function GodModeBootstrap() {
       // Log welcome message
       const accessMode = process.env.NODE_ENV === 'development'
         ? 'Development Mode'
-        : isEducator
-        ? 'Educator Access'
-        : 'URL Parameter'
+        : 'Educator Access'
 
       console.warn(`⚠️ God Mode enabled (${accessMode}). Use window.godMode.* for testing.`)
       console.log('%c🎮 Available God Mode Commands:', 'font-weight: bold; font-size: 14px;')
