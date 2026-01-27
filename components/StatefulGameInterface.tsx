@@ -217,6 +217,7 @@ import { IdentityCeremony } from '@/components/IdentityCeremony'
 import { JourneyComplete } from '@/components/JourneyComplete'
 import { useAudioDirector } from '@/hooks/game/useAudioDirector'
 import { useGameInitializer } from '@/hooks/game/useGameInitializer'
+import { useIdleAmbience } from '@/hooks/game/useIdleAmbience'
 import { resolveNode } from '@/hooks/game/useNarrativeNavigator'
 import { computeTrustFeedback, computePatternEcho, computeOrbMilestoneEcho, computeTransformation, computeTrustFeedbackMessage, computeSkillTracking } from '@/lib/choice-processing'
 // useNarrativeNavigator available but not yet wired — see hooks/game/useNarrativeNavigator.ts
@@ -748,98 +749,13 @@ export default function StatefulGameInterface() {
     return 'neutral'
   }, [stationAtmosphere, state.gameState, state.currentCharacterId])
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // AMBIENT EVENTS-"The Station Breathes"
-  // When the player pauses to think, life continues around them.
-  // ═══════════════════════════════════════════════════════════════════════════
-  const idleTimerRef = useRef<NodeJS.Timeout | null>(null)
-  const idleCountRef = useRef(0)  // Track how many ambient events shown this idle period
-  const lastChoiceTimeRef = useRef(Date.now())
-
-
+  // Idle ambience system — extracted to hook
+  useIdleAmbience({ state, setState })
 
   // Helper to clean atmospheric tags
   const cleanContent = (text: string) => {
     return text.replace(/\[atmospheric.*?\]/gi, '').trim()
   }
-
-  // Helper to get dominant pattern
-  const getDominantPattern = useCallback((): PatternType | undefined => {
-    if (!state.gameState) return undefined
-    const patterns = state.gameState.patterns
-    let maxPattern: PatternType | undefined
-    let maxValue = 0
-    for (const p of PATTERN_TYPES) {
-      const value = patterns[p] || 0
-      if (value > maxValue) {
-        maxValue = value
-        maxPattern = p
-      }
-    }
-    return maxValue >= 3 ? maxPattern : undefined  // Only if pattern is strong enough
-  }, [state.gameState])
-
-  // Start/reset idle timer
-  const resetIdleTimer = useCallback(() => {
-    // Clear any existing timer
-    if (idleTimerRef.current) {
-      clearTimeout(idleTimerRef.current)
-    }
-
-    // Reset idle count when player acts
-    idleCountRef.current = 0
-    lastChoiceTimeRef.current = Date.now()
-
-    // Clear any showing ambient event
-    setState(prev => prev.ambientEvent ? { ...prev, ambientEvent: null } : prev)
-
-    // Don't start timer if game not active or no choices available
-    if (!state.hasStarted || state.availableChoices.length === 0) return
-
-    const scheduleAmbientEvent = () => {
-      const delay = idleCountRef.current === 0
-        ? IDLE_CONFIG.FIRST_IDLE_MS
-        : IDLE_CONFIG.SUBSEQUENT_IDLE_MS
-
-      idleTimerRef.current = setTimeout(() => {
-        // Don't show if max events reached or modals open
-        if (idleCountRef.current >= IDLE_CONFIG.MAX_IDLE_EVENTS) return
-        if (state.showJournal || state.showConstellation || state.showJourneySummary) return
-
-        const dominantPattern = getDominantPattern()
-        const event = selectAmbientEvent(state.currentCharacterId, dominantPattern)
-
-        if (event) {
-          idleCountRef.current++
-          setState(prev => ({ ...prev, ambientEvent: event }))
-
-          // Schedule next event if not at max
-          if (idleCountRef.current < IDLE_CONFIG.MAX_IDLE_EVENTS) {
-            scheduleAmbientEvent()
-          }
-        }
-      }, delay)
-    }
-
-    scheduleAmbientEvent()
-  }, [state.hasStarted, state.availableChoices.length, state.currentCharacterId, state.showJournal, state.showConstellation, state.showJourneySummary, getDominantPattern])
-
-  // Reset timer when choices change (player made a choice)
-  useEffect(() => {
-    resetIdleTimer()
-    // Lock release moved to handleChoice finally block (Fix 5: attempt-based lock).
-    // This effect no longer manages the processing lock.
-
-    // ISP: Update Conductor with full state
-    if (state.gameState && state.currentCharacterId) {
-      generativeScore.update(state.gameState, state.currentCharacterId)
-    }
-    return () => {
-      if (idleTimerRef.current) {
-        clearTimeout(idleTimerRef.current)
-      }
-    }
-  }, [state.currentNode?.nodeId, resetIdleTimer, state.gameState, state.currentCharacterId])
 
   // Audio Immersion: Consequence echo sounds handled by useAudioDirector
 
