@@ -52,12 +52,16 @@ describe('Phase 1 Fixtures Verification', () => {
 
     const content = await fs.readFile(componentPath, 'utf-8')
 
-    // Verify critical testids exist
+    // Verify critical testids exist (some moved to extracted sub-components)
     expect(content).toContain('data-testid="dialogue-card"')
     expect(content).toContain('data-testid="dialogue-content"')
-    expect(content).toContain('data-testid="speaker-name"')
     expect(content).toContain('data-testid="game-interface"')
-    expect(content).toContain('data-testid="character-header"')
+
+    // speaker-name and character-header moved to GameHeader.tsx
+    const headerPath = path.resolve(process.cwd(), 'components/game/GameHeader.tsx')
+    const headerContent = await fs.readFile(headerPath, 'utf-8')
+    expect(headerContent).toContain('data-testid="speaker-name"')
+    expect(headerContent).toContain('data-testid="character-header"')
   })
 
   it('should have global-setup.ts file', async () => {
