@@ -406,6 +406,48 @@ const initialState: GameState = {
 }
 
 
+// ═══════════════════════════════════════════════════════════════════════════
+// PURE DERIVED STATE FUNCTIONS (Phase 2.1)
+// These are used by setCoreGameState/updateCoreGameState/applyCoreStateChange
+// to atomically compute derived slices in a single set() call.
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Pure function: compute derived state slices from core game state.
+ * Returns only Zustand-storable slices (no side-effects).
+ *
+ * @param core - Must be a SerializableGameState (array-based characters[]),
+ *               NOT a hydrated GameState (Map-based). Passing a Map-based
+ *               state will produce empty results without error.
+ */
+export function deriveDerivedState(core: SerializableGameState): { visitedScenes: string[] } {
+  const visitedScenes: string[] = []
+  for (const char of core.characters) {
+    for (const nodeId of char.conversationHistory) {
+      if (!visitedScenes.includes(nodeId)) {
+        visitedScenes.push(nodeId)
+      }
+    }
+  }
+  return { visitedScenes }
+}
+
+/**
+ * Side-effect: update ambient music based on current character's nervous system state.
+ * Separated from deriveDerivedState because it's not Zustand state.
+ */
+function updateAmbientMusicFromCore(core: SerializableGameState): void {
+  const currentCharacter = core.characters.find(c => c.characterId === core.currentCharacterId)
+  if (currentCharacter) {
+    const nsState = currentCharacter.nervousSystemState || 'ventral_vagal'
+    try {
+      updateAmbientMusic(nsState)
+    } catch (e) {
+      console.warn('[Limbic Audio] Failed to update ambient music', e)
+    }
+  }
+}
+
 // Create the game store
 export const useGameStore = create<GameState & GameActions>()(
   devtools(
@@ -489,10 +531,12 @@ export const useGameStore = create<GameState & GameActions>()(
         },
 
         // Character relationship actions
-        // NOTE: This should ideally update through coreGameState, but kept for backward compatibility
-        // The main trust updates should go through coreGameState via setCoreGameState()
-        // This function is primarily used for syncing from coreGameState, not for direct updates
+        // DEPRECATED (Phase 2.1): Use setCoreGameState or applyCoreStateChange instead.
+        // Kept as thin wrapper with deprecation warning for one release cycle.
         updateCharacterTrust: (characterId, trust) => {
+          if (process.env.NODE_ENV === 'development') {
+            console.warn('[DEPRECATED] updateCharacterTrust() called directly. Use applyCoreStateChange({ characterId, trustChange }) instead.')
+          }
           set((state) => ({
             characterTrust: { ...state.characterTrust, [characterId]: trust }
           }))
@@ -527,9 +571,12 @@ export const useGameStore = create<GameState & GameActions>()(
         },
 
         // Pattern tracking actions
-        // NOTE: This should ideally update through coreGameState, but kept for backward compatibility
-        // The main pattern updates should go through coreGameState via setCoreGameState()
+        // DEPRECATED (Phase 2.1): Use setCoreGameState or applyCoreStateChange instead.
+        // Kept as thin wrapper with deprecation warning for one release cycle.
         updatePatterns: (patterns) => {
+          if (process.env.NODE_ENV === 'development') {
+            console.warn('[DEPRECATED] updatePatterns() called directly. Use applyCoreStateChange({ patternChanges }) instead.')
+          }
           set((state) => ({
             patterns: { ...state.patterns, ...patterns }
           }))
@@ -733,10 +780,12 @@ export const useGameStore = create<GameState & GameActions>()(
         // ═══════════════════════════════════════════════════════════════════════════
 
         // Set the entire core game state (used on load/init)
+        // Phase 2.1: Atomic single set() — core + derived in one call
         setCoreGameState: (state: SerializableGameState) => {
-          set({ coreGameState: state })
-          // Automatically sync derived state
-          get().syncDerivedState()
+          const derived = deriveDerivedState(state)
+          set({ coreGameState: state, ...derived })
+          // Side-effect: ambient music (not Zustand state)
+          updateAmbientMusicFromCore(state)
         },
 
         // Update core game state with a function (for complex updates)
@@ -744,8 +793,9 @@ export const useGameStore = create<GameState & GameActions>()(
           const current = get().coreGameState
           if (!current) return
           const updated = updater(current)
-          set({ coreGameState: updated })
-          get().syncDerivedState()
+          const derived = deriveDerivedState(updated)
+          set({ coreGameState: updated, ...derived })
+          updateAmbientMusicFromCore(updated)
         },
 
         // Apply a StateChange to the core game state
@@ -758,8 +808,9 @@ export const useGameStore = create<GameState & GameActions>()(
           const updated = GameStateUtils.applyStateChange(hydrated, change)
           const newSerialized = GameStateUtils.serialize(updated)
 
-          set({ coreGameState: newSerialized })
-          get().syncDerivedState()
+          const derived = deriveDerivedState(newSerialized)
+          set({ coreGameState: newSerialized, ...derived })
+          updateAmbientMusicFromCore(newSerialized)
         },
 
         // Get hydrated GameState (with Map/Set) for dialogue system
@@ -770,36 +821,15 @@ export const useGameStore = create<GameState & GameActions>()(
         },
 
         // Sync derived state from coreGameState
-        // NOTE: characterTrust, patterns, thoughts are now derived via selectors (single source of truth)
-        // This function only handles: visitedScenes derivation and ambient music updates
+        // NOTE: Prefer using setCoreGameState/updateCoreGameState/applyCoreStateChange
+        // which atomically sync derived state in a single set() call.
+        // This method is kept for backward compatibility only.
         syncDerivedState: () => {
           const core = get().coreGameState
           if (!core) return
-
-          // Derive visited scenes from conversation history
-          // (This is still needed because visitedScenes has a different structure than coreGameState)
-          const visitedScenes: string[] = []
-          for (const char of core.characters) {
-            for (const nodeId of char.conversationHistory) {
-              if (!visitedScenes.includes(nodeId)) {
-                visitedScenes.push(nodeId)
-              }
-            }
-          }
-
-          set({ visitedScenes })
-
-          // Update Ambient Music based on Current Character's Nervous System State
-          // This creates the "Limbic Connection" between the NPC's state and the Player's Environment
-          const currentCharacter = core.characters.find(c => c.characterId === core.currentCharacterId)
-          if (currentCharacter) {
-            const nsState = currentCharacter.nervousSystemState || 'ventral_vagal'
-            try {
-              updateAmbientMusic(nsState)
-            } catch (e) {
-              console.warn('[Limbic Audio] Failed to update ambient music', e)
-            }
-          }
+          const derived = deriveDerivedState(core)
+          set(derived)
+          updateAmbientMusicFromCore(core)
         },
 
         // Force UI refresh (for God Mode navigation)

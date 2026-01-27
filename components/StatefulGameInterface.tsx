@@ -101,7 +101,6 @@ import { CharacterAvatar } from '@/components/CharacterAvatar'
 import { getTrustLabel } from '@/lib/trust-labels'
 import { CharacterState, GameState, GameStateUtils } from '@/lib/character-state'
 import { GameLogic } from '@/lib/game-logic'
-import { synthEngine } from '@/lib/audio/synth-engine'
 import { HeroBadge } from '@/components/HeroBadge'
 import { StrategyReport } from '@/components/career/StrategyReport'
 import { UnifiedMenu } from '@/components/UnifiedMenu'
@@ -158,7 +157,7 @@ import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achieveme
 import { selectAmbientEvent, IDLE_CONFIG, type AmbientEvent } from '@/lib/ambient-events'
 import { PATTERN_TYPES, type PatternType, getPatternSensation, isValidPattern } from '@/lib/patterns'
 import { calculatePatternGain } from '@/lib/identity-system'
-import { getConsequenceEcho, checkPatternThreshold as checkPatternEchoThreshold, getPatternRecognitionEcho, createResonanceEchoFromDescription, getVoicedChoiceText, applyPatternReflection, getOrbMilestoneEcho, getDiscoveryHint, DISCOVERY_HINTS, type ConsequenceEcho, resolveContentVoiceVariation, applySkillReflection, applyNervousSystemReflection } from '@/lib/consequence-echoes'
+import { getPatternRecognitionEcho, createResonanceEchoFromDescription, getVoicedChoiceText, applyPatternReflection, getDiscoveryHint, DISCOVERY_HINTS, type ConsequenceEcho, resolveContentVoiceVariation, applySkillReflection, applyNervousSystemReflection } from '@/lib/consequence-echoes'
 import { calculateResonantTrustChange } from '@/lib/pattern-affinity'
 import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS, analyzeTrustAsymmetry, getAsymmetryComment, type AsymmetryReaction, calculateInheritedTrust, recordTrustChange, type TrustTimeline, executeInfoTrade, getAvailableInfoTrades, type InfoTradeOffer } from '@/lib/trust-derivatives'
 // D-057: Info Trades
@@ -182,7 +181,7 @@ import {
   type ActiveComboState,
   type InterruptComboChain
 } from '@/lib/interrupt-derivatives'
-import { checkTransformationEligible, type TransformationMoment } from '@/lib/character-transformations'
+// checkTransformationEligible + TransformationMoment moved to choice-processing.ts
 import { loadEchoQueue, saveEchoQueue, queueEchosForFlag, getAndUpdateEchosForCharacter, type CrossCharacterEchoQueueState } from '@/lib/cross-character-memory'
 import { CheckInQueue } from '@/lib/character-check-ins'
 import { UnlockManager } from '@/lib/unlock-manager'
@@ -193,7 +192,7 @@ import { getArcCompletionFlag } from '@/lib/arc-learning-objectives'
 import { getPatternVoice, incrementPatternVoiceNodeCounter, checkVoiceConflict, type PatternVoiceResult, type PatternVoiceContext, type VoiceConflictResult } from '@/lib/pattern-voices'
 import { PATTERN_VOICE_LIBRARY } from '@/content/pattern-voice-library'
 import { PatternVoice } from '@/components/game/PatternVoice'
-import { useOrbs } from '@/hooks/useOrbs'
+import { useOrbs, type OrbMilestones } from '@/hooks/useOrbs'
 // Analytics Hooks
 import { trackUserOnNode, recordVisit } from '@/lib/admin-analytics'
 // Complex Character Hooks
@@ -213,7 +212,9 @@ import { setupPlayTimeTracking } from '@/lib/session-tracker'
 import { SessionBoundaryAnnouncement } from '@/components/SessionBoundaryAnnouncement'
 import { IdentityCeremony } from '@/components/IdentityCeremony'
 import { JourneyComplete } from '@/components/JourneyComplete'
-import { playPatternSound, playTrustSound, playIdentitySound, playMilestoneSound, playEpisodeSound, playSound, initializeAudio, setAudioEnabled } from '@/lib/audio-feedback'
+import { useAudioDirector } from '@/hooks/game/useAudioDirector'
+import { computeTrustFeedback, computePatternEcho, computeOrbMilestoneEcho, computeTransformation, computeTrustFeedbackMessage, computeSkillTracking } from '@/lib/choice-processing'
+// useNarrativeNavigator available but not yet wired — see hooks/game/useNarrativeNavigator.ts
 // OnboardingScreen removed-discovery-based learning via Samuel's firstOrb echo instead
 // FoxTheatreGlow import removed-unused
 import { ExperienceRenderer } from '@/components/game/ExperienceRenderer'
@@ -266,7 +267,6 @@ interface GameInterfaceState {
   endingPattern: PatternType | null  // Dominant pattern for ending
   hasNewTrust: boolean  // Track trust changes for Constellation attention indicator
   hasNewMeeting: boolean  // Track first meeting with non-Samuel character
-  isMuted: boolean
   isProcessing: boolean
   activeInterrupt: InterruptWindow | null  // ME2-style interrupt window during dialogue
   patternVoice: PatternVoiceResult | null  // Disco Elysium-style inner monologue
@@ -422,7 +422,6 @@ export default function StatefulGameInterface() {
     endingPattern: null,
     hasNewTrust: false,
     hasNewMeeting: false,
-    isMuted: typeof window !== 'undefined' ? localStorage.getItem('lux_audio_muted') === 'true' : false,
     isProcessing: false,
     activeInterrupt: null,
     patternVoice: null,
@@ -434,14 +433,10 @@ export default function StatefulGameInterface() {
     // activeExperience: null
   })
 
-  // Audio volume state (0-100, persisted to localStorage)
-  const [audioVolume, setAudioVolume] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('lux_audio_volume')
-      return stored ? parseInt(stored, 10) : 50
-    }
-    return 50
-  })
+  // Audio Director hook (Phase 1.1 extraction)
+  const audio = useAudioDirector(state.consequenceEcho, pushSettingsToCloud)
+
+  const audioVolume = audio.state.audioVolume
 
   // 5. GOD MODE OVERRIDE-Access from zustand store (conditional render at end of component)
   const debugSimulation = useGameStore(s => s.debugSimulation)
@@ -545,12 +540,7 @@ export default function StatefulGameInterface() {
 
     // Action shortcuts
     registerHandler('toggleMute', () => {
-      const newMuted = !state.isMuted
-      setState(prev => ({ ...prev, isMuted: newMuted }))
-      localStorage.setItem('lux_audio_muted', String(newMuted))
-      synthEngine.setMute(newMuted)
-      setAudioEnabled(!newMuted)
-      pushSettingsToCloud()
+      audio.actions.toggleMute()
     })
     registerHandler('openSettings', () => {
       window.location.href = '/profile'
@@ -588,7 +578,7 @@ export default function StatefulGameInterface() {
       else if (state.showReport) setState(prev => ({ ...prev, showReport: false }))
       else if (showShortcutsHelp) setShowShortcutsHelp(false)
     })
-  }, [registerHandler, state.isMuted, state.showJournal, state.showConstellation, state.showReport, showShortcutsHelp, pushSettingsToCloud, setAudioEnabled])
+  }, [registerHandler, state.showJournal, state.showConstellation, state.showReport, showShortcutsHelp, audio.actions])
 
   // Keyboard shortcut hint - show after 30 seconds of gameplay (only once)
   useEffect(() => {
@@ -972,12 +962,7 @@ export default function StatefulGameInterface() {
     }
   }, [state.currentNode?.nodeId, resetIdleTimer, state.gameState, state.currentCharacterId])
 
-  // Audio Immersion: Trigger sounds for Consequence Echoes
-  useEffect(() => {
-    if (state.consequenceEcho?.soundCue) {
-      playSound(state.consequenceEcho.soundCue)
-    }
-  }, [state.consequenceEcho])
+  // Audio Immersion: Consequence echo sounds handled by useAudioDirector
 
   // Handle atmospheric intro start-now just starts the game directly
   // Pattern teaching happens via Samuel's firstOrb milestone echo (discovery-based learning)
@@ -1317,7 +1302,6 @@ export default function StatefulGameInterface() {
         endingPattern: null,
         hasNewTrust: false,
         hasNewMeeting: false,
-        isMuted: false,
         showReport: false,
         activeInterrupt: shouldShowInterrupt(content.interrupt, gameState.patterns), // D-009: Filter by pattern
         patternVoice: null,
@@ -1414,7 +1398,7 @@ export default function StatefulGameInterface() {
   // Choice handler
   const handleChoice = useCallback(async (choice: EvaluatedChoice) => {
     // Initialize audio on first user interaction (required for mobile)
-    initializeAudio()
+    audio.actions.initialize()
 
     // Prevent race condition from rapid-fire clicks
     if (isProcessingChoiceRef.current) return
@@ -1499,7 +1483,7 @@ export default function StatefulGameInterface() {
           }))
 
           if (result.events.checkIdentityThreshold) {
-            playIdentitySound()
+            audio.actions.triggerIdentitySound()
           }
         }
 
@@ -1517,8 +1501,7 @@ export default function StatefulGameInterface() {
             }
           }))
 
-          // Play sound (reuse identity sound for now)
-          playIdentitySound()
+          audio.actions.triggerIdentitySound()
         }
 
         // 5. Check for NEW THOUGHT UNLOCKS (P3)
@@ -1537,8 +1520,7 @@ export default function StatefulGameInterface() {
             }
           }))
 
-          // Play sound (reuse identity sound for now)
-          playIdentitySound()
+          audio.actions.triggerIdentitySound()
         }
       }
 
@@ -1561,9 +1543,7 @@ export default function StatefulGameInterface() {
           }
         }))
 
-        // Play distinct sound
-        const { playIdentitySound } = await import('@/lib/audio-feedback')
-        playIdentitySound()
+        audio.actions.triggerIdentitySound()
       }
 
       // 7. Voice Revelation Echo ("Surface the Magic")
@@ -1580,9 +1560,7 @@ export default function StatefulGameInterface() {
         logger.info('[StatefulGameInterface] Voice system revelation triggered:', {
           echoText: echo.text.substring(0, 50)
         })
-        // Play identity sound for the meaningful moment
-        const { playIdentitySound: playRevelation } = await import('@/lib/audio-feedback')
-        playRevelation()
+        audio.actions.triggerIdentitySound()
       }
 
       // Check for identity threshold (existing logic)
@@ -1604,7 +1582,7 @@ export default function StatefulGameInterface() {
       // 2. Process Audio Events
       if (result.events.playSound) {
         const { type, id } = result.events.playSound
-        if (type === 'pattern' && id) playPatternSound(id)
+        if (type === 'pattern' && id) audio.actions.triggerPatternSound(id)
         // other types handled implicitly or below
       }
 
@@ -1640,144 +1618,75 @@ export default function StatefulGameInterface() {
       const patternSensation = result.patternSensation
 
       // 5. Generate Consequence Echoes (Dialogue Feedback)
-      let consequenceEcho: ConsequenceEcho | null = null
-      // D-010: Get current trust level for echo intensity
-      const currentTrust = newGameState.characters.get(state.currentCharacterId)?.trust ?? 5
+      // Phase 1.2: Trust feedback extracted to pure function
+      const trustFeedback = computeTrustFeedback({
+        trustDelta,
+        characterId: state.currentCharacterId,
+        newGameState,
+        choicePattern: choice.choice.pattern as PatternType | undefined,
+        nodeId: state.currentNode?.nodeId || 'unknown',
+        choiceText: choice.choice.text,
+      })
+      let consequenceEcho: ConsequenceEcho | null = trustFeedback.consequenceEcho
 
-      if (trustDelta !== 0) {
-        // Check if pattern resonance affected this trust change
-        // Resonance descriptions are more meaningful than generic trust echoes
-        const choicePattern = choice.choice.pattern as PatternType | undefined
-        const resonanceResult = calculateResonantTrustChange(
-          trustDelta,
-          state.currentCharacterId,
-          newGameState.patterns as Record<PatternType, number>,
-          choicePattern
-        )
-
-        // Use resonance echo if triggered, otherwise fall back to generic trust echo
-        if (resonanceResult.resonanceTriggered && resonanceResult.resonanceDescription) {
-          consequenceEcho = createResonanceEchoFromDescription(resonanceResult.resonanceDescription)
-          logger.info('[StatefulGameInterface] Resonance echo triggered:', {
-            characterId: state.currentCharacterId,
-            description: resonanceResult.resonanceDescription.substring(0, 50) + '...'
-          })
-        } else {
-          consequenceEcho = getConsequenceEcho(state.currentCharacterId, trustDelta)
-
-          // P4: If no direct trust feedback, check for relationship echoes (Gossip)
-          if (!consequenceEcho) {
-            const crossEcho = getRelevantCrossCharacterEcho(state.currentCharacterId, newGameState)
-            if (crossEcho) {
-              consequenceEcho = {
-                text: crossEcho.text,
-                emotion: crossEcho.emotion,
-                timing: 'immediate',
-                trustAtEvent: currentTrust
-              }
-              logger.info('[StatefulGameInterface] Cross-Character echo triggered', {
-                speaker: state.currentCharacterId,
-                text: crossEcho.text.substring(0, 30)
-              })
-            }
-          }
-        }
-
-        // D-010: Add trust level to echo for intensity-based display
-        if (consequenceEcho) {
-          consequenceEcho = { ...consequenceEcho, trustAtEvent: currentTrust }
-        }
-
-        // Audio feedback for trust increase
-        if (trustDelta > 0) {
-          playTrustSound()
-        }
-
-        // D-039: Record trust change in timeline for visualization
+      if (trustFeedback.playTrustSound) {
+        audio.actions.triggerTrustSound()
+      }
+      if (trustFeedback.updatedTimeline) {
         const charState = newGameState.characters.get(state.currentCharacterId)
-        if (charState?.trustTimeline) {
-          charState.trustTimeline = recordTrustChange(
-            charState.trustTimeline,
-            charState.trust,
-            trustDelta,
-            state.currentNode?.nodeId || 'unknown',
-            choice.choice.text.substring(0, 50)
-          )
-          logger.info('[StatefulGameInterface] D-039 Trust timeline recorded:', {
-            characterId: state.currentCharacterId,
-            newTrust: charState.trust,
-            delta: trustDelta
-          })
+        if (charState) {
+          charState.trustTimeline = trustFeedback.updatedTimeline
         }
       }
 
-      // Also check for pattern recognition echos (when player crosses a threshold)
-      const crossedPattern = checkPatternEchoThreshold(previousPatterns, newGameState.patterns, 5) // Check multiples of 5
-      let patternShiftMsg: string | null = null
+      // Phase 1.2: Pattern echo extracted to pure function
+      const patternEchoResult = computePatternEcho({
+        previousPatterns,
+        newPatterns: newGameState.patterns,
+        characterId: state.currentCharacterId,
+        existingEcho: consequenceEcho,
+      })
+      let patternShiftMsg: string | null = patternEchoResult.patternShiftMsg
 
-      if (crossedPattern) {
-        // Pattern recognition takes precedence over trust echo if no trust change
-        if (!consequenceEcho) {
-          consequenceEcho = getPatternRecognitionEcho(state.currentCharacterId, crossedPattern)
-        }
-
-        // Trigger distinct "Identity Shift" sensation
-        const level = (newGameState.patterns as any)[crossedPattern] || 0
-        const patternName = crossedPattern.charAt(0).toUpperCase() + crossedPattern.slice(1)
-        patternShiftMsg = `Worldview Shift: ${patternName} (Level ${level})`
-        playPatternSound(crossedPattern) // Ensure sound plays
+      if (patternEchoResult.consequenceEcho && !consequenceEcho) {
+        consequenceEcho = patternEchoResult.consequenceEcho
+      }
+      if (patternEchoResult.crossedPattern) {
+        audio.actions.triggerPatternSound(patternEchoResult.crossedPattern)
       }
 
-      // Check for orb milestone echoes-Samuel acknowledges growth
-      // Only shows when talking to Samuel and there's an unacknowledged milestone
-      if (!consequenceEcho && state.currentCharacterId === 'samuel') {
-        const unacknowledgedMilestone = getUnacknowledgedMilestone()
-        if (unacknowledgedMilestone) {
-          consequenceEcho = getOrbMilestoneEcho(unacknowledgedMilestone)
-          if (consequenceEcho) {
-            acknowledgeMilestone(unacknowledgedMilestone)
-            // Audio feedback for milestone achievement
-            playMilestoneSound()
-          }
+      // Phase 1.2: Orb milestone echo extracted to pure function
+      const milestoneResult = computeOrbMilestoneEcho({
+        characterId: state.currentCharacterId,
+        existingEcho: consequenceEcho,
+        getUnacknowledgedMilestone,
+      })
+      if (milestoneResult.consequenceEcho) {
+        consequenceEcho = milestoneResult.consequenceEcho
+        if (milestoneResult.milestoneToAcknowledge) {
+          acknowledgeMilestone(milestoneResult.milestoneToAcknowledge as keyof OrbMilestones)
         }
+        audio.actions.triggerMilestoneSound()
       }
 
-      // Check for character transformation eligibility (dramatic reveal moments)
-      // Transformations trigger when trust + flags + patterns align
-      let eligibleTransformation: TransformationMoment | null = null
-      if (trustDelta > 0) { // Only check when trust increases
-        const zustandState = useGameStore.getState()
-        const characterData = newGameState.characters.get(state.currentCharacterId)
-        if (characterData) {
-          eligibleTransformation = checkTransformationEligible(
-            state.currentCharacterId,
-            {
-              trust: characterData.trust,
-              knowledgeFlags: characterData.knowledgeFlags,
-              globalFlags: newGameState.globalFlags,
-              patterns: newGameState.patterns as Record<PatternType, number>,
-              witnessedTransformations: zustandState.witnessedTransformations
-            }
-          )
-
-          // If transformation is eligible, mark it as witnessed and apply consequences
-          if (eligibleTransformation) {
-            zustandState.markTransformationWitnessed(eligibleTransformation.id)
-
-            // Apply transformation consequences (set global flags)
-            for (const flag of eligibleTransformation.consequences.globalFlagsSet) {
-              newGameState.globalFlags.add(flag)
-            }
-
-            // Show transformation as a special consequence echo
-            // The first line of transformation dialogue becomes the echo
-            if (eligibleTransformation.transformation.triggerDialogue.length > 0) {
-              consequenceEcho = {
-                text: eligibleTransformation.transformation.triggerDialogue[0],
-                emotion: eligibleTransformation.transformation.emotionArc[0],
-                timing: 'immediate'
-              }
-            }
+      // Phase 1.2: Transformation eligibility extracted to pure function
+      const zustandStateForTransform = useGameStore.getState()
+      const eligibleTransformation = computeTransformation({
+        trustDelta,
+        characterId: state.currentCharacterId,
+        newGameState,
+        witnessedTransformations: zustandStateForTransform.witnessedTransformations,
+      })
+      if (eligibleTransformation) {
+        zustandStateForTransform.markTransformationWitnessed(eligibleTransformation.id)
+        for (const flag of eligibleTransformation.consequences.globalFlagsSet) {
+          newGameState.globalFlags.add(flag)
+        }
+        if (eligibleTransformation.transformation.triggerDialogue.length > 0) {
+          consequenceEcho = {
+            text: eligibleTransformation.transformation.triggerDialogue[0],
+            emotion: eligibleTransformation.transformation.emotionArc[0],
+            timing: 'immediate'
           }
         }
       }
@@ -2678,7 +2587,7 @@ export default function StatefulGameInterface() {
         // Increment boundary counter in game state
         newGameState = incrementBoundaryCounter(newGameState)
         // Audio feedback for session/episode boundary
-        playEpisodeSound()
+        audio.actions.triggerEpisodeSound()
       }
 
       const content = DialogueGraphNavigator.selectContent(nextNode, targetCharacter.conversationHistory, newGameState)
@@ -2713,59 +2622,30 @@ export default function StatefulGameInterface() {
         })
       }
 
-      // Skill tracking logic (abbreviated for safety, same as before)
-      // Note: Toast removed as user found it intrusive. Skills still tracked silently.
-      let demonstratedSkills: string[] = []
+      // Phase 1.2: Skill tracking extracted to pure function
+      const skillResult = computeSkillTracking({
+        choiceSkills: choice.choice.skills as string[] | undefined,
+        currentNodeId: state.currentNode?.nodeId,
+        currentNodeSpeaker: state.currentNode?.speaker,
+        choiceText: choice.choice.text,
+        choicePattern: choice.choice.pattern,
+        gamePatterns: state.gameState.patterns,
+        recentSkills: state.recentSkills,
+      })
 
-      if (skillTrackerRef.current && state.currentNode && choice.choice.skills) {
-        demonstratedSkills = choice.choice.skills as string[]
-
-        // Generate rich context for skill demonstrations (2-3 sentences)
-        // Uses available dialogue data instead of manual mappings
-        const speaker = state.currentNode.speaker
-        const choiceText = choice.choice.text.length > 60
-          ? choice.choice.text.substring(0, 57) + '...'
-          : choice.choice.text
-        const pattern = choice.choice.pattern || 'exploring'
-
-        // Build context with character, choice, and skills
-        let context = `In conversation with ${speaker}, `
-        context += `the player chose "${choiceText}" `
-        context += `(${pattern} pattern), `
-        context += `demonstrating ${demonstratedSkills.join(', ')}. `
-
-        // Add relationship/pattern depth if available
-        const dominantPattern = Object.entries(state.gameState.patterns)
-          .reduce((max, curr) => curr[1] > max[1] ? curr : max, ['exploring', 0])
-        if (dominantPattern[1] >= 5) {
-          context += `This aligns with their emerging ${dominantPattern[0]} identity. `
-        }
-
-        // Add scene context
-        context += `[${state.currentNode.nodeId}]`
-
+      if (skillTrackerRef.current && skillResult.skillContext && state.currentNode) {
         skillTrackerRef.current.recordSkillDemonstration(
           state.currentNode.nodeId,
           choice.choice.choiceId,
-          demonstratedSkills,
-          context
+          skillResult.demonstratedSkills,
+          skillResult.skillContext,
         )
       }
 
-      const skillsToKeep = demonstratedSkills.length > 0
-        ? [...demonstratedSkills, ...state.recentSkills].slice(0, 10)
-        : state.recentSkills.slice(0, 8)
+      const skillsToKeep = skillResult.skillsToKeep
 
-      // Trust feedback enabled (Subtle Toast)
-      let consequenceFeedback: { message: string } | null = null
-
-      if (trustDelta !== 0) {
-        const charName = state.currentCharacterId.charAt(0).toUpperCase() + state.currentCharacterId.slice(1)
-        const sign = trustDelta > 0 ? '+' : ''
-        consequenceFeedback = {
-          message: `Trust (${charName}): ${sign}${trustDelta}`
-        }
-      }
+      // Phase 1.2: Trust feedback message extracted to pure function
+      const consequenceFeedback = computeTrustFeedbackMessage(trustDelta, state.currentCharacterId)
 
 
       const completedArc = detectArcCompletion(state.gameState, newGameState)
@@ -2915,7 +2795,6 @@ export default function StatefulGameInterface() {
         endingPattern: dominantPattern,  // Dominant pattern for ending
         hasNewTrust: trustDelta !== 0 ? true : state.hasNewTrust,  // Track trust changes for Constellation attention
         hasNewMeeting: isFirstMeeting ? true : state.hasNewMeeting,  // Track first meeting for Constellation nudge
-        isMuted: state.isMuted,
         showReport: state.showReport,
         isProcessing: false, // ISP FIX: Unlock UI
         patternVoice,  // Disco Elysium-style inner monologue
@@ -3648,21 +3527,13 @@ export default function StatefulGameInterface() {
                 {/* Unified Settings Menu - Consolidates game settings, accessibility, and account */}
                 <UnifiedMenu
                   onShowReport={() => setState(prev => ({ ...prev, showReport: true }))}
-                  isMuted={state.isMuted}
+                  isMuted={audio.state.isMuted}
                   onToggleMute={() => {
-                    const newMuted = !state.isMuted
-                    console.log(`[UnifiedMenu] Toggling Mute to: ${newMuted}`)
-                    setState(prev => ({ ...prev, isMuted: newMuted }))
-                    localStorage.setItem('lux_audio_muted', String(newMuted))
-                    synthEngine.setMute(newMuted)
-                    setAudioEnabled(!newMuted)
-                    pushSettingsToCloud()
+                    audio.actions.toggleMute()
                   }}
-                  volume={audioVolume}
+                  volume={audio.state.audioVolume}
                   onVolumeChange={(newVolume) => {
-                    setAudioVolume(newVolume)
-                    localStorage.setItem('lux_audio_volume', String(newVolume))
-                    pushSettingsToCloud()
+                    audio.actions.setVolume(newVolume)
                   }}
                   playerId={state.gameState?.playerId}
                 />
