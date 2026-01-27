@@ -119,8 +119,24 @@ function withGodModeFlag<T>(fn: () => T): T {
 
 /**
  * Create God Mode API instance
+ * SECURITY: Only callable in development or by authenticated educators
  */
 export function createGodModeAPI(): GodModeAPI {
+  if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined' && !window.__GOD_MODE_AUTHORIZED) {
+    console.error('[God Mode] Blocked: Not authorized in production.')
+    // Return a no-op API that logs warnings
+    const handler: ProxyHandler<GodModeAPI> = {
+      get(_target, prop) {
+        if (typeof prop === 'string') {
+          return (..._args: unknown[]) => {
+            console.warn(`[God Mode] ${prop}() blocked in production.`)
+            return null
+          }
+        }
+      }
+    }
+    return new Proxy({} as GodModeAPI, handler)
+  }
   return {
     // ═══════════════════════════════════════════════════════════════════════════
     // TRUST MANAGEMENT

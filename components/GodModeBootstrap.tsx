@@ -31,6 +31,11 @@ export function GodModeBootstrap() {
 
     // Lazy load God Mode API to avoid bloating production bundle
     import('@/lib/dev-tools').then(({ createGodModeAPI }) => {
+      // Set authorization flag for production educator access
+      if (isEducator) {
+        window.__GOD_MODE_AUTHORIZED = true
+      }
+
       // Expose to window
       window.godMode = createGodModeAPI()
 

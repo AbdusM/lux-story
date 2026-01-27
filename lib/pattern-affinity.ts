@@ -759,6 +759,190 @@ export const CHARACTER_PATTERN_AFFINITIES: Record<string, CharacterPatternAffini
     ]
   },
 
+  quinn: {
+    characterId: 'quinn',
+    primary: 'analytical',        // Finance requires rigorous number-crunching
+    secondary: 'patience',        // Markets reward those who wait
+    neutral: ['building', 'exploring'],
+    friction: 'helping',          // Quinn believes in self-reliance over handouts
+
+    resonanceDescriptions: [
+      {
+        pattern: 'analytical',
+        description: 'Quinn\'s quills settle. You speak the language of numbers and risk.'
+      },
+      {
+        pattern: 'patience',
+        description: 'Quinn respects your willingness to wait for the right opportunity.'
+      },
+      {
+        pattern: 'building',
+        description: 'Quinn sees value in your constructive approach. Building wealth is building, after all.'
+      },
+      {
+        pattern: 'exploring',
+        description: 'Quinn finds your curiosity interesting—diversification starts with exploration.'
+      },
+      {
+        pattern: 'helping',
+        description: 'Quinn bristles slightly. "Charity is admirable, but it doesn\'t compound."'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'analytical',
+        threshold: 40,
+        unlockedNodeId: 'quinn_risk_assessment',
+        description: 'Quinn shares their personal risk assessment framework'
+      },
+      {
+        pattern: 'patience',
+        threshold: 50,
+        unlockedNodeId: 'quinn_long_game',
+        description: 'Quinn reveals the long game strategy most people miss'
+      }
+    ]
+  },
+
+  dante: {
+    characterId: 'dante',
+    primary: 'exploring',         // Sales is about discovering what people need
+    secondary: 'building',        // Building relationships and pipelines
+    neutral: ['helping', 'analytical'],
+    friction: 'patience',         // Dante thrives on momentum, not waiting
+
+    resonanceDescriptions: [
+      {
+        pattern: 'exploring',
+        description: 'Dante\'s feathers practically shimmer. "You get it—every conversation is a door."'
+      },
+      {
+        pattern: 'building',
+        description: 'Dante respects your drive to create. Sales is architecture with people.'
+      },
+      {
+        pattern: 'helping',
+        description: 'Dante sees your empathy. The best salespeople genuinely care.'
+      },
+      {
+        pattern: 'analytical',
+        description: 'Dante nods at your precision. Data drives the modern deal.'
+      },
+      {
+        pattern: 'patience',
+        description: 'Dante shifts impatiently. "Timing matters, but waiting too long kills the deal."'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'exploring',
+        threshold: 40,
+        unlockedNodeId: 'dante_million_dollar_lesson',
+        description: 'Dante tells you about the deal that taught them everything'
+      },
+      {
+        pattern: 'building',
+        threshold: 50,
+        unlockedNodeId: 'dante_relationship_map',
+        description: 'Dante shares how they map relationships strategically'
+      }
+    ]
+  },
+
+  nadia: {
+    characterId: 'nadia',
+    primary: 'analytical',        // AI strategy demands deep analytical thinking
+    secondary: 'exploring',       // Innovation requires curiosity
+    neutral: ['building', 'patience'],
+    friction: 'helping',          // Nadia is wary of AI "helping" without understanding consequences
+
+    resonanceDescriptions: [
+      {
+        pattern: 'analytical',
+        description: 'Nadia\'s owl-like gaze sharpens with approval. You think in systems.'
+      },
+      {
+        pattern: 'exploring',
+        description: 'Nadia appreciates your curiosity. AI reveals itself to those who question.'
+      },
+      {
+        pattern: 'building',
+        description: 'Nadia respects your maker instinct. AI needs builders, not just theorists.'
+      },
+      {
+        pattern: 'patience',
+        description: 'Nadia nods. AI strategy is a long game most people don\'t have the patience for.'
+      },
+      {
+        pattern: 'helping',
+        description: 'Nadia\'s expression cools. "The most dangerous AI is the one built to \'help\' without understanding."'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'analytical',
+        threshold: 40,
+        unlockedNodeId: 'nadia_ai_framework',
+        description: 'Nadia shares her framework for evaluating AI opportunities'
+      },
+      {
+        pattern: 'exploring',
+        threshold: 50,
+        unlockedNodeId: 'nadia_future_vision',
+        description: 'Nadia reveals her vision for AI\'s transformative potential'
+      }
+    ]
+  },
+
+  isaiah: {
+    characterId: 'isaiah',
+    primary: 'helping',           // Nonprofit leadership is service-driven
+    secondary: 'building',        // Building organizations and communities
+    neutral: ['patience', 'exploring'],
+    friction: 'analytical',       // Pure metrics miss the human impact
+
+    resonanceDescriptions: [
+      {
+        pattern: 'helping',
+        description: 'Isaiah\'s steady presence warms. You understand that service is strength.'
+      },
+      {
+        pattern: 'building',
+        description: 'Isaiah respects your drive to construct something lasting.'
+      },
+      {
+        pattern: 'patience',
+        description: 'Isaiah appreciates your steadiness. Change takes generations, not quarters.'
+      },
+      {
+        pattern: 'exploring',
+        description: 'Isaiah values your curiosity about how communities actually work.'
+      },
+      {
+        pattern: 'analytical',
+        description: 'Isaiah\'s gaze becomes careful. "Impact can\'t always be measured in spreadsheets."'
+      }
+    ],
+
+    patternUnlocks: [
+      {
+        pattern: 'helping',
+        threshold: 40,
+        unlockedNodeId: 'isaiah_community_story',
+        description: 'Isaiah shares the community story that shaped his mission'
+      },
+      {
+        pattern: 'building',
+        threshold: 50,
+        unlockedNodeId: 'isaiah_organization_vision',
+        description: 'Isaiah reveals his vision for building lasting nonprofit infrastructure'
+      }
+    ]
+  },
+
   elena: {
     characterId: 'elena',
     primary: 'patience',          // Archives require patience and preservation

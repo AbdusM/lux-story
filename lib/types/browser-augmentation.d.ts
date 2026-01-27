@@ -70,6 +70,12 @@ declare global {
      * Flag to prevent sync queue hammering during bulk God Mode operations
      */
     __GOD_MODE_ACTIVE?: boolean
+
+    /**
+     * Flag set by GodModeBootstrap when educator role is verified
+     * Required for createGodModeAPI() to function in production
+     */
+    __GOD_MODE_AUTHORIZED?: boolean
   }
 }
 

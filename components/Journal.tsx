@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { usePullToDismiss, pullToDismissPresets } from "@/hooks/usePullToDismiss"
 import { useReaderMode } from "@/hooks/useReaderMode"
-import { Users, Zap, Compass, TrendingUp, X, Crown, Cpu, Play, Sparkles, AlertTriangle, Brain, Building2, Type } from "lucide-react"
+import { Users, Zap, Compass, TrendingUp, X, Crown, Cpu, Play, Sparkles, AlertTriangle, Brain, Building2, Type, Puzzle } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useConstellationData } from "@/hooks/useConstellationData"
 import { useInsights } from "@/hooks/useInsights"
@@ -21,6 +21,7 @@ import { ToolkitView } from "./ToolkitView"
 import { SimulationsArchive } from "./SimulationsArchive"
 import { SimulationGodView } from "./journal/SimulationGodView"
 import { OpportunitiesView } from "./journal/OpportunitiesView"
+import { SynthesisPuzzlesView } from "./journal/SynthesisPuzzlesView"
 import { CareerRecommendationsView } from "./journal/CareerRecommendationsView"
 import { SkillCombosView } from "./journal/SkillCombosView"
 import { OrbDetailPanel } from "./OrbDetailPanel"
@@ -35,7 +36,7 @@ interface JournalProps {
   onClose: () => void
 }
 
-type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'toolkit' | 'simulations' | 'cognition' | 'analysis' | 'god_mode' | 'opportunities' | 'careers' | 'combos'
+type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'toolkit' | 'simulations' | 'cognition' | 'analysis' | 'god_mode' | 'opportunities' | 'careers' | 'combos' | 'mysteries'
 
 // Tab content variants - respects prefers-reduced-motion via Framer Motion's global setting
 // but we also pass explicit reduced variants for clarity
@@ -122,7 +123,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     god_mode: false,
     opportunities: hasNewOpportunities,
     careers: hasNewCareers,
-    combos: hasNewCombos
+    combos: hasNewCombos,
+    mysteries: false
   }
 
 
@@ -143,6 +145,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     { id: 'careers', label: 'Careers', icon: TrendingUp },
     { id: 'combos', label: 'Combos', icon: Zap },
     { id: 'opportunities', label: 'Opportunities', icon: Building2 },
+    { id: 'mysteries', label: 'Mysteries', icon: Puzzle },
     { id: 'mind', label: 'Mind', icon: TrendingUp },
     { id: 'toolkit', label: 'Toolkit', icon: Cpu },
     { id: 'simulations', label: 'Sims', icon: Play },
@@ -346,6 +349,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                     {activeTab === 'opportunities' && <OpportunitiesView />}
                     {activeTab === 'careers' && <CareerRecommendationsView />}
                     {activeTab === 'combos' && <SkillCombosView />}
+                    {activeTab === 'mysteries' && <SynthesisPuzzlesView />}
                     {activeTab === 'god_mode' && <SimulationGodView onClose={onClose} />}
                   </motion.div>
                 )}

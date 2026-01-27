@@ -228,6 +228,10 @@ import { computeTrustFeedback, computePatternEcho, computeOrbMilestoneEcho, comp
 import { ExperienceRenderer } from '@/components/game/ExperienceRenderer'
 import { SimulationRenderer } from '@/components/game/SimulationRenderer'
 import { GameErrorBoundary } from '@/components/GameErrorBoundary'
+import { ChatPacedDialogue } from '@/components/ChatPacedDialogue'
+import { ConsequenceEchoDisplay } from '@/components/game/ConsequenceEchoDisplay'
+import { useWaitingRoom } from '@/hooks/useWaitingRoom'
+import { WaitingRoomIndicator, WaitingRoomRevealToast } from '@/components/ui/WaitingRoomIndicator'
 import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
 import { calculateSkillDecay, getSkillDecayNarrative } from '@/lib/assessment-derivatives'
 // Share prompts removed-too obtrusive
@@ -756,6 +760,20 @@ export default function StatefulGameInterface() {
   // Idle ambience system — extracted to hook
   useIdleAmbience({ state, setState })
 
+  // Waiting Room patience mechanic — reveals hidden content when player lingers
+  const [activeWaitingReveal, setActiveWaitingReveal] = useState<{ text: string; type: 'ambient' | 'memory' | 'whisper' | 'insight'; speaker?: string } | null>(null)
+  const waitingRoom = useWaitingRoom({
+    characterId: state.hasStarted ? state.currentCharacterId : null,
+    enabled: state.hasStarted && !state.isProcessing,
+    onReveal: (reveal) => {
+      setActiveWaitingReveal({
+        text: reveal.content.text,
+        type: reveal.content.type,
+        speaker: reveal.content.speaker,
+      })
+    },
+  })
+
   // Helper to clean atmospheric tags
   const cleanContent = (text: string) => {
     return text.replace(/\[atmospheric.*?\]/gi, '').trim()
@@ -1254,23 +1272,44 @@ export default function StatefulGameInterface() {
                             const textEffectClasses = getTextEffectClasses(textEffects)
                             const textEffectStyles = getTextEffectStyles(textEffects)
                             return (
-                              <DialogueDisplay
-                                key="dialogue-display-main"
-                                text={cleanContent(state.gameState ? TextProcessor.process(state.currentContent || '', state.gameState) : (state.currentContent || ''))}
+                              <ChatPacedDialogue
                                 characterName={state.currentNode?.speaker}
-                                characterId={state.currentCharacterId}
-                                gameState={state.gameState ?? undefined}
-                                showAvatar={false}
-                                richEffects={getRichEffectContext(state.currentDialogueContent, state.isLoading, state.recentSkills, state.useChatPacing)}
-                                interaction={state.currentDialogueContent?.interaction}
                                 emotion={state.currentDialogueContent?.emotion}
-                                microAction={state.currentDialogueContent?.microAction}
-                                patternSensation={state.patternSensation}
-                                textEffectClasses={textEffectClasses}
-                                textEffectStyles={textEffectStyles}
-                              />
+                                nodeId={state.currentNode?.nodeId || ''}
+                              >
+                                <DialogueDisplay
+                                  key="dialogue-display-main"
+                                  text={cleanContent(state.gameState ? TextProcessor.process(state.currentContent || '', state.gameState) : (state.currentContent || ''))}
+                                  characterName={state.currentNode?.speaker}
+                                  characterId={state.currentCharacterId}
+                                  gameState={state.gameState ?? undefined}
+                                  showAvatar={false}
+                                  richEffects={getRichEffectContext(state.currentDialogueContent, state.isLoading, state.recentSkills, state.useChatPacing)}
+                                  interaction={state.currentDialogueContent?.interaction}
+                                  emotion={state.currentDialogueContent?.emotion}
+                                  microAction={state.currentDialogueContent?.microAction}
+                                  patternSensation={state.patternSensation}
+                                  textEffectClasses={textEffectClasses}
+                                  textEffectStyles={textEffectStyles}
+                                />
+                              </ChatPacedDialogue>
                             )
                           })()}
+
+                          {/* Consequence Echo — dialogue-based feedback for trust/pattern changes */}
+                          <ConsequenceEchoDisplay echo={state.consequenceEcho} />
+
+                          {/* Pattern sensation — atmospheric feedback after choices */}
+                          {state.patternSensation && (
+                            <motion.p
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ delay: 0.5, duration: 0.4 }}
+                              className="mt-3 text-sm italic text-emerald-300/50 font-serif"
+                            >
+                              {state.patternSensation}
+                            </motion.p>
+                          )}
 
                           {/* ISP: INLINE SIMULATION WIDGET (Handshake Protocol) */}
                           {state.currentNode?.simulation && state.currentNode.simulation.mode === 'inline' && (
@@ -1405,6 +1444,25 @@ export default function StatefulGameInterface() {
         }
 
 
+
+        {/* Waiting Room patience mechanic — subtle indicators and reveal toasts */}
+        <AnimatePresence>
+          {waitingRoom.isBreathing && (
+            <WaitingRoomIndicator
+              isActive={waitingRoom.revealedContent.length > 0}
+              progress={waitingRoom.progressToNext}
+              isBreathing={waitingRoom.isBreathing}
+            />
+          )}
+          {activeWaitingReveal && (
+            <WaitingRoomRevealToast
+              text={activeWaitingReveal.text}
+              type={activeWaitingReveal.type}
+              speaker={activeWaitingReveal.speaker}
+              onComplete={() => setActiveWaitingReveal(null)}
+            />
+          )}
+        </AnimatePresence>
 
         {/* ══════════════════════════════════════════════════════════════════
           OVERLAYS & MODALS-Positioned above everything
