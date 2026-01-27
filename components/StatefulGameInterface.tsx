@@ -242,6 +242,9 @@ import type { GameInterfaceState } from '@/lib/game-interface-types'
 import { characterNames } from '@/lib/game-interface-types'
 import { shouldShowInterrupt } from '@/lib/interrupt-visibility'
 import { AmbientDescriptionDisplay } from '@/components/game/AmbientDescriptionDisplay'
+import { GameHeader } from '@/components/game/GameHeader'
+import { GameFooter } from '@/components/game/GameFooter'
+import { EndingPanel } from '@/components/game/EndingPanel'
 import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
 
 export default function StatefulGameInterface() {
@@ -1119,92 +1122,24 @@ export default function StatefulGameInterface() {
         {/* ══════════════════════════════════════════════════════════════════
           FIXED HEADER-Always visible at top (Claude/ChatGPT pattern)
           ══════════════════════════════════════════════════════════════════ */}
-        <header
-          className="relative flex-shrink-0 glass-panel border-b border-white/10 z-10"
-          style={{ paddingTop: 'env(safe-area-inset-top)' }}
-        >
-          <div className="max-w-4xl mx-auto px-3 sm:px-4">
-            {/* Top Row-Title and Navigation */}
-            <div className="flex items-center justify-between py-2 border-b border-white/5">
-              <Link href="/" className="text-sm font-semibold text-slate-100 hover:text-white transition-colors truncate min-w-0 flex flex-col">
-                <span>Terminus</span>
-                {/* Station Status-Always visible compact dashboard */}
-                <StationStatusBadge gameState={state.gameState} />
-              </Link>
-              <div className="flex items-center gap-1 flex-shrink-0">
-                {/* Hero Badge-Player Identity */}
-                {state.gameState && (
-                  <HeroBadge
-                    patterns={state.gameState.patterns}
-                    compact={true}
-                    className="mr-2 hidden sm:flex"
-                  />
-                )}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setState(prev => ({ ...prev, showJournal: true }))}
-                  className={cn(
-                    "relative h-9 w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md",
-                    hasNewOrbs ? "text-amber-400 nav-attention-halo nav-attention-halo-amber" : ""
-                  )}
-                  title="The Prism"
-                >
-                  <BookOpen className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setState(prev => ({ ...prev, showConstellation: true, hasNewTrust: false, hasNewMeeting: false }))}
-                  className={cn(
-                    "relative h-9 w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md",
-                    (state.hasNewTrust || state.hasNewMeeting) ? "text-purple-400 nav-attention-marquee nav-attention-halo nav-attention-halo-purple" : ""
-                  )}
-                  title="Your Journey"
-                >
-                  <Stars className="h-4 w-4" />
-                </Button>
-
-                {/* Unified Settings Menu - Consolidates game settings, accessibility, and account */}
-                <UnifiedMenu
-                  onShowReport={() => setState(prev => ({ ...prev, showReport: true }))}
-                  isMuted={audio.state.isMuted}
-                  onToggleMute={() => {
-                    audio.actions.toggleMute()
-                  }}
-                  volume={audio.state.audioVolume}
-                  onVolumeChange={(newVolume) => {
-                    audio.actions.setVolume(newVolume)
-                  }}
-                  playerId={state.gameState?.playerId}
-                />
-
-                {/* Connection Status Indicator */}
-                <SyncStatusIndicator />
-              </div>
-            </div>
-            {/* Character Info Row-extra vertical padding for mobile touch */}
-            {/* Only show if current node has a speaker (hide for atmospheric narration) */}
-            {currentCharacter && state.currentNode?.speaker && (
-              <div
-                className="flex items-center justify-between py-3 sm:py-2"
-                data-testid="character-header"
-                data-character-id={state.currentCharacterId}
-              >
-                <div className="flex items-center gap-2 font-medium text-slate-200 text-sm sm:text-base">
-                  <CharacterAvatar
-                    characterName={characterNames[state.currentCharacterId]}
-                    size="sm"
-                  />
-                  <span data-testid="speaker-name" className="truncate max-w-[150px] sm:max-w-none">{characterNames[state.currentCharacterId]}</span>
-                </div>
-                <div className="flex flex-col items-end">
-                  {/* Trust Label hidden for immersion */}
-                </div>
-              </div>
-            )}
-          </div>
-        </header>
+        <GameHeader
+          gameState={state.gameState}
+          currentCharacterId={state.currentCharacterId}
+          currentNode={state.currentNode}
+          hasCurrentCharacter={!!currentCharacter}
+          hasNewOrbs={hasNewOrbs}
+          hasNewTrust={state.hasNewTrust}
+          hasNewMeeting={state.hasNewMeeting}
+          audio={{
+            isMuted: audio.state.isMuted,
+            audioVolume: audio.state.audioVolume,
+            toggleMute: () => audio.actions.toggleMute(),
+            setVolume: (v) => audio.actions.setVolume(v),
+          }}
+          onShowJournal={() => setState(prev => ({ ...prev, showJournal: true }))}
+          onShowConstellation={() => setState(prev => ({ ...prev, showConstellation: true, hasNewTrust: false, hasNewMeeting: false }))}
+          onShowReport={() => setState(prev => ({ ...prev, showReport: true }))}
+        />
 
         {/* ══════════════════════════════════════════════════════════════════
           SCROLLABLE DIALOGUE AREA-Middle section
@@ -1403,160 +1338,37 @@ export default function StatefulGameInterface() {
 
             {/* Ending State-Shows in scroll area when conversation complete */}
             {isEnding && (
-              <Card className={cn(
-                "mt-4 rounded-xl shadow-md",
-                state.gameState && isJourneyComplete(state.gameState) ? "bg-gradient-to-b from-amber-50 to-white border-amber-200" : ""
-              )}>
-                <CardContent className="p-4 sm:p-6 text-center">
-                  {state.gameState && isJourneyComplete(state.gameState) ? (
-                    <>
-                      {/* Journey Complete-Full celebration */}
-                      <div className="mb-4">
-                        <Compass className="w-10 h-10 mx-auto text-amber-600 mb-2" />
-                        <h3 className="text-xl sm:text-2xl font-bold text-slate-800 mb-2">
-                          The Station Knows You Now
-                        </h3>
-                        <p className="text-sm text-slate-600 italic mb-4">
-                          Your journey through Terminus is complete.
-                        </p>
-                      </div>
-                      <div className="space-y-3">
-                        <Button
-                          onClick={() => {
-                            if (state.gameState) {
-                              const demonstrations = skillTrackerRef.current?.getAllDemonstrations() || []
-                              const trackedSkills = useGameStore.getState().skills // Get tracked skills from game store
-                              const narrative = generateJourneyNarrative(state.gameState, demonstrations, trackedSkills)
-                              setState(prev => ({ ...prev, showJourneySummary: true, journeyNarrative: narrative }))
-                            }
-                          }}
-                          className="w-full min-h-[48px] bg-amber-600 hover:bg-amber-700 text-white"
-                        >
-                          See Your Journey
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          onClick={() => setState(prev => ({ ...prev, showReport: true }))}
-                          className="w-full min-h-[48px] bg-slate-900 text-white hover:bg-slate-700 border border-slate-700"
-                        >
-                          Export Career Profile
-                        </Button>
-                        <Button
-                          variant="outline"
-                          onClick={handleReturnToStation}
-                          className="w-full min-h-[48px] active:scale-[0.98] transition-transform"
-                        >
-                          Continue Exploring
-                        </Button>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      {/* Conversation Complete-but journey continues */}
-                      <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3 sm:mb-4">
-                        Conversation Complete
-                      </h3>
-                      <Button
-                        variant="outline"
-                        onClick={handleReturnToStation}
-                        className="w-full min-h-[48px] active:scale-[0.98] transition-transform"
-                      >
-                        Return to Station
-                      </Button>
-                    </>
-                  )}
-                </CardContent>
-              </Card>
+              <EndingPanel
+                gameState={state.gameState}
+                onSeeJourney={() => {
+                  if (state.gameState) {
+                    const demonstrations = skillTrackerRef.current?.getAllDemonstrations() || []
+                    const trackedSkills = useGameStore.getState().skills
+                    const narrative = generateJourneyNarrative(state.gameState, demonstrations, trackedSkills)
+                    setState(prev => ({ ...prev, showJourneySummary: true, journeyNarrative: narrative }))
+                  }
+                }}
+                onExportProfile={() => setState(prev => ({ ...prev, showReport: true }))}
+                onContinueExploring={handleReturnToStation}
+                onReturnToStation={handleReturnToStation}
+              />
             )}
           </div>
         </main >
 
         {/* ══════════════════════════════════════════════════════════════════
           CHOICES PANEL-Positioned for optimal flow
-          PC: Closer to content (not stuck at very bottom)
-          Mobile: Bottom with proper safe area padding
           ══════════════════════════════════════════════════════════════════ */}
-        < AnimatePresence mode="wait" >
-          {!isEnding && (
-            <footer
-              className="flex-shrink-0 sticky bottom-0 glass-panel max-w-4xl mx-auto w-full px-3 sm:px-4 z-20"
-              style={{
-                // SINGLE SCROLL REFACTOR: Sticky footer with safe area padding
-                // Chrome mobile has 48-56px bottom bar that's NOT in safe-area-inset
-                paddingBottom: 'max(64px, env(safe-area-inset-bottom, 64px))'
-              }}
-            >
-              {/* Response label - compact on mobile */}
-              <div className="px-4 sm:px-6 pt-2 pb-0.5 text-center">
-                <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 uppercase tracking-[0.1em]">
-                  Your Response
-                </span>
-              </div>
-
-              <div className="px-4 sm:px-6 pt-1 pb-2">
-                {/* Scrollable choices container with scroll indicator */}
-                <div className="relative w-full">
-                  {/* SINGLE SCROLL REFACTOR: Removed nested scroll - choices expand naturally */}
-                  {/* For >3 choices, TICKET-002 will add bottom sheet */}
-                  <div
-                    id="choices-container"
-                    className="w-full"
-                  >
-                    <GameChoices
-                      choices={(() => {
-                        // Hoist pivotal check effectively
-                        const nodeTags = state.currentNode?.tags || []
-                        const isNodePivotal = nodeTags.some(tag =>
-                          ['pivotal', 'defining_moment', 'final_choice', 'climax', 'revelation', 'introduction'].includes(tag)
-                        )
-
-                        return filterChoicesByLoad(
-                          state.availableChoices,
-                          cognitiveLoad,
-                          undefined, // Todo: Pass dominant pattern
-                          isNodePivotal // Bypass filtering for pivotal moments
-                        ).map((c) => {
-                          // Find original index for the callback
-                          const originalIndex = state.availableChoices.indexOf(c)
-                          // Recalculate pivotal for UI styling (redundant but safe)
-                          // or just use isNodePivotal if appropriate, but UI expects per-choice styling
-                          // Actually GameChoices uses the 'pivotal' prop for specific styling
-
-                          const voicedText = state.gameState ? getVoicedChoiceText(
-                            c.choice.text,
-                            c.choice.voiceVariations,
-                            state.gameState.patterns
-                          ) : c.choice.text
-                          return {
-                            text: voicedText,
-                            pattern: c.choice.pattern,
-                            feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
-                            pivotal: isNodePivotal,
-                            requiredOrbFill: c.choice.requiredOrbFill,
-                            next: String(originalIndex)
-                          }
-                        })
-                      })()}
-                      isProcessing={state.isProcessing}
-                      orbFillLevels={orbFillLevels}
-                      onChoice={(c) => {
-                        const index = parseInt(c.next || '0', 10)
-                        const original = state.availableChoices[index]
-                        if (original) handleChoice(original)
-                      }}
-                      // FIX: Always use glass mode for dark theme (prevents white background issue)
-                      glass={true}
-                      playerPatterns={state.gameState?.patterns}
-                      cognitiveLoad={cognitiveLoad}
-                    />
-                  </div>
-
-                  {/* Scroll indicator removed based on user feedback (often unnecessary) */}
-                </div>
-              </div>
-            </footer>
-          )}
-        </AnimatePresence>
+        <GameFooter
+          isEnding={isEnding}
+          availableChoices={state.availableChoices}
+          currentNode={state.currentNode}
+          gameState={state.gameState}
+          isProcessing={state.isProcessing}
+          orbFillLevels={orbFillLevels}
+          cognitiveLoad={cognitiveLoad}
+          onChoice={handleChoice}
+        />
 
         {/* Share prompts removed-too obtrusive */}
 
