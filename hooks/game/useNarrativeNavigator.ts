@@ -42,8 +42,11 @@ export interface NavigationResult {
   availableChoices: EvaluatedChoice[]
 }
 
+export type NavigationErrorCode = 'MISSING_GRAPH' | 'MISSING_NODE' | 'MISSING_CHARACTER'
+
 export interface NavigationError {
   success: false
+  errorCode: NavigationErrorCode
   error: {
     title: string
     message: string
@@ -68,6 +71,7 @@ export function resolveNode(
   if (!searchResult) {
     return {
       success: false,
+      errorCode: 'MISSING_GRAPH',
       error: {
         title: 'Navigation Error',
         message: `Could not find node "${nodeId}". Please refresh the page to restart.`,
@@ -80,6 +84,7 @@ export function resolveNode(
   if (!nextNode) {
     return {
       success: false,
+      errorCode: 'MISSING_NODE',
       error: {
         title: 'Navigation Error',
         message: `Node "${nodeId}" not found in ${searchResult.graph.metadata?.title || 'graph'}. Please refresh.`,

@@ -1,4 +1,7 @@
-/* eslint-disable */
+/* eslint-disable @typescript-eslint/no-unused-vars -- God Component has many imports used conditionally; cleanup tracked separately */
+/* eslint-disable @typescript-eslint/no-explicit-any -- Legacy casts in simulation props; tracked for cleanup */
+/* eslint-disable react-hooks/exhaustive-deps -- Complex hook deps require careful audit; tracked separately */
+/* eslint-disable prefer-const -- Minor; tracked for cleanup */
 'use client'
 
 
@@ -155,7 +158,7 @@ import { useToast } from '@/components/ui/toast'
 import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } from '@/lib/journey-narrative-generator'
 import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
 import { selectAmbientEvent, IDLE_CONFIG, type AmbientEvent } from '@/lib/ambient-events'
-import { PATTERN_TYPES, type PatternType, getPatternSensation, isValidPattern } from '@/lib/patterns'
+import { PATTERN_TYPES, type PatternType, type PlayerPatterns, getPatternSensation, isValidPattern } from '@/lib/patterns'
 import { calculatePatternGain } from '@/lib/identity-system'
 import { getPatternRecognitionEcho, createResonanceEchoFromDescription, getVoicedChoiceText, applyPatternReflection, getDiscoveryHint, DISCOVERY_HINTS, type ConsequenceEcho, resolveContentVoiceVariation, applySkillReflection, applyNervousSystemReflection } from '@/lib/consequence-echoes'
 import { calculateResonantTrustChange } from '@/lib/pattern-affinity'
@@ -213,6 +216,7 @@ import { SessionBoundaryAnnouncement } from '@/components/SessionBoundaryAnnounc
 import { IdentityCeremony } from '@/components/IdentityCeremony'
 import { JourneyComplete } from '@/components/JourneyComplete'
 import { useAudioDirector } from '@/hooks/game/useAudioDirector'
+import { resolveNode } from '@/hooks/game/useNarrativeNavigator'
 import { computeTrustFeedback, computePatternEcho, computeOrbMilestoneEcho, computeTransformation, computeTrustFeedbackMessage, computeSkillTracking } from '@/lib/choice-processing'
 // useNarrativeNavigator available but not yet wired — see hooks/game/useNarrativeNavigator.ts
 // OnboardingScreen removed-discovery-based learning via Samuel's firstOrb echo instead
@@ -477,6 +481,7 @@ export default function StatefulGameInterface() {
 
   // Share prompts disabled-too obtrusive
   const isProcessingChoiceRef = useRef(false) // Race condition guard
+  const choiceAttemptIdRef = useRef(0) // Monotonic counter for lock release (Fix 5)
   const contentLoadTimestampRef = useRef<number>(Date.now()) // Track when content appeared
   const { queueStats: _queueStats } = useBackgroundSync({ enabled: true })
   const [hasSaveFile, setHasSaveFile] = useState(false)
@@ -942,14 +947,8 @@ export default function StatefulGameInterface() {
   // Reset timer when choices change (player made a choice)
   useEffect(() => {
     resetIdleTimer()
-    // ISP FIX: Release choice lock here, once the new node is actually rendered
-    // This prevents race conditions where lock is released before state update
-    if (isProcessingChoiceRef.current) {
-      // Small delay to ensure render cycle completes
-      setTimeout(() => {
-        isProcessingChoiceRef.current = false
-      }, 100)
-    }
+    // Lock release moved to handleChoice finally block (Fix 5: attempt-based lock).
+    // This effect no longer manages the processing lock.
 
     // ISP: Update Conductor with full state
     if (state.gameState && state.currentCharacterId) {
@@ -966,7 +965,7 @@ export default function StatefulGameInterface() {
 
   // Handle atmospheric intro start-now just starts the game directly
   // Pattern teaching happens via Samuel's firstOrb milestone echo (discovery-based learning)
-  // eslint-disable-next-line react-hooks/exhaustive-deps--initializeGame is stable, intentionally excluded to prevent re-creation
+  // initializeGame is stable, intentionally excluded to prevent re-creation
   const handleAtmosphericIntroStart = useCallback(() => {
     initializeGame()
   }, [])
@@ -1404,14 +1403,15 @@ export default function StatefulGameInterface() {
     if (isProcessingChoiceRef.current) return
     if (!state.gameState || !choice.enabled) return
 
-    // LOCK: Immediate ref lock + UI state update
+    // LOCK: Immediate ref lock + UI state update + attempt tracking
     isProcessingChoiceRef.current = true
+    const attemptId = ++choiceAttemptIdRef.current
     setState(prev => ({ ...prev, isProcessing: true }))
 
     // Safety timeout: auto-reset lock if handler crashes or hangs
     const safetyTimeout = setTimeout(() => {
-      if (isProcessingChoiceRef.current) {
-        logger.error('[StatefulGameInterface] Choice handler timeout-auto-resetting lock')
+      if (isProcessingChoiceRef.current && choiceAttemptIdRef.current === attemptId) {
+        logger.error('[StatefulGameInterface] Choice handler timeout-auto-resetting lock', { attemptId })
         isProcessingChoiceRef.current = false
         setState(prev => ({ ...prev, isProcessing: false }))
       }
@@ -1427,11 +1427,19 @@ export default function StatefulGameInterface() {
       const result = GameLogic.processChoice(state.gameState, choice, reactionTime)
       const previousPatterns = { ...state.gameState.patterns } // Restored for echo check
       let newGameState = result.newState
+      // INVARIANT: newGameState is deep-cloned by GameLogic.processChoice (via cloneGameState).
+      // globalFlags (Set) and characters (Map) are fresh clones — .add()/.set() mutations are safe.
+      // patterns is a spread copy of primitives — direct assignment is safe.
+      // If cloneGameState depth changes, these assumptions break. See lib/character-state.ts:533.
       const trustDelta = result.trustDelta
 
       // ═══════════════════════════════════════════════════════════════════════════
       // STATE DEFINITIONS
       // ═══════════════════════════════════════════════════════════════════════════
+
+      // Fix 6: Buffer localStorage writes to avoid synchronous stalls on mobile Safari.
+      // Reads stay inline (fast, needed for logic). Writes flush once at end.
+      const localStorageBuffer: Record<string, string> = {}
 
       // P5: Derive Atmospheric Emotion (Moved to top level to avoid conditional hook error)
 
@@ -1618,6 +1626,11 @@ export default function StatefulGameInterface() {
       const patternSensation = result.patternSensation
 
       // 5. Generate Consequence Echoes (Dialogue Feedback)
+      // PRECEDENCE RULES (23 echo evaluators):
+      //   Priority tier 1 (unconditional overwrite): Transformation > Milestone > Trust/Pattern
+      //   Priority tier 2 (first-match-wins): Blocks 5-23 only set echo if null
+      //   One echo per choice — first match wins after tier 1 resolution.
+      //   Many blocks also mutate newGameState (flags, arcs, patterns) regardless of echo.
       // Phase 1.2: Trust feedback extracted to pure function
       const trustFeedback = computeTrustFeedback({
         trustDelta,
@@ -1691,8 +1704,10 @@ export default function StatefulGameInterface() {
         }
       }
 
-      // 6. SYNC TO ZUSTAND (Critical for Side Menus)
-      // Ensure Journal and Constellation get the latest state immediately
+      // 6. EARLY SYNC TO ZUSTAND (Critical for Side Menus)
+      // Pushes trust/pattern changes to side panels BEFORE echo cascade.
+      // This is intentionally early — a second sync happens after setState (see commitGameState below).
+      // TODO: Eliminate this early sync once side panels read from React state instead of Zustand.
       useGameStore.getState().setCoreGameState(GameStateUtils.serialize(newGameState))
 
       // Floating modules disabled-broke dialogue immersion
@@ -1745,45 +1760,26 @@ export default function StatefulGameInterface() {
         }
       }
 
-      const searchResult = findCharacterForNode(choice.choice.nextNodeId, newGameState)
-      if (!searchResult) {
-        logger.error('[StatefulGameInterface] Could not find character graph for node:', { nodeId: choice.choice.nextNodeId })
+      // Navigation: resolve next node via centralized function
+      // [] for conversationHistory is intentional — only nextNode/targetGraph/targetCharacterId
+      // are used from this result. Content is re-selected later with actual history (line ~2587).
+      const navResult = resolveNode(choice.choice.nextNodeId, newGameState, [])
+      if (!navResult.success) {
+        logger.error('[StatefulGameInterface] Navigation failed:', {
+          nodeId: choice.choice.nextNodeId,
+          errorCode: navResult.errorCode,
+        })
         isProcessingChoiceRef.current = false  // Release lock on error
         setState(prev => ({
           ...prev,
-          error: {
-            title: 'Navigation Error',
-            message: `Could not find node "${choice.choice.nextNodeId}". Please refresh the page to restart.`,
-            severity: 'error' as const
-          },
+          error: { ...navResult.error, severity: 'error' as const },
           isLoading: false,
           isProcessing: false
         }))
         return
       }
 
-      const nextNode = searchResult.graph.nodes.get(choice.choice.nextNodeId)
-      if (!nextNode) {
-        logger.error('[StatefulGameInterface] Node not found in graph:', {
-          nodeId: choice.choice.nextNodeId,
-          characterId: searchResult.characterId,
-          graphName: searchResult.graph.metadata?.title || 'unknown'
-        })
-        isProcessingChoiceRef.current = false  // Release lock on error
-        setState(prev => ({
-          ...prev,
-          error: {
-            title: 'Navigation Error',
-            message: `Node "${choice.choice.nextNodeId}" not found in ${searchResult.graph.metadata?.title || 'graph'}. Please refresh.`,
-            severity: 'error' as const
-          },
-          isProcessing: false
-        }))
-        return
-      }
-
-      const targetGraph = searchResult.graph
-      const targetCharacterId = searchResult.characterId
+      const { nextNode, targetGraph, targetCharacterId } = navResult
 
       // Track identity internalization for ceremony
       let identityCeremonyPattern: PatternType | null = null
@@ -1876,6 +1872,7 @@ export default function StatefulGameInterface() {
 
       // Update top-level navigation state
       newGameState.currentNodeId = nextNode.nodeId
+      // Safe: primitive assignment on cloned object (not shared reference)
       newGameState.currentCharacterId = targetCharacterId
 
       // D-011/D-012: Analytics Tracking
@@ -2004,9 +2001,11 @@ export default function StatefulGameInterface() {
         if (progress >= 1.0) {
           // Apply rewards
           if (puzzle.reward.patternBonus) {
+            const patternUpdates: Partial<PlayerPatterns> = {}
             for (const [pattern, bonus] of Object.entries(puzzle.reward.patternBonus)) {
-              newGameState.patterns[pattern as keyof typeof newGameState.patterns] += bonus as number
+              patternUpdates[pattern as keyof PlayerPatterns] = bonus as number
             }
+            newGameState = GameStateUtils.applyStateChange(newGameState, { patternChanges: patternUpdates })
           }
           if (puzzle.reward.unlockFlag) {
             newGameState.globalFlags.add(puzzle.reward.unlockFlag)
@@ -2014,9 +2013,7 @@ export default function StatefulGameInterface() {
 
           // Mark as completed
           completedPuzzles.add(puzzle.id)
-          if (typeof window !== 'undefined') {
-            localStorage.setItem(completedPuzzlesKey, JSON.stringify([...completedPuzzles]))
-          }
+          localStorageBuffer[completedPuzzlesKey] = JSON.stringify([...completedPuzzles])
 
           // Show completion echo if no other pending
           if (!consequenceEcho) {
@@ -2036,9 +2033,7 @@ export default function StatefulGameInterface() {
         // Puzzle partially complete (50%+)-show hint
         else if (progress >= 0.5 && !hintsShown.has(puzzle.id)) {
           hintsShown.add(puzzle.id)
-          if (typeof window !== 'undefined') {
-            localStorage.setItem(hintShownKey, JSON.stringify([...hintsShown]))
-          }
+          localStorageBuffer[hintShownKey] = JSON.stringify([...hintsShown])
 
           if (!consequenceEcho) {
             consequenceEcho = {
@@ -2079,9 +2074,7 @@ export default function StatefulGameInterface() {
 
       if (newTradeAvailable && !consequenceEcho) {
         notifiedTrades.add(newTradeAvailable.id)
-        if (typeof window !== 'undefined') {
-          localStorage.setItem(notifiedTradesKey, JSON.stringify([...notifiedTrades]))
-        }
+        localStorageBuffer[notifiedTradesKey] = JSON.stringify([...notifiedTrades])
 
         consequenceEcho = {
           text: `${targetCharacter.characterId} seems willing to share something: "${newTradeAvailable.description}" ${newTradeAvailable.trustCost > 0 ? `(Trust cost: ${newTradeAvailable.trustCost})` : ''}`,
@@ -2117,9 +2110,7 @@ export default function StatefulGameInterface() {
         const matchingItem = KNOWLEDGE_ITEMS.find(item => item.id === flag)
         if (matchingItem && !discoveredKnowledge.has(matchingItem.id)) {
           discoveredKnowledge.add(matchingItem.id)
-          if (typeof window !== 'undefined') {
-            localStorage.setItem(discoveredKnowledgeKey, JSON.stringify([...discoveredKnowledge]))
-          }
+          localStorageBuffer[discoveredKnowledgeKey] = JSON.stringify([...discoveredKnowledge])
 
           // Show discovery echo if no other pending
           if (!consequenceEcho) {
@@ -2194,9 +2185,7 @@ export default function StatefulGameInterface() {
           // Mark as shown
           const commentKey = `${comment.characterId}_${comment.pattern}_${comment.threshold}`
           shownComments.add(commentKey)
-          if (typeof window !== 'undefined') {
-            localStorage.setItem(shownCommentsKey, JSON.stringify([...shownComments]))
-          }
+          localStorageBuffer[shownCommentsKey] = JSON.stringify([...shownComments])
 
           logger.info('[StatefulGameInterface] D-004 Pattern recognition comment:', {
             characterId: targetCharacterId,
@@ -2345,9 +2334,7 @@ export default function StatefulGameInterface() {
 
           // Mark as shown
           shownMagical.add(manifestation.id)
-          if (typeof window !== 'undefined') {
-            localStorage.setItem(shownMagicalKey, JSON.stringify([...shownMagical]))
-          }
+          localStorageBuffer[shownMagicalKey] = JSON.stringify([...shownMagical])
 
           // Add flag for dialogue to reference
           newGameState.globalFlags.add(`magical_${manifestation.id}`)
@@ -2805,21 +2792,9 @@ export default function StatefulGameInterface() {
         pendingGift,
         isReturningPlayer: state.isReturningPlayer
       })
+      // COMMIT: Persist + sync to Zustand in one place
       GameStateManager.saveGameState(newGameState)
-
-      // ═══════════════════════════════════════════════════════════════════════════
-      // SYNC BRIDGE: Push GameState changes to Zustand for UI components
-      // This ensures ConstellationPanel, Journal, and other Zustand consumers
-      // see real-time updates from gameplay choices.
-      //
-      // We sync the full SerializableGameState, which automatically updates
-      // all derived fields (characterTrust, patterns, etc.) via syncDerivedState
-      // ═══════════════════════════════════════════════════════════════════════════
-      // Note: zustandStore was declared earlier for floating module evaluation
-
-      // Sync full CoreGameState to Zustand (single source of truth)
-      const serializedState = GameStateUtils.serialize(newGameState)
-      zustandStore.setCoreGameState(serializedState)
+      zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
 
       // Additional explicit syncs for Journal (these use different data structures)
       // Note: syncDerivedState handles characterTrust and patterns automatically
@@ -2855,18 +2830,29 @@ export default function StatefulGameInterface() {
           patterns: newGameState.patterns
         })
       }
+
+      // Fix 6: Flush buffered localStorage writes
+      for (const [k, v] of Object.entries(localStorageBuffer)) {
+        try { localStorage.setItem(k, v) } catch { /* quota exceeded */ }
+      }
     } catch (error) {
       console.error('Choice handling failed:', error)
-      isProcessingChoiceRef.current = false // Release lock if error
+      // Release lock immediately on error (no render delay needed)
+      if (choiceAttemptIdRef.current === attemptId) {
+        isProcessingChoiceRef.current = false
+      }
       setState(prev => ({ ...prev, isProcessing: false }))
     } finally {
       // Clear safety timeout
       clearTimeout(safetyTimeout)
 
-      // CRITICAL RACE CONDITION FIX:
-      // Do NOT release isProcessingChoiceRef.current here!
-      // We wait for the useEffect on nodeId change to release it.
-      // This ensures we don't accept clicks while the old node is still rendered.
+      // Fix 5: Release lock via attempt ID after render cycle.
+      // Uses attemptId to avoid releasing a lock from a superseded attempt.
+      setTimeout(() => {
+        if (choiceAttemptIdRef.current === attemptId) {
+          isProcessingChoiceRef.current = false
+        }
+      }, 100)
     }
   }, [state.gameState, state.currentNode, state.recentSkills, state.showJournal, state.showConstellation, state.journeyNarrative, state.showJourneySummary, state.currentCharacterId, state.currentContent, state.previousTotalNodes, earnOrb, earnBonusOrbs, getUnacknowledgedMilestone, acknowledgeMilestone])
 
@@ -3015,48 +3001,31 @@ export default function StatefulGameInterface() {
       }
     }
 
-    // Navigate to the interrupt target node
-    const searchResult = findCharacterForNode(interrupt.targetNodeId, newGameState)
-    if (!searchResult) {
-      logger.error('[StatefulGameInterface] Interrupt target node not found:', { nodeId: interrupt.targetNodeId })
+    // Navigate to the interrupt target node via centralized resolver
+    const navResult = resolveNode(interrupt.targetNodeId, newGameState, [])
+    if (!navResult.success) {
+      logger.error('[StatefulGameInterface] Interrupt navigation failed:', {
+        nodeId: interrupt.targetNodeId,
+        errorCode: navResult.errorCode,
+      })
       setState(prev => ({ ...prev, activeInterrupt: null }))
       return
     }
-
-    const targetNode = searchResult.graph.nodes.get(interrupt.targetNodeId)
-    if (!targetNode) {
-      logger.error('[StatefulGameInterface] Interrupt target node not in graph:', { nodeId: interrupt.targetNodeId })
-      setState(prev => ({ ...prev, activeInterrupt: null }))
-      return
-    }
-
-    const content = DialogueGraphNavigator.selectContent(targetNode, [], newGameState)
-    const regularInterruptChoices = StateConditionEvaluator.evaluateChoices(targetNode, newGameState, searchResult.characterId, newGameState.skillLevels).filter(c => c.visible)
-
-    // Add pattern-unlocked choices for interrupt context
-    const interruptCharState = newGameState.characters.get(searchResult.characterId)
-    const patternUnlockInterruptChoices = getPatternUnlockChoices(
-      searchResult.characterId,
-      newGameState.patterns,
-      searchResult.graph,
-      interruptCharState?.visitedPatternUnlocks
-    )
-    const choices = [...regularInterruptChoices, ...patternUnlockInterruptChoices]
-    const reflected = applyPatternReflection(content.text, content.emotion, content.patternReflection, newGameState.patterns)
 
     setState(prev => ({
       ...prev,
       gameState: newGameState,
-      currentNode: targetNode,
-      currentGraph: searchResult.graph,
-      currentCharacterId: searchResult.characterId,
-      availableChoices: choices,
-      currentContent: reflected.text,
-      currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
-      activeInterrupt: shouldShowInterrupt(content.interrupt, newGameState.patterns), // D-009: Filter by pattern
+      currentNode: navResult.nextNode,
+      currentGraph: navResult.targetGraph,
+      currentCharacterId: navResult.targetCharacterId,
+      availableChoices: navResult.availableChoices,
+      currentContent: navResult.reflectedText,
+      currentDialogueContent: { ...navResult.content, text: navResult.reflectedText, emotion: navResult.reflectedEmotion },
+      activeInterrupt: shouldShowInterrupt(navResult.content.interrupt, newGameState.patterns), // D-009: Filter by pattern
       activeComboChain: newComboChain  // D-084: Track combo chain state
     }))
 
+    // COMMIT: Persist + sync
     GameStateManager.saveGameState(newGameState)
     useGameStore.getState().setCoreGameState(GameStateUtils.serialize(newGameState))
   }, [state.activeInterrupt, state.gameState, state.activeComboChain])
@@ -3072,38 +3041,21 @@ export default function StatefulGameInterface() {
 
     // Clear the interrupt-if there's a missedNodeId, navigate there
     if (interrupt.missedNodeId) {
-      const searchResult = findCharacterForNode(interrupt.missedNodeId, state.gameState)
-      if (searchResult) {
-        const targetNode = searchResult.graph.nodes.get(interrupt.missedNodeId)
-        if (targetNode) {
-          const content = DialogueGraphNavigator.selectContent(targetNode, [], state.gameState)
-          const regularMissedChoices = StateConditionEvaluator.evaluateChoices(targetNode, state.gameState, searchResult.characterId, state.gameState.skillLevels).filter(c => c.visible)
-
-          // Add pattern-unlocked choices
-          const missedCharState = state.gameState.characters.get(searchResult.characterId)
-          const patternUnlockMissedChoices = getPatternUnlockChoices(
-            searchResult.characterId,
-            state.gameState.patterns,
-            searchResult.graph,
-            missedCharState?.visitedPatternUnlocks
-          )
-          const choices = [...regularMissedChoices, ...patternUnlockMissedChoices]
-          const reflected = applyPatternReflection(content.text, content.emotion, content.patternReflection, state.gameState.patterns)
-
-          // D-084: Reset combo chain when interrupt is missed
-          setState(prev => ({
-            ...prev,
-            currentNode: targetNode,
-            currentGraph: searchResult.graph,
-            currentCharacterId: searchResult.characterId,
-            availableChoices: choices,
-            currentContent: reflected.text,
-            currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
-            activeInterrupt: state.gameState ? shouldShowInterrupt(content.interrupt, state.gameState.patterns) : null, // D-009: Filter by pattern
-            activeComboChain: null  // D-084: Reset combo on missed interrupt
-          }))
-          return
-        }
+      const missedNav = resolveNode(interrupt.missedNodeId, state.gameState, [])
+      if (missedNav.success) {
+        // D-084: Reset combo chain when interrupt is missed
+        setState(prev => ({
+          ...prev,
+          currentNode: missedNav.nextNode,
+          currentGraph: missedNav.targetGraph,
+          currentCharacterId: missedNav.targetCharacterId,
+          availableChoices: missedNav.availableChoices,
+          currentContent: missedNav.reflectedText,
+          currentDialogueContent: { ...missedNav.content, text: missedNav.reflectedText, emotion: missedNav.reflectedEmotion },
+          activeInterrupt: state.gameState ? shouldShowInterrupt(missedNav.content.interrupt, state.gameState.patterns) : null, // D-009: Filter by pattern
+          activeComboChain: null  // D-084: Reset combo on missed interrupt
+        }))
+        return
       }
     }
 
