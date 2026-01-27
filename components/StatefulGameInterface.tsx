@@ -230,136 +230,15 @@ import { calculateSkillDecay, getSkillDecayNarrative } from '@/lib/assessment-de
 
 // Trust feedback now dialogue-based via consequence echoes
 
-// Types
-interface GameInterfaceState {
-  gameState: GameState | null
-  currentNode: DialogueNode | null
-  currentGraph: DialogueGraph
-  currentCharacterId: CharacterId
-  availableChoices: EvaluatedChoice[]
-  currentContent: string
-  currentDialogueContent: DialogueContent | null
-  useChatPacing: boolean
-  isLoading: boolean
-  hasStarted: boolean
-  selectedChoice: string | null
-  showSaveConfirmation: boolean
-  skillToast: { skill: string; message: string } | null
-  consequenceFeedback: { message: string } | null
-  error: { title: string; message: string; severity: 'error' | 'warning' | 'info' } | null
-  previousSpeaker: string | null
-  recentSkills: string[]
-  showExperienceSummary: boolean
-  experienceSummaryData: ExperienceSummaryData | null
-  // showConfigWarning removed-Samuel mentions it once via consequenceEcho
-  showJournal: boolean
-  showConstellation: boolean
-  pendingFloatingModule: null // Floating modules disabled
-  showJourneySummary: boolean
-  showReport: boolean
-  journeyNarrative: JourneyNarrative | null
-  achievementNotification: MetaAchievement | null
-  ambientEvent: AmbientEvent | null  // Station breathing-idle atmosphere
-  patternSensation: string | null    // Brief feedback when pattern triggered
-  consequenceEcho: ConsequenceEcho | null  // Dialogue-based trust feedback
-  // patternToast removed-Journal glow effect replaces it
-  sessionBoundary: SessionAnnouncement | null  // Session boundary announcement
-  previousTotalNodes: number  // Track total nodes for boundary calculation
-  showIdentityCeremony: boolean  // Identity internalization ceremony
-  ceremonyPattern: PatternType | null  // Pattern being internalized
-  showPatternEnding: boolean  // Pattern-based journey ending screen
-  endingPattern: PatternType | null  // Dominant pattern for ending
-  hasNewTrust: boolean  // Track trust changes for Constellation attention indicator
-  hasNewMeeting: boolean  // Track first meeting with non-Samuel character
-  isProcessing: boolean
-  activeInterrupt: InterruptWindow | null  // ME2-style interrupt window during dialogue
-  patternVoice: PatternVoiceResult | null  // Disco Elysium-style inner monologue
-  voiceConflict: VoiceConflictResult | null  // D-096: Voice conflict when patterns disagree
-  activeComboChain: ActiveComboState | null  // D-084: Active interrupt combo chain
-  // Engagement Loop State
-  waitingCharacters: CharacterWaitingState[]  // Characters "waiting" for returning player
-  pendingGift: DelayedGift | null  // Gift ready to deliver
-  isReturningPlayer: boolean  // True if player returned after absence
-
-  // P6: Loyalty Experience System
-  activeExperience: import("@/lib/experience-engine").ActiveExperienceState | null
-}
-
+// Types, helpers, and presentational components extracted to:
+// - lib/game-interface-types.ts (GameInterfaceState, characterNames)
+// - lib/interrupt-visibility.ts (shouldShowInterrupt, EMERGING_THRESHOLD)
+// - components/game/AmbientDescriptionDisplay.tsx
+import type { GameInterfaceState } from '@/lib/game-interface-types'
+import { characterNames } from '@/lib/game-interface-types'
+import { shouldShowInterrupt } from '@/lib/interrupt-visibility'
+import { AmbientDescriptionDisplay } from '@/components/game/AmbientDescriptionDisplay'
 import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
-
-// D-009: Filter interrupt visibility based on player's developed patterns
-// Only see interrupts aligned with patterns at EMERGING threshold (2+)
-const EMERGING_THRESHOLD = 2 // Matches PATTERN_THRESHOLDS.EMERGING
-function shouldShowInterrupt(
-  interrupt: InterruptWindow | null | undefined,
-  patterns: { analytical: number; patience: number; exploring: number; helping: number; building: number }
-): InterruptWindow | null {
-  if (!interrupt) return null
-
-  // Get patterns aligned with this interrupt type
-  const alignedPatterns = INTERRUPT_PATTERN_ALIGNMENT[interrupt.type]
-  if (!alignedPatterns) return interrupt // Unknown type-show by default
-
-  // Check if any aligned pattern is at EMERGING threshold
-  const hasAlignedPattern = alignedPatterns.some(
-    patternKey => patterns[patternKey] >= EMERGING_THRESHOLD
-  )
-
-  // If no aligned pattern developed, hide the interrupt
-  return hasAlignedPattern ? interrupt : null
-}
-
-function AmbientDescriptionDisplay({ gameState, mode = 'fixed' }: { gameState: GameState, mode?: 'fixed' | 'inline' }) {
-  const [description, setDescription] = useState('')
-
-  useEffect(() => {
-    const ctx = calculateAmbientContext(gameState)
-    setDescription(ATMOSPHERES[ctx.atmosphere]?.description || "The station hums quietly.")
-  }, [gameState])
-
-  if (!description) return null
-
-  if (mode === 'inline') {
-    return <span>{description}</span>
-  }
-
-  return (
-    <motion.p
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="text-2xs uppercase tracking-widest text-slate-400 font-mono leading-relaxed"
-    >
-      {description}
-    </motion.p>
-  )
-}
-
-const characterNames: Record<CharacterId, string> = {
-  samuel: 'Samuel Washington',
-  maya: 'Maya Chen',
-  devon: 'Devon Solis',
-  jordan: 'Jordan Kyles',
-  marcus: 'Marcus Vance',
-  tess: 'Tess O\'Malley',
-  yaquin: 'Dr. Yaquin',
-  kai: 'Kai',
-  alex: 'Alex',
-  rohan: 'Rohan',
-  silas: 'Silas',
-  elena: 'Elena',
-  grace: 'Grace',
-  asha: 'Asha Patel',
-  lira: 'Lira Vance',
-  zara: 'Zara El-Amin',
-  quinn: 'Quinn Almeida',
-  dante: 'Dante Moreau',
-  nadia: 'Nadia Petrova',
-  isaiah: 'Isaiah Greene',
-  station_entry: 'Sector 0',
-  grand_hall: 'Sector 1: The Grand Hall',
-  market: 'Sector 2: The Asset Exchange',
-  deep_station: 'Sector 3: The Core'
-}
 
 export default function StatefulGameInterface() {
   const safeStart = getSafeStart()
