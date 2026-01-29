@@ -10,6 +10,7 @@ import { UnifiedMenu } from '@/components/UnifiedMenu'
 import { SyncStatusIndicator } from '@/components/SyncStatusIndicator'
 import { StationStatusBadge } from '@/components/StationStatusBadge'
 import { characterNames } from '@/lib/game-interface-types'
+import { useGameSelectors } from '@/lib/game-store'
 import type { GameState } from '@/lib/character-state'
 import type { DialogueNode } from '@/lib/dialogue-graph'
 import type { CharacterId } from '@/lib/graph-registry'
@@ -46,6 +47,15 @@ export function GameHeader({
   onShowConstellation,
   onShowReport,
 }: GameHeaderProps) {
+  // TD-001 Step 2: Read patterns directly from Zustand (single source of truth)
+  // This removes dependency on gameState prop for patterns
+  const corePatterns = useGameSelectors.useCorePatterns()
+  const coreGameState = useGameSelectors.useCoreGameState()
+
+  // Use Zustand patterns (preferred) or fallback to prop for backward compatibility
+  const patterns = corePatterns
+  const playerId = coreGameState?.playerId ?? gameState?.playerId
+
   return (
     <header
       className="relative flex-shrink-0 glass-panel border-b border-white/10 z-10"
@@ -60,10 +70,10 @@ export function GameHeader({
             <StationStatusBadge gameState={gameState} />
           </Link>
           <div className="flex items-center gap-1 flex-shrink-0">
-            {/* Hero Badge-Player Identity */}
-            {gameState && (
+            {/* Hero Badge-Player Identity (TD-001: reads from Zustand now) */}
+            {coreGameState && (
               <HeroBadge
-                patterns={gameState.patterns}
+                patterns={patterns}
                 compact={true}
                 className="mr-2 hidden sm:flex"
               />
@@ -100,7 +110,7 @@ export function GameHeader({
               onToggleMute={audio.toggleMute}
               volume={audio.audioVolume}
               onVolumeChange={audio.setVolume}
-              playerId={gameState?.playerId}
+              playerId={playerId}
             />
 
             {/* Connection Status Indicator */}
