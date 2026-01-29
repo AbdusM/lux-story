@@ -32,6 +32,8 @@ test.describe('Core Game Loop E2E', () => {
     // STEP 4: Select first choice
     const firstChoice = choices.first()
     await expect(firstChoice).toBeVisible()
+    // Wait for button to be enabled before clicking
+    await expect(firstChoice).toBeEnabled({ timeout: 5000 })
     await firstChoice.click()
 
     // STEP 5: Wait for dialogue to update (state transition)

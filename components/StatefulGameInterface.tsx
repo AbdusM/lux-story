@@ -815,9 +815,11 @@ export default function StatefulGameInterface() {
   })
 
   // Choice handler — extracted to useChoiceHandler hook
+  // TD-001: Pass gameState explicitly from Zustand shim
   const { handleChoice, isProcessingRef: isProcessingChoiceRef } = useChoiceHandler({
     state,
     setState,
+    gameState,
     audio,
     skillTrackerRef,
     contentLoadTimestampRef,

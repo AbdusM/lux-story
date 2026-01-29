@@ -114,6 +114,8 @@ import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
 interface UseChoiceHandlerParams {
   state: GameInterfaceState
   setState: Dispatch<SetStateAction<GameInterfaceState>>
+  // TD-001: gameState passed explicitly from Zustand (via useCoreGameStateHydrated shim)
+  gameState: GameState | null
   audio: ReturnType<typeof useAudioDirector>
   skillTrackerRef: RefObject<SkillTracker | null>
   contentLoadTimestampRef: RefObject<number>
@@ -126,6 +128,7 @@ interface UseChoiceHandlerParams {
 export function useChoiceHandler({
   state,
   setState,
+  gameState,
   audio,
   skillTrackerRef,
   contentLoadTimestampRef,
@@ -143,7 +146,8 @@ export function useChoiceHandler({
 
     // Prevent race condition from rapid-fire clicks
     if (isProcessingChoiceRef.current) return
-    if (!state.gameState || !choice.enabled) return
+    // TD-001: Read from explicit gameState param (from Zustand)
+    if (!gameState || !choice.enabled) return
 
     // LOCK: Immediate ref lock + UI state update + attempt tracking
     isProcessingChoiceRef.current = true
@@ -166,8 +170,9 @@ export function useChoiceHandler({
       // ═══════════════════════════════════════════════════════════════════════════
 
       const reactionTime = Date.now() - contentLoadTimestampRef.current
-      const result = GameLogic.processChoice(state.gameState, choice, reactionTime)
-      const previousPatterns = { ...state.gameState.patterns } // Restored for echo check
+      // TD-001: Use explicit gameState param (from Zustand)
+      const result = GameLogic.processChoice(gameState, choice, reactionTime)
+      const previousPatterns = { ...gameState.patterns } // Restored for echo check
       let newGameState = result.newState
       // INVARIANT: newGameState is deep-cloned by GameLogic.processChoice (via cloneGameState).
       // globalFlags (Set) and characters (Map) are fresh clones — .add()/.set() mutations are safe.
@@ -838,11 +843,11 @@ export function useChoiceHandler({
       const discoveredKnowledge = new Set<string>(discoveredKnowledgeRaw ? JSON.parse(discoveredKnowledgeRaw) : [])
 
       // Check if any new knowledge items were gained via flags
-      const prevGlobalFlags = state.gameState?.globalFlags || new Set<string>()
+      const prevGlobalFlags = gameState?.globalFlags || new Set<string>()
       const newFlags = Array.from(newGameState.globalFlags).filter(flag => !prevGlobalFlags.has(flag))
 
       // Also check character knowledge flags
-      const prevCharacterFlags = state.gameState?.characters.get(targetCharacterId)?.knowledgeFlags || new Set<string>()
+      const prevCharacterFlags = gameState?.characters.get(targetCharacterId)?.knowledgeFlags || new Set<string>()
       const newCharacterFlags = Array.from(targetCharacter.knowledgeFlags).filter(flag => !prevCharacterFlags.has(flag))
 
       const allNewFlags = [...newFlags, ...newCharacterFlags]
@@ -947,7 +952,7 @@ export function useChoiceHandler({
         })
 
         // Check for new combinations (compare old vs new state)
-        const oldGlobalFlags = state.gameState?.globalFlags || new Set<string>()
+        const oldGlobalFlags = gameState?.globalFlags || new Set<string>()
         const newCombinations = getNewlyAvailableCombinations(
           oldGlobalFlags,
           newGameState.globalFlags,
@@ -1024,8 +1029,8 @@ export function useChoiceHandler({
       // D-002: Check for newly unlocked pattern-trust gates
       // Special content requires BOTH high trust AND specific pattern development
       if (!consequenceEcho) {
-        const prevUnlockedGates = state.gameState
-          ? getUnlockedGates(targetCharacterId, state.gameState.characters.get(targetCharacterId)?.trust || 0, state.gameState.patterns)
+        const prevUnlockedGates = gameState
+          ? getUnlockedGates(targetCharacterId, gameState.characters.get(targetCharacterId)?.trust || 0, gameState.patterns)
           : []
         const nowUnlockedGates = getUnlockedGates(targetCharacterId, targetCharacter.trust, newGameState.patterns)
         const newlyUnlocked = nowUnlockedGates.filter(g => !prevUnlockedGates.includes(g))
@@ -1058,7 +1063,7 @@ export function useChoiceHandler({
         const shownMagicalRaw = typeof window !== 'undefined' ? localStorage.getItem(shownMagicalKey) : null
         const shownMagical = new Set<string>(shownMagicalRaw ? JSON.parse(shownMagicalRaw) : [])
 
-        const prevManifestations = state.gameState ? getActiveMagicalRealisms(state.gameState.patterns) : []
+        const prevManifestations = gameState ? getActiveMagicalRealisms(gameState.patterns) : []
         const nowManifestations = getActiveMagicalRealisms(newGameState.patterns)
 
         // Find newly unlocked manifestations that haven't been shown
@@ -1089,8 +1094,8 @@ export function useChoiceHandler({
       }
 
       // D-059: Check for newly earned pattern achievements
-      if (!consequenceEcho && state.gameState) {
-        const newAchievements = checkNewAchievements(state.gameState.patterns, newGameState.patterns)
+      if (!consequenceEcho && gameState) {
+        const newAchievements = checkNewAchievements(gameState.patterns, newGameState.patterns)
 
         if (newAchievements.length > 0) {
           const achievement = newAchievements[0]
@@ -1108,8 +1113,8 @@ export function useChoiceHandler({
       }
 
       // D-016: Check for newly active environmental effects from character trust
-      if (!consequenceEcho && state.gameState) {
-        const prevEffects = getActiveEnvironmentalEffects(state.gameState)
+      if (!consequenceEcho && gameState) {
+        const prevEffects = getActiveEnvironmentalEffects(gameState)
         const nowEffects = getActiveEnvironmentalEffects(newGameState)
         const newEffects = nowEffects.filter(e =>
           !prevEffects.some(p => p.effect === e.effect)
@@ -1131,8 +1136,8 @@ export function useChoiceHandler({
       }
 
       // D-017: Check for newly available cross-character experiences
-      if (!consequenceEcho && state.gameState) {
-        const prevExperiences = getAvailableCrossCharacterExperiences(state.gameState)
+      if (!consequenceEcho && gameState) {
+        const prevExperiences = getAvailableCrossCharacterExperiences(gameState)
         const nowExperiences = getAvailableCrossCharacterExperiences(newGameState)
         const newExperiences = nowExperiences.filter(e =>
           !prevExperiences.some(p => p.experienceId === e.experienceId)
@@ -1154,9 +1159,9 @@ export function useChoiceHandler({
       }
 
       // D-062: Check for cascade effects triggered by new flags
-      if (!consequenceEcho && state.gameState) {
+      if (!consequenceEcho && gameState) {
         // Find flags that were just added
-        const newFlags = [...newGameState.globalFlags].filter(f => !state.gameState!.globalFlags.has(f))
+        const newFlags = [...newGameState.globalFlags].filter(f => !gameState!.globalFlags.has(f))
 
         for (const flag of newFlags) {
           const cascade = getCascadeEffectsForFlag(flag, targetCharacterId)
@@ -1187,8 +1192,8 @@ export function useChoiceHandler({
       }
 
       // D-065: Check for newly unlocked meta-narrative revelations
-      if (!consequenceEcho && state.gameState) {
-        const prevRevelations = getUnlockedMetaRevelations(state.gameState.patterns)
+      if (!consequenceEcho && gameState) {
+        const prevRevelations = getUnlockedMetaRevelations(gameState.patterns)
         const nowRevelations = getUnlockedMetaRevelations(newGameState.patterns)
         const newRevelations = nowRevelations.filter(r =>
           !prevRevelations.some(p => p.id === r.id) &&
@@ -1358,7 +1363,7 @@ export function useChoiceHandler({
         currentNodeSpeaker: state.currentNode?.speaker,
         choiceText: choice.choice.text,
         choicePattern: choice.choice.pattern,
-        gamePatterns: state.gameState.patterns,
+        gamePatterns: gameState.patterns,
         recentSkills: state.recentSkills,
       })
 
@@ -1377,7 +1382,7 @@ export function useChoiceHandler({
       const consequenceFeedback = computeTrustFeedbackMessage(trustDelta, state.currentCharacterId)
 
 
-      const completedArc = detectArcCompletion(state.gameState, newGameState)
+      const completedArc = detectArcCompletion(gameState, newGameState)
       const experienceSummaryUpdate = { showExperienceSummary: false, experienceSummaryData: null as ExperienceSummaryData | null }
 
       // Award bonus orbs for arc completion-SILENT (no notification)
@@ -1596,7 +1601,7 @@ export function useChoiceHandler({
         }
       }, 100)
     }
-  }, [state.gameState, state.currentNode, state.recentSkills, state.showJournal, state.showConstellation, state.journeyNarrative, state.showJourneySummary, state.currentCharacterId, state.currentContent, state.previousTotalNodes, earnOrb, earnBonusOrbs, getUnacknowledgedMilestone, acknowledgeMilestone])
+  }, [gameState, state.currentNode, state.recentSkills, state.showJournal, state.showConstellation, state.journeyNarrative, state.showJourneySummary, state.currentCharacterId, state.currentContent, state.previousTotalNodes, earnOrb, earnBonusOrbs, getUnacknowledgedMilestone, acknowledgeMilestone])
 
   return { handleChoice, isProcessingRef: isProcessingChoiceRef }
 }
