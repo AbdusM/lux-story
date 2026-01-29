@@ -335,7 +335,7 @@ export default function StatefulGameInterface() {
   const zustandGameState = useGameSelectors.useCoreGameStateHydrated()
 
   // Dev-loud shim: warn if fallback is used (indicates incomplete migration)
-  const gameState = useMemo(() => {
+  const gameState = useMemo((): GameState | null => {
     if (zustandGameState) {
       return zustandGameState
     }
@@ -348,7 +348,7 @@ export default function StatefulGameInterface() {
         'Investigate if this persists after initialization.'
       )
     }
-    return state.gameState
+    return state.gameState ?? null
   }, [zustandGameState, state.gameState])
 
   // Audio Director hook (Phase 1.1 extraction)
@@ -983,9 +983,13 @@ export default function StatefulGameInterface() {
       return
     }
 
+    // TD-001: Write to Zustand ONLY (single source of truth)
+    useGameStore.getState().setCoreGameState(GameStateUtils.serialize(newGameState))
+    GameStateManager.saveGameState(newGameState)
+
+    // Update UI-ephemeral state (no gameState - now in Zustand)
     setState(prev => ({
       ...prev,
-      gameState: newGameState,
       currentNode: navResult.nextNode,
       currentGraph: navResult.targetGraph,
       currentCharacterId: navResult.targetCharacterId,
@@ -995,10 +999,6 @@ export default function StatefulGameInterface() {
       activeInterrupt: shouldShowInterrupt(navResult.content.interrupt, newGameState.patterns), // D-009: Filter by pattern
       activeComboChain: newComboChain  // D-084: Track combo chain state
     }))
-
-    // COMMIT: Persist + sync
-    GameStateManager.saveGameState(newGameState)
-    useGameStore.getState().setCoreGameState(GameStateUtils.serialize(newGameState))
   }, [state.activeInterrupt, gameState, state.activeComboChain])
 
   /**
@@ -1051,15 +1051,15 @@ export default function StatefulGameInterface() {
 
       const newGameState = { ...gameState!, ...result.updates }
 
-      // Update state
+      // TD-001: Write to Zustand ONLY (single source of truth)
+      useGameStore.getState().setCoreGameState(GameStateUtils.serialize(newGameState))
+      GameStateManager.saveGameState(newGameState)
+
+      // Update UI-ephemeral state (no gameState - now in Zustand)
       setState(prev => ({
         ...prev,
         activeExperience: result.isComplete ? null : result.newState,
-        gameState: newGameState,
       }))
-
-      // Sync
-      GameStateManager.saveGameState(newGameState)
     })
   }, [state.activeExperience, gameState])
 

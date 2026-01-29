@@ -1486,8 +1486,8 @@ export function useChoiceHandler({
         if (!dominantPattern) dominantPattern = 'exploring'
       }
 
+      // TD-001: gameState removed from React state - now only in Zustand
       setState({
-        gameState: newGameState,
         currentNode: nextNode,
         currentGraph: targetGraph,
         currentCharacterId: targetCharacterId,

@@ -21,7 +21,9 @@ import type { ActiveExperienceState } from '@/lib/experience-engine'
 import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
 
 export interface GameInterfaceState {
-  gameState: GameState | null
+  // TD-001: gameState is now optional - read from Zustand via useGameSelectors.useCoreGameStateHydrated()
+  // Kept for backward compatibility during migration; will be removed in Step 3e
+  gameState?: GameState | null
   currentNode: DialogueNode | null
   currentGraph: DialogueGraph
   currentCharacterId: CharacterId
