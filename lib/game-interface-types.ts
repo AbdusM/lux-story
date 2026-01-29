@@ -4,7 +4,6 @@
  * Extracted from SGI to reduce file size and enable reuse across hooks.
  */
 
-import type { GameState } from '@/lib/character-state'
 import type { DialogueGraph, DialogueNode, DialogueContent, EvaluatedChoice, InterruptWindow } from '@/lib/dialogue-graph'
 import type { CharacterId } from '@/lib/graph-registry'
 import type { JourneyNarrative } from '@/lib/journey-narrative-generator'
@@ -21,9 +20,7 @@ import type { ActiveExperienceState } from '@/lib/experience-engine'
 import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
 
 export interface GameInterfaceState {
-  // TD-001: gameState is now optional - read from Zustand via useGameSelectors.useCoreGameStateHydrated()
-  // Kept for backward compatibility during migration; will be removed in Step 3e
-  gameState?: GameState | null
+  // TD-001: gameState removed - read from Zustand via useGameSelectors.useCoreGameStateHydrated()
   currentNode: DialogueNode | null
   currentGraph: DialogueGraph
   currentCharacterId: CharacterId

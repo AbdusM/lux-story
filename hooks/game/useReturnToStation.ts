@@ -2,7 +2,7 @@
 
 import { useCallback, type Dispatch, type SetStateAction } from 'react'
 import type { GameInterfaceState } from '@/lib/game-interface-types'
-import { CharacterState, GameStateUtils } from '@/lib/character-state'
+import { CharacterState, GameStateUtils, type GameState } from '@/lib/character-state'
 import { GameStateManager } from '@/lib/game-state-manager'
 import {
   DialogueGraphNavigator,
@@ -22,20 +22,22 @@ import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
 import { queueRelationshipSync, queuePlatformStateSync } from '@/lib/sync-queue'
 
 interface UseReturnToStationParams {
-  state: Pick<GameInterfaceState, 'gameState'>
   setState: Dispatch<SetStateAction<GameInterfaceState>>
+  // TD-001: gameState passed explicitly from Zustand (via useCoreGameStateHydrated)
+  gameState: GameState | null
 }
 
-export function useReturnToStation({ state, setState }: UseReturnToStationParams) {
+export function useReturnToStation({ setState, gameState }: UseReturnToStationParams) {
+  // TD-001: gameState passed explicitly from Zustand
   const handleReturnToStation = useCallback(async () => {
-    if (!state.gameState) return
+    if (!gameState) return
 
     try {
       // Determine which Samuel entry point to use based on completed arcs
       let targetNodeId: string = samuelEntryPoints.INTRODUCTION
 
       // Check for character-specific reflection gateways
-      const globalFlags = Array.from(state.gameState.globalFlags)
+      const globalFlags = Array.from(gameState.globalFlags)
       if (globalFlags.includes('kai_arc_complete')) {
         targetNodeId = samuelEntryPoints.KAI_REFLECTION_GATEWAY
       } else if (globalFlags.includes('maya_arc_complete') && !globalFlags.includes('devon_arc_complete')) {
@@ -62,15 +64,15 @@ export function useReturnToStation({ state, setState }: UseReturnToStationParams
       }
 
       // Find the character and graph for the target node
-      const searchResult = findCharacterForNode(targetNodeId, state.gameState)
+      const searchResult = findCharacterForNode(targetNodeId, gameState)
       if (!searchResult) {
         logger.error('Failed to find Samuel hub node:', { targetNodeId })
         // Fallback: reset to introduction
-        const samuelGraph = getGraphForCharacter('samuel', state.gameState)
+        const samuelGraph = getGraphForCharacter('samuel', gameState)
         const introNode = samuelGraph.nodes.get(samuelEntryPoints.INTRODUCTION)
         if (introNode) {
           // STATE FIX: Use full clone instead of shallow clone
-          const newGameState = GameStateUtils.cloneGameState(state.gameState)
+          const newGameState = GameStateUtils.cloneGameState(gameState)
           newGameState.currentNodeId = introNode.nodeId
           newGameState.currentCharacterId = 'samuel'
           const samuelChar = newGameState.characters.get('samuel') || GameStateUtils.createCharacterState('samuel')
@@ -95,9 +97,14 @@ export function useReturnToStation({ state, setState }: UseReturnToStationParams
             newGameState.patterns
           )
 
+          // TD-001: Save to Zustand first (single source of truth)
+          const zustandStore = useGameStore.getState()
+          zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
+          GameStateManager.saveGameState(newGameState)
+
           setState(prev => ({
             ...prev,
-            gameState: newGameState,
+            // TD-001: gameState removed - now in Zustand only
             currentNode: introNode,
             currentGraph: samuelGraph,
             currentCharacterId: 'samuel',
@@ -108,9 +115,6 @@ export function useReturnToStation({ state, setState }: UseReturnToStationParams
             isLoading: false,
             isProcessing: false
           }))
-          GameStateManager.saveGameState(newGameState)
-          const zustandStore = useGameStore.getState()
-          zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
           return
         }
         // If fallback also fails, show error
@@ -145,7 +149,7 @@ export function useReturnToStation({ state, setState }: UseReturnToStationParams
 
       // Navigate to the target node (similar to handleChoice but without choice consequences)
       // STATE FIX: Start with full clone to avoid mutations
-      let newGameState = GameStateUtils.cloneGameState(state.gameState)
+      let newGameState = GameStateUtils.cloneGameState(gameState)
       const targetCharacterId = searchResult.characterId
       const targetGraph = searchResult.graph
 
@@ -203,7 +207,7 @@ export function useReturnToStation({ state, setState }: UseReturnToStationParams
             setState(prev => ({
               ...prev,
               activeExperience: expState,
-              gameState: newGameState,
+              // TD-001: gameState removed - now in Zustand only
               currentNode: targetNode, // Keep node for context/return
               isProcessing: false
             }))
@@ -212,9 +216,15 @@ export function useReturnToStation({ state, setState }: UseReturnToStationParams
         })
       }
 
+      // TD-001: Save to Zustand first (single source of truth)
+      const zustandStore = useGameStore.getState()
+      zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
+      zustandStore.markSceneVisited(targetNode.nodeId)
+      GameStateManager.saveGameState(newGameState)
+
       setState(prev => ({
         ...prev,
-        gameState: newGameState,
+        // TD-001: gameState removed - now in Zustand only
         currentNode: targetNode,
         currentGraph: targetGraph,
         currentCharacterId: targetCharacterId,
@@ -225,13 +235,6 @@ export function useReturnToStation({ state, setState }: UseReturnToStationParams
         isLoading: false,
         isProcessing: false
       }))
-
-      GameStateManager.saveGameState(newGameState)
-
-      // Sync to Zustand
-      const zustandStore = useGameStore.getState()
-      zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
-      zustandStore.markSceneVisited(targetNode.nodeId)
 
       // Sync to Supabase
       if (isSupabaseConfigured()) {
@@ -264,7 +267,7 @@ export function useReturnToStation({ state, setState }: UseReturnToStationParams
         isLoading: false
       }))
     }
-  }, [state.gameState])
+  }, [gameState])
 
   return { handleReturnToStation }
 }

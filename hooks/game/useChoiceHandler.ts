@@ -451,10 +451,11 @@ export function useChoiceHandler({
         }
       }
 
-      // 6. EARLY SYNC TO ZUSTAND (Critical for Side Menus)
-      // Pushes trust/pattern changes to side panels BEFORE echo cascade.
-      // This is intentionally early — a second sync happens after setState (see commitGameState below).
-      // TODO: Eliminate this early sync once side panels read from React state instead of Zustand.
+      // 6. EARLY SYNC TO ZUSTAND (Required for early-exit paths)
+      // TD-001: This sync is NECESSARY for Conductor Mode and God Mode paths that exit
+      // before the final sync at line ~1544. Those paths return early but still need
+      // the game state changes (trust, patterns) from processChoice to be persisted.
+      // The final sync is technically redundant for the normal path but handles localStorage.
       useGameStore.getState().setCoreGameState(GameStateUtils.serialize(newGameState))
 
       // Floating modules disabled-broke dialogue immersion

@@ -12,21 +12,24 @@ import { generativeScore } from '@/lib/audio/generative-score'
 
 interface UseIdleAmbienceParams {
   state: Pick<GameInterfaceState,
-    'gameState' | 'hasStarted' | 'availableChoices' | 'currentCharacterId' |
+    'hasStarted' | 'availableChoices' | 'currentCharacterId' |
     'showJournal' | 'showConstellation' | 'showJourneySummary' | 'currentNode'
   >
   setState: Dispatch<SetStateAction<GameInterfaceState>>
+  // TD-001: gameState passed explicitly from Zustand (via useCoreGameStateHydrated)
+  gameState: GameState | null
 }
 
-export function useIdleAmbience({ state, setState }: UseIdleAmbienceParams) {
+export function useIdleAmbience({ state, setState, gameState }: UseIdleAmbienceParams) {
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null)
   const idleCountRef = useRef(0)
   const lastChoiceTimeRef = useRef(Date.now())
 
   // Helper to get dominant pattern
+  // TD-001: Use explicit gameState param (from Zustand)
   const getDominantPattern = useCallback((): PatternType | undefined => {
-    if (!state.gameState) return undefined
-    const patterns = state.gameState.patterns
+    if (!gameState) return undefined
+    const patterns = gameState.patterns
     let maxPattern: PatternType | undefined
     let maxValue = 0
     for (const p of PATTERN_TYPES) {
@@ -37,7 +40,7 @@ export function useIdleAmbience({ state, setState }: UseIdleAmbienceParams) {
       }
     }
     return maxValue >= 3 ? maxPattern : undefined
-  }, [state.gameState])
+  }, [gameState])
 
   // Start/reset idle timer
   const resetIdleTimer = useCallback(() => {
@@ -85,15 +88,16 @@ export function useIdleAmbience({ state, setState }: UseIdleAmbienceParams) {
     resetIdleTimer()
 
     // ISP: Update Conductor with full state
-    if (state.gameState && state.currentCharacterId) {
-      generativeScore.update(state.gameState, state.currentCharacterId)
+    // TD-001: Use explicit gameState param (from Zustand)
+    if (gameState && state.currentCharacterId) {
+      generativeScore.update(gameState, state.currentCharacterId)
     }
     return () => {
       if (idleTimerRef.current) {
         clearTimeout(idleTimerRef.current)
       }
     }
-  }, [state.currentNode?.nodeId, resetIdleTimer, state.gameState, state.currentCharacterId])
+  }, [state.currentNode?.nodeId, resetIdleTimer, gameState, state.currentCharacterId])
 
   return { resetIdleTimer, lastChoiceTimeRef }
 }

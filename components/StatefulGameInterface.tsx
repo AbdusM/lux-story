@@ -278,7 +278,7 @@ export default function StatefulGameInterface() {
   }), [orbBalance])
 
   const [state, setState] = useState<GameInterfaceState>({
-    gameState: null,
+    // TD-001: gameState removed - now read from Zustand via useCoreGameStateHydrated()
     currentNode: null,
     currentGraph: safeStart.graph,
     currentCharacterId: safeStart.characterId,
@@ -328,28 +328,10 @@ export default function StatefulGameInterface() {
   })
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // TD-001 STEP 3a: ZUSTAND GAME STATE (Single Source of Truth)
-  // Read game state from Zustand. During migration, we use a shim that prefers
-  // Zustand but falls back to React state. The fallback triggers a dev warning.
+  // TD-001 COMPLETE: ZUSTAND GAME STATE (Single Source of Truth)
+  // Game state is read exclusively from Zustand. React state holds only UI fields.
   // ═══════════════════════════════════════════════════════════════════════════
-  const zustandGameState = useGameSelectors.useCoreGameStateHydrated()
-
-  // Dev-loud shim: warn if fallback is used (indicates incomplete migration)
-  const gameState = useMemo((): GameState | null => {
-    if (zustandGameState) {
-      return zustandGameState
-    }
-    // Fallback to React state during migration
-    if (state.gameState && process.env.NODE_ENV === 'development') {
-      // Only warn once per mount to avoid console spam
-      console.warn(
-        '[TD-001 Migration] Using legacy React gameState fallback. ' +
-        'This indicates Zustand state is null but React state exists. ' +
-        'Investigate if this persists after initialization.'
-      )
-    }
-    return state.gameState ?? null
-  }, [zustandGameState, state.gameState])
+  const gameState = useGameSelectors.useCoreGameStateHydrated()
 
   // Audio Director hook (Phase 1.1 extraction)
   const audio = useAudioDirector(state.consequenceEcho, pushSettingsToCloud)
@@ -783,7 +765,8 @@ export default function StatefulGameInterface() {
   }, [stationAtmosphere, gameState, state.currentCharacterId])
 
   // Idle ambience system — extracted to hook
-  useIdleAmbience({ state, setState })
+  // TD-001: Pass gameState explicitly from Zustand
+  useIdleAmbience({ state, setState, gameState })
 
   // Waiting Room patience mechanic — reveals hidden content when player lingers
   const [activeWaitingReveal, setActiveWaitingReveal] = useState<{ text: string; type: 'ambient' | 'memory' | 'whisper' | 'insight'; speaker?: string } | null>(null)
@@ -1042,7 +1025,8 @@ export default function StatefulGameInterface() {
    * Determines the appropriate entry point based on completed arcs
    */
   // Return to station — extracted to hook
-  const { handleReturnToStation } = useReturnToStation({ state, setState })
+  // TD-001: Pass gameState explicitly from Zustand
+  const { handleReturnToStation } = useReturnToStation({ setState, gameState })
 
   // Experience Choice Handler
   const handleExperienceChoice = useCallback((choiceId: string) => {

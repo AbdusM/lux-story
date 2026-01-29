@@ -340,7 +340,7 @@ export function useGameInitializer({
       }
 
       setState({
-        gameState,
+        // TD-001: gameState removed - now in Zustand only (synced at line 415)
         currentNode,
         currentGraph: actualGraph,
         currentCharacterId: actualCharacterId,
