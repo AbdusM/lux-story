@@ -216,12 +216,12 @@ export interface GameActions {
   setPlatformAccessible: (platformId: string, accessible: boolean) => void
 
   // Character relationships
-  updateCharacterTrust: (characterId: string, trust: number) => void
+  // TD-001: updateCharacterTrust() removed - use setCoreGameState() or applyCoreStateChange()
   setCharacterTrust: (trustRecord: Record<string, number>) => void
   updateCharacterHelped: (characterId: string, helped: number) => void
 
   // Pattern tracking
-  updatePatterns: (patterns: Partial<PatternTracking>) => void
+  // TD-001: updatePatterns() removed - use setCoreGameState() or applyCoreStateChange()
 
   // State updates
   updateEmotionalState: (state: Partial<EmotionalState>) => void
@@ -531,31 +531,7 @@ export const useGameStore = create<GameState & GameActions>()(
         },
 
         // Character relationship actions
-        // DEPRECATED (Phase 2.1): Use setCoreGameState or applyCoreStateChange instead.
-        // Kept as thin wrapper with deprecation warning for one release cycle.
-        updateCharacterTrust: (characterId, trust) => {
-          if (process.env.NODE_ENV === 'development') {
-            console.warn('[DEPRECATED] updateCharacterTrust() called directly. Use applyCoreStateChange({ characterId, trustChange }) instead.')
-          }
-          set((state) => ({
-            characterTrust: { ...state.characterTrust, [characterId]: trust }
-          }))
-          // Also sync to coreGameState if it exists
-          const core = get().coreGameState
-          if (core) {
-            const updated = {
-              ...core,
-              characters: core.characters.map(char =>
-                char.characterId === characterId
-                  ? { ...char, trust }
-                  : char
-              )
-            }
-            set({ coreGameState: updated })
-            // Note: syncDerivedState would overwrite characterTrust, so we don't call it here
-            // This is a temporary bridge - ideally all updates should go through setCoreGameState()
-          }
-        },
+        // TD-001: updateCharacterTrust() removed - use setCoreGameState() or applyCoreStateChange()
 
         // Batch update character trust (for syncing from GameState)
         setCharacterTrust: (trustRecord: Record<string, number>) => {
@@ -571,30 +547,7 @@ export const useGameStore = create<GameState & GameActions>()(
         },
 
         // Pattern tracking actions
-        // DEPRECATED (Phase 2.1): Use setCoreGameState or applyCoreStateChange instead.
-        // Kept as thin wrapper with deprecation warning for one release cycle.
-        updatePatterns: (patterns) => {
-          if (process.env.NODE_ENV === 'development') {
-            console.warn('[DEPRECATED] updatePatterns() called directly. Use applyCoreStateChange({ patternChanges }) instead.')
-          }
-          set((state) => ({
-            patterns: { ...state.patterns, ...patterns }
-          }))
-          // Also sync to coreGameState if it exists
-          const core = get().coreGameState
-          if (core) {
-            const updated = {
-              ...core,
-              patterns: {
-                ...core.patterns,
-                ...patterns
-              }
-            }
-            set({ coreGameState: updated })
-            // Note: syncDerivedState would overwrite patterns, so we don't call it here
-            // This is a temporary bridge - ideally all updates should go through setCoreGameState()
-          }
-        },
+        // TD-001: updatePatterns() removed - use setCoreGameState() or applyCoreStateChange()
 
         // State update actions
         updateEmotionalState: (state) => {
