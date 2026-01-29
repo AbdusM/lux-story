@@ -1297,5 +1297,104 @@ export const useGameSelectors = {
   // Character Transformations
   useWitnessedTransformations: () => useGameStore((state) => state.witnessedTransformations),
   useHasWitnessedTransformation: (transformationId: string) =>
-    useGameStore((state) => state.witnessedTransformations.includes(transformationId))
+    useGameStore((state) => state.witnessedTransformations.includes(transformationId)),
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TD-001 STEP 1: DIALOGUE NAVIGATION SELECTORS
+  // These selectors enable side menus to read directly from Zustand,
+  // preparing for removal of the early sync hack in useChoiceHandler.
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  /**
+   * Get the current character ID from core game state.
+   * Used by: Journal, Constellation, side menus
+   */
+  useCurrentCharacterId: () =>
+    useGameStore((state) => state.coreGameState?.currentCharacterId ?? 'samuel'),
+
+  /**
+   * Get the current dialogue node ID.
+   * Used by: Dialogue display, navigation logic
+   */
+  useCurrentNodeId: () =>
+    useGameStore((state) => state.coreGameState?.currentNodeId ?? null),
+
+  /**
+   * Get the current character's full state (trust, flags, history).
+   * Returns null if no game state or character not found.
+   */
+  useCurrentCharacterState: () =>
+    useGameStore((state) => {
+      if (!state.coreGameState) return null
+      const charId = state.coreGameState.currentCharacterId
+      return state.coreGameState.characters.find(c => c.characterId === charId) ?? null
+    }),
+
+  /**
+   * Get all character trust levels as a stable record.
+   * Optimized: Only updates when trust values actually change.
+   */
+  useAllCharacterTrust: () =>
+    useGameStore(
+      useShallow((state) => {
+        if (!state.coreGameState) return {}
+        const result: Record<string, number> = {}
+        for (const char of state.coreGameState.characters) {
+          result[char.characterId] = char.trust
+        }
+        return result
+      })
+    ),
+
+  /**
+   * Get all character knowledge flags as a combined set.
+   * Used by: Choice visibility evaluation, pattern reflections
+   */
+  useAllKnowledgeFlags: () =>
+    useGameStore((state) => {
+      if (!state.coreGameState) return new Set<string>()
+      const flags = new Set<string>()
+      for (const char of state.coreGameState.characters) {
+        for (const flag of char.knowledgeFlags) {
+          flags.add(flag)
+        }
+      }
+      return flags
+    }),
+
+  /**
+   * Check if a specific knowledge flag exists (any character).
+   */
+  useHasKnowledgeFlag: (flag: string) =>
+    useGameStore((state) => {
+      if (!state.coreGameState) return false
+      return state.coreGameState.characters.some(c => c.knowledgeFlags.includes(flag))
+    }),
+
+  /**
+   * Get patterns directly from coreGameState (not the legacy patterns field).
+   * This is the canonical source of truth for pattern values.
+   */
+  useCorePatterns: () =>
+    useGameStore(
+      useShallow((state) => state.coreGameState?.patterns ?? {
+        analytical: 0,
+        patience: 0,
+        exploring: 0,
+        helping: 0,
+        building: 0
+      })
+    ),
+
+  /**
+   * Get episode number for progression tracking.
+   */
+  useEpisodeNumber: () =>
+    useGameStore((state) => state.coreGameState?.episodeNumber ?? 1),
+
+  /**
+   * Get pending travel target for conductor mode.
+   */
+  usePendingTravelTarget: () =>
+    useGameStore((state) => state.pendingTravelTarget)
 }

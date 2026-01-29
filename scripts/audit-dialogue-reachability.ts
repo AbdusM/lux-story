@@ -16,7 +16,13 @@
 
 // Register path aliases
 import { register } from 'tsconfig-paths'
-import { resolve } from 'path'
+import { resolve, dirname } from 'path'
+import { fileURLToPath } from 'url'
+import { createRequire } from 'module'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+const require = createRequire(import.meta.url)
 const tsconfig = require(resolve(__dirname, '../tsconfig.json'))
 register({
   baseUrl: resolve(__dirname, '..'),
