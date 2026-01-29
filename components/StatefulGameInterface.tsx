@@ -699,12 +699,13 @@ export default function StatefulGameInterface() {
         consequenceEcho: null  // Clear echo from previous character
       }))
 
-      // Persist the jump
+      // TD-001: Persist to Zustand first (single source of truth), then localStorage
       const newState = {
         ...gameState,
         currentNodeId: targetNode.nodeId,
         currentCharacterId: targetCharId
       }
+      useGameStore.getState().setCoreGameState(GameStateUtils.serialize(newState))
       GameStateManager.saveGameState(newState)
     }
 
