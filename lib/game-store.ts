@@ -11,6 +11,8 @@ import {
 import { getPatternValue } from './patterns'
 import { SimulationConfig } from '@/components/game/simulations/types'
 import { updateAmbientMusic } from './audio-feedback'
+import { GameStateManager } from './game-state-manager'
+import { logger } from './logger'
 
 // Core game state interfaces
 export interface GameState {
@@ -1000,6 +1002,47 @@ export const useGameStore = create<GameState & GameActions>()(
     { name: 'grand-central-game-store' } // devtools options - only needs name
   )
 )
+
+// ═══════════════════════════════════════════════════════════════════════════
+// COMMIT GAME STATE: Single source of truth write operation
+// TD-001: Atomic commit to both Zustand and localStorage
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * commitGameState - Atomic write to both Zustand and localStorage
+ *
+ * This is the ONLY function that should be used to persist game state changes.
+ * It ensures both stores are always in sync, preventing data loss on early-exit paths.
+ *
+ * @param gameState - The hydrated GameState to persist
+ * @param opts.reason - Debug label for logging (e.g., 'choice-complete', 'navigation')
+ *
+ * Usage:
+ *   commitGameState(newGameState, { reason: 'choice-complete' })
+ *
+ * Replaces:
+ *   - useGameStore.getState().setCoreGameState(...)
+ *   - GameStateManager.saveGameState(...)
+ *   - (when used together for persistence)
+ */
+export function commitGameState(
+  gameState: CoreGameState,
+  opts?: { reason?: string }
+): void {
+  const serialized = GameStateUtils.serialize(gameState)
+
+  // 1. Update Zustand (UI reactivity)
+  useGameStore.getState().setCoreGameState(serialized)
+
+  // 2. Persist to localStorage
+  GameStateManager.saveGameState(gameState)
+
+  logger.debug('[commitGameState] Committed', {
+    reason: opts?.reason,
+    nodeId: gameState.currentNodeId,
+    characterId: gameState.currentCharacterId
+  })
+}
 
 // Validation utilities for serialization
 export function validateGameState(state: unknown): { isValid: boolean; errors: string[] } {

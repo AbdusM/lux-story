@@ -133,7 +133,7 @@ import {
 import { samuelEntryPoints } from '@/content/samuel-dialogue-graph'
 import { SkillTracker } from '@/lib/skill-tracker'
 import { queueRelationshipSync, queuePlatformStateSync, queueSkillDemonstrationSync, queuePatternDemonstrationSync } from '@/lib/sync-queue'
-import { useGameStore, useGameSelectors } from '@/lib/game-store' // RESTORED + TD-001 selectors
+import { useGameStore, useGameSelectors, commitGameState } from '@/lib/game-store' // RESTORED + TD-001 selectors
 import { dashboard } from '@/lib/telemetry/dashboard-feed' // FIXED: Named export is 'dashboard'
 import { generativeScore } from '@/lib/audio/generative-score' // ISP: Symphonic Agency
 import { CHOICE_HANDLER_TIMEOUT_MS } from '@/lib/constants'
@@ -699,14 +699,13 @@ export default function StatefulGameInterface() {
         consequenceEcho: null  // Clear echo from previous character
       }))
 
-      // TD-001: Persist to Zustand first (single source of truth), then localStorage
+      // TD-001: Atomic commit to both Zustand and localStorage
       const newState = {
         ...gameState,
         currentNodeId: targetNode.nodeId,
         currentCharacterId: targetCharId
       }
-      useGameStore.getState().setCoreGameState(GameStateUtils.serialize(newState))
-      GameStateManager.saveGameState(newState)
+      commitGameState(newState, { reason: 'constellation-navigation' })
     }
 
     // Reset the request so we don't loop
@@ -969,9 +968,8 @@ export default function StatefulGameInterface() {
       return
     }
 
-    // TD-001: Write to Zustand ONLY (single source of truth)
-    useGameStore.getState().setCoreGameState(GameStateUtils.serialize(newGameState))
-    GameStateManager.saveGameState(newGameState)
+    // TD-001: Atomic commit to both Zustand and localStorage
+    commitGameState(newGameState, { reason: 'interrupt-choice' })
 
     // Update UI-ephemeral state (no gameState - now in Zustand)
     setState(prev => ({
@@ -1038,9 +1036,8 @@ export default function StatefulGameInterface() {
 
       const newGameState = { ...gameState!, ...result.updates }
 
-      // TD-001: Write to Zustand ONLY (single source of truth)
-      useGameStore.getState().setCoreGameState(GameStateUtils.serialize(newGameState))
-      GameStateManager.saveGameState(newGameState)
+      // TD-001: Atomic commit to both Zustand and localStorage
+      commitGameState(newGameState, { reason: 'experience-choice' })
 
       // Update UI-ephemeral state (no gameState - now in Zustand)
       setState(prev => ({

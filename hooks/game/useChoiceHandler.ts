@@ -11,11 +11,10 @@ import { useCallback, useRef, type RefObject, type Dispatch, type SetStateAction
 import type { GameInterfaceState } from '@/lib/game-interface-types'
 import { type CharacterState, type GameState, GameStateUtils } from '@/lib/character-state'
 import { GameLogic } from '@/lib/game-logic'
-import { GameStateManager } from '@/lib/game-state-manager'
 import { DialogueGraphNavigator, StateConditionEvaluator, type EvaluatedChoice } from '@/lib/dialogue-graph'
 import type { CharacterId } from '@/lib/graph-registry'
 import type { SkillTracker } from '@/lib/skill-tracker'
-import { useGameStore } from '@/lib/game-store'
+import { useGameStore, commitGameState } from '@/lib/game-store'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { logger } from '@/lib/logger'
 import { CHOICE_HANDLER_TIMEOUT_MS } from '@/lib/constants'
@@ -451,12 +450,11 @@ export function useChoiceHandler({
         }
       }
 
-      // 6. EARLY SYNC TO ZUSTAND (Required for early-exit paths)
-      // TD-001: This sync is NECESSARY for Conductor Mode and God Mode paths that exit
-      // before the final sync at line ~1544. Those paths return early but still need
-      // the game state changes (trust, patterns) from processChoice to be persisted.
-      // The final sync is technically redundant for the normal path but handles localStorage.
-      useGameStore.getState().setCoreGameState(GameStateUtils.serialize(newGameState))
+      // 6. EARLY COMMIT (Required for early-exit paths)
+      // TD-001: commitGameState writes to both Zustand AND localStorage atomically.
+      // This ensures Conductor Mode and God Mode early-exit paths don't lose data.
+      // The final commit at line ~1544 overwrites with the full state including derivative effects.
+      commitGameState(newGameState, { reason: 'pre-navigation' })
 
       // Floating modules disabled-broke dialogue immersion
       const zustandStore = useGameStore.getState()
@@ -1540,9 +1538,9 @@ export function useChoiceHandler({
         pendingGift,
         isReturningPlayer: state.isReturningPlayer
       })
-      // COMMIT: Persist + sync to Zustand in one place
-      GameStateManager.saveGameState(newGameState)
-      zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
+      // COMMIT: Atomic persist to both Zustand and localStorage
+      // TD-001: Single commitGameState call replaces the previous dual-write pattern
+      commitGameState(newGameState, { reason: 'choice-complete' })
 
       // Additional explicit syncs for Journal (these use different data structures)
       // TD-001: syncVisitedScenes syncs visitedScenes from coreGameState automatically

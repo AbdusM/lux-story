@@ -3,7 +3,6 @@
 import { useCallback, type Dispatch, type SetStateAction } from 'react'
 import type { GameInterfaceState } from '@/lib/game-interface-types'
 import { CharacterState, GameStateUtils, type GameState } from '@/lib/character-state'
-import { GameStateManager } from '@/lib/game-state-manager'
 import {
   DialogueGraphNavigator,
   StateConditionEvaluator,
@@ -14,7 +13,7 @@ import {
   type CharacterId,
 } from '@/lib/graph-registry'
 import { samuelEntryPoints } from '@/content/samuel-dialogue-graph'
-import { useGameStore } from '@/lib/game-store'
+import { useGameStore, commitGameState } from '@/lib/game-store'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { logger } from '@/lib/logger'
 import { applyPatternReflection } from '@/lib/consequence-echoes'
@@ -97,10 +96,8 @@ export function useReturnToStation({ setState, gameState }: UseReturnToStationPa
             newGameState.patterns
           )
 
-          // TD-001: Save to Zustand first (single source of truth)
-          const zustandStore = useGameStore.getState()
-          zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
-          GameStateManager.saveGameState(newGameState)
+          // TD-001: Atomic commit to both Zustand and localStorage
+          commitGameState(newGameState, { reason: 'return-to-station-fallback' })
 
           setState(prev => ({
             ...prev,
@@ -216,11 +213,9 @@ export function useReturnToStation({ setState, gameState }: UseReturnToStationPa
         })
       }
 
-      // TD-001: Save to Zustand first (single source of truth)
-      const zustandStore = useGameStore.getState()
-      zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
-      zustandStore.markSceneVisited(targetNode.nodeId)
-      GameStateManager.saveGameState(newGameState)
+      // TD-001: Atomic commit to both Zustand and localStorage
+      commitGameState(newGameState, { reason: 'return-to-station' })
+      useGameStore.getState().markSceneVisited(targetNode.nodeId)
 
       setState(prev => ({
         ...prev,
