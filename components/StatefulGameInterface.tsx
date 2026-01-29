@@ -133,7 +133,7 @@ import {
 import { samuelEntryPoints } from '@/content/samuel-dialogue-graph'
 import { SkillTracker } from '@/lib/skill-tracker'
 import { queueRelationshipSync, queuePlatformStateSync, queueSkillDemonstrationSync, queuePatternDemonstrationSync } from '@/lib/sync-queue'
-import { useGameStore } from '@/lib/game-store' // RESTORED
+import { useGameStore, useGameSelectors } from '@/lib/game-store' // RESTORED + TD-001 selectors
 import { dashboard } from '@/lib/telemetry/dashboard-feed' // FIXED: Named export is 'dashboard'
 import { generativeScore } from '@/lib/audio/generative-score' // ISP: Symphonic Agency
 import { CHOICE_HANDLER_TIMEOUT_MS } from '@/lib/constants'
@@ -327,6 +327,30 @@ export default function StatefulGameInterface() {
     // activeExperience: null
   })
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TD-001 STEP 3a: ZUSTAND GAME STATE (Single Source of Truth)
+  // Read game state from Zustand. During migration, we use a shim that prefers
+  // Zustand but falls back to React state. The fallback triggers a dev warning.
+  // ═══════════════════════════════════════════════════════════════════════════
+  const zustandGameState = useGameSelectors.useCoreGameStateHydrated()
+
+  // Dev-loud shim: warn if fallback is used (indicates incomplete migration)
+  const gameState = useMemo(() => {
+    if (zustandGameState) {
+      return zustandGameState
+    }
+    // Fallback to React state during migration
+    if (state.gameState && process.env.NODE_ENV === 'development') {
+      // Only warn once per mount to avoid console spam
+      console.warn(
+        '[TD-001 Migration] Using legacy React gameState fallback. ' +
+        'This indicates Zustand state is null but React state exists. ' +
+        'Investigate if this persists after initialization.'
+      )
+    }
+    return state.gameState
+  }, [zustandGameState, state.gameState])
+
   // Audio Director hook (Phase 1.1 extraction)
   const audio = useAudioDirector(state.consequenceEcho, pushSettingsToCloud)
 
@@ -339,7 +363,8 @@ export default function StatefulGameInterface() {
   const refreshCounter = useGameStore(s => s.refreshCounter)
 
   // Derived State for UI Logic
-  const currentState = state.gameState ? 'dialogue' : 'station'
+  // TD-001: Use gameState from shim (prefers Zustand)
+  const currentState = gameState ? 'dialogue' : 'station'
 
   // Rich effects config-KEEPING NEW STAGGERED MODE
   const enableRichEffects = true
