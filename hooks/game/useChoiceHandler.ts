@@ -1545,7 +1545,7 @@ export function useChoiceHandler({
       zustandStore.setCoreGameState(GameStateUtils.serialize(newGameState))
 
       // Additional explicit syncs for Journal (these use different data structures)
-      // Note: syncDerivedState handles characterTrust and patterns automatically
+      // TD-001: syncVisitedScenes syncs visitedScenes from coreGameState automatically
       zustandStore.markSceneVisited(nextNode.nodeId)
       zustandStore.addChoiceRecord({
         sceneId: state.currentNode?.nodeId || '',

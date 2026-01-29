@@ -12,7 +12,7 @@
  * - computeTrustFeedbackMessage (trustDelta → toast)
  * - computeSkillTracking (skills → context + recent skills)
  * - resolveNode (nodeId → graph + node + content + choices)
- * - deriveDerivedState (core → visitedScenes)
+ * - deriveVisitedScenes (core → visitedScenes)
  */
 
 import { describe, it, expect } from 'vitest'
@@ -24,7 +24,7 @@ import {
   computeSkillTracking,
 } from '@/lib/choice-processing'
 import { resolveNode } from '@/hooks/game/useNarrativeNavigator'
-import { deriveDerivedState } from '@/lib/game-store'
+import { deriveVisitedScenes } from '@/lib/game-store'
 import type { GameState } from '@/lib/character-state'
 import type { PlayerPatterns } from '@/lib/patterns'
 import type { SerializableGameState } from '@/lib/character-state'
@@ -184,7 +184,7 @@ describe('Orchestration Integration: Choice Flow', () => {
 })
 
 describe('Orchestration Integration: Derived State', () => {
-  it('deriveDerivedState produces visitedScenes from character histories', () => {
+  it('deriveVisitedScenes produces visitedScenes from character histories', () => {
     const core = {
       characters: [
         { characterId: 'samuel', conversationHistory: ['node_a', 'node_b'] },
@@ -192,7 +192,7 @@ describe('Orchestration Integration: Derived State', () => {
       ],
     } as unknown as SerializableGameState
 
-    const derived = deriveDerivedState(core)
+    const derived = deriveVisitedScenes(core)
     expect(derived.visitedScenes).toEqual(['node_a', 'node_b', 'node_c'])
   })
 })

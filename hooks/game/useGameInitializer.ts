@@ -414,8 +414,8 @@ export function useGameInitializer({
       const serializedState = GameStateUtils.serialize(gameState)
       zustandStore.setCoreGameState(serializedState)
 
-      // syncDerivedState is called automatically by setCoreGameState,
-      // but we also explicitly sync here for clarity and debugging
+      // TD-001: syncVisitedScenes is called automatically by setCoreGameState,
+      // which syncs visitedScenes from the serialized state
       logger.debug('Zustand synced with CoreGameState', {
         operation: 'game-interface.zustand-sync',
         characterCount: serializedState.characters.length,

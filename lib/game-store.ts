@@ -248,7 +248,7 @@ export interface GameActions {
   updateCoreGameState: (updater: (state: SerializableGameState) => SerializableGameState) => void
   applyCoreStateChange: (change: StateChange) => void
   getCoreGameStateHydrated: () => CoreGameState | null
-  syncDerivedState: () => void  // Sync characterTrust/patterns from coreGameState
+  syncVisitedScenes: () => void  // TD-001: Renamed from syncDerivedState - only syncs visitedScenes
   forceRefresh: () => void  // Force UI re-render (God Mode)
 
   // Meta-Achievements
@@ -420,7 +420,8 @@ const initialState: GameState = {
  *               NOT a hydrated GameState (Map-based). Passing a Map-based
  *               state will produce empty results without error.
  */
-export function deriveDerivedState(core: SerializableGameState): { visitedScenes: string[] } {
+// TD-001: Renamed from deriveVisitedScenes - only derives visitedScenes, not all derived state
+export function deriveVisitedScenes(core: SerializableGameState): { visitedScenes: string[] } {
   const visitedScenes: string[] = []
   for (const char of core.characters) {
     for (const nodeId of char.conversationHistory) {
@@ -434,7 +435,7 @@ export function deriveDerivedState(core: SerializableGameState): { visitedScenes
 
 /**
  * Side-effect: update ambient music based on current character's nervous system state.
- * Separated from deriveDerivedState because it's not Zustand state.
+ * Separated from deriveVisitedScenes because it's not Zustand state.
  */
 function updateAmbientMusicFromCore(core: SerializableGameState): void {
   const currentCharacter = core.characters.find(c => c.characterId === core.currentCharacterId)
@@ -735,7 +736,7 @@ export const useGameStore = create<GameState & GameActions>()(
         // Set the entire core game state (used on load/init)
         // Phase 2.1: Atomic single set() — core + derived in one call
         setCoreGameState: (state: SerializableGameState) => {
-          const derived = deriveDerivedState(state)
+          const derived = deriveVisitedScenes(state)
           set({ coreGameState: state, ...derived })
           // Side-effect: ambient music (not Zustand state)
           updateAmbientMusicFromCore(state)
@@ -746,7 +747,7 @@ export const useGameStore = create<GameState & GameActions>()(
           const current = get().coreGameState
           if (!current) return
           const updated = updater(current)
-          const derived = deriveDerivedState(updated)
+          const derived = deriveVisitedScenes(updated)
           set({ coreGameState: updated, ...derived })
           updateAmbientMusicFromCore(updated)
         },
@@ -761,7 +762,7 @@ export const useGameStore = create<GameState & GameActions>()(
           const updated = GameStateUtils.applyStateChange(hydrated, change)
           const newSerialized = GameStateUtils.serialize(updated)
 
-          const derived = deriveDerivedState(newSerialized)
+          const derived = deriveVisitedScenes(newSerialized)
           set({ coreGameState: newSerialized, ...derived })
           updateAmbientMusicFromCore(newSerialized)
         },
@@ -777,10 +778,11 @@ export const useGameStore = create<GameState & GameActions>()(
         // NOTE: Prefer using setCoreGameState/updateCoreGameState/applyCoreStateChange
         // which atomically sync derived state in a single set() call.
         // This method is kept for backward compatibility only.
-        syncDerivedState: () => {
+        // TD-001: Renamed from syncDerivedState - only syncs visitedScenes, not all derived state
+        syncVisitedScenes: () => {
           const core = get().coreGameState
           if (!core) return
-          const derived = deriveDerivedState(core)
+          const derived = deriveVisitedScenes(core)
           set(derived)
           updateAmbientMusicFromCore(core)
         },
