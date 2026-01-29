@@ -418,15 +418,15 @@ export default function StatefulGameInterface() {
   // Flush deferred saves on page hide (tab close, navigation)
   useEffect(() => {
     const flushSave = () => {
-      if (pendingSaveRef.current && state.gameState) {
+      if (pendingSaveRef.current && gameState) {
         clearTimeout(pendingSaveRef.current)
-        GameStateManager.saveGameState(state.gameState)
+        GameStateManager.saveGameState(gameState)
         pendingSaveRef.current = null
       }
     }
     window.addEventListener('pagehide', flushSave)
     return () => window.removeEventListener('pagehide', flushSave)
-  }, [state.gameState])
+  }, [gameState])
 
   // 3. LOAD GAME ID
   useEffect(() => {
@@ -520,7 +520,7 @@ export default function StatefulGameInterface() {
 
   // God Mode Refresh: Reload dialogue when refreshCounter changes (God Mode navigation)
   useEffect(() => {
-    if (!state.gameState || refreshCounter === 0) return
+    if (!gameState || refreshCounter === 0) return
 
     const coreState = useGameStore.getState().coreGameState
     if (!coreState) return
@@ -528,7 +528,7 @@ export default function StatefulGameInterface() {
     // Reload dialogue from coreGameState
     const characterId = coreState.currentCharacterId as CharacterId
     const nodeId = coreState.currentNodeId
-    const graph = getGraphForCharacter(characterId, state.gameState)
+    const graph = getGraphForCharacter(characterId, gameState)
     const node = graph.nodes.get(nodeId)
 
     if (node) {
@@ -536,9 +536,9 @@ export default function StatefulGameInterface() {
 
       // Apply voice variation pipeline for consistency
       const content = node.content[0]
-      const gamePatterns = state.gameState!.patterns
-      const skillLevels = state.gameState!.skillLevels
-      const charState = state.gameState!.characters.get(characterId)
+      const gamePatterns = gameState!.patterns
+      const skillLevels = gameState!.skillLevels
+      const charState = gameState!.characters.get(characterId)
 
       // Apply pattern reflection first
       const mergedPatternReflection = node.patternReflection || content.patternReflection
@@ -560,7 +560,7 @@ export default function StatefulGameInterface() {
         currentCharacterId: characterId,
         currentContent: reflected.text,
         currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
-        availableChoices: StateConditionEvaluator.evaluateChoices(node, state.gameState!, characterId, state.gameState!.skillLevels),
+        availableChoices: StateConditionEvaluator.evaluateChoices(node, gameState!, characterId, gameState!.skillLevels),
         previousSpeaker: null
       }))
     }
@@ -571,7 +571,7 @@ export default function StatefulGameInterface() {
   const requestedSceneId = useGameStore(s => s.currentSceneId)
 
   useEffect(() => {
-    if (!requestedSceneId || !state.gameState) return
+    if (!requestedSceneId || !gameState) return
 
     // Logic: If it's a CharacterID, go to their Intro/Hub. If it's a NodeID, go there.
     // We assume it's a CharacterID first
@@ -600,13 +600,13 @@ export default function StatefulGameInterface() {
       // 3. Immediately trigger navigation to Samuel's Conductor Node
       // We manually set state here because we can't use setCurrentScene (would loop)
       const conductorNodeId = 'samuel_conductor'
-      const samuelGraph = getGraphForCharacter('samuel', state.gameState)
+      const samuelGraph = getGraphForCharacter('samuel', gameState)
       const conductorNode = samuelGraph.nodes.get(conductorNodeId)
 
 
       if (conductorNode) {
         // Dynamic Variable Injection for Conductor Mode
-        const targetCharacter = state.gameState?.characters.get(targetCharId)
+        const targetCharacter = gameState?.characters.get(targetCharId)
         const hasMet = (targetCharacter?.conversationHistory?.length || 0) > 0
         const targetName = characterNames[targetCharId] || 'someone'
         const conductorAction = hasMet ? 'Heading back to' : 'Off to see'
@@ -614,7 +614,7 @@ export default function StatefulGameInterface() {
         // Pre-process the content with the variables
         const processedText = TextProcessor.process(
           conductorNode.content[0].text,
-          state.gameState!,
+          gameState!,
           { targetName, conductorAction }
         )
 
@@ -625,7 +625,7 @@ export default function StatefulGameInterface() {
           currentCharacterId: 'samuel',
           currentContent: processedText, // Injected name
           currentDialogueContent: conductorNode.content[0],
-          availableChoices: StateConditionEvaluator.evaluateChoices(conductorNode, state.gameState!, 'samuel', state.gameState!.skillLevels),
+          availableChoices: StateConditionEvaluator.evaluateChoices(conductorNode, gameState!, 'samuel', gameState!.skillLevels),
           previousSpeaker: null
         }))
         return // Stop processing the direct jump
@@ -642,7 +642,7 @@ export default function StatefulGameInterface() {
 
       // Navigate to Samuel's God Mode conductor node
       const conductorNodeId = 'samuel_conductor_god_mode'
-      const samuelGraph = getGraphForCharacter('samuel', state.gameState)
+      const samuelGraph = getGraphForCharacter('samuel', gameState)
       const conductorNode = samuelGraph.nodes.get(conductorNodeId)
 
       if (conductorNode) {
@@ -652,7 +652,7 @@ export default function StatefulGameInterface() {
         // Pre-process content with simulation title
         const processedText = TextProcessor.process(
           conductorNode.content[0].text,
-          state.gameState!,
+          gameState!,
           { simulationTitle: simTitle }
         )
 
@@ -663,7 +663,7 @@ export default function StatefulGameInterface() {
           currentCharacterId: 'samuel',
           currentContent: processedText,
           currentDialogueContent: conductorNode.content[0],
-          availableChoices: StateConditionEvaluator.evaluateChoices(conductorNode, state.gameState!, 'samuel', state.gameState!.skillLevels),
+          availableChoices: StateConditionEvaluator.evaluateChoices(conductorNode, gameState!, 'samuel', gameState!.skillLevels),
           previousSpeaker: null
         }))
         return
@@ -673,7 +673,7 @@ export default function StatefulGameInterface() {
 
     // Default to [char]_introduction convention
     const targetNodeId = `${requestedSceneId}_introduction`
-    const graph = getGraphForCharacter(targetCharId, state.gameState)
+    const graph = getGraphForCharacter(targetCharId, gameState)
 
     // Check if the graph actually has this node, otherwise fallback to first node
     let targetNode = graph.nodes.get(targetNodeId)
@@ -687,9 +687,9 @@ export default function StatefulGameInterface() {
 
       // Apply voice variation pipeline for consistency
       const content = targetNode.content[0]
-      const gamePatterns = state.gameState!.patterns
-      const skillLevels = state.gameState!.skillLevels
-      const charState = state.gameState!.characters.get(targetCharId)
+      const gamePatterns = gameState!.patterns
+      const skillLevels = gameState!.skillLevels
+      const charState = gameState!.characters.get(targetCharId)
 
       // Apply pattern reflection first
       const mergedPatternReflection = targetNode.patternReflection || content.patternReflection
@@ -712,14 +712,14 @@ export default function StatefulGameInterface() {
         currentCharacterId: targetCharId,
         currentContent: reflected.text,
         currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
-        availableChoices: StateConditionEvaluator.evaluateChoices(targetNode!, state.gameState!, targetCharId, state.gameState!.skillLevels),
+        availableChoices: StateConditionEvaluator.evaluateChoices(targetNode!, gameState!, targetCharId, gameState!.skillLevels),
         previousSpeaker: null, // Reset speaker on jump
         consequenceEcho: null  // Clear echo from previous character
       }))
 
       // Persist the jump
       const newState = {
-        ...state.gameState,
+        ...gameState,
         currentNodeId: targetNode.nodeId,
         currentCharacterId: targetCharId
       }
@@ -729,7 +729,7 @@ export default function StatefulGameInterface() {
     // Reset the request so we don't loop
     useGameStore.getState().setCurrentScene(null)
 
-  }, [requestedSceneId, state.gameState, state.currentCharacterId])
+  }, [requestedSceneId, gameState, state.currentCharacterId])
 
   // ═══════════════════════════════════════════════════════════════════════════
   // STATION EVOLUTION: Sync Station State & Ambience
@@ -738,9 +738,9 @@ export default function StatefulGameInterface() {
 
   // Sync Ambient Context when GameState changes
   useEffect(() => {
-    if (state.gameState) {
+    if (gameState) {
       try {
-        const context = calculateAmbientContext(state.gameState)
+        const context = calculateAmbientContext(gameState)
         useStationStore.getState().setAtmosphere(context.atmosphere)
 
         // Update local ambient description for UI
@@ -753,16 +753,16 @@ export default function StatefulGameInterface() {
         console.warn('Failed to sync station ambience', e)
       }
     }
-  }, [state.gameState, state.currentCharacterId])
+  }, [gameState, state.currentCharacterId])
 
   // P5: Sync station atmosphere with game state
   useEffect(() => {
-    if (state.gameState) {
+    if (gameState) {
       import('@/lib/station-logic').then(({ updateStationState }) => {
-        updateStationState(state.gameState!)
+        updateStationState(gameState!)
       })
     }
-  }, [state.gameState?.globalFlags?.size, state.gameState?.globalFlags]) // Re-run when flags change
+  }, [gameState?.globalFlags?.size, gameState?.globalFlags]) // Re-run when flags change
 
   // P5: Derive Atmospheric Emotion (Moved to top level to avoid conditional hook error)
   const stationAtmosphere = useStationStore(s => s.atmosphere)
@@ -772,7 +772,7 @@ export default function StatefulGameInterface() {
     if (stationAtmosphere === 'awakening') return 'fear_awe'
 
     // Character-based overrides
-    const char = state.gameState?.characters.get(state.currentCharacterId)
+    const char = gameState?.characters.get(state.currentCharacterId)
     if (char && char.anxiety > 60) return 'anxiety'
 
     // Location-based overrides
@@ -780,7 +780,7 @@ export default function StatefulGameInterface() {
     if (state.currentCharacterId === 'market') return 'curiosity'
 
     return 'neutral'
-  }, [stationAtmosphere, state.gameState, state.currentCharacterId])
+  }, [stationAtmosphere, gameState, state.currentCharacterId])
 
   // Idle ambience system — extracted to hook
   useIdleAmbience({ state, setState })
@@ -831,7 +831,7 @@ export default function StatefulGameInterface() {
   // Check if the player is being silent and if the current node has a specific reaction to it
   useEffect(() => {
     // Only run if we are in a dialogue state and not processing
-    if (!state.gameState || !state.currentNode || state.isProcessing || state.activeInterrupt) return
+    if (!gameState || !state.currentNode || state.isProcessing || state.activeInterrupt) return
 
     // Clear any existing timer
     const silenceTimer = setTimeout(() => {
@@ -848,11 +848,11 @@ export default function StatefulGameInterface() {
         // 3. Trigger active interrupt
         logger.info('[StatefulGameInterface] Silence detected. Triggering dynamic reaction.', { nodeId: node.nodeId })
 
-        const activeSilenceState: GameState = state.gameState ? {
-          ...state.gameState,
-          saveVersion: state.gameState.saveVersion || '1.0', // Ensure string
-          globalFlags: new Set([...state.gameState.globalFlags, 'temporary_silence'])
-        } : state.gameState!
+        const activeSilenceState: GameState = gameState ? {
+          ...gameState,
+          saveVersion: gameState.saveVersion || '1.0', // Ensure string
+          globalFlags: new Set([...gameState.globalFlags, 'temporary_silence'])
+        } : gameState!
 
         // Select the new content
         const newContent = DialogueGraphNavigator.selectContent(node, [], activeSilenceState)
@@ -879,19 +879,19 @@ export default function StatefulGameInterface() {
     }, 15000) // 15 seconds threshold
 
     return () => clearTimeout(silenceTimer)
-  }, [state.currentNode, state.currentContent, state.isProcessing, state.activeInterrupt, state.gameState]) // Reset on content change
+  }, [state.currentNode, state.currentContent, state.isProcessing, state.activeInterrupt, gameState]) // Reset on content change
 
   /**
    * Handle interrupt trigger-player acted during NPC speech
    */
   const handleInterruptTrigger = useCallback(() => {
     const interrupt = state.activeInterrupt
-    if (!interrupt || !state.gameState) return
+    if (!interrupt || !gameState) return
 
     logger.info('[StatefulGameInterface] Interrupt triggered:', { action: interrupt.action, targetNodeId: interrupt.targetNodeId })
 
     // Apply interrupt consequence if present
-    let newGameState = state.gameState
+    let newGameState = gameState
     if (interrupt.consequence) {
       newGameState = GameStateUtils.applyStateChange(newGameState, interrupt.consequence)
     }
@@ -999,20 +999,20 @@ export default function StatefulGameInterface() {
     // COMMIT: Persist + sync
     GameStateManager.saveGameState(newGameState)
     useGameStore.getState().setCoreGameState(GameStateUtils.serialize(newGameState))
-  }, [state.activeInterrupt, state.gameState, state.activeComboChain])
+  }, [state.activeInterrupt, gameState, state.activeComboChain])
 
   /**
    * Handle interrupt timeout-player didn't act
    */
   const handleInterruptTimeout = useCallback(() => {
     const interrupt = state.activeInterrupt
-    if (!interrupt || !state.gameState) return
+    if (!interrupt || !gameState) return
 
     logger.info('[StatefulGameInterface] Interrupt timed out:', { action: interrupt.action })
 
     // Clear the interrupt-if there's a missedNodeId, navigate there
     if (interrupt.missedNodeId) {
-      const missedNav = resolveNode(interrupt.missedNodeId, state.gameState, [])
+      const missedNav = resolveNode(interrupt.missedNodeId, gameState, [])
       if (missedNav.success) {
         // D-084: Reset combo chain when interrupt is missed
         setState(prev => ({
@@ -1023,7 +1023,7 @@ export default function StatefulGameInterface() {
           availableChoices: missedNav.availableChoices,
           currentContent: missedNav.reflectedText,
           currentDialogueContent: { ...missedNav.content, text: missedNav.reflectedText, emotion: missedNav.reflectedEmotion },
-          activeInterrupt: state.gameState ? shouldShowInterrupt(missedNav.content.interrupt, state.gameState.patterns) : null, // D-009: Filter by pattern
+          activeInterrupt: gameState ? shouldShowInterrupt(missedNav.content.interrupt, gameState.patterns) : null, // D-009: Filter by pattern
           activeComboChain: null  // D-084: Reset combo on missed interrupt
         }))
         return
@@ -1033,7 +1033,7 @@ export default function StatefulGameInterface() {
     // No missedNodeId or it wasn't found-just clear the interrupt
     // D-084: Also reset combo chain
     setState(prev => ({ ...prev, activeInterrupt: null, activeComboChain: null }))
-  }, [state.activeInterrupt, state.gameState])
+  }, [state.activeInterrupt, gameState])
 
   /**
    * Navigate back to Samuel's hub after completing a conversation
@@ -1044,12 +1044,12 @@ export default function StatefulGameInterface() {
 
   // Experience Choice Handler
   const handleExperienceChoice = useCallback((choiceId: string) => {
-    if (!state.activeExperience || !state.gameState) return
+    if (!state.activeExperience || !gameState) return
 
     import("@/lib/experience-engine").then(({ ExperienceEngine }) => {
-      const result = ExperienceEngine.processChoice(state.activeExperience!, choiceId, state.gameState!)
+      const result = ExperienceEngine.processChoice(state.activeExperience!, choiceId, gameState!)
 
-      const newGameState = { ...state.gameState!, ...result.updates }
+      const newGameState = { ...gameState!, ...result.updates }
 
       // Update state
       setState(prev => ({
@@ -1061,7 +1061,7 @@ export default function StatefulGameInterface() {
       // Sync
       GameStateManager.saveGameState(newGameState)
     })
-  }, [state.activeExperience, state.gameState])
+  }, [state.activeExperience, gameState])
 
 
   // Render Logic-Restored Card Layout
@@ -1119,7 +1119,7 @@ export default function StatefulGameInterface() {
 
 
 
-  const currentCharacter = state.gameState?.characters.get(state.currentCharacterId)
+  const currentCharacter = gameState?.characters.get(state.currentCharacterId)
   const isEnding = state.availableChoices.length === 0
 
   // GOD MODE OVERRIDE-Render simulation if active (must be at end after all hooks)
@@ -1149,7 +1149,7 @@ export default function StatefulGameInterface() {
       className={currentState === 'station' ? 'cursor-default' : ''}
     >
       {/* Environmental body class manager - applies pattern/character atmosphere to <body> */}
-      <EnvironmentalEffects gameState={state.gameState} />
+      <EnvironmentalEffects gameState={gameState} />
       <div
         className="relative z-10 flex flex-col min-h-[100dvh] w-full max-w-xl mx-auto shadow-2xl border-x border-white/5 bg-black/10"
         style={{
@@ -1166,7 +1166,7 @@ export default function StatefulGameInterface() {
           FIXED HEADER-Always visible at top (Claude/ChatGPT pattern)
           ══════════════════════════════════════════════════════════════════ */}
         <GameHeader
-          gameState={state.gameState}
+          gameState={gameState}
           currentCharacterId={state.currentCharacterId}
           currentNode={state.currentNode}
           hasCurrentCharacter={!!currentCharacter}
@@ -1199,7 +1199,7 @@ export default function StatefulGameInterface() {
                 className="glass-panel text-white"
                 style={{ transition: 'none', background: 'rgba(10, 12, 16, 0.85)' }}
                 data-testid="dialogue-card"
-                data-node-id={state.gameState?.currentNodeId || ''}
+                data-node-id={gameState?.currentNodeId || ''}
                 data-character-id={state.currentCharacterId}
                 data-is-narration={state.currentNode?.speaker ? undefined : 'true'}
                 data-emotional-beat={
@@ -1255,7 +1255,7 @@ export default function StatefulGameInterface() {
                           <div className="prose prose-invert max-w-none text-lg leading-relaxed text-indigo-100/90 whitespace-pre-wrap">
                             <ExperienceRenderer
                               state={state.activeExperience}
-                              gameState={state.gameState!}
+                              gameState={gameState!}
                               onChoice={(choiceId) => handleExperienceChoice(choiceId)}
                             />
                           </div>
@@ -1291,8 +1291,8 @@ export default function StatefulGameInterface() {
                         <div className="p-6 md:p-8">
                           {/* D-008: Compute text effects based on player state */}
                           {(() => {
-                            const textEffects = state.gameState
-                              ? getActiveTextEffects(state.gameState, state.currentCharacterId)
+                            const textEffects = gameState
+                              ? getActiveTextEffects(gameState, state.currentCharacterId)
                               : []
                             const textEffectClasses = getTextEffectClasses(textEffects)
                             const textEffectStyles = getTextEffectStyles(textEffects)
@@ -1304,10 +1304,10 @@ export default function StatefulGameInterface() {
                               >
                                 <DialogueDisplay
                                   key="dialogue-display-main"
-                                  text={cleanContent(state.gameState ? TextProcessor.process(state.currentContent || '', state.gameState) : (state.currentContent || ''))}
+                                  text={cleanContent(gameState ? TextProcessor.process(state.currentContent || '', gameState) : (state.currentContent || ''))}
                                   characterName={state.currentNode?.speaker}
                                   characterId={state.currentCharacterId}
-                                  gameState={state.gameState ?? undefined}
+                                  gameState={gameState ?? undefined}
                                   showAvatar={false}
                                   richEffects={getRichEffectContext(state.currentDialogueContent, state.isLoading, state.recentSkills, state.useChatPacing)}
                                   interaction={state.currentDialogueContent?.interaction}
@@ -1403,12 +1403,12 @@ export default function StatefulGameInterface() {
             {/* Ending State-Shows in scroll area when conversation complete */}
             {isEnding && (
               <EndingPanel
-                gameState={state.gameState}
+                gameState={gameState}
                 onSeeJourney={() => {
-                  if (state.gameState) {
+                  if (gameState) {
                     const demonstrations = skillTrackerRef.current?.getAllDemonstrations() || []
                     const trackedSkills = useGameStore.getState().skills
-                    const narrative = generateJourneyNarrative(state.gameState, demonstrations, trackedSkills)
+                    const narrative = generateJourneyNarrative(gameState, demonstrations, trackedSkills)
                     setState(prev => ({ ...prev, showJourneySummary: true, journeyNarrative: narrative }))
                   }
                 }}
@@ -1427,7 +1427,7 @@ export default function StatefulGameInterface() {
           isEnding={isEnding}
           availableChoices={state.availableChoices}
           currentNode={state.currentNode}
-          gameState={state.gameState}
+          gameState={gameState}
           isProcessing={state.isProcessing}
           orbFillLevels={orbFillLevels}
           cognitiveLoad={cognitiveLoad}
@@ -1547,9 +1547,9 @@ export default function StatefulGameInterface() {
         {/* Limbic System Overlay REMOVED-caused distracting color flashing */}
         {/* The Reality Interface-Career Report */}
         {
-          state.showReport && state.gameState && (
+          state.showReport && gameState && (
             <StrategyReport
-              gameState={state.gameState}
+              gameState={gameState}
               onClose={() => setState(prev => ({ ...prev, showReport: false }))}
             />
           )
