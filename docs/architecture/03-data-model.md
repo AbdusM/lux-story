@@ -11,7 +11,7 @@
 ### player_profiles
 
 **Purpose:** Core player record — identity, progress, metadata.
-**Migration:** `001_initial_schema.sql`, `002_normalized_core.sql`
+**Migration:** `001_setup.sql`, `002_normalized_core.sql`
 
 | Column | Type | Nullable | Notes |
 |--------|------|----------|-------|
@@ -39,7 +39,7 @@
 ### skill_demonstrations
 
 **Purpose:** Individual skill demonstration events.
-**Migration:** `001_initial_schema.sql`
+**Migration:** `001_setup.sql`
 
 | Column | Type | Nullable | Notes |
 |--------|------|----------|-------|
@@ -59,7 +59,7 @@
 ### career_explorations
 
 **Purpose:** Career paths explored with match scores.
-**Migration:** `001_initial_schema.sql`
+**Migration:** `001_setup.sql`
 
 | Column | Type | Nullable | Notes |
 |--------|------|----------|-------|
@@ -81,7 +81,7 @@
 ### relationship_progress
 
 **Purpose:** Trust level per character.
-**Migration:** `001_initial_schema.sql`
+**Migration:** `001_setup.sql`
 
 | Column | Type | Nullable | Notes |
 |--------|------|----------|-------|
@@ -101,7 +101,7 @@
 ### platform_states
 
 **Purpose:** Platform discovery and warmth state.
-**Migration:** `001_initial_schema.sql`
+**Migration:** `001_setup.sql`
 
 | Column | Type | Nullable | Notes |
 |--------|------|----------|-------|

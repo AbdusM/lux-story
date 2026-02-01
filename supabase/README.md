@@ -64,7 +64,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_actual_anon_key_here
 1. Go to https://supabase.com/dashboard/project/YOUR_PROJECT_REF
 2. Click "SQL Editor" in left sidebar
 3. Click "New query"
-4. Copy contents of `migrations/001_initial_schema.sql`
+4. Copy contents of `migrations/001_setup.sql`
 5. Paste into SQL editor
 6. Click "Run"
 
@@ -75,7 +75,7 @@ PGPASSWORD='your_database_password' psql \
   -p 5432 \
   -U postgres \
   -d postgres \
-  -f supabase/migrations/001_initial_schema.sql
+  -f supabase/migrations/001_setup.sql
 ```
 
 **Option C: Supabase CLI**

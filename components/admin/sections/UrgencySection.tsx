@@ -1,22 +1,16 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { AlertTriangle, RefreshCw, ArrowRight } from 'lucide-react'
+import { AlertTriangle, RefreshCw } from 'lucide-react'
 import { getUrgencyClasses } from '@/lib/admin-urgency-classes'
-import { PermissionButton } from '@/components/admin/PermissionGate'
-import { formatAdminDate, type ViewMode } from '@/lib/admin-date-formatting'
-import type { SkillProfile } from '@/lib/skill-profile-adapter'
-import { InterventionTriggers } from '@/components/admin/InterventionTriggers'
+import { formatAdminDate } from '@/lib/admin-date-formatting'
 
 interface UrgencySectionProps {
   userId: string
-  profile: SkillProfile
-  adminViewMode: 'family' | 'research'
 }
 
 interface UrgencyData {
@@ -34,7 +28,7 @@ interface UrgencyData {
   relationshipsFormed: number
 }
 
-export function UrgencySection({ userId, profile: _profile, adminViewMode }: UrgencySectionProps) {
+export function UrgencySection({ userId }: UrgencySectionProps) {
   const [urgencyData, setUrgencyData] = useState<UrgencyData | null>(null)
   const [urgencyLoading, setUrgencyLoading] = useState(false)
   const [urgencyError, setUrgencyError] = useState<string | null>(null)
@@ -113,18 +107,18 @@ export function UrgencySection({ userId, profile: _profile, adminViewMode }: Urg
                 Intervention Priority
               </CardTitle>
               <CardDescription className="text-sm sm:text-base">
-                Your intervention priority with transparent narrative justification
+                Admin view of urgency signals with narrative justification
               </CardDescription>
             </div>
-            <PermissionButton
-              permission="recalculate_urgency"
+            <Button
+              type="button"
               onClick={handleRecalculate}
               disabled={recalculating}
               className="gap-2 min-h-[44px] w-full sm:w-auto px-4 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/20 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <RefreshCw className={`w-4 h-4 ${recalculating ? 'animate-spin' : ''}`} />
               Recalculate
-            </PermissionButton>
+            </Button>
           </div>
         </CardHeader>
         <CardContent className="min-h-[280px]">
@@ -138,9 +132,9 @@ export function UrgencySection({ userId, profile: _profile, adminViewMode }: Urg
             </div>
           ) : !urgencyData ? (
             <div className="text-center py-12 space-y-4">
-              <p className="text-gray-600 text-sm sm:text-base">No urgency data available for you yet.</p>
+              <p className="text-gray-600 text-sm sm:text-base">No urgency data available for this user yet.</p>
               <p className="text-sm text-gray-500">
-                Click "Recalculate" to generate your urgency score.
+                Click "Recalculate" to generate the urgency score.
               </p>
             </div>
           ) : (
@@ -148,45 +142,38 @@ export function UrgencySection({ userId, profile: _profile, adminViewMode }: Urg
               {/* Urgency Level Badge and Score */}
               <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ${getUrgencyClasses(urgencyData.urgencyLevel).card}`}>
                 <div>
-                  <p className="text-sm sm:text-base text-gray-800 mb-2">Your Priority Level</p>
+                  <p className="text-sm sm:text-base text-gray-800 mb-2">Priority Level</p>
                   <Badge className={getUrgencyClasses(urgencyData.urgencyLevel).badge}>
                     {urgencyData.urgencyLevel?.toUpperCase() || 'PENDING'}
                   </Badge>
                 </div>
                 <div className="text-center sm:text-right">
                   <p className="text-sm sm:text-base text-gray-800 mb-2">
-                    {adminViewMode === 'family' ? 'Attention Needed' : 'Your Priority Score'}
+                    Priority Score
                   </p>
                   <p className={`text-2xl sm:text-3xl font-bold ${getUrgencyClasses(urgencyData.urgencyLevel).percentage}`}>
-                    {adminViewMode === 'family'
-                      ? `${urgencyData.urgencyLevel ? urgencyData.urgencyLevel.charAt(0).toUpperCase() + urgencyData.urgencyLevel.slice(1) : 'Pending'} (${Math.max(0, Math.min(100, Math.round((urgencyData.urgencyScore || 0) * 100)))}%)`
-                      : `${Math.max(0, Math.min(100, Math.round((urgencyData.urgencyScore || 0) * 100)))}%`}
+                    {Math.max(0, Math.min(100, Math.round((urgencyData.urgencyScore || 0) * 100)))}%
                   </p>
                 </div>
               </div>
 
               {/* Glass Box Narrative */}
               <div className="p-4 sm:p-6 bg-blue-50 border-l-4 border-blue-400 rounded-lg">
-                <h4 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Your Priority Explanation:</h4>
+                <h4 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Explanation:</h4>
                 <p className="text-sm sm:text-base italic text-gray-800 leading-relaxed">
                   {urgencyData.urgencyNarrative || "No narrative generated yet."}
                 </p>
               </div>
 
-              {/* MIVA 2.0 Intervention Triggers */}
-              <InterventionTriggers profile={_profile} adminViewMode={adminViewMode} />
-
               {/* Contributing Factors */}
               <div className="space-y-4">
-                <h4 className="text-sm sm:text-base font-semibold text-gray-800">Your Contributing Factors:</h4>
+                <h4 className="text-sm sm:text-base font-semibold text-gray-800">Contributing Factors:</h4>
 
                 <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                     <span className="font-medium text-sm sm:text-base">Disengagement</span>
                     <span className="text-gray-600 text-xs sm:text-sm">
-                      {adminViewMode === 'family'
-                        ? `Most important factor (${Math.max(0, Math.min(100, Math.round((urgencyData.disengagementScore || 0) * 100)))}%)`
-                        : `40% weight • ${Math.max(0, Math.min(100, Math.round((urgencyData.disengagementScore || 0) * 100)))}%`}
+                      {Math.max(0, Math.min(100, Math.round((urgencyData.disengagementScore || 0) * 100)))}%
                     </span>
                   </div>
                   <Progress value={Math.max(0, Math.min(100, (urgencyData.disengagementScore || 0) * 100))} className="h-3" />
@@ -196,9 +183,7 @@ export function UrgencySection({ userId, profile: _profile, adminViewMode }: Urg
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                     <span className="font-medium text-sm sm:text-base">Confusion</span>
                     <span className="text-gray-600 text-xs sm:text-sm">
-                      {adminViewMode === 'family'
-                        ? `Career uncertainty (${Math.max(0, Math.min(100, Math.round((urgencyData.confusionScore || 0) * 100)))}%)`
-                        : `30% weight • ${Math.max(0, Math.min(100, Math.round((urgencyData.confusionScore || 0) * 100)))}%`}
+                      {Math.max(0, Math.min(100, Math.round((urgencyData.confusionScore || 0) * 100)))}%
                     </span>
                   </div>
                   <Progress value={Math.max(0, Math.min(100, (urgencyData.confusionScore || 0) * 100))} className="h-3" />
@@ -208,9 +193,7 @@ export function UrgencySection({ userId, profile: _profile, adminViewMode }: Urg
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                     <span className="font-medium text-sm sm:text-base">Stress</span>
                     <span className="text-gray-600 text-xs sm:text-sm">
-                      {adminViewMode === 'family'
-                        ? `Decision pressure (${Math.max(0, Math.min(100, Math.round((urgencyData.stressScore || 0) * 100)))}%)`
-                        : `20% weight • ${Math.max(0, Math.min(100, Math.round((urgencyData.stressScore || 0) * 100)))}%`}
+                      {Math.max(0, Math.min(100, Math.round((urgencyData.stressScore || 0) * 100)))}%
                     </span>
                   </div>
                   <Progress value={Math.max(0, Math.min(100, (urgencyData.stressScore || 0) * 100))} className="h-3" />
@@ -220,9 +203,7 @@ export function UrgencySection({ userId, profile: _profile, adminViewMode }: Urg
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                     <span className="font-medium text-sm sm:text-base">Isolation</span>
                     <span className="text-gray-600 text-xs sm:text-sm">
-                      {adminViewMode === 'family'
-                        ? `Exploring alone (${Math.max(0, Math.min(100, Math.round((urgencyData.isolationScore || 0) * 100)))}%)`
-                        : `10% weight • ${Math.max(0, Math.min(100, Math.round((urgencyData.isolationScore || 0) * 100)))}%`}
+                      {Math.max(0, Math.min(100, Math.round((urgencyData.isolationScore || 0) * 100)))}%
                     </span>
                   </div>
                   <Progress value={Math.max(0, Math.min(100, (urgencyData.isolationScore || 0) * 100))} className="h-3" />
@@ -236,7 +217,7 @@ export function UrgencySection({ userId, profile: _profile, adminViewMode }: Urg
                   <div className="text-center sm:text-left">
                     <p className="text-xs sm:text-sm text-gray-600 mb-1">Last Active</p>
                     <p className="text-base sm:text-lg font-semibold text-gray-900">
-                      {urgencyData.lastActivity ? formatAdminDate(urgencyData.lastActivity, 'urgency', adminViewMode as ViewMode) : 'No activity'}
+                      {urgencyData.lastActivity ? formatAdminDate(urgencyData.lastActivity, 'urgency') : 'No activity'}
                     </p>
                   </div>
                   <div className="text-center sm:text-left">
@@ -262,8 +243,8 @@ export function UrgencySection({ userId, profile: _profile, adminViewMode }: Urg
                     <div>
                       <h4 className="font-semibold text-red-900 text-sm sm:text-base">Support Available</h4>
                       <p className="text-sm sm:text-base text-red-700 mt-2 leading-relaxed">
-                        You show {urgencyData.urgencyLevel} priority indicators.
-                        Consider reaching out for support or guidance.
+                        This user shows {urgencyData.urgencyLevel} priority indicators.
+                        Consider reaching out with support or guidance.
                       </p>
                     </div>
                   </div>
@@ -273,15 +254,6 @@ export function UrgencySection({ userId, profile: _profile, adminViewMode }: Urg
           )}
         </CardContent>
       </Card>
-
-      {/* Navigation suggestion */}
-      <Link href={`/admin/${userId}/skills`}>
-        <Button variant="ghost" className="w-full justify-center gap-2 mt-6">
-          Next: View Skills
-          <ArrowRight className="w-4 h-4" />
-        </Button>
-      </Link>
     </div>
   )
 }
-

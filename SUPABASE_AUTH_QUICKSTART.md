@@ -21,7 +21,7 @@ Go to: https://supabase.com/dashboard/project/tavalvqcebosfxamuvlx/sql/new
 
 ### 1.2 Copy & Run Migration
 
-Copy the **entire contents** of `supabase/migrations/001_auth_setup.sql` (200 lines) and paste into the SQL editor, then click **Run**.
+Copy the **entire contents** of `supabase/migrations/001_setup.sql` (200 lines) and paste into the SQL editor, then click **Run**.
 
 **Expected output:**
 ```

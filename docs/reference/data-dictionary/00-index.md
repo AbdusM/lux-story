@@ -1,8 +1,9 @@
 # Data Dictionary - Index
 
-**Last Updated:** January 13, 2026
+**Last Updated:** February 1, 2026
 **Status:** 100% Complete - All Categories Documented
 **Coverage:** 12 of 12 categories documented (100% complete)
+**Start here:** `00-core-gameplay.md` (summary of the core runtime contract)
 
 ---
 
@@ -42,6 +43,10 @@ This data dictionary documents all metadata used in the Lux Story game system, i
 ---
 
 ## Table of Contents
+
+### Start Here (Summary)
+
+0. **[Core Gameplay](./00-core-gameplay.md)** ✅ - The minimal runtime contract for the game loop
 
 ### Complete Systems (All 12 files) ✅
 

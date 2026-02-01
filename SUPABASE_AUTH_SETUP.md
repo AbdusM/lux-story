@@ -29,7 +29,7 @@ This guide walks you through setting up Google OAuth and Magic Link authenticati
 
 ### 1.2 Run Migration Script
 
-Copy the entire contents of `supabase/migrations/001_auth_setup.sql` and paste it into the SQL editor, then click **Run**.
+Copy the entire contents of `supabase/migrations/001_setup.sql` and paste it into the SQL editor, then click **Run**.
 
 **What this does:**
 - Creates `profiles` table with `role` column (student/educator/admin)
@@ -365,7 +365,7 @@ https://tavalvqcebosfxamuvlx.supabase.co/auth/v1/callback
 
 | File | Purpose |
 |------|---------|
-| `supabase/migrations/001_auth_setup.sql` | Database schema, RLS policies, triggers |
+| `supabase/migrations/001_setup.sql` | Database schema, RLS policies, triggers |
 | `lib/supabase/client.ts` | Browser Supabase client |
 | `lib/supabase/server.ts` | Server Supabase client (for API routes) |
 | `lib/supabase/middleware.ts` | Session refresh middleware |

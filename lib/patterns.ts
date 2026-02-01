@@ -24,6 +24,17 @@ export const PATTERN_TYPES = [
 
 export type PatternType = typeof PATTERN_TYPES[number]
 
+const LEGACY_PATTERN_ALIASES: Record<string, PatternType> = {
+  analyzing: 'analytical'
+}
+
+export function normalizePatternName(pattern: string): PatternType | null {
+  if (PATTERN_TYPES.includes(pattern as PatternType)) {
+    return pattern as PatternType
+  }
+  return LEGACY_PATTERN_ALIASES[pattern] || null
+}
+
 /**
  * Standard Pattern Thresholds
  * Used across Logic, Voice, and Experience systems to ensure consistent difficulty.
@@ -316,14 +327,15 @@ export function getPatternValue(
 ): number {
   if (!patterns) return 0
 
-  if (!isValidPattern(pattern)) {
+  const normalized = normalizePatternName(pattern)
+  if (!normalized) {
     if (process.env.NODE_ENV === 'development') {
       console.warn(`[Patterns] Invalid pattern key: "${pattern}"`)
     }
     return 0
   }
 
-  return patterns[pattern] ?? 0
+  return patterns[normalized] ?? 0
 }
 
 /**

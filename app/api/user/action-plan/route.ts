@@ -41,17 +41,7 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       logger.error('Supabase error saving action plan', { operation: OPERATION_POST, userId }, error instanceof Error ? error : undefined)
-
-      // Fallback: Try player_profiles if table doesn't exist
-      if (error.code === '42P01') {
-        const { error: profileError } = await supabase
-          .from('player_profiles')
-          .update({ last_action_plan: plan, last_activity: new Date().toISOString() })
-          .eq('user_id', userId)
-        if (profileError) throw profileError
-      } else {
-        throw error
-      }
+      throw error
     }
 
     return NextResponse.json({ success: true })

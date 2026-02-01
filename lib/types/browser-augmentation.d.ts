@@ -76,6 +76,11 @@ declare global {
      * Required for createGodModeAPI() to function in production
      */
     __GOD_MODE_AUTHORIZED?: boolean
+
+    /**
+     * E2E-only admin override for Playwright tests
+     */
+    __E2E_ADMIN__?: boolean
   }
 }
 

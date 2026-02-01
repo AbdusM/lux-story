@@ -182,18 +182,18 @@ async function testAuthChecks() {
       }
     }
 
-    // Check middleware exists
+    // Check admin layout exists and enforces role-based auth
     try {
-      const middlewarePath = path.join(process.cwd(), 'middleware.ts')
-      const middlewareContent = await fs.readFile(middlewarePath, 'utf-8')
+      const adminLayoutPath = path.join(process.cwd(), 'app/admin/layout.tsx')
+      const adminLayoutContent = await fs.readFile(adminLayoutPath, 'utf-8')
 
-      if (middlewareContent.includes('admin_auth_token') && middlewareContent.includes('/admin')) {
-        pass('Middleware Protection', 'Admin routes protected by middleware')
+      if (adminLayoutContent.includes('getAdminAuthStatus') && adminLayoutContent.includes('createClient')) {
+        pass('Admin Layout Protection', 'Admin routes protected by server-side role checks')
       } else {
-        fail('Middleware Protection', 'Middleware may not protect admin routes')
+        fail('Admin Layout Protection', 'Admin layout may not enforce role-based access')
       }
     } catch (error) {
-      fail('Middleware Protection', `Could not read middleware: ${error instanceof Error ? error.message : String(error)}`)
+      fail('Admin Layout Protection', `Could not read admin layout: ${error instanceof Error ? error.message : String(error)}`)
     }
 
   } catch (error) {
@@ -300,4 +300,3 @@ runAllTests().catch(error => {
   console.error(`\n${colors.red}❌ Fatal error:${colors.reset}`, error)
   process.exit(1)
 })
-

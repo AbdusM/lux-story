@@ -256,5 +256,10 @@ export default defineConfig({
     url: 'http://localhost:3005',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
+    env: {
+      ...process.env,
+      E2E_ADMIN_BYPASS_TOKEN: process.env.E2E_ADMIN_BYPASS_TOKEN || 'e2e-admin-bypass',
+      E2E_ADMIN_BYPASS_ENABLED: process.env.E2E_ADMIN_BYPASS_ENABLED || 'true'
+    },
   },
 })

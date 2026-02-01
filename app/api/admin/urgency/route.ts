@@ -8,7 +8,7 @@
  * - GET /api/admin/urgency?level={all|high|critical}&limit=50
  * - POST /api/admin/urgency (triggers recalculation for all players)
  *
- * Authentication: Cookie-based (admin_auth_token)
+ * Authentication: Supabase role-based (admin/educator) or X-Admin-Token fallback
  * Security: Uses centralized admin client with service role access
  */
 

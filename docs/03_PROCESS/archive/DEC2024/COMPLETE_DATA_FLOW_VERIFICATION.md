@@ -206,7 +206,7 @@ curl "http://localhost:3005/api/user/career-analytics?userId=player_175954674447
 - ✅ app/api/user/career-analytics/route.ts ← **Found during verification**
 
 ### Database Schema
-- ✅ supabase/migrations/001_initial_schema.sql
+- ✅ supabase/migrations/001_setup.sql
 - ✅ supabase/migrations/005_career_analytics_table.sql ← **Found during verification**
 
 ### Game Integration

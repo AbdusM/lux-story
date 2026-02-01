@@ -10,7 +10,7 @@ This guide helps verify that all database migrations have been applied to your p
 
 The following 12 migration files should be applied in order:
 
-1. **001_initial_schema.sql** - Core tables (player_profiles, skill_demonstrations, career_explorations, relationship_progress, platform_states)
+1. **001_setup.sql** - Core tables (player_profiles, skill_demonstrations, career_explorations, relationship_progress, platform_states)
 2. **002_normalized_core.sql** - Normalized schema improvements
 3. **003_urgency_triage.sql** - Urgency triage system with materialized views
 4. **004_fix_urgency_function.sql** - Bug fix for urgency calculation function

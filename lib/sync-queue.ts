@@ -907,6 +907,7 @@ export function queueRelationshipSync(data: {
  */
 export function queuePlatformStateSync(data: {
   user_id: string
+  platform_id?: string
   current_scene?: string
   global_flags?: string[]
   patterns?: {
@@ -917,11 +918,13 @@ export function queuePlatformStateSync(data: {
     exploring: number
   }
 }): void {
+  const resolvedPlatformId = data.platform_id || 'core'
   SyncQueue.addToQueue({
     id: generateActionId(),
     type: 'platform_state',
     data: {
       ...data,
+      platform_id: resolvedPlatformId,
       updated_at: new Date().toISOString()
     },
     timestamp: Date.now()

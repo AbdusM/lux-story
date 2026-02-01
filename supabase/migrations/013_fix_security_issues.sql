@@ -146,6 +146,48 @@ ALTER TABLE career_local_opportunities ENABLE ROW LEVEL SECURITY;
 -- 3. CREATE RLS POLICIES FOR EACH TABLE
 -- ============================================================================
 
+-- Drop existing policies to allow idempotent re-run
+DROP POLICY IF EXISTS "Users can view own urgency scores" ON player_urgency_scores;
+DROP POLICY IF EXISTS "Service role can view all urgency scores" ON player_urgency_scores;
+DROP POLICY IF EXISTS "Service role can manage urgency scores" ON player_urgency_scores;
+
+DROP POLICY IF EXISTS "Users can view own visited scenes" ON visited_scenes;
+DROP POLICY IF EXISTS "Users can insert own visited scenes" ON visited_scenes;
+DROP POLICY IF EXISTS "Service role can view all visited scenes" ON visited_scenes;
+DROP POLICY IF EXISTS "Service role can insert all visited scenes" ON visited_scenes;
+
+DROP POLICY IF EXISTS "Users can view own choice history" ON choice_history;
+DROP POLICY IF EXISTS "Users can insert own choices" ON choice_history;
+DROP POLICY IF EXISTS "Service role can view all choice history" ON choice_history;
+DROP POLICY IF EXISTS "Service role can insert all choice history" ON choice_history;
+
+DROP POLICY IF EXISTS "Users can view own patterns" ON player_patterns;
+DROP POLICY IF EXISTS "Users can update own patterns" ON player_patterns;
+DROP POLICY IF EXISTS "Users can insert own patterns" ON player_patterns;
+DROP POLICY IF EXISTS "Service role can view all player patterns" ON player_patterns;
+DROP POLICY IF EXISTS "Service role can manage all player patterns" ON player_patterns;
+
+DROP POLICY IF EXISTS "Users can view own behavioral profile" ON player_behavioral_profiles;
+DROP POLICY IF EXISTS "Users can update own behavioral profile" ON player_behavioral_profiles;
+DROP POLICY IF EXISTS "Users can insert own behavioral profile" ON player_behavioral_profiles;
+DROP POLICY IF EXISTS "Service role can view all behavioral profiles" ON player_behavioral_profiles;
+DROP POLICY IF EXISTS "Service role can manage all behavioral profiles" ON player_behavioral_profiles;
+
+DROP POLICY IF EXISTS "Users can view own milestones" ON skill_milestones;
+DROP POLICY IF EXISTS "Users can insert own milestones" ON skill_milestones;
+DROP POLICY IF EXISTS "Service role can view all milestones" ON skill_milestones;
+DROP POLICY IF EXISTS "Service role can insert all milestones" ON skill_milestones;
+
+DROP POLICY IF EXISTS "Users can view own relationship key moments" ON relationship_key_moments;
+DROP POLICY IF EXISTS "Users can insert own relationship key moments" ON relationship_key_moments;
+DROP POLICY IF EXISTS "Service role can view all relationship key moments" ON relationship_key_moments;
+DROP POLICY IF EXISTS "Service role can insert all relationship key moments" ON relationship_key_moments;
+
+DROP POLICY IF EXISTS "Users can view own career opportunities" ON career_local_opportunities;
+DROP POLICY IF EXISTS "Users can insert own career opportunities" ON career_local_opportunities;
+DROP POLICY IF EXISTS "Service role can view all career opportunities" ON career_local_opportunities;
+DROP POLICY IF EXISTS "Service role can insert all career opportunities" ON career_local_opportunities;
+
 -- ============================================================================
 -- player_urgency_scores policies
 -- ============================================================================

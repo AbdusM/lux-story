@@ -85,7 +85,7 @@ export interface CareerReadiness {
 // Pattern-Related Types
 // ============================================================================
 
-export type PatternName = 'helping' | 'analyzing' | 'building' | 'exploring' | 'patience' | 'rushing'
+export type PatternName = 'helping' | 'analytical' | 'analyzing' | 'building' | 'exploring' | 'patience' | 'rushing'
 
 export interface PatternDemonstration {
   id: string

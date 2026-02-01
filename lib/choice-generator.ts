@@ -250,19 +250,19 @@ export class ChoiceGenerator {
 
     // Early game: focus on exploration
     if (chapter === 1 && sceneNum < 5) {
-      patterns.push('exploring', 'exploring', 'helping', 'analyzing')
+      patterns.push('exploring', 'exploring', 'helping', 'analytical')
     }
     // Character interaction scenes: include helping
     else if (contexts.includes('character') || contexts.includes('lost')) {
       patterns.push('helping', 'exploring', 'building', 'patience')
     }
-    // Problem/challenge scenes: include building and analyzing
+    // Problem/challenge scenes: include building and analytical
     else if (contexts.includes('problem') || contexts.includes('mystery')) {
-      patterns.push('analyzing', 'building', 'exploring', 'helping')
+      patterns.push('analytical', 'building', 'exploring', 'helping')
     }
     // Platform/career scenes: balanced approach
     else if (contexts.includes('station') || contexts.includes('opportunity')) {
-      patterns.push('exploring', 'building', 'analyzing', 'helping')
+      patterns.push('exploring', 'building', 'analytical', 'helping')
     }
     // Default: exploration focused
     else {
@@ -409,7 +409,7 @@ export class ChoiceGenerator {
 
     // Select a pattern to augment (prefer less represented patterns)
     const existingPatterns = choices.map(c => c.consequence.split('_')[0])
-    const availablePatterns = ['exploring', 'helping', 'building', 'analyzing', 'patience']
+    const availablePatterns = ['exploring', 'helping', 'building', 'analytical', 'patience']
 
     // Find patterns not well represented
     const underrepresentedPatterns = availablePatterns.filter(pattern => {

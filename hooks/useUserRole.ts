@@ -3,8 +3,9 @@
  * Fetches and caches user role from Supabase profiles table
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { isTestEnvironment } from '@/lib/test-environment'
 
 export type UserRole = 'student' | 'educator' | 'admin'
 
@@ -21,16 +22,22 @@ export function useUserRole(): UserRoleData {
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState<any | null>(null)
 
-  // Create client outside useEffect (following LinkDap pattern)
-  const supabase = createClient()
+  const supabase = useMemo(() => createClient(), [])
 
   useEffect(() => {
     async function fetchRole() {
       try {
+        if (isTestEnvironment()) {
+          if (window.__E2E_ADMIN__ === true || document.cookie.includes('e2e_admin_bypass=')) {
+            setRole('admin')
+            setUser({ id: 'e2e-admin' })
+            setLoading(false)
+            return
+          }
+        }
+
         // Get current user
         const { data: { user: currentUser } } = await supabase.auth.getUser()
-
-        console.log('[useUserRole] Current user:', currentUser?.email || 'none')
 
         if (!currentUser) {
           setRole('student')
@@ -49,14 +56,11 @@ export function useUserRole(): UserRoleData {
           .single()
 
         if (error) {
-          console.error('[useUserRole] Error fetching profile:', error)
           setRole('student') // Fallback
         } else {
-          console.log('[useUserRole] Profile role:', profile?.role || 'student')
           setRole(profile?.role || 'student')
         }
       } catch (error) {
-        console.error('[useUserRole] Unexpected error:', error)
         setRole('student') // Fallback
       } finally {
         setLoading(false)
@@ -66,9 +70,7 @@ export function useUserRole(): UserRoleData {
     fetchRole()
 
     // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('[useUserRole] Auth state changed:', event, session?.user?.email || 'none')
-
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session?.user) {
         setRole('student')
         setUser(null)

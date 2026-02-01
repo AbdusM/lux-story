@@ -1,7 +1,6 @@
 /**
- * Next.js Middleware - Route Protection & Auth Session Management
- * 1. Refreshes Supabase auth sessions automatically
- * 2. Protects /admin routes with authentication (legacy support)
+ * Next.js Middleware - Auth Session Management
+ * Refreshes Supabase auth sessions automatically.
  */
 
 import { NextResponse } from 'next/server'
@@ -16,22 +15,6 @@ export async function middleware(request: NextRequest) {
   // If updateSession returned a redirect, respect it
   if (supabaseResponse.headers.get('Location')) {
     return supabaseResponse
-  }
-
-  const { pathname } = request.nextUrl
-
-  // Admin route protection with session-based authentication
-  if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) {
-    // Check for session token in cookie
-    const authToken = request.cookies.get('admin_auth_token')?.value
-
-    // If no session token, redirect to login
-    // Actual token validation happens at API level via requireAdminAuth()
-    if (!authToken) {
-      const loginUrl = new URL('/admin/login', request.url)
-      loginUrl.searchParams.set('redirect', pathname)
-      return NextResponse.redirect(loginUrl)
-    }
   }
 
   // Return the Supabase response (with refreshed session cookies)

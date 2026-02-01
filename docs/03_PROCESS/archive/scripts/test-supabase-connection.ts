@@ -42,7 +42,7 @@ async function testConnection() {
     if (error) {
       console.log('⚠️  Table query error (expected if migration not run yet):', error.message)
       console.log('\n📋 Next step: Run the migration in Supabase SQL Editor')
-      console.log('   File: supabase/migrations/001_initial_schema.sql')
+      console.log('   File: supabase/migrations/001_setup.sql')
     } else {
       console.log('✅ Successfully queried player_profiles table')
       console.log('   Data:', data)

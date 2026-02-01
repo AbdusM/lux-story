@@ -90,6 +90,7 @@ export default function WelcomePage() {
   const handleGuestEntry = useCallback(() => {
     // Store that user chose guest mode
     localStorage.setItem('lux_guest_mode', 'true')
+    document.cookie = 'lux_guest_mode=true; path=/; max-age=31536000; samesite=lax'
     router.push('/')
   }, [router])
 

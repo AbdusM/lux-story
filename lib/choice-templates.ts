@@ -8,7 +8,7 @@ import type { Choice } from './story-engine'
 
 export interface ChoiceTemplate {
   /** Core psychological pattern this choice measures */
-  pattern: 'exploring' | 'helping' | 'building' | 'analyzing' | 'patience' | 'rushing' | 'independence'
+  pattern: 'exploring' | 'helping' | 'building' | 'analytical' | 'patience' | 'rushing' | 'independence'
 
   /** Consequence tag for tracking */
   consequence: string
@@ -243,7 +243,7 @@ export const CHOICE_TEMPLATES: ChoiceTemplate[] = [
 
   // ANALYZING pattern choices
   {
-    pattern: 'analyzing',
+    pattern: 'analytical',
     consequence: 'analyzing_1',
     textVariations: [
       'Think it through',
@@ -265,7 +265,7 @@ export const CHOICE_TEMPLATES: ChoiceTemplate[] = [
       ]
     },
     stateChanges: {
-      patterns: { analyzing: 1 },
+      patterns: { analytical: 1 },
       careerValues: { dataInsights: 0.71 }
     }
   },
@@ -354,7 +354,7 @@ export function generateContextualChoices(
   const choices: Choice[] = []
 
   // Default to exploring patterns if none specified
-  const patterns = requiredPatterns || ['exploring', 'helping', 'building', 'analyzing']
+  const patterns = requiredPatterns || ['exploring', 'helping', 'building', 'analytical']
 
   patterns.forEach((pattern, index) => {
     const templates = CHOICE_TEMPLATES.filter(t => t.pattern === pattern)

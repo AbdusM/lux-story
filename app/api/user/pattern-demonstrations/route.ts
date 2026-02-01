@@ -8,7 +8,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
-import { PATTERN_TYPES } from '@/lib/patterns'
+import { PATTERN_TYPES, normalizePatternName } from '@/lib/patterns'
 import { logger } from '@/lib/logger'
 import { ensurePlayerProfile } from '@/lib/api/ensure-player-profile'
 import {
@@ -45,8 +45,9 @@ export async function POST(request: NextRequest) {
       return validation.response
     }
 
+    const normalizedPattern = normalizePatternName(pattern_name)
     // Validate pattern_name against CHECK constraint
-    if (!PATTERN_TYPES.includes(pattern_name)) {
+    if (!normalizedPattern || !PATTERN_TYPES.includes(normalizedPattern)) {
       logger.warn('Invalid pattern name', { operation: OPERATION_POST, patternName: pattern_name })
       return NextResponse.json({ error: `Invalid pattern_name. Must be one of: ${PATTERN_TYPES.join(', ')}` }, { status: 400 })
     }
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
       .from('pattern_demonstrations')
       .insert({
         user_id,
-        pattern_name,
+        pattern_name: normalizedPattern,
         choice_id,
         choice_text: choice_text || '',
         scene_id: scene_id || '',

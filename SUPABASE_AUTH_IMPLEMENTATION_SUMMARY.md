@@ -33,7 +33,7 @@ A complete role-based authentication system with Google OAuth and Magic Link aut
 
 ### Database (Supabase)
 ```
-supabase/migrations/001_auth_setup.sql
+supabase/migrations/001_setup.sql
 ```
 - Profiles table with role column
 - RLS policies (users can only update own profile, not role)
@@ -77,7 +77,7 @@ SUPABASE_AUTH_IMPLEMENTATION_SUMMARY.md    # This file
 ### Step 1: Run Database Migration
 📍 **Location**: [Supabase SQL Editor](https://supabase.com/dashboard/project/tavalvqcebosfxamuvlx/editor)
 
-Copy contents of `supabase/migrations/001_auth_setup.sql` and run in SQL Editor.
+Copy contents of `supabase/migrations/001_setup.sql` and run in SQL Editor.
 
 ### Step 2: Enable Google OAuth
 📍 **Location**: [Supabase Auth Providers](https://supabase.com/dashboard/project/tavalvqcebosfxamuvlx/auth/providers)

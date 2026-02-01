@@ -31,7 +31,8 @@ const OPERATION_POST = 'platform-state.post'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { user_id, current_scene, global_flags, patterns, updated_at } = body
+    const { user_id, platform_id, current_scene, global_flags, patterns, updated_at } = body
+    const resolvedPlatformId = platform_id || 'core'
 
     logger.debug('Platform state POST request', { operation: OPERATION_POST, userId: user_id })
 
@@ -48,6 +49,7 @@ export async function POST(request: NextRequest) {
     // Build update object with only provided fields
     const updateData: Record<string, unknown> = {
       user_id,
+      platform_id: resolvedPlatformId,
       updated_at: updated_at || new Date().toISOString()
     }
     if (current_scene !== undefined) updateData.current_scene = current_scene
@@ -56,7 +58,7 @@ export async function POST(request: NextRequest) {
 
     const { data, error } = await supabase
       .from('platform_states')
-      .upsert(updateData, { onConflict: 'user_id' })
+      .upsert(updateData, { onConflict: 'user_id,platform_id' })
       .select()
       .single()
 
@@ -84,6 +86,7 @@ export async function GET(request: NextRequest) {
       return validation.response
     }
     const { userId } = validation
+    const platformId = request.nextUrl.searchParams.get('platformId') || 'core'
 
     const supabase = getSupabaseServerClient()
 
@@ -91,6 +94,7 @@ export async function GET(request: NextRequest) {
       .from('platform_states')
       .select('*')
       .eq('user_id', userId)
+      .eq('platform_id', platformId)
       .single()
 
     // PGRST116 = no rows returned (not an error)

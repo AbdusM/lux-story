@@ -6,7 +6,7 @@
 --
 -- Author: Dev Team
 -- Date: 2025-10-01
--- Dependencies: 001_initial_schema.sql
+-- Dependencies: 001_setup.sql
 -- ============================================================================
 
 BEGIN;

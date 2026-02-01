@@ -45,7 +45,9 @@
     "report-entry-nodes": "npx tsx scripts/report-entry-nodes.ts",
     "precommit": "npm run check-typewriter && npm run lint",
     "health-check": "curl http://localhost:3003/api/health && curl http://localhost:3003/api/health/db",
-    "validate-simulations-doc": "npx tsx scripts/validate-simulations-doc.ts"
+    "validate-simulations-doc": "npx tsx scripts/validate-simulations-doc.ts",
+    "check:core-contracts": "node scripts/check-core-gameplay-contracts.js",
+    "audit:core-diff": "node scripts/report-core-gameplay-diff.js"
   },
   "keywords": [
     "career-exploration",

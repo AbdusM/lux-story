@@ -1,0 +1,29 @@
+name: Core Gameplay Contracts
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check core gameplay contracts
+        run: node scripts/check-core-gameplay-contracts.js
+
+      - name: Ensure core gameplay doc updated
+        env:
+          CORE_GAMEPLAY_STRICT: '1'
+        run: node scripts/report-core-gameplay-diff.js --since=origin/main

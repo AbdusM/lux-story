@@ -42,15 +42,6 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Protection for admin routes (if needed)
-  if (request.nextUrl.pathname.startsWith('/admin') && !user) {
-    // Redirect to login if accessing admin routes without auth
-    const url = request.nextUrl.clone()
-    url.pathname = '/'
-    url.searchParams.set('login', 'true')
-    return NextResponse.redirect(url)
-  }
-
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:
   // 1. Pass the request in it, like so:

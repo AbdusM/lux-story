@@ -3,7 +3,7 @@
  * Tests authentication, authorization, and data retrieval for admin routes
  */
 
-import { describe, test, expect, beforeEach, vi, afterEach } from 'vitest'
+import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 
 // Mock environment variables
@@ -19,6 +19,11 @@ const mockSupabaseResponse = {
   data: null as unknown,
   error: null as Error | null
 }
+
+let mockAuthUser: { id: string } | null = null
+let mockAuthError: Error | null = null
+let mockProfileRole: string | null = null
+let mockProfileError: Error | null = null
 
 vi.mock('@supabase/supabase-js', () => ({
   createClient: vi.fn(() => ({
@@ -44,12 +49,15 @@ vi.mock('@supabase/supabase-js', () => ({
 vi.mock('@supabase/ssr', () => ({
   createServerClient: vi.fn(() => ({
     auth: {
-      getUser: vi.fn(() => Promise.resolve({ data: { user: null }, error: null }))
+      getUser: vi.fn(() => Promise.resolve({ data: { user: mockAuthUser }, error: mockAuthError }))
     },
     from: vi.fn(() => ({
       select: vi.fn(() => ({
         eq: vi.fn(() => ({
-          single: vi.fn(() => Promise.resolve(mockSupabaseResponse))
+          single: vi.fn(() => Promise.resolve({
+            data: mockProfileRole ? { role: mockProfileRole } : null,
+            error: mockProfileError
+          }))
         }))
       }))
     }))
@@ -78,21 +86,6 @@ vi.mock('@/lib/logger', () => ({
     error: vi.fn()
   }
 }))
-
-// Mock auth-utils to handle session validation
-// The session store is in-memory, so we mock validateSession to recognize our test token
-vi.mock('@/lib/auth-utils', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@/lib/auth-utils')>()
-  return {
-    ...actual,
-    validateSession: vi.fn((token: string) => {
-      // Return admin user ID for our test token
-      if (token === MOCK_ADMIN_TOKEN) return 'admin-test-user'
-      return null
-    }),
-    createSession: vi.fn(() => MOCK_ADMIN_TOKEN)
-  }
-})
 
 // Helper to create request with cookies
 function createRequest(
@@ -123,77 +116,14 @@ function createRequest(
   return request
 }
 
-describe('Admin Auth API (/api/admin/auth)', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-    mockSupabaseResponse.data = null
-    mockSupabaseResponse.error = null
-  })
-
-  test('should reject login with missing password', async () => {
-    const { POST } = await import('@/app/api/admin/auth/route')
-
-    const request = createRequest('http://localhost:3000/api/admin/auth', {
-      method: 'POST',
-      body: {}
-    })
-
-    const response = await POST(request)
-    const data = await response.json()
-
-    expect(response.status).toBe(400)
-    // Error message varies: "Password required" or "Invalid input: expected string"
-    expect(data.error).toBeTruthy()
-  })
-
-  test('should reject login with wrong password', async () => {
-    const { POST } = await import('@/app/api/admin/auth/route')
-
-    const request = createRequest('http://localhost:3000/api/admin/auth', {
-      method: 'POST',
-      body: { password: 'wrong-password' }
-    })
-
-    const response = await POST(request)
-    const data = await response.json()
-
-    expect(response.status).toBe(401)
-    expect(data.error).toBe('Invalid password')
-  })
-
-  test('should accept login with correct password', async () => {
-    const { POST } = await import('@/app/api/admin/auth/route')
-
-    const request = createRequest('http://localhost:3000/api/admin/auth', {
-      method: 'POST',
-      body: { password: MOCK_ADMIN_TOKEN }
-    })
-
-    const response = await POST(request)
-    const data = await response.json()
-
-    expect(response.status).toBe(200)
-    expect(data.success).toBe(true)
-
-    // Should set auth cookie
-    const setCookie = response.headers.get('set-cookie')
-    expect(setCookie).toContain('admin_auth_token')
-  })
-
-  test('should clear cookie on logout', async () => {
-    const { DELETE } = await import('@/app/api/admin/auth/route')
-
-    const request = createRequest('http://localhost:3000/api/admin/auth', {
-      method: 'DELETE',
-      cookies: { admin_auth_token: MOCK_ADMIN_TOKEN }
-    })
-
-    const response = await DELETE(request)
-    const data = await response.json()
-
-    expect(response.status).toBe(200)
-    expect(data.success).toBe(true)
-  })
+beforeEach(() => {
+  vi.clearAllMocks()
+  mockAuthUser = null
+  mockAuthError = null
+  mockProfileRole = null
+  mockProfileError = null
+  mockSupabaseResponse.data = null
+  mockSupabaseResponse.error = null
 })
 
 describe('Admin User IDs API (/api/admin/user-ids)', () => {
@@ -218,25 +148,26 @@ describe('Admin User IDs API (/api/admin/user-ids)', () => {
     expect(data.error).toContain('Unauthorized')
   })
 
-  test('should reject requests with invalid token', async () => {
+  test('should reject requests from non-admin users', async () => {
+    mockAuthUser = { id: 'user-123' }
+    mockProfileRole = 'student'
+
     const { GET } = await import('@/app/api/admin/user-ids/route')
 
-    const request = createRequest('http://localhost:3000/api/admin/user-ids', {
-      cookies: { admin_auth_token: 'invalid-token' }
-    })
+    const request = createRequest('http://localhost:3000/api/admin/user-ids')
 
     const response = await GET(request)
 
-    expect(response.status).toBe(401)
+    expect(response.status).toBe(403)
   })
 
-  // TODO: Requires proper Supabase SSR auth mocking
-  test.skip('should return user IDs for authenticated admin', async () => {
+  test('should return user IDs for authenticated admin', async () => {
+    mockAuthUser = { id: 'admin-123' }
+    mockProfileRole = 'admin'
+
     const { GET } = await import('@/app/api/admin/user-ids/route')
 
-    const request = createRequest('http://localhost:3000/api/admin/user-ids', {
-      cookies: { admin_auth_token: MOCK_ADMIN_TOKEN }
-    })
+    const request = createRequest('http://localhost:3000/api/admin/user-ids')
 
     const response = await GET(request)
     const data = await response.json()
@@ -246,16 +177,15 @@ describe('Admin User IDs API (/api/admin/user-ids)', () => {
     expect(data.userIds).toEqual(['player_123', 'player_456'])
   })
 
-  // TODO: Requires proper Supabase SSR auth mocking
-  test.skip('should handle database errors gracefully', async () => {
+  test('should handle database errors gracefully', async () => {
+    mockAuthUser = { id: 'admin-123' }
+    mockProfileRole = 'admin'
     mockSupabaseResponse.data = null
     mockSupabaseResponse.error = new Error('Database connection failed')
 
     const { GET } = await import('@/app/api/admin/user-ids/route')
 
-    const request = createRequest('http://localhost:3000/api/admin/user-ids', {
-      cookies: { admin_auth_token: MOCK_ADMIN_TOKEN }
-    })
+    const request = createRequest('http://localhost:3000/api/admin/user-ids')
 
     const response = await GET(request)
     const data = await response.json()
@@ -266,20 +196,19 @@ describe('Admin User IDs API (/api/admin/user-ids)', () => {
 })
 
 describe('Admin Auth Helper Functions', () => {
-  // TODO: These tests need Supabase SSR client mocking update after auth flow change
-  // The auth now uses Supabase session cookies instead of custom session tokens
-  test.skip('requireAdminAuth should return null for valid token', async () => {
+  test('requireAdminAuth should return null for valid admin role', async () => {
+    mockAuthUser = { id: 'admin-123' }
+    mockProfileRole = 'admin'
+
     const { requireAdminAuth } = await import('@/lib/admin-supabase-client')
 
-    const request = createRequest('http://localhost:3000/api/admin/test', {
-      cookies: { admin_auth_token: MOCK_ADMIN_TOKEN }
-    })
+    const request = createRequest('http://localhost:3000/api/admin/test')
 
     const result = await requireAdminAuth(request)
     expect(result).toBeNull()
   })
 
-  test.skip('requireAdminAuth should return error response for missing token', async () => {
+  test('requireAdminAuth should return error response for missing user', async () => {
     const { requireAdminAuth } = await import('@/lib/admin-supabase-client')
 
     const request = createRequest('http://localhost:3000/api/admin/test')
@@ -289,16 +218,17 @@ describe('Admin Auth Helper Functions', () => {
     expect(result?.status).toBe(401)
   })
 
-  test.skip('requireAdminAuth should return error response for invalid token', async () => {
+  test('requireAdminAuth should return error response for non-admin role', async () => {
+    mockAuthUser = { id: 'user-123' }
+    mockProfileRole = 'student'
+
     const { requireAdminAuth } = await import('@/lib/admin-supabase-client')
 
-    const request = createRequest('http://localhost:3000/api/admin/test', {
-      cookies: { admin_auth_token: 'wrong-token' }
-    })
+    const request = createRequest('http://localhost:3000/api/admin/test')
 
     const result = await requireAdminAuth(request)
     expect(result).not.toBeNull()
-    expect(result?.status).toBe(401)
+    expect(result?.status).toBe(403)
   })
 
   test('getAdminSupabaseClient should return client when env vars are set', async () => {
@@ -312,7 +242,6 @@ describe('Admin Auth Helper Functions', () => {
 
 describe('Admin Check Profile API (/api/admin/check-profile)', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
     mockSupabaseResponse.data = { user_id: 'player_123', patterns: {} }
     mockSupabaseResponse.error = null
   })
@@ -329,13 +258,13 @@ describe('Admin Check Profile API (/api/admin/check-profile)', () => {
     expect(response.status).toBe(401)
   })
 
-  // TODO: Requires proper Supabase SSR auth mocking
-  test.skip('should require userId parameter', async () => {
+  test('should require userId parameter', async () => {
+    mockAuthUser = { id: 'admin-123' }
+    mockProfileRole = 'admin'
+
     const { GET } = await import('@/app/api/admin/check-profile/route')
 
-    const request = createRequest('http://localhost:3000/api/admin/check-profile', {
-      cookies: { admin_auth_token: MOCK_ADMIN_TOKEN }
-    })
+    const request = createRequest('http://localhost:3000/api/admin/check-profile')
 
     const response = await GET(request)
     const data = await response.json()
@@ -346,24 +275,24 @@ describe('Admin Check Profile API (/api/admin/check-profile)', () => {
 })
 
 describe('Rate Limiting', () => {
-  test('should enforce rate limits on login attempts', async () => {
+  test('should enforce rate limits on admin user list', async () => {
     // Mock rate limiter to throw (rate limit exceeded)
     vi.doMock('@/lib/rate-limit', () => ({
       rateLimit: () => ({
         check: vi.fn().mockRejectedValue(new Error('Rate limited'))
-      })
+      }),
+      getClientIp: vi.fn().mockReturnValue('127.0.0.1')
     }))
 
     // Re-import to get new mock
     vi.resetModules()
-    const { POST } = await import('@/app/api/admin/auth/route')
+    mockAuthUser = { id: 'admin-123' }
+    mockProfileRole = 'admin'
 
-    const request = createRequest('http://localhost:3000/api/admin/auth', {
-      method: 'POST',
-      body: { password: 'any' }
-    })
+    const { GET } = await import('@/app/api/admin/user-ids/route')
+    const request = createRequest('http://localhost:3000/api/admin/user-ids')
 
-    const response = await POST(request)
+    const response = await GET(request)
 
     expect(response.status).toBe(429)
   })
