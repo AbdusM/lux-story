@@ -16,15 +16,22 @@ const mockSupabaseResponse = {
   error: null as Error | null
 }
 
+// Create a chainable eq mock that supports multiple .eq() calls
+const createChainableEq = () => {
+  const eqMock: ReturnType<typeof vi.fn> = vi.fn(() => ({
+    eq: eqMock, // Support chained .eq().eq() calls
+    single: vi.fn(() => Promise.resolve(mockSupabaseResponse)),
+    order: vi.fn(() => Promise.resolve(mockSupabaseResponse)),
+    abortSignal: vi.fn(() => Promise.resolve(mockSupabaseResponse))
+  }))
+  return eqMock
+}
+
 vi.mock('@supabase/supabase-js', () => ({
   createClient: vi.fn(() => ({
     from: vi.fn(() => ({
       select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn(() => Promise.resolve(mockSupabaseResponse)),
-          order: vi.fn(() => Promise.resolve(mockSupabaseResponse)),
-          abortSignal: vi.fn(() => Promise.resolve(mockSupabaseResponse))
-        })),
+        eq: createChainableEq(),
         abortSignal: vi.fn(() => Promise.resolve(mockSupabaseResponse))
       })),
       upsert: vi.fn(() => ({

@@ -46,6 +46,25 @@ export async function POST(request: NextRequest) {
 
     const supabase = getSupabaseServerClient()
 
+    // Ensure player profile exists (required by FK constraint on platform_states)
+    // This upsert is idempotent - creates if missing, no-op if exists
+    const { error: profileError } = await supabase
+      .from('player_profiles')
+      .upsert({ user_id, created_at: new Date().toISOString() }, {
+        onConflict: 'user_id',
+        ignoreDuplicates: true
+      })
+
+    if (profileError) {
+      logger.error('Failed to ensure player profile', {
+        operation: OPERATION_POST,
+        userId: user_id,
+        errorCode: profileError.code,
+        errorMessage: profileError.message
+      })
+      return supabaseErrorResponse(OPERATION_POST, profileError.code, 'Failed to ensure player profile', user_id)
+    }
+
     // Build update object with only provided fields
     const updateData: Record<string, unknown> = {
       user_id,
@@ -64,6 +83,12 @@ export async function POST(request: NextRequest) {
 
     // PGRST204 = upsert succeeded but RLS prevents select
     if (error && error.code !== 'PGRST204') {
+      logger.error('Failed to upsert platform state', {
+        operation: OPERATION_POST,
+        userId: user_id,
+        errorCode: error.code,
+        errorMessage: error.message
+      })
       return supabaseErrorResponse(OPERATION_POST, error.code, 'Failed to upsert platform state', user_id)
     }
 

@@ -138,70 +138,72 @@ export interface NodeSearchResult {
 }
 
 /**
+ * Lazy-initialized index: nodeId → characterId
+ * Built once on first lookup, then O(1) for all subsequent lookups
+ * Reduces findCharacterForNode from O(n*m) to O(1) where n=graphs, m=nodes
+ */
+let nodeToCharacterIndex: Map<string, CharacterId> | null = null
+
+function getNodeIndex(): Map<string, CharacterId> {
+  if (nodeToCharacterIndex) return nodeToCharacterIndex
+
+  nodeToCharacterIndex = new Map()
+  for (const [graphKey, graph] of Object.entries(DIALOGUE_GRAPHS)) {
+    // Get base character ID (strip _revisit suffix)
+    const baseCharId = graphKey.replace('_revisit', '') as CharacterId
+    if (!isValidCharacterId(baseCharId)) continue
+
+    for (const nodeId of graph.nodes.keys()) {
+      // First graph to claim a node wins (base before revisit due to object order)
+      if (!nodeToCharacterIndex.has(nodeId)) {
+        nodeToCharacterIndex.set(nodeId, baseCharId)
+      }
+    }
+  }
+  return nodeToCharacterIndex
+}
+
+/**
  * Find which character owns a given node ID
  *
- * TRULY DYNAMIC: Automatically searches all characters by inspecting DIALOGUE_GRAPHS keys
- * When you add a new character graph, this function automatically includes it - ZERO code changes needed
- *
- * Searches both state-appropriate graphs (base or revisit) AND handles edge case where
- * revisit content links back to base nodes (e.g., "Remember when we first met?")
+ * OPTIMIZED: Uses lazy-initialized index for O(1) lookups instead of scanning all graphs
+ * Still handles revisit graph edge cases for cross-graph node references
  *
  * @param nodeId - The dialogue node ID to search for
- * @param gameState - Current game state (determines which graphs to search)
+ * @param gameState - Current game state (determines which graph variant to return)
  * @returns Character and graph containing the node, or null if not found
  */
 export function findCharacterForNode(
   nodeId: string,
   gameState: GameState
 ): NodeSearchResult | null {
-  // TRULY DYNAMIC: Derive character list from DIALOGUE_GRAPHS keys
-  // Filter out revisit graphs (_revisit suffix) to get base character list
-  const baseCharacterIds = Object.keys(DIALOGUE_GRAPHS).filter(
-    key => !key.includes('_revisit')
-  ) as CharacterId[]
+  // O(1) lookup via index
+  const index = getNodeIndex()
+  const charId = index.get(nodeId)
 
-  for (const charId of baseCharacterIds) {
-    // Get the state-appropriate graph (base or revisit) for this character
-    const graph = getGraphForCharacter(charId, gameState)
+  if (!charId) return null
 
-    // Defensive: Skip if graph is undefined
-    if (!graph) continue
+  // Get state-appropriate graph (may be base or revisit variant)
+  const graph = getGraphForCharacter(charId, gameState)
 
-    // Check if node exists in state-appropriate graph
-    if (graph.nodes.has(nodeId)) {
-      return {
-        characterId: charId,
-        graph
-      }
-    }
-
-    // EDGE CASE: If we're using a revisit graph, ALSO check base graph
-    // Handles scenario where revisit content links back to base nodes
-    // Example: Maya revisit says "Remember when we first talked about Pepper?"
-    // That node might be in maya_dialogue_graph, not maya_revisit_graph
-    const revisitGraphKey = `${charId}_revisit` as keyof typeof DIALOGUE_GRAPHS
-    const revisitGraph = DIALOGUE_GRAPHS[revisitGraphKey]
-    const baseGraph = DIALOGUE_GRAPHS[charId]
-
-    // If current graph is the revisit variant, check if node exists in base
-    if (graph === revisitGraph && baseGraph && baseGraph.nodes.has(nodeId)) {
-      return {
-        characterId: charId,
-        graph: baseGraph
-      }
-    }
-
-    // ADDITIONAL FIX: If we're looking for a revisit node but the current graph is base,
-    // also check the revisit graph directly
-    if (nodeId.includes('_revisit_') && revisitGraph && revisitGraph.nodes.has(nodeId)) {
-      return {
-        characterId: charId,
-        graph: revisitGraph
-      }
-    }
+  // Fast path: node exists in state-appropriate graph
+  if (graph.nodes.has(nodeId)) {
+    return { characterId: charId, graph }
   }
 
-  // Node not found in any graph
+  // Edge case: node in base graph but state returned revisit graph
+  const baseGraph = DIALOGUE_GRAPHS[charId]
+  if (baseGraph && baseGraph.nodes.has(nodeId)) {
+    return { characterId: charId, graph: baseGraph }
+  }
+
+  // Edge case: node in revisit graph
+  const revisitKey = `${charId}_revisit` as keyof typeof DIALOGUE_GRAPHS
+  const revisitGraph = DIALOGUE_GRAPHS[revisitKey]
+  if (revisitGraph && revisitGraph.nodes.has(nodeId)) {
+    return { characterId: charId, graph: revisitGraph }
+  }
+
   return null
 }
 

@@ -22,6 +22,7 @@
     "test:e2e:headed": "playwright test --headed",
     "qa": "npx tsx scripts/run-qa.ts",
     "qa:quick": "npm run type-check && npm run test:run",
+    "verify": "npm run type-check && npm run lint && npm run test:run && npm run build",
     "validate-graphs": "npx tsx scripts/validate-dialogue-graphs.ts",
     "validate-content": "npx tsx scripts/validate-content-integrity.ts",
     "analyze-text-density": "npx tsx scripts/analyze-text-density.ts",

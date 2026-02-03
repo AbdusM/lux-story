@@ -1,13 +1,11 @@
 import Link from 'next/link'
+import { AdminUserLayoutProps, getAdminUserId } from '@/lib/types/admin'
 
-export default function AdminUserLayout({
+export default async function AdminUserLayout({
   children,
   params,
-}: {
-  children: React.ReactNode
-  params: { userId: string }
-}) {
-  const { userId } = params
+}: AdminUserLayoutProps) {
+  const userId = await getAdminUserId(params)
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">

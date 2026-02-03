@@ -57,3 +57,35 @@ export interface RecalculationResponse {
 }
 
 export type UrgencyLevel = 'all' | 'low' | 'medium' | 'high' | 'critical'
+
+// ============================================================================
+// Next.js 15 Dynamic Route Props
+// ============================================================================
+
+/**
+ * Next.js 15 requires params to be Promise<T> in dynamic routes
+ * Single base type - derive layout from it to prevent drift
+ *
+ * @see https://nextjs.org/docs/app/building-your-application/upgrading/version-15
+ */
+export type AdminUserParams = Promise<{ userId: string }>
+
+export type AdminUserPageProps = {
+  params: AdminUserParams
+}
+
+export type AdminUserLayoutProps = AdminUserPageProps & {
+  children: React.ReactNode
+}
+
+/**
+ * Helper to unwrap params with validation
+ * Used by all admin pages with [userId] dynamic segment
+ */
+export async function getAdminUserId(params: AdminUserParams): Promise<string> {
+  const { userId } = await params
+  if (!userId || userId.trim() === '') {
+    throw new Error('Invalid userId')
+  }
+  return userId
+}
