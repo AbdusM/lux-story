@@ -88,35 +88,40 @@ const EVALUATOR_REGISTRY: EvaluatorDef[] = [
   {
     id: 'storyArcUnlock',
     tier: 2,
-    linePattern: /if \(checkArcUnlock\(arc, newGameState\)\)/,
+    // Now handled by choice processor - matches comment in useChoiceHandler
+    linePattern: /D-061:.*Story Arc Progression.*CHOICE PROCESSOR|if \(checkArcUnlock\(arc, newGameState\)\)/,
     dependencies: ['transformation'],
     description: 'New story arc becomes available'
   },
   {
     id: 'chapterComplete',
     tier: 2,
-    linePattern: /const \{ newState: updatedArcState, arcCompleted \}/,
+    // Now part of storyArcUnlock via processStoryArcProgression
+    linePattern: /D-061:.*Story Arc Progression.*CHOICE PROCESSOR|const \{ newState: updatedArcState, arcCompleted \}/,
     dependencies: ['storyArcUnlock'],
     description: 'Story chapter progression'
   },
   {
     id: 'synthesisPuzzle',
     tier: 2,
-    linePattern: /for \(const puzzle of SYNTHESIS_PUZZLES\)/,
+    // Now handled by choice processor - matches comment in useChoiceHandler
+    linePattern: /D-083:.*Synthesis Puzzle.*CHOICE PROCESSOR|for \(const puzzle of SYNTHESIS_PUZZLES\)/,
     dependencies: ['chapterComplete'],
     description: 'Puzzle completion or hint'
   },
   {
     id: 'infoTradeAvailable',
     tier: 2,
-    linePattern: /const availableTrades = getAvailableInfoTrades/,
+    // Now handled by choice processor - matches comment in useChoiceHandler
+    linePattern: /D-056\/D-057:.*Knowledge Discovery.*CHOICE PROCESSOR|const availableTrades = getAvailableInfoTrades/,
     dependencies: ['synthesisPuzzle'],
     description: 'New info trade unlocked'
   },
   {
     id: 'knowledgeDiscovery',
     tier: 2,
-    linePattern: /const matchingItem = KNOWLEDGE_ITEMS\.find/,
+    // Now part of infoTradeAvailable via processKnowledgeUpdates
+    linePattern: /D-056\/D-057:.*Knowledge Discovery.*CHOICE PROCESSOR|const matchingItem = KNOWLEDGE_ITEMS\.find/,
     dependencies: ['infoTradeAvailable'],
     description: 'Knowledge item found'
   },
@@ -146,8 +151,8 @@ const EVALUATOR_REGISTRY: EvaluatorDef[] = [
   {
     id: 'icebergInvestigable',
     tier: 2,
-    // Still inline - not yet migrated to registry
-    linePattern: /const nowInvestigable = getInvestigableTopics/,
+    // Now handled by choice processor - matches comment in useChoiceHandler
+    linePattern: /D-019:.*Iceberg References.*CHOICE PROCESSOR|const nowInvestigable = getInvestigableTopics/,
     dependencies: ['knowledgeCombination'],
     description: 'Iceberg topic becomes investigable'
   },
