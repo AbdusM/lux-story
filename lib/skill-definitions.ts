@@ -402,6 +402,228 @@ export const SKILL_DEFINITIONS: Record<string, SkillDefinition> = {
         superpowerName: 'Tension Release',
         definition: 'Using levity to disarm, connect, and illuminate.',
         manifesto: 'You know that laughter is the shortest distance between two people.'
+    },
+
+    // --- ETHICS & VALUES CLUSTER ---
+    ethicalReasoning: {
+        id: 'ethicalReasoning',
+        title: 'Ethical Reasoning',
+        superpowerName: 'Moral Compass',
+        definition: 'Navigating complex decisions through principled frameworks.',
+        manifesto: 'Right and wrong are not always clear, but you have the tools to find the truth in the grey.'
+    },
+    values: {
+        id: 'values',
+        title: 'Values',
+        superpowerName: 'Core Principles',
+        definition: 'Living in alignment with your deepest beliefs.',
+        manifesto: 'Your actions are an expression of what you hold sacred. Compromise elsewhere, never here.'
+    },
+    compliance: {
+        id: 'compliance',
+        title: 'Compliance',
+        superpowerName: 'Regulatory Navigation',
+        definition: 'Understanding and working within established rules and frameworks.',
+        manifesto: 'Rules are not obstacles; they are the guardrails that keep the system fair for everyone.'
+    },
+    utilitarian: {
+        id: 'utilitarian',
+        title: 'Utilitarian Thinking',
+        superpowerName: 'Greatest Good',
+        definition: 'Optimizing decisions for maximum collective benefit.',
+        manifesto: 'You measure success by how many lives are improved, not by who gets the credit.'
+    },
+
+    // --- SELF & PERSONAL GROWTH CLUSTER ---
+    selfAwareness: {
+        id: 'selfAwareness',
+        title: 'Self-Awareness',
+        superpowerName: 'Inner Mirror',
+        definition: 'Understanding your own patterns, biases, and blind spots.',
+        manifesto: 'Know thyself. The unexamined life is a ship without a rudder.'
+    },
+    grounding: {
+        id: 'grounding',
+        title: 'Grounding',
+        superpowerName: 'Centered Presence',
+        definition: 'Staying anchored when chaos swirls around you.',
+        manifesto: 'You are the eye of the storm. While others spin, you remain still.'
+    },
+    confidence: {
+        id: 'confidence',
+        title: 'Confidence',
+        superpowerName: 'Self-Trust',
+        definition: 'Believing in your capacity to handle what comes.',
+        manifesto: 'You do not need external validation. You know what you bring to the table.'
+    },
+    growth: {
+        id: 'growth',
+        title: 'Growth Mindset',
+        superpowerName: 'Infinite Potential',
+        definition: 'Viewing challenges as opportunities for development.',
+        manifesto: 'You are not fixed. Every failure is a lesson, every setback a setup for a comeback.'
+    },
+    purpose: {
+        id: 'purpose',
+        title: 'Purpose',
+        superpowerName: 'North Star',
+        definition: 'Understanding why you do what you do.',
+        manifesto: 'When you know your why, the how becomes bearable. Purpose is your fuel.'
+    },
+    discipline: {
+        id: 'discipline',
+        title: 'Discipline',
+        superpowerName: 'Iron Will',
+        definition: 'Doing what needs to be done, regardless of how you feel.',
+        manifesto: 'Motivation is fickle. Discipline is reliable. You show up every single day.'
+    },
+    mastery: {
+        id: 'mastery',
+        title: 'Mastery',
+        superpowerName: 'Craft Perfection',
+        definition: 'The relentless pursuit of excellence in your domain.',
+        manifesto: 'Good enough is the enemy of great. You practice until the difficult becomes effortless.'
+    },
+    openness: {
+        id: 'openness',
+        title: 'Openness',
+        superpowerName: 'Receptive Mind',
+        definition: 'Embracing new ideas without immediate judgment.',
+        manifesto: 'Your mind is a parachute. It only works when it is open.'
+    },
+
+    // --- COMMUNICATION & SOCIAL CLUSTER ---
+    activeListening: {
+        id: 'activeListening',
+        title: 'Active Listening',
+        superpowerName: 'Deep Hearing',
+        definition: 'Hearing not just words, but meaning, emotion, and intent.',
+        manifesto: 'Most people listen to reply. You listen to understand.'
+    },
+    negotiation: {
+        id: 'negotiation',
+        title: 'Negotiation',
+        superpowerName: 'Win-Win Creation',
+        definition: 'Finding agreements that leave all parties better off.',
+        manifesto: 'The best deals are not won; they are engineered so everyone feels victorious.'
+    },
+    socialLearning: {
+        id: 'socialLearning',
+        title: 'Social Learning',
+        superpowerName: 'Collective Wisdom',
+        definition: 'Learning from the experiences and insights of others.',
+        manifesto: 'You do not need to make every mistake yourself. You learn from the scars of those who walked before.'
+    },
+    selfMarketing: {
+        id: 'selfMarketing',
+        title: 'Self-Marketing',
+        superpowerName: 'Value Articulation',
+        definition: 'Communicating your worth without arrogance.',
+        manifesto: 'If you do not tell your story, someone else will. Make sure they get it right.'
+    },
+
+    // --- ANALYTICAL & DATA CLUSTER ---
+    dataAnalysis: {
+        id: 'dataAnalysis',
+        title: 'Data Analysis',
+        superpowerName: 'Pattern Extraction',
+        definition: 'Transforming raw numbers into actionable insights.',
+        manifesto: 'Data does not lie, but it does not volunteer the truth either. You ask the right questions.'
+    },
+    dataLiteracy: {
+        id: 'dataLiteracy',
+        title: 'Data Literacy',
+        superpowerName: 'Numerical Fluency',
+        definition: 'Reading, understanding, and communicating with data.',
+        manifesto: 'In a world drowning in data, you are fluent in its language.'
+    },
+    attentionToDetail: {
+        id: 'attentionToDetail',
+        title: 'Attention to Detail',
+        superpowerName: 'Precision Focus',
+        definition: 'Catching the small errors that cause big problems.',
+        manifesto: 'God is in the details. Devils too. You find them both.'
+    },
+
+    // --- TECHNICAL CLUSTER ---
+    cybersecurity: {
+        id: 'cybersecurity',
+        title: 'Cybersecurity',
+        superpowerName: 'Digital Defense',
+        definition: 'Protecting systems and data from malicious actors.',
+        manifesto: 'You think like the attacker so you can defend like a fortress.'
+    },
+    technology: {
+        id: 'technology',
+        title: 'Technology',
+        superpowerName: 'Tool Mastery',
+        definition: 'Leveraging tools to amplify human capability.',
+        manifesto: 'Technology is an extension of your will. You wield it, not the other way around.'
+    },
+    debuggingMastery: {
+        id: 'debuggingMastery',
+        title: 'Debugging Mastery',
+        superpowerName: 'Root Cause Hunter',
+        definition: 'Systematically isolating and eliminating defects.',
+        manifesto: 'Bugs are puzzles. You love puzzles. You will find where it breaks.'
+    },
+    debugging: {
+        id: 'debugging',
+        title: 'Debugging',
+        superpowerName: 'Error Elimination',
+        definition: 'Finding and fixing problems in complex systems.',
+        manifesto: 'Something is wrong. You will find it. You will fix it. That is what you do.'
+    },
+    distributedSystems: {
+        id: 'distributedSystems',
+        title: 'Distributed Systems',
+        superpowerName: 'Network Architecture',
+        definition: 'Designing systems that work across multiple machines.',
+        manifesto: 'You understand that the network is not reliable, and you build for that truth.'
+    },
+    observability: {
+        id: 'observability',
+        title: 'Observability',
+        superpowerName: 'System Insight',
+        definition: 'Making complex systems transparent and debuggable.',
+        manifesto: 'You cannot fix what you cannot see. You make the invisible visible.'
+    },
+    incidentManagement: {
+        id: 'incidentManagement',
+        title: 'Incident Management',
+        superpowerName: 'Crisis Response',
+        definition: 'Coordinating effective responses when things go wrong.',
+        manifesto: 'When the alarms ring, you do not panic. You execute the playbook.'
+    },
+
+    // --- CREATIVE & STRATEGY CLUSTER ---
+    contentCreation: {
+        id: 'contentCreation',
+        title: 'Content Creation',
+        superpowerName: 'Story Weaving',
+        definition: 'Crafting compelling narratives across mediums.',
+        manifesto: 'Every piece of content is a chance to change a mind. You do not waste chances.'
+    },
+    metaphoricalThinking: {
+        id: 'metaphoricalThinking',
+        title: 'Metaphorical Thinking',
+        superpowerName: 'Abstract Bridging',
+        definition: 'Explaining complex ideas through relatable comparisons.',
+        manifesto: 'A good metaphor is worth a thousand explanations. You find the bridge between the known and unknown.'
+    },
+    projectManagement: {
+        id: 'projectManagement',
+        title: 'Project Management',
+        superpowerName: 'Orchestrated Execution',
+        definition: 'Coordinating people, resources, and timelines to achieve goals.',
+        manifesto: 'Vision without execution is hallucination. You turn plans into reality.'
+    },
+    prioritization: {
+        id: 'prioritization',
+        title: 'Prioritization',
+        superpowerName: 'Essential Focus',
+        definition: 'Knowing what matters most and acting accordingly.',
+        manifesto: 'You cannot do everything, but you can do the right things. You choose wisely.'
     }
 }
 

@@ -377,6 +377,9 @@ export function useChoiceHandler({
       //   Priority tier 2 (first-match-wins): Blocks 5-23 only set echo if null
       //   One echo per choice — first match wins after tier 1 resolution.
       //   Many blocks also mutate newGameState (flags, arcs, patterns) regardless of echo.
+      //
+      // EVALUATOR REGISTRY: See tests/lib/evaluator-order.test.ts for full dependency graph.
+      // WARNING: Do not reorder evaluators without updating the test + validating dependencies.
       // Phase 1.2: Trust feedback extracted to pure function
       const trustFeedback = computeTrustFeedback({
         trustDelta,

@@ -1,12 +1,13 @@
 import { findCharacterForNode, isValidCharacterId, CHARACTER_IDS } from './graph-registry'
+import { SerializedGameStateSchema, safeParseGameState } from './schemas/game-state-schema'
 import { ActiveThought, THOUGHT_REGISTRY } from '@/content/thoughts'
-import { calculateResonantTrustChange } from './pattern-affinity'
+import { calculateTrustChange } from './trust/trust-calculator'
 import { PatternType, isValidPattern, asPatternRecord } from './patterns'
 import { INITIAL_TRUST, TRUST_THRESHOLDS, NARRATIVE_CONSTANTS as GLOBAL_NARRATIVE_CONSTANTS, NEUTRAL_ANXIETY } from './constants'
 import { NervousSystemState, determineNervousSystemState, ChemicalReaction } from './emotions'
 import { calculateReaction } from './chemistry'
 import { ArchivistState } from './lore-system'
-import { type TrustMomentum, createTrustMomentum, updateTrustMomentum, applyMomentumToTrustChange, type TrustTimeline, createTrustTimeline } from './trust-derivatives'
+import { type TrustMomentum, type TrustTimeline, createTrustTimeline } from './trust-derivatives'
 import { type IcebergState, createIcebergState } from './knowledge-derivatives'
 import { type PatternEvolutionHistory, createPatternEvolutionHistory } from './pattern-derivatives'
 import { type StoryArcState, createStoryArcState } from './story-arcs'
@@ -415,27 +416,23 @@ export class GameStateUtils {
       let updatedKnowledgeFlags = oldCharState.knowledgeFlags
 
       // Trust changes with pattern-character resonance
+      // Phase 3D: Uses consolidated trust calculator for all trust modifications
       if (change.trustChange !== undefined) {
-        // Calculate resonant trust change based on player's pattern affinity
-        const { modifiedTrust } =
-          calculateResonantTrustChange(
-            change.trustChange,
-            change.characterId,
-            newState.patterns as Record<PatternType, number>,
-            change.patternChanges
+        const trustResult = calculateTrustChange(
+          oldCharState.trust,
+          change.trustChange,
+          {
+            characterId: change.characterId,
+            patterns: newState.patterns,
+            choicePattern: change.patternChanges
               ? (Object.keys(change.patternChanges)[0] as PatternType)
-              : undefined
-          )
-
-        // D-082: Apply trust momentum (accelerates/decelerates changes based on history)
-        const currentMomentum = oldCharState.trustMomentum || createTrustMomentum(change.characterId)
-        const momentumAdjustedTrust = applyMomentumToTrustChange(modifiedTrust, currentMomentum)
-        updatedTrustMomentum = updateTrustMomentum(currentMomentum, modifiedTrust)
-
-        updatedTrust = Math.max(
-          NARRATIVE_CONSTANTS.MIN_TRUST,
-          Math.min(NARRATIVE_CONSTANTS.MAX_TRUST, oldCharState.trust + momentumAdjustedTrust)
+              : undefined,
+            momentum: oldCharState.trustMomentum
+          }
         )
+
+        updatedTrust = trustResult.newTrust
+        updatedTrustMomentum = trustResult.updatedMomentum
 
         // Limbic System Update: Recalculate biological state
         updatedAnxiety = (10 - updatedTrust) * 10
@@ -984,18 +981,52 @@ export class StateValidation {
     )
   }
 
+  /**
+   * Validate serializable game state using Zod schema
+   * Phase 3C: Enhanced validation with detailed error reporting
+   *
+   * The Zod schema provides:
+   * - Type-safe validation
+   * - Default values for missing fields
+   * - Detailed error messages
+   */
   static isValidSerializableGameState(obj: unknown): obj is SerializableGameState {
+    // Fast path: basic structure check
     if (typeof obj !== 'object' || obj === null) return false
     const objRecord = obj as Record<string, unknown>
-    return (
-      typeof objRecord.saveVersion === 'string' &&
-      typeof objRecord.playerId === 'string' &&
-      Array.isArray(objRecord.characters) &&
-      Array.isArray(objRecord.globalFlags) &&
-      StateValidation.hasValidPatterns(objRecord.patterns) &&
-      StateValidation.isValidNumber(objRecord.lastSaved) &&
-      StateValidation.isValidNodeId(objRecord.currentNodeId) &&
-      typeof objRecord.currentCharacterId === 'string'
-    )
+
+    // Required fields must exist (Zod will fill defaults for optional)
+    if (typeof objRecord.playerId !== 'string') return false
+
+    // Use Zod for detailed validation
+    const result = SerializedGameStateSchema.safeParse(obj)
+
+    if (!result.success) {
+      // Log first 3 errors for debugging
+      // Zod v4 uses 'issues' not 'errors'
+      const issues = result.error.issues.slice(0, 3)
+      console.warn('[StateValidation] Save validation failed:', issues.map(e => ({
+        path: e.path?.map(String).join('.') ?? 'unknown',
+        message: e.message
+      })))
+      return false
+    }
+
+    // Additional semantic validation (node must exist)
+    if (!StateValidation.isValidNodeId(result.data.currentNodeId)) {
+      console.warn('[StateValidation] Invalid node ID:', result.data.currentNodeId)
+      // Don't fail - game-state-manager has recovery logic for missing nodes
+    }
+
+    return true
+  }
+
+  /**
+   * Parse and validate serializable game state, returning validated data with defaults
+   * Use this when you need the parsed data with defaults filled in
+   */
+  static parseSerializableGameState(obj: unknown): SerializableGameState | null {
+    const result = safeParseGameState(obj)
+    return result as SerializableGameState | null
   }
 }
