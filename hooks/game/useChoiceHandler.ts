@@ -98,6 +98,7 @@ import {
   computeTrustFeedbackMessage,
   computeSkillTracking,
 } from '@/lib/choice-processing'
+import { runTier2Evaluators, type EvaluatorContext } from '@/lib/evaluators'
 import { resolveNode } from '@/hooks/game/useNarrativeNavigator'
 import { shouldShowInterrupt } from '@/lib/interrupt-visibility'
 import {
@@ -906,6 +907,68 @@ export function useChoiceHandler({
             targetCharacter: targetCharacterId,
             echoText: consequenceEcho.text.substring(0, 50) + '...'
           })
+        }
+      }
+
+      // ═══════════════════════════════════════════════════════════════════════════
+      // TIER 2 EVALUATOR REGISTRY
+      // Phase 4B: Run extracted evaluators via registry instead of inline code.
+      // ═══════════════════════════════════════════════════════════════════════════
+      if (!consequenceEcho) {
+        // Read localStorage for deduplication (evaluators are pure - no localStorage access)
+        const shownCommentsKey = 'lux_pattern_recognition_shown'
+        const shownCommentsRaw = typeof window !== 'undefined' ? localStorage.getItem(shownCommentsKey) : null
+        const shownPatternComments = new Set<string>(shownCommentsRaw ? JSON.parse(shownCommentsRaw) : [])
+
+        const shownMagicalKey = 'lux_magical_realism_shown'
+        const shownMagicalRaw = typeof window !== 'undefined' ? localStorage.getItem(shownMagicalKey) : null
+        const shownMagicalRealisms = new Set<string>(shownMagicalRaw ? JSON.parse(shownMagicalRaw) : [])
+
+        const evaluatorCtx: EvaluatorContext = {
+          gameState: newGameState,
+          previousGameState: gameState,
+          previousPatterns,
+          choice: choice,
+          currentNode: nextNode,
+          characterId: targetCharacterId,
+          trustDelta,
+          now: Date.now(),
+          nodeId: nextNode.nodeId,
+          choiceText: choice.choice.text,
+          choicePattern: choice.choice.pattern as PatternType | undefined,
+          shownPatternComments,
+          shownMagicalRealisms,
+        }
+
+        const tier2Result = runTier2Evaluators(evaluatorCtx, consequenceEcho)
+
+        if (tier2Result.consequenceEcho) {
+          consequenceEcho = tier2Result.consequenceEcho
+          logger.info('[StatefulGameInterface] Tier 2 evaluator produced echo:', {
+            sources: tier2Result.echoSources,
+            echoText: consequenceEcho.text.substring(0, 50) + '...'
+          })
+        }
+
+        // Apply state changes from evaluators
+        for (const changes of tier2Result.stateChanges) {
+          if (changes.addGlobalFlags) {
+            for (const flag of changes.addGlobalFlags) {
+              newGameState.globalFlags.add(flag)
+            }
+          }
+          if (changes.markPatternCommentsShown) {
+            for (const key of changes.markPatternCommentsShown) {
+              shownPatternComments.add(key)
+            }
+            localStorageBuffer[shownCommentsKey] = JSON.stringify([...shownPatternComments])
+          }
+          if (changes.markMagicalRealismsShown) {
+            for (const id of changes.markMagicalRealismsShown) {
+              shownMagicalRealisms.add(id)
+            }
+            localStorageBuffer[shownMagicalKey] = JSON.stringify([...shownMagicalRealisms])
+          }
         }
       }
 
