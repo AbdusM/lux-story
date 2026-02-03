@@ -130,20 +130,23 @@ const EVALUATOR_REGISTRY: EvaluatorDef[] = [
   {
     id: 'patternRecognition',
     tier: 2,
-    linePattern: /const patternComments = getPatternRecognitionComments/,
+    // Now handled by evaluator registry - matches comment in useChoiceHandler
+    linePattern: /D-004:.*Pattern recognition.*EVALUATOR REGISTRY|const patternComments = getPatternRecognitionComments/,
     dependencies: ['crossCharacterEcho'],
     description: 'Character notices player pattern'
   },
   {
     id: 'knowledgeCombination',
     tier: 2,
-    linePattern: /const newCombinations = getNewlyAvailableCombinations/,
+    // Now handled by evaluator registry - matches comment in useChoiceHandler
+    linePattern: /D-006:.*Knowledge combination.*EVALUATOR REGISTRY|const newCombinations = getNewlyAvailableCombinations/,
     dependencies: ['patternRecognition'],
     description: 'Knowledge pieces combine'
   },
   {
     id: 'icebergInvestigable',
     tier: 2,
+    // Still inline - not yet migrated to registry
     linePattern: /const nowInvestigable = getInvestigableTopics/,
     dependencies: ['knowledgeCombination'],
     description: 'Iceberg topic becomes investigable'
@@ -151,55 +154,63 @@ const EVALUATOR_REGISTRY: EvaluatorDef[] = [
   {
     id: 'patternTrustGate',
     tier: 2,
-    linePattern: /const nowUnlockedGates = getUnlockedGates/,
+    // Now handled by evaluator registry - matches comment in useChoiceHandler
+    linePattern: /D-002:.*Pattern-trust gates.*EVALUATOR REGISTRY|const nowUnlockedGates = getUnlockedGates/,
     dependencies: ['icebergInvestigable'],
     description: 'Pattern+trust gate unlocked'
   },
   {
     id: 'magicalRealism',
     tier: 2,
-    linePattern: /const nowManifestations = getActiveMagicalRealisms/,
+    // Now handled by evaluator registry - matches comment in useChoiceHandler
+    linePattern: /D-020:.*Magical realism.*EVALUATOR REGISTRY|const nowManifestations = getActiveMagicalRealisms/,
     dependencies: ['patternTrustGate'],
     description: 'High pattern magical effect'
   },
   {
     id: 'patternAchievement',
     tier: 2,
-    linePattern: /const newAchievements = checkNewAchievements/,
+    // Now handled by evaluator registry - matches comment in useChoiceHandler
+    linePattern: /D-059:.*Pattern achievements.*EVALUATOR REGISTRY|const newAchievements = checkNewAchievements/,
     dependencies: ['magicalRealism'],
     description: 'Pattern achievement earned'
   },
   {
     id: 'environmentalEffect',
     tier: 2,
-    linePattern: /const nowEffects = getActiveEnvironmentalEffects/,
+    // Now handled by evaluator registry - matches comment in useChoiceHandler
+    linePattern: /D-016:.*Environmental effects.*EVALUATOR REGISTRY|const nowEffects = getActiveEnvironmentalEffects/,
     dependencies: ['patternAchievement'],
     description: 'Trust-based environment change'
   },
   {
     id: 'crossCharacterExp',
     tier: 2,
-    linePattern: /const nowExperiences = getAvailableCrossCharacterExperiences/,
+    // Now handled by evaluator registry - matches comment in useChoiceHandler
+    linePattern: /D-017:.*Cross-character experiences.*EVALUATOR REGISTRY|const nowExperiences = getAvailableCrossCharacterExperiences/,
     dependencies: ['environmentalEffect'],
     description: 'Cross-character experience available'
   },
   {
     id: 'cascadeEffect',
     tier: 2,
-    linePattern: /const cascade = getCascadeEffectsForFlag/,
+    // Now handled by evaluator registry - matches comment in useChoiceHandler
+    linePattern: /D-062:.*Cascade effects.*EVALUATOR REGISTRY|const cascade = getCascadeEffectsForFlag/,
     dependencies: ['crossCharacterExp'],
     description: 'Flag cascade triggered'
   },
   {
     id: 'metaRevelation',
     tier: 2,
-    linePattern: /const nowRevelations = getUnlockedMetaRevelations/,
+    // Now handled by evaluator registry - matches comment in useChoiceHandler
+    linePattern: /D-065:.*Meta-narrative revelations.*EVALUATOR REGISTRY|const nowRevelations = getUnlockedMetaRevelations/,
     dependencies: ['cascadeEffect'],
     description: 'Meta-narrative revelation'
   },
   {
     id: 'delayedGift',
     tier: 2,
+    // Still inline - not a registry evaluator (different pattern)
     linePattern: /const readyGifts = getReadyGiftsForCharacter/,
     dependencies: ['metaRevelation'],
     description: 'Delayed gift ready to deliver'
@@ -207,14 +218,16 @@ const EVALUATOR_REGISTRY: EvaluatorDef[] = [
   {
     id: 'discoveryHint',
     tier: 2,
-    linePattern: /const hint = getDiscoveryHint/,
+    // Now handled by evaluator registry - matches comment in useChoiceHandler
+    linePattern: /Discovery hints.*EVALUATOR REGISTRY|const hint = getDiscoveryHint/,
     dependencies: ['delayedGift'],
     description: 'Vulnerability foreshadowing'
   },
   {
     id: 'trustAsymmetry',
     tier: 2,
-    linePattern: /const asymmetries = analyzeTrustAsymmetry/,
+    // Now handled by evaluator registry - matches comment in useChoiceHandler
+    linePattern: /D-005:.*Trust asymmetry.*EVALUATOR REGISTRY|const asymmetries = analyzeTrustAsymmetry/,
     dependencies: ['discoveryHint'],
     description: 'Character notices trust imbalance'
   }

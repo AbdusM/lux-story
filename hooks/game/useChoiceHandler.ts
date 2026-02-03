@@ -22,40 +22,25 @@ import { type PatternType, type PlayerPatterns, isValidPattern } from '@/lib/pat
 import { calculatePatternGain } from '@/lib/identity-system'
 import {
   applyPatternReflection,
-  getDiscoveryHint,
-  DISCOVERY_HINTS,
   type ConsequenceEcho,
 } from '@/lib/consequence-echoes'
 import {
   getAvailableInfoTrades,
 } from '@/lib/trust-derivatives'
-import type { AsymmetryReaction } from '@/lib/trust-derivatives'
-import { analyzeTrustAsymmetry, getAsymmetryComment } from '@/lib/trust-derivatives'
 import { ALL_INFO_TRADES } from '@/content/info-trades'
 import { KNOWLEDGE_ITEMS } from '@/content/knowledge-items'
 import {
   calculateCharacterTrustDecay,
-  getPatternRecognitionComments,
-  getUnlockedGates,
-  PATTERN_TRUST_GATES,
-  checkNewAchievements,
   recordPatternEvolution,
 } from '@/lib/pattern-derivatives'
 import {
-  getNewlyAvailableCombinations,
   recordIcebergMention,
   getInvestigableTopics,
 } from '@/lib/knowledge-derivatives'
 import {
-  getActiveMagicalRealisms,
-  getCascadeEffectsForFlag,
   getNarrativeFraming,
-  getUnlockedMetaRevelations,
 } from '@/lib/narrative-derivatives'
-import {
-  getActiveEnvironmentalEffects,
-  getAvailableCrossCharacterExperiences,
-} from '@/lib/character-derivatives'
+// character-derivatives imports moved to evaluator registry
 import {
   loadEchoQueue,
   saveEchoQueue,
@@ -972,75 +957,8 @@ export function useChoiceHandler({
         }
       }
 
-      // D-004: Check for pattern recognition comments
-      // Characters notice and comment on player's developed patterns
-      if (!consequenceEcho) {
-        // Get shown comments from localStorage (or could add to game state)
-        const shownCommentsKey = 'lux_pattern_recognition_shown'
-        const shownCommentsRaw = typeof window !== 'undefined' ? localStorage.getItem(shownCommentsKey) : null
-        const shownComments = new Set<string>(shownCommentsRaw ? JSON.parse(shownCommentsRaw) : [])
-
-        const patternComments = getPatternRecognitionComments(
-          targetCharacterId,
-          newGameState.patterns,
-          shownComments
-        )
-
-        if (patternComments.length > 0) {
-          const comment = patternComments[0]
-          consequenceEcho = {
-            text: `"${comment.comment}"`,
-            emotion: comment.emotion,
-            timing: 'immediate'
-          }
-
-          // Mark as shown
-          const commentKey = `${comment.characterId}_${comment.pattern}_${comment.threshold}`
-          shownComments.add(commentKey)
-          localStorageBuffer[shownCommentsKey] = JSON.stringify([...shownComments])
-
-          logger.info('[StatefulGameInterface] D-004 Pattern recognition comment:', {
-            characterId: targetCharacterId,
-            pattern: comment.pattern,
-            comment: comment.comment.substring(0, 40) + '...'
-          })
-        }
-      }
-
-      // D-006: Check for newly available knowledge combinations
-      // When player has gathered enough knowledge pieces, they can make connections
-      if (!consequenceEcho) {
-        // Get character knowledge map
-        const characterKnowledge = new Map<string, Set<string>>()
-        newGameState.characters.forEach((char, charId) => {
-          characterKnowledge.set(charId, char.knowledgeFlags)
-        })
-
-        // Check for new combinations (compare old vs new state)
-        const oldGlobalFlags = gameState?.globalFlags || new Set<string>()
-        const newCombinations = getNewlyAvailableCombinations(
-          oldGlobalFlags,
-          newGameState.globalFlags,
-          characterKnowledge
-        )
-
-        if (newCombinations.length > 0) {
-          const combo = newCombinations[0]
-          consequenceEcho = {
-            text: combo.discoveryText,
-            emotion: 'revelation',
-            timing: 'immediate'
-          }
-          // Add the unlock flag
-          newGameState.globalFlags.add(combo.unlocksFlag)
-
-          logger.info('[StatefulGameInterface] D-006 Knowledge combination discovered:', {
-            comboId: combo.id,
-            comboName: combo.name,
-            unlocksNode: combo.unlocksNodeId
-          })
-        }
-      }
+      // D-004: Pattern recognition - NOW HANDLED BY EVALUATOR REGISTRY (evaluatePatternRecognition)
+      // D-006: Knowledge combination - NOW HANDLED BY EVALUATOR REGISTRY (evaluateKnowledgeCombination)
 
       // D-019: Check for iceberg references in dialogue node tags
       // Tags prefixed with "iceberg:" indicate casual mentions of mystery topics
@@ -1091,198 +1009,14 @@ export function useChoiceHandler({
         }
       }
 
-      // D-002: Check for newly unlocked pattern-trust gates
-      // Special content requires BOTH high trust AND specific pattern development
-      if (!consequenceEcho) {
-        const prevUnlockedGates = gameState
-          ? getUnlockedGates(targetCharacterId, gameState.characters.get(targetCharacterId)?.trust || 0, gameState.patterns)
-          : []
-        const nowUnlockedGates = getUnlockedGates(targetCharacterId, targetCharacter.trust, newGameState.patterns)
-        const newlyUnlocked = nowUnlockedGates.filter(g => !prevUnlockedGates.includes(g))
+      // D-002: Pattern-trust gates - NOW HANDLED BY EVALUATOR REGISTRY (evaluatePatternTrustGate)
+      // D-020: Magical realism - NOW HANDLED BY EVALUATOR REGISTRY (evaluateMagicalRealism)
+      // D-059: Pattern achievements - NOW HANDLED BY EVALUATOR REGISTRY (evaluatePatternAchievement)
+      // D-016: Environmental effects - NOW HANDLED BY EVALUATOR REGISTRY (evaluateEnvironmentalEffect)
 
-        if (newlyUnlocked.length > 0) {
-          const gateId = newlyUnlocked[0]
-          const gate = PATTERN_TRUST_GATES[gateId]
-          if (gate) {
-            consequenceEcho = {
-              text: `Something shifts in ${targetCharacterId}'s demeanor... ${gate.description}`,
-              emotion: 'intrigued',
-              timing: 'immediate'
-            }
-            // Add flag so dialogue can check for this
-            newGameState.globalFlags.add(`gate_unlocked_${gateId}`)
-            logger.info('[StatefulGameInterface] D-002 Pattern-trust gate unlocked:', {
-              gateId,
-              trust: targetCharacter.trust,
-              pattern: gate.pattern,
-              patternLevel: newGameState.patterns[gate.pattern]
-            })
-          }
-        }
-      }
-
-      // D-020: Check for newly active magical realism manifestations
-      // At high pattern levels, reality becomes more fluid
-      if (!consequenceEcho) {
-        const shownMagicalKey = 'lux_magical_realism_shown'
-        const shownMagicalRaw = typeof window !== 'undefined' ? localStorage.getItem(shownMagicalKey) : null
-        const shownMagical = new Set<string>(shownMagicalRaw ? JSON.parse(shownMagicalRaw) : [])
-
-        const prevManifestations = gameState ? getActiveMagicalRealisms(gameState.patterns) : []
-        const nowManifestations = getActiveMagicalRealisms(newGameState.patterns)
-
-        // Find newly unlocked manifestations that haven't been shown
-        const newlyActive = nowManifestations.filter(m =>
-          !prevManifestations.some(p => p.id === m.id) && !shownMagical.has(m.id)
-        )
-
-        if (newlyActive.length > 0) {
-          const manifestation = newlyActive[0]
-          consequenceEcho = {
-            text: manifestation.manifestation,
-            emotion: 'wonder',
-            timing: 'immediate'
-          }
-
-          // Mark as shown
-          shownMagical.add(manifestation.id)
-          localStorageBuffer[shownMagicalKey] = JSON.stringify([...shownMagical])
-
-          // Add flag for dialogue to reference
-          newGameState.globalFlags.add(`magical_${manifestation.id}`)
-          logger.info('[StatefulGameInterface] D-020 Magical realism manifestation:', {
-            id: manifestation.id,
-            name: manifestation.name,
-            pattern: manifestation.triggerPattern
-          })
-        }
-      }
-
-      // D-059: Check for newly earned pattern achievements
-      if (!consequenceEcho && gameState) {
-        const newAchievements = checkNewAchievements(gameState.patterns, newGameState.patterns)
-
-        if (newAchievements.length > 0) {
-          const achievement = newAchievements[0]
-          consequenceEcho = {
-            text: `${achievement.icon} ${achievement.name}: ${achievement.description}${achievement.reward ? `\n\n${achievement.reward}` : ''}`,
-            emotion: 'triumph',
-            timing: 'immediate'
-          }
-          newGameState.globalFlags.add(`achievement_${achievement.id}`)
-          logger.info('[StatefulGameInterface] D-059 Achievement earned:', {
-            id: achievement.id,
-            name: achievement.name
-          })
-        }
-      }
-
-      // D-016: Check for newly active environmental effects from character trust
-      if (!consequenceEcho && gameState) {
-        const prevEffects = getActiveEnvironmentalEffects(gameState)
-        const nowEffects = getActiveEnvironmentalEffects(newGameState)
-        const newEffects = nowEffects.filter(e =>
-          !prevEffects.some(p => p.effect === e.effect)
-        )
-
-        if (newEffects.length > 0) {
-          const effect = newEffects[0]
-          consequenceEcho = {
-            text: effect.visualDescription,
-            emotion: 'wonder',
-            timing: 'immediate'
-          }
-          newGameState.globalFlags.add(`env_${effect.effect}`)
-          logger.info('[StatefulGameInterface] D-016 Environmental effect triggered:', {
-            effect: effect.effect,
-            warmthChange: effect.warmthChange
-          })
-        }
-      }
-
-      // D-017: Check for newly available cross-character experiences
-      if (!consequenceEcho && gameState) {
-        const prevExperiences = getAvailableCrossCharacterExperiences(gameState)
-        const nowExperiences = getAvailableCrossCharacterExperiences(newGameState)
-        const newExperiences = nowExperiences.filter(e =>
-          !prevExperiences.some(p => p.experienceId === e.experienceId)
-        )
-
-        if (newExperiences.length > 0) {
-          const exp = newExperiences[0]
-          consequenceEcho = {
-            text: `${exp.unlockHint}\n\n(New experience available: ${exp.experienceName})`,
-            emotion: 'intrigued',
-            timing: 'immediate'
-          }
-          newGameState.globalFlags.add(`exp_available_${exp.experienceId}`)
-          logger.info('[StatefulGameInterface] D-017 Cross-character experience available:', {
-            experienceId: exp.experienceId,
-            experienceName: exp.experienceName
-          })
-        }
-      }
-
-      // D-062: Check for cascade effects triggered by new flags
-      if (!consequenceEcho && gameState) {
-        // Find flags that were just added
-        const newFlags = [...newGameState.globalFlags].filter(f => !gameState!.globalFlags.has(f))
-
-        for (const flag of newFlags) {
-          const cascade = getCascadeEffectsForFlag(flag, targetCharacterId)
-          if (cascade && cascade.chain.length > 0) {
-            // Get the first degree effect
-            const firstEffect = cascade.chain.find(c => c.degree === 1)
-            if (firstEffect) {
-              consequenceEcho = {
-                text: firstEffect.description,
-                emotion: 'knowing',
-                timing: 'immediate'
-              }
-              // Apply first degree effects immediately
-              if (firstEffect.effect.flagSet) {
-                newGameState.globalFlags.add(firstEffect.effect.flagSet)
-              }
-              // Queue later effects via global flags for tracking
-              newGameState.globalFlags.add(`cascade_${cascade.id}_triggered`)
-              logger.info('[StatefulGameInterface] D-062 Cascade triggered:', {
-                cascadeId: cascade.id,
-                triggerFlag: flag,
-                chainLength: cascade.chain.length
-              })
-              break
-            }
-          }
-        }
-      }
-
-      // D-065: Check for newly unlocked meta-narrative revelations
-      if (!consequenceEcho && gameState) {
-        const prevRevelations = getUnlockedMetaRevelations(gameState.patterns)
-        const nowRevelations = getUnlockedMetaRevelations(newGameState.patterns)
-        const newRevelations = nowRevelations.filter(r =>
-          !prevRevelations.some(p => p.id === r.id) &&
-          !newGameState.globalFlags.has(`meta_${r.id}`)
-        )
-
-        if (newRevelations.length > 0) {
-          const revelation = newRevelations[0]
-          consequenceEcho = {
-            text: `${revelation.revelation}\n\n${revelation.characterAcknowledgement.dialogue}`,
-            emotion: 'profound',
-            timing: 'immediate'
-          }
-          newGameState.globalFlags.add(`meta_${revelation.id}`)
-          // Unlock associated dialogue nodes
-          revelation.unlocksDialogue.forEach(nodeId => {
-            newGameState.globalFlags.add(`dialogue_unlocked_${nodeId}`)
-          })
-          logger.info('[StatefulGameInterface] D-065 Meta-narrative revelation:', {
-            id: revelation.id,
-            name: revelation.name
-          })
-        }
-      }
+      // D-017: Cross-character experiences - NOW HANDLED BY EVALUATOR REGISTRY (evaluateCrossCharacterExperience)
+      // D-062: Cascade effects - NOW HANDLED BY EVALUATOR REGISTRY (evaluateCascadeEffect)
+      // D-065: Meta-narrative revelations - NOW HANDLED BY EVALUATOR REGISTRY (evaluateMetaRevelation)
 
       // D-064: Log narrative framing for current session (UI will use this)
       const narrativeFraming = getNarrativeFraming(newGameState.patterns)
@@ -1323,59 +1057,8 @@ export function useChoiceHandler({
         }
       }
 
-      // Check for discovery hints (vulnerability foreshadowing for Maya/Devon)
-      // 20% chance per interaction, only if no other echo is active
-      if (!consequenceEcho && DISCOVERY_HINTS[targetCharacterId] && Math.random() < 0.2) {
-        const vulnerabilities = DISCOVERY_HINTS[targetCharacterId]
-        for (const vuln of vulnerabilities) {
-          // Check if vulnerability not yet discovered
-          const discoveryFlag = `${targetCharacterId}_${vuln.vulnerability}_revealed`
-          if (!targetCharacter.knowledgeFlags.has(discoveryFlag)) {
-            const hint = getDiscoveryHint(targetCharacterId, vuln.vulnerability, targetCharacter.trust)
-            if (hint) {
-              consequenceEcho = hint
-              logger.info('[StatefulGameInterface] Discovery hint triggered:', {
-                characterId: targetCharacterId,
-                vulnerability: vuln.vulnerability,
-                trust: targetCharacter.trust
-              })
-              break // Only one hint per interaction
-            }
-          }
-        }
-      }
-
-      // D-005: Check for trust asymmetry (character notices player trusts others differently)
-      // 15% chance per interaction, only if no other echo and asymmetry is notable or major
-      if (!consequenceEcho && Math.random() < 0.15) {
-        const asymmetries = analyzeTrustAsymmetry(newGameState.characters, targetCharacterId)
-        // Get the most significant asymmetry
-        const significantAsymmetry = asymmetries.find(a => a.asymmetry.level === 'notable' || a.asymmetry.level === 'major')
-
-        if (significantAsymmetry) {
-          // Determine reaction type based on direction
-          const reaction: AsymmetryReaction = significantAsymmetry.direction === 'higher'
-            ? 'curiosity'  // Player trusts this character more
-            : 'jealousy'   // Player trusts others more
-
-          const asymmetryText = getAsymmetryComment(targetCharacterId, reaction, newGameState)
-
-          if (asymmetryText) {
-            consequenceEcho = {
-              text: asymmetryText,
-              timing: 'immediate',
-              soundCue: undefined
-            }
-            logger.info('[StatefulGameInterface] D-005: Trust asymmetry comment triggered:', {
-              characterId: targetCharacterId,
-              asymmetryWith: significantAsymmetry.characterId,
-              level: significantAsymmetry.asymmetry.level,
-              direction: significantAsymmetry.direction,
-              reaction
-            })
-          }
-        }
-      }
+      // Discovery hints - NOW HANDLED BY EVALUATOR REGISTRY (evaluateDiscoveryHint)
+      // D-005: Trust asymmetry - NOW HANDLED BY EVALUATOR REGISTRY (evaluateTrustAsymmetry)
 
       // Check for session boundary (every 15-30 nodes, only at natural pause points)
       const boundary = checkSessionBoundary(newGameState, state.previousTotalNodes, nextNode)
