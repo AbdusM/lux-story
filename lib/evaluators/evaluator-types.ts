@@ -64,6 +64,12 @@ export interface EvaluatorContext {
    * Orchestrator reads from localStorage before calling, handles persistence after.
    */
   shownPatternComments: Set<string>
+
+  /**
+   * Already-shown magical realism manifestation IDs (for deduplication).
+   * Orchestrator reads from localStorage before calling, handles persistence after.
+   */
+  shownMagicalRealisms: Set<string>
 }
 
 /**
@@ -90,6 +96,9 @@ export interface EvaluatorResult {
 
     /** Pattern recognition comment keys to mark as shown (for persistence) */
     markPatternCommentsShown?: string[]
+
+    /** Magical realism manifestation IDs to mark as shown (for persistence) */
+    markMagicalRealismsShown?: string[]
   }
 
   /** Events to trigger (orchestrator handles) */
