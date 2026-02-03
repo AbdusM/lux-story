@@ -57,6 +57,13 @@ export interface EvaluatorContext {
 
   /** Choice pattern (if any) */
   choicePattern: PatternType | undefined
+
+  /**
+   * Already-shown pattern recognition comment keys (for deduplication).
+   * Format: `${characterId}_${pattern}_${threshold}`
+   * Orchestrator reads from localStorage before calling, handles persistence after.
+   */
+  shownPatternComments: Set<string>
 }
 
 /**
@@ -80,6 +87,9 @@ export interface EvaluatorResult {
       pattern: PatternType
       delta: number
     }
+
+    /** Pattern recognition comment keys to mark as shown (for persistence) */
+    markPatternCommentsShown?: string[]
   }
 
   /** Events to trigger (orchestrator handles) */
