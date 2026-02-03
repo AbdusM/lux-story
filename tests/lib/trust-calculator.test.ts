@@ -13,7 +13,7 @@ import {
   isValidTrust,
   TRUST_BOUNDS
 } from '@/lib/trust/trust-calculator'
-import { createTrustMomentum } from '@/lib/trust-derivatives'
+import { createTrustMomentum, TrustMomentum } from '@/lib/trust-derivatives'
 
 describe('Trust Calculator (Phase 3D)', () => {
   const defaultPatterns = {
@@ -80,10 +80,14 @@ describe('Trust Calculator (Phase 3D)', () => {
     })
 
     test('applies momentum when not skipped', () => {
-      const momentum = createTrustMomentum('maya')
-      // Simulate some positive history
-      momentum.recentChanges = [1, 1, 1, 1, 1]
-      momentum.consecutivePositive = 5
+      // Create momentum with positive history
+      const momentum: TrustMomentum = {
+        characterId: 'maya',
+        momentum: 0.6,  // Positive momentum
+        consecutivePositive: 5,
+        consecutiveNegative: 0,
+        lastChangeAt: Date.now()
+      }
 
       const result = calculateTrustChange(5, 2, {
         characterId: 'maya',
