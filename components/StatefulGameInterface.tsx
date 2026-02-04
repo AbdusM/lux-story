@@ -112,6 +112,7 @@ import { UnifiedMenu } from '@/components/UnifiedMenu'
 import { GameStateManager } from '@/lib/game-state-manager'
 import { useBackgroundSync } from '@/hooks/useBackgroundSync'
 import { useSettingsSync } from '@/hooks/useSettingsSync'
+import { useMultiTabSync } from '@/hooks/useMultiTabSync'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 // Lazy loaded - only shown on demand
 const KeyboardShortcutsHelp = dynamic(() => import('@/components/KeyboardShortcutsHelp').then(m => m.KeyboardShortcutsHelp), { ssr: false })
@@ -268,6 +269,9 @@ export default function StatefulGameInterface() {
 
   // Settings sync - automatically sync settings to cloud when authenticated
   const { pushNow: pushSettingsToCloud } = useSettingsSync()
+
+  // TD-006: Multi-tab coordination - sync state when changed in another tab
+  useMultiTabSync()
 
   // Keyboard shortcuts
   const { registerHandler, shortcuts, updateShortcut, resetShortcuts } = useKeyboardShortcuts()
