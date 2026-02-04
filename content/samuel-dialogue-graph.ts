@@ -464,6 +464,9 @@ export const samuelDialogueNodes: DialogueNode[] = [
       variation_id: 'sim_intro_v1'
     }],
     simulation: {
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'samuel_triage_phase1',
       type: 'chat_negotiation',
       title: 'Traveler Triage: The Lost Musician',
       taskDescription: 'A traveler is panicking about a missed train. Use the station logs to realize their ticket was automatically rebooked, then calm them down.',
@@ -531,7 +534,269 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         }
       }
     ],
-    tags: ['simulation', 'samuel_arc']
+    tags: ['simulation', 'samuel_arc', 'phase_1']
+  },
+
+  // ============= PHASE 2 SIMULATION: STATION CRISIS =============
+  {
+    nodeId: 'samuel_simulation_phase2',
+    speaker: 'Samuel Washington',
+    requiredState: {
+      trust: { min: 5 }
+    },
+    content: [{
+      text: "You've been here a while now. Seen you help a few folks find their way. That's good.\n\nBut sometimes... the station throws somethin' bigger at you. Multiple travelers, conflicting needs, limited time.\n\nHere's one of those moments. Three travelers arrived on the same platform. Each thinks their train is next. Only one of 'em is right.\n\nHow you handle this tells me a lot about who you're becoming.",
+      emotion: 'serious_teaching',
+      variation_id: 'sim2_intro_v1'
+    }],
+    simulation: {
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'samuel_crisis_phase2',
+      timeLimit: 120,
+      type: 'dashboard_triage',
+      title: 'Platform Prioritization: Three Travelers',
+      taskDescription: 'Three travelers need help simultaneously. One has a job interview, one has a medical appointment, one is meeting estranged family. All claim urgency. Only one train is actually boarding. Triage based on the schedule and human need.',
+      initialContext: {
+        label: 'Platform 3 Status Board',
+        content: `CURRENT TIME: 4:42 PM
+
+TRAVELERS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[A] Marcus - Job interview downtown, "The 4:45 is mine, right?"
+    Status: Anxious, checking phone repeatedly
+
+[B] Elena - Medical specialist appointment, "I can't miss this one"
+    Status: Pale, sitting on bench, appears tired
+
+[C] Jordan - Reuniting with father after 10 years, "He's waiting at Union"
+    Status: Emotional, clutching an old photograph
+
+SCHEDULE REALITY:
+- 4:45 Train: CANCELED (track maintenance)
+- 4:52 Train: BOARDING NOW → Union Station
+- 5:15 Train: Downtown Express`,
+        displayStyle: 'text'
+      },
+      successFeedback: '✓ TRIAGE COMPLETE: You helped each traveler understand their real options. The 4:52 is boarding now—Jordan needs to move.'
+    },
+    choices: [
+      {
+        choiceId: 'sim2_prioritize_urgent',
+        text: "Elena's medical appointment takes priority. Health comes first.",
+        nextNodeId: 'samuel_sim2_result_compassion',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'criticalThinking'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1,
+          addKnowledgeFlags: ['samuel_simulation_phase2_complete']
+        }
+      },
+      {
+        choiceId: 'sim2_check_schedule',
+        text: "Wait—the 4:52 is boarding NOW. Jordan needs to go first or miss the reunion entirely.",
+        nextNodeId: 'samuel_sim2_result_insight',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'informationLiteracy'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2,
+          addKnowledgeFlags: ['samuel_simulation_phase2_complete', 'samuel_triage_mastery']
+        }
+      },
+      {
+        choiceId: 'sim2_help_all',
+        text: "Give everyone the full schedule and let them decide for themselves.",
+        nextNodeId: 'samuel_sim2_result_neutral',
+        pattern: 'patience',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1,
+          addKnowledgeFlags: ['samuel_simulation_phase2_complete']
+        }
+      }
+    ],
+    tags: ['simulation', 'samuel_arc', 'phase_2']
+  },
+
+  // Phase 2 Result Nodes
+  {
+    nodeId: 'samuel_sim2_result_insight',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "Now that's what I call station sense.\n\nYou didn't just hear what they said—you saw what mattered. Jordan's train was boarding. Ten years of silence almost became ten years and one missed platform.\n\nMarcus can catch the 5:15. Elena's appointment... I'll make a call. The clinic knows me.\n\nYou're ready for more responsibility here.",
+      emotion: 'proud_teaching',
+      variation_id: 'sim2_result_insight_v1'
+    }],
+    choices: [{
+      choiceId: 'sim2_insight_continue',
+      text: "Thank you, Samuel.",
+      nextNodeId: 'samuel_conductor',
+      pattern: 'patience'
+    }]
+  },
+  {
+    nodeId: 'samuel_sim2_result_compassion',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "Heart's in the right place. Health is important.\n\nBut here's the thing—Elena's appointment was at 5:30. She had time. Jordan's reunion? That train was boarding NOW.\n\nSometimes the urgent thing ain't the important thing. And sometimes... it is. You gotta see the whole board, not just the loudest voice.\n\nWe'll work on it.",
+      emotion: 'thoughtful',
+      variation_id: 'sim2_result_compassion_v1'
+    }],
+    choices: [{
+      choiceId: 'sim2_compassion_continue',
+      text: "I see. I'll look at the full picture next time.",
+      nextNodeId: 'samuel_conductor',
+      pattern: 'analytical'
+    }]
+  },
+  {
+    nodeId: 'samuel_sim2_result_neutral',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "Fair approach. Give folks information, let 'em decide.\n\nBut sometimes people are too stressed to process a schedule. Jordan was holding an old photograph—you think they could read a timetable clearly in that state?\n\nStation keepin' means knowing when to inform... and when to guide.\n\nYou'll learn the difference.",
+      emotion: 'thoughtful',
+      variation_id: 'sim2_result_neutral_v1'
+    }],
+    choices: [{
+      choiceId: 'sim2_neutral_continue',
+      text: "I understand. Sometimes people need more than information.",
+      nextNodeId: 'samuel_conductor',
+      pattern: 'helping'
+    }]
+  },
+
+  // ============= PHASE 3 SIMULATION: THE STATION'S MEMORY =============
+  {
+    nodeId: 'samuel_simulation_phase3',
+    speaker: 'Samuel Washington',
+    requiredState: {
+      trust: { min: 8 }
+    },
+    content: [{
+      text: "Sit down. I want to show you somethin' I don't share with many.\n\nThis station... it remembers. Every traveler who passed through, every choice they made. The patterns are all here, if you know how to read 'em.\n\nI've been keepin' records for thirty years. Tonight, I need your help with somethin' important.\n\nThere's a traveler comin' through who was here before—fifteen years ago. They left angry. Said some things. Made some choices.\n\nThey don't know I remember. But I do.\n\nHow we handle this... it'll show me if you're ready to be more than a helper here.",
+      emotion: 'vulnerable_serious',
+      variation_id: 'sim3_intro_v1',
+      interaction: 'bloom'
+    }],
+    simulation: {
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'samuel_memory_phase3',
+      timeLimit: 90,
+      successThreshold: 85,
+      type: 'chat_negotiation',
+      title: 'The Returning Traveler',
+      taskDescription: 'A traveler who left in anger 15 years ago has returned. They made a choice then that hurt someone. Now they\'re back—older, different. Samuel\'s records show everything. Do you confront them with the past, let them pass anonymously, or find a third way?',
+      initialContext: {
+        label: 'Samuel\'s Private Station Log (1994-Present)',
+        content: `LOG ENTRY #4,847 - March 15, 2009
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Traveler: David Chen, 28, arriving from Platform 7
+Destination: Atlanta (claimed job opportunity)
+Actual situation: Leaving family. Wife, young daughter.
+He said: "Some trains only come once."
+She came looking for him an hour later.
+I had to tell her he was already gone.
+
+LOG ENTRY #12,341 - Tonight
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Traveler: David Chen, 43, arriving from Platform 3
+Destination: Birmingham (return)
+Note: Recognizes the station. Doesn't recognize me.
+Wife passed away last year. Daughter—Maya—is
+now an AI engineer in Birmingham.
+He's coming back to apologize. To her.
+
+OBSERVATION: He looks tired. Scared. Different.`,
+        displayStyle: 'code'
+      },
+      successFeedback: '✓ WISDOM DEMONSTRATED: You found the path between judgment and forgiveness. David will meet his daughter. What happens next is up to them.'
+    },
+    choices: [
+      {
+        choiceId: 'sim3_confront',
+        text: "He needs to know someone remembers. Tell him you know what he did.",
+        nextNodeId: 'samuel_sim3_result_confrontation',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'sim3_let_pass',
+        text: "The past is the past. Let him pass without judgment.",
+        nextNodeId: 'samuel_sim3_result_mercy',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'sim3_guide',
+        text: "Ask where he's headed. If he says 'to find my daughter,' offer to help him practice what he'll say.",
+        nextNodeId: 'samuel_sim3_result_wisdom',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication', 'mentorship'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2,
+          addKnowledgeFlags: ['samuel_simulation_phase3_complete', 'samuel_keeper_heir']
+        }
+      }
+    ],
+    tags: ['simulation', 'samuel_arc', 'phase_3', 'mastery']
+  },
+
+  // Phase 3 Result Nodes
+  {
+    nodeId: 'samuel_sim3_result_wisdom',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "Now that... that's somethin' special.\n\nYou didn't judge him. Didn't let him off easy either. You gave him a chance to find the words he's been too scared to say for fifteen years.\n\nHe practiced that apology three times. By the end, he was cryin'. Good tears.\n\nMaya's gonna hear her father say things he should've said when she was eight. That's because of you.\n\nI've been runnin' this station a long time. Wonderin' who might take care of it when I'm gone. Now I'm startin' to think... maybe I found 'em.",
+      emotion: 'deeply_moved',
+      variation_id: 'sim3_result_wisdom_v1',
+      interaction: 'bloom'
+    }],
+    choices: [{
+      choiceId: 'sim3_wisdom_continue',
+      text: "I just wanted to help them both find their way.",
+      nextNodeId: 'samuel_conductor',
+      pattern: 'helping',
+      consequence: {
+        characterId: 'samuel',
+        trustChange: 1,
+        addGlobalFlags: ['samuel_heir_potential']
+      }
+    }]
+  },
+  {
+    nodeId: 'samuel_sim3_result_confrontation',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "He didn't take it well.\n\nCan't blame you for wantin' accountability. What he did was wrong. But confrontin' someone who's already ashamed... sometimes it just makes 'em run again.\n\nHe left. Took the next train out. Said he 'wasn't ready.'\n\nMaybe he'll come back. Maybe not. Some lessons take time.\n\nYou've got strong convictions. Just... remember mercy has its place too.",
+      emotion: 'sad_teaching',
+      variation_id: 'sim3_result_confrontation_v1'
+    }],
+    choices: [{
+      choiceId: 'sim3_confrontation_continue',
+      text: "I understand. Justice and mercy aren't always the same thing.",
+      nextNodeId: 'samuel_conductor',
+      pattern: 'patience'
+    }]
+  },
+  {
+    nodeId: 'samuel_sim3_result_mercy',
+    speaker: 'Samuel Washington',
+    content: [{
+      text: "Kind of you. The past is heavy, and lettin' it go takes courage.\n\nBut here's the thing—he didn't just need to pass through. He needed to prepare. Fifteen years of guilt don't disappear just 'cause you buy a ticket home.\n\nHe's gonna show up at Maya's door with no idea what to say. That conversation... it might go badly. And that's a chance we could've helped with.\n\nSometimes mercy means more than just absence of judgment. Sometimes it means active help.\n\nYou'll learn the difference.",
+      emotion: 'thoughtful',
+      variation_id: 'sim3_result_mercy_v1'
+    }],
+    choices: [{
+      choiceId: 'sim3_mercy_continue',
+      text: "You're right. I could have done more to help him prepare.",
+      nextNodeId: 'samuel_conductor',
+      pattern: 'helping'
+    }]
   },
 
   // ============= ORIGINAL INTRODUCTION (for direct step-off) =============

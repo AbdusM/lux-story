@@ -36,13 +36,13 @@ const COMPLETE_SIMULATION_CHARACTERS = [
   'silas',
   'asha',
   'lira',
-  'zara'
+  'zara',
+  'samuel'
 ] as const
 
 // Characters with Phase 1 only (explicit incomplete status)
-const PHASE_1_ONLY_CHARACTERS = [
-  'samuel'
-] as const
+// All 20 playable characters now have complete 3-phase simulations!
+const PHASE_1_ONLY_CHARACTERS = [] as const
 
 // Non-character graphs (locations) - excluded from simulation checks
 const LOCATION_GRAPHS = [
@@ -135,6 +135,11 @@ describe('Simulation Completeness Validator', () => {
   })
 
   describe('Phase 1 Only Characters (Documented Incomplete)', () => {
+    // All 20 characters now have complete 3-phase simulations!
+    it('no characters remain incomplete', () => {
+      expect(PHASE_1_ONLY_CHARACTERS.length).toBe(0)
+    })
+
     for (const charId of PHASE_1_ONLY_CHARACTERS) {
       it(`${charId} is correctly documented as Phase 1 only`, () => {
         const graph = DIALOGUE_GRAPHS[charId]
