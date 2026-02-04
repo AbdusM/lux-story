@@ -412,7 +412,7 @@ Platform resonance requires architectural refactor because:
 |------|--------|--------|--------|
 | TD-002: Add Immer/Object.freeze | 1 day | Mutation safety | Pending |
 | TD-006: Add StorageEvent listener | 4 hrs | Multi-tab safety | ✅ DONE |
-| TD-007: Seeded PRNG for gameplay | 4 hrs | Deterministic testing | Pending |
+| TD-007: Seeded PRNG for gameplay | 4 hrs | Deterministic testing | ✅ DONE |
 | Define pattern affinity for 19 chars | 2-4 hrs | Trust calculations | ✅ DONE (already complete) |
 
 **Note:** Pattern affinity audit finding was incorrect - all 20 characters already have complete pattern affinities in `lib/pattern-affinity.ts`.
