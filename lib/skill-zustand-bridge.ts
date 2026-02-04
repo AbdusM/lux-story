@@ -11,13 +11,21 @@
  * Without this bridge, skills never appear in the constellation.
  */
 
-import { useGameStore, type FutureSkills } from './game-store'
+import { useGameStore, type FutureSkills, type SkillRecord } from './game-store'
 import { SKILL_NODES } from './constellation/skill-positions'
 import { logger } from './logger'
 import { safeStorage } from './safe-storage'
 
 // Skill IDs from constellation that we track
 const CONSTELLATION_SKILL_IDS = new Set(SKILL_NODES.map(node => node.id))
+
+/**
+ * Convert FutureSkills to SkillRecord for dynamic key access.
+ * TD-008: Encapsulates type assertion in one place for cleaner code.
+ */
+function toSkillRecord(skills: FutureSkills): SkillRecord {
+  return skills as unknown as SkillRecord
+}
 
 // Convert demonstration count to 0-1 scale for Zustand
 // Mirrors useConstellationData logic: demonstrationCount = Math.round(rawValue * 10)
@@ -46,7 +54,7 @@ export function syncSkillToZustand(skillName: string, demonstrationCount: number
   }
 
   const store = useGameStore.getState()
-  const currentValue = (store.skills as unknown as Record<string, number>)[normalizedSkill] || 0
+  const currentValue = toSkillRecord(store.skills)[normalizedSkill] || 0
   const newValue = demonstrationCountToScale(demonstrationCount)
 
   // Only update if value increased (skills don't decrease)
@@ -84,10 +92,10 @@ export function syncAllSkillsToZustand(
     // Handle both array length and direct count
     const count = typeof data === 'number' ? data : (data?.length || 0)
     const newValue = demonstrationCountToScale(count)
-    const currentValue = (store.skills as unknown as Record<string, number>)[normalizedSkill] || 0
+    const currentValue = toSkillRecord(store.skills)[normalizedSkill] || 0
 
     if (newValue > currentValue) {
-      (updates as Record<string, number>)[normalizedSkill] = newValue
+      (updates as SkillRecord)[normalizedSkill] = newValue
       updateCount++
     }
   }
@@ -185,11 +193,11 @@ function normalizeSkillName(skill: string): string {
  */
 export function debugSkillState(userId: string): {
   localStorage: Record<string, number>
-  zustand: Record<string, number>
+  zustand: SkillRecord
   mismatches: string[]
 } {
   const localStorageCounts = getSkillCountsFromLocalStorage(userId)
-  const zustandSkills = useGameStore.getState().skills as unknown as Record<string, number>
+  const zustandSkills = toSkillRecord(useGameStore.getState().skills)
 
   const mismatches: string[] = []
 

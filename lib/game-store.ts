@@ -189,6 +189,9 @@ export interface FutureSkills {
   selfMarketing: number
 }
 
+// Type for dynamic skill access (TD-008: cleaner than `as unknown as`)
+export type SkillRecord = Record<string, number>
+
 // Game store actions
 export interface GameActions {
   // Scene management
