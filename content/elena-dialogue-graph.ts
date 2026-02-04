@@ -224,6 +224,9 @@ const nodes: DialogueNode[] = [
       interaction: 'ripple'
     }],
     simulation: {
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'elena_signal_phase1',
       type: 'data_ticker',
       mode: 'inline',
       title: 'Signal Stabilization Protocol',
@@ -840,6 +843,10 @@ const nodes: DialogueNode[] = [
       variation_id: 'default'
     }],
     simulation: {
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'elena_research_phase2',
+      timeLimit: 120,
       type: 'prompt_engineering',
       title: 'Deep Research Protocol',
       taskDescription: 'The archives are flooded with noise. Construct a search query that isolates timestamp anomalies excluding standard maintenance logs.',
@@ -936,6 +943,11 @@ const nodes: DialogueNode[] = [
       variation_id: 'default'
     }],
     simulation: {
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'elena_synthesis_phase3',
+      timeLimit: 90,
+      successThreshold: 85,
       type: 'data_analysis',
       title: 'Contextual Synthesis',
       taskDescription: 'The crew logs are 500 pages of bureaucratic jargon. Generate an "Audio Overview" that focuses specifically on the 3-second time gap.',

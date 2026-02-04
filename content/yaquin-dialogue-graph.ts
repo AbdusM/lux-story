@@ -468,6 +468,9 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       }
     ],
     simulation: {
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'yaquin_module_phase1',
       type: 'creative_direction',
       title: 'Course Module Design',
       taskDescription: 'Design the opening module for "The Real Dental Assistant" course. The hook needs to grab attention and prove this isn\'t another boring textbook.',
@@ -1545,6 +1548,10 @@ Which opening sells the VALUE of practical experience?`,
       useChatPacing: true
     }],
     simulation: {
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'yaquin_review_phase2',
+      timeLimit: 120,
       type: 'dashboard_triage',
       title: 'Course Review Triage',
       taskDescription: 'Three critical reviews require different responses. Prioritize which to address first to protect course reputation while maintaining integrity.',
@@ -1628,6 +1635,11 @@ Which opening sells the VALUE of practical experience?`,
       useChatPacing: true
     }],
     simulation: {
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'yaquin_response_phase3',
+      timeLimit: 90,
+      successThreshold: 85,
       type: 'chat_negotiation',
       title: 'Public Response Strategy',
       taskDescription: 'Dr. Lam raised a valid technical concern publicly. Craft a response that maintains credibility, acknowledges the feedback, and reinforces your teaching methodology.',

@@ -124,6 +124,9 @@ export const graceDialogueNodes: DialogueNode[] = [
       interaction: 'ripple'
     }],
     simulation: {
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'grace_triage_phase1',
       type: 'dashboard_triage',
       mode: 'inline',
       inlineHeight: 'h-80',
@@ -793,6 +796,10 @@ export const graceDialogueNodes: DialogueNode[] = [
       }
     ],
     simulation: {
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'grace_presence_phase2',
+      timeLimit: 120,
       type: 'chat_negotiation',
       title: 'The Moment of Presence',
       taskDescription: 'Mrs. Williams is crying by the window. She has Alzheimer\'s and may not remember why she\'s upset. Your response will shape whether she feels alone or accompanied.',
@@ -1117,6 +1124,11 @@ QUESTION: How do you approach her?
       }
     ],
     simulation: {
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'grace_family_phase3',
+      timeLimit: 90,
+      successThreshold: 85,
       type: 'chat_negotiation',
       title: 'The Worried Daughter',
       taskDescription: 'Maria Rodriguez is terrified about her mother\'s condition. She needs information, but more than that, she needs to feel heard. Your approach will determine whether she trusts you with her mother\'s care.',

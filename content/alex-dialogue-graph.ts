@@ -778,6 +778,9 @@ export const alexDialogueNodes: DialogueNode[] = [
       }
     ],
     simulation: {
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'alex_prompt_phase1',
       type: 'prompt_engineering',
       title: 'Learning Pattern Discovery',
       taskDescription: 'Alex\'s prototype needs a better opening prompt. The current version asks generic questions. Help refine it to uncover genuine curiosity patterns instead of career anxiety.',
@@ -1336,6 +1339,10 @@ export const alexDialogueNodes: DialogueNode[] = [
       }
     ],
     simulation: {
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'alex_supply_phase2',
+      timeLimit: 120,
       type: 'dashboard_triage',
       title: 'Supply Chain Triage',
       taskDescription: 'The nonprofit needs 2,000 supply kits in 72 hours. Each supplier has tradeoffs. Your recommendation will affect real students.',
@@ -2039,6 +2046,11 @@ export const alexDialogueNodes: DialogueNode[] = [
       variation_id: 'sim3_intro_v1'
     }],
     simulation: {
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'alex_curriculum_phase3',
+      timeLimit: 90,
+      successThreshold: 85,
       type: 'chat_negotiation',
       title: 'Curriculum Design: The Learning Paradox',
       taskDescription: 'Design a learning program that serves both genuine curiosity AND employability. Most programs sacrifice one for the other. Can you do both?',

@@ -1013,6 +1013,10 @@ export const kaiDialogueNodes: DialogueNode[] = [
       type: 'visual_canvas',
       title: 'Hydroponics Safety Grid',
       taskDescription: 'Redesign the Sector 4 Life Support safety protocol. Balance nutrient flow efficiency against critical fail-safe redundancy.',
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'kai_hydroponics_phase2',
+      timeLimit: 120,
       initialContext: {
         label: 'SECTOR_4_SCHEMATIC',
         content: `Current System Efficiency: 98%
@@ -1223,6 +1227,9 @@ Available Components:
       type: 'visual_canvas',
       title: 'Safety System Blueprint',
       taskDescription: 'The current protocol relies entirely on individual compliance. Redesign the workflow to include systemic fail-safes that protect workers even when they make mistakes.',
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'kai_safety_phase1',
       initialContext: {
         label: 'Blueprint: Zone 4 (Forklift Loading)',
         content: 'Current State: [Worker] -> [Load Check] -> [Move]\nRisk Factor: High (Human Error)\n\nDrag components to build redundancy:\n[ ] Automated Load Sensors\n[ ] Physical Barriers\n[ ] Teammate Spotter Protocol',
@@ -2095,6 +2102,11 @@ Available Components:
       type: 'visual_canvas',
       title: 'Safety Training Redesign: Compliance vs Life-Saving',
       taskDescription: 'Redesign warehouse safety training. Current: PowerPoint compliance theater. Goal: Training that actually prevents injuries.',
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'kai_training_phase3',
+      timeLimit: 90,
+      successThreshold: 85,
       initialContext: {
         label: 'Training Design Canvas',
         content: `CURRENT TRAINING:

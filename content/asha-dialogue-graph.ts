@@ -681,6 +681,9 @@ export const ashaDialogueNodes: DialogueNode[] = [
             }
         ],
         simulation: {
+            phase: 1,
+            difficulty: 'introduction',
+            variantId: 'asha_mural_phase1',
             type: 'visual_canvas',
             title: 'Mural Concept Generation',
             taskDescription: 'The AI generated a generic "Sci-Fi City". Refine the creative direction to reflect the real "Soul of Birmingham" (History + Nature + Future).',
@@ -2288,6 +2291,10 @@ export const ashaDialogueNodes: DialogueNode[] = [
             variation_id: 'sim2_intro_v1'
         }],
         simulation: {
+            phase: 2,
+            difficulty: 'application',
+            variantId: 'asha_stakeholder_phase2',
+            timeLimit: 120,
             type: 'chat_negotiation',
             title: 'Stakeholder Synthesis: The Community Mural',
             taskDescription: 'Three groups want different things from one mural. Find the creative direction that honors all voices.',
@@ -2419,6 +2426,11 @@ CHALLENGE: One mural. All voices honored.`,
             variation_id: 'sim3_intro_v1'
         }],
         simulation: {
+            phase: 3,
+            difficulty: 'mastery',
+            variantId: 'asha_critique_phase3',
+            timeLimit: 90,
+            successThreshold: 85,
             type: 'visual_canvas',
             title: 'Navigating Public Critique',
             taskDescription: 'Your mural receives harsh criticism from an art critic and social media, but deep praise from community members. How do you respond?',

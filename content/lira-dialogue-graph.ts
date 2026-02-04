@@ -23,6 +23,9 @@ export const liraDialogueNodes: DialogueNode[] = [
             interaction: 'ripple'
         }],
         simulation: {
+            phase: 1,
+            difficulty: 'introduction',
+            variantId: 'lira_synesthesia_phase1',
             type: 'audio_studio',
             mode: 'inline',
             inlineHeight: 'h-[500px]',
@@ -717,6 +720,10 @@ export const liraDialogueNodes: DialogueNode[] = [
             }
         ],
         simulation: {
+            phase: 2,
+            difficulty: 'application',
+            variantId: 'lira_memory_phase2',
+            timeLimit: 120,
             type: 'audio_studio',
             title: 'Soundtrack Generation: "Memory Loss"',
             taskDescription: 'The AI is generating generic "sad ambient" music. Refine the prompt to create a complex, haunting melody that represents "forgetting".',
@@ -2830,6 +2837,11 @@ export const liraDialogueNodes: DialogueNode[] = [
             }
         ],
         simulation: {
+            phase: 3,
+            difficulty: 'mastery',
+            variantId: 'lira_symphony_phase3',
+            timeLimit: 90,
+            successThreshold: 85,
             type: 'audio_studio',
             title: 'Station Symphony: The Living Score',
             taskDescription: 'Compose the "Sound of the Station" by layering 4 distinct audio tracks. Balance the volume to ensure no single layer overpowers the others.',

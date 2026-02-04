@@ -2031,6 +2031,9 @@ STATUS: Signal fighting itself`,
       type: 'chat_negotiation',
       title: 'Investor Pitch Simulation',
       taskDescription: "Help Maya respond to skeptical investors. Her parents are watching from the audience. One wrong move could confirm their fears.",
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'maya_pitch_phase1',
       initialContext: {
         label: 'Investor Question',
         content: '"Why should we fund a pre-med student\'s side project? This seems like a distraction from your real career."',
@@ -2149,6 +2152,10 @@ STATUS: Signal fighting itself`,
       type: 'chat_negotiation',
       title: 'Competitive Moat Defense',
       taskDescription: "The investors are probing for weaknesses. Maya needs to defend her competitive position without sounding naive.",
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'maya_pitch_phase2',
+      timeLimit: 120,
       initialContext: {
         label: 'Investor Challenge',
         content: '"What\'s stopping a bigger company from copying this and crushing you?"',
@@ -2413,6 +2420,255 @@ STATUS: Signal fighting itself`,
       }
     ],
     tags: ['simulation', 'maya_arc', 'tech_demo', 'aftermath_fail']
+  },
+
+  // ============= PHASE 3 SIMULATION: ACQUISITION DECISION (Trust ≥ 8) =============
+  {
+    nodeId: 'maya_simulation_phase3_setup',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "Something happened. I need your help.\n\nOrthoTech—one of the biggest prosthetics companies—they saw my demo. They want to acquire my entire project. All the patents, the algorithms, everything.\n\nThey're offering enough to fund my PhD. Enough to get prosthetics to thousands of kids within two years instead of ten.\n\nBut...\n\nThey also want to 'optimize for market fit.' Which means premium pricing. Which means the kids in rural Alabama—the ones I built this for—they can't afford it.\n\nMy parents think I should take the money. 'Finally, a real career path.'\n\nI don't know what to do. Can you help me think through this?",
+        emotion: 'conflicted_vulnerable',
+        variation_id: 'phase3_intro_v1',
+        useChatPacing: true,
+        richEffectContext: 'warning'
+      }
+    ],
+    requiredState: {
+      trust: { min: 8 },
+      hasKnowledgeFlags: ['maya_simulation_phase1_complete']
+    },
+    choices: [
+      {
+        choiceId: 'phase3_start_framework',
+        text: "Let's build a decision framework. What are your non-negotiables?",
+        nextNodeId: 'maya_simulation_phase3',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'problemSolving'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'phase3_start_values',
+        text: "Before the deal terms, let's talk about what you actually want. Not what your parents want.",
+        nextNodeId: 'maya_simulation_phase3',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'phase3_start_creative',
+        text: "What if there's a third option neither side has considered?",
+        nextNodeId: 'maya_simulation_phase3',
+        pattern: 'exploring',
+        skills: ['creativity', 'visionaryThinking'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      }
+    ],
+    tags: ['simulation', 'maya_arc', 'phase_3', 'setup']
+  },
+
+  {
+    nodeId: 'maya_simulation_phase3',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "Okay. Help me map this out. What's the right path forward?",
+        emotion: 'focused_vulnerable',
+        variation_id: 'phase3_v1'
+      }
+    ],
+    simulation: {
+      type: 'visual_canvas',
+      title: 'Acquisition Decision Framework',
+      taskDescription: "Help Maya design a decision framework for the acquisition offer. Balance mission impact, financial security, family expectations, and personal fulfillment.",
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'maya_acquisition_phase3',
+      timeLimit: 90,
+      successThreshold: 80,
+      initialContext: {
+        label: 'DECISION MATRIX',
+        content: `ACQUISITION OFFER: OrthoTech
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ACCEPT (Full Acquisition):
++ $2.5M upfront + PhD funding
++ 10,000 prosthetics in 2 years
+- Premium pricing ($15k/unit)
+- Lose control of mission
+- Parents: "Finally sensible"
+
+REJECT (Stay Independent):
++ Full control of pricing
++ Mission-aligned ($3k/unit target)
+- 10 years to scale
+- No PhD funding
+- Parents: "Throwing away future"
+
+UNKNOWN OPTION:
+? What else is possible ?
+
+YOUR FRAMEWORK:
+1. [Define non-negotiables]
+2. [Map stakeholder impact]
+3. [Identify creative alternatives]
+4. [Make values-aligned choice]`,
+        displayStyle: 'text'
+      },
+      successFeedback: 'CLARITY ACHIEVED: Maya sees a path that honors both her mission and her growth.'
+    },
+    choices: [
+      {
+        choiceId: 'phase3_license_model',
+        text: "Counter-offer: License the tech, don't sell it. Keep mission control, get funding.",
+        nextNodeId: 'maya_simulation_phase3_success',
+        pattern: 'analytical',
+        skills: ['problemSolving', 'negotiation'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2,
+          addKnowledgeFlags: ['chose_license_approach']
+        }
+      },
+      {
+        choiceId: 'phase3_tiered_pricing',
+        text: "Negotiate tiered pricing: premium in wealthy markets funds subsidized access in underserved areas.",
+        nextNodeId: 'maya_simulation_phase3_success',
+        pattern: 'building',
+        skills: ['creativity', 'systemsThinking'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2,
+          addKnowledgeFlags: ['chose_tiered_approach']
+        }
+      },
+      {
+        choiceId: 'phase3_nonprofit_arm',
+        text: "Create a nonprofit foundation alongside the acquisition. They get the commercial market, foundation serves the mission.",
+        nextNodeId: 'maya_simulation_phase3_success',
+        pattern: 'helping',
+        skills: ['visionaryThinking', 'communication'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2,
+          addKnowledgeFlags: ['chose_nonprofit_approach']
+        }
+      },
+      {
+        choiceId: 'phase3_binary_choice',
+        text: "Sometimes there's no clever middle path. You have to choose: money or mission.",
+        nextNodeId: 'maya_simulation_phase3_fail',
+        pattern: 'patience',
+        skills: ['criticalThinking']
+      }
+    ],
+    tags: ['simulation', 'maya_arc', 'phase_3']
+  },
+
+  {
+    nodeId: 'maya_simulation_phase3_success',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "Oh.\n\nOh wow.\n\nI was thinking in binaries. Accept or reject. Parent's approval or disappointment. Success or failure.\n\nBut you showed me a third path. Maybe a fourth.\n\nI can build something that matters AND build a sustainable career. I can honor my parents' concerns about security WITHOUT abandoning my mission.\n\nThis framework... it's not just for the acquisition. It's for every impossible choice.\n\nYou didn't give me an answer. You gave me a way to find my own answers.\n\nThank you. For seeing possibilities I couldn't see alone.",
+        emotion: 'transformed_grateful',
+        variation_id: 'phase3_success_v1',
+        useChatPacing: true,
+        richEffectContext: 'success',
+        interaction: 'bloom',
+        patternReflection: [
+          {
+            pattern: 'analytical',
+            minLevel: 5,
+            altText: "You approached it like an engineer. Mapped the constraints, found the optimization.\n\nThat's exactly how I think when I'm at my best. You helped me remember that."
+          },
+          {
+            pattern: 'helping',
+            minLevel: 5,
+            altText: "You saw the human in the business problem. The kids, my parents, me.\n\nI was so focused on the deal that I forgot why I started. You brought me back to that."
+          },
+          {
+            pattern: 'building',
+            minLevel: 5,
+            altText: "You didn't accept the problem as given. You redesigned it.\n\nThat's what makers do. That's what I do. I just forgot I could do it here too."
+          }
+        ]
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'maya',
+        addKnowledgeFlags: ['maya_simulation_phase3_complete', 'maya_mastery_achieved'],
+        addGlobalFlags: ['maya_simulation_mastery']
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'phase3_success_affirm',
+        text: "You always had the answers. You just needed someone to think alongside.",
+        nextNodeId: 'maya_encouraged',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      },
+      {
+        choiceId: 'phase3_success_next',
+        text: "Now comes the hard part: making it real. But you've done harder things.",
+        nextNodeId: 'maya_crossroads',
+        pattern: 'building',
+        skills: ['leadership']
+      }
+    ],
+    tags: ['simulation', 'maya_arc', 'phase_3', 'success', 'mastery']
+  },
+
+  {
+    nodeId: 'maya_simulation_phase3_fail',
+    speaker: 'Maya Chen',
+    content: [
+      {
+        text: "Maybe you're right.\n\nMaybe I'm looking for a way out that doesn't exist. Maybe every choice is a sacrifice.\n\nBut I've watched you navigate impossible situations. You don't always find the perfect answer, but you don't accept the obvious ones either.\n\nI'm not ready to decide yet. But... thank you for being honest. Even when the honest answer is 'this is really hard.'",
+        emotion: 'reflective_determined',
+        variation_id: 'phase3_fail_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'phase3_fail_encourage',
+        text: "Hard doesn't mean impossible. Keep looking.",
+        nextNodeId: 'maya_encouraged',
+        pattern: 'patience',
+        skills: ['resilience'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'phase3_fail_support',
+        text: "Whatever you choose, I'll be here.",
+        nextNodeId: 'maya_encouraged',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'maya',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['simulation', 'maya_arc', 'phase_3', 'fail']
   },
 
   // ============= PATTERN UNLOCK NODES =============

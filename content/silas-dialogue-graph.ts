@@ -91,6 +91,9 @@ export const silasDialogueNodes: DialogueNode[] = [
       interaction: 'ripple'
     }],
     simulation: {
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'silas_sensor_phase1',
       type: 'data_ticker',
       mode: 'inline',
       title: 'Sensor Calibration',
@@ -549,6 +552,10 @@ export const silasDialogueNodes: DialogueNode[] = [
       }
     ],
     simulation: {
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'silas_diagnostic_phase2',
+      timeLimit: 120,
       type: 'dashboard_triage',
       title: 'Ground Truth Diagnostic',
       taskDescription: 'The dashboard says everything is optimal, but the plants are dying. Something is lying. Find the discrepancy between sensor data and physical reality.',
@@ -1603,6 +1610,11 @@ HINT: Sensors measure WHERE they're placed...`,
       }
     ],
     simulation: {
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'silas_ghost_phase3',
+      timeLimit: 90,
+      successThreshold: 85,
       type: 'secure_terminal',
       title: 'Sensor Calibration: Ground Truth',
       taskDescription: 'The sensor array is picking up "ghost data"—anomalies that persist across reboots. Isolate the signal pattern and lock the baseline.',

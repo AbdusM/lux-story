@@ -601,6 +601,9 @@ export const tessDialogueNodes: DialogueNode[] = [
       }
     ],
     simulation: {
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'tess_pitch_phase1',
       type: 'chat_negotiation',
       title: 'Pitch Practice: The Skeptical Investor',
       taskDescription: 'An old friend from your corporate days is considering investing. But she thinks vinyl is dead. Convince her that The B-Side 2.0 is about community, not product.',
@@ -1278,6 +1281,10 @@ RACHEL: What am I missing?
       }
     ],
     simulation: {
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'tess_conflict_phase2',
+      timeLimit: 120,
       type: 'chat_negotiation',
       title: 'The Escalating Conflict',
       taskDescription: 'Two students are in a public confrontation about fairness and contribution. The class is watching. Your response will set the tone for how conflict is handled.',
@@ -2216,6 +2223,11 @@ Stakes: Trust, fairness, emotional safety for both students`,
       }
     ],
     simulation: {
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'tess_botany_phase3',
+      timeLimit: 90,
+      successThreshold: 85,
       type: 'botany_grid',
       title: 'Hydroponic Genetic Sequencer',
       taskDescription: 'The Moonlight Orchid is fading. Rebalance nutrient mix to match genetic markers.',

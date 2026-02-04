@@ -635,6 +635,9 @@ export const rohanDialogueNodes: DialogueNode[] = [
       variation_id: 'sim_setup_v2'
     }],
     simulation: {
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'rohan_hallucination_phase1',
       type: 'chat_negotiation',
       title: 'Hallucination Debate',
       taskDescription: 'The AI model insists the efficient code is correct. You must navigate the conversation to force it to acknowledge the "ghost" dependency.',
@@ -2126,6 +2129,10 @@ export const rohanDialogueNodes: DialogueNode[] = [
       variation_id: 'sim2_intro_v1'
     }],
     simulation: {
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'rohan_legacy_phase2',
+      timeLimit: 120,
       type: 'dashboard_triage',
       title: 'Legacy Code Archaeology',
       taskDescription: 'A 900-line payment function occasionally doubles charges. Find the bug without documentation or AI assistance.',
@@ -2248,6 +2255,11 @@ HINT: The gateway sometimes responds AFTER the timeout window.`,
       variation_id: 'sim3_intro_v1'
     }],
     simulation: {
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'rohan_prod_phase3',
+      timeLimit: 90,
+      successThreshold: 85,
       type: 'dashboard_triage',
       title: 'Production Debugging: The Distributed Mystery',
       taskDescription: 'API response time degraded from 200ms to 847ms. Four services, all claiming innocence. Find the bottleneck.',

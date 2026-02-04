@@ -2301,6 +2301,9 @@ export const quinnDialogueNodes: DialogueNode[] = [
       variation_id: 'sim1_intro_v1'
     }],
     simulation: {
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'quinn_budget_phase1',
       type: 'dashboard_triage',
       title: 'Financial Literacy: The 50/30/20 Rule',
       taskDescription: 'Jasmine earns $42K ($2,625/month after tax). Categorize her expenses using the 50/30/20 rule: 50% needs, 30% wants, 20% savings.',
@@ -2425,6 +2428,10 @@ TARGET: 50% needs ($1,312) | 30% wants ($787) | 20% savings ($525)`,
       variation_id: 'sim2_intro_v1'
     }],
     simulation: {
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'quinn_portfolio_phase2',
+      timeLimit: 120,
       type: 'dashboard_triage',
       title: 'Portfolio Allocation',
       taskDescription: 'Allocate $10,000 across asset classes. Balance growth potential vs risk for a 30-year horizon.',
@@ -2571,6 +2578,11 @@ CLASSIC ALLOCATION (Age 28):
       variation_id: 'sim3_intro_v1'
     }],
     simulation: {
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'quinn_ethics_phase3',
+      timeLimit: 90,
+      successThreshold: 85,
       type: 'chat_negotiation',
       title: 'Values vs Returns: The Ethical Investor',
       taskDescription: 'A defense contractor offers 18% returns for a youth education nonprofit. High returns fund scholarships. But the source conflicts with values. What do you do?',

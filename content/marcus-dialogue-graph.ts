@@ -642,6 +642,9 @@ const nodes: DialogueNode[] = [
       type: 'dashboard_triage',
       title: 'Workflow Orchestration',
       taskDescription: 'The notification stream is overwhelming human capacity. Design an automated triage flow that prioritizes urgency without losing the personal touch.',
+      phase: 1,
+      difficulty: 'introduction',
+      variantId: 'marcus_workflow_phase1',
       initialContext: {
         label: 'System Logs',
         content: `INCOMING: "My appointment was cancelled!" [URGENT]
@@ -1000,6 +1003,10 @@ WARNING: Response time > 48h`,
       type: 'code_refactor',
       title: 'Architectural Refactor',
       taskDescription: 'The "User" service has become a "God Object" handling too many responsibilities. Plan a refactor to separate concerns using AI.',
+      phase: 2,
+      difficulty: 'application',
+      variantId: 'marcus_refactor_phase2',
+      timeLimit: 120,
       initialContext: {
         label: 'UserService.ts',
         content: '// 4000 lines of mixed auth, database, and notification logic',
@@ -2879,6 +2886,11 @@ WARNING: Response time > 48h`,
       type: 'dashboard_triage',
       title: 'Mass Casualty Response: Sector 7',
       taskDescription: 'A reactor breach has occurred. Casualties are flooding the system. Triage incoming reports to maximize survival. CRITICAL: prioritize life-threatening injuries over structural damage.',
+      phase: 3,
+      difficulty: 'mastery',
+      variantId: 'marcus_crisis_phase3',
+      timeLimit: 60,
+      successThreshold: 90,
       initialContext: {
         items: [
           { id: '1', label: 'Hull Breach - Sector 7G', value: 95, priority: 'critical', trend: 'down' },

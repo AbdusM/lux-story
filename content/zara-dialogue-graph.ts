@@ -87,6 +87,9 @@ export const zaraDialogueNodes: DialogueNode[] = [
             interaction: 'ripple'
         }],
         simulation: {
+            phase: 1,
+            difficulty: 'introduction',
+            variantId: 'zara_audit_phase1',
             type: 'data_audit',
             mode: 'inline',
             inlineHeight: 'h-60',
@@ -274,6 +277,10 @@ export const zaraDialogueNodes: DialogueNode[] = [
             }
         ],
         simulation: {
+            phase: 2,
+            difficulty: 'application',
+            variantId: 'zara_logistics_phase2',
+            timeLimit: 120,
             type: 'data_analysis',
             title: 'Dataset Audit: Logistics Beta',
             taskDescription: 'The "Efficiency AI" is unfairly penalizing drivers. Identify the hidden variable in the dataset designed to filter "slackers".',
@@ -849,6 +856,11 @@ export const zaraDialogueNodes: DialogueNode[] = [
             }
         ],
         simulation: {
+            phase: 3,
+            difficulty: 'mastery',
+            variantId: 'zara_recruitment_phase3',
+            timeLimit: 90,
+            successThreshold: 85,
             type: 'dashboard_triage', // Using dashboard for analysis/triage of data points
             title: 'Audit: Recruitment Neural Net',
             taskDescription: 'The "Cultural Fit" model is rejecting viable candidates. Analyze the rejection signals. Identify the discriminatory variable hiding in the noise.',
