@@ -1,429 +1,500 @@
-# Deepening Implementation Plan
+# Deepening Implementation Plan (v2 - Verified)
 
 **Status:** 🔵 READY FOR IMPLEMENTATION
 **Created:** 2026-02-04
+**Last Updated:** 2026-02-04 (Post-Audit)
 **Author:** Claude Code Analysis
 
 ---
 
 ## Executive Summary
 
-Post-ranking system completion audit identified **4 major areas** for deepening:
+Deep audit with blindspot verification identified **4 major areas** for improvement:
 
-| Area | Items | Priority | Impact |
-|------|-------|----------|--------|
-| Dormant Capabilities | 6 systems | P1-P2 | HIGH - Already built, needs surfacing |
-| Technical Debt | 10 items | P0-P2 | MEDIUM - Stability/maintainability |
-| Skipped Tests | 41 tests | P1 | HIGH - Quality assurance |
-| Feature Backlog | 8 features | P2-P3 | MEDIUM - Enhancement |
+| Area | Items | Priority | Actual Status |
+|------|-------|----------|---------------|
+| Dormant Capabilities | 4 systems (not 6) | P1-P2 | Some already surfaced |
+| Technical Debt | 8 items (2 resolved) | P1-P2 | TD-001, TD-010 DONE |
+| Skipped Tests | ~25 actionable | P1 | Many intentional |
+| Code Cleanup | 4 items | P2-P3 | Orphaned code found |
 
-**Key Finding:** Several systems are fully implemented but never surfaced to users. These represent the highest-value quick wins.
+### Key Corrections from Audit:
+- ✅ **Identity System** is FULLY ACTIVE (IdentityCeremony.tsx renders)
+- ✅ **Birmingham Opportunities** has OpportunitiesView.tsx (18 records, not 50+)
+- ✅ **TD-001** (Dual State) RESOLVED via commitGameState abstraction
+- ✅ **TD-010** (God Mode) RESOLVED via authorization gates
+- ✅ **Simulations** now 20/20 (100%) complete
+- ✅ **PRD Ranking System** ALL 12 PHASES fully implemented
 
 ---
 
-## 1. DORMANT CAPABILITIES (Highest ROI)
+## 1. DORMANT CAPABILITIES (Verified Status)
 
-Systems that are **built and tested** but never activated in the UI.
+### 1.1 ✅ ALREADY ACTIVE - Identity Offering System
+**Status:** FULLY IMPLEMENTED AND SURFACED
 
-### 1.1 Chemistry/Biology System (~2 hrs to surface)
+**Evidence:**
+- `lib/identity-system.ts` (258 lines) - Complete mechanics
+- `components/IdentityCeremony.tsx` - Renders ceremony UI
+- Triggers at pattern level 5, player can internalize (+20% bonus) or discard
 
-**Location:** `lib/chemistry-derivatives.ts`, `lib/biology-derivatives.ts`
+**Action:** None needed - working as designed
 
-**What's Built:**
-- Nervous system state tracking (ventral_vagal/sympathetic/dorsal_vagal)
-- Chemical reactions (resonance, cold_fusion, volatility, deep_rooting, shutdown)
-- Narrative gravity affecting choice ordering
+---
+
+### 1.2 ✅ PARTIALLY ACTIVE - Birmingham Opportunities
+**Status:** UI EXISTS, may need visibility improvements
+
+**Evidence:**
+- `content/birmingham-opportunities.ts` (591 lines, 18 records - NOT 50+)
+- `components/journal/OpportunitiesView.tsx` - Already renders in Journal
+
+**Correction:** Documentation claimed "50+ records" but only 18 exist.
+
+**Action:**
+- Verify OpportunitiesView is accessible in Journal tabs
+- Consider adding more opportunities if stakeholders need them
+- **Effort:** SMALL (verification only)
+
+---
+
+### 1.3 ⚠️ TRULY DORMANT - Mystery Progression System
+**Status:** State machine defined, NO TRIGGERS
+
+**Evidence:**
+- `lib/character-state.ts` lines 61-68 - MysteryState interface
+- 4 branches: letterSender, platformSeven, samuelsPast, stationNature
+- `GameState.mysteries` field serializes correctly
+- **BUT:** No dialogue node triggers mystery state changes
+
+**What's Missing:**
+- Dialogue choices that call `mysteryChanges` in StateChange
+- UI to display mystery progress
+- Clue discovery mechanics wired to content
+
+**Action:**
+1. Wire mystery triggers to Samuel/location dialogue nodes
+2. Add "Mysteries" section to Journal
+3. Create clue discovery feedback UI
+
+**Effort:** MEDIUM (4-8 hours)
+**Impact:** HIGH - Adds replayability and narrative depth
+
+---
+
+### 1.4 ⚠️ TRULY DORMANT - Chemistry/Biology Display
+**Status:** COMPUTED, NEVER DISPLAYED
+
+**Evidence:**
+- `lib/chemistry.ts` (83 lines) - calculateReaction() works
+- `lib/emotions.ts` lines 717-804 - Nervous system computed
+- `GameState.lastReaction` stores chemical reactions
+- `GameState.nervousSystemState` tracks ventral_vagal/sympathetic/dorsal_vagal
 
 **What's Missing:**
 - UI visualization of nervous system state
 - Chemical reaction indicators during gameplay
-- Player feedback on emotional/biological state
 
-**Implementation:**
-```typescript
-// Add to Journal or floating indicator
-interface BiologyIndicator {
-  nervousState: 'calm' | 'activated' | 'shutdown'
-  lastReaction: ChemicalReaction
-  narrativeGravity: number
-}
-```
+**Action:**
+1. Add BiologyIndicator component to game interface
+2. Show nervous state transitions during emotional moments
 
 **Effort:** SMALL (2-4 hours)
-**Impact:** HIGH - Adds depth perception without new mechanics
+**Impact:** MEDIUM - Adds depth perception
 
 ---
 
-### 1.2 Birmingham Opportunities Database (~8 hrs)
+### 1.5 ⚠️ TRULY DORMANT - Career Values Display
+**Status:** COMPUTED, NEVER DISPLAYED
 
-**Location:** `lib/birmingham-opportunities.ts`
+**Evidence:**
+- `lib/character-state.ts` lines 52-58 - CareerValues interface
+- 5 values: directImpact, systemsThinking, dataInsights, futureBuilding, independence
+- Tracked in `GameState.careerValues`
+- Referenced in career analytics but not rendered
 
-**What's Built:**
-- 50+ local opportunities (job shadowing, internships, mentorships, volunteer, courses)
-- Organizations: UAB, Children's Hospital, Southern Company, Regions Bank
-- `getPersonalizedOpportunities(patterns, skills)` function - never called
-
-**What's Missing:**
-- UI tab in Journal or Student Insights
-- Pattern/skill-based filtering display
-- Links to application processes
-
-**Implementation:**
-1. Add "Opportunities" tab to Journal (`components/Journal.tsx`)
-2. Call `getPersonalizedOpportunities()` with player state
-3. Display matched opportunities with organization details
-
-**Effort:** MEDIUM (6-10 hours)
-**Impact:** HIGH - Direct B2B value for Birmingham stakeholders
-
----
-
-### 1.3 Mystery Progression System (~4 hrs)
-
-**Location:** `lib/mystery-progression.ts`
-
-**What's Built:**
-- 4 mystery branches: letterSender, platformSeven, samuelsPast, stationNature
-- Full state machine with progression stages
-- Clue discovery mechanics
-
-**What's Missing:**
-- UI for mystery tracking
-- Dialogue triggers that advance mysteries
-- Player-facing mystery status
-
-**Implementation:**
-1. Add "Mysteries" section to Journal
-2. Wire clue discoveries to dialogue choices
-3. Add visual indicators when new clues available
-
-**Effort:** MEDIUM (4-8 hours)
-**Impact:** MEDIUM - Adds replayability and narrative depth
-
----
-
-### 1.4 Career Values System (~3 hrs)
-
-**Location:** `lib/career-values.ts`
-
-**What's Built:**
-- 5 values tracked: directImpact, systemsThinking, dataInsights, futureBuilding, independence
-- Career affinity matching to 8 career paths
-- Computed from player choices
-
-**What's Missing:**
-- Visualization in Journal
-- Career recommendations based on values
-- Connection to character interactions
-
-**Implementation:**
+**Action:**
 1. Add "Your Values" visualization to Journal
-2. Show career path affinities
-3. Connect to existing career mapping UI
+2. Connect to career recommendations
 
 **Effort:** SMALL (2-4 hours)
-**Impact:** MEDIUM - Enhances career exploration feedback
+**Impact:** MEDIUM - Enhances career feedback
 
 ---
 
-### 1.5 Identity Offering System (~6 hrs)
+### 1.6 ⚠️ PARTIALLY DORMANT - Platform Evolution
+**Status:** ENGINE COMPLETE, STATE NEVER MODIFIED
 
-**Location:** `lib/identity-system.ts`
+**Evidence:**
+- `lib/platform-resonance.ts` (576 lines) - Full engine
+- 6 platforms with warmth (-5 to 5) and resonance (0-10)
+- `updatePlatformResonance()` exists but state never changes
+- NOT rendered in UI
 
-**What's Built:**
-- Disco Elysium-style identity internalization
-- When pattern crosses threshold 5: offer identity choice
-- Internalize for +20% bonus OR discard for flexibility
-- Full mechanics defined
-
-**What's Missing:**
-- UI modal for identity offering
-- Integration with pattern crossing detection
-- Visual feedback on internalized identities
-
-**Implementation:**
-1. Create `IdentityOfferingModal` component
-2. Hook into pattern change detection
-3. Display internalized identities in Journal
-
-**Effort:** MEDIUM (4-8 hours)
-**Impact:** HIGH - Meaningful player choice and differentiation
-
----
-
-### 1.6 Platform Evolution System (~4 hrs)
-
-**Location:** `lib/platform-state.ts`
-
-**What's Built:**
-- Platform warmth (-5 to 5) per platform
-- Platform resonance (0-10) per platform
-- `queuePlatformStateSync()` function
-
-**What's Missing:**
-- State never actually modified
-- Visual platform differences based on state
-- Player actions that affect platforms
-
-**Implementation:**
+**Action:**
 1. Wire platform state changes to player actions
 2. Add visual indicators in Constellation view
-3. Affect available characters/paths based on platform state
 
 **Effort:** MEDIUM (4-6 hours)
-**Impact:** MEDIUM - Environmental feedback loop
+**Impact:** MEDIUM - Environmental feedback
 
 ---
 
-## 2. TECHNICAL DEBT (Stability)
+### 1.7 ⚠️ PARTIAL - Pattern-Character Affinity
+**Status:** Only Maya fully configured
 
-### P0: Pre-Release (Required)
+**Evidence:**
+- `lib/pattern-affinity.ts` - CHARACTER_PATTERN_AFFINITIES
+- Maya: complete (building +50%, analytical +25%, helping -25%)
+- **10 other characters missing affinity data**
 
-| ID | Issue | Resolution | Effort |
-|----|-------|------------|--------|
-| **TD-010** | God Mode in production | Gate behind `NODE_ENV === 'development'` | 30 min |
+**Action:**
+1. Define affinity bonuses for remaining 19 characters
+2. Each character needs pattern bonuses/penalties
 
-### P1: High Priority (Within 2 weeks)
-
-| ID | Issue | Resolution | Effort |
-|----|-------|------------|--------|
-| **TD-001** | Dual state (Zustand + React useState) | Eliminate useState for game state | 3-4 days |
-| **TD-002** | No immutability enforcement | Add Immer or Object.freeze in dev | 1 day |
-| **TD-003** | Scoped eslint-disable in SGI | Extract logic into smaller modules | 2-3 days |
-
-### P2: Medium Priority (Within 1 month)
-
-| ID | Issue | Resolution | Effort |
-|----|-------|------------|--------|
-| **TD-004** | Orbs outside GameState | Merge orb state into coreGameState | 1 day |
-| **TD-005** | Fragmented localStorage namespace | Consolidate under `lux_story_v2_*` | 2 days |
-| **TD-006** | Multi-tab corruption risk | Add StorageEvent listener | 4 hrs |
-| **TD-007** | Non-deterministic randomness | Replace with seeded PRNG | 4 hrs |
-
-### P3: Low Priority (Backlog)
-
-| ID | Issue | Resolution | Effort |
-|----|-------|------------|--------|
-| **TD-008** | Legacy type casts in skill-zustand-bridge | Type skills interface properly | 2 hrs |
-| **TD-009** | initializeGame empty dependencies | Extract into custom hook | 2 hrs |
+**Effort:** MEDIUM (2-4 hours for data entry)
+**Impact:** HIGH - Affects trust calculations
 
 ---
 
-## 3. SKIPPED TESTS (Quality Assurance)
+## 2. TECHNICAL DEBT (Verified Status)
 
-41 tests currently skipped across 12 files. Priority order:
+### ✅ RESOLVED Items
 
-### 3.1 Journey Summary (10 tests) - P1
+| ID | Issue | Status | Evidence |
+|----|-------|--------|----------|
+| **TD-001** | Dual State (Zustand + React) | **RESOLVED** | commitGameState abstraction, 5 commits |
+| **TD-010** | God Mode in Production | **RESOLVED** | Gated behind authorization + lazy-loaded |
+
+### ⚠️ OUTSTANDING Items
+
+| ID | Issue | Status | Effort | Priority |
+|----|-------|--------|--------|----------|
+| **TD-002** | No Immutability Enforcement | Convention only | 1 day | P1 |
+| **TD-003** | ESLint disables in SGI | 4 file-level suppressions | 2-3 days | P2 |
+| **TD-004** | Orbs Outside GameState | By design (cosmetic) | 1 day | P3 |
+| **TD-005** | Fragmented localStorage | 10+ key families | 2 days | P2 |
+| **TD-006** | Multi-Tab Corruption | No StorageEvent listener | 4 hrs | P2 |
+| **TD-007** | Non-Deterministic Randomness | 11+ Math.random() locations | 4 hrs | P2 |
+| **TD-008** | Legacy Type Casts | 3 locations in skill bridge | 2 hrs | P3 |
+| **TD-009** | initializeGame Dependencies | Intentional disable, documented | N/A | Mitigated |
+
+### Priority Actions:
+
+**P1 (This Week):**
+- TD-002: Add Immer or Object.freeze in dev builds
+
+**P2 (This Sprint):**
+- TD-006: Add StorageEvent listener for multi-tab safety
+- TD-007: Replace Math.random() with seeded PRNG in gameplay code
+
+**P3 (Backlog):**
+- TD-003: SGI eslint cleanup (large refactor)
+- TD-004/005: localStorage consolidation (migration needed)
+
+---
+
+## 3. SKIPPED TESTS (Verified Analysis)
+
+### Summary
+- **Total Skipped:** ~43 tests
+- **Intentional/Defensive:** ~18 tests (working as designed)
+- **Actionable:** ~25 tests
+
+### 3.1 🔴 HIGH PRIORITY - Journey Summary (10 tests)
 
 **File:** `tests/e2e/journey-summary.spec.ts`
 
-**Tests to Enable:**
-- Journey button appears when complete
-- Modal opens/closes
-- Keyboard navigation
-- All sections visible
-- Stats display
-- Navigation dots
-- Relationship reflections
-- Pattern profile
+**Root Cause:** Complex state seeding - tests need completed journey state
 
-**Blocker:** Journey Summary UI may not be fully wired
+**Action:** Create `seedCompletedGameState()` fixture helper
 
-**Action:** Verify UI completion, then unskip tests
+**Effort:** 2-3 hours
 
 ---
 
-### 3.2 Admin Dashboard (6 tests) - P2
+### 3.2 🔴 HIGH PRIORITY - Admin Auth (10+ tests)
 
-**File:** `tests/e2e/admin/`
+**File:** `tests/e2e/admin/admin-auth.spec.ts`
 
-**Tests to Enable:**
-- Admin authentication
-- Dashboard navigation
-- Student detail pages
+**Root Cause:** Auth mechanism refactored from password-based to role-based
 
-**Blocker:** Admin features may be in development
+**Action:** Rewrite tests for new auth flow (TODO documented in code)
 
-**Action:** Coordinate with admin feature completion
+**Effort:** 2-3 hours
 
 ---
 
-### 3.3 Constellation Mobile (9 tests) - P1
+### 3.3 🟡 MEDIUM PRIORITY - God Mode Test Environment (1 test)
 
-**File:** `tests/e2e/constellation/mobile.spec.ts`
+**File:** `tests/e2e/simulations/simulation-smoke.spec.ts`
 
-**Tests to Enable:**
-- Touch interactions
-- Pan/zoom gestures
-- Node selection on mobile
-- Responsive layout
+**Root Cause:** NODE_ENV check may not work in Playwright context
 
-**Action:** Run tests, identify specific failures
+**Action:** Debug environment variable detection in test runner
+
+**Effort:** 1-2 hours
 
 ---
 
-### 3.4 Other Skipped Tests (16 tests) - P2
+### 3.4 🟡 MEDIUM PRIORITY - Content Spoiler Detection (4 tests)
 
-| Area | Count | Action |
-|------|-------|--------|
-| Ranking system | 5 | Review after ranking work |
-| Simulation smoke | 1 | Should pass now |
-| Trust derivatives | 1 | Verify test validity |
-| Final QA | 2 | Review scope |
-| Game engine | 1 | Browser runtime check |
+**File:** `tests/content-spoiler-detection.test.ts`
 
----
+**Root Cause:** Referenced files don't exist (AtmosphericIntro.tsx)
 
-## 4. FEATURE BACKLOG
+**Action:** Update file paths or remove obsolete checks
 
-### P2: Near-term Features
-
-| Feature | Description | Effort | Dependency |
-|---------|-------------|--------|------------|
-| **Time Scrubbing** | Timeline slider to revisit conversations | MEDIUM | Conversation history tracking |
-| **Constellation Smart Zoom** | Snap-to-node, auto-zoom on selection | SMALL | None |
-| **Evidence Schema** | B2B value capture for stakeholders | MEDIUM | Birmingham opportunities |
-| **Neural Deck Copy** | Haptic feedback on clipboard copy | SMALL | None |
-
-### P3: Stretch Features
-
-| Feature | Description | Effort | Risk |
-|---------|-------------|--------|------|
-| **Visual Cutscenes** | Orb handoff ceremony animation | MEDIUM | Animation complexity |
-| **Prism Mode** | Journal as navigable 3D world | HIGH | Major architectural decision |
-| **Movement/Spatial** | Physical exploration of station | HIGH | Requires design decision |
+**Effort:** 30 minutes
 
 ---
 
-## 5. IMPLEMENTATION PHASES
+### 3.5 ✅ NO ACTION NEEDED - Defensive Mobile Tests (~16 tests)
 
-### Phase 1: Quick Wins (Week 1)
+**Files:** constellation-mobile.spec.ts, ranking/*.spec.ts
 
-**Goal:** Surface dormant high-value systems
+**Status:** These use conditional `test.skip()` when UI elements unavailable
 
-| Task | Effort | Owner |
-|------|--------|-------|
-| TD-010: Gate God Mode | 30 min | Dev |
-| Surface Chemistry/Biology UI | 2-4 hrs | Dev |
-| Surface Career Values UI | 2-4 hrs | Dev |
-| Run skipped simulation test | 30 min | Dev |
+**Finding:** Working as designed - graceful degradation, not bugs
+
+---
+
+## 4. CODE CLEANUP (New Findings)
+
+### 4.1 Unused Hook: `useVirtualScrolling`
+
+**Location:** `/hooks/useVirtualScrolling.ts` (119 lines)
+
+**Status:** 0 imports found in codebase
+
+**Action:**
+- Document intended use case, OR
+- Delete if virtual scrolling no longer needed
+
+**Effort:** 15 minutes
+
+---
+
+### 4.2 Orphaned File: `reciprocity-engine-v2.ts`
+
+**Location:** `/content/reciprocity-engine-v2.ts` (~200 lines)
+
+**Status:** Zero imports, appears to be design exploration
+
+**Action:**
+- Check if superseded by current dialogue system
+- Archive or delete
+
+**Effort:** 30 minutes investigation
+
+---
+
+### 4.3 STUB Nodes in New Characters
+
+**Location:** Nadia, Quinn, Isaiah dialogue graphs
+
+**Status:** Multiple "STUB NODES" marked with incomplete navigation
+
+**Action:**
+- Run dialogue graph validation tests
+- Verify nextNodeId references are valid
+
+**Effort:** 1 hour verification
+
+---
+
+### 4.4 Test Coverage Gap
+
+**Finding:** 104 files in `/lib/` have NO corresponding test files
+
+**High Priority Missing Tests:**
+| Module | Lines | Criticality |
+|--------|-------|-------------|
+| `2030-skills-system.ts` | 788 | HIGH |
+| `character-relationships.ts` | 1620 | HIGH |
+| `character-transformations.ts` | ~400 | MEDIUM |
+
+**Action:** Add unit tests for core systems
+
+**Effort:** 1-2 days for high-priority files
+
+---
+
+## 5. WHAT'S ALREADY COMPLETE (No Action)
+
+### Ranking System - FULLY IMPLEMENTED ✅
+- All 12 PRD phases implemented
+- 269 exports, 6,637 lines in lib/ranking/
+- 8 badge components + RankingDashboard
+- 12 test files with 100+ test cases
+- 4 E2E test files
+
+### Simulations - 20/20 COMPLETE ✅
+- All 20 characters have 3-phase simulations
+- Phase 1 (trust 0-2), Phase 2 (trust 5+), Phase 3 (trust 8+)
+
+### Core Systems - 100% ✅
+- Interrupt Windows: 20/20
+- Vulnerability Arcs: 20/20
+- Consequence Echoes: 20/20
+- Loyalty Experiences: 20/20
+- Character Relationships: 68 edges
+
+---
+
+## 6. IMPLEMENTATION PHASES (Revised)
+
+### Phase 1: Quick Wins (2-3 days)
+
+| Task | Effort | Impact |
+|------|--------|--------|
+| Verify OpportunitiesView accessibility | 1 hr | Confirm B2B value visible |
+| Add Chemistry/Biology UI indicator | 2-4 hrs | Surface computed state |
+| Add Career Values visualization | 2-4 hrs | Enhance career feedback |
+| Delete/document useVirtualScrolling | 15 min | Code cleanup |
+| Verify STUB node navigation | 1 hr | Content integrity |
 
 **Deliverables:**
-- [ ] God Mode dev-only
-- [ ] Biology indicator in Journal
-- [ ] Career values visualization
-- [ ] 1 skipped test enabled
+- [ ] Biology indicator in game interface
+- [ ] Career values in Journal
+- [ ] Unused code documented/removed
 
 ---
 
-### Phase 2: Opportunity System (Week 2)
+### Phase 2: Mystery & Platform Systems (1 week)
 
-**Goal:** Activate Birmingham B2B value
-
-| Task | Effort | Owner |
-|------|--------|-------|
-| Birmingham Opportunities tab | 6-10 hrs | Dev |
-| Connect to pattern/skill matching | 2 hrs | Dev |
-| Unskip Journey Summary tests | 4 hrs | QA |
+| Task | Effort | Impact |
+|------|--------|--------|
+| Wire mystery triggers to dialogue | 4-6 hrs | Narrative depth |
+| Add Mysteries section to Journal | 2-4 hrs | Player visibility |
+| Wire platform state changes | 4-6 hrs | Environmental feedback |
+| Add platform visualization to Constellation | 2-4 hrs | Visual feedback |
 
 **Deliverables:**
-- [ ] Opportunities tab in Journal
-- [ ] Personalized opportunity matching
-- [ ] 10 Journey Summary tests passing
+- [ ] Mystery progression triggers work
+- [ ] Mysteries visible in Journal
+- [ ] Platform warmth affects visuals
 
 ---
 
-### Phase 3: Depth Systems (Week 3)
+### Phase 3: Test Coverage (1 week)
 
-**Goal:** Activate mystery and identity systems
-
-| Task | Effort | Owner |
-|------|--------|-------|
-| Mystery Progression UI | 4-8 hrs | Dev |
-| Identity Offering Modal | 4-8 hrs | Dev |
-| Platform Evolution wiring | 4-6 hrs | Dev |
-| Unskip Constellation mobile tests | 4 hrs | QA |
+| Task | Effort | Impact |
+|------|--------|--------|
+| Create seedCompletedGameState() fixture | 2 hrs | Enable Journey tests |
+| Enable 10 Journey Summary tests | 2 hrs | Feature coverage |
+| Rewrite Admin auth tests | 2-3 hrs | Admin coverage |
+| Add tests for 2030-skills-system.ts | 4-6 hrs | Core system coverage |
+| Add tests for character-relationships.ts | 4-6 hrs | Graph integrity |
 
 **Deliverables:**
-- [ ] Mysteries section in Journal
-- [ ] Identity offering on pattern threshold
-- [ ] Platform state visible in Constellation
-- [ ] 9 mobile tests passing
+- [ ] 20+ previously skipped tests enabled
+- [ ] Core lib files have test coverage
 
 ---
 
-### Phase 4: Technical Debt (Week 4)
+### Phase 4: Technical Debt (1 week)
 
-**Goal:** Stability improvements
-
-| Task | Effort | Owner |
-|------|--------|-------|
-| TD-001: Eliminate dual state | 3-4 days | Dev |
-| TD-002: Add immutability | 1 day | Dev |
-| TD-006: Multi-tab safety | 4 hrs | Dev |
+| Task | Effort | Impact |
+|------|--------|--------|
+| TD-002: Add Immer/Object.freeze | 1 day | Mutation safety |
+| TD-006: Add StorageEvent listener | 4 hrs | Multi-tab safety |
+| TD-007: Seeded PRNG for gameplay | 4 hrs | Deterministic testing |
+| Define pattern affinity for 19 chars | 2-4 hrs | Trust calculations |
 
 **Deliverables:**
-- [ ] Single source of truth (Zustand only)
-- [ ] Immutable state in dev mode
+- [ ] Immutability in dev mode
 - [ ] Multi-tab coordination
+- [ ] All characters have pattern affinities
 
 ---
 
-## 6. SUCCESS METRICS
+## 7. SUCCESS METRICS
 
-### Before Implementation
+### Current State (Feb 4, 2026)
 
-| Metric | Current |
-|--------|---------|
-| Dormant systems surfaced | 0/6 |
-| Technical debt resolved | 0/10 |
-| Skipped tests enabled | 0/41 |
-| Feature backlog complete | 0/8 |
+| Metric | Value |
+|--------|-------|
+| Dormant systems surfaced | 2/6 (Identity, Opportunities) |
+| Technical debt resolved | 2/10 (TD-001, TD-010) |
+| Skipped tests (actionable) | ~25 |
+| Test coverage (lib files) | ~25% |
+| Simulations complete | 20/20 (100%) ✅ |
+| Ranking PRD implemented | 12/12 (100%) ✅ |
 
-### After Phase 4
+### Target After Phase 4
 
 | Metric | Target |
 |--------|--------|
 | Dormant systems surfaced | 6/6 (100%) |
 | Technical debt resolved | 5/10 (50%) |
-| Skipped tests enabled | 20/41 (50%) |
-| Feature backlog complete | 2/8 (25%) |
+| Skipped tests enabled | 15/25 (60%) |
+| Test coverage (priority files) | +3 core files |
 
 ---
 
-## 7. RISKS & MITIGATIONS
+## 8. RISKS & MITIGATIONS
 
 | Risk | Probability | Impact | Mitigation |
 |------|-------------|--------|------------|
-| Dormant systems have bugs | MEDIUM | LOW | Incremental activation with testing |
-| TD-001 breaks game state | HIGH | HIGH | Feature flag, parallel testing |
-| Skipped tests reveal bugs | MEDIUM | MEDIUM | Fix bugs before enabling tests |
-| Birmingham data outdated | LOW | MEDIUM | Verify with stakeholders |
+| Mystery triggers break dialogue flow | MEDIUM | MEDIUM | Test in isolation first |
+| Pattern affinity data unbalanced | LOW | LOW | Review with game design |
+| Multi-tab fix causes race conditions | LOW | HIGH | Feature flag for rollback |
 
 ---
 
-## 8. DEFINITION OF DONE
+## 9. DEFINITION OF DONE
 
 **Phase 1 Complete When:**
-- [ ] All quick win tasks merged to main
-- [ ] No new test failures
-- [ ] Biology/Career visible in Journal
+- [ ] Chemistry/Biology UI visible during gameplay
+- [ ] Career values shown in Journal
+- [ ] No unused hooks remaining
+- [ ] STUB nodes verified or fixed
 
 **Phase 2 Complete When:**
-- [ ] Opportunities tab functional
-- [ ] Journey Summary tests passing
-- [ ] B2B demo ready for stakeholders
+- [ ] Player can discover and track mysteries
+- [ ] Platform warmth visually indicated
+- [ ] At least 1 mystery branch progressible
 
 **Phase 3 Complete When:**
-- [ ] All 6 dormant systems surfaced
-- [ ] Mobile tests passing
-- [ ] Identity offering triggers correctly
+- [ ] Journey Summary tests passing
+- [ ] Admin auth tests rewritten
+- [ ] 2030-skills-system.ts has test coverage
 
 **Phase 4 Complete When:**
-- [ ] Zustand is sole game state source
-- [ ] Dev mode has immutability checks
+- [ ] Dev mode has Object.freeze protection
 - [ ] Multi-tab doesn't corrupt state
+- [ ] All 20 characters have pattern affinities
 
 ---
 
-**Next Action:** Begin Phase 1 Quick Wins - Gate God Mode and surface Chemistry/Biology UI.
+## Appendix: Files Referenced
+
+### Dormant Systems
+- `lib/chemistry.ts` (83 lines)
+- `lib/emotions.ts` lines 717-804
+- `lib/character-state.ts` lines 52-68
+- `lib/platform-resonance.ts` (576 lines)
+- `lib/identity-system.ts` (258 lines) ✅ ACTIVE
+- `content/birmingham-opportunities.ts` (591 lines, 18 records)
+- `components/journal/OpportunitiesView.tsx` ✅ EXISTS
+- `components/IdentityCeremony.tsx` ✅ ACTIVE
+
+### Technical Debt
+- `components/StatefulGameInterface.tsx` - TD-001 resolved, TD-003 pending
+- `lib/game-store.ts` - commitGameState abstraction
+- `lib/dev-tools/god-mode-api.ts` - TD-010 resolved
+- `lib/skill-zustand-bridge.ts` - TD-008 pending
+
+### Code Cleanup
+- `hooks/useVirtualScrolling.ts` - Unused
+- `content/reciprocity-engine-v2.ts` - Orphaned
+- `content/{nadia,quinn,isaiah}-dialogue-graph.ts` - STUB nodes
+
+### Missing Tests
+- `lib/2030-skills-system.ts` (788 lines)
+- `lib/character-relationships.ts` (1620 lines)
+
+---
+
+**Next Action:** Begin Phase 1 Quick Wins - Surface Chemistry/Biology UI and verify existing features.
