@@ -23,6 +23,7 @@ import { SimulationGodView } from "./journal/SimulationGodView"
 import { OpportunitiesView } from "./journal/OpportunitiesView"
 import { SynthesisPuzzlesView } from "./journal/SynthesisPuzzlesView"
 import { CareerRecommendationsView } from "./journal/CareerRecommendationsView"
+import { CareerValuesView } from "./journal/CareerValuesView"
 import { SkillCombosView } from "./journal/SkillCombosView"
 import { RankingView } from "./journal/RankingView"
 import { OrbDetailPanel } from "./OrbDetailPanel"
@@ -360,7 +361,15 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                     {activeTab === 'cognition' && <CognitionView />}
                     {activeTab === 'analysis' && <NarrativeAnalysisDisplay />}
                     {activeTab === 'opportunities' && <OpportunitiesView />}
-                    {activeTab === 'careers' && <CareerRecommendationsView />}
+                    {activeTab === 'careers' && (
+                      <div className="space-y-6">
+                        <div className="p-4 border-b border-white/5">
+                          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Your Values</h3>
+                          <CareerValuesView />
+                        </div>
+                        <CareerRecommendationsView />
+                      </div>
+                    )}
                     {activeTab === 'combos' && <SkillCombosView />}
                     {activeTab === 'mysteries' && <SynthesisPuzzlesView />}
                     {activeTab === 'ranks' && <RankingView />}
