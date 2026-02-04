@@ -10,8 +10,8 @@
  * not a jarring quiz show experience.
  */
 
-import { DialogueNode } from '../lib/dialogue-graph'
-import { parentalWorkLegacy, unlimitedResources } from './player-questions'
+import { DialogueNode } from '../../lib/dialogue-graph'
+import { parentalWorkLegacy, unlimitedResources } from '../player-questions'
 
 // ============= MANDATE 1: GRACEFUL DECLINE PATH =============
 export const gracefulDeclineNodes: DialogueNode[] = [

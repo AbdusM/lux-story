@@ -32,6 +32,8 @@ import { ORB_TIERS } from "@/lib/orbs"
 import { CompactRankBadge } from "@/components/ranking/PatternRankBadge"
 import { useSimulations } from "@/hooks/useSimulations"
 import { useUserRole } from "@/hooks/useUserRole"
+import { useBiology } from "@/hooks/useBiology"
+import { BiologyIndicator } from "./BiologyIndicator"
 
 interface JournalProps {
   isOpen: boolean
@@ -77,6 +79,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const thoughts = useGameSelectors.useThoughts()
   const { availableCount: availableSimulations } = useSimulations()
   const { isEducator, loading: roleLoading } = useUserRole()
+  const { nervousState, lastReaction, isLoading: biologyLoading } = useBiology()
 
   // Tab badge indicators
   const hasNewPatterns = hasNewOrbs
@@ -215,6 +218,13 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
+                  {/* Biology Indicator - shows nervous system state */}
+                  {!biologyLoading && (
+                    <BiologyIndicator
+                      nervousState={nervousState}
+                      lastReaction={lastReaction}
+                    />
+                  )}
                   {/* Dominant Pattern Orb - shows player's current tendency */}
                   {insights?.decisionStyle?.primaryPattern && (
                     <PatternOrb
