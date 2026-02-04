@@ -72,6 +72,7 @@ import {
   runAllDerivativeProcessors,
   readLocalStorageSnapshot,
   buildChoiceUiPatch,
+  type UiPatchContext,
 } from '@/lib/choice-processors'
 import { resolveNode } from '@/hooks/game/useNarrativeNavigator'
 import { shouldShowInterrupt } from '@/lib/interrupt-visibility'
@@ -805,53 +806,50 @@ export function useChoiceHandler({
       }
 
       // TD-001: gameState removed from React state - now only in Zustand
-      setState({
-        currentNode: nextNode,
-        currentGraph: targetGraph,
-        currentCharacterId: targetCharacterId,
-        availableChoices: newChoices,
-        currentContent: reflected.text,
-        currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
+      // Phase 4B: UI patch built via pure function for maintainability
+      const activeInterrupt = shouldShowInterrupt(content.interrupt, newGameState.patterns)
+      const uiPatchCtx: UiPatchContext = {
+        // Navigation
+        nextNode,
+        targetGraph,
+        targetCharacterId,
+        // Content
+        newChoices,
+        reflectedText: reflected.text,
+        reflectedEmotion: reflected.emotion || content.emotion || 'neutral',
+        dialogueContent: content,
         useChatPacing: content.useChatPacing || false,
-        isLoading: false,
-        hasStarted: true,
-        selectedChoice: null,
-        showSaveConfirmation: false, // Disabled-save happens silently, no interruption
-        skillToast: null, // Disabled-skills tracked silently
+        // Feedback
         consequenceFeedback,
-        error: null,
-        previousSpeaker: state.currentNode?.speaker || null,
-        recentSkills: skillsToKeep,
-        activeExperience: state.activeExperience, // Added to fix build error
-        ...experienceSummaryUpdate,
-        showJournal: state.showJournal,
-        showConstellation: state.showConstellation,
-        pendingFloatingModule: null, // Floating modules disabled
-        showJourneySummary: state.showJourneySummary,
-        activeInterrupt: shouldShowInterrupt(content.interrupt, newGameState.patterns), // D-009: Filter by pattern
-        journeyNarrative: state.journeyNarrative,
+        consequenceEcho,
+        patternSensation,
+        patternShiftMsg,
+        // Session
+        sessionBoundary: sessionBoundaryAnnouncement,
+        previousTotalNodes: getTotalNodesVisited(newGameState),
+        // Identity
+        identityCeremonyPattern,
+        isJourneyCompleteNode,
+        dominantPattern,
+        // Trust
+        trustDelta,
+        // Skills
+        skillsToKeep,
+        // Pattern voice
+        patternVoice,
+        voiceConflict,
+        // Interrupts
+        activeInterrupt,
+        // Achievements
         achievementNotification,
-        ambientEvent: null,  // Clear ambient event when player acts
-        patternSensation: patternShiftMsg || patternSensation, // Prefer shift msg if shift happened
-        consequenceEcho,     // Dialogue-based trust feedback
-        sessionBoundary: sessionBoundaryAnnouncement,  // Session boundary announcement if triggered
-        previousTotalNodes: getTotalNodesVisited(newGameState),  // Track for next boundary check
-        showIdentityCeremony: identityCeremonyPattern !== null,  // Identity ceremony if triggered
-        ceremonyPattern: identityCeremonyPattern,  // Pattern being internalized
-        showPatternEnding: isJourneyCompleteNode,  // Pattern-based journey ending
-        endingPattern: dominantPattern,  // Dominant pattern for ending
-        hasNewTrust: trustDelta !== 0 ? true : state.hasNewTrust,  // Track trust changes for Constellation attention
-        hasNewMeeting: isFirstMeeting ? true : state.hasNewMeeting,  // Track first meeting for Constellation nudge
-        showReport: state.showReport,
-        isProcessing: false, // ISP FIX: Unlock UI
-        patternVoice,  // Disco Elysium-style inner monologue
-        voiceConflict,  // D-096: Voice conflict when patterns disagree
-        activeComboChain: state.activeComboChain,  // D-084: Preserve combo chain state
-        // Engagement Loop State (preserved across choice)
-        waitingCharacters: state.waitingCharacters,
+        // Gifts
         pendingGift,
-        isReturningPlayer: state.isReturningPlayer
-      })
+        // First meeting
+        isFirstMeeting,
+        // Previous state
+        previousState: state,
+      }
+      setState(buildChoiceUiPatch(uiPatchCtx))
       // COMMIT: Atomic persist to both Zustand and localStorage
       // TD-001: Single commitGameState call replaces the previous dual-write pattern
       commitGameState(newGameState, { reason: 'choice-complete' })
