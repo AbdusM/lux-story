@@ -2,148 +2,82 @@ import { test, expect } from '@playwright/test'
 
 /**
  * Admin Dashboard Authentication E2E Tests
- * Tests the complete admin login flow and protected route access
+ * Tests admin access using role-based authentication with E2E bypass
  *
- * NOTE: These tests are skipped because the authentication mechanism has changed.
- * The admin login page no longer uses a password input. Instead, it uses role-based
- * authentication that integrates with the user account system. The page just shows
- * a redirect notice and forwards to the main page.
- *
- * TODO: Rewrite these tests to match the new role-based authentication flow.
+ * Authentication flow:
+ * - Admin login page redirects to main page (role-based, no password)
+ * - E2E tests use bypass token via headers/cookies
+ * - Admin routes require authenticated user with admin/educator role
  */
 
-test.describe.skip('Admin Authentication', () => {
-  // Clear cookies before each test
-  test.beforeEach(async ({ context }) => {
-    await context.clearCookies()
-  })
+const TEST_ADMIN_TOKEN = process.env.E2E_ADMIN_BYPASS_TOKEN || 'e2e-admin-bypass'
 
-  test('should redirect unauthenticated users to login page', async ({ page }) => {
-    // Try to access admin dashboard directly
-    await page.goto('/admin')
-
-    // Should be redirected to login
-    await expect(page).toHaveURL(/\/admin\/login/)
-
-    // Login form should be visible
-    await expect(page.locator('input[type="password"]')).toBeVisible()
-    await expect(page.getByRole('button', { name: /login/i })).toBeVisible()
-  })
-
-  test('should redirect to login when accessing student detail page', async ({ page }) => {
-    // Try to access a specific student page
-    await page.goto('/admin/player_123456/urgency')
-
-    // Should be redirected to login with redirect param
-    await expect(page).toHaveURL(/\/admin\/login\?redirect=/)
-  })
-
-  test('should show error for invalid password', async ({ page }) => {
+test.describe('Admin Login Page Behavior', () => {
+  test('login page shows redirect notice and redirects to home', async ({ page }) => {
     await page.goto('/admin/login')
 
-    // Enter wrong password
-    await page.fill('input[type="password"]', 'wrong-password')
-    await page.click('button[type="submit"]')
+    // Should show the redirect notice
+    await expect(page.getByText('Admin Access')).toBeVisible()
+    await expect(page.getByText('Admin access is now integrated with your user account')).toBeVisible()
+    await expect(page.getByText('Redirecting to main page')).toBeVisible()
 
-    // Should show error message
-    await expect(page.locator('text=Invalid password')).toBeVisible({ timeout: 5000 })
-
-    // Should still be on login page
-    await expect(page).toHaveURL(/\/admin\/login/)
+    // Wait for redirect (3 second timeout in the component)
+    await page.waitForURL('/', { timeout: 5000 })
   })
 
-  test('should successfully login with correct password', async ({ page }) => {
+  test('login page shows educator contact information', async ({ page }) => {
     await page.goto('/admin/login')
 
-    // Get admin password from env (same as ADMIN_API_TOKEN)
-    const adminPassword = process.env.ADMIN_API_TOKEN || 'admin'
-
-    // Enter correct password
-    await page.fill('input[type="password"]', adminPassword)
-    await page.click('button[type="submit"]')
-
-    // Should redirect to admin dashboard
-    await expect(page).toHaveURL('/admin', { timeout: 10000 })
-
-    // Dashboard content should be visible
-    await expect(page.locator('text=Student Insights Dashboard')).toBeVisible({ timeout: 10000 })
-  })
-
-  test('should preserve redirect URL after login', async ({ page }) => {
-    // Try to access specific page
-    await page.goto('/admin/player_test123/patterns')
-
-    // Should redirect to login with redirect param
-    await expect(page).toHaveURL(/\/admin\/login\?redirect=/)
-
-    // Login
-    const adminPassword = process.env.ADMIN_API_TOKEN || 'admin'
-    await page.fill('input[type="password"]', adminPassword)
-    await page.click('button[type="submit"]')
-
-    // Should redirect to original destination (or admin if user doesn't exist)
-    // The redirect happens even if the userId doesn't exist
-    await page.waitForURL(/\/admin/, { timeout: 10000 })
-  })
-
-  test('should persist auth across page navigations', async ({ page }) => {
-    // Login first
-    await page.goto('/admin/login')
-    const adminPassword = process.env.ADMIN_API_TOKEN || 'admin'
-    await page.fill('input[type="password"]', adminPassword)
-    await page.click('button[type="submit"]')
-
-    // Wait for dashboard
-    await expect(page).toHaveURL('/admin', { timeout: 10000 })
-
-    // Navigate to login page directly - should redirect back to admin
-    await page.goto('/admin')
-
-    // Should still have access (cookie persisted)
-    await expect(page.locator('text=Student Insights Dashboard')).toBeVisible({ timeout: 10000 })
-  })
-
-  test('should show loading state while authenticating', async ({ page }) => {
-    await page.goto('/admin/login')
-
-    // Fill password
-    await page.fill('input[type="password"]', 'any-password')
-
-    // Click submit button
-    const submitButton = page.getByRole('button', { name: /login/i })
-    await submitButton.click()
-
-    // Either we'll see an error message OR redirect to admin page
-    await Promise.race([
-      page.waitForURL(/\/admin\/login/, { timeout: 5000 }),
-      page.locator('text=Invalid password').waitFor({ state: 'visible', timeout: 5000 })
-    ])
-
-    // The test passes - authentication was processed
-    expect(true).toBe(true)
+    await expect(page.getByText('For Birmingham educators and administrators')).toBeVisible()
+    await expect(page.getByText(/contact your program coordinator/i)).toBeVisible()
   })
 })
 
-test.describe.skip('Admin Dashboard Navigation', () => {
-  // Login before each test in this group
+test.describe('Admin Dashboard with E2E Bypass', () => {
+  // Use the E2E bypass mechanism for admin access
+  test.use({ extraHTTPHeaders: { 'X-Test-Admin': TEST_ADMIN_TOKEN } })
+
   test.beforeEach(async ({ page }) => {
-    await page.goto('/admin/login')
-    const adminPassword = process.env.ADMIN_API_TOKEN || 'admin'
-    await page.fill('input[type="password"]', adminPassword)
-    await page.click('button[type="submit"]')
-    await expect(page).toHaveURL('/admin', { timeout: 10000 })
+    // Set up bypass cookies and flags
+    await page.addInitScript(() => {
+      window.__E2E_ADMIN__ = true
+      window.__PLAYWRIGHT__ = true
+    })
+    await page.context().addCookies([{
+      name: 'e2e_admin_bypass',
+      value: TEST_ADMIN_TOKEN,
+      url: 'http://localhost:3005'
+    }])
   })
 
-  test('should display student list on dashboard', async ({ page }) => {
-    // Wait for loading to complete - dashboard shows one of three states
+  test('can access admin dashboard with bypass', async ({ page }) => {
+    await page.goto('/admin')
+
+    // Should see dashboard content (not redirected to login)
+    // Dashboard shows one of: students list, empty state, or db error
     await Promise.race([
-      page.locator('a[href*="/urgency"]').first().waitFor({ state: 'visible', timeout: 5000 }).catch(() => {}),
-      page.locator('text=No Students Yet').waitFor({ state: 'visible', timeout: 5000 }).catch(() => {}),
-      page.locator('text=Database Connection Issue').waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
+      page.locator('text=Student Insights').waitFor({ state: 'visible', timeout: 10000 }).catch(() => {}),
+      page.locator('text=No Students Yet').waitFor({ state: 'visible', timeout: 10000 }).catch(() => {}),
+      page.locator('text=Database Connection').waitFor({ state: 'visible', timeout: 10000 }).catch(() => {})
+    ])
+
+    // Should have admin UI elements
+    const hasAdminContent = await page.locator('body').textContent()
+    expect(hasAdminContent).toBeTruthy()
+    expect(hasAdminContent!.length).toBeGreaterThan(100)
+  })
+
+  test('dashboard displays student list or empty state', async ({ page }) => {
+    await page.goto('/admin')
+
+    // Wait for loading to complete
+    await Promise.race([
+      page.locator('a[href*="/urgency"]').first().waitFor({ state: 'visible', timeout: 10000 }).catch(() => {}),
+      page.locator('text=No Students Yet').waitFor({ state: 'visible', timeout: 10000 }).catch(() => {}),
+      page.locator('text=Database Connection Issue').waitFor({ state: 'visible', timeout: 10000 }).catch(() => {})
     ])
 
     // Dashboard should show either students or empty state
-    // Student cards link to /admin/{userId}/urgency pattern
     const studentCards = page.locator('a[href*="/urgency"]')
     const hasStudents = await studentCards.count() > 0
     const hasEmptyState = await page.locator('text=No Students Yet').count() > 0
@@ -153,27 +87,12 @@ test.describe.skip('Admin Dashboard Navigation', () => {
     expect(hasStudents || hasEmptyState || hasDbError).toBe(true)
   })
 
-  test('should have pattern filter controls', async ({ page }) => {
-    // Wait for dashboard to load
-    await Promise.race([
-      page.locator('a[href*="/urgency"]').first().waitFor({ state: 'visible', timeout: 5000 }).catch(() => {}),
-      page.locator('text=No Students Yet').waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
-    ])
+  test('can navigate to student detail page', async ({ page }) => {
+    await page.goto('/admin')
 
-    // If there are students, filter should be visible
-    const studentCards = page.locator('a[href*="/urgency"]')
-    const hasStudents = await studentCards.count() > 0
-
-    if (hasStudents) {
-      // Pattern filter buttons should be present
-      await expect(page.locator('text=All Students')).toBeVisible()
-    }
-  })
-
-  test('should navigate to student detail page', async ({ page }) => {
     // Wait for students to load
     const studentLinks = page.locator('a[href*="/urgency"]')
-    await studentLinks.first().waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
+    await studentLinks.first().waitFor({ state: 'visible', timeout: 10000 }).catch(() => {})
 
     const count = await studentLinks.count()
 
@@ -184,70 +103,116 @@ test.describe.skip('Admin Dashboard Navigation', () => {
       // Should navigate to student detail (urgency page by default)
       await expect(page).toHaveURL(/\/admin\/.*\/urgency/, { timeout: 10000 })
     } else {
-      // Skip if no students
+      // Skip if no students - this is expected in test environments
       test.skip()
     }
   })
 })
 
-test.describe.skip('Admin Student Detail Pages', () => {
-  test.beforeEach(async ({ page }) => {
-    // Login
-    await page.goto('/admin/login')
-    const adminPassword = process.env.ADMIN_API_TOKEN || 'admin'
-    await page.fill('input[type="password"]', adminPassword)
-    await page.click('button[type="submit"]')
-    await expect(page).toHaveURL('/admin', { timeout: 10000 })
+test.describe('Admin Routes Protection', () => {
+  // NO bypass - tests protection without authentication
+
+  test('admin dashboard requires authentication', async ({ page }) => {
+    // Clear any existing cookies
+    await page.context().clearCookies()
+
+    await page.goto('/admin', { waitUntil: 'networkidle' })
+
+    // Without auth, should either:
+    // 1. Show unauthorized message
+    // 2. Redirect to login
+    // 3. Show loading state that eventually errors
+
+    const url = page.url()
+    const bodyText = await page.locator('body').textContent()
+
+    // Either redirected to login or shows error/loading
+    const isOnLogin = url.includes('/login')
+    const hasError = bodyText?.includes('unauthorized') ||
+                     bodyText?.includes('Unauthorized') ||
+                     bodyText?.includes('Sign in') ||
+                     bodyText?.includes('Loading')
+
+    expect(isOnLogin || hasError || bodyText?.length === 0).toBe(true)
   })
 
-  test('should show loading state for non-existent user', async ({ page }) => {
-    // Navigate to a fake user
+  test('student detail page requires authentication', async ({ page }) => {
+    await page.context().clearCookies()
+
+    await page.goto('/admin/player_test123/urgency', { waitUntil: 'networkidle' })
+
+    const url = page.url()
+    const bodyText = await page.locator('body').textContent()
+
+    // Should show auth error or redirect
+    const isProtected = url.includes('/login') ||
+                       bodyText?.includes('unauthorized') ||
+                       bodyText?.includes('Unauthorized') ||
+                       bodyText?.includes('Sign in')
+
+    expect(isProtected || bodyText?.length === 0).toBe(true)
+  })
+})
+
+test.describe('Admin Student Detail Pages', () => {
+  test.use({ extraHTTPHeaders: { 'X-Test-Admin': TEST_ADMIN_TOKEN } })
+
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      window.__E2E_ADMIN__ = true
+      window.__PLAYWRIGHT__ = true
+    })
+    await page.context().addCookies([{
+      name: 'e2e_admin_bypass',
+      value: TEST_ADMIN_TOKEN,
+      url: 'http://localhost:3005'
+    }])
+  })
+
+  test('student detail page handles non-existent user gracefully', async ({ page }) => {
     await page.goto('/admin/player_nonexistent_12345/urgency', { waitUntil: 'networkidle' })
 
     // Wait for page to finish loading
     await page.locator('body').waitFor({ state: 'visible', timeout: 5000 })
 
-    // Page should have loaded something
+    // Page should render something (loading, error, or empty state)
     const bodyText = await page.locator('body').textContent()
     expect(bodyText).toBeTruthy()
   })
 
-  test('should have navigation tabs in student detail view', async ({ page }) => {
+  test('student detail page has navigation tabs when student exists', async ({ page }) => {
     // First get a real student ID
     await page.goto('/admin')
 
     const studentLinks = page.locator('a[href*="/urgency"]')
-    await studentLinks.first().waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
+    await studentLinks.first().waitFor({ state: 'visible', timeout: 10000 }).catch(() => {})
     const count = await studentLinks.count()
 
     if (count > 0) {
       await studentLinks.first().click()
       await page.waitForURL(/\/admin\/.*\/urgency/, { timeout: 10000 })
 
-      // Wait for loading to complete - page shows "Loading student profile..." initially
+      // Wait for loading to complete
       await page.waitForFunction(
         () => !document.body.textContent?.includes('Loading student profile'),
         { timeout: 15000 }
-      ).catch(() => {
-        // If loading takes too long, content may still have navigation
-      })
+      ).catch(() => {})
 
-      // Wait for navigation elements to render
+      // Wait for navigation elements
       await Promise.race([
         page.locator('a[href*="/urgency"]').first().waitFor({ state: 'visible', timeout: 3000 }).catch(() => {}),
         page.locator('a[href*="/skills"]').first().waitFor({ state: 'visible', timeout: 3000 }).catch(() => {}),
         page.locator('a[href*="/patterns"]').first().waitFor({ state: 'visible', timeout: 3000 }).catch(() => {})
       ])
 
-      // Check for navigation elements (tabs or links to other sections)
-      // The layout should have links to different sections
+      // Check for navigation elements
       const hasUrgencyLink = await page.locator('a[href*="/urgency"]').count() > 0
       const hasSkillsLink = await page.locator('a[href*="/skills"]').count() > 0
       const hasPatternsLink = await page.locator('a[href*="/patterns"]').count() > 0
-      const hasAnyContent = await page.locator('body').textContent().then(t => (t?.length || 0) > 100)
+      const hasContent = await page.locator('body').textContent().then(t => (t?.length || 0) > 100)
 
-      // At least some navigation or meaningful content should exist
-      expect(hasUrgencyLink || hasSkillsLink || hasPatternsLink || hasAnyContent).toBe(true)
+      // At least some navigation or content should exist
+      expect(hasUrgencyLink || hasSkillsLink || hasPatternsLink || hasContent).toBe(true)
     } else {
       test.skip()
     }

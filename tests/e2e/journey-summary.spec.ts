@@ -7,10 +7,9 @@ import { test, expect } from '@playwright/test'
  */
 
 test.describe('Journey Summary', () => {
-  // NOTE: Most tests are skipped because they require complex state seeding
-  // that must match SerializableGameState exactly, including valid node IDs
-  // that exist in the dialogue graphs. The feature has been manually verified
-  // to work correctly. These tests document the expected behavior.
+  // Tests require complex state seeding that matches SerializableGameState exactly,
+  // including valid node IDs from dialogue graphs. The seedCompletedJourneyState
+  // fixture handles this correctly.
   /**
    * Seed game state with completed journey to trigger the Journey Summary button
    * The isJourneyComplete function checks:
@@ -90,9 +89,8 @@ test.describe('Journey Summary', () => {
     await page.waitForLoadState('networkidle')
   })
 
-  test.skip('Journey Summary button appears when journey is complete', async ({ page }) => {
+  test('Journey Summary button appears when journey is complete', async ({ page }) => {
     // Fixed: State seeding now includes all required fields and valid node IDs
-    // Skipped until dev server integration confirmed
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
@@ -129,8 +127,7 @@ test.describe('Journey Summary', () => {
     })
   })
 
-  test.skip('Journey Summary modal opens and closes correctly', async ({ page }) => {
-    // SKIPPED: Requires complex state seeding
+  test('Journey Summary modal opens and closes correctly', async ({ page }) => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
@@ -157,8 +154,7 @@ test.describe('Journey Summary', () => {
     await expect(page.getByText("Samuel's Reflection on Your Journey")).not.toBeVisible()
   })
 
-  test.skip('Journey Summary modal supports keyboard navigation', async ({ page }) => {
-    // SKIPPED: Requires complex state seeding
+  test('Journey Summary modal supports keyboard navigation', async ({ page }) => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
@@ -191,8 +187,7 @@ test.describe('Journey Summary', () => {
     await expect(page.getByText("Samuel's Reflection on Your Journey")).not.toBeVisible()
   })
 
-  test.skip('Journey Summary displays all sections with Next/Back navigation', async ({ page }) => {
-    // SKIPPED: Requires complex state seeding
+  test('Journey Summary displays all sections with Next/Back navigation', async ({ page }) => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
@@ -232,8 +227,7 @@ test.describe('Journey Summary', () => {
     await expect(page.getByRole('button', { name: 'Complete Journey' })).toBeVisible()
   })
 
-  test.skip('Journey Summary shows journey stats', async ({ page }) => {
-    // SKIPPED: Requires complex state seeding
+  test('Journey Summary shows journey stats', async ({ page }) => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
@@ -252,8 +246,7 @@ test.describe('Journey Summary', () => {
     await expect(page.getByText(/pattern/i)).toBeVisible()
   })
 
-  test.skip('Journey Summary navigation dots work', async ({ page }) => {
-    // SKIPPED: Requires complex state seeding
+  test('Journey Summary navigation dots work', async ({ page }) => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
@@ -283,8 +276,7 @@ test.describe('Journey Summary', () => {
     await expect(page.getByText('The Beginning')).toBeVisible({ timeout: 3000 })
   })
 
-  test.skip('Journey Summary Back button is disabled on first section', async ({ page }) => {
-    // SKIPPED: Requires complex state seeding
+  test('Journey Summary Back button is disabled on first section', async ({ page }) => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
@@ -305,8 +297,7 @@ test.describe('Journey Summary', () => {
     await expect(backButton).toBeDisabled()
   })
 
-  test.skip('Journey Summary Complete Journey button closes modal', async ({ page }) => {
-    // SKIPPED: Requires complex state seeding
+  test('Journey Summary Complete Journey button closes modal', async ({ page }) => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
@@ -347,8 +338,7 @@ test.describe('Journey Summary', () => {
     await expect(page.getByText("Samuel's Reflection on Your Journey")).not.toBeVisible()
   })
 
-  test.skip('Journey Summary shows relationship reflections based on trust', async ({ page }) => {
-    // SKIPPED: Requires complex state seeding
+  test('Journey Summary shows relationship reflections based on trust', async ({ page }) => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
@@ -372,8 +362,7 @@ test.describe('Journey Summary', () => {
     await expect(page.getByText('Maya Chen').or(page.getByText('Devon Kumar'))).toBeVisible({ timeout: 3000 })
   })
 
-  test.skip('Journey Summary shows pattern profile', async ({ page }) => {
-    // SKIPPED: Requires complex state seeding
+  test('Journey Summary shows pattern profile', async ({ page }) => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()

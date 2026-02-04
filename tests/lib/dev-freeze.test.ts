@@ -72,8 +72,8 @@ describe('devFreeze', () => {
     const obj = devFreeze({ value: 1 })
 
     expect(() => {
-      // @ts-expect-error - intentionally testing mutation prevention
-      obj.value = 2
+      // Frozen objects throw at runtime when mutated
+      ;(obj as { value: number }).value = 2
     }).toThrow()
   })
 
