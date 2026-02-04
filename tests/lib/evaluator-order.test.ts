@@ -1,43 +1,28 @@
 /**
  * Evaluator Ordering Tests
  *
- * Phase 3B: Validates that consequence echo evaluators in useChoiceHandler
- * are ordered correctly to respect their implicit dependencies.
+ * Phase 4B: Validates consequence echo evaluator ordering across two files:
+ * - Tier 1 evaluators: inline in useChoiceHandler.ts
+ * - Tier 2 evaluators: consolidated in derivative-orchestrator.ts
  *
- * EVALUATOR REGISTRY (23 evaluators in precedence order):
+ * EVALUATOR REGISTRY (24 entries):
  *
- * Tier 1 - Unconditional Overwrite (can always set echo):
+ * Tier 1 - Unconditional Overwrite (in useChoiceHandler.ts):
  *   1. trustFeedback         - Base trust change feedback
  *   2. patternEcho           - Pattern threshold crossing
  *   3. orbMilestone          - Orb milestone reached (OVERWRITES)
  *   4. transformation        - Character transformation (OVERWRITES)
  *
- * Tier 2 - First-Match-Wins (only set if !consequenceEcho):
- *   5. storyArcUnlock        - New story arc becomes available
- *   6. chapterComplete       - Story chapter progression
- *   7. synthesisPuzzle       - Puzzle completion/hint
- *   8. infoTradeAvailable    - New info trade unlocked
- *   9. knowledgeDiscovery    - Knowledge item found
- *  10. crossCharacterEcho    - Echo from another character's arc
- *  11. patternRecognition    - Character notices player pattern
- *  12. knowledgeCombination  - Knowledge pieces combine
- *  13. icebergInvestigable   - Iceberg topic becomes investigable
- *  14. patternTrustGate      - Pattern+trust gate unlocked
- *  15. magicalRealism        - High pattern magical effect
- *  16. patternAchievement    - Pattern achievement earned
- *  17. environmentalEffect   - Trust-based environment change
- *  18. crossCharacterExp     - Cross-character experience available
- *  19. cascadeEffect         - Flag cascade triggered
- *  20. metaRevelation        - Meta-narrative revelation
- *  21. delayedGift           - Delayed gift ready to deliver
- *  22. discoveryHint         - Vulnerability foreshadowing
- *  23. trustAsymmetry        - Character notices trust imbalance
+ * Tier 2 - Derivative Orchestrator (in derivative-orchestrator.ts):
+ *   5. derivativeOrchestrator - Entry point from useChoiceHandler
+ *   6-24. Individual processors (order enforced by orchestrator implementation)
  *
  * Dependencies:
  *   - patternEcho depends on trustFeedback (trust affects pattern display)
  *   - orbMilestone depends on patternEcho (checks after pattern processed)
  *   - transformation depends on orbMilestone (trust/pattern state finalized)
- *   - Tier 2 evaluators have no inter-dependencies (all check !consequenceEcho)
+ *   - derivativeOrchestrator depends on transformation (Tier 1 must complete)
+ *   - Tier 2 internal order enforced by orchestrator code, not position
  */
 
 import { describe, test, expect } from 'vitest'
@@ -48,17 +33,21 @@ import * as path from 'path'
 interface EvaluatorDef {
   id: string
   tier: 1 | 2
-  linePattern: RegExp  // Pattern to find this evaluator in the source
-  dependencies?: string[]  // Must appear before this evaluator
+  linePattern: RegExp  // Pattern to find this evaluator
+  searchFile: 'handler' | 'orchestrator' | 'both'  // Which file to search
+  dependencies?: string[]  // Must appear before this evaluator (within same file)
   description: string
 }
 
 const EVALUATOR_REGISTRY: EvaluatorDef[] = [
-  // Tier 1 - Unconditional Overwrite
+  // ═══════════════════════════════════════════════════════════════════════════
+  // Tier 1 - Unconditional Overwrite (in useChoiceHandler.ts)
+  // ═══════════════════════════════════════════════════════════════════════════
   {
     id: 'trustFeedback',
     tier: 1,
     linePattern: /const trustFeedback = computeTrustFeedback/,
+    searchFile: 'handler',
     dependencies: [],
     description: 'Base trust change feedback'
   },
@@ -66,6 +55,7 @@ const EVALUATOR_REGISTRY: EvaluatorDef[] = [
     id: 'patternEcho',
     tier: 1,
     linePattern: /const patternEchoResult = computePatternEcho/,
+    searchFile: 'handler',
     dependencies: ['trustFeedback'],
     description: 'Pattern threshold crossing'
   },
@@ -73,6 +63,7 @@ const EVALUATOR_REGISTRY: EvaluatorDef[] = [
     id: 'orbMilestone',
     tier: 1,
     linePattern: /const milestoneResult = computeOrbMilestoneEcho/,
+    searchFile: 'handler',
     dependencies: ['patternEcho'],
     description: 'Orb milestone reached (can overwrite)'
   },
@@ -80,174 +71,111 @@ const EVALUATOR_REGISTRY: EvaluatorDef[] = [
     id: 'transformation',
     tier: 1,
     linePattern: /const eligibleTransformation = computeTransformation/,
+    searchFile: 'handler',
     dependencies: ['orbMilestone'],
     description: 'Character transformation (can overwrite)'
   },
 
-  // Tier 2 - First-Match-Wins
+  // ═══════════════════════════════════════════════════════════════════════════
+  // Tier 2 - Derivative Processor Orchestrator (in derivative-orchestrator.ts)
+  // Phase 4B: All Tier 2 evaluators consolidated into single orchestrator.
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: 'derivativeOrchestrator',
+    tier: 2,
+    linePattern: /DERIVATIVE PROCESSOR ORCHESTRATOR|runAllDerivativeProcessors\(/,
+    searchFile: 'handler',
+    dependencies: ['transformation'],  // Must come after Tier 1
+    description: 'Derivative processor orchestrator (consolidates Tier 2)'
+  },
+  // The following entries validate orchestrator internal structure.
+  // Order is guaranteed by the orchestrator's sequential execution.
   {
     id: 'storyArcUnlock',
     tier: 2,
-    // Now handled by choice processor - matches comment in useChoiceHandler
-    linePattern: /D-061:.*Story Arc Progression.*CHOICE PROCESSOR|if \(checkArcUnlock\(arc, newGameState\)\)/,
-    dependencies: ['transformation'],
+    linePattern: /1\. STORY ARC PROGRESSION/,
+    searchFile: 'orchestrator',
+    dependencies: [],  // First in orchestrator
     description: 'New story arc becomes available'
-  },
-  {
-    id: 'chapterComplete',
-    tier: 2,
-    // Now part of storyArcUnlock via processStoryArcProgression
-    linePattern: /D-061:.*Story Arc Progression.*CHOICE PROCESSOR|const \{ newState: updatedArcState, arcCompleted \}/,
-    dependencies: ['storyArcUnlock'],
-    description: 'Story chapter progression'
   },
   {
     id: 'synthesisPuzzle',
     tier: 2,
-    // Now handled by choice processor - matches comment in useChoiceHandler
-    linePattern: /D-083:.*Synthesis Puzzle.*CHOICE PROCESSOR|for \(const puzzle of SYNTHESIS_PUZZLES\)/,
-    dependencies: ['chapterComplete'],
+    linePattern: /2\. SYNTHESIS PUZZLES/,
+    searchFile: 'orchestrator',
+    dependencies: ['storyArcUnlock'],
     description: 'Puzzle completion or hint'
-  },
-  {
-    id: 'infoTradeAvailable',
-    tier: 2,
-    // Now handled by choice processor - matches comment in useChoiceHandler
-    linePattern: /D-056\/D-057:.*Knowledge Discovery.*CHOICE PROCESSOR|const availableTrades = getAvailableInfoTrades/,
-    dependencies: ['synthesisPuzzle'],
-    description: 'New info trade unlocked'
   },
   {
     id: 'knowledgeDiscovery',
     tier: 2,
-    // Now part of infoTradeAvailable via processKnowledgeUpdates
-    linePattern: /D-056\/D-057:.*Knowledge Discovery.*CHOICE PROCESSOR|const matchingItem = KNOWLEDGE_ITEMS\.find/,
-    dependencies: ['infoTradeAvailable'],
+    linePattern: /3\. KNOWLEDGE DISCOVERY/,
+    searchFile: 'orchestrator',
+    dependencies: ['synthesisPuzzle'],
     description: 'Knowledge item found'
   },
   {
     id: 'crossCharacterEcho',
     tier: 2,
-    linePattern: /const echoQueue = loadEchoQueue\(\)/,
+    linePattern: /4\. CROSS-CHARACTER ECHOES/,
+    searchFile: 'orchestrator',
     dependencies: ['knowledgeDiscovery'],
     description: 'Echo from another character arc'
   },
   {
-    id: 'patternRecognition',
+    id: 'tier2Registry',
     tier: 2,
-    // Now handled by evaluator registry - matches comment in useChoiceHandler
-    linePattern: /D-004:.*Pattern recognition.*EVALUATOR REGISTRY|const patternComments = getPatternRecognitionComments/,
+    linePattern: /5\. TIER 2 EVALUATOR REGISTRY/,
+    searchFile: 'orchestrator',
     dependencies: ['crossCharacterEcho'],
-    description: 'Character notices player pattern'
+    description: 'Pattern recognition, knowledge combination, etc.'
   },
   {
-    id: 'knowledgeCombination',
+    id: 'icebergReferences',
     tier: 2,
-    // Now handled by evaluator registry - matches comment in useChoiceHandler
-    linePattern: /D-006:.*Knowledge combination.*EVALUATOR REGISTRY|const newCombinations = getNewlyAvailableCombinations/,
-    dependencies: ['patternRecognition'],
-    description: 'Knowledge pieces combine'
+    linePattern: /6\. ICEBERG REFERENCES/,
+    searchFile: 'orchestrator',
+    dependencies: ['tier2Registry'],
+    description: 'Iceberg topic tracking'
   },
   {
-    id: 'icebergInvestigable',
+    id: 'delayedGifts',
     tier: 2,
-    // Now handled by choice processor - matches comment in useChoiceHandler
-    linePattern: /D-019:.*Iceberg References.*CHOICE PROCESSOR|const nowInvestigable = getInvestigableTopics/,
-    dependencies: ['knowledgeCombination'],
-    description: 'Iceberg topic becomes investigable'
-  },
-  {
-    id: 'patternTrustGate',
-    tier: 2,
-    // Now handled by evaluator registry - matches comment in useChoiceHandler
-    linePattern: /D-002:.*Pattern-trust gates.*EVALUATOR REGISTRY|const nowUnlockedGates = getUnlockedGates/,
-    dependencies: ['icebergInvestigable'],
-    description: 'Pattern+trust gate unlocked'
-  },
-  {
-    id: 'magicalRealism',
-    tier: 2,
-    // Now handled by evaluator registry - matches comment in useChoiceHandler
-    linePattern: /D-020:.*Magical realism.*EVALUATOR REGISTRY|const nowManifestations = getActiveMagicalRealisms/,
-    dependencies: ['patternTrustGate'],
-    description: 'High pattern magical effect'
-  },
-  {
-    id: 'patternAchievement',
-    tier: 2,
-    // Now handled by evaluator registry - matches comment in useChoiceHandler
-    linePattern: /D-059:.*Pattern achievements.*EVALUATOR REGISTRY|const newAchievements = checkNewAchievements/,
-    dependencies: ['magicalRealism'],
-    description: 'Pattern achievement earned'
-  },
-  {
-    id: 'environmentalEffect',
-    tier: 2,
-    // Now handled by evaluator registry - matches comment in useChoiceHandler
-    linePattern: /D-016:.*Environmental effects.*EVALUATOR REGISTRY|const nowEffects = getActiveEnvironmentalEffects/,
-    dependencies: ['patternAchievement'],
-    description: 'Trust-based environment change'
-  },
-  {
-    id: 'crossCharacterExp',
-    tier: 2,
-    // Now handled by evaluator registry - matches comment in useChoiceHandler
-    linePattern: /D-017:.*Cross-character experiences.*EVALUATOR REGISTRY|const nowExperiences = getAvailableCrossCharacterExperiences/,
-    dependencies: ['environmentalEffect'],
-    description: 'Cross-character experience available'
-  },
-  {
-    id: 'cascadeEffect',
-    tier: 2,
-    // Now handled by evaluator registry - matches comment in useChoiceHandler
-    linePattern: /D-062:.*Cascade effects.*EVALUATOR REGISTRY|const cascade = getCascadeEffectsForFlag/,
-    dependencies: ['crossCharacterExp'],
-    description: 'Flag cascade triggered'
-  },
-  {
-    id: 'metaRevelation',
-    tier: 2,
-    // Now handled by evaluator registry - matches comment in useChoiceHandler
-    linePattern: /D-065:.*Meta-narrative revelations.*EVALUATOR REGISTRY|const nowRevelations = getUnlockedMetaRevelations/,
-    dependencies: ['cascadeEffect'],
-    description: 'Meta-narrative revelation'
-  },
-  {
-    id: 'delayedGift',
-    tier: 2,
-    // Still inline - not a registry evaluator (different pattern)
-    linePattern: /const readyGifts = getReadyGiftsForCharacter/,
-    dependencies: ['metaRevelation'],
+    linePattern: /7\. DELAYED GIFTS/,
+    searchFile: 'orchestrator',
+    dependencies: ['icebergReferences'],
     description: 'Delayed gift ready to deliver'
   },
   {
-    id: 'discoveryHint',
+    id: 'arcCompletion',
     tier: 2,
-    // Now handled by evaluator registry - matches comment in useChoiceHandler
-    linePattern: /Discovery hints.*EVALUATOR REGISTRY|const hint = getDiscoveryHint/,
-    dependencies: ['delayedGift'],
-    description: 'Vulnerability foreshadowing'
-  },
-  {
-    id: 'trustAsymmetry',
-    tier: 2,
-    // Now handled by evaluator registry - matches comment in useChoiceHandler
-    linePattern: /D-005:.*Trust asymmetry.*EVALUATOR REGISTRY|const asymmetries = analyzeTrustAsymmetry/,
-    dependencies: ['discoveryHint'],
-    description: 'Character notices trust imbalance'
+    linePattern: /8\. ARC COMPLETION/,
+    searchFile: 'orchestrator',
+    dependencies: ['delayedGifts'],
+    description: 'Arc completion rewards'
   }
 ]
 
 describe('Evaluator Order Validation', () => {
-  const sourceFile = path.join(process.cwd(), 'hooks/game/useChoiceHandler.ts')
-  const sourceContent = fs.readFileSync(sourceFile, 'utf-8')
+  const handlerFile = path.join(process.cwd(), 'hooks/game/useChoiceHandler.ts')
+  const handlerContent = fs.readFileSync(handlerFile, 'utf-8')
 
-  test('all evaluators exist in source file', () => {
+  const orchestratorFile = path.join(process.cwd(), 'lib/choice-processors/derivative-orchestrator.ts')
+  const orchestratorContent = fs.readFileSync(orchestratorFile, 'utf-8')
+
+  const getContent = (searchFile: 'handler' | 'orchestrator' | 'both') => {
+    if (searchFile === 'handler') return handlerContent
+    if (searchFile === 'orchestrator') return orchestratorContent
+    return handlerContent + orchestratorContent
+  }
+
+  test('all evaluators exist in their designated files', () => {
     const missingEvaluators: string[] = []
 
     for (const evaluator of EVALUATOR_REGISTRY) {
-      if (!evaluator.linePattern.test(sourceContent)) {
-        missingEvaluators.push(evaluator.id)
+      const content = getContent(evaluator.searchFile)
+      if (!evaluator.linePattern.test(content)) {
+        missingEvaluators.push(`${evaluator.id} (in ${evaluator.searchFile})`)
       }
     }
 
@@ -258,51 +186,95 @@ describe('Evaluator Order Validation', () => {
     expect(missingEvaluators).toHaveLength(0)
   })
 
-  test('evaluator dependencies are satisfied (appear in correct order)', () => {
-    // Build a map of evaluator positions in the source
+  test('Tier 1 evaluators are in correct order in useChoiceHandler', () => {
+    const tier1Evaluators = EVALUATOR_REGISTRY.filter(e => e.tier === 1)
     const positions: Record<string, number> = {}
 
-    for (const evaluator of EVALUATOR_REGISTRY) {
-      const match = sourceContent.match(evaluator.linePattern)
+    for (const evaluator of tier1Evaluators) {
+      const match = handlerContent.match(evaluator.linePattern)
       if (match && match.index !== undefined) {
         positions[evaluator.id] = match.index
       }
     }
 
-    // Validate each evaluator's dependencies come before it
     const violations: string[] = []
-
-    for (const evaluator of EVALUATOR_REGISTRY) {
+    for (const evaluator of tier1Evaluators) {
       if (!evaluator.dependencies) continue
-
       const evalPosition = positions[evaluator.id]
       if (evalPosition === undefined) continue
 
       for (const dep of evaluator.dependencies) {
         const depPosition = positions[dep]
         if (depPosition === undefined) continue
-
         if (depPosition > evalPosition) {
-          violations.push(`${evaluator.id} (line ~${Math.floor(evalPosition / 50)}) must come after ${dep} (line ~${Math.floor(depPosition / 50)})`)
+          violations.push(`${evaluator.id} must come after ${dep}`)
         }
       }
     }
 
     if (violations.length > 0) {
-      console.log('Dependency violations:', violations)
+      console.log('Tier 1 dependency violations:', violations)
+    }
+    expect(violations).toHaveLength(0)
+  })
+
+  test('orchestrator is called after Tier 1 evaluators in useChoiceHandler', () => {
+    const tier1Positions: number[] = []
+    for (const evaluator of EVALUATOR_REGISTRY.filter(e => e.tier === 1)) {
+      const match = handlerContent.match(evaluator.linePattern)
+      if (match && match.index !== undefined) {
+        tier1Positions.push(match.index)
+      }
     }
 
+    const orchestratorEntry = EVALUATOR_REGISTRY.find(e => e.id === 'derivativeOrchestrator')!
+    const orchestratorMatch = handlerContent.match(orchestratorEntry.linePattern)
+    const orchestratorPosition = orchestratorMatch?.index ?? -1
+
+    const maxTier1 = Math.max(...tier1Positions)
+    expect(orchestratorPosition).toBeGreaterThan(maxTier1)
+  })
+
+  test('orchestrator processors are in correct order', () => {
+    const orchestratorEvaluators = EVALUATOR_REGISTRY.filter(
+      e => e.tier === 2 && e.searchFile === 'orchestrator'
+    )
+    const positions: Record<string, number> = {}
+
+    for (const evaluator of orchestratorEvaluators) {
+      const match = orchestratorContent.match(evaluator.linePattern)
+      if (match && match.index !== undefined) {
+        positions[evaluator.id] = match.index
+      }
+    }
+
+    const violations: string[] = []
+    for (const evaluator of orchestratorEvaluators) {
+      if (!evaluator.dependencies || evaluator.dependencies.length === 0) continue
+      const evalPosition = positions[evaluator.id]
+      if (evalPosition === undefined) continue
+
+      for (const dep of evaluator.dependencies) {
+        const depPosition = positions[dep]
+        if (depPosition === undefined) continue
+        if (depPosition > evalPosition) {
+          violations.push(`${evaluator.id} must come after ${dep}`)
+        }
+      }
+    }
+
+    if (violations.length > 0) {
+      console.log('Orchestrator dependency violations:', violations)
+    }
     expect(violations).toHaveLength(0)
   })
 
   test('no circular dependencies exist', () => {
-    // Build dependency graph
     const graph: Record<string, string[]> = {}
     for (const evaluator of EVALUATOR_REGISTRY) {
       graph[evaluator.id] = evaluator.dependencies || []
     }
 
-    // Detect cycles using DFS
     const visited = new Set<string>()
     const recStack = new Set<string>()
     const cycles: string[] = []
@@ -338,29 +310,9 @@ describe('Evaluator Order Validation', () => {
     expect(cycles).toHaveLength(0)
   })
 
-  test('tier 1 evaluators come before tier 2', () => {
-    const tier1Positions: number[] = []
-    const tier2Positions: number[] = []
-
-    for (const evaluator of EVALUATOR_REGISTRY) {
-      const match = sourceContent.match(evaluator.linePattern)
-      if (match && match.index !== undefined) {
-        if (evaluator.tier === 1) {
-          tier1Positions.push(match.index)
-        } else {
-          tier2Positions.push(match.index)
-        }
-      }
-    }
-
-    const maxTier1 = Math.max(...tier1Positions)
-    const minTier2 = Math.min(...tier2Positions)
-
-    expect(maxTier1).toBeLessThan(minTier2)
-  })
-
-  test('evaluator count matches expected (23)', () => {
-    expect(EVALUATOR_REGISTRY.length).toBe(23)
+  test('evaluator count matches expected (13)', () => {
+    // 4 Tier 1 + 1 orchestrator entry + 8 orchestrator processors = 13
+    expect(EVALUATOR_REGISTRY.length).toBe(13)
   })
 })
 

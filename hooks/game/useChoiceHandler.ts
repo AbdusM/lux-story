@@ -34,11 +34,7 @@ import {
   getNarrativeFraming,
 } from '@/lib/narrative-derivatives'
 // character-derivatives imports moved to evaluator registry
-import {
-  loadEchoQueue,
-  saveEchoQueue,
-  getAndUpdateEchosForCharacter,
-} from '@/lib/cross-character-memory'
+// cross-character-memory imports moved to derivative-orchestrator
 // queueEchosForFlag moved to arc-completion-processor
 import { UnlockManager } from '@/lib/unlock-manager'
 import { ABILITIES } from '@/lib/abilities'
@@ -58,10 +54,8 @@ import { processComplexCharacterTick } from '@/lib/character-complex'
 import {
   queueGiftForChoice,
   tickGiftCounters,
-  getReadyGiftsForCharacter,
-  consumeGift,
-  type DelayedGift,
 } from '@/lib/delayed-gifts'
+// getReadyGiftsForCharacter, consumeGift moved to derivative-orchestrator
 // queueGiftsForArcComplete moved to arc-completion-processor
 import { checkSessionBoundary, incrementBoundaryCounter, getTotalNodesVisited, type SessionAnnouncement } from '@/lib/session-structure'
 import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
@@ -73,13 +67,11 @@ import {
   computeTrustFeedbackMessage,
   computeSkillTracking,
 } from '@/lib/choice-processing'
-import { runTier2Evaluators, type EvaluatorContext } from '@/lib/evaluators'
+// runTier2Evaluators moved to derivative-orchestrator
 import {
-  processStoryArcProgression,
-  processSynthesisPuzzles,
-  processKnowledgeUpdates,
-  processIcebergReferences,
-  processArcCompletion,
+  runAllDerivativeProcessors,
+  readLocalStorageSnapshot,
+  buildChoiceUiPatch,
 } from '@/lib/choice-processors'
 import { resolveNode } from '@/hooks/game/useNarrativeNavigator'
 import { shouldShowInterrupt } from '@/lib/interrupt-visibility'
@@ -614,174 +606,45 @@ export function useChoiceHandler({
       // D-018/D-063/D-095: Complex Character Tick
       processComplexCharacterTick(newGameState, targetCharacterId)
 
-      // D-061: Story Arc Progression - NOW HANDLED BY CHOICE PROCESSOR
-      const storyArcResult = processStoryArcProgression(
-        {
-          gameState: newGameState,
-          nextNode,
-          targetCharacterId,
-          currentConversationHistory: targetCharacter.conversationHistory,
-        },
-        consequenceEcho
-      )
-      newGameState = storyArcResult.newGameState
-      if (storyArcResult.consequenceEcho && !consequenceEcho) {
-        consequenceEcho = storyArcResult.consequenceEcho
-      }
-      for (const log of storyArcResult.logs) {
-        logger.info(`[StatefulGameInterface] D-061 Story arc ${log.type}:`, log.data)
-      }
-
-      // D-083: Synthesis Puzzle Auto-Checking - NOW HANDLED BY CHOICE PROCESSOR
-      const completedPuzzlesRaw = typeof window !== 'undefined' ? localStorage.getItem('lux_completed_synthesis_puzzles') : null
-      const hintsShownRaw = typeof window !== 'undefined' ? localStorage.getItem('lux_synthesis_hints_shown') : null
-      const puzzleResult = processSynthesisPuzzles(
-        {
-          gameState: newGameState,
-          completedPuzzles: new Set<string>(completedPuzzlesRaw ? JSON.parse(completedPuzzlesRaw) : []),
-          hintsShown: new Set<string>(hintsShownRaw ? JSON.parse(hintsShownRaw) : []),
-        },
-        consequenceEcho
-      )
-      newGameState = puzzleResult.newGameState
-      if (puzzleResult.consequenceEcho && !consequenceEcho) {
-        consequenceEcho = puzzleResult.consequenceEcho
-      }
-      Object.assign(localStorageBuffer, puzzleResult.localStorageWrites)
-      for (const log of puzzleResult.logs) {
-        logger.info(`[StatefulGameInterface] D-083 Synthesis puzzle ${log.type}:`, { puzzleId: log.puzzleId, ...log.data })
-      }
-
-      // D-056/D-057: Knowledge Discovery & Info Trade - NOW HANDLED BY CHOICE PROCESSOR
-      const completedTradesRaw = typeof window !== 'undefined' ? localStorage.getItem('lux_completed_info_trades') : null
-      const notifiedTradesRaw = typeof window !== 'undefined' ? localStorage.getItem('lux_notified_info_trades') : null
-      const discoveredKnowledgeRaw = typeof window !== 'undefined' ? localStorage.getItem('lux_discovered_knowledge_items') : null
-      const knowledgeResult = processKnowledgeUpdates(
-        {
-          newGameState,
-          previousGameState: gameState,
-          targetCharacterId,
-          targetCharacter,
-          completedTrades: new Set<string>(completedTradesRaw ? JSON.parse(completedTradesRaw) : []),
-          notifiedTrades: new Set<string>(notifiedTradesRaw ? JSON.parse(notifiedTradesRaw) : []),
-          discoveredKnowledge: new Set<string>(discoveredKnowledgeRaw ? JSON.parse(discoveredKnowledgeRaw) : []),
-        },
-        consequenceEcho
-      )
-      if (knowledgeResult.consequenceEcho && !consequenceEcho) {
-        consequenceEcho = knowledgeResult.consequenceEcho
-      }
-      Object.assign(localStorageBuffer, knowledgeResult.localStorageWrites)
-      for (const log of knowledgeResult.logs) {
-        logger.info(`[StatefulGameInterface] ${log.type === 'trade' ? 'D-057 Info trade available' : 'D-056 Knowledge item discovered'}:`, log.data)
-      }
-
-      // Check for cross-character echoes (characters referencing other relationships)
-      // Echoes are delivered when entering a character's dialogue after another arc completes
-      if (!consequenceEcho) {
-        const echoQueue = loadEchoQueue()
-        const { echoes: crossEchoes, updatedQueue } = getAndUpdateEchosForCharacter(
-          targetCharacterId,
-          newGameState,
-          echoQueue
-        )
-        if (crossEchoes.length > 0) {
-          // Deliver the first ready echo as the consequence echo
-          consequenceEcho = crossEchoes[0]
-          saveEchoQueue(updatedQueue)
-          logger.info('[StatefulGameInterface] Delivered cross-character echo:', {
-            targetCharacter: targetCharacterId,
-            echoText: consequenceEcho.text.substring(0, 50) + '...'
-          })
-        }
-      }
-
       // ═══════════════════════════════════════════════════════════════════════════
-      // TIER 2 EVALUATOR REGISTRY
-      // Phase 4B: Run extracted evaluators via registry instead of inline code.
+      // DERIVATIVE PROCESSOR ORCHESTRATOR
+      // Phase 4B: All derivative processors consolidated into single orchestrator.
+      // Reads localStorage once, calls processors in deterministic order, returns merged result.
       // ═══════════════════════════════════════════════════════════════════════════
-      if (!consequenceEcho) {
-        // Read localStorage for deduplication (evaluators are pure - no localStorage access)
-        const shownCommentsKey = 'lux_pattern_recognition_shown'
-        const shownCommentsRaw = typeof window !== 'undefined' ? localStorage.getItem(shownCommentsKey) : null
-        const shownPatternComments = new Set<string>(shownCommentsRaw ? JSON.parse(shownCommentsRaw) : [])
+      const localStorageSnapshot = readLocalStorageSnapshot()
+      const derivativeResult = runAllDerivativeProcessors({
+        gameState: newGameState,
+        previousGameState: gameState,
+        previousPatterns,
+        choice,
+        nextNode,
+        targetCharacterId,
+        targetCharacter: updatedCharacter,
+        trustDelta,
+        localStorage: localStorageSnapshot,
+        existingEcho: consequenceEcho,
+      })
 
-        const shownMagicalKey = 'lux_magical_realism_shown'
-        const shownMagicalRaw = typeof window !== 'undefined' ? localStorage.getItem(shownMagicalKey) : null
-        const shownMagicalRealisms = new Set<string>(shownMagicalRaw ? JSON.parse(shownMagicalRaw) : [])
+      // Apply orchestrator results
+      newGameState = derivativeResult.newGameState
+      consequenceEcho = derivativeResult.consequenceEcho
+      Object.assign(localStorageBuffer, derivativeResult.localStorageWrites)
+      const pendingGift = derivativeResult.pendingGift
 
-        const evaluatorCtx: EvaluatorContext = {
-          gameState: newGameState,
-          previousGameState: gameState,
-          previousPatterns,
-          choice: choice,
-          currentNode: nextNode,
-          characterId: targetCharacterId,
-          trustDelta,
-          now: Date.now(),
-          nodeId: nextNode.nodeId,
-          choiceText: choice.choice.text,
-          choicePattern: choice.choice.pattern as PatternType | undefined,
-          shownPatternComments,
-          shownMagicalRealisms,
-        }
-
-        const tier2Result = runTier2Evaluators(evaluatorCtx, consequenceEcho)
-
-        if (tier2Result.consequenceEcho) {
-          consequenceEcho = tier2Result.consequenceEcho
-          logger.info('[StatefulGameInterface] Tier 2 evaluator produced echo:', {
-            sources: tier2Result.echoSources,
-            echoText: consequenceEcho.text.substring(0, 50) + '...'
-          })
-        }
-
-        // Apply state changes from evaluators
-        for (const changes of tier2Result.stateChanges) {
-          if (changes.addGlobalFlags) {
-            for (const flag of changes.addGlobalFlags) {
-              newGameState.globalFlags.add(flag)
-            }
-          }
-          if (changes.markPatternCommentsShown) {
-            for (const key of changes.markPatternCommentsShown) {
-              shownPatternComments.add(key)
-            }
-            localStorageBuffer[shownCommentsKey] = JSON.stringify([...shownPatternComments])
-          }
-          if (changes.markMagicalRealismsShown) {
-            for (const id of changes.markMagicalRealismsShown) {
-              shownMagicalRealisms.add(id)
-            }
-            localStorageBuffer[shownMagicalKey] = JSON.stringify([...shownMagicalRealisms])
-          }
-        }
+      // Log all processor activity
+      for (const log of derivativeResult.logs) {
+        const prefix = {
+          storyArc: 'D-061 Story arc',
+          puzzle: 'D-083 Synthesis puzzle',
+          knowledge: log.type === 'trade' ? 'D-057 Info trade available' : 'D-056 Knowledge item discovered',
+          crossCharacter: 'Cross-character echo',
+          tier2Registry: 'Tier 2 evaluator',
+          iceberg: 'D-019 Iceberg',
+          delayedGift: 'Delayed gift',
+          arcCompletion: 'Arc',
+        }[log.processor] || log.processor
+        logger.info(`[StatefulGameInterface] ${prefix} ${log.type}:`, log.data)
       }
-
-      // D-004: Pattern recognition - NOW HANDLED BY EVALUATOR REGISTRY (evaluatePatternRecognition)
-      // D-006: Knowledge combination - NOW HANDLED BY EVALUATOR REGISTRY (evaluateKnowledgeCombination)
-
-      // D-019: Iceberg References - NOW HANDLED BY CHOICE PROCESSOR
-      const icebergResult = processIcebergReferences(
-        { gameState: newGameState, nextNode, targetCharacterId },
-        consequenceEcho
-      )
-      newGameState = icebergResult.newGameState
-      if (icebergResult.consequenceEcho && !consequenceEcho) {
-        consequenceEcho = icebergResult.consequenceEcho
-      }
-      for (const log of icebergResult.logs) {
-        logger.info(`[StatefulGameInterface] D-019 Iceberg ${log.type}:`, log.data)
-      }
-
-      // D-002: Pattern-trust gates - NOW HANDLED BY EVALUATOR REGISTRY (evaluatePatternTrustGate)
-      // D-020: Magical realism - NOW HANDLED BY EVALUATOR REGISTRY (evaluateMagicalRealism)
-      // D-059: Pattern achievements - NOW HANDLED BY EVALUATOR REGISTRY (evaluatePatternAchievement)
-      // D-016: Environmental effects - NOW HANDLED BY EVALUATOR REGISTRY (evaluateEnvironmentalEffect)
-
-      // D-017: Cross-character experiences - NOW HANDLED BY EVALUATOR REGISTRY (evaluateCrossCharacterExperience)
-      // D-062: Cascade effects - NOW HANDLED BY EVALUATOR REGISTRY (evaluateCascadeEffect)
-      // D-065: Meta-narrative revelations - NOW HANDLED BY EVALUATOR REGISTRY (evaluateMetaRevelation)
 
       // D-064: Log narrative framing for current session (UI will use this)
       const narrativeFraming = getNarrativeFraming(newGameState.patterns)
@@ -789,41 +652,6 @@ export function useChoiceHandler({
         dominantPattern: narrativeFraming.pattern,
         stationMetaphor: narrativeFraming.stationMetaphor
       })
-
-      // Check for delayed gifts ready to deliver
-      // Gifts surface after N interactions, creating "your choice mattered" moments
-      let pendingGift: DelayedGift | null = null
-      if (!consequenceEcho) {
-        const readyGifts = getReadyGiftsForCharacter(targetCharacterId)
-        if (readyGifts.length > 0) {
-          pendingGift = readyGifts[0]
-          // Deliver gift as consequence echo
-          let giftText = `"${pendingGift.content.text}"`
-          // Append attribution if context exists
-          if (pendingGift.giftContext?.sourceChoiceText) {
-            const shortText = pendingGift.giftContext.sourceChoiceText.length > 50
-              ? pendingGift.giftContext.sourceChoiceText.substring(0, 47) + '...'
-              : pendingGift.giftContext.sourceChoiceText
-            giftText += `\n\n(Recall: "${shortText}")`
-          }
-
-          consequenceEcho = {
-            text: giftText,
-            emotion: pendingGift.content.emotion || 'knowing',
-            timing: 'immediate' as const
-          }
-          consumeGift(pendingGift.id)
-          logger.info('[StatefulGameInterface] Delivered delayed gift:', {
-            giftId: pendingGift.id,
-            sourceCharacter: pendingGift.sourceCharacter,
-            targetCharacter: pendingGift.targetCharacter,
-            giftType: pendingGift.giftType
-          })
-        }
-      }
-
-      // Discovery hints - NOW HANDLED BY EVALUATOR REGISTRY (evaluateDiscoveryHint)
-      // D-005: Trust asymmetry - NOW HANDLED BY EVALUATOR REGISTRY (evaluateTrustAsymmetry)
 
       // Check for session boundary (every 15-30 nodes, only at natural pause points)
       const boundary = checkSessionBoundary(newGameState, state.previousTotalNodes, nextNode)
@@ -895,19 +723,10 @@ export function useChoiceHandler({
       const consequenceFeedback = computeTrustFeedbackMessage(trustDelta, state.currentCharacterId)
 
 
-      // Arc Completion - NOW HANDLED BY CHOICE PROCESSOR
-      const arcCompletionResult = processArcCompletion({
-        previousGameState: gameState,
-        newGameState,
-      })
+      // Arc completion results from orchestrator - award bonus orbs silently
       const experienceSummaryUpdate = { showExperienceSummary: false, experienceSummaryData: null as ExperienceSummaryData | null }
-
-      // Award bonus orbs for arc completion-SILENT (no notification)
-      if (arcCompletionResult.completedArc && arcCompletionResult.dominantPattern) {
-        earnBonusOrbs(arcCompletionResult.dominantPattern, arcCompletionResult.bonusOrbAmount)
-      }
-      for (const log of arcCompletionResult.logs) {
-        logger.info(`[StatefulGameInterface] Arc ${log.type}:`, log.data)
+      if (derivativeResult.arcCompletion.completedArc && derivativeResult.arcCompletion.dominantPattern) {
+        earnBonusOrbs(derivativeResult.arcCompletion.dominantPattern, derivativeResult.arcCompletion.bonusOrbAmount)
       }
 
       // Queue delayed gift for this specific choice (if applicable)
