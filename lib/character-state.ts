@@ -1,4 +1,5 @@
 import { findCharacterForNode, isValidCharacterId, CHARACTER_IDS } from './graph-registry'
+import { devFreeze } from './dev-freeze'
 import { SerializedGameStateSchema, safeParseGameState } from './schemas/game-state-schema'
 import { ActiveThought, THOUGHT_REGISTRY } from '@/content/thoughts'
 import { calculateTrustChange } from './trust/trust-calculator'
@@ -403,7 +404,7 @@ export class GameStateUtils {
       const oldCharState = newState.characters.get(change.characterId)
       if (!oldCharState) {
         console.error(`Character ${change.characterId} not found in state`)
-        return newState
+        return devFreeze(newState)
       }
 
       // PHASE 1: CALCULATE all new values (no mutations)
@@ -520,7 +521,8 @@ export class GameStateUtils {
       }
     }
 
-    return newState
+    // TD-002: Freeze state in dev mode to catch accidental mutations
+    return devFreeze(newState)
   }
 
   /**
