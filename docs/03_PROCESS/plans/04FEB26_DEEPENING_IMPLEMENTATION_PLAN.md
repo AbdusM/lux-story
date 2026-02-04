@@ -355,25 +355,38 @@ Deep audit with blindspot verification identified **4 major areas** for improvem
 | Verify STUB node navigation | 1 hr | Content integrity |
 
 **Deliverables:**
-- [ ] Biology indicator in game interface
-- [ ] Career values in Journal
-- [ ] Unused code documented/removed
+- [x] Biology indicator in game interface ✅ (BiologyIndicator.tsx added to Journal)
+- [x] Career values in Journal ✅ (CareerValuesView.tsx added)
+- [x] Unused code documented/removed ✅ (useVirtualScrolling archived)
+- [x] STUB nodes verified ✅ (all content contract tests pass)
+- [x] Pattern affinity: Already complete for all 20 characters ✅
+
+**STATUS: PHASE 1 COMPLETE (2026-02-04)**
 
 ---
 
 ### Phase 2: Mystery & Platform Systems (1 week)
 
-| Task | Effort | Impact |
-|------|--------|--------|
-| Wire mystery triggers to dialogue | 4-6 hrs | Narrative depth |
-| Add Mysteries section to Journal | 2-4 hrs | Player visibility |
-| Wire platform state changes | 4-6 hrs | Environmental feedback |
-| Add platform visualization to Constellation | 2-4 hrs | Visual feedback |
+| Task | Effort | Impact | Status |
+|------|--------|--------|--------|
+| Wire mystery triggers to dialogue | 4-6 hrs | Narrative depth | ✅ DONE |
+| Add Mysteries section to Journal | 2-4 hrs | Player visibility | ✅ DONE |
+| Wire platform state changes | 4-6 hrs | Environmental feedback | ⚠️ DEFERRED |
+| Add platform visualization to Constellation | 2-4 hrs | Visual feedback | ⚠️ DEFERRED |
 
-**Deliverables:**
-- [ ] Mystery progression triggers work
-- [ ] Mysteries visible in Journal
-- [ ] Platform warmth affects visuals
+**Completed (2026-02-04):**
+- [x] Mystery triggers wired: platformSeven (Rohan, Elena), stationNature (Samuel), samuelsPast (Samuel)
+- [x] MysteryView component shows 4 mystery branches with progress bars
+- [x] Mysteries section added to Journal "Mysteries" tab
+
+**Deferred - Platform System:**
+Platform resonance requires architectural refactor because:
+1. `lib/platform-resonance.ts` uses its own localStorage (`lux-platforms-${playerId}`)
+2. This is separate from `GameState.platforms` - causes drift
+3. Integrating requires unifying storage OR adding `platformChanges` to StateChange
+4. See TD-005 (Fragmented localStorage) in Technical Debt
+
+**STATUS: PHASE 2 PARTIAL (2026-02-04)**
 
 ---
 

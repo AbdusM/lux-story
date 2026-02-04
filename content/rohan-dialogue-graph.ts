@@ -1542,6 +1542,12 @@ export const rohanDialogueNodes: DialogueNode[] = [
         variation_id: 'arc2_ch1_v1'
       }
     ],
+    // MYSTERY PROGRESSION: Platform Seven advances from 'stable' to 'flickering'
+    onEnter: [
+      {
+        mysteryChanges: { platformSeven: 'flickering' }
+      }
+    ],
     choices: [
       {
         choiceId: 'ask_samuel_platform',
@@ -2495,9 +2501,11 @@ WHERE IS THE 847ms COMING FROM?`,
         interaction: 'bloom'
       }
     ],
+    // MYSTERY PROGRESSION: Platform Seven advances to 'revealed'
     onEnter: [
       {
-        addGlobalFlags: ['platform_seven_reached', 'deep_mystery_begun']
+        addGlobalFlags: ['platform_seven_reached', 'deep_mystery_begun'],
+        mysteryChanges: { platformSeven: 'revealed' }
       }
     ],
     choices: [

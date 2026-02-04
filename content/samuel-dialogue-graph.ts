@@ -1335,9 +1335,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
         characterId: 'samuel',
         addKnowledgeFlags: ['samuel_vulnerability_revealed', 'knows_about_dorothy']
       },
-      // MYSTERY PROGRESSION: Letter sender advances to 'investigating' at trust 6
+      // MYSTERY PROGRESSION: Letter sender advances to 'investigating', Samuel's past fully revealed
       {
-        mysteryChanges: { letterSender: 'investigating' }
+        mysteryChanges: { letterSender: 'investigating', samuelsPast: 'revealed' }
       }
     ],
     choices: [
@@ -9078,8 +9078,13 @@ OBSERVATION: He looks tired. Scared. Different.`,
         variation_id: 'mystery_mirror_response_v1'
       }
     ],
+    // MYSTERY PROGRESSION: Station Nature advances to 'understanding'
     onEnter: [
-      { characterId: 'samuel', addKnowledgeFlags: ['mystery_mirror_revealed'] }
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['mystery_mirror_revealed'],
+        mysteryChanges: { stationNature: 'understanding' }
+      }
     ],
     choices: [
       {
@@ -9143,8 +9148,13 @@ OBSERVATION: He looks tired. Scared. Different.`,
         variation_id: 'station_truth_v3'
       }
     ],
+    // MYSTERY PROGRESSION: Station Nature advances to 'mastered' - full understanding
     onEnter: [
-      { characterId: 'samuel', addKnowledgeFlags: ['station_truth_revealed'] }
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['station_truth_revealed'],
+        mysteryChanges: { stationNature: 'mastered' }
+      }
     ],
     choices: [
       {

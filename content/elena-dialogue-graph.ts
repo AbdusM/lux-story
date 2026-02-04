@@ -2578,6 +2578,12 @@ Your curiosity combined with analysis... that's exactly what they need.`,
       emotion: 'scared_determined',
       variation_id: 'arc2_gap_v1'
     }],
+    // MYSTERY PROGRESSION: Platform Seven advances to 'error' (corrupted records)
+    onEnter: [
+      {
+        mysteryChanges: { platformSeven: 'error' }
+      }
+    ],
     choices: [
       {
         choiceId: 'elena_gap_pursue',

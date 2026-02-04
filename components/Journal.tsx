@@ -24,6 +24,7 @@ import { OpportunitiesView } from "./journal/OpportunitiesView"
 import { SynthesisPuzzlesView } from "./journal/SynthesisPuzzlesView"
 import { CareerRecommendationsView } from "./journal/CareerRecommendationsView"
 import { CareerValuesView } from "./journal/CareerValuesView"
+import { MysteryView } from "./journal/MysteryView"
 import { SkillCombosView } from "./journal/SkillCombosView"
 import { RankingView } from "./journal/RankingView"
 import { OrbDetailPanel } from "./OrbDetailPanel"
@@ -371,7 +372,15 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                       </div>
                     )}
                     {activeTab === 'combos' && <SkillCombosView />}
-                    {activeTab === 'mysteries' && <SynthesisPuzzlesView />}
+                    {activeTab === 'mysteries' && (
+                      <div className="space-y-6">
+                        <div className="p-4 border-b border-white/5">
+                          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Station Mysteries</h3>
+                          <MysteryView />
+                        </div>
+                        <SynthesisPuzzlesView />
+                      </div>
+                    )}
                     {activeTab === 'ranks' && <RankingView />}
                     {activeTab === 'god_mode' && <SimulationGodView onClose={onClose} />}
                   </motion.div>
