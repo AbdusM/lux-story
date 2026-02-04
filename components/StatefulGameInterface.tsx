@@ -221,6 +221,7 @@ import { useIdleAmbience } from '@/hooks/game/useIdleAmbience'
 import { useReturnToStation } from '@/hooks/game/useReturnToStation'
 import { useChoiceHandler } from '@/hooks/game/useChoiceHandler'
 import { useSilenceDetection } from '@/hooks/game/useSilenceDetection'
+import { useConstellationNavigation } from '@/hooks/game/useConstellationNavigation'
 import { resolveNode } from '@/hooks/game/useNarrativeNavigator'
 import { computeTrustFeedback, computePatternEcho, computeOrbMilestoneEcho, computeTransformation, computeTrustFeedbackMessage, computeSkillTracking } from '@/lib/choice-processing'
 // useNarrativeNavigator available but not yet wired — see hooks/game/useNarrativeNavigator.ts
@@ -549,170 +550,15 @@ export default function StatefulGameInterface() {
     }
   }, [refreshCounter])
 
-  // 4. NAVIGATION BRIDGE (Connects Constellation Panel to Game Interface)
-  // Listen for navigation requests from the Zustand store
-  const requestedSceneId = useGameStore(s => s.currentSceneId)
-
-  useEffect(() => {
-    if (!requestedSceneId || !gameState) return
-
-    // Logic: If it's a CharacterID, go to their Intro/Hub. If it's a NodeID, go there.
-    // We assume it's a CharacterID first
-    const targetCharId = requestedSceneId as CharacterId
-
-    // ============= CONDUCTOR MODE LOGIC =============
-    // D-102: Route all travel through Samuel (The Conductor) unless:
-    // 1. We are already talking to Samuel (avoid loops)
-    // 2. The target IS Samuel (direct travel permitted)
-    // 3. It's a specific internal node jump (contains underscores not ending in 'introduction')
-
-    // Check if it's a "Travel" command (Character ID) or a specific node jump
-    const isCharacterJump = !requestedSceneId.includes('_') || requestedSceneId.endsWith('_introduction')
-    const isTargetSamuel = targetCharId === 'samuel' || requestedSceneId.startsWith('samuel_')
-    const currentIsSamuel = state.currentCharacterId === 'samuel'
-
-    if (isCharacterJump && !isTargetSamuel && !currentIsSamuel) {
-      logger.info('[Conductor Mode] Intercepting travel request', { target: targetCharId })
-
-      // 1. Store the destination
-      useGameStore.getState().setPendingTravelTarget(targetCharId)
-
-      // 2. Clear the request to stop this hook re-firing immediately
-      useGameStore.getState().setCurrentScene(null)
-
-      // 3. Immediately trigger navigation to Samuel's Conductor Node
-      // We manually set state here because we can't use setCurrentScene (would loop)
-      const conductorNodeId = 'samuel_conductor'
-      const samuelGraph = getGraphForCharacter('samuel', gameState)
-      const conductorNode = samuelGraph.nodes.get(conductorNodeId)
-
-
-      if (conductorNode) {
-        // Dynamic Variable Injection for Conductor Mode
-        const targetCharacter = gameState?.characters.get(targetCharId)
-        const hasMet = (targetCharacter?.conversationHistory?.length || 0) > 0
-        const targetName = characterNames[targetCharId] || 'someone'
-        const conductorAction = hasMet ? 'Heading back to' : 'Off to see'
-
-        // Pre-process the content with the variables
-        const processedText = TextProcessor.process(
-          conductorNode.content[0].text,
-          gameState!,
-          { targetName, conductorAction }
-        )
-
-        setState(prev => ({
-          ...prev,
-          currentNode: conductorNode,
-          currentGraph: samuelGraph,
-          currentCharacterId: 'samuel',
-          currentContent: processedText, // Injected name
-          currentDialogueContent: conductorNode.content[0],
-          availableChoices: StateConditionEvaluator.evaluateChoices(conductorNode, gameState!, 'samuel', gameState!.skillLevels),
-          previousSpeaker: null
-        }))
-        return // Stop processing the direct jump
-      }
-    }
-
-    // ============= GOD MODE CONDUCTOR =============
-    // Handle God Mode simulation requests that go through Samuel
-    if (requestedSceneId === 'samuel_conductor_god_mode') {
-      logger.info('[God Mode Conductor] Routing simulation through Samuel')
-
-      // Clear the request
-      useGameStore.getState().setCurrentScene(null)
-
-      // Navigate to Samuel's God Mode conductor node
-      const conductorNodeId = 'samuel_conductor_god_mode'
-      const samuelGraph = getGraphForCharacter('samuel', gameState)
-      const conductorNode = samuelGraph.nodes.get(conductorNodeId)
-
-      if (conductorNode) {
-        const pendingSim = useGameStore.getState().pendingGodModeSimulation
-        const simTitle = pendingSim?.title?.replace('[DEBUG] ', '') || 'a simulation'
-
-        // Pre-process content with simulation title
-        const processedText = TextProcessor.process(
-          conductorNode.content[0].text,
-          gameState!,
-          { simulationTitle: simTitle }
-        )
-
-        setState(prev => ({
-          ...prev,
-          currentNode: conductorNode,
-          currentGraph: samuelGraph,
-          currentCharacterId: 'samuel',
-          currentContent: processedText,
-          currentDialogueContent: conductorNode.content[0],
-          availableChoices: StateConditionEvaluator.evaluateChoices(conductorNode, gameState!, 'samuel', gameState!.skillLevels),
-          previousSpeaker: null
-        }))
-        return
-      }
-    }
-    // ===============================================
-
-    // Default to [char]_introduction convention
-    const targetNodeId = `${requestedSceneId}_introduction`
-    const graph = getGraphForCharacter(targetCharId, gameState)
-
-    // Check if the graph actually has this node, otherwise fallback to first node
-    let targetNode = graph.nodes.get(targetNodeId)
-    if (!targetNode && graph.nodes.size > 0) {
-      // Fallback: Pick the first node in the graph (usually the entry)
-      targetNode = graph.nodes.values().next().value
-    }
-
-    if (targetNode) {
-      logger.info('Navigating via Constellation', { target: requestedSceneId, resolvedNode: targetNode.nodeId })
-
-      // Apply voice variation pipeline for consistency
-      const content = targetNode.content[0]
-      const gamePatterns = gameState!.patterns
-      const skillLevels = gameState!.skillLevels
-      const charState = gameState!.characters.get(targetCharId)
-
-      // Apply pattern reflection first
-      const mergedPatternReflection = targetNode.patternReflection || content.patternReflection
-      let reflected = applyPatternReflection(content.text, content.emotion, mergedPatternReflection, gamePatterns)
-
-      // Apply voice variations (NPC responds to player's dominant pattern)
-      const contentWithReflection = { ...content, text: reflected.text, emotion: reflected.emotion }
-      const voiceVaried = resolveContentVoiceVariation(contentWithReflection, gamePatterns)
-      const skillReflected = applySkillReflection(voiceVaried, skillLevels)
-      const fullyReflected = applyNervousSystemReflection(skillReflected, charState?.nervousSystemState)
-
-      // Update reflected with all bidirectional reflections
-      reflected = { text: fullyReflected.text, emotion: fullyReflected.emotion || reflected.emotion }
-
-      // Update State to Render New Scene
-      setState(prev => ({
-        ...prev,
-        currentNode: targetNode!,
-        currentGraph: graph,
-        currentCharacterId: targetCharId,
-        currentContent: reflected.text,
-        currentDialogueContent: { ...content, text: reflected.text, emotion: reflected.emotion },
-        availableChoices: StateConditionEvaluator.evaluateChoices(targetNode!, gameState!, targetCharId, gameState!.skillLevels),
-        previousSpeaker: null, // Reset speaker on jump
-        consequenceEcho: null  // Clear echo from previous character
-      }))
-
-      // TD-001: Atomic commit to both Zustand and localStorage
-      const newState = {
-        ...gameState,
-        currentNodeId: targetNode.nodeId,
-        currentCharacterId: targetCharId
-      }
-      commitGameState(newState, { reason: 'constellation-navigation' })
-    }
-
-    // Reset the request so we don't loop
-    useGameStore.getState().setCurrentScene(null)
-
-  }, [requestedSceneId, gameState, state.currentCharacterId])
+  // 4. NAVIGATION BRIDGE - Extracted to useConstellationNavigation hook
+  // Handles Conductor Mode (D-102) and God Mode routing through Samuel
+  useConstellationNavigation({
+    gameState,
+    currentCharacterId: state.currentCharacterId,
+    onNavigate: useCallback((update) => {
+      setState(prev => ({ ...prev, ...update }))
+    }, []),
+  })
 
   // ═══════════════════════════════════════════════════════════════════════════
   // STATION EVOLUTION: Sync Station State & Ambience
