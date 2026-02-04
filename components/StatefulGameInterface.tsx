@@ -220,6 +220,7 @@ import { useGameInitializer } from '@/hooks/game/useGameInitializer'
 import { useIdleAmbience } from '@/hooks/game/useIdleAmbience'
 import { useReturnToStation } from '@/hooks/game/useReturnToStation'
 import { useChoiceHandler } from '@/hooks/game/useChoiceHandler'
+import { useSilenceDetection } from '@/hooks/game/useSilenceDetection'
 import { resolveNode } from '@/hooks/game/useNarrativeNavigator'
 import { computeTrustFeedback, computePatternEcho, computeOrbMilestoneEcho, computeTransformation, computeTrustFeedbackMessage, computeSkillTracking } from '@/lib/choice-processing'
 // useNarrativeNavigator available but not yet wired — see hooks/game/useNarrativeNavigator.ts
@@ -812,59 +813,17 @@ export default function StatefulGameInterface() {
     acknowledgeMilestone,
   })
 
-  // ISP: Active Silence Detection
-  // Check if the player is being silent and if the current node has a specific reaction to it
-  useEffect(() => {
-    // Only run if we are in a dialogue state and not processing
-    if (!gameState || !state.currentNode || state.isProcessing || state.activeInterrupt) return
-
-    // Clear any existing timer
-    const silenceTimer = setTimeout(() => {
-      // 1. Check if we're still on the same node (ensured by cleanup)
-      // 2. Check if current node has a silence variation
-      const node = state.currentNode!
-      const silenceVariation = node.content.find(c =>
-        c.condition &&
-        c.condition.hasGlobalFlags &&
-        c.condition.hasGlobalFlags.includes('temporary_silence')
-      )
-
-      if (silenceVariation) {
-        // 3. Trigger active interrupt
-        logger.info('[StatefulGameInterface] Silence detected. Triggering dynamic reaction.', { nodeId: node.nodeId })
-
-        const activeSilenceState: GameState = gameState ? {
-          ...gameState,
-          saveVersion: gameState.saveVersion || '1.0', // Ensure string
-          globalFlags: new Set([...gameState.globalFlags, 'temporary_silence'])
-        } : gameState!
-
-        // Select the new content
-        const newContent = DialogueGraphNavigator.selectContent(node, [], activeSilenceState)
-
-        // Only update if different
-        if (newContent.variation_id !== state.currentDialogueContent?.variation_id) {
-          // Apply pattern reflection
-          const reflected = applyPatternReflection(
-            newContent.text,
-            newContent.emotion,
-            newContent.patternReflection,
-            activeSilenceState.patterns
-          )
-
-          setState(prev => ({
-            ...prev,
-            currentContent: reflected.text,
-            currentDialogueContent: { ...newContent, text: reflected.text, emotion: reflected.emotion },
-            // feedback for the player?
-            patternSensation: "The silence speaks..."
-          }))
-        }
-      }
-    }, 15000) // 15 seconds threshold
-
-    return () => clearTimeout(silenceTimer)
-  }, [state.currentNode, state.currentContent, state.isProcessing, state.activeInterrupt, gameState]) // Reset on content change
+  // ISP: Active Silence Detection - Extracted to useSilenceDetection hook
+  useSilenceDetection({
+    gameState,
+    currentNode: state.currentNode,
+    currentDialogueContent: state.currentDialogueContent,
+    isProcessing: state.isProcessing,
+    activeInterrupt: state.activeInterrupt,
+    onSilenceTriggered: useCallback((update) => {
+      setState(prev => ({ ...prev, ...update }))
+    }, []),
+  })
 
   /**
    * Handle interrupt trigger-player acted during NPC speech
