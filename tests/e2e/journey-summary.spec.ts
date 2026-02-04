@@ -24,14 +24,17 @@ test.describe('Journey Summary', () => {
       const gameState = {
         saveVersion: '2.0.0',
         playerId: 'test-player-journey',
-        currentNodeId: 'samuel_hub_initial',
+        currentNodeId: 'samuel_hub_return', // Valid hub node for returning players
         currentCharacterId: 'samuel',
         // Set two arcs as complete to trigger journey complete condition
-        globalFlags: ['maya_arc_complete', 'devon_arc_complete', 'met_maya', 'met_devon'],
+        globalFlags: ['maya_arc_complete', 'devon_arc_complete', 'met_maya', 'met_devon', 'first_journey_complete'],
         characters: [
           {
             characterId: 'samuel',
             trust: 5,
+            anxiety: 50,
+            nervousSystemState: 'ventral_vagal',
+            lastReaction: null,
             knowledgeFlags: [],
             relationshipStatus: 'acquaintance',
             conversationHistory: []
@@ -39,6 +42,9 @@ test.describe('Journey Summary', () => {
           {
             characterId: 'maya',
             trust: 7,
+            anxiety: 50,
+            nervousSystemState: 'ventral_vagal',
+            lastReaction: null,
             knowledgeFlags: ['maya_goal_discussed'],
             relationshipStatus: 'acquaintance',
             conversationHistory: []
@@ -46,6 +52,9 @@ test.describe('Journey Summary', () => {
           {
             characterId: 'devon',
             trust: 6,
+            anxiety: 50,
+            nervousSystemState: 'ventral_vagal',
+            lastReaction: null,
             knowledgeFlags: ['devon_goal_discussed'],
             relationshipStatus: 'acquaintance',
             conversationHistory: []
@@ -54,7 +63,22 @@ test.describe('Journey Summary', () => {
         // High pattern scores to also meet the 20+ choices condition
         patterns: { analytical: 6, building: 4, helping: 8, exploring: 3, patience: 4 },
         lastSaved: Date.now(),
-        thoughts: []
+        thoughts: [],
+        episodeNumber: 2,
+        sessionStartTime: Date.now(),
+        sessionBoundariesCrossed: 1,
+        platforms: {},
+        careerValues: { directImpact: 2, systemsThinking: 1, dataInsights: 1, futureBuilding: 1, independence: 0 },
+        mysteries: { letterSender: 'unknown', platformSeven: 'stable', samuelsPast: 'hidden', stationNature: 'unknown' },
+        time: { currentDisplay: '23:47', minutesRemaining: 13, flowRate: 1.0, isStopped: false },
+        quietHour: { potential: true, experienced: [] },
+        overdensity: 0.3,
+        items: { letter: 'kept', discoveredPaths: [] },
+        pendingCheckIns: [],
+        unlockedAbilities: [],
+        archivistState: { collectedRecords: [], verifiedLore: [], sensoryCalibration: {} },
+        skillLevels: {},
+        skillUsage: []
       }
       localStorage.setItem('grand-central-terminus-save', JSON.stringify(gameState))
     })
@@ -67,7 +91,8 @@ test.describe('Journey Summary', () => {
   })
 
   test.skip('Journey Summary button appears when journey is complete', async ({ page }) => {
-    // SKIPPED: Requires complex state seeding with valid node IDs from dialogue graphs
+    // Fixed: State seeding now includes all required fields and valid node IDs
+    // Skipped until dev server integration confirmed
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()

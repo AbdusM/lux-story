@@ -90,7 +90,7 @@ const createFreshGameState = () => ({
 const createJourneyCompleteState = () => ({
   saveVersion: '1.0',
   playerId: `test-journey-${Date.now()}`,
-  currentNodeId: 'samuel_hub_wisdom',
+  currentNodeId: 'samuel_hub_return', // Valid hub node for returning players
   currentCharacterId: 'samuel',
   patterns: {
     analytical: 3,
@@ -164,7 +164,7 @@ const createJourneyCompleteState = () => ({
 const createDemonstratedSkillsState = () => ({
   saveVersion: '1.0',
   playerId: `test-skills-${Date.now()}`,
-  currentNodeId: 'samuel_hub_wisdom',
+  currentNodeId: 'samuel_hub_return', // Valid hub node
   currentCharacterId: 'samuel',
   patterns: {
     analytical: 4,
