@@ -1,31 +1,30 @@
 # Technical Debt Register
 
 > Audited as of commit `33ef4c2` on 2026-01-27
-> Updated: 2026-02-04 (TD-002, TD-003, TD-006, TD-008, TD-009, TD-010 resolved)
+> Updated: 2026-02-04 (TD-001, TD-002, TD-003, TD-006, TD-008, TD-009, TD-010 resolved)
 
 ## Summary
 
-10 items tracked. 1 high risk (was 3), 3 medium (was 4), 0 low (was 3).
-**6 items resolved** this sprint.
+10 items tracked. 0 high risk (was 3), 3 medium (was 4), 0 low (was 3).
+**7 items resolved** this sprint. 3 items remaining (all medium risk).
 
 ---
 
 ## High Risk
 
-### TD-001: Dual Source of Truth (Zustand + React State)
+### TD-001: Dual Source of Truth (Zustand + React State) ✅ RESOLVED
 
 **Impact:** During active session, both React `useState` in StatefulGameInterface and Zustand `coreGameState` hold game state. They can drift if a `setState` call fails or if Zustand persist lags.
 
 **Evidence:** `components/StatefulGameInterface.tsx` (grep: `useState<GameState>`), `lib/game-store.ts` (grep: `setCoreGameState`)
 
-**Mitigation:** Zustand is authoritative for persistence. React state is authoritative for render. Convention enforced via code review.
+**Resolution:** Refactored SGI to read game state exclusively from Zustand:
+1. `GameInterfaceState` now holds only UI fields (modals, loading, transient feedback)
+2. Game data read via `useGameSelectors.useCoreGameStateHydrated()` (line 334)
+3. All mutations go through `applyCoreStateChange` and `commitGameState`
+4. Comment at line 331-333 documents the architecture
 
-**Resolution path:** Eliminate React `useState` for game state; derive all UI from Zustand selectors. Requires SGI refactor.
-
-**Owner:** Core team
-**Trigger:** Before multi-device sync
-**Risk:** High
-**Estimate:** Large
+**Resolved:** 2026-02-04 (discovered already complete during audit)
 
 ---
 
