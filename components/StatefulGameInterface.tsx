@@ -88,6 +88,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -105,13 +106,15 @@ import { getTrustLabel } from '@/lib/trust-labels'
 import { CharacterState, GameState, GameStateUtils } from '@/lib/character-state'
 import { GameLogic } from '@/lib/game-logic'
 import { HeroBadge } from '@/components/HeroBadge'
-import { StrategyReport } from '@/components/career/StrategyReport'
+// Lazy loaded - only shown when user requests report
+const StrategyReport = dynamic(() => import('@/components/career/StrategyReport').then(m => m.StrategyReport), { ssr: false })
 import { UnifiedMenu } from '@/components/UnifiedMenu'
 import { GameStateManager } from '@/lib/game-state-manager'
 import { useBackgroundSync } from '@/hooks/useBackgroundSync'
 import { useSettingsSync } from '@/hooks/useSettingsSync'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
-import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
+// Lazy loaded - only shown on demand
+const KeyboardShortcutsHelp = dynamic(() => import('@/components/KeyboardShortcutsHelp').then(m => m.KeyboardShortcutsHelp), { ssr: false })
 import { StationState, useStationStore } from '@/lib/station-state'
 import { filterChoicesByLoad, CognitiveLoadLevel } from '@/lib/cognitive-load' // Fixed: Top-level import
 import { generateUserId } from '@/lib/safe-storage'
@@ -145,15 +148,18 @@ import { isSupabaseConfigured } from '@/lib/supabase'
 // eslint-disable-next-line
 import { GameChoices } from '@/components/GameChoices'
 import { BookOpen, Stars, Compass } from 'lucide-react'
-import { Journal } from '@/components/Journal'
+// Lazy loaded - side panel, not needed for initial render
+const Journal = dynamic(() => import('@/components/Journal').then(m => m.Journal), { ssr: false })
 import { SessionSummary } from '@/components/SessionSummary'
-import { ConstellationPanel } from '@/components/constellation'
+// Lazy loaded - side panel, not needed for initial render
+const ConstellationPanel = dynamic(() => import('@/components/constellation').then(m => m.ConstellationPanel), { ssr: false })
 import { SectionErrorBoundary } from '@/components/LayeredErrorBoundaries'
 import { StationStatusBadge } from '@/components/StationStatusBadge'
 import { TextProcessor } from '@/lib/text-processor'
 // InGameSettings removed - consolidated into UnifiedMenu
 import { IdleWarningModal } from '@/components/IdleWarningModal'
-import { JourneySummary } from '@/components/JourneySummary'
+// Lazy loaded - only shown at journey end
+const JourneySummary = dynamic(() => import('@/components/JourneySummary').then(m => m.JourneySummary), { ssr: false })
 import { useToast } from '@/components/ui/toast'
 import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } from '@/lib/journey-narrative-generator'
 import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
