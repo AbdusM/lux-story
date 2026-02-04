@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { usePullToDismiss, pullToDismissPresets } from "@/hooks/usePullToDismiss"
 import { useReaderMode } from "@/hooks/useReaderMode"
-import { Users, Zap, Compass, TrendingUp, X, Crown, Cpu, Play, Sparkles, AlertTriangle, Brain, Building2, Type, Puzzle } from "lucide-react"
+import { Users, Zap, Compass, TrendingUp, X, Crown, Cpu, Play, Sparkles, AlertTriangle, Brain, Building2, Type, Puzzle, Award } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useConstellationData } from "@/hooks/useConstellationData"
 import { useInsights } from "@/hooks/useInsights"
@@ -24,10 +24,12 @@ import { OpportunitiesView } from "./journal/OpportunitiesView"
 import { SynthesisPuzzlesView } from "./journal/SynthesisPuzzlesView"
 import { CareerRecommendationsView } from "./journal/CareerRecommendationsView"
 import { SkillCombosView } from "./journal/SkillCombosView"
+import { RankingView } from "./journal/RankingView"
 import { OrbDetailPanel } from "./OrbDetailPanel"
 import { CognitionView } from "./CognitionView"
 import { PatternType } from "@/lib/patterns"
 import { ORB_TIERS } from "@/lib/orbs"
+import { CompactRankBadge } from "@/components/ranking/PatternRankBadge"
 import { useSimulations } from "@/hooks/useSimulations"
 import { useUserRole } from "@/hooks/useUserRole"
 
@@ -36,7 +38,7 @@ interface JournalProps {
   onClose: () => void
 }
 
-type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'toolkit' | 'simulations' | 'cognition' | 'analysis' | 'god_mode' | 'opportunities' | 'careers' | 'combos' | 'mysteries'
+type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'toolkit' | 'simulations' | 'cognition' | 'analysis' | 'god_mode' | 'opportunities' | 'careers' | 'combos' | 'mysteries' | 'ranks'
 
 // Tab content variants - respects prefers-reduced-motion via Framer Motion's global setting
 // but we also pass explicit reduced variants for clarity
@@ -98,6 +100,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const hasNewOpportunities = !viewedTabs.has('opportunities') // Simple new indicator for now
   const hasNewCareers = skills.length > 0 && !viewedTabs.has('careers') // Show badge when skills exist
   const hasNewCombos = skills.length > 0 && !viewedTabs.has('combos') // Show badge when skills exist
+  const hasNewRanks = balance.totalEarned > 0 && !viewedTabs.has('ranks') // Show badge when orbs earned
 
   // Mark tab as viewed when selected
   const handleTabSelect = (tabId: TabId) => {
@@ -124,7 +127,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     opportunities: hasNewOpportunities,
     careers: hasNewCareers,
     combos: hasNewCombos,
-    mysteries: false
+    mysteries: false,
+    ranks: hasNewRanks
   }
 
 
@@ -142,6 +146,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     { id: 'harmonics', label: 'Harmonics', icon: Zap },
     { id: 'essence', label: 'Essence', icon: Compass },
     { id: 'mastery', label: 'Mastery', icon: Crown },
+    { id: 'ranks', label: 'Ranks', icon: Award },
     { id: 'careers', label: 'Careers', icon: TrendingUp },
     { id: 'combos', label: 'Combos', icon: Zap },
     { id: 'opportunities', label: 'Opportunities', icon: Building2 },
@@ -253,9 +258,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                     <span className="text-xs text-slate-400 uppercase tracking-wider">
                       orbs
                     </span>
-                    <span className="text-xs px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 font-medium">
-                      {ORB_TIERS[tier].label}
-                    </span>
+                    <CompactRankBadge tier={tier} />
                   </div>
                 </div>
               )}
@@ -350,6 +353,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                     {activeTab === 'careers' && <CareerRecommendationsView />}
                     {activeTab === 'combos' && <SkillCombosView />}
                     {activeTab === 'mysteries' && <SynthesisPuzzlesView />}
+                    {activeTab === 'ranks' && <RankingView />}
                     {activeTab === 'god_mode' && <SimulationGodView onClose={onClose} />}
                   </motion.div>
                 )}
