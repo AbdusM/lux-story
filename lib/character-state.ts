@@ -222,6 +222,14 @@ export interface StateChange {
 
   // Mystery progression
   mysteryChanges?: Partial<MysteryState>
+
+  // Platform resonance (TD-005: Career platform warmth/resonance)
+  platformChanges?: {
+    platformId: string
+    warmthDelta?: number
+    resonanceDelta?: number
+    setAccessible?: boolean
+  }[]
 }
 
 /**

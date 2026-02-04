@@ -88,6 +88,13 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         characterId: 'devon',
         setRelationshipStatus: 'stranger'
+      },
+      // TD-005: First meeting with Devon warms up the technology platform
+      {
+        platformChanges: [{
+          platformId: 'platform-7',
+          warmthDelta: 1
+        }]
       }
     ],
     tags: ['introduction', 'devon_arc']

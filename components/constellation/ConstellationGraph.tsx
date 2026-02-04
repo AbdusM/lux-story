@@ -7,8 +7,10 @@ import { CHARACTER_CONNECTIONS, CHARACTER_COLORS } from '@/lib/constellation/cha
 import { CHARACTER_RELATIONSHIP_WEB } from '@/lib/character-relationships'
 import { hapticFeedback } from '@/lib/haptic-feedback'
 import { getVisibleResonancePaths, type ResonancePath } from '@/lib/constellation/pattern-resonance-paths'
-import { useGameStore } from '@/lib/game-store'
+import { getCharacterPlatform, PLATFORMS } from '@/lib/constellation/platform-mapping'
+import { useGameStore, useGameSelectors } from '@/lib/game-store'
 import type { PatternType } from '@/lib/patterns'
+import type { CharacterId } from '@/lib/graph-registry'
 import { TRUST_THRESHOLDS, TRUST_STATE_THRESHOLDS } from '@/lib/constants'
 import { GameErrorBoundary } from '@/components/GameErrorBoundary'
 
@@ -34,6 +36,10 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
 
     // Get player's pattern levels for resonance paths
     const patterns = useGameStore(state => state.patterns)
+
+    // TD-005: Get platform warmth for resonance glow effects
+    const platformWarmth = useGameSelectors.usePlatformWarmthAll()
+
     const visibleResonancePaths = useMemo(() => {
         const patternLevels: Record<PatternType, number> = {
             analytical: patterns.analytical || 0,
@@ -555,6 +561,30 @@ export function ConstellationGraph({ characters, onOpenDetail, onTravel }: Const
                             >
                                 {/* Hit Area */}
                                 <circle r={12} fill="transparent" />
+
+                                {/* TD-005: Platform Resonance Glow */}
+                                {(() => {
+                                    const platform = getCharacterPlatform(char.id as CharacterId)
+                                    if (!platform) return null
+                                    const warmth = platformWarmth[platform.id] || 0
+                                    if (warmth <= 0) return null
+
+                                    // Glow intensity based on warmth (0-10 scale)
+                                    const glowIntensity = Math.min(warmth / 10, 1)
+                                    const glowRadius = radius + 6 + (glowIntensity * 4)
+
+                                    return (
+                                        <circle
+                                            r={glowRadius}
+                                            fill={`hsla(${platform.hue}, 70%, 50%, ${glowIntensity * 0.15})`}
+                                            className="transition-all duration-1000 pointer-events-none"
+                                            style={{
+                                                filter: `blur(${2 + glowIntensity * 3}px)`,
+                                            }}
+                                            aria-hidden="true"
+                                        />
+                                    )
+                                })()}
 
                                 {/* Outer Ring (Persistent BRASS/GOLD Rim) */}
                                 {(char.hasMet || isHovered) && (

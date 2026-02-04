@@ -152,6 +152,13 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         characterId: 'maya',
         addKnowledgeFlags: ['met_player']
+      },
+      // TD-005: First meeting with Maya warms up the technology platform
+      {
+        platformChanges: [{
+          platformId: 'platform-7',
+          warmthDelta: 1
+        }]
       }
     ],
     tags: ['introduction', 'maya_arc', 'bg3_hook']
@@ -863,6 +870,13 @@ STATUS: Signal fighting itself`,
         addKnowledgeFlags: ['knows_robotics'],
         setRelationshipStatus: 'confidant',
         thoughtId: 'community-heart'
+      },
+      // TD-005: Deep tech discussion significantly warms the technology platform
+      {
+        platformChanges: [{
+          platformId: 'platform-7',
+          warmthDelta: 2
+        }]
       }
     ],
     tags: ['major_reveal', 'trust_gate', 'maya_arc', 'immersive_scenario']

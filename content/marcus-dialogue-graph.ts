@@ -132,6 +132,13 @@ const nodes: DialogueNode[] = [
       {
         characterId: 'marcus',
         addKnowledgeFlags: ['met_marcus']
+      },
+      // TD-005: First meeting with Marcus warms up the healthcare platform
+      {
+        platformChanges: [{
+          platformId: 'platform-1',
+          warmthDelta: 1
+        }]
       }
     ]
   },

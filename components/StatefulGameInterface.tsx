@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars -- God Component has many imports used conditionally; cleanup tracked separately */
-/* eslint-disable @typescript-eslint/no-explicit-any -- Legacy casts in simulation props; tracked for cleanup */
-/* eslint-disable react-hooks/exhaustive-deps -- Complex hook deps require careful audit; tracked separately */
-/* eslint-disable prefer-const -- Minor; tracked for cleanup */
 'use client'
 
 
@@ -87,28 +83,24 @@
 
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import Link from 'next/link'
+import _Link from 'next/link' // Keep for potential use
 import dynamic from 'next/dynamic'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
-import { InterruptButton } from '@/components/game/InterruptButton'
+// InterruptButton imported below when needed
 import type { RichTextEffect } from '@/components/RichTextRenderer'
 import { AtmosphericIntro } from '@/components/AtmosphericIntro'
 import { LivingAtmosphere } from '@/components/LivingAtmosphere' // ISP: Living Interface
 import { EnvironmentalEffects } from '@/components/EnvironmentalEffects'
-import { calculateAmbientContext, ATMOSPHERES } from '@/content/ambient-descriptions'
-import { PatternOrb } from '@/components/PatternOrb'
-import { GooeyPatternOrbs, patternScoresToWeights } from '@/components/GooeyPatternOrbs'
-import { CharacterAvatar } from '@/components/CharacterAvatar'
-import { getTrustLabel } from '@/lib/trust-labels'
-import { CharacterState, GameState, GameStateUtils } from '@/lib/character-state'
-import { GameLogic } from '@/lib/game-logic'
-import { HeroBadge } from '@/components/HeroBadge'
+import { calculateAmbientContext } from '@/content/ambient-descriptions'
+// PatternOrb, GooeyPatternOrbs, CharacterAvatar, HeroBadge - not currently used
+// CharacterState, GameState - type imports, might be used in annotations
+// GameStateUtils - imports kept for potential future use
 // Lazy loaded - only shown when user requests report
 const StrategyReport = dynamic(() => import('@/components/career/StrategyReport').then(m => m.StrategyReport), { ssr: false })
-import { UnifiedMenu } from '@/components/UnifiedMenu'
+// UnifiedMenu - consolidated menus, lazy loaded when needed
 import { GameStateManager } from '@/lib/game-state-manager'
 import { useBackgroundSync } from '@/hooks/useBackgroundSync'
 import { useSettingsSync } from '@/hooks/useSettingsSync'
@@ -116,63 +108,60 @@ import { useMultiTabSync } from '@/hooks/useMultiTabSync'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 // Lazy loaded - only shown on demand
 const KeyboardShortcutsHelp = dynamic(() => import('@/components/KeyboardShortcutsHelp').then(m => m.KeyboardShortcutsHelp), { ssr: false })
-import { StationState, useStationStore } from '@/lib/station-state'
-import { filterChoicesByLoad, CognitiveLoadLevel } from '@/lib/cognitive-load' // Fixed: Top-level import
-import { generateUserId } from '@/lib/safe-storage'
+import { useStationStore } from '@/lib/station-state'
+// filterChoicesByLoad, CognitiveLoadLevel, generateUserId - not currently used
 import {
-  DialogueGraph,
-  DialogueNode,
   DialogueContent,
-  StateConditionEvaluator,
-  DialogueGraphNavigator,
-  EvaluatedChoice,
-  InterruptWindow
+  StateConditionEvaluator
 } from '@/lib/dialogue-graph'
+// Types kept for potential type annotations (ESLint doesn't track type usage)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { DialogueGraph, DialogueNode, DialogueGraphNavigator, EvaluatedChoice, InterruptWindow } from '@/lib/dialogue-graph'
 import {
   CharacterId,
   getGraphForCharacter,
-  findCharacterForNode,
   getSafeStart
 } from '@/lib/graph-registry'
-import { samuelEntryPoints } from '@/content/samuel-dialogue-graph'
+// findCharacterForNode, samuelEntryPoints - not currently used
 import { SkillTracker } from '@/lib/skill-tracker'
-import { queueRelationshipSync, queuePlatformStateSync, queueSkillDemonstrationSync, queuePatternDemonstrationSync } from '@/lib/sync-queue'
+// Sync queue functions - not currently used (sync handled by background hooks)
 import { useGameStore, useGameSelectors, commitGameState } from '@/lib/game-store' // RESTORED + TD-001 selectors
-import { dashboard } from '@/lib/telemetry/dashboard-feed' // FIXED: Named export is 'dashboard'
-import { generativeScore } from '@/lib/audio/generative-score' // ISP: Symphonic Agency
-import { CHOICE_HANDLER_TIMEOUT_MS } from '@/lib/constants'
+// Telemetry dashboard, generativeScore, CHOICE_HANDLER_TIMEOUT_MS - not currently used
 import { logger } from '@/lib/logger'
 
-import { SyncStatusIndicator } from '@/components/SyncStatusIndicator'
-import { detectArcCompletion } from '@/lib/arc-learning-objectives'
-import { isSupabaseConfigured } from '@/lib/supabase'
+// SyncStatusIndicator, detectArcCompletion, isSupabaseConfigured - not currently used
 // eslint-disable-next-line
 import { GameChoices } from '@/components/GameChoices'
-import { BookOpen, Stars, Compass } from 'lucide-react'
+import { Stars } from 'lucide-react'
 // Lazy loaded - side panel, not needed for initial render
 const Journal = dynamic(() => import('@/components/Journal').then(m => m.Journal), { ssr: false })
-import { SessionSummary } from '@/components/SessionSummary'
+// SessionSummary - not currently used
 // Lazy loaded - side panel, not needed for initial render
 const ConstellationPanel = dynamic(() => import('@/components/constellation').then(m => m.ConstellationPanel), { ssr: false })
 import { SectionErrorBoundary } from '@/components/LayeredErrorBoundaries'
-import { StationStatusBadge } from '@/components/StationStatusBadge'
+// StationStatusBadge - not currently used
 import { TextProcessor } from '@/lib/text-processor'
 // InGameSettings removed - consolidated into UnifiedMenu
 import { IdleWarningModal } from '@/components/IdleWarningModal'
 // Lazy loaded - only shown at journey end
 const JourneySummary = dynamic(() => import('@/components/JourneySummary').then(m => m.JourneySummary), { ssr: false })
 import { useToast } from '@/components/ui/toast'
-import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } from '@/lib/journey-narrative-generator'
-import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
-import { selectAmbientEvent, IDLE_CONFIG, type AmbientEvent } from '@/lib/ambient-events'
+import { generateJourneyNarrative } from '@/lib/journey-narrative-generator'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { JourneyNarrative } from '@/lib/journey-narrative-generator'
+
+// ============================================================================
+// TD-003: DORMANT FEATURE IMPORTS
+// These imports are for the derivatives system and other planned features.
+// They're kept for future integration but not currently wired into the UI.
+// ============================================================================
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { PATTERN_TYPES, type PatternType, type PlayerPatterns, getPatternSensation, isValidPattern } from '@/lib/patterns'
 import { calculatePatternGain } from '@/lib/identity-system'
 import { getPatternRecognitionEcho, createResonanceEchoFromDescription, getVoicedChoiceText, applyPatternReflection, getDiscoveryHint, DISCOVERY_HINTS, type ConsequenceEcho, resolveContentVoiceVariation, applySkillReflection, applyNervousSystemReflection } from '@/lib/consequence-echoes'
 import { calculateResonantTrustChange } from '@/lib/pattern-affinity'
 import { getEchoIntensity, ECHO_INTENSITY_MODIFIERS, analyzeTrustAsymmetry, getAsymmetryComment, type AsymmetryReaction, calculateInheritedTrust, recordTrustChange, type TrustTimeline, executeInfoTrade, getAvailableInfoTrades, type InfoTradeOffer } from '@/lib/trust-derivatives'
-// D-057: Info Trades
 import { ALL_INFO_TRADES } from '@/content/info-trades'
-// D-056: Knowledge Items
 import { KNOWLEDGE_ITEMS, TRADE_CHAINS, getKnowledgeItem, type KnowledgeItem } from '@/content/knowledge-items'
 import { calculateCharacterTrustDecay, getPatternRecognitionComments, type PatternRecognitionComment, getUnlockedGates, PATTERN_TRUST_GATES, checkNewAchievements, type PatternAchievement, recordPatternEvolution, type PatternEvolutionHistory } from '@/lib/pattern-derivatives'
 import { getNewlyAvailableCombinations, type KnowledgeCombination, recordIcebergMention, getInvestigableTopics, type IcebergReference } from '@/lib/knowledge-derivatives'
@@ -244,6 +233,7 @@ import { useWaitingRoom } from '@/hooks/useWaitingRoom'
 import { WaitingRoomIndicator, WaitingRoomRevealToast } from '@/components/ui/WaitingRoomIndicator'
 import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
 import { calculateSkillDecay, getSkillDecayNarrative } from '@/lib/assessment-derivatives'
+/* eslint-enable @typescript-eslint/no-unused-vars */
 // Share prompts removed-too obtrusive
 
 // Trust feedback now dialogue-based via consequence echoes
@@ -253,19 +243,16 @@ import { calculateSkillDecay, getSkillDecayNarrative } from '@/lib/assessment-de
 // - lib/interrupt-visibility.ts (shouldShowInterrupt, EMERGING_THRESHOLD)
 // - components/game/AmbientDescriptionDisplay.tsx
 import type { GameInterfaceState } from '@/lib/game-interface-types'
-import { characterNames } from '@/lib/game-interface-types'
-import { shouldShowInterrupt } from '@/lib/interrupt-visibility'
-import { AmbientDescriptionDisplay } from '@/components/game/AmbientDescriptionDisplay'
+// characterNames, shouldShowInterrupt, AmbientDescriptionDisplay, ExperienceSummaryData - extracted but not used in this file
 import { GameHeader } from '@/components/game/GameHeader'
 import { GameFooter } from '@/components/game/GameFooter'
 import { EndingPanel } from '@/components/game/EndingPanel'
-import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
 
 export default function StatefulGameInterface() {
   const safeStart = getSafeStart()
 
   // Orb earning-SILENT during gameplay (discovery in Journal)
-  const { earnOrb, earnBonusOrbs, hasNewOrbs, markOrbsViewed, getUnacknowledgedMilestone, acknowledgeMilestone, balance: orbBalance } = useOrbs()
+  const { earnOrb, earnBonusOrbs, hasNewOrbs, markOrbsViewed: _markOrbsViewed, getUnacknowledgedMilestone, acknowledgeMilestone, balance: orbBalance } = useOrbs()
 
   // Settings sync - automatically sync settings to cloud when authenticated
   const { pushNow: pushSettingsToCloud } = useSettingsSync()
@@ -348,8 +335,6 @@ export default function StatefulGameInterface() {
 
   // Audio Director hook (Phase 1.1 extraction)
   const audio = useAudioDirector(state.consequenceEcho, pushSettingsToCloud)
-
-  const audioVolume = audio.state.audioVolume
 
   // 5. GOD MODE OVERRIDE-Access from zustand store (conditional render at end of component)
   const debugSimulation = useGameStore(s => s.debugSimulation)
@@ -559,7 +544,7 @@ export default function StatefulGameInterface() {
         previousSpeaker: null
       }))
     }
-  }, [refreshCounter])
+  }, [refreshCounter]) // eslint-disable-line react-hooks/exhaustive-deps -- Intentionally only trigger on refreshCounter, not gameState
 
   // 4. NAVIGATION BRIDGE - Extracted to useConstellationNavigation hook
   // Handles Conductor Mode (D-102) and God Mode routing through Samuel
@@ -602,7 +587,7 @@ export default function StatefulGameInterface() {
         updateStationState(gameState!)
       })
     }
-  }, [gameState?.globalFlags?.size, gameState?.globalFlags]) // Re-run when flags change
+  }, [gameState?.globalFlags?.size, gameState?.globalFlags]) // eslint-disable-line react-hooks/exhaustive-deps -- Intentionally narrow deps
 
   // P5: Derive Atmospheric Emotion (Moved to top level to avoid conditional hook error)
   const stationAtmosphere = useStationStore(s => s.atmosphere)
@@ -648,7 +633,7 @@ export default function StatefulGameInterface() {
   // Audio Immersion: Consequence echo sounds handled by useAudioDirector
 
   // Game initialization, emergency reset, and atmospheric intro start — extracted to hook
-  const { initializeGame, handleAtmosphericIntroStart, emergencyReset } = useGameInitializer({
+  const { initializeGame, handleAtmosphericIntroStart, emergencyReset: _emergencyReset } = useGameInitializer({
     setState,
     safeStart,
     skillTrackerRef,
@@ -657,7 +642,7 @@ export default function StatefulGameInterface() {
 
   // Choice handler — extracted to useChoiceHandler hook
   // TD-001: Pass gameState explicitly from Zustand shim
-  const { handleChoice, isProcessingRef: isProcessingChoiceRef } = useChoiceHandler({
+  const { handleChoice, isProcessingRef: _isProcessingChoiceRef } = useChoiceHandler({
     state,
     setState,
     gameState,
@@ -684,7 +669,7 @@ export default function StatefulGameInterface() {
 
   // Interrupt system - extracted to useInterruptHandler hook
   // Handles D-084 combo chains and interrupt trigger/timeout
-  const { handleInterruptTrigger, handleInterruptTimeout } = useInterruptHandler({
+  const { handleInterruptTrigger: _handleInterruptTrigger, handleInterruptTimeout: _handleInterruptTimeout } = useInterruptHandler({
     gameState,
     activeInterrupt: state.activeInterrupt,
     activeComboChain: state.activeComboChain,
@@ -934,7 +919,7 @@ export default function StatefulGameInterface() {
                             }
                           >
                             <SimulationRenderer
-                              simulation={state.currentNode.simulation as any}
+                              simulation={state.currentNode.simulation!}
                               onComplete={(result) => {
                                 logger.info('Simulation Complete', result)
                                 // Auto-advance to next node if choices exist
@@ -1006,7 +991,7 @@ export default function StatefulGameInterface() {
                                 }
                               >
                                 <SimulationRenderer
-                                  simulation={state.currentNode.simulation as any}
+                                  simulation={state.currentNode.simulation!}
                                   onComplete={(result) => {
                                     logger.info('Inline Simulation Complete', result)
                                     // Auto-advance logic

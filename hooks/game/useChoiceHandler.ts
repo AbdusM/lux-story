@@ -513,6 +513,19 @@ export function useChoiceHandler({
         for (const change of nextNode.onEnter) {
           newGameState = GameStateUtils.applyStateChange(newGameState, change)
 
+          // TD-005: Process platform changes (update Zustand store)
+          if (change.platformChanges) {
+            for (const platformChange of change.platformChanges) {
+              if (platformChange.warmthDelta !== undefined) {
+                const currentWarmth = useGameStore.getState().platformWarmth[platformChange.platformId] || 0
+                useGameStore.getState().updatePlatformWarmth(platformChange.platformId, currentWarmth + platformChange.warmthDelta)
+              }
+              if (platformChange.setAccessible !== undefined) {
+                useGameStore.getState().setPlatformAccessible(platformChange.platformId, platformChange.setAccessible)
+              }
+            }
+          }
+
           // Detect identity internalization for ceremony animation
           if (change.internalizeThought && change.thoughtId?.startsWith('identity-')) {
             const patternName = change.thoughtId.replace('identity-', '') as PatternType

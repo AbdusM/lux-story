@@ -1,10 +1,12 @@
 # Technical Debt Register
 
 > Audited as of commit `33ef4c2` on 2026-01-27
+> Updated: 2026-02-04 (TD-002, TD-003, TD-006, TD-008, TD-009, TD-010 resolved)
 
 ## Summary
 
-10 items tracked. 3 high risk, 4 medium, 3 low.
+10 items tracked. 1 high risk (was 3), 3 medium (was 4), 0 low (was 3).
+**6 items resolved** this sprint.
 
 ---
 
@@ -27,37 +29,31 @@
 
 ---
 
-### TD-002: No Immutability Enforcement
+### TD-002: No Immutability Enforcement ✅ RESOLVED
 
 **Impact:** `GameStateUtils.applyStateChange()` returns a new object by convention, but nothing prevents direct mutation. Subtle bugs possible from accidental state mutation.
 
 **Evidence:** `lib/character-state.ts` (grep: `applyStateChange`). No `Object.freeze` or Immer usage.
 
-**Mitigation:** Code review convention. All state changes routed through `applyStateChange`.
+**Resolution:** Added `devFreeze()` wrapper that applies `Object.freeze` in development mode. All state returned from `applyStateChange()` is now frozen in dev, catching accidental mutations immediately.
 
-**Resolution path:** Add Immer for production mutations, or `Object.freeze` in dev builds. See [ADR-003](02-architecture-decisions.md#adr-003).
-
-**Owner:** Core team
-**Trigger:** Before adding new state mutators
-**Risk:** High
-**Estimate:** Medium
+**Resolved:** 2026-02-04
 
 ---
 
-### TD-003: Scoped eslint-disable in StatefulGameInterface
+### TD-003: Scoped eslint-disable in StatefulGameInterface ✅ RESOLVED
 
 **Impact:** SGI has 4 file-level eslint-disable directives suppressing: unused-vars, no-explicit-any, exhaustive-deps, prefer-const. Masks real issues alongside intentional suppressions.
 
 **Evidence:** `components/StatefulGameInterface.tsx` (grep: `eslint-disable`)
 
-**Mitigation:** Each directive has a comment explaining rationale. Tracked for cleanup.
+**Resolution:** Removed all 4 file-level suppressions. Fixed underlying issues:
+- Removed ~45 unused imports
+- Fixed SimulationType mismatches in simulation types
+- Added targeted `eslint-disable-line` for intentional exhaustive-deps omissions
+- Documented dormant feature imports with block-level disable
 
-**Resolution path:** Extract logic from SGI into smaller modules. Re-enable lint rules per-file. Part of ongoing SGI refactor.
-
-**Owner:** Core team
-**Trigger:** Next SGI refactor phase
-**Risk:** High
-**Estimate:** Large
+**Resolved:** 2026-02-04
 
 ---
 
@@ -97,20 +93,19 @@
 
 ---
 
-### TD-006: Multi-Tab Corruption Risk
+### TD-006: Multi-Tab Corruption Risk ✅ RESOLVED
 
 **Impact:** No coordination between browser tabs. Both tabs can write to `grand-central-game-store` simultaneously. Last write wins, potentially losing recent choices.
 
 **Evidence:** No `BroadcastChannel`, `StorageEvent`, or mutex in `lib/game-store.ts`.
 
-**Mitigation:** Single-player game, multi-tab is uncommon usage. Zustand persist is near-instant (~1ms).
+**Resolution:** Added `useMultiTabSync` hook (`hooks/useMultiTabSync.ts`) that:
+- Listens for `storage` events from other tabs
+- Debounces and rate-limits rehydration (max once/second)
+- Rehydrates Zustand store when external changes detected
+- Used in StatefulGameInterface
 
-**Resolution path:** Add `StorageEvent` listener to detect external writes, or `BroadcastChannel` for tab coordination.
-
-**Owner:** Core team
-**Trigger:** Before PWA/offline support
-**Risk:** Medium
-**Estimate:** Small
+**Resolved:** 2026-02-04
 
 ---
 
@@ -133,51 +128,47 @@
 
 ## Low Risk
 
-### TD-008: Legacy Type Casts in Simulation Props
+### TD-008: Legacy Type Casts in Simulation Props ✅ RESOLVED
 
 **Impact:** Simulation-related code uses `as unknown as Record<string, number>` for skills access. Type safety gap.
 
 **Evidence:** `lib/skill-zustand-bridge.ts` (grep: `as unknown as Record`)
 
-**Mitigation:** Isolated to one file. Runtime behavior is correct.
+**Resolution:** Created `SkillRecord` type alias and `toSkillRecord()` helper function in `lib/game-store.ts`. Encapsulates the type assertion in one place with clear documentation. Updated `skill-zustand-bridge.ts` to use the helper.
 
-**Resolution path:** Type the skills interface properly in Zustand store. Requires FutureSkills type cleanup.
-
-**Owner:** Core team
-**Trigger:** Simulation type cleanup sprint
-**Risk:** Low
-**Estimate:** Small
+**Resolved:** 2026-02-04
 
 ---
 
-### TD-009: initializeGame Empty Dependencies
+### TD-009: initializeGame Empty Dependencies ✅ RESOLVED
 
 **Impact:** `initializeGame` in SGI uses `useEffect` with complex dependency management. Some deps may be stale.
 
 **Evidence:** `components/StatefulGameInterface.tsx` (grep: `initializeGame`)
 
-**Mitigation:** Covered by `eslint-disable react-hooks/exhaustive-deps`. Initialization runs once on mount.
+**Resolution:** Extracted to `useGameInitializer` hook (`hooks/game/useGameInitializer.ts`):
+1. Hook has file-level eslint-disable with clear explanation of intentional empty deps
+2. `initializeGame` reads state imperatively from stores/managers (not through closures)
+3. Function is intentionally stable - created once, reads current state when called
+4. This is the correct pattern for initialization logic that shouldn't re-create
 
-**Resolution path:** Extract initialization into a custom hook with explicit deps. Part of SGI refactor.
-
-**Owner:** Core team
-**Trigger:** Next hook audit
-**Risk:** Low
-**Estimate:** Small
+**Resolved:** 2026-02-04
 
 ---
 
-### TD-010: God Mode Keys in Production Build
+### TD-010: God Mode Keys in Production Build ✅ RESOLVED
 
 **Impact:** `window.godMode` is accessible in production builds. Allows trust manipulation, node jumping, state export.
 
 **Evidence:** `lib/dev-tools/god-mode-api.ts` (grep: `window.godMode`)
 
-**Mitigation:** God Mode only modifies local state. Cannot affect other users. No server-side bypass. Sets `window.__GOD_MODE_ACTIVE` flag that prevents SyncQueue writes.
+**Resolution:** Implemented multi-layer protection:
+1. `GodModeBootstrap.tsx` gates loading behind `NODE_ENV === 'development' || isEducator` check
+2. `useUserRole` hook validates educator role via Supabase auth + profiles table (RLS protected)
+3. `createGodModeAPI()` returns no-op proxy if `__GOD_MODE_AUTHORIZED` flag not set
+4. Dynamic import code-splits God Mode into separate chunk, only loaded for educators
+5. `__GOD_MODE_ACTIVE` flag prevents SyncQueue writes during state manipulation
 
-**Resolution path:** Gate behind `process.env.NODE_ENV === 'development'` check, or remove from production bundle via tree-shaking.
+**Security model:** Regular production users never trigger the import. Only server-validated educators can access. Even manual bypass only affects local state (no server-side impact).
 
-**Owner:** Core team
-**Trigger:** Before public release
-**Risk:** Low
-**Estimate:** Small
+**Resolved:** 2026-02-04

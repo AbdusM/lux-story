@@ -17,12 +17,14 @@ export type SimulationType =
     | 'secure_terminal'
     | 'prompt_engineering'
     | 'code_refactor'
+    | 'terminal_coding'
+    | 'data_analysis'
 
 
 export interface BaseSimulationContext {
     label?: string
     content?: string
-    displayStyle?: 'text' | 'code' | 'visual'
+    displayStyle?: 'text' | 'code' | 'visual' | 'image_placeholder'
     [key: string]: unknown
 }
 
@@ -74,7 +76,7 @@ import { BotanyTarget } from '@/lib/visualizers/botany-types'
 interface BaseContext {
     label?: string
     content?: string
-    displayStyle?: 'text' | 'code' | 'visual'
+    displayStyle?: 'text' | 'code' | 'visual' | 'image_placeholder'
     [key: string]: unknown
 }
 
