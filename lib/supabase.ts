@@ -8,6 +8,21 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import { getSupabaseConfig } from './env'
 
+/**
+ * Mock response type for offline/unconfigured mode
+ * Returns null data with descriptive error
+ */
+interface MockErrorResponse {
+  data: null
+  error: { message: string; code: string }
+}
+
+/**
+ * Mock client that mimics SupabaseClient's chainable API
+ * Used when Supabase is not configured or network is unreachable
+ * Uses a Proxy to dynamically return chainable methods that resolve to errors
+ */
+
 let _supabaseInstance: SupabaseClient | null = null
 let _networkFailureDetected = false
 let _configWarningLogged = false
@@ -24,40 +39,44 @@ function getSupabaseClient(): SupabaseClient {
   const config = getSupabaseConfig()
 
   // Return mock client that prevents crashes and supports chaining
-  interface MockChain {
-    then?: (resolve: (value: { data: null; error: { message: string; code: string } }) => void) => Promise<void>
-    [key: string]: unknown
-  }
-  
-  const createMockChain = (reason: string = 'not configured'): MockChain => new Proxy({} as MockChain, {
-    get: (_target, prop) => {
-      if (prop === 'then' || prop === 'catch') {
-        // Don't chain for Promise-like behavior
-        return undefined
-      }
-      return (..._args: unknown[]) => {
-        // Return another chainable mock for method chaining
-        const result = createMockChain(reason)
-        // Also make it awaitable with error
-        result.then = (resolve: (value: { data: null; error: { message: string; code: string } }) => void) => {
-          resolve({ 
-            data: null, 
-            error: { 
-              message: `Supabase ${reason}. Running in local-only mode.`,
-              code: 'NETWORK_ERROR'
-            } 
-          })
-          return Promise.resolve()
+  // Uses Proxy to create a deeply chainable mock that returns error responses
+  const createMockChain = (reason: string = 'not configured'): SupabaseClient => {
+    type ChainableResult = {
+      then?: (resolve: (value: MockErrorResponse) => void) => Promise<void>
+      [key: string]: unknown
+    }
+
+    const handler: ProxyHandler<ChainableResult> = {
+      get: (_target, prop) => {
+        if (prop === 'then' || prop === 'catch') {
+          // Don't chain for Promise-like behavior - return undefined
+          return undefined
         }
-        return result
+        return (..._args: unknown[]) => {
+          // Return another chainable mock for method chaining
+          const result = new Proxy({} as ChainableResult, handler)
+          // Also make it awaitable with error
+          result.then = (resolve) => {
+            resolve({
+              data: null,
+              error: {
+                message: `Supabase ${reason}. Running in local-only mode.`,
+                code: 'NETWORK_ERROR'
+              }
+            })
+            return Promise.resolve()
+          }
+          return result
+        }
       }
     }
-  })
-  
+    // Cast to SupabaseClient at the boundary - the Proxy handles all method calls
+    return new Proxy({} as ChainableResult, handler) as unknown as SupabaseClient
+  }
+
   // If network failure was detected, use mock client
   if (_networkFailureDetected) {
-    const mockClient = createMockChain('network unreachable')
-    _supabaseInstance = mockClient as unknown as SupabaseClient
+    _supabaseInstance = createMockChain('network unreachable')
     return _supabaseInstance
   }
 
@@ -68,8 +87,7 @@ function getSupabaseClient(): SupabaseClient {
       console.warn('[Supabase] Missing environment variables. Running in local-only mode.')
     }
 
-    const mockClient = createMockChain('not configured')
-    _supabaseInstance = mockClient as unknown as SupabaseClient
+    _supabaseInstance = createMockChain('not configured')
     return _supabaseInstance
   }
 

@@ -56,7 +56,12 @@ describe('Orb Migration', () => {
         exploring: 2,
         helping: 4,
         building: 1,
-        totalEarned: 15
+        totalEarned: 15,
+        currentStreak: 0,
+        currentStreakType: null,
+        bestStreak: 0,
+        arcCompletions: 0,
+        patternThresholdsHit: 0
       }
       mockStorage.set('lux-orb-balance', JSON.stringify(legacyBalance))
 

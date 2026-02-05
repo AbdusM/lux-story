@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo } from 'react'
 import { useGameStore } from '@/lib/game-store'
 import {
@@ -141,7 +140,5 @@ export const useRelationshipGraph = () => {
         })
 
         return { nodes, links }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [coreGameState])
+    }, [coreGameState]) // Dependency is correct - all data derives from coreGameState
 }

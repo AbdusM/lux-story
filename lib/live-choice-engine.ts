@@ -64,6 +64,14 @@ const ChoiceSchema = z.object({
   requiredOrbFill: OrbRequirementSchema.optional()
 }).passthrough() // Allow extra fields like 'id', 'pattern'
 
+// Extended schema for approved choices with pattern and sceneId
+const ApprovedChoiceSchema = ChoiceSchema.extend({
+  pattern: z.string(),
+  sceneId: z.string()
+})
+
+type ApprovedChoice = z.infer<typeof ApprovedChoiceSchema>
+
 const ReviewQueueEntrySchema = z.object({
   id: z.string(),
   sceneId: z.string(),
@@ -94,11 +102,11 @@ const ReviewQueueEntrySchema = z.object({
  * Handles real-time choice generation with Gemini API
  */
 export class LiveChoiceEngine {
-  private static instance: LiveChoiceEngine
+  private static instance: LiveChoiceEngine | null = null
   private reviewQueue: ReviewQueueEntry[]
   // ...
 
-  private approvedChoices: (Choice & { pattern: string; sceneId: string })[]
+  private approvedChoices: ApprovedChoice[]
 
   private constructor() {
     this.approvedChoices = []
@@ -121,7 +129,7 @@ export class LiveChoiceEngine {
    * Allows tests to start with fresh state.
    */
   public static resetInstance(): void {
-    LiveChoiceEngine.instance = undefined as unknown as LiveChoiceEngine
+    LiveChoiceEngine.instance = null
   }
 
   /**
@@ -133,11 +141,11 @@ export class LiveChoiceEngine {
 
     const validatedChoices = safeStorage.getValidatedItem(
       'lux-story-approved-choices-v2', // Diamond Safe: Versioned Key
-      z.array(ChoiceSchema.extend({ pattern: z.string(), sceneId: z.string() }))
+      z.array(ApprovedChoiceSchema)
     )
 
     if (validatedChoices) {
-      this.approvedChoices = validatedChoices as unknown as (Choice & { pattern: string; sceneId: string })[]
+      this.approvedChoices = validatedChoices
     } else {
       logger.info('LiveChoiceEngine: Clean slate initialized (No previous valid choices found for approved choices)')
       this.approvedChoices = []
@@ -178,7 +186,7 @@ export class LiveChoiceEngine {
           errorData = await response.json().catch(() => ({ error: 'Unknown JSON error' }))
         }
 
-        console.error('❌ API Error:', errorData.error)
+        logger.error('API Error:', { error: errorData.error })
         throw new Error(`API request failed: ${response.status} - ${errorData.error}`)
       }
 
@@ -188,7 +196,7 @@ export class LiveChoiceEngine {
       const validation = LiveChoiceResponseSchema.safeParse(generatedData)
 
       if (!validation.success) {
-        console.error('❌ API returned invalid data:', validation.error)
+        logger.error('API returned invalid data:', { error: validation.error })
         return null
       }
 
@@ -199,7 +207,7 @@ export class LiveChoiceEngine {
       return validatedData
 
     } catch (error) {
-      console.error('Live choice generation failed:', error)
+      logger.error('Live choice generation failed:', { error })
       return null
     }
   }
@@ -295,7 +303,7 @@ export class LiveChoiceEngine {
   /**
    * Get approved choices for a pattern/scene
    */
-  getApprovedChoices(pattern: string, sceneId: string): Choice[] {
+  getApprovedChoices(pattern: string, sceneId: string): ApprovedChoice[] {
     // Array-based filter
     return this.approvedChoices.filter(c =>
       c.pattern === pattern && c.sceneId === sceneId

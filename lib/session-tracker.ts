@@ -160,7 +160,7 @@ export function generateSessionSummary(gameState: SerializableGameState | null):
   return {
     timeAway: formatTimeAway(timeSince),
     recentCharacters,
-    dominantPattern,
+    dominantPattern: dominantPattern ?? null,
     dominantPatternLabel: dominantPattern ? PATTERN_METADATA[dominantPattern].label : null,
     totalTrust,
     charactersWithTrust: charactersWithTrust.length,

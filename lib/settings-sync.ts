@@ -11,6 +11,7 @@
 
 import { createClient } from '@/lib/supabase/client'
 import { STORAGE_KEYS } from '@/lib/persistence/storage-keys'
+import { logger } from '@/lib/logger'
 
 export interface UserSettings {
   // Audio
@@ -129,21 +130,21 @@ export async function loadCloudSettings(): Promise<UserSettings | null> {
     const { data: { user }, error } = await supabase.auth.getUser()
 
     if (error || !user) {
-      console.log('[SettingsSync] No authenticated user, skipping cloud load')
+      logger.info('[SettingsSync] No authenticated user, skipping cloud load')
       return null
     }
 
     const cloudSettings = user.user_metadata?.settings as UserSettings | undefined
 
     if (!cloudSettings) {
-      console.log('[SettingsSync] No cloud settings found')
+      logger.info('[SettingsSync] No cloud settings found')
       return null
     }
 
-    console.log('[SettingsSync] Loaded cloud settings:', cloudSettings)
+    logger.info('[SettingsSync] Loaded cloud settings', { settings: cloudSettings })
     return cloudSettings
   } catch (error) {
-    console.error('[SettingsSync] Error loading cloud settings:', error)
+    logger.error('[SettingsSync] Error loading cloud settings', { error: String(error) })
     return null
   }
 }
@@ -158,7 +159,7 @@ export async function saveCloudSettings(settings: UserSettings): Promise<boolean
     const { data: { user }, error: userError } = await supabase.auth.getUser()
 
     if (userError || !user) {
-      console.warn('[SettingsSync] No authenticated user, skipping cloud save')
+      logger.warn('[SettingsSync] No authenticated user, skipping cloud save')
       return false
     }
 
@@ -175,14 +176,14 @@ export async function saveCloudSettings(settings: UserSettings): Promise<boolean
     })
 
     if (error) {
-      console.error('[SettingsSync] Error saving cloud settings:', error)
+      logger.error('[SettingsSync] Error saving cloud settings', { error: error.message })
       return false
     }
 
-    console.log('[SettingsSync] Saved settings to cloud:', settingsWithTimestamp)
+    logger.info('[SettingsSync] Saved settings to cloud', { settings: settingsWithTimestamp })
     return true
   } catch (error) {
-    console.error('[SettingsSync] Error saving cloud settings:', error)
+    logger.error('[SettingsSync] Error saving cloud settings', { error: String(error) })
     return false
   }
 }
@@ -204,7 +205,7 @@ export function mergeSettings(local: Partial<UserSettings>, cloud: UserSettings 
 
   // Both exist - merge with last-write-wins
   // For simplicity, cloud wins (user logged in, likely their latest preferences)
-  console.log('[SettingsSync] Merging settings - cloud wins in conflicts')
+  logger.info('[SettingsSync] Merging settings - cloud wins in conflicts')
   return { ...DEFAULT_SETTINGS, ...local, ...cloud }
 }
 
@@ -212,7 +213,7 @@ export function mergeSettings(local: Partial<UserSettings>, cloud: UserSettings 
  * Full sync: Load cloud, merge with local, save to both
  */
 export async function syncSettings(): Promise<UserSettings> {
-  console.log('[SettingsSync] Starting full sync...')
+  logger.info('[SettingsSync] Starting full sync...')
 
   // Load from both sources
   const localSettings = loadLocalSettings()
@@ -225,7 +226,7 @@ export async function syncSettings(): Promise<UserSettings> {
   saveLocalSettings(mergedSettings)
   await saveCloudSettings(mergedSettings)
 
-  console.log('[SettingsSync] Sync complete:', mergedSettings)
+  logger.info('[SettingsSync] Sync complete', { settings: mergedSettings })
   return mergedSettings
 }
 
@@ -246,7 +247,7 @@ export async function pullSettingsFromCloud(): Promise<UserSettings | null> {
 
   if (cloudSettings) {
     saveLocalSettings(cloudSettings)
-    console.log('[SettingsSync] Pulled settings from cloud to local')
+    logger.info('[SettingsSync] Pulled settings from cloud to local')
   }
 
   return cloudSettings

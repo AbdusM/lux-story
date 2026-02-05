@@ -4,7 +4,7 @@
  */
 
 import { useMemo } from 'react'
-import { useGameStore } from '@/lib/game-store'
+import { useGameStore, type SkillRecord } from '@/lib/game-store'
 import { CHARACTER_NODES, type CharacterId, type CharacterNodeData } from '@/lib/constellation/character-positions'
 import { SKILL_NODES, getSkillState, type SkillState, type SkillNodeData } from '@/lib/constellation/skill-positions'
 import { CHARACTER_RELATIONSHIP_WEB } from '@/lib/character-relationships'
@@ -87,10 +87,12 @@ export function useConstellationData(): ConstellationData {
   }, [coreGameState, legacyCharacterTrust])
 
   const skillsWithState = useMemo<SkillWithState[]>(() => {
+    // TD-008: Use SkillRecord for dynamic skill access (FutureSkills → SkillRecord)
+    const skillRecord: SkillRecord = skills as unknown as SkillRecord
     return SKILL_NODES.map(node => {
       // Skills are stored as 0-1 values, convert to demonstration count approximation
       // 0 = 0 demos, 0.1 = 1 demo, 0.5 = 5 demos, 1.0 = 10+ demos
-      const rawValue = (skills as unknown as Record<string, number>)[node.id] || 0
+      const rawValue = skillRecord[node.id] || 0
       const demonstrationCount = Math.round(rawValue * 10)
 
       return {
@@ -159,6 +161,8 @@ export function useCharacterTrust(characterId: CharacterId): number {
 // Selector for individual skill
 export function useSkillDemonstrations(skillId: string): number {
   const skills = useGameStore(state => state.skills)
-  const rawValue = (skills as unknown as Record<string, number>)[skillId] || 0
+  // TD-008: Use SkillRecord for dynamic skill access (FutureSkills → SkillRecord)
+  const skillRecord: SkillRecord = skills as unknown as SkillRecord
+  const rawValue = skillRecord[skillId] || 0
   return Math.round(rawValue * 10)
 }
