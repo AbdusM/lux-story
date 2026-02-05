@@ -6,7 +6,9 @@ import {
   GameState as CoreGameState,
   SerializableGameState,
   GameStateUtils,
-  StateChange
+  StateChange,
+  OrbState,
+  INITIAL_ORB_STATE
 } from './character-state'
 import { getPatternValue } from './patterns'
 import { SimulationConfig } from '@/components/game/simulations/types'
@@ -270,6 +272,9 @@ export interface GameActions {
   resetIdentityState: () => void
   resetNeuralState: () => void
   resetSkills: () => void
+
+  // TD-004: Orb economy actions
+  updateOrbs: (updater: (orbs: OrbState) => OrbState) => void
 }
 
 // Initial state
@@ -829,7 +834,19 @@ export const useGameStore = create<GameState & GameActions>()(
         resetCognitiveState: () => set({ cognitiveState: initialState.cognitiveState }),
         resetIdentityState: () => set({ identityState: initialState.identityState }),
         resetNeuralState: () => set({ neuralState: initialState.neuralState }),
-        resetSkills: () => set({ skills: initialState.skills })
+        resetSkills: () => set({ skills: initialState.skills }),
+
+        // TD-004: Orb economy - update orbs within coreGameState
+        updateOrbs: (updater) => {
+          const current = get().coreGameState
+          if (!current) return
+
+          const updatedOrbs = updater(current.orbs || INITIAL_ORB_STATE)
+          const updated = { ...current, orbs: updatedOrbs }
+
+          const derived = deriveVisitedScenes(updated)
+          set({ coreGameState: updated, ...derived })
+        }
       }),
       {
         name: 'grand-central-game-store',
@@ -1397,5 +1414,28 @@ export const useGameSelectors = {
    * Get pending travel target for conductor mode.
    */
   usePendingTravelTarget: () =>
-    useGameStore((state) => state.pendingTravelTarget)
+    useGameStore((state) => state.pendingTravelTarget),
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TD-004: ORB ECONOMY SELECTORS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  /**
+   * Get orb state from core game state.
+   * Returns null if no game state, INITIAL_ORB_STATE fallback for old saves.
+   */
+  useOrbs: () =>
+    useGameStore((state) => state.coreGameState?.orbs ?? INITIAL_ORB_STATE),
+
+  /**
+   * Get orb balance only (for Journal display).
+   */
+  useOrbBalance: () =>
+    useGameStore((state) => state.coreGameState?.orbs?.balance ?? INITIAL_ORB_STATE.balance),
+
+  /**
+   * Get orb milestones (for dialogue system triggers).
+   */
+  useOrbMilestones: () =>
+    useGameStore((state) => state.coreGameState?.orbs?.milestones ?? INITIAL_ORB_STATE.milestones)
 }

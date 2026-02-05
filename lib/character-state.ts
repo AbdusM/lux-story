@@ -13,6 +13,44 @@ import { type IcebergState, createIcebergState } from './knowledge-derivatives'
 import { type PatternEvolutionHistory, createPatternEvolutionHistory } from './pattern-derivatives'
 import { type StoryArcState, createStoryArcState } from './story-arcs'
 import { SkillUsageRecord } from './assessment-derivatives'
+import { type OrbBalance, type OrbType, INITIAL_ORB_BALANCE } from './orbs'
+
+/**
+ * TD-004: Orb state - integrated into GameState for atomic save/load
+ */
+export interface OrbState {
+  balance: OrbBalance
+  milestones: {
+    firstOrb: boolean
+    tierEmerging: boolean
+    tierDeveloping: boolean
+    tierFlourishing: boolean
+    tierMastered: boolean
+    streak3: boolean
+    streak5: boolean
+    streak10: boolean
+  }
+  lastViewed: number
+  lastViewedBalance: Partial<Record<OrbType, number>>
+  acknowledged: Partial<Record<string, boolean>>
+}
+
+export const INITIAL_ORB_STATE: OrbState = {
+  balance: INITIAL_ORB_BALANCE,
+  milestones: {
+    firstOrb: false,
+    tierEmerging: false,
+    tierDeveloping: false,
+    tierFlourishing: false,
+    tierMastered: false,
+    streak3: false,
+    streak5: false,
+    streak10: false
+  },
+  lastViewed: 0,
+  lastViewedBalance: {},
+  acknowledged: {}
+}
 
 /**
  * Core character relationship state
@@ -139,6 +177,9 @@ export interface GameState {
   // D-014: Skill Tracking (Claim 14)
   skillLevels: Record<string, number>
   skillUsage: Map<string, SkillUsageRecord>
+
+  // TD-004: Orb economy (moved from standalone localStorage)
+  orbs: OrbState
 }
 
 /**
@@ -307,6 +348,9 @@ export interface SerializableGameState {
   // D-014: Serializable skills
   skillLevels: Record<string, number>
   skillUsage: Array<{ key: string, value: SkillUsageRecord }>
+
+  // TD-004: Orb economy (moved from standalone localStorage)
+  orbs: OrbState
 }
 
 
@@ -606,7 +650,15 @@ export class GameStateUtils {
       } : undefined,
       // D-014: Clone skills
       skillLevels: { ...state.skillLevels },
-      skillUsage: new Map(state.skillUsage)
+      skillUsage: new Map(state.skillUsage),
+      // TD-004: Clone orbs
+      orbs: {
+        balance: { ...state.orbs.balance },
+        milestones: { ...state.orbs.milestones },
+        lastViewed: state.orbs.lastViewed,
+        lastViewedBalance: { ...state.orbs.lastViewedBalance },
+        acknowledged: { ...state.orbs.acknowledged }
+      }
     }
   }
 
@@ -695,7 +747,9 @@ export class GameStateUtils {
       patternEvolutionHistory: createPatternEvolutionHistory(),
       // D-014: Skills
       skillLevels: {},
-      skillUsage: new Map()
+      skillUsage: new Map(),
+      // TD-004: Orb economy
+      orbs: INITIAL_ORB_STATE
     }
   }
 
@@ -775,7 +829,9 @@ export class GameStateUtils {
         completedChapters: Array.from(state.storyArcState.completedChapters)
       } : undefined,
       skillLevels: state.skillLevels,
-      skillUsage: Array.from(state.skillUsage.entries()).map(([key, value]) => ({ key, value }))
+      skillUsage: Array.from(state.skillUsage.entries()).map(([key, value]) => ({ key, value })),
+      // TD-004: Orb economy
+      orbs: state.orbs
     }
   }
 
@@ -882,7 +938,9 @@ export class GameStateUtils {
         completedChapters: new Set(serialized.storyArcState.completedChapters)
       } : createStoryArcState(),
       skillLevels: serialized.skillLevels || {},
-      skillUsage: new Map((serialized.skillUsage || []).map(item => [item.key, item.value]))
+      skillUsage: new Map((serialized.skillUsage || []).map(item => [item.key, item.value])),
+      // TD-004: Orb economy (fallback to initial state for old saves)
+      orbs: serialized.orbs || INITIAL_ORB_STATE
     }
   }
 }
@@ -971,7 +1029,9 @@ export class StateValidation {
       },
       // D-014: Skills (Minimal)
       skillLevels: {},
-      skillUsage: new Map()
+      skillUsage: new Map(),
+      // TD-004: Orbs (Minimal)
+      orbs: INITIAL_ORB_STATE
     } as GameState
     return !!findCharacterForNode(nodeId, minimalState)
   }

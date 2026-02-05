@@ -3,6 +3,9 @@
 /**
  * useOrbs - Hook for managing orb state and earning logic
  *
+ * TD-004: Refactored to use Zustand store instead of direct localStorage.
+ * Orb state is now part of coreGameState for atomic save/load.
+ *
  * Design principle: SILENT during gameplay.
  * - No toasts or notifications that break narrative flow
  * - Orbs accumulate silently as player makes choices
@@ -17,7 +20,8 @@
  */
 
 import { useCallback, useMemo } from 'react'
-import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { useGameStore, useGameSelectors } from '@/lib/game-store'
+import { INITIAL_ORB_STATE, type OrbState } from '@/lib/character-state'
 import {
   type OrbBalance,
   type OrbType,
@@ -63,44 +67,16 @@ interface UseOrbsReturn {
 }
 
 export function useOrbs(): UseOrbsReturn {
-  // Persist orb balance to localStorage
-  const [balance, setBalance] = useLocalStorage<OrbBalance>(
-    'lux-orb-balance',
-    INITIAL_ORB_BALANCE
-  )
+  // TD-004: Read orb state from Zustand (single source of truth)
+  const orbState = useGameSelectors.useOrbs()
+  const updateOrbs = useGameStore((state) => state.updateOrbs)
 
-  // Track which milestones have been reached (for dialogue triggers)
-  const [milestones, setMilestones] = useLocalStorage<OrbMilestones>(
-    'lux-orb-milestones',
-    {
-      firstOrb: false,
-      tierEmerging: false,
-      tierDeveloping: false,
-      tierFlourishing: false,
-      tierMastered: false,
-      streak3: false,
-      streak5: false,
-      streak10: false
-    }
-  )
-
-  // Track last viewed total for FoxTheatreGlow discovery prompt
-  const [lastViewedTotal, setLastViewedTotal] = useLocalStorage<number>(
-    'lux-orb-last-viewed',
-    0
-  )
-
-  // Track per-pattern last viewed counts for strategic marquee effects
-  const [lastViewedBalance, setLastViewedBalance] = useLocalStorage<Partial<Record<OrbType, number>>>(
-    'lux-orb-last-viewed-balance',
-    {}
-  )
-
-  // Track which milestones Samuel has acknowledged (so he doesn't repeat)
-  const [acknowledgedMilestones, setAcknowledgedMilestones] = useLocalStorage<Partial<OrbMilestones>>(
-    'lux-orb-acknowledged',
-    {}
-  )
+  // Extract state with fallbacks for migration
+  const balance = orbState?.balance ?? INITIAL_ORB_BALANCE
+  const milestones = orbState?.milestones ?? INITIAL_ORB_STATE.milestones
+  const lastViewedTotal = orbState?.lastViewed ?? 0
+  const lastViewedBalance = orbState?.lastViewedBalance ?? {}
+  const acknowledgedMilestones = orbState?.acknowledged ?? {}
 
   /**
    * Earn orb from a choice - SILENT, no UI feedback
@@ -109,25 +85,26 @@ export function useOrbs(): UseOrbsReturn {
     const orbType = pattern as OrbType
     let crossedThreshold5 = false
 
-    setBalance(prev => {
-      const previousCount = prev[orbType]  // Store count before earning
+    updateOrbs((prev: OrbState) => {
+      const prevBalance = prev.balance
+      const previousCount = prevBalance[orbType]
       let amount = ORB_EARNINGS.choice
 
       // Check for streak
       let newStreak = 1
-      let newStreakType: OrbType | null = orbType
+      const newStreakType: OrbType | null = orbType
 
-      if (prev.currentStreakType === orbType) {
-        newStreak = prev.currentStreak + 1
+      if (prevBalance.currentStreakType === orbType) {
+        newStreak = prevBalance.currentStreak + 1
 
         // Add streak bonus
-        const streakBonus = getStreakBonus(newStreak) - getStreakBonus(prev.currentStreak)
+        const streakBonus = getStreakBonus(newStreak) - getStreakBonus(prevBalance.currentStreak)
         if (streakBonus > 0) {
           amount += streakBonus
         }
       }
 
-      const newTotal = prev.totalEarned + amount
+      const newTotal = prevBalance.totalEarned + amount
       const newCount = previousCount + amount
 
       // Check if crossed threshold 5 (for identity offering)
@@ -137,30 +114,34 @@ export function useOrbs(): UseOrbsReturn {
 
       // Update milestones (for dialogue system to check)
       const newTier = getOrbTier(newTotal)
-      setMilestones(m => ({
-        ...m,
+      const newMilestones = {
+        ...prev.milestones,
         firstOrb: true,
-        tierEmerging: newTier !== 'nascent' || m.tierEmerging,
-        tierDeveloping: ['developing', 'flourishing', 'mastered'].includes(newTier) || m.tierDeveloping,
-        tierFlourishing: ['flourishing', 'mastered'].includes(newTier) || m.tierFlourishing,
-        tierMastered: newTier === 'mastered' || m.tierMastered,
-        streak3: newStreak >= 3 || m.streak3,
-        streak5: newStreak >= 5 || m.streak5,
-        streak10: newStreak >= 10 || m.streak10
-      }))
+        tierEmerging: newTier !== 'nascent' || prev.milestones.tierEmerging,
+        tierDeveloping: ['developing', 'flourishing', 'mastered'].includes(newTier) || prev.milestones.tierDeveloping,
+        tierFlourishing: ['flourishing', 'mastered'].includes(newTier) || prev.milestones.tierFlourishing,
+        tierMastered: newTier === 'mastered' || prev.milestones.tierMastered,
+        streak3: newStreak >= 3 || prev.milestones.streak3,
+        streak5: newStreak >= 5 || prev.milestones.streak5,
+        streak10: newStreak >= 10 || prev.milestones.streak10
+      }
 
       return {
         ...prev,
-        [orbType]: prev[orbType] + amount,
-        totalEarned: newTotal,
-        currentStreak: newStreak,
-        currentStreakType: newStreakType,
-        bestStreak: Math.max(prev.bestStreak, newStreak)
+        balance: {
+          ...prevBalance,
+          [orbType]: newCount,
+          totalEarned: newTotal,
+          currentStreak: newStreak,
+          currentStreakType: newStreakType,
+          bestStreak: Math.max(prevBalance.bestStreak, newStreak)
+        },
+        milestones: newMilestones
       }
     })
 
     return { crossedThreshold5 }
-  }, [setBalance, setMilestones])
+  }, [updateOrbs])
 
   /**
    * Earn bonus orbs (milestones, arc completion) - SILENT
@@ -168,28 +149,33 @@ export function useOrbs(): UseOrbsReturn {
   const earnBonusOrbs = useCallback((pattern: PatternType, amount: number) => {
     const orbType = pattern as OrbType
 
-    setBalance(prev => ({
+    updateOrbs((prev: OrbState) => ({
       ...prev,
-      [orbType]: prev[orbType] + amount,
-      totalEarned: prev.totalEarned + amount
+      balance: {
+        ...prev.balance,
+        [orbType]: prev.balance[orbType] + amount,
+        totalEarned: prev.balance.totalEarned + amount
+      }
     }))
-  }, [setBalance])
+  }, [updateOrbs])
 
   /**
    * Mark orbs as viewed - call when Journal is opened
    * This clears the FoxTheatreGlow "new orbs" indicator
    */
   const markOrbsViewed = useCallback(() => {
-    setLastViewedTotal(balance.totalEarned)
-    // Also save per-pattern counts for marquee targeting
-    setLastViewedBalance({
-      analytical: balance.analytical,
-      patience: balance.patience,
-      exploring: balance.exploring,
-      helping: balance.helping,
-      building: balance.building
-    })
-  }, [setLastViewedTotal, setLastViewedBalance, balance])
+    updateOrbs((prev: OrbState) => ({
+      ...prev,
+      lastViewed: prev.balance.totalEarned,
+      lastViewedBalance: {
+        analytical: prev.balance.analytical,
+        patience: prev.balance.patience,
+        exploring: prev.balance.exploring,
+        helping: prev.balance.helping,
+        building: prev.balance.building
+      }
+    }))
+  }, [updateOrbs])
 
   /**
    * Get the next unacknowledged milestone for Samuel to recognize
@@ -222,11 +208,14 @@ export function useOrbs(): UseOrbsReturn {
    * Mark a milestone as acknowledged by Samuel
    */
   const acknowledgeMilestone = useCallback((milestone: keyof OrbMilestones) => {
-    setAcknowledgedMilestones(prev => ({
+    updateOrbs((prev: OrbState) => ({
       ...prev,
-      [milestone]: true
+      acknowledged: {
+        ...prev.acknowledged,
+        [milestone]: true
+      }
     }))
-  }, [setAcknowledgedMilestones])
+  }, [updateOrbs])
 
   // Computed values
   const tier = useMemo(() => getOrbTier(balance.totalEarned), [balance.totalEarned])

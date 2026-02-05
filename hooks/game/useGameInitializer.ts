@@ -34,6 +34,7 @@ import { selectAnnouncement } from '@/lib/platform-announcements'
 import { getTotalNodesVisited } from '@/lib/session-structure'
 import { detectReturningPlayer, getWaitingCharacters, getSamuelWaitingSummary } from '@/lib/character-waiting'
 import { calculateSkillDecay, getSkillDecayNarrative } from '@/lib/assessment-derivatives'
+import { migrateOrbsFromLocalStorage } from '@/lib/migrations/orb-migration'
 
 interface UseGameInitializerParams {
   setState: Dispatch<SetStateAction<GameInterfaceState>>
@@ -56,6 +57,17 @@ export function useGameInitializer({
       if (!gameState) {
         const userId = generateUserId()
         gameState = GameStateUtils.createNewGameState(userId)
+      }
+
+      // TD-004: Migrate orb state from legacy localStorage keys
+      // This runs once per save if legacy keys exist, then removes them
+      const migratedOrbs = migrateOrbsFromLocalStorage()
+      if (migratedOrbs) {
+        gameState.orbs = { ...gameState.orbs, ...migratedOrbs }
+        GameStateManager.saveGameState(gameState)
+        logger.info('[Game Init] TD-004: Migrated orb state from legacy localStorage', {
+          totalEarned: migratedOrbs.balance.totalEarned
+        })
       }
 
       const zustandStore = useGameStore.getState()
