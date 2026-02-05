@@ -85,6 +85,7 @@ import {
 import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
 import type { useAudioDirector } from '@/hooks/game/useAudioDirector'
 import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
+import { hapticFeedback } from '@/lib/haptic-feedback'
 
 interface UseChoiceHandlerParams {
   state: GameInterfaceState
@@ -205,7 +206,7 @@ export function useChoiceHandler({
             thoughtId: identityThoughtId
           })
 
-          // Trigger the Identity Ceremony (Visual & Audio)
+          // Trigger the Identity Ceremony (Visual, Audio, & Haptic)
           setState(prev => ({
             ...prev,
             showIdentityCeremony: true,
@@ -214,6 +215,7 @@ export function useChoiceHandler({
 
           if (result.events.checkIdentityThreshold) {
             audio.actions.triggerIdentitySound()
+            hapticFeedback.patternMilestone() // Premium haptic for identity milestone
           }
         }
 
@@ -232,6 +234,7 @@ export function useChoiceHandler({
           }))
 
           audio.actions.triggerIdentitySound()
+          hapticFeedback.success() // Success haptic for ability unlock
         }
 
         // 5. Thought Unlocks - ARCHIVED
@@ -354,6 +357,7 @@ export function useChoiceHandler({
 
       if (trustFeedback.playTrustSound) {
         audio.actions.triggerTrustSound()
+        hapticFeedback.trustMilestone() // Warm haptic for trust increase
       }
       if (trustFeedback.updatedTimeline) {
         const charState = newGameState.characters.get(state.currentCharacterId)

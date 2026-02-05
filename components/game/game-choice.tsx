@@ -15,6 +15,7 @@ import { LoadingDots } from "@/components/ui/loading-dots"
 import { cn } from "@/lib/utils"
 import { springs, STAGGER_DELAY } from "@/lib/animations"
 import { type PatternType, getPatternColor } from "@/lib/patterns"
+import { hapticFeedback } from "@/lib/haptic-feedback"
 import { type PlayerPatterns } from "@/lib/character-state"
 import { getPatternPreviewStyles, getPatternHintText } from "@/lib/pattern-derivatives"
 import { getVoicedText } from "@/lib/voice-templates"
@@ -104,6 +105,12 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
       })
     }, [choice.text, choice.voiceVariations, choice.archetype, playerPatterns])
 
+    // Wrap onSelect to add haptic feedback for choice selection
+    const handleSelect = React.useCallback(() => {
+      hapticFeedback.choice()
+      onSelect?.()
+    }, [onSelect])
+
     // Animation variants - spring from bottom
     const variants = {
       hidden: { opacity: 0, y: 12 },
@@ -120,7 +127,7 @@ const GameChoice = React.forwardRef<HTMLButtonElement, GameChoiceProps>(
     return (
       <motion.button
         ref={ref}
-        onClick={onSelect}
+        onClick={handleSelect}
         disabled={disabled || loading || isSelected}
         initial={animated && !prefersReducedMotion ? "hidden" : false}
         animate="visible"

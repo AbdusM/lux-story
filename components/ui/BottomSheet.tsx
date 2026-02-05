@@ -4,6 +4,7 @@ import * as React from 'react'
 import { motion, AnimatePresence, useReducedMotion, PanInfo } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { springs } from '@/lib/animations'
+import { hapticFeedback } from '@/lib/haptic-feedback'
 
 /**
  * BottomSheet Component
@@ -84,8 +85,14 @@ export function BottomSheet({
   const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     // Close if dragged down past threshold
     if (info.offset.y > dragCloseThreshold) {
+      hapticFeedback.light()
       onClose()
     }
+  }
+
+  const handleBackdropClick = () => {
+    hapticFeedback.light()
+    onClose()
   }
 
   return (
@@ -99,7 +106,7 @@ export function BottomSheet({
             animate={{ opacity: 1 }}
             exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0 }}
             transition={{ duration: 0.2 }}
-            onClick={onClose}
+            onClick={handleBackdropClick}
             aria-hidden="true"
           />
 
@@ -200,10 +207,15 @@ export function BottomSheetItem({
   className,
   icon,
 }: BottomSheetItemProps) {
+  const handleClick = React.useCallback(() => {
+    hapticFeedback.light()
+    onClick?.()
+  }, [onClick])
+
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={handleClick}
       disabled={disabled}
       className={cn(
         'w-full min-h-[52px] px-6 py-3',

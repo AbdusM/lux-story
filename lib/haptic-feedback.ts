@@ -92,9 +92,31 @@ export class HapticFeedback {
   // Story progression pattern
   storyProgress(): void {
     if (!this.isSupported) return
-    
+
     try {
       navigator.vibrate([30, 10, 30]) // Story progression pattern
+    } catch (error) {
+      console.warn('Haptic feedback failed:', error)
+    }
+  }
+
+  // Pattern milestone - ascending double-tap for "level up" feel
+  patternMilestone(): void {
+    if (!this.isSupported) return
+
+    try {
+      navigator.vibrate([15, 30, 25, 30, 35]) // Ascending pattern: short-pause-medium-pause-longer
+    } catch (error) {
+      console.warn('Haptic feedback failed:', error)
+    }
+  }
+
+  // Trust milestone - warm, affirming pattern
+  trustMilestone(): void {
+    if (!this.isSupported) return
+
+    try {
+      navigator.vibrate([40, 50, 40]) // Symmetric pattern: solid, pause, solid
     } catch (error) {
       console.warn('Haptic feedback failed:', error)
     }

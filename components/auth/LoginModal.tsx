@@ -45,11 +45,11 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
       if (error) throw error
 
-      setSuccess('Confirmation email sent! Check your inbox.')
+      setSuccess('Confirmation email sent! Check your inbox (and spam folder, just in case).')
       setShowResendButton(false)
     } catch (err) {
       console.error('[Login] Resend confirmation error:', err)
-      setError(err instanceof Error ? err.message : 'Failed to resend confirmation email')
+      setError(err instanceof Error ? err.message : 'Couldn\'t send the confirmation email. Let\'s try again in a moment.')
     } finally {
       setLoading(false)
     }
@@ -70,7 +70,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
       if (error) throw error
     } catch (err) {
       console.error('[Login] Google OAuth error:', err)
-      setError(err instanceof Error ? err.message : 'Failed to sign in with Google')
+      setError(err instanceof Error ? err.message : 'Google sign-in hit a snag. Let\'s try again!')
       setLoading(false)
     }
   }
@@ -117,17 +117,23 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
     } catch (err) {
       console.error('[Login] Email auth error:', err)
 
-      // Handle specific error cases with user-friendly messages
-      let errorMessage = `Failed to ${mode === 'signup' ? 'sign up' : 'sign in'}`
+      // Handle specific error cases with compassionate, user-friendly messages
+      let errorMessage = mode === 'signup'
+        ? 'We couldn\'t create your account right now. Let\'s try again.'
+        : 'We couldn\'t sign you in. Let\'s double-check your details.'
 
       if (err instanceof Error) {
         if (err.message.includes('Email not confirmed')) {
-          errorMessage = 'Please confirm your email address. Check your inbox for a confirmation link.'
+          errorMessage = 'Almost there! Please check your inbox for a confirmation link to complete your journey.'
           setShowResendButton(true)
         } else if (err.message.includes('Invalid login credentials')) {
-          errorMessage = 'Invalid email or password. Please try again.'
+          errorMessage = 'Those credentials didn\'t quite match. Double-check your email and password?'
         } else if (err.message.includes('User already registered')) {
-          errorMessage = 'This email is already registered. Try signing in instead.'
+          errorMessage = 'Looks like you\'ve been here before! This email is already registered—try signing in instead.'
+        } else if (err.message.includes('Password')) {
+          errorMessage = 'Your password needs to be at least 6 characters. A bit longer for safety!'
+        } else if (err.message.includes('rate limit')) {
+          errorMessage = 'Too many attempts. Take a breath and try again in a moment.'
         } else {
           errorMessage = err.message
         }
@@ -222,22 +228,22 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
                 <SocialButton
                   provider="discord"
                   disabled
-                  onClick={() => setError('Discord login coming soon')}
+                  onClick={() => setError('Discord is on the platform map—coming soon!')}
                 />
                 <SocialButton
                   provider="github"
                   disabled
-                  onClick={() => setError('GitHub login coming soon')}
+                  onClick={() => setError('GitHub integration arriving soon!')}
                 />
                 <SocialButton
                   provider="linkedin"
                   disabled
-                  onClick={() => setError('LinkedIn login coming soon')}
+                  onClick={() => setError('LinkedIn connection coming soon!')}
                 />
                 <SocialButton
                   provider="twitch"
                   disabled
-                  onClick={() => setError('Twitch login coming soon')}
+                  onClick={() => setError('Twitch connection arriving soon!')}
                 />
               </div>
 

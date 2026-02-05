@@ -11,6 +11,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { CheckCircle, XCircle, Info, AlertTriangle, X, Cloud, CloudOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { springs } from '@/lib/animations'
+import { hapticFeedback } from '@/lib/haptic-feedback'
 
 // Toast types
 export type ToastType = 'success' | 'error' | 'info' | 'warning' | 'sync' | 'offline'
@@ -154,7 +155,10 @@ function ToastItem({
 
       {/* Dismiss button */}
       <button
-        onClick={onDismiss}
+        onClick={() => {
+          hapticFeedback.light()
+          onDismiss()
+        }}
         className="flex-shrink-0 p-1 rounded-md hover:bg-white/10 transition-colors"
         aria-label="Dismiss notification"
       >

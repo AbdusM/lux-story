@@ -18,6 +18,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Heart, Swords, Volume2 } from 'lucide-react'
 import { springs } from '@/lib/animations'
+import { hapticFeedback } from '@/lib/haptic-feedback'
 import type { InterruptWindow } from '@/lib/dialogue-graph'
 
 interface InterruptButtonProps {
@@ -95,6 +96,7 @@ export function InterruptButton({ interrupt, onTrigger, onTimeout }: InterruptBu
 
   const handleTrigger = useCallback(() => {
     if (!isVisible) return
+    hapticFeedback.medium() // Stronger feedback for interrupt action
     setIsVisible(false)
     onTrigger()
   }, [isVisible, onTrigger])
