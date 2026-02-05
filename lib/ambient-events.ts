@@ -12,6 +12,7 @@
  */
 
 import type { PatternType } from './patterns'
+import { random } from './seeded-random'
 
 export type AmbientEventType =
   | 'station_atmosphere'  // Trains, announcements, travelers
@@ -164,7 +165,8 @@ export function selectAmbientEvent(
   }
 
   // Add pattern observations if player has strong pattern
-  if (dominantPattern && Math.random() < 0.3) { // 30% chance for pattern-specific
+  // TD-007: Use seeded random for testability
+  if (dominantPattern && random() < 0.3) { // 30% chance for pattern-specific
     const patternEvents = PATTERN_OBSERVATIONS[dominantPattern]
     if (patternEvents) {
       pool.push(...patternEvents)
@@ -180,13 +182,13 @@ export function selectAmbientEvent(
     return selectAmbientEvent(characterId, dominantPattern)
   }
 
-  // Weighted random selection
+  // Weighted random selection (TD-007: use seeded random)
   const totalWeight = available.reduce((sum, e) => sum + e.weight, 0)
-  let random = Math.random() * totalWeight
+  let randomValue = random() * totalWeight
 
   for (const event of available) {
-    random -= event.weight
-    if (random <= 0) {
+    randomValue -= event.weight
+    if (randomValue <= 0) {
       // Track this event as recently shown
       recentEventIds.push(event.id)
       if (recentEventIds.length > MAX_RECENT) {

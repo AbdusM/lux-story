@@ -18,6 +18,7 @@ import type { PatternType } from './patterns'
 import type { CharacterId } from './graph-registry'
 import type { GameState } from './character-state'
 import { getVoiceToneForTrust, formatVoiceWithTone, type VoiceTone } from './trust-derivatives'
+import { random, randomPick } from './seeded-random'
 import { getActiveVoiceConflicts, type VoiceConflict } from './pattern-derivatives'
 
 /**
@@ -149,8 +150,8 @@ export function getPatternVoice(
   // Pick the highest priority voice
   const selected = eligibleVoices[0]
 
-  // Select random voice line from options
-  const voiceText = selected.entry.voices[Math.floor(Math.random() * selected.entry.voices.length)]
+  // Select random voice line from options (TD-007: use seeded random)
+  const voiceText = randomPick(selected.entry.voices)!
 
   // Update cooldowns
   const voiceKey = `${selected.entry.pattern}-${selected.entry.trigger}-${selected.entry.condition?.characterId || 'any'}`
@@ -252,7 +253,8 @@ export function checkVoiceConflict(
   gameState: GameState
 ): VoiceConflictResult | null {
   // Only check occasionally (10% chance to avoid spam)
-  if (Math.random() > 0.1) return null
+  // TD-007: Use seeded random for testability
+  if (random() > 0.1) return null
 
   const activeConflicts = getActiveVoiceConflicts(gameState.patterns, shownConflicts)
 

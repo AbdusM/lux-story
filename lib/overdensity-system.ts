@@ -1,5 +1,4 @@
-
-
+import { random } from './seeded-random'
 
 export const OVERDENSITY_CONSTANTS = {
     MIN_DENSITY: 0.0,
@@ -31,7 +30,8 @@ export function calculateInflation(density: number): number {
  * Determines if a "Crowd Event" should trigger
  */
 export function rollForCrowdEvent(density: number): 'none' | 'bump' | 'pickpocket' | 'overhear' {
-    const roll = Math.random()
+    // TD-007: Use seeded random for testability
+    const roll = random()
 
     if (density < 0.3) return 'none'
 
@@ -50,7 +50,8 @@ export function rollForCrowdEvent(density: number): 'none' | 'bump' | 'pickpocke
 export function simulateDensityFluctuation(currentDensity: number): number {
     // Random walk: -0.05 to +0.08 (slight bias towards rising until it hits cap)
     // This simulates a market getting busier over time
-    const change = (Math.random() * 0.13) - 0.05
+    // TD-007: Use seeded random for testability
+    const change = (random() * 0.13) - 0.05
 
     let newDensity = currentDensity + change
 

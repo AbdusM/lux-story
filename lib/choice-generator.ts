@@ -9,6 +9,7 @@ import { getPersonaTracker } from './player-persona'
 import type { Choice, Scene } from './story-engine'
 import type { GameState } from './game-store'
 import { logger } from './logger'
+import { random, randomPick } from './seeded-random'
 
 /**
  * Simple string similarity using Levenshtein distance
@@ -302,9 +303,9 @@ export class ChoiceGenerator {
         }
       }
 
-      // Relationship-specific prefixes
+      // Relationship-specific prefixes (TD-007: use seeded random)
       if (relationship === 'close' && contexts.includes('character')) {
-        if (choice.consequence.includes('exploring') && Math.random() > 0.5) {
+        if (choice.consequence.includes('exploring') && random() > 0.5) {
           modifiedText = 'Together, ' + modifiedText.toLowerCase()
         }
       }
@@ -393,9 +394,9 @@ export class ChoiceGenerator {
     const liveEngine = getLiveChoiceEngine()
     const personaTracker = getPersonaTracker()
 
-    // Determine if we should trigger live augmentation
+    // Determine if we should trigger live augmentation (TD-007: use seeded random)
     const augmentationChance = options.liveAugmentationChance || 0.33
-    const shouldTrigger = Math.random() < augmentationChance || choices.length < 3
+    const shouldTrigger = random() < augmentationChance || choices.length < 3
 
     if (!shouldTrigger) {
       logger.debug('Live augmentation skipped this time (probabilistic)', { operation: 'choice-generator.live-skip' })
@@ -417,9 +418,10 @@ export class ChoiceGenerator {
       return count === 0 || (count === 1 && choices.length >= 4)
     })
 
+    // TD-007: Use randomPick for deterministic pattern selection
     const targetPattern = underrepresentedPatterns.length > 0
-      ? underrepresentedPatterns[Math.floor(Math.random() * underrepresentedPatterns.length)]
-      : availablePatterns[Math.floor(Math.random() * availablePatterns.length)]
+      ? randomPick(underrepresentedPatterns)!
+      : randomPick(availablePatterns)!
 
     // Prepare request
     const request: LiveChoiceRequest = {
@@ -472,10 +474,10 @@ export class ChoiceGenerator {
   ): Promise<Choice[]> {
     const choices = await this.generateChoices(scene, gameState, options)
 
-    // Add subtle Birmingham context for certain scenes
+    // Add subtle Birmingham context for certain scenes (TD-007: use seeded random)
     const sceneText = (scene.text || '').toLowerCase()
 
-    if (sceneText.includes('platform') && Math.random() > 0.7) {
+    if (sceneText.includes('platform') && random() > 0.7) {
       // Occasionally reference Birmingham transit
       choices.forEach(choice => {
         if (choice.consequence.includes('exploring')) {
@@ -484,8 +486,8 @@ export class ChoiceGenerator {
             'similar to UAB campus exploration',
             'reminds you of discovering local spots'
           ]
-          if (Math.random() > 0.8) {
-            choice.text += ' (' + birminghamRefs[Math.floor(Math.random() * birminghamRefs.length)] + ')'
+          if (random() > 0.8) {
+            choice.text += ' (' + randomPick(birminghamRefs) + ')'
           }
         }
       })

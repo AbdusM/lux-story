@@ -5,6 +5,7 @@ import { isValidPattern, getPatternSensation, PatternType, PATTERN_THRESHOLDS, P
 import { detectRelationshipUpdates } from './character-relationships'
 import { simulateDensityFluctuation, OVERDENSITY_CONSTANTS } from './overdensity-system'
 import { checkVoiceRevelationTrigger, getVoiceRevelationEcho, type ConsequenceEcho } from './consequence-echoes'
+import { random } from './seeded-random'
 
 /**
  * Result of processing a choice
@@ -256,8 +257,8 @@ export class GameLogic {
                 patternChanges: { [choice.pattern]: modifiedGain }
             })
 
-            // 30% chance of sensation
-            if (isValidPattern(choice.pattern) && Math.random() < 0.3) {
+            // 30% chance of sensation (TD-007: use seeded random for testability)
+            if (isValidPattern(choice.pattern) && random() < 0.3) {
                 patternSensation = getPatternSensation(choice.pattern)
             }
         }

@@ -28,6 +28,7 @@ import {
   PATTERN_TRUST_GATES,
   checkNewAchievements,
 } from '@/lib/pattern-derivatives'
+import { random } from '@/lib/seeded-random'
 import { getNewlyAvailableCombinations } from '@/lib/knowledge-derivatives'
 import {
   getActiveMagicalRealisms,
@@ -54,8 +55,8 @@ export function evaluateTrustAsymmetry(
     return { consequenceEcho: null }
   }
 
-  // 15% chance per interaction
-  if (Math.random() >= 0.15) {
+  // 15% chance per interaction (TD-007: use seeded random)
+  if (random() >= 0.15) {
     return { consequenceEcho: null }
   }
 
@@ -112,8 +113,8 @@ export function evaluateDiscoveryHint(
     return { consequenceEcho: null }
   }
 
-  // 20% chance per interaction
-  if (Math.random() >= 0.20) {
+  // 20% chance per interaction (TD-007: use seeded random)
+  if (random() >= 0.20) {
     return { consequenceEcho: null }
   }
 
