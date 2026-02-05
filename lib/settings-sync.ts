@@ -10,6 +10,7 @@
  */
 
 import { createClient } from '@/lib/supabase/client'
+import { STORAGE_KEYS } from '@/lib/persistence/storage-keys'
 
 export interface UserSettings {
   // Audio
@@ -39,15 +40,15 @@ const DEFAULT_SETTINGS: UserSettings = {
   lastSynced: undefined,
 }
 
-// LocalStorage keys mapped to settings object
+// LocalStorage keys mapped to settings object (TD-005: use unified keys)
 const STORAGE_KEY_MAP: Record<keyof UserSettings, string | null> = {
-  audioMuted: 'lux_audio_muted',
-  audioVolume: 'lux_audio_volume',
-  accessibilityProfile: 'lux_accessibility_profile',
-  textSize: 'lux_text_size',
-  colorBlindMode: 'lux_color_blind_mode',
-  cognitiveLoadLevel: 'lux_cognitive_load_level',
-  adminViewMode: 'admin_view_preference',
+  audioMuted: STORAGE_KEYS.AUDIO_MUTED,
+  audioVolume: STORAGE_KEYS.AUDIO_VOLUME,
+  accessibilityProfile: STORAGE_KEYS.ACCESSIBILITY_PROFILE,
+  textSize: STORAGE_KEYS.TEXT_SIZE,
+  colorBlindMode: STORAGE_KEYS.COLOR_BLIND_MODE,
+  cognitiveLoadLevel: STORAGE_KEYS.COGNITIVE_LOAD_LEVEL,
+  adminViewMode: STORAGE_KEYS.ADMIN_VIEW_MODE,
   lastSynced: null,  // Not stored in localStorage
 }
 
@@ -60,43 +61,43 @@ export function loadLocalSettings(): Partial<UserSettings> {
   const settings: Partial<UserSettings> = {}
 
   // Audio muted
-  const audioMuted = localStorage.getItem('lux_audio_muted')
+  const audioMuted = localStorage.getItem(STORAGE_KEYS.AUDIO_MUTED)
   if (audioMuted !== null) {
     settings.audioMuted = audioMuted === 'true'
   }
 
   // Audio volume
-  const audioVolume = localStorage.getItem('lux_audio_volume')
+  const audioVolume = localStorage.getItem(STORAGE_KEYS.AUDIO_VOLUME)
   if (audioVolume !== null) {
     settings.audioVolume = parseInt(audioVolume, 10)
   }
 
   // Accessibility profile
-  const accessibilityProfile = localStorage.getItem('lux_accessibility_profile')
+  const accessibilityProfile = localStorage.getItem(STORAGE_KEYS.ACCESSIBILITY_PROFILE)
   if (accessibilityProfile) {
     settings.accessibilityProfile = accessibilityProfile
   }
 
   // Text size
-  const textSize = localStorage.getItem('lux_text_size')
+  const textSize = localStorage.getItem(STORAGE_KEYS.TEXT_SIZE)
   if (textSize) {
     settings.textSize = textSize
   }
 
   // Color blind mode
-  const colorBlindMode = localStorage.getItem('lux_color_blind_mode')
+  const colorBlindMode = localStorage.getItem(STORAGE_KEYS.COLOR_BLIND_MODE)
   if (colorBlindMode) {
     settings.colorBlindMode = colorBlindMode
   }
 
   // Cognitive load level
-  const cognitiveLoadLevel = localStorage.getItem('lux_cognitive_load_level')
+  const cognitiveLoadLevel = localStorage.getItem(STORAGE_KEYS.COGNITIVE_LOAD_LEVEL)
   if (cognitiveLoadLevel) {
     settings.cognitiveLoadLevel = cognitiveLoadLevel
   }
 
   // Admin view mode
-  const adminViewMode = localStorage.getItem('admin_view_preference')
+  const adminViewMode = localStorage.getItem(STORAGE_KEYS.ADMIN_VIEW_MODE)
   if (adminViewMode) {
     settings.adminViewMode = adminViewMode as 'family' | 'research'
   }

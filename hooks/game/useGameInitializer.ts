@@ -35,6 +35,8 @@ import { getTotalNodesVisited } from '@/lib/session-structure'
 import { detectReturningPlayer, getWaitingCharacters, getSamuelWaitingSummary } from '@/lib/character-waiting'
 import { calculateSkillDecay, getSkillDecayNarrative } from '@/lib/assessment-derivatives'
 import { migrateOrbsFromLocalStorage } from '@/lib/migrations/orb-migration'
+import { migrateLocalStorageKeys } from '@/lib/persistence/storage-migration'
+import { STORAGE_KEYS } from '@/lib/persistence/storage-keys'
 
 interface UseGameInitializerParams {
   setState: Dispatch<SetStateAction<GameInterfaceState>>
@@ -53,6 +55,16 @@ export function useGameInitializer({
   const initializeGame = useCallback(async () => {
     logger.debug('Initializing Stateful Narrative Engine', { operation: 'game-interface.init' })
     try {
+      // TD-005: Migrate legacy localStorage keys to unified format
+      // This runs once if legacy keys exist, migrating them to new keys
+      const migrationResult = migrateLocalStorageKeys()
+      if (migrationResult.migrated.length > 0) {
+        logger.info('[Game Init] TD-005: Migrated localStorage keys', {
+          migrated: migrationResult.migrated.length,
+          keys: migrationResult.migrated
+        })
+      }
+
       let gameState = GameStateManager.loadGameState()
       if (!gameState) {
         const userId = generateUserId()
@@ -402,9 +414,9 @@ export function useGameInitializer({
 
       // One-time local mode notice via Samuel (replaces persistent banner)
       if (!isSupabaseConfigured() && typeof window !== 'undefined') {
-        const hasSeenLocalModeNotice = localStorage.getItem('lux-local-mode-seen')
+        const hasSeenLocalModeNotice = localStorage.getItem(STORAGE_KEYS.LOCAL_MODE_SEEN)
         if (!hasSeenLocalModeNotice) {
-          localStorage.setItem('lux-local-mode-seen', 'true')
+          localStorage.setItem(STORAGE_KEYS.LOCAL_MODE_SEEN, 'true')
           // Inject Samuel's echo about local mode-shows once, naturally in dialogue
           setState(prev => ({
             ...prev,

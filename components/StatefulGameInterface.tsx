@@ -146,6 +146,7 @@ import { IdleWarningModal } from '@/components/IdleWarningModal'
 // Lazy loaded - only shown at journey end
 const JourneySummary = dynamic(() => import('@/components/JourneySummary').then(m => m.JourneySummary), { ssr: false })
 import { useToast } from '@/components/ui/toast'
+import { STORAGE_KEYS } from '@/lib/persistence/storage-keys'
 import { generateJourneyNarrative } from '@/lib/journey-narrative-generator'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { JourneyNarrative } from '@/lib/journey-narrative-generator'
@@ -484,14 +485,14 @@ export default function StatefulGameInterface() {
     if (!state.hasStarted) return
 
     // Check if already shown
-    const hintShown = localStorage.getItem('lux_keyboard_hint_shown')
+    const hintShown = localStorage.getItem(STORAGE_KEYS.KEYBOARD_HINT_SHOWN)
     if (hintShown === 'true') return
 
     const timer = setTimeout(() => {
       // Double-check it hasn't been shown (e.g., user opened shortcuts manually)
-      if (localStorage.getItem('lux_keyboard_hint_shown') !== 'true') {
+      if (localStorage.getItem(STORAGE_KEYS.KEYBOARD_HINT_SHOWN) !== 'true') {
         toast.info('Press ? for keyboard shortcuts', 'Navigate faster with hotkeys')
-        localStorage.setItem('lux_keyboard_hint_shown', 'true')
+        localStorage.setItem(STORAGE_KEYS.KEYBOARD_HINT_SHOWN, 'true')
       }
     }, 30000) // 30 seconds
 

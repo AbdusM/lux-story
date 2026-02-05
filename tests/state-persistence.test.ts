@@ -12,6 +12,7 @@ import {
 } from '../lib/character-state'
 
 import { GameStateManager } from '../lib/game-state-manager'
+import { STORAGE_KEYS } from '../lib/persistence/storage-keys'
 
 import {
   StateConditionEvaluator,
@@ -349,8 +350,8 @@ describe('State Persistence', () => {
       const state = GameStateUtils.createNewGameState('player123')
       GameStateManager.saveGameState(state)
 
-      // Corrupt the save
-      mockStorage.setItem('grand-central-terminus-save', 'corrupted data')
+      // Corrupt the save (TD-005: use unified storage key)
+      mockStorage.setItem(STORAGE_KEYS.GAME_SAVE, 'corrupted data')
 
       // Should return null or restore from backup
       const loaded = GameStateManager.loadGameState()

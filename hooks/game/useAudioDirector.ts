@@ -23,6 +23,7 @@ import {
   setAudioEnabled,
   SoundType
 } from '@/lib/audio-feedback'
+import { STORAGE_KEYS } from '@/lib/persistence/storage-keys'
 
 export interface ConsequenceEchoRef {
   soundCue?: SoundType
@@ -70,14 +71,14 @@ export function useAudioDirector(
   // --- State ---
   const [isMuted, setIsMuted] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('lux_audio_muted') === 'true'
+      return localStorage.getItem(STORAGE_KEYS.AUDIO_MUTED) === 'true'
     }
     return false
   })
 
   const [audioVolume, setAudioVolumeState] = useState(() => {
     if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('lux_audio_volume')
+      const stored = localStorage.getItem(STORAGE_KEYS.AUDIO_VOLUME)
       return stored ? parseInt(stored, 10) : 50
     }
     return 50
@@ -122,7 +123,7 @@ export function useAudioDirector(
   const toggleMute = useCallback(() => {
     setIsMuted(prev => {
       const newMuted = !prev
-      localStorage.setItem('lux_audio_muted', String(newMuted))
+      localStorage.setItem(STORAGE_KEYS.AUDIO_MUTED, String(newMuted))
       synthEngine.setMute(newMuted)
       setAudioEnabled(!newMuted)
       onSettingsChanged?.()
@@ -132,7 +133,7 @@ export function useAudioDirector(
 
   const setVolume = useCallback((volume: number) => {
     setAudioVolumeState(volume)
-    localStorage.setItem('lux_audio_volume', String(volume))
+    localStorage.setItem(STORAGE_KEYS.AUDIO_VOLUME, String(volume))
     onSettingsChanged?.()
   }, [onSettingsChanged])
 

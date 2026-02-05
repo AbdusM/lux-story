@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Sparkles, TrendingUp, Target, Lightbulb } from 'lucide-react'
 import { loadSkillProfile } from '@/lib/skill-profile-adapter'
+import { STORAGE_KEYS } from '@/lib/persistence/storage-keys'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
 import { YourJourneySection } from '@/components/student/sections/YourJourneySection'
 import { PatternInsightsSection } from '@/components/student/sections/PatternInsightsSection'
@@ -26,8 +27,9 @@ export default function StudentInsightsPage() {
   useEffect(() => {
     // Get userId from localStorage (same as game uses)
     if (typeof window !== 'undefined') {
-      // Try multiple possible keys (for compatibility)
+      // Try unified key first, then fall back to legacy keys for migration compatibility
       const savedUserId =
+        localStorage.getItem(STORAGE_KEYS.PLAYER_ID) ||
         localStorage.getItem('lux-player-id') ||
         localStorage.getItem('playerId') ||
         localStorage.getItem('gameUserId')

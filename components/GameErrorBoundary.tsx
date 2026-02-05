@@ -3,6 +3,7 @@
 import { Component, ReactNode } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
 import { Button } from '@/components/ui/button'
+import { STORAGE_KEYS } from '@/lib/persistence/storage-keys'
 
 interface GameErrorBoundaryProps {
   children: ReactNode
@@ -27,9 +28,9 @@ export class GameErrorBoundary extends Component<GameErrorBoundaryProps> {
 
     // Try to save game state before error
     try {
-      const currentSceneId = localStorage.getItem('currentSceneId')
+      const currentSceneId = localStorage.getItem(STORAGE_KEYS.CURRENT_SCENE_ID)
       if (currentSceneId) {
-        localStorage.setItem('lastKnownSceneId', currentSceneId)
+        localStorage.setItem(STORAGE_KEYS.LAST_KNOWN_SCENE_ID, currentSceneId)
       }
     } catch (e) {
       console.warn('Could not save game state before error:', e)

@@ -18,6 +18,7 @@ import { User, Play, Eye, Settings, ChevronDown, ChevronUp } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useAccessibilityProfile } from '@/hooks/useAccessibilityProfile'
 import { cn } from '@/lib/utils'
+import { STORAGE_KEYS } from '@/lib/persistence/storage-keys'
 import { springs } from '@/lib/animations'
 
 // Animated quotes for rotating display
@@ -89,7 +90,7 @@ export default function WelcomePage() {
   // Handle guest entry
   const handleGuestEntry = useCallback(() => {
     // Store that user chose guest mode
-    localStorage.setItem('lux_guest_mode', 'true')
+    localStorage.setItem(STORAGE_KEYS.GUEST_MODE, 'true')
     document.cookie = 'lux_guest_mode=true; path=/; max-age=31536000; samesite=lax'
     router.push('/')
   }, [router])

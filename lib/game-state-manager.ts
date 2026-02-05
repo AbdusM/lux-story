@@ -15,9 +15,11 @@ import {
 import { getGraphForCharacter, findCharacterForNode, getSafeStart, type CharacterId } from './graph-registry'
 import { generateUserId } from './safe-storage'
 import { logger } from './logger'
+import { STORAGE_KEYS } from './persistence/storage-keys'
 
-const STORAGE_KEY = 'grand-central-terminus-save'
-const BACKUP_STORAGE_KEY = 'grand-central-terminus-save-backup'
+// TD-005: Use unified storage keys
+const STORAGE_KEY = STORAGE_KEYS.GAME_SAVE
+const BACKUP_STORAGE_KEY = STORAGE_KEYS.GAME_SAVE_BACKUP
 
 /**
  * Manages all game state persistence operations
@@ -339,7 +341,7 @@ export class GameStateManager {
     try {
       localStorage.removeItem(STORAGE_KEY)
       localStorage.removeItem(BACKUP_STORAGE_KEY)
-      localStorage.removeItem('grand-central-game-store') // Clear Zustand store
+      localStorage.removeItem(STORAGE_KEYS.GAME_STORE) // Clear Zustand store
 
       // Clear Skill Tracker data (find all keys starting with skill_tracker_)
       Object.keys(localStorage).forEach(key => {

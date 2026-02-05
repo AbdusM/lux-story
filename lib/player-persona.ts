@@ -9,6 +9,7 @@ import type { GameState } from './game-store'
 import type { Choice } from './story-engine'
 import { logChoice } from './real-time-monitor'
 import { logger } from './logger'
+import { STORAGE_KEYS } from './persistence/storage-keys'
 
 export interface SkillDemonstrationSummary {
   count: number
@@ -590,7 +591,7 @@ export class PlayerPersonaTracker {
   private savePersonas() {
     try {
       const data = Object.fromEntries(this.personas)
-      localStorage.setItem('lux-story-player-personas', JSON.stringify(data))
+      localStorage.setItem(STORAGE_KEYS.PLAYER_PERSONAS, JSON.stringify(data))
     } catch (error) {
       console.warn('Failed to save personas:', error)
     }
@@ -601,7 +602,7 @@ export class PlayerPersonaTracker {
    */
   private loadPersonas() {
     try {
-      const stored = localStorage.getItem('lux-story-player-personas')
+      const stored = localStorage.getItem(STORAGE_KEYS.PLAYER_PERSONAS)
       if (stored) {
         const data = JSON.parse(stored)
         this.personas = new Map(Object.entries(data))
@@ -623,7 +624,7 @@ export class PlayerPersonaTracker {
    */
   clearAllPersonas() {
     this.personas.clear()
-    localStorage.removeItem('lux-story-player-personas')
+    localStorage.removeItem(STORAGE_KEYS.PLAYER_PERSONAS)
   }
 }
 

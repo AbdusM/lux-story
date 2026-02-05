@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation'
 import { useLargeTextMode } from '@/hooks/useLargeTextMode'
 import { useColorBlindMode } from '@/hooks/useColorBlindMode'
 import { useSettingsSync } from '@/hooks/useSettingsSync'
+import { STORAGE_KEYS } from '@/lib/persistence/storage-keys'
 import { useToast } from '@/components/ui/toast'
 import { cn } from '@/lib/utils'
 import { springs } from '@/lib/animations'
@@ -54,7 +55,7 @@ export function InGameSettings({ className }: InGameSettingsProps) {
   // Show pulse animation on first visit (once only)
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const hasSeenSettings = localStorage.getItem('lux_settings_discovered')
+      const hasSeenSettings = localStorage.getItem(STORAGE_KEYS.SETTINGS_DISCOVERED)
       if (!hasSeenSettings) {
         setShowPulse(true)
       }
@@ -72,7 +73,7 @@ export function InGameSettings({ className }: InGameSettingsProps) {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('lux_reduced_motion')
+      const stored = localStorage.getItem(STORAGE_KEYS.REDUCED_MOTION)
       setReducedMotion(stored === 'true')
     }
   }, [])
@@ -83,7 +84,7 @@ export function InGameSettings({ className }: InGameSettingsProps) {
     setActiveSection('main') // Reset to main when reopening
     // Mark settings as discovered (stops pulse animation)
     if (showPulse) {
-      localStorage.setItem('lux_settings_discovered', 'true')
+      localStorage.setItem(STORAGE_KEYS.SETTINGS_DISCOVERED, 'true')
       setShowPulse(false)
     }
   }, [showPulse])
@@ -114,7 +115,7 @@ export function InGameSettings({ className }: InGameSettingsProps) {
   const toggleReducedMotion = useCallback(async () => {
     const newValue = !reducedMotion
     setReducedMotion(newValue)
-    localStorage.setItem('lux_reduced_motion', String(newValue))
+    localStorage.setItem(STORAGE_KEYS.REDUCED_MOTION, String(newValue))
     document.documentElement.classList.toggle('reduce-motion', newValue)
     const result = await pushNow()
     if (result.success) {

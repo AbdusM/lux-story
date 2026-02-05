@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
+import { STORAGE_KEYS } from '@/lib/persistence/storage-keys'
 
 // Mock audio dependencies before imports
 vi.mock('@/lib/audio/synth-engine', () => ({
@@ -46,7 +47,7 @@ describe('useAudioDirector', () => {
   })
 
   it('initializes isMuted from localStorage', () => {
-    localStorage.setItem('lux_audio_muted', 'true')
+    localStorage.setItem(STORAGE_KEYS.AUDIO_MUTED, 'true')
     const { result } = renderHook(() => useAudioDirector(null))
     expect(result.current.state.isMuted).toBe(true)
   })
@@ -57,7 +58,7 @@ describe('useAudioDirector', () => {
   })
 
   it('initializes audioVolume from localStorage', () => {
-    localStorage.setItem('lux_audio_volume', '75')
+    localStorage.setItem(STORAGE_KEYS.AUDIO_VOLUME, '75')
     const { result } = renderHook(() => useAudioDirector(null))
     expect(result.current.state.audioVolume).toBe(75)
   })
@@ -71,7 +72,7 @@ describe('useAudioDirector', () => {
     act(() => { result.current.actions.toggleMute() })
 
     expect(result.current.state.isMuted).toBe(true)
-    expect(localStorage.getItem('lux_audio_muted')).toBe('true')
+    expect(localStorage.getItem(STORAGE_KEYS.AUDIO_MUTED)).toBe('true')
     expect(synthEngine.setMute).toHaveBeenCalledWith(true)
     expect(setAudioEnabled).toHaveBeenCalledWith(false)
   })
@@ -93,7 +94,7 @@ describe('useAudioDirector', () => {
     act(() => { result.current.actions.setVolume(80) })
 
     expect(result.current.state.audioVolume).toBe(80)
-    expect(localStorage.getItem('lux_audio_volume')).toBe('80')
+    expect(localStorage.getItem(STORAGE_KEYS.AUDIO_VOLUME)).toBe('80')
   })
 
   it('setVolume calls onSettingsChanged', () => {

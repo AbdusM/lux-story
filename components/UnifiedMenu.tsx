@@ -39,6 +39,7 @@ import { createClient } from '@/lib/supabase/client'
 import { LoginModal } from '@/components/auth/LoginModal'
 import { cn } from '@/lib/utils'
 import { springs } from '@/lib/animations'
+import { STORAGE_KEYS } from '@/lib/persistence/storage-keys'
 
 // Text size options
 const TEXT_SIZES = [
@@ -95,7 +96,7 @@ export function UnifiedMenu({
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('lux_reduced_motion')
+      const stored = localStorage.getItem(STORAGE_KEYS.REDUCED_MOTION)
       setReducedMotion(stored === 'true')
     }
   }, [])
@@ -137,7 +138,7 @@ export function UnifiedMenu({
   const toggleReducedMotion = useCallback(async () => {
     const newValue = !reducedMotion
     setReducedMotion(newValue)
-    localStorage.setItem('lux_reduced_motion', String(newValue))
+    localStorage.setItem(STORAGE_KEYS.REDUCED_MOTION, String(newValue))
     document.documentElement.classList.toggle('reduce-motion', newValue)
     await pushNow()
   }, [reducedMotion, pushNow])

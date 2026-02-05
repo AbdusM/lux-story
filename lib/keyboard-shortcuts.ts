@@ -6,6 +6,8 @@
  * Modifiers: ctrl, alt, shift, meta (cmd on Mac)
  */
 
+import { STORAGE_KEYS } from './persistence/storage-keys'
+
 export type ShortcutAction =
   | 'toggleJournal'
   | 'toggleConstellation'
@@ -202,7 +204,7 @@ export function formatKeyCombo(combo: string): string {
 export function loadCustomShortcuts(): Partial<Record<ShortcutAction, string>> {
   if (typeof window === 'undefined') return {}
 
-  const stored = localStorage.getItem('lux_keyboard_shortcuts')
+  const stored = localStorage.getItem(STORAGE_KEYS.KEYBOARD_SHORTCUTS)
   if (!stored) return {}
 
   try {
@@ -217,7 +219,7 @@ export function loadCustomShortcuts(): Partial<Record<ShortcutAction, string>> {
  */
 export function saveCustomShortcuts(shortcuts: Partial<Record<ShortcutAction, string>>): void {
   if (typeof window === 'undefined') return
-  localStorage.setItem('lux_keyboard_shortcuts', JSON.stringify(shortcuts))
+  localStorage.setItem(STORAGE_KEYS.KEYBOARD_SHORTCUTS, JSON.stringify(shortcuts))
 }
 
 /**
@@ -245,5 +247,5 @@ export function getEffectiveShortcuts(): Record<ShortcutAction, KeyboardShortcut
  */
 export function resetShortcuts(): void {
   if (typeof window === 'undefined') return
-  localStorage.removeItem('lux_keyboard_shortcuts')
+  localStorage.removeItem(STORAGE_KEYS.KEYBOARD_SHORTCUTS)
 }

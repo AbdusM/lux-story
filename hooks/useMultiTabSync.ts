@@ -2,6 +2,7 @@
 
 import { useEffect, useCallback, useRef } from 'react'
 import { useGameStore } from '@/lib/game-store'
+import { STORAGE_KEYS } from '@/lib/persistence/storage-keys'
 
 /**
  * TD-006: Multi-Tab Coordination
@@ -16,7 +17,7 @@ import { useGameStore } from '@/lib/game-store'
  * - We show a toast/notification when state is synced from another tab
  */
 
-const STORAGE_KEY = 'grand-central-game-store'
+// TD-005: Use unified storage key
 const DEBOUNCE_MS = 100
 
 export function useMultiTabSync() {
@@ -25,7 +26,7 @@ export function useMultiTabSync() {
 
   const handleStorageChange = useCallback((event: StorageEvent) => {
     // Only handle our storage key
-    if (event.key !== STORAGE_KEY) return
+    if (event.key !== STORAGE_KEYS.GAME_STORE) return
 
     // Debounce rapid changes
     if (debounceRef.current) {
@@ -85,10 +86,10 @@ export function useMultiTabConflictDetection() {
     // Register this tab in sessionStorage (survives reloads, but not new tabs)
     const registerTab = () => {
       try {
-        const activeTabs = JSON.parse(localStorage.getItem('lux-active-tabs') || '[]') as string[]
+        const activeTabs = JSON.parse(localStorage.getItem(STORAGE_KEYS.ACTIVE_TABS) || '[]') as string[]
         if (!activeTabs.includes(tabIdRef.current)) {
           activeTabs.push(tabIdRef.current)
-          localStorage.setItem('lux-active-tabs', JSON.stringify(activeTabs))
+          localStorage.setItem(STORAGE_KEYS.ACTIVE_TABS, JSON.stringify(activeTabs))
         }
       } catch {
         // Ignore errors
@@ -98,9 +99,9 @@ export function useMultiTabConflictDetection() {
     // Unregister this tab on unload
     const unregisterTab = () => {
       try {
-        const activeTabs = JSON.parse(localStorage.getItem('lux-active-tabs') || '[]') as string[]
+        const activeTabs = JSON.parse(localStorage.getItem(STORAGE_KEYS.ACTIVE_TABS) || '[]') as string[]
         const filtered = activeTabs.filter((id: string) => id !== tabIdRef.current)
-        localStorage.setItem('lux-active-tabs', JSON.stringify(filtered))
+        localStorage.setItem(STORAGE_KEYS.ACTIVE_TABS, JSON.stringify(filtered))
       } catch {
         // Ignore errors
       }
@@ -119,7 +120,7 @@ export function useMultiTabConflictDetection() {
   const getActiveTabCount = useCallback(() => {
     if (typeof window === 'undefined') return 1
     try {
-      const activeTabs = JSON.parse(localStorage.getItem('lux-active-tabs') || '[]')
+      const activeTabs = JSON.parse(localStorage.getItem(STORAGE_KEYS.ACTIVE_TABS) || '[]')
       return Array.isArray(activeTabs) ? activeTabs.length : 1
     } catch {
       return 1

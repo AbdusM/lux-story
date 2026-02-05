@@ -22,6 +22,7 @@ import { useSettingsSync } from '@/hooks/useSettingsSync'
 import { useToast } from '@/components/ui/toast'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { loadLocalSettings } from '@/lib/settings-sync'
+import { STORAGE_KEYS } from '@/lib/persistence/storage-keys'
 import { CATEGORY_LABELS, formatKeyCombo } from '@/lib/keyboard-shortcuts'
 import type { KeyboardShortcut } from '@/lib/keyboard-shortcuts'
 import { springs } from '@/lib/animations'
@@ -54,14 +55,14 @@ export default function ProfilePage() {
   // Audio settings
   const [isMuted, setIsMuted] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('lux_audio_muted') === 'true'
+      return localStorage.getItem(STORAGE_KEYS.AUDIO_MUTED) === 'true'
     }
     return false
   })
 
   const [audioVolume, setAudioVolume] = useState(() => {
     if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('lux_audio_volume')
+      const stored = localStorage.getItem(STORAGE_KEYS.AUDIO_VOLUME)
       return stored ? parseInt(stored, 10) : 50
     }
     return 50
@@ -95,7 +96,7 @@ export default function ProfilePage() {
   const handleToggleMute = async () => {
     const newMuted = !isMuted
     setIsMuted(newMuted)
-    localStorage.setItem('lux_audio_muted', String(newMuted))
+    localStorage.setItem(STORAGE_KEYS.AUDIO_MUTED, String(newMuted))
     const result = await pushNow()
     if (result.success) {
       toast.syncSuccess()
@@ -111,7 +112,7 @@ export default function ProfilePage() {
   const handleVolumeChange = (newVolume: number) => {
     hasInteracted.current = true
     setAudioVolume(newVolume)
-    localStorage.setItem('lux_audio_volume', String(newVolume))
+    localStorage.setItem(STORAGE_KEYS.AUDIO_VOLUME, String(newVolume))
 
     // Debounce the sync and toast
     if (volumeChangeTimer.current) {
@@ -168,17 +169,17 @@ export default function ProfilePage() {
         const text = await file.text()
         const importedSettings = JSON.parse(text)
 
-        // Apply imported settings to localStorage
+        // Apply imported settings to localStorage (TD-005: use unified keys)
         type SettingKey = 'audioMuted' | 'audioVolume' | 'accessibilityProfile' | 'textSize' | 'colorBlindMode' | 'cognitiveLoadLevel' | 'adminViewMode'
 
         const storageKeyMap: Record<SettingKey, string> = {
-          audioMuted: 'lux_audio_muted',
-          audioVolume: 'lux_audio_volume',
-          accessibilityProfile: 'lux_accessibility_profile',
-          textSize: 'lux_text_size',
-          colorBlindMode: 'lux_color_blind_mode',
-          cognitiveLoadLevel: 'lux_cognitive_load_level',
-          adminViewMode: 'admin_view_preference',
+          audioMuted: STORAGE_KEYS.AUDIO_MUTED,
+          audioVolume: STORAGE_KEYS.AUDIO_VOLUME,
+          accessibilityProfile: STORAGE_KEYS.ACCESSIBILITY_PROFILE,
+          textSize: STORAGE_KEYS.TEXT_SIZE,
+          colorBlindMode: STORAGE_KEYS.COLOR_BLIND_MODE,
+          cognitiveLoadLevel: STORAGE_KEYS.COGNITIVE_LOAD_LEVEL,
+          adminViewMode: STORAGE_KEYS.ADMIN_VIEW_MODE,
         }
 
         Object.entries(importedSettings).forEach(([key, value]) => {

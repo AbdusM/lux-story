@@ -10,6 +10,7 @@ import {
   OrbState,
   INITIAL_ORB_STATE
 } from './character-state'
+import { STORAGE_KEYS } from './persistence/storage-keys'
 import { getPatternValue } from './patterns'
 import { SimulationConfig } from '@/components/game/simulations/types'
 import { updateAmbientMusic } from './audio-feedback'
@@ -849,7 +850,7 @@ export const useGameStore = create<GameState & GameActions>()(
         }
       }),
       {
-        name: 'grand-central-game-store',
+        name: STORAGE_KEYS.GAME_STORE, // TD-005: Unified storage key
         version: 2, // Version 2: Single source of truth (characterTrust, patterns, thoughts in coreGameState only)
         migrate: (persistedState: unknown, version: number) => {
           // Handle migration from corrupted Set data to Arrays (version 0 → 1)
@@ -1019,7 +1020,7 @@ export const useGameStore = create<GameState & GameActions>()(
         }
       }
     ),
-    { name: 'grand-central-game-store' } // devtools options - only needs name
+    { name: 'lux-story-game-store' } // devtools options - only needs name
   )
 )
 
@@ -1138,7 +1139,7 @@ export function clearCorruptedStorage() {
   } catch (error) {
     console.warn('Error checking localStorage, clearing it:', error)
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('grand-central-game-store')
+      localStorage.removeItem(STORAGE_KEYS.GAME_STORE)
     }
     return true
   }
