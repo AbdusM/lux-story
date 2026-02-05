@@ -559,6 +559,24 @@ const nodes: DialogueNode[] = [
         nextNodeId: 'elena_origin_deeper',
         pattern: 'patience',
         skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'pattern_recognition_types',
+        text: "Pattern recognition of a different kind... what do you mean?",
+        nextNodeId: 'elena_origin_deeper',
+        pattern: 'exploring',
+        skills: ['curiosity']
+      },
+      {
+        choiceId: 'endings_arent_answers',
+        text: "Endings don't always give you answers. Sometimes the middle holds more truth.",
+        nextNodeId: 'elena_origin_deeper',
+        pattern: 'analytical',
+        skills: ['criticalThinking'],
+        consequence: {
+          characterId: 'elena',
+          trustChange: 1
+        }
       }
     ],
     tags: ['interrupt_target', 'elena_arc']
@@ -627,6 +645,24 @@ const nodes: DialogueNode[] = [
         nextNodeId: 'elena_first_pattern',
         pattern: 'exploring',
         skills: ['curiosity']
+      },
+      {
+        choiceId: 'validate_experience',
+        text: "Being gaslit by reality... that's a powerful way to describe it.",
+        nextNodeId: 'elena_first_pattern',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'elena',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'data_as_proof',
+        text: "So data isn't just analysis for you. It's vindication.",
+        nextNodeId: 'elena_first_pattern',
+        pattern: 'analytical',
+        skills: ['observation', 'criticalThinking']
       }
     ]
   },
@@ -646,6 +682,20 @@ const nodes: DialogueNode[] = [
         nextNodeId: 'elena_first_pattern',
         pattern: 'helping',
         skills: ['collaboration']
+      },
+      {
+        choiceId: 'find_the_angle',
+        text: "What angles have you already tried?",
+        nextNodeId: 'elena_first_pattern',
+        pattern: 'analytical',
+        skills: ['problemSolving', 'criticalThinking']
+      },
+      {
+        choiceId: 'patience_with_system',
+        text: "Sometimes proof takes time. What's making this one different?",
+        nextNodeId: 'elena_why_it_matters',
+        pattern: 'patience',
+        skills: ['observation']
       }
     ]
   },
@@ -904,7 +954,23 @@ const nodes: DialogueNode[] = [
       {
         choiceId: 'retry_search',
         text: 'Let me try different filter parameters.',
-        nextNodeId: 'elena_simulation_perplexity'
+        nextNodeId: 'elena_simulation_perplexity',
+        pattern: 'building',
+        skills: ['adaptability']
+      },
+      {
+        choiceId: 'step_back_analyze',
+        text: "Wait. What makes this noise pattern different from the signal?",
+        nextNodeId: 'elena_simulation_perplexity',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'narrow_timeframe',
+        text: "Let's narrow the timeframe. When did the anomaly first appear?",
+        nextNodeId: 'elena_simulation_perplexity',
+        pattern: 'patience',
+        skills: ['problemSolving']
       }
     ]
   },
@@ -1005,7 +1071,23 @@ const nodes: DialogueNode[] = [
       {
         choiceId: 'retry_notebook',
         text: 'You have to direct the focus. Tell it WHAT to look for.',
-        nextNodeId: 'elena_simulation_notebooklm'
+        nextNodeId: 'elena_simulation_notebooklm',
+        pattern: 'building',
+        skills: ['promptEngineering']
+      },
+      {
+        choiceId: 'think_about_what_matters',
+        text: "What would be in those documents that actually matters to the anomaly?",
+        nextNodeId: 'elena_simulation_notebooklm',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'different_approach',
+        text: "Maybe we need to ask about something specific. What happened right before the gap?",
+        nextNodeId: 'elena_simulation_notebooklm',
+        pattern: 'exploring',
+        skills: ['curiosity']
       }
     ]
   },

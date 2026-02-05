@@ -317,9 +317,28 @@ export const tessDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'continue_to_numbers_courage',
-        text: "[Continue]",
+        text: "So how's the landing going?",
         nextNodeId: 'tess_the_numbers',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['communication']
+      },
+      {
+        choiceId: 'courage_has_cost',
+        text: "Courage usually comes with a price tag. What's yours?",
+        nextNodeId: 'tess_the_numbers',
+        pattern: 'analytical',
+        skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'reckless_lucky',
+        text: "Reckless and lucky sounds like most good decisions.",
+        nextNodeId: 'tess_the_numbers',
+        pattern: 'exploring',
+        skills: ['observation'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -338,9 +357,28 @@ export const tessDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'continue_to_numbers_reality',
-        text: "[Continue]",
+        text: "At least hollow was comfortable. This sounds harder.",
         nextNodeId: 'tess_the_numbers',
-        pattern: 'patience'
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'feeling_everything',
+        text: "Feeling everything sounds exhausting. Worth it?",
+        nextNodeId: 'tess_the_numbers',
+        pattern: 'helping',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'this_is_mine',
+        text: "'At least this is mine' - that's the whole point, isn't it?",
+        nextNodeId: 'tess_the_numbers',
+        pattern: 'building',
+        skills: ['observation']
       }
     ]
   },
