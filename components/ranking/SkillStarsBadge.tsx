@@ -9,7 +9,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import type { StarLevel, StarType, SkillStarsState, SkillStar } from '@/lib/ranking/types'
-import { STAR_TYPE_DISPLAY, STAR_LEVEL_DISPLAY } from '@/lib/ranking/skill-stars'
+import { STAR_LEVEL_DISPLAY } from '@/lib/ranking/skill-stars'
 import { springs } from '@/lib/animations'
 import { Star, Target, Puzzle, Search, Heart, TrendingUp, Shield } from 'lucide-react'
 

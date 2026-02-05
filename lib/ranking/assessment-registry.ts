@@ -11,7 +11,6 @@ import type {
   AssessmentPhaseConfig,
   AssessmentState,
   AssessmentResult,
-  CurrentAssessmentProgress,
   PhaseResult,
   AssessmentPhase
 } from './assessment-arc'

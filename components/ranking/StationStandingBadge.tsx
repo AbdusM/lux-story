@@ -9,22 +9,9 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import type { StationStandingTier, MeritBreakdown, BillboardState } from '@/lib/ranking/types'
-import { STANDING_DISPLAY, MERIT_CATEGORIES, getMeritPercentages } from '@/lib/ranking/station-billboard'
+import { STANDING_DISPLAY, getMeritPercentages } from '@/lib/ranking/station-billboard'
 import { springs } from '@/lib/animations'
-import { Building, Trophy, Users, Map, BookOpen, Award, Sparkles } from 'lucide-react'
-
-// ═══════════════════════════════════════════════════════════════════════════
-// ICON MAPPING
-// ═══════════════════════════════════════════════════════════════════════════
-
-const MeritIcons: Record<string, typeof Trophy> = {
-  exploration: Map,
-  social: Users,
-  progression: Trophy,
-  discovery: BookOpen,
-  mastery: Sparkles,
-  engagement: Award
-}
+import { Building } from 'lucide-react'
 
 // ═══════════════════════════════════════════════════════════════════════════
 // COLOR TOKENS

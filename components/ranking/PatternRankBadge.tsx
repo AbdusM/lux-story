@@ -12,8 +12,7 @@ import { cn } from '@/lib/utils'
 import type { OrbTier } from '@/lib/orbs'
 import type { PatternMasteryState } from '@/lib/ranking/types'
 import {
-  PATTERN_MASTERY_DISPLAY,
-  getPatternMasteryDisplayName
+  PATTERN_MASTERY_DISPLAY
 } from '@/lib/ranking/pattern-mastery-display'
 import { springs } from '@/lib/animations'
 

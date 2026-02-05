@@ -28,7 +28,6 @@ import { calculateResonantTrustChange } from '@/lib/pattern-affinity'
 import { getRelevantCrossCharacterEcho } from '@/lib/character-relationships'
 import { recordTrustChange, type TrustTimeline } from '@/lib/trust-derivatives'
 import { checkTransformationEligible, type TransformationMoment } from '@/lib/character-transformations'
-import type { CharacterId } from '@/lib/graph-registry'
 
 // ============================================================
 // Trust Feedback Computation

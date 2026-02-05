@@ -5,7 +5,7 @@
  * ISP: Evidence-Based — validators must produce actionable diagnostics.
  */
 
-import { DialogueGraph, DialogueNode, StateConditionEvaluator } from '../dialogue-graph'
+import { DialogueGraph, StateConditionEvaluator } from '../dialogue-graph'
 import { CHARACTER_PATTERN_AFFINITIES } from '../pattern-affinity'
 import { GameState, GameStateUtils } from '../character-state'
 

@@ -12,16 +12,12 @@
 
 import type { DialogueGraph, DialogueNode, DialogueContent, EvaluatedChoice, InterruptWindow } from '@/lib/dialogue-graph'
 import type { CharacterId } from '@/lib/graph-registry'
-import type { JourneyNarrative } from '@/lib/journey-narrative-generator'
 import type { MetaAchievement } from '@/lib/meta-achievements'
 import type { PatternType } from '@/lib/patterns'
 import type { ConsequenceEcho } from '@/lib/consequence-echoes'
 import type { SessionAnnouncement } from '@/lib/session-structure'
 import type { PatternVoiceResult, VoiceConflictResult } from '@/lib/pattern-voices'
-import type { ActiveComboState } from '@/lib/interrupt-derivatives'
-import type { CharacterWaitingState } from '@/lib/character-waiting'
 import type { DelayedGift } from '@/lib/delayed-gifts'
-import type { ActiveExperienceState } from '@/lib/experience-engine'
 import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
 import type { GameInterfaceState } from '@/lib/game-interface-types'
 

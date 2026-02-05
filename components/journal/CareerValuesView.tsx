@@ -18,15 +18,6 @@ import { springs, STAGGER_DELAY } from '@/lib/animations'
  * - Independence: Creating new approaches
  */
 
-interface ValueConfig {
-  id: keyof typeof VALUE_CONFIGS
-  label: string
-  description: string
-  icon: typeof Heart
-  color: string
-  bgColor: string
-}
-
 const VALUE_CONFIGS = {
   directImpact: {
     label: 'Direct Impact',

@@ -2,8 +2,6 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 
 export type AdminRole = 'admin' | 'educator'
 
-const TEST_ADMIN_HEADER = 'x-test-admin'
-
 export function isE2EAdminBypassEnabled(): boolean {
   return process.env.NODE_ENV !== 'production' && process.env.E2E_ADMIN_BYPASS_ENABLED === 'true'
 }
