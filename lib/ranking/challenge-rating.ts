@@ -7,6 +7,7 @@
  * @module lib/ranking/challenge-rating
  */
 
+import { randomPick } from '@/lib/seeded-random'
 import type {
   ChallengeGrade,
   ReadinessMatch,
@@ -256,7 +257,7 @@ export const SAMUEL_GRADE_MESSAGES: Record<ChallengeGrade, string[]> = {
  */
 export function getSamuelGradeMessage(grade: ChallengeGrade): string {
   const messages = SAMUEL_GRADE_MESSAGES[grade]
-  return messages[Math.floor(Math.random() * messages.length)]
+  return randomPick(messages)!
 }
 
 export const SAMUEL_MATCH_MESSAGES: Record<ReadinessMatch, string> = {

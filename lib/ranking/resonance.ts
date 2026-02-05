@@ -7,6 +7,7 @@
  * @module lib/ranking/resonance
  */
 
+import { randomPick } from '@/lib/seeded-random'
 import type { RankCategory } from './types'
 import type { QualitativeStanding } from './cohorts'
 
@@ -508,7 +509,7 @@ export const SAMUEL_RESONANCE_MESSAGES: Record<number, string[]> = {
 export function getSamuelResonanceMessage(resonanceCount: number): string {
   const clampedCount = Math.min(resonanceCount, 4)
   const messages = SAMUEL_RESONANCE_MESSAGES[clampedCount]
-  return messages[Math.floor(Math.random() * messages.length)]
+  return randomPick(messages)!
 }
 
 /**

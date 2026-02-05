@@ -9,6 +9,7 @@
  * @module lib/ranking/pattern-mastery-display
  */
 
+import { randomPick } from '@/lib/seeded-random'
 import type { OrbTier, OrbBalance } from '@/lib/orbs'
 import { getOrbTier, ORB_TIERS } from '@/lib/orbs'
 import type { PatternType, PlayerPatterns } from '@/lib/patterns'
@@ -167,7 +168,7 @@ export const SAMUEL_PATTERN_MESSAGES: Record<PatternType, Record<OrbTier, string
  */
 export function getSamuelPromotionMessage(orbTier: OrbTier): string {
   const messages = SAMUEL_PROMOTION_MESSAGES[orbTier]
-  return messages[Math.floor(Math.random() * messages.length)]
+  return randomPick(messages)!
 }
 
 /**

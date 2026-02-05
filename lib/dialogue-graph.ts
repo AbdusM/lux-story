@@ -13,6 +13,7 @@ import {
 import { FutureSkills } from './2030-skills-system'
 import { PatternType } from './patterns'
 import { isComboUnlocked } from './pattern-combos'
+import { randomPick } from './seeded-random'
 // Note: Emotions use string type to support compound emotions like 'anxious_hopeful'
 // Use isValidEmotion() from lib/emotions.ts for runtime validation of core emotions
 
@@ -821,12 +822,13 @@ export class DialogueGraphNavigator {
     if (previousVariations && previousVariations.length > 0) {
       const unused = availableContent.filter(c => !previousVariations.includes(c.variation_id))
       if (unused.length > 0) {
-        return unused[Math.floor(Math.random() * unused.length)]
+        // TD-007: Use seeded random for deterministic testing
+        return randomPick(unused) ?? unused[0]
       }
     }
 
-    // Random selection from available
-    return availableContent[Math.floor(Math.random() * availableContent.length)]
+    // TD-007: Use seeded random for deterministic testing
+    return randomPick(availableContent) ?? availableContent[0]
   }
 }
 

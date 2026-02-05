@@ -8,6 +8,7 @@
  */
 
 import type { PatternType } from '@/lib/patterns'
+import { randomPick } from '@/lib/seeded-random'
 
 // ═══════════════════════════════════════════════════════════════════════════
 // ASSESSMENT TYPES
@@ -241,7 +242,7 @@ export const SAMUEL_ASSESSMENT_MESSAGES = {
 export function getSamuelAssessmentStartMessage(assessmentId: string): string {
   const messages = SAMUEL_ASSESSMENT_MESSAGES.start[assessmentId as keyof typeof SAMUEL_ASSESSMENT_MESSAGES.start]
   if (!messages) return "An assessment awaits. Show me what you've learned."
-  return messages[Math.floor(Math.random() * messages.length)]
+  return randomPick(messages)!
 }
 
 /**
@@ -249,7 +250,7 @@ export function getSamuelAssessmentStartMessage(assessmentId: string): string {
  */
 export function getSamuelPhaseCompleteMessage(phase: AssessmentPhase): string {
   const messages = SAMUEL_ASSESSMENT_MESSAGES.phaseComplete[phase]
-  return messages[Math.floor(Math.random() * messages.length)]
+  return randomPick(messages)!
 }
 
 /**
@@ -258,14 +259,14 @@ export function getSamuelPhaseCompleteMessage(phase: AssessmentPhase): string {
 export function getSamuelAssessmentResultMessage(passed: boolean, partial: boolean): string {
   if (passed) {
     const messages = SAMUEL_ASSESSMENT_MESSAGES.passed
-    return messages[Math.floor(Math.random() * messages.length)]
+    return randomPick(messages)!
   }
   if (partial) {
     const messages = SAMUEL_ASSESSMENT_MESSAGES.partial
-    return messages[Math.floor(Math.random() * messages.length)]
+    return randomPick(messages)!
   }
   const messages = SAMUEL_ASSESSMENT_MESSAGES.retry
-  return messages[Math.floor(Math.random() * messages.length)]
+  return randomPick(messages)!
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

@@ -7,6 +7,7 @@
  */
 
 import { GameState } from './character-state'
+import { random } from './seeded-random'
 
 // ═══════════════════════════════════════════════════════════════════════════
 // D-018: MEMETIC INFECTION ("Idea Virus")
@@ -52,8 +53,8 @@ export function infectCharacter(memeId: string, targetCharId: string): boolean {
     const meme = ACTIVE_MEMES.get(memeId)
     if (!meme) return false
 
-    // Infection check
-    if (Math.random() < meme.potency) {
+    // Infection check - TD-007: Use seeded random for determinism
+    if (random() < meme.potency) {
         meme.infectedCharacters.add(targetCharId)
         return true
     }

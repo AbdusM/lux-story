@@ -7,6 +7,7 @@
  * @module lib/ranking/skill-stars
  */
 
+import { randomPick } from '@/lib/seeded-random'
 import type {
   StarLevel,
   StarType,
@@ -314,7 +315,7 @@ export const SAMUEL_STAR_MESSAGES: Record<StarLevel, string[]> = {
  */
 export function getSamuelStarMessage(level: StarLevel): string {
   const messages = SAMUEL_STAR_MESSAGES[level]
-  return messages[Math.floor(Math.random() * messages.length)]
+  return randomPick(messages)!
 }
 
 export const SAMUEL_CONSTELLATION_MESSAGES: Record<string, string> = {

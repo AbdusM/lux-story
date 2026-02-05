@@ -18,6 +18,7 @@
  */
 
 import { type PatternType, getDominantPattern } from '@/lib/patterns'
+import { random } from '@/lib/seeded-random'
 import type {
   TemplateArchetype,
   VoiceCharacterId,
@@ -203,7 +204,8 @@ export function resolveVoiceVariation(
   let effectivePattern = dominant
   let varietyInjected = false
 
-  if (ENABLE_VARIETY_INJECTION && Math.random() < VARIETY_INJECTION_RATE) {
+  // TD-007: Use seeded random for deterministic testing
+  if (ENABLE_VARIETY_INJECTION && random() < VARIETY_INJECTION_RATE) {
     const secondary = getSecondaryPattern(patterns, dominant)
     if (secondary) {
       effectivePattern = secondary

@@ -9,6 +9,7 @@
  * @module lib/ranking/career-expertise
  */
 
+import { randomPick } from '@/lib/seeded-random'
 import type { CharacterId } from '@/lib/graph-registry'
 import type {
   CareerDomain,
@@ -375,5 +376,5 @@ export const SAMUEL_EXPERTISE_MESSAGES: Record<string, string[]> = {
  */
 export function getSamuelExpertiseMessage(tierName: string): string {
   const messages = SAMUEL_EXPERTISE_MESSAGES[tierName] || SAMUEL_EXPERTISE_MESSAGES.Curious
-  return messages[Math.floor(Math.random() * messages.length)]
+  return randomPick(messages)!
 }

@@ -7,6 +7,7 @@
  * @module lib/ranking/station-billboard
  */
 
+import { randomPick } from '@/lib/seeded-random'
 import type {
   StationStandingTier,
   MeritBreakdown,
@@ -281,7 +282,7 @@ export const SAMUEL_STANDING_MESSAGES: Record<StationStandingTier, string[]> = {
  */
 export function getSamuelStandingMessage(standing: StationStandingTier): string {
   const messages = SAMUEL_STANDING_MESSAGES[standing]
-  return messages[Math.floor(Math.random() * messages.length)]
+  return randomPick(messages)!
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

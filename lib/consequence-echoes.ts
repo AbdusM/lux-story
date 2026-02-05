@@ -14,6 +14,7 @@ import type { TemplateArchetype, VoiceCharacterId } from './voice-templates/temp
 import { resolveVoiceVariation } from './voice-templates/template-resolver'
 import type { DialogueContent } from './dialogue-graph'
 import { getDominantPattern } from './patterns'
+import { randomPick } from './seeded-random'
 
 // Note: Using string for emotion to support compound emotions in dialogue content
 
@@ -970,7 +971,7 @@ export function getConsequenceEcho(
   if (!pool || pool.length === 0) return null
 
   // Random selection from pool
-  return pool[Math.floor(Math.random() * pool.length)]
+  return randomPick(pool)!
 }
 
 /**
@@ -984,7 +985,7 @@ export function getPatternRecognitionEcho(
   if (!echoes?.patternRecognition?.[pattern]) return null
 
   const pool = echoes.patternRecognition[pattern]
-  return pool[Math.floor(Math.random() * pool.length)]
+  return randomPick(pool)!
 }
 
 /**
@@ -1171,7 +1172,7 @@ export function getOrbMilestoneEcho(
   const pool = ORB_MILESTONE_ECHOES[milestone]
   if (!pool || pool.length === 0) return null
 
-  return pool[Math.floor(Math.random() * pool.length)]
+  return randomPick(pool)!
 }
 
 // ============================================
@@ -1264,7 +1265,7 @@ export function getVoiceRevelationEcho(
   const pool = VOICE_REVELATION_ECHOES[dominantPattern]
   if (!pool || pool.length === 0) return null
 
-  return pool[Math.floor(Math.random() * pool.length)]
+  return randomPick(pool)!
 }
 
 /**
@@ -1387,7 +1388,7 @@ export function getResonanceEcho(
   const pool = echoes[resonanceType]
   if (!pool || pool.length === 0) return null
 
-  return pool[Math.floor(Math.random() * pool.length)]
+  return randomPick(pool)!
 }
 
 // ============================================
@@ -1466,7 +1467,7 @@ export function getDiscoveryHint(
   }
 
   const pool = vulnHints.hints
-  return pool[Math.floor(Math.random() * pool.length)]
+  return randomPick(pool)!
 }
 
 // ============================================
@@ -1501,7 +1502,7 @@ export function getVulnerabilityRevelationEcho(
   const pool = VULNERABILITY_REVELATION_ECHOES[vulnerabilityId]
   if (!pool || pool.length === 0) return null
 
-  return pool[Math.floor(Math.random() * pool.length)]
+  return randomPick(pool)!
 }
 
 // ============================================
@@ -1671,7 +1672,7 @@ export function getSkillVoice(
   if (!characterVoices || characterVoices.length === 0) return null
 
   return {
-    text: characterVoices[Math.floor(Math.random() * characterVoices.length)],
+    text: randomPick(characterVoices)!,
     style: level >= 8 ? 'impressed' : 'noticing'
   }
 }

@@ -7,6 +7,8 @@
  * @module lib/ranking/cohorts
  */
 
+import { randomPick } from '@/lib/seeded-random'
+
 // Types available from './types' if needed for future enhancements
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -341,7 +343,7 @@ export const SAMUEL_COHORT_MESSAGES: Record<QualitativeStanding, string[]> = {
  */
 export function getSamuelCohortMessage(standing: QualitativeStanding): string {
   const messages = SAMUEL_COHORT_MESSAGES[standing]
-  return messages[Math.floor(Math.random() * messages.length)]
+  return randomPick(messages)!
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

@@ -12,6 +12,7 @@
 
 import type { GameState } from './character-state'
 import type { DialogueNode } from './dialogue-graph'
+import { random, randomPick } from './seeded-random'
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -299,7 +300,8 @@ export function checkSessionBoundary(
   if ((isPausePoint || explicitlyAllowed) && hasDoneEnough) {
 
     // Prefer resolution announcements for natural breaks
-    const announcement = RESOLUTION_ANNOUNCEMENTS[Math.floor(Math.random() * RESOLUTION_ANNOUNCEMENTS.length)]
+    // TD-007: Use seeded random for deterministic testing
+    const announcement = randomPick(RESOLUTION_ANNOUNCEMENTS)!
 
     return {
       shouldShow: true,

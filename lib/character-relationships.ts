@@ -1,4 +1,5 @@
 import { GameState } from '@/lib/character-state'
+import { randomPick, randomInt } from './seeded-random'
 
 /**
  * Character Relationships System
@@ -1487,9 +1488,8 @@ export function getSharedMemory(
     return null
   }
 
-  return relationship.opinions.memories[
-    Math.floor(Math.random() * relationship.opinions.memories.length)
-  ]
+  // TD-007: Use seeded random for determinism
+  return randomPick(relationship.opinions.memories)!
 }
 
 /**
@@ -1610,8 +1610,8 @@ export function getRelevantCrossCharacterEcho(
 
   if (validEchoes.length === 0) return null
 
-  // Simple random selection for variety
-  const selected = validEchoes[Math.floor(Math.random() * validEchoes.length)]
+  // TD-007: Use seeded random for determinism
+  const selected = randomPick(validEchoes)!
 
   return {
     text: selected.text,

@@ -7,6 +7,7 @@
  * @module lib/ranking/elite-status
  */
 
+import { randomPick } from '@/lib/seeded-random'
 import type {
   EliteDesignation,
   EliteStatusState
@@ -235,7 +236,7 @@ export const SAMUEL_DESIGNATION_MESSAGES: Record<EliteDesignation, string[]> = {
  */
 export function getSamuelDesignationMessage(designation: EliteDesignation): string {
   const messages = SAMUEL_DESIGNATION_MESSAGES[designation]
-  return messages[Math.floor(Math.random() * messages.length)]
+  return randomPick(messages)!
 }
 
 export const SAMUEL_ELITE_TIER_MESSAGES: Record<string, string> = {
