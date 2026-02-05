@@ -1254,41 +1254,496 @@ export const isaiahDialogueNodes: DialogueNode[] = [
   // STUB NODES - Fix broken navigation (content TBD)
   // ═══════════════════════════════════════════════════════════════
 
-  { nodeId: 'isaiah_burn_boundary_response', speaker: 'Isaiah Thompson', content: [{ text: "Sometimes you have to set boundaries to sustain the work. It's not about doing less—it's about lasting longer.", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "That makes sense.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'isaiah_burn_push_response', speaker: 'Isaiah Thompson', content: [{ text: "Pushing through feels heroic, but heroes burn out. I've learned that the hard way.", emotion: 'serious', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Thank you for sharing.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'isaiah_burn_quit_response', speaker: 'Isaiah Thompson', content: [{ text: "Quitting isn't failure. Sometimes it's wisdom. Knowing when to step back is its own kind of strength.", emotion: 'warm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "I appreciate that perspective.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'isaiah_carry_marcus', speaker: 'Isaiah Thompson', content: [{ text: "Marcus and I see different sides of the same coin. He sees the systems that break people. I see the people rebuilding after.", emotion: 'reflective', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Both perspectives matter.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'isaiah_cultivation_detail', speaker: 'Isaiah Thompson', content: [{ text: "Cultivation isn't about asking for money. It's about building relationships. The giving follows when people feel connected to the mission.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Relationships first.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'isaiah_daily_choice', speaker: 'Isaiah Thompson', content: [{ text: "Every day I choose to show up. Even when the funding's uncertain, even when the wins feel small. That choice matters.", emotion: 'determined', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Consistency counts.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'isaiah_difference', speaker: 'Isaiah Thompson', content: [{ text: "Making a difference isn't about grand gestures. It's about showing up, again and again, for people who need someone in their corner.", emotion: 'warm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "That's powerful.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'isaiah_early_calling', speaker: 'Isaiah Thompson', content: [{ text: "I knew early that I wanted to help. Not in an abstract way—I wanted to see the faces, hear the stories, be part of the change.", emotion: 'passionate', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "That's a clear calling.", nextNodeId: 'isaiah_hub_return', pattern: 'exploring' }], tags: ['stub'] },
-  { nodeId: 'isaiah_favorite_donors', speaker: 'Isaiah Thompson', content: [{ text: "My favorite donors aren't the biggest givers. They're the ones who ask 'How are YOU doing?' before asking about the numbers.", emotion: 'warm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "They care about you.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'isaiah_fundraising_reality', speaker: 'Isaiah Thompson', content: [{ text: "Fundraising isn't about convincing people to give. It's about connecting them to something they already want to be part of.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Connection over persuasion.", nextNodeId: 'isaiah_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'isaiah_hope_career', speaker: 'Isaiah Thompson', content: [{ text: "Hope is the job. On good days and bad days. When funders say yes and when they say no. Hope is what I offer.", emotion: 'determined', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "That's meaningful work.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'isaiah_kids_stories', speaker: 'Isaiah Thompson', content: [{ text: "The kids... their stories keep me going. Every success, every graduation, every 'thank you'—it adds up to something bigger than any of us.", emotion: 'tender', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "They're why you do this.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'isaiah_major_gift_sim', speaker: 'Isaiah Thompson', content: [{ text: "Major gifts aren't about the money. They're about shared vision. When someone gives big, they're saying 'I believe what you believe.'", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Shared vision.", nextNodeId: 'isaiah_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'isaiah_manipulation_line', speaker: 'Isaiah Thompson', content: [{ text: "There's a line between inspiration and manipulation. I've seen fundraisers cross it. I work hard to stay on the right side.", emotion: 'serious', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Integrity matters.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'isaiah_meaning_progress', speaker: 'Isaiah Thompson', content: [{ text: "Progress in nonprofit work isn't always visible. Sometimes it's a kid who doesn't drop out. A family that stays together. Quiet victories.", emotion: 'reflective', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "The invisible wins.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'isaiah_measurement_innovation', speaker: 'Isaiah Thompson', content: [{ text: "We're always being asked to measure impact. But how do you measure hope? How do you quantify a kid believing in themselves?", emotion: 'frustrated', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Some things can't be measured.", nextNodeId: 'isaiah_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'isaiah_ministry_past', speaker: 'Isaiah Thompson', content: [{ text: "I almost went into ministry. Different path, same call. Serving people, building community, holding space for hope.", emotion: 'reflective', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "The call found its way.", nextNodeId: 'isaiah_hub_return', pattern: 'exploring' }], tags: ['stub'] },
-  { nodeId: 'isaiah_motivations', speaker: 'Isaiah Thompson', content: [{ text: "Why do I do this? Because someone did it for me. Someone believed in a kid from the neighborhood when nobody else did.", emotion: 'vulnerable', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Paying it forward.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'isaiah_patterns_seen', speaker: 'Isaiah Thompson', content: [{ text: "After years in this work, you start seeing patterns. Who succeeds, who struggles, what makes the difference. It's rarely what you'd expect.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "What do you see?", nextNodeId: 'isaiah_hub_return', pattern: 'exploring' }], tags: ['stub'] },
-  { nodeId: 'isaiah_real_solutions', speaker: 'Isaiah Thompson', content: [{ text: "Real solutions are messy. They don't fit in grant reports. They involve failure and pivoting and trying again.", emotion: 'serious', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Messy but real.", nextNodeId: 'isaiah_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'isaiah_recovery', speaker: 'Isaiah Thompson', content: [{ text: "Recovery—from burnout, from setbacks, from the weight of this work—it's a practice. Not a destination.", emotion: 'peaceful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "A practice, not a destination.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'isaiah_resonant_stories', speaker: 'Isaiah Thompson', content: [{ text: "The stories that resonate aren't about numbers. They're about moments. A breakthrough. A connection. A door opening.", emotion: 'warm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Moments matter.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'isaiah_room_kids', speaker: 'Isaiah Thompson', content: [{ text: "When I'm in a room with kids, everything else falls away. The funding stress, the politics—none of it matters. Just them.", emotion: 'peaceful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "They're what matters.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'isaiah_sim_adapt_response', speaker: 'Isaiah Thompson', content: [{ text: "Adapting to the donor's needs while staying true to mission—that's the art. You saw that in action.", emotion: 'appreciative', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "It's a delicate balance.", nextNodeId: 'isaiah_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'isaiah_sim_decline_response', speaker: 'Isaiah Thompson', content: [{ text: "Sometimes saying no is the right answer. Protecting the mission matters more than any single gift.", emotion: 'firm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Mission first.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'isaiah_sim_redirect_response', speaker: 'Isaiah Thompson', content: [{ text: "Redirecting energy into better channels—that's leadership. Not every opportunity is the right opportunity.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Discernment matters.", nextNodeId: 'isaiah_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'isaiah_staying_pain', speaker: 'Isaiah Thompson', content: [{ text: "Staying present with pain is part of the work. Not fixing it, not rushing past it. Just... being there.", emotion: 'tender', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Presence as service.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'isaiah_success_detail', speaker: 'Isaiah Thompson', content: [{ text: "Success in this work is rarely clean. It's one step forward, two steps back, then three forward. Progress is jagged.", emotion: 'honest', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Jagged but forward.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'isaiah_success_stories', speaker: 'Isaiah Thompson', content: [{ text: "The success stories keep us going. Not as marketing—as reminders. Reminders that this work matters.", emotion: 'warm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Reminders of why.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'isaiah_suffering_culture', speaker: 'Isaiah Thompson', content: [{ text: "Nonprofit culture sometimes glorifies suffering. Working late, sacrificing everything. I'm trying to change that.", emotion: 'determined', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Sustainability matters.", nextNodeId: 'isaiah_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'isaiah_sustainability_insight', speaker: 'Isaiah Thompson', content: [{ text: "Sustainable impact requires sustainable people. You can't pour from an empty cup, no matter how much you want to.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Take care of yourself too.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'isaiah_therapy_insight', speaker: 'Isaiah Thompson', content: [{ text: "Therapy helped me see that I was trying to save everyone because I couldn't save everyone from my past. Heavy stuff.", emotion: 'vulnerable', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Thank you for sharing that.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'isaiah_translation_work', speaker: 'Isaiah Thompson', content: [{ text: "Translation is a big part of the job. Translating community needs for funders. Translating funder expectations for staff.", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Bridging worlds.", nextNodeId: 'isaiah_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'isaiah_uncomfortable_money', speaker: 'Isaiah Thompson', content: [{ text: "Money conversations are uncomfortable. But discomfort is where growth happens—for me and for donors.", emotion: 'honest', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Leaning into discomfort.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'isaiah_witnesses', speaker: 'Isaiah Thompson', content: [{ text: "Sometimes the most important thing isn't solving problems. It's witnessing them. Saying 'I see you. This matters.'", emotion: 'tender', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Being seen is powerful.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
+  {
+    nodeId: 'isaiah_burn_boundary_response',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Sometimes you have to set boundaries to sustain the work. It's not about doing less—it's about lasting longer.\n\nI used to answer emails at midnight. Take calls during my daughter's dance recital. Say yes to every request because the need was real.\n\nBut you can't serve from empty. I had to learn that the hard way.",
+      emotion: 'thoughtful',
+      variation_id: 'isaiah_burn_boundary_v1'
+    }],
+    choices: [
+      { choiceId: 'boundary_set', text: "What boundaries do you set now?", nextNodeId: 'isaiah_recovery', pattern: 'exploring' },
+      { choiceId: 'boundary_guilt', text: "Do you ever feel guilty saying no?", nextNodeId: 'isaiah_staying_pain', pattern: 'helping' },
+      { choiceId: 'boundary_culture', text: "Is boundary-setting accepted in nonprofit culture?", nextNodeId: 'isaiah_suffering_culture', pattern: 'analytical' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_burn_push_response',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Pushing through feels heroic, but heroes burn out. I've learned that the hard way.\n\nThere was a year... I ran myself into the ground. Pneumonia twice. Marriage nearly ended. Still I kept going because 'the kids need me.'\n\nWhat I didn't see was that exhausted-Isaiah wasn't helping anyone. He was just performing helpfulness while falling apart.",
+      emotion: 'vulnerable',
+      variation_id: 'isaiah_burn_push_v1'
+    }],
+    choices: [
+      { choiceId: 'push_wakeup', text: "What was the wake-up call?", nextNodeId: 'isaiah_therapy_insight', pattern: 'exploring' },
+      { choiceId: 'push_now', text: "How do you handle the drive to push now?", nextNodeId: 'isaiah_recovery', pattern: 'patience' },
+      { choiceId: 'push_advice', text: "What advice would you give to someone in that cycle?", nextNodeId: 'isaiah_sustainability_insight', pattern: 'helping' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_burn_quit_response',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Quitting isn't failure. Sometimes it's wisdom. Knowing when to step back is its own kind of strength.\n\nI've watched people destroy themselves trying to 'stay the course.' Lost marriages. Lost health. Lost the very passion that brought them to this work.\n\nSometimes the bravest thing you can do is say 'not me, not now' and trust that the work will continue without you.",
+      emotion: 'warm',
+      variation_id: 'isaiah_burn_quit_v1'
+    }],
+    choices: [
+      { choiceId: 'quit_hard', text: "That must be hard to accept.", nextNodeId: 'isaiah_recovery', pattern: 'helping' },
+      { choiceId: 'quit_when', text: "How do you know when it's time?", nextNodeId: 'isaiah_patterns_seen', pattern: 'analytical' },
+      { choiceId: 'quit_stayed', text: "But you stayed.", nextNodeId: 'isaiah_daily_choice', pattern: 'exploring' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_carry_marcus',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Marcus and I see different sides of the same coin. He sees the systems that break people. I see the people rebuilding after.\n\nWe've had some real conversations. About healthcare, about community, about what it means to actually help someone.\n\nHe gets frustrated with the slow pace of nonprofit work. I get frustrated with how healthcare sometimes treats symptoms instead of causes. But we're both trying to fix the same broken world.",
+      emotion: 'reflective',
+      variation_id: 'isaiah_carry_marcus_v1'
+    }],
+    choices: [
+      { choiceId: 'marcus_learn', text: "What have you learned from each other?", nextNodeId: 'isaiah_real_solutions', pattern: 'exploring' },
+      { choiceId: 'marcus_tension', text: "Where do you disagree?", nextNodeId: 'isaiah_measurement_innovation', pattern: 'analytical' },
+      { choiceId: 'marcus_collaborate', text: "Have you ever worked together?", nextNodeId: 'isaiah_resonant_stories', pattern: 'building' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_cultivation_detail',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Cultivation isn't about asking for money. It's about building relationships. The giving follows when people feel connected to the mission.\n\nFirst meeting? I don't ask for anything. I listen. What do they care about? What keeps them up at night? Where does their passion live?\n\nSecond meeting, maybe third—I start showing how our work connects to what they already value. Not selling. Revealing.\n\nBy the time I make an ask, it's not a sales pitch. It's an invitation to be part of something they already believe in.",
+      emotion: 'knowing',
+      variation_id: 'isaiah_cultivation_v1'
+    }],
+    choices: [
+      { choiceId: 'cultivation_time', text: "That takes a lot of time.", nextNodeId: 'isaiah_sustainability_insight', pattern: 'patience' },
+      { choiceId: 'cultivation_authentic', text: "How do you keep it authentic?", nextNodeId: 'isaiah_manipulation_line', pattern: 'exploring' },
+      { choiceId: 'cultivation_failure', text: "What if they never come around?", nextNodeId: 'isaiah_hope_career', pattern: 'analytical' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_daily_choice',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Every day I choose to show up. Even when the funding's uncertain, even when the wins feel small. That choice matters.\n\nThere are mornings I don't want to. Mornings where the inbox is full of problems and the grant deadline is looming and I wonder if any of this makes a difference.\n\nBut then I remember: the kids don't get to take a day off from their circumstances. So I show up.",
+      emotion: 'determined',
+      variation_id: 'isaiah_daily_choice_v1'
+    }],
+    choices: [
+      { choiceId: 'daily_sustain', text: "How do you sustain that commitment?", nextNodeId: 'isaiah_recovery', pattern: 'patience' },
+      { choiceId: 'daily_days', text: "What gets you through the hardest days?", nextNodeId: 'isaiah_kids_stories', pattern: 'helping' },
+      { choiceId: 'daily_measure', text: "How do you know when you've made a difference?", nextNodeId: 'isaiah_meaning_progress', pattern: 'analytical' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_difference',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Making a difference isn't about grand gestures. It's about showing up, again and again, for people who need someone in their corner.\n\nI used to dream about big moments. The transformative grant. The celebrity endorsement. The viral success story.\n\nNow I know: the difference is made in a thousand small moments. A kid who trusts you enough to ask for help. A parent who finally believes change is possible.",
+      emotion: 'warm',
+      variation_id: 'isaiah_difference_v1'
+    }],
+    choices: [
+      { choiceId: 'diff_small', text: "Tell me about one of those small moments.", nextNodeId: 'isaiah_resonant_stories', pattern: 'helping' },
+      { choiceId: 'diff_scale', text: "How do you scale small moments into larger impact?", nextNodeId: 'isaiah_real_solutions', pattern: 'building' },
+      { choiceId: 'diff_patience', text: "It sounds like that requires a lot of patience.", nextNodeId: 'isaiah_hope_career', pattern: 'patience' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_early_calling',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "I knew early that I wanted to help. Not in an abstract way—I wanted to see the faces, hear the stories, be part of the change.\n\nGrowing up, I watched my neighborhood struggle. Good people, working hard, still falling behind. And I thought: someone needs to do something.\n\nTook me years to realize that someone was me.",
+      emotion: 'passionate',
+      variation_id: 'isaiah_early_calling_v1'
+    }],
+    choices: [
+      { choiceId: 'calling_path', text: "What path led you here?", nextNodeId: 'isaiah_ministry_past', pattern: 'exploring' },
+      { choiceId: 'calling_change', text: "Has that calling changed over time?", nextNodeId: 'isaiah_hope_career', pattern: 'patience' },
+      { choiceId: 'calling_doubt', text: "Did you ever doubt that calling?", nextNodeId: 'isaiah_daily_choice', pattern: 'analytical' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_favorite_donors',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "My favorite donors aren't the biggest givers. They're the ones who ask 'How are YOU doing?' before asking about the numbers.\n\nThere's a retired teacher who gives fifty dollars a month. Never misses. She calls every quarter just to check in. Asks about my kids, my wife.\n\nThat's partnership. Not transaction.",
+      emotion: 'warm',
+      variation_id: 'isaiah_favorite_donors_v1'
+    }],
+    choices: [
+      { choiceId: 'donors_rare', text: "Are donors like that rare?", nextNodeId: 'isaiah_cultivation_detail', pattern: 'exploring' },
+      { choiceId: 'donors_cultivate', text: "How do you find people who give that way?", nextNodeId: 'isaiah_fundraising_reality', pattern: 'analytical' },
+      { choiceId: 'donors_reciprocate', text: "How do you reciprocate that care?", nextNodeId: 'isaiah_staying_pain', pattern: 'helping' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_fundraising_reality',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Fundraising isn't about convincing people to give. It's about connecting them to something they already want to be part of.\n\nMost donors have giving in their heart already. They're looking for the right vessel. Something they trust, something that matches their values.\n\nMy job isn't to manufacture that desire. It's to help them see that what we do is what they've been searching for.",
+      emotion: 'knowing',
+      variation_id: 'isaiah_fundraising_v1'
+    }],
+    choices: [
+      { choiceId: 'fundraising_find', text: "How do you find those people?", nextNodeId: 'isaiah_favorite_donors', pattern: 'exploring' },
+      { choiceId: 'fundraising_mismatch', text: "What if there's no match?", nextNodeId: 'isaiah_sim_decline_response', pattern: 'patience' },
+      { choiceId: 'fundraising_skills', text: "What skills does this kind of fundraising require?", nextNodeId: 'isaiah_translation_work', pattern: 'analytical' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_hope_career',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Hope is the job. On good days and bad days. When funders say yes and when they say no. Hope is what I offer.\n\nPeople don't come to us because they have options. They come because they've run out of them. And what we give first—before programs, before services—is the belief that things can be different.\n\nThat's not naive. That's strategy. Because without hope, nothing else works.",
+      emotion: 'determined',
+      variation_id: 'isaiah_hope_career_v1'
+    }],
+    choices: [
+      { choiceId: 'hope_maintain', text: "How do you maintain hope when outcomes are uncertain?", nextNodeId: 'isaiah_daily_choice', pattern: 'patience' },
+      { choiceId: 'hope_practical', text: "Is hope enough without practical resources?", nextNodeId: 'isaiah_real_solutions', pattern: 'analytical' },
+      { choiceId: 'hope_offer', text: "How do you offer hope to someone who's given up?", nextNodeId: 'isaiah_witnesses', pattern: 'helping' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_kids_stories',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "The kids... their stories keep me going.\n\nLast month, DeShawn graduated. First in his family to finish high school. Came to our program at thirteen, angry at the world. Now he's heading to Tuskegee.\n\nEvery success like that, every graduation, every 'thank you'—it adds up to something bigger than any of us.\n\nOn the hard days, I think about DeShawn. About Maria. About all the kids whose names I'll never know who went a little further because someone showed up.",
+      emotion: 'tender',
+      variation_id: 'isaiah_kids_v1'
+    }],
+    choices: [
+      { choiceId: 'kids_failures', text: "What about the ones who don't make it?", nextNodeId: 'isaiah_meaning_progress', pattern: 'exploring' },
+      { choiceId: 'kids_connection', text: "Do you stay in touch with graduates?", nextNodeId: 'isaiah_room_kids', pattern: 'helping' },
+      { choiceId: 'kids_impact', text: "How do you measure that kind of impact?", nextNodeId: 'isaiah_measurement_innovation', pattern: 'analytical' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_major_gift_sim',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Major gifts aren't about the money. They're about shared vision. When someone gives big, they're saying 'I believe what you believe.'\n\nThe cultivation process for a major gift can take years. Years of relationship building, of listening, of showing—not telling—how the work connects to their values.\n\nAnd when that gift finally comes, it's not a transaction. It's a partnership being born.",
+      emotion: 'thoughtful',
+      variation_id: 'isaiah_major_gift_v1'
+    }],
+    choices: [
+      { choiceId: 'major_time', text: "Years of cultivation sounds exhausting.", nextNodeId: 'isaiah_sustainability_insight', pattern: 'patience' },
+      { choiceId: 'major_wrong', text: "What if the vision isn't actually shared?", nextNodeId: 'isaiah_sim_decline_response', pattern: 'exploring' },
+      { choiceId: 'major_steps', text: "What does that cultivation process look like?", nextNodeId: 'isaiah_cultivation_detail', pattern: 'analytical' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_manipulation_line',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "There's a line between inspiration and manipulation. I've seen fundraisers cross it. I work hard to stay on the right side.\n\nIt's easy to weaponize suffering. To use poverty porn, trauma stories, guilt. And it works—in the short term.\n\nBut it dehumanizes the people we serve. Turns them into props for donor sympathy. I won't do that, no matter how much money is at stake.",
+      emotion: 'serious',
+      variation_id: 'isaiah_manipulation_v1'
+    }],
+    choices: [
+      { choiceId: 'manip_pressure', text: "Do you ever feel pressure to cross that line?", nextNodeId: 'isaiah_uncomfortable_money', pattern: 'exploring' },
+      { choiceId: 'manip_tell', text: "How do you tell stories ethically?", nextNodeId: 'isaiah_resonant_stories', pattern: 'analytical' },
+      { choiceId: 'manip_others', text: "Have you called out others who cross that line?", nextNodeId: 'isaiah_real_solutions', pattern: 'building' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_meaning_progress',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Progress in nonprofit work isn't always visible. Sometimes it's a kid who doesn't drop out. A family that stays together. Quiet victories.\n\nThe hardest part is explaining that to funders who want metrics. 'How many lives did you save this quarter?' As if transformation works on quarterly reports.\n\nSome of our biggest wins, we'll never see. A seed planted that grows years later.",
+      emotion: 'reflective',
+      variation_id: 'isaiah_meaning_progress_v1'
+    }],
+    choices: [
+      { choiceId: 'progress_measure', text: "How do you measure what can't be counted?", nextNodeId: 'isaiah_measurement_innovation', pattern: 'analytical' },
+      { choiceId: 'progress_patience', text: "That requires a lot of faith.", nextNodeId: 'isaiah_hope_career', pattern: 'patience' },
+      { choiceId: 'progress_example', text: "Tell me about a quiet victory.", nextNodeId: 'isaiah_kids_stories', pattern: 'helping' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_measurement_innovation',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "We're always being asked to measure impact. But how do you measure hope? How do you quantify a kid believing in themselves?\n\nI've tried everything. Surveys, interviews, longitudinal tracking. And yes, we have data—graduation rates, employment numbers, income changes.\n\nBut the data misses the thing that matters most: the moment someone decides their life can be different. That's where the magic happens, and it doesn't fit in a spreadsheet.",
+      emotion: 'frustrated',
+      variation_id: 'isaiah_measurement_v1'
+    }],
+    choices: [
+      { choiceId: 'measure_funders', text: "How do funders respond to that?", nextNodeId: 'isaiah_translation_work', pattern: 'exploring' },
+      { choiceId: 'measure_better', text: "Are there better ways to capture impact?", nextNodeId: 'isaiah_resonant_stories', pattern: 'analytical' },
+      { choiceId: 'measure_tension', text: "That tension sounds exhausting.", nextNodeId: 'isaiah_suffering_culture', pattern: 'helping' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_ministry_past',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "I almost went into ministry. Different path, same call. Serving people, building community, holding space for hope.\n\nSpent two years in seminary before I realized: I didn't want to preach from a pulpit. I wanted to be in the streets. In the schools. Where the struggle actually lives.\n\nSometimes I wonder what would have happened if I'd finished. Different collar, same work, maybe.",
+      emotion: 'reflective',
+      variation_id: 'isaiah_ministry_v1'
+    }],
+    choices: [
+      { choiceId: 'ministry_regret', text: "Do you regret leaving seminary?", nextNodeId: 'isaiah_early_calling', pattern: 'exploring' },
+      { choiceId: 'ministry_faith', text: "Does faith still guide your work?", nextNodeId: 'isaiah_hope_career', pattern: 'patience' },
+      { choiceId: 'ministry_different', text: "How is nonprofit work different from ministry?", nextNodeId: 'isaiah_difference', pattern: 'analytical' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_motivations',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Why do I do this?\n\nBecause someone did it for me. Mr. Henderson. Ran a youth program in our neighborhood when I was fourteen. Everybody else saw a kid headed for trouble. He saw... potential.\n\nHe didn't have much. Drove an old car, wore the same jacket every day. But he showed up. Every single day. For us.\n\nThat consistency—that stubborn belief in kids everyone else had given up on—it changed everything for me.",
+      emotion: 'vulnerable',
+      variation_id: 'isaiah_motivations_v1'
+    }],
+    choices: [
+      { choiceId: 'motivations_mentor', text: "Where is Mr. Henderson now?", nextNodeId: 'isaiah_ministry_past', pattern: 'exploring' },
+      { choiceId: 'motivations_payforward', text: "So you're doing for others what he did for you.", nextNodeId: 'isaiah_kids_stories', pattern: 'helping' },
+      { choiceId: 'motivations_different', text: "What made you different from other kids?", nextNodeId: 'isaiah_early_calling', pattern: 'analytical' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_patterns_seen',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "After years in this work, you start seeing patterns. Who succeeds, who struggles, what makes the difference. It's rarely what you'd expect.\n\nIt's not always the smartest kids who make it. Or the ones with the most talent. It's the ones who have one person—just one—who believes in them unconditionally.\n\nThat's the pattern. Connection. Belief. Someone in their corner.",
+      emotion: 'knowing',
+      variation_id: 'isaiah_patterns_v1'
+    }],
+    choices: [
+      { choiceId: 'patterns_person', text: "How do you become that person for someone?", nextNodeId: 'isaiah_staying_pain', pattern: 'helping' },
+      { choiceId: 'patterns_system', text: "Can you systematize that kind of connection?", nextNodeId: 'isaiah_real_solutions', pattern: 'building' },
+      { choiceId: 'patterns_fail', text: "What about when connection isn't enough?", nextNodeId: 'isaiah_meaning_progress', pattern: 'patience' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_real_solutions',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Real solutions are messy. They don't fit in grant reports. They involve failure and pivoting and trying again.\n\nWe tried a mentorship program three different ways before we found what worked. And what worked wasn't what any of us expected—it was letting kids choose their mentors instead of assigning them.\n\nThat kind of learning doesn't happen in a strategic plan. It happens in the doing.",
+      emotion: 'serious',
+      variation_id: 'isaiah_real_solutions_v1'
+    }],
+    choices: [
+      { choiceId: 'solutions_fail', text: "How do you handle failure in this work?", nextNodeId: 'isaiah_recovery', pattern: 'patience' },
+      { choiceId: 'solutions_funders', text: "Do funders accept messy solutions?", nextNodeId: 'isaiah_translation_work', pattern: 'analytical' },
+      { choiceId: 'solutions_learn', text: "What else have you learned the hard way?", nextNodeId: 'isaiah_success_detail', pattern: 'exploring' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_recovery',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Recovery—from burnout, from setbacks, from the weight of this work—it's a practice. Not a destination.\n\nI meditate every morning. Twenty minutes before the inbox, before the demands. It's not enough, but it's something.\n\nAnd I've learned to notice the warning signs. When I start resenting the people I'm supposed to help—that's the red flag. That's when I need to step back.",
+      emotion: 'peaceful',
+      variation_id: 'isaiah_recovery_v1'
+    }],
+    choices: [
+      { choiceId: 'recovery_practice', text: "What other practices help you recover?", nextNodeId: 'isaiah_sustainability_insight', pattern: 'patience' },
+      { choiceId: 'recovery_warning', text: "How often do you hit those warning signs?", nextNodeId: 'isaiah_burn_boundary_response', pattern: 'exploring' },
+      { choiceId: 'recovery_others', text: "How do you help your team with recovery?", nextNodeId: 'isaiah_suffering_culture', pattern: 'helping' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_resonant_stories',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "The stories that resonate aren't about numbers. They're about moments. A breakthrough. A connection. A door opening.\n\nI remember a kid—Marcus, actually—who hadn't spoken in group for six months. Just sat there, arms crossed. Then one day, another kid shared about losing his dad. And Marcus started talking. About his own loss. His own pain.\n\nThat moment changed everything for him. For the whole group. You can't put that in a pie chart.",
+      emotion: 'warm',
+      variation_id: 'isaiah_resonant_v1'
+    }],
+    choices: [
+      { choiceId: 'resonant_share', text: "How do you share stories like that responsibly?", nextNodeId: 'isaiah_manipulation_line', pattern: 'analytical' },
+      { choiceId: 'resonant_remember', text: "Do you remember all those moments?", nextNodeId: 'isaiah_staying_pain', pattern: 'helping' },
+      { choiceId: 'resonant_create', text: "Can you create conditions for moments like that?", nextNodeId: 'isaiah_room_kids', pattern: 'building' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_room_kids',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "When I'm in a room with kids, everything else falls away. The funding stress, the politics—none of it matters. Just them.\n\nThey're not impressed by my title or my grant writing skills. They just want to know: Are you real? Do you actually care? Can I trust you?\n\nThat honesty keeps me grounded. Reminds me what this is actually about.",
+      emotion: 'peaceful',
+      variation_id: 'isaiah_room_kids_v1'
+    }],
+    choices: [
+      { choiceId: 'room_trust', text: "How do you earn their trust?", nextNodeId: 'isaiah_staying_pain', pattern: 'helping' },
+      { choiceId: 'room_balance', text: "How do you balance admin work with face time?", nextNodeId: 'isaiah_daily_choice', pattern: 'patience' },
+      { choiceId: 'room_change', text: "Has what they need changed over the years?", nextNodeId: 'isaiah_patterns_seen', pattern: 'exploring' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_sim_adapt_response',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Adapting to the donor's needs while staying true to mission—that's the art. You saw that in action.\n\nIt's not compromise. It's finding the overlap between what they care about and what we're trying to do.\n\nWhen it works, both parties walk away feeling heard. That's the foundation of a lasting partnership.",
+      emotion: 'appreciative',
+      variation_id: 'isaiah_sim_adapt_v1'
+    }],
+    choices: [
+      { choiceId: 'adapt_learn', text: "How did you learn to do that?", nextNodeId: 'isaiah_cultivation_detail', pattern: 'exploring' },
+      { choiceId: 'adapt_boundaries', text: "Where do you draw the line on adapting?", nextNodeId: 'isaiah_manipulation_line', pattern: 'patience' },
+      { choiceId: 'adapt_apply', text: "I can see how that applies beyond fundraising.", nextNodeId: 'isaiah_translation_work', pattern: 'analytical' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_sim_decline_response',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Sometimes saying no is the right answer. Protecting the mission matters more than any single gift.\n\nI've seen organizations chase money that came with strings. Five years later, they're unrecognizable. Serving the donor's vision, not the community's.\n\nThat's a trap. A well-funded trap, but a trap.",
+      emotion: 'firm',
+      variation_id: 'isaiah_sim_decline_v1'
+    }],
+    choices: [
+      { choiceId: 'decline_pressure', text: "How do you handle the pressure when funding is tight?", nextNodeId: 'isaiah_daily_choice', pattern: 'exploring' },
+      { choiceId: 'decline_board', text: "Does your board support saying no to big gifts?", nextNodeId: 'isaiah_real_solutions', pattern: 'analytical' },
+      { choiceId: 'decline_feel', text: "It must be hard to turn down money you need.", nextNodeId: 'isaiah_uncomfortable_money', pattern: 'helping' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_sim_redirect_response',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Redirecting energy into better channels—that's leadership. Not every opportunity is the right opportunity.\n\nWhen I was younger, I'd chase every lead. Exhaust myself on prospects that weren't aligned.\n\nNow I ask: Even if we get this gift, will it move us toward our mission or away from it?",
+      emotion: 'knowing',
+      variation_id: 'isaiah_sim_redirect_v1'
+    }],
+    choices: [
+      { choiceId: 'redirect_discernment', text: "How do you develop that discernment?", nextNodeId: 'isaiah_patterns_seen', pattern: 'exploring' },
+      { choiceId: 'redirect_mistakes', text: "Have you ever misjudged and regretted it?", nextNodeId: 'isaiah_success_detail', pattern: 'helping' },
+      { choiceId: 'redirect_teach', text: "How do you teach that to newer fundraisers?", nextNodeId: 'isaiah_fundraising_reality', pattern: 'building' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_staying_pain',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Staying present with pain is part of the work. Not fixing it, not rushing past it. Just... being there.\n\nPeople in crisis don't always need solutions. Sometimes they need a witness. Someone who says: 'I see what you're going through. It matters. You matter.'\n\nThat kind of presence costs something. But it's often the most valuable thing I can offer.",
+      emotion: 'tender',
+      variation_id: 'isaiah_staying_pain_v1'
+    }],
+    choices: [
+      { choiceId: 'pain_cost', text: "What does that presence cost you?", nextNodeId: 'isaiah_therapy_insight', pattern: 'exploring' },
+      { choiceId: 'pain_learn', text: "How did you learn to do that?", nextNodeId: 'isaiah_ministry_past', pattern: 'patience' },
+      { choiceId: 'pain_protect', text: "How do you protect yourself while being present?", nextNodeId: 'isaiah_recovery', pattern: 'analytical' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_success_detail',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Success in this work is rarely clean. It's one step forward, two steps back, then three forward. Progress is jagged.\n\nI've had kids graduate from our program, get jobs, start families—then show up three years later in crisis. Back at square one.\n\nDoes that mean we failed? I don't think so. It means life is hard. And we're here for the long haul.",
+      emotion: 'honest',
+      variation_id: 'isaiah_success_detail_v1'
+    }],
+    choices: [
+      { choiceId: 'success_measure', text: "How do you measure success when it's not linear?", nextNodeId: 'isaiah_measurement_innovation', pattern: 'analytical' },
+      { choiceId: 'success_return', text: "What happens when people come back?", nextNodeId: 'isaiah_hope_career', pattern: 'helping' },
+      { choiceId: 'success_patience', text: "That takes incredible patience.", nextNodeId: 'isaiah_daily_choice', pattern: 'patience' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_success_stories',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "The success stories keep us going. Not as marketing—as reminders. Reminders that this work matters.\n\nWe have a wall in the office. Photos of graduates, letters they've sent, announcements of jobs and weddings and babies. On the hard days, I stand there.\n\nNot to feel proud. To remember: This is real. These lives changed. Keep going.",
+      emotion: 'warm',
+      variation_id: 'isaiah_success_stories_v1'
+    }],
+    choices: [
+      { choiceId: 'stories_share', text: "Do you share those stories with donors?", nextNodeId: 'isaiah_manipulation_line', pattern: 'analytical' },
+      { choiceId: 'stories_hard', text: "What about the ones who didn't make it to the wall?", nextNodeId: 'isaiah_meaning_progress', pattern: 'exploring' },
+      { choiceId: 'stories_team', text: "How does your team use those reminders?", nextNodeId: 'isaiah_suffering_culture', pattern: 'building' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_suffering_culture',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Nonprofit culture sometimes glorifies suffering. Working late, sacrificing everything. I'm trying to change that.\n\nFor years, I wore my exhaustion like a badge. 'Look how much I care.' But burnt-out staff don't serve anyone well.\n\nNow I send my team home at 5. I take real vacations. It's hard—the work never stops—but we're modeling something different.",
+      emotion: 'determined',
+      variation_id: 'isaiah_suffering_culture_v1'
+    }],
+    choices: [
+      { choiceId: 'suffering_resistance', text: "Do you face resistance to that approach?", nextNodeId: 'isaiah_real_solutions', pattern: 'exploring' },
+      { choiceId: 'suffering_model', text: "How do you model healthy boundaries?", nextNodeId: 'isaiah_burn_boundary_response', pattern: 'patience' },
+      { choiceId: 'suffering_sector', text: "Is the sector changing?", nextNodeId: 'isaiah_translation_work', pattern: 'analytical' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_sustainability_insight',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Sustainable impact requires sustainable people. You can't pour from an empty cup, no matter how much you want to.\n\nI learned this the hard way. Crashed hard about five years ago. Had to take three months off. The organization survived without me—humbling, honestly.\n\nBut it taught me: I'm not indispensable. And that's actually liberating.",
+      emotion: 'knowing',
+      variation_id: 'isaiah_sustainability_v1'
+    }],
+    choices: [
+      { choiceId: 'sustain_practice', text: "How do you practice sustainability now?", nextNodeId: 'isaiah_recovery', pattern: 'patience' },
+      { choiceId: 'sustain_team', text: "How do you help your team be sustainable?", nextNodeId: 'isaiah_suffering_culture', pattern: 'building' },
+      { choiceId: 'sustain_crash', text: "What did you learn from that crash?", nextNodeId: 'isaiah_therapy_insight', pattern: 'exploring' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_therapy_insight',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Therapy... that was hard. Admitting I needed help when my whole job is helping others.\n\nBut I was burning out. Running on fumes. Snapping at my wife. Missing my kids' games to chase one more donor meeting.\n\nMy therapist helped me see it: I was trying to save everyone because I couldn't save the people from my past. My cousin who got caught up. My uncle who never got out.\n\nHeavy stuff. But understanding it... that was the first step to actually being sustainable in this work.",
+      emotion: 'vulnerable',
+      variation_id: 'isaiah_therapy_v1'
+    }],
+    choices: [
+      { choiceId: 'therapy_balance', text: "How do you balance the drive to help with self-care now?", nextNodeId: 'isaiah_recovery', pattern: 'patience' },
+      { choiceId: 'therapy_family', text: "How's your family now?", nextNodeId: 'isaiah_room_kids', pattern: 'helping' },
+      { choiceId: 'therapy_recommend', text: "Would you recommend therapy to others in nonprofit work?", nextNodeId: 'isaiah_sustainability_insight', pattern: 'exploring' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_translation_work',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Translation is a big part of the job. Translating community needs for funders. Translating funder expectations for staff.\n\nI speak three languages: nonprofit-speak for grants, street-speak for the community, and donor-speak for cultivation. Different vocabulary, different frames.\n\nThe trick is never losing the truth in translation. Making sure everyone hears the same story, just in their own language.",
+      emotion: 'thoughtful',
+      variation_id: 'isaiah_translation_v1'
+    }],
+    choices: [
+      { choiceId: 'translate_hard', text: "What's hardest to translate?", nextNodeId: 'isaiah_measurement_innovation', pattern: 'exploring' },
+      { choiceId: 'translate_lost', text: "Does anything get lost in translation?", nextNodeId: 'isaiah_manipulation_line', pattern: 'analytical' },
+      { choiceId: 'translate_bridge', text: "How do you bridge those different worlds?", nextNodeId: 'isaiah_carry_marcus', pattern: 'helping' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_uncomfortable_money',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Money conversations are uncomfortable. But discomfort is where growth happens—for me and for donors.\n\nI used to apologize when I asked for money. 'I know this is awkward, but...' Now I don't. Because asking someone to invest in change isn't asking for a favor—it's offering an opportunity.\n\nThat shift in mindset changed everything.",
+      emotion: 'honest',
+      variation_id: 'isaiah_uncomfortable_v1'
+    }],
+    choices: [
+      { choiceId: 'money_learn', text: "How did you develop that mindset?", nextNodeId: 'isaiah_cultivation_detail', pattern: 'exploring' },
+      { choiceId: 'money_donors', text: "How do donors respond to that confidence?", nextNodeId: 'isaiah_favorite_donors', pattern: 'helping' },
+      { choiceId: 'money_specific', text: "How do you actually make the ask?", nextNodeId: 'isaiah_major_gift_sim', pattern: 'analytical' }
+    ]
+  },
+  {
+    nodeId: 'isaiah_witnesses',
+    speaker: 'Isaiah Thompson',
+    content: [{
+      text: "Sometimes the most important thing isn't solving problems. It's witnessing them. Saying 'I see you. This matters.'\n\nThere's a kid I worked with years ago. Couldn't fix his situation. Couldn't get him out of foster care, couldn't change his school. But I could show up. Every week. For three years.\n\nHe told me later: 'You were the first person who never gave up on me.' That witnessing—that persistence—was the intervention.",
+      emotion: 'tender',
+      variation_id: 'isaiah_witnesses_v1'
+    }],
+    choices: [
+      { choiceId: 'witness_hard', text: "That must be hard—witnessing without fixing.", nextNodeId: 'isaiah_staying_pain', pattern: 'helping' },
+      { choiceId: 'witness_balance', text: "How do you balance witnessing with action?", nextNodeId: 'isaiah_real_solutions', pattern: 'analytical' },
+      { choiceId: 'witness_impact', text: "How do you know when witnessing is enough?", nextNodeId: 'isaiah_patterns_seen', pattern: 'patience' }
+    ]
+  },
 
   // ═══════════════════════════════════════════════════════════════
   // SIMULATION PHASE 1: Authentic Donor Cultivation (trust ≥ 2)

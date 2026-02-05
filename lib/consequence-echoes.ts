@@ -223,6 +223,15 @@ export const CHARACTER_ECHOES: Record<string, {
       ],
       patience: [
         { text: "\"You understand that some journeys take time. Not everyone does.\"", emotion: 'warm', timing: 'delayed' }
+      ],
+      analytical: [
+        { text: "\"You map out your options carefully. That's strategic thinking.\"", emotion: 'knowing', timing: 'delayed' }
+      ],
+      building: [
+        { text: "\"You're thinking about career as something you construct. Good framework.\"", emotion: 'approving', timing: 'delayed' }
+      ],
+      helping: [
+        { text: "\"You consider how your choices affect others. That shapes good paths.\"", emotion: 'warm', timing: 'delayed' }
       ]
     }
   },
@@ -405,6 +414,15 @@ export const CHARACTER_ECHOES: Record<string, {
       ],
       building: [
         { text: "\"You're building something. I can tell. What's the endgame?\"", emotion: 'curious', timing: 'delayed', soundCue: 'pattern-building' }
+      ],
+      patience: [
+        { text: "\"You give ideas time to grow. Teaching is patient work.\"", emotion: 'warm', timing: 'delayed', soundCue: 'pattern-patience' }
+      ],
+      exploring: [
+        { text: "\"You're curious about what education could be. That's the first step to changing it.\"", emotion: 'approving', timing: 'delayed', soundCue: 'pattern-exploring' }
+      ],
+      helping: [
+        { text: "\"You think about the students first. That's what matters most.\"", emotion: 'knowing', timing: 'delayed', soundCue: 'pattern-helping' }
       ]
     }
   },
@@ -494,6 +512,15 @@ export const CHARACTER_ECHOES: Record<string, {
       ],
       exploring: [
         { text: "\"You look for the source code of the world. I respect that.\"", emotion: "curious", timing: "delayed" }
+      ],
+      analytical: [
+        { text: "\"You organize your thoughts like you're cataloging them. I appreciate that.\"", emotion: "approving", timing: "delayed" }
+      ],
+      helping: [
+        { text: "\"You ask about the people, not just the systems. That matters here.\"", emotion: "warm", timing: "delayed" }
+      ],
+      patience: [
+        { text: "\"You let the archive speak instead of rushing to conclusions. Good instinct.\"", emotion: "knowing", timing: "delayed" }
       ]
     }
   },
@@ -534,6 +561,15 @@ export const CHARACTER_ECHOES: Record<string, {
       ],
       patience: [
         { text: "\"You know the value of stillness.\"", emotion: "approving", timing: "delayed" }
+      ],
+      analytical: [
+        { text: "\"You see the patterns in how care flows through a system. That's rare.\"", emotion: "knowing", timing: "delayed" }
+      ],
+      building: [
+        { text: "\"You're thinking about what we could build here. I like that vision.\"", emotion: "warm", timing: "delayed" }
+      ],
+      exploring: [
+        { text: "\"You ask the questions most people forget to ask. Keep doing that.\"", emotion: "approving", timing: "delayed" }
       ]
     }
   },
@@ -574,6 +610,15 @@ export const CHARACTER_ECHOES: Record<string, {
       ],
       building: [
         { text: "\"Practical. I like practical.\"", emotion: "approving", timing: "delayed" }
+      ],
+      patience: [
+        { text: "\"You wait for the right moment. In logistics, timing is everything.\"", emotion: "knowing", timing: "delayed" }
+      ],
+      exploring: [
+        { text: "\"You look for the alternate routes. That's how you find the shortcuts.\"", emotion: "approving", timing: "delayed" }
+      ],
+      helping: [
+        { text: "\"You think about the people at the end of the chain. Not everyone does.\"", emotion: "warm", timing: "delayed" }
       ]
     }
   },
@@ -1372,6 +1417,329 @@ export const RESONANCE_ECHOES: Record<string, {
       { text: "Samuel pauses. 'Not everything needs to be fixed, you know.'", emotion: 'thoughtful', timing: 'immediate' },
       { text: "'Some journeys take time.' Samuel's voice is gentle but firm.", emotion: 'neutral', timing: 'immediate' }
     ]
+  },
+
+  marcus: {
+    high: [
+      // Helping resonance - Marcus connects with fellow caretakers
+      { text: "Marcus sets down his tool. 'You think about the people first. I can tell.'", emotion: 'warm', timing: 'immediate' },
+      { text: "'You're doing this for someone else, aren't you?' Marcus sounds like he knows.", emotion: 'knowing', timing: 'immediate' },
+      { text: "Something softens in Marcus's expression. 'You understand why I do this.'", emotion: 'open', timing: 'immediate' }
+    ],
+    secondary: [
+      // Building resonance
+      { text: "'You make things work.' Marcus nods approvingly. 'That matters here.'", emotion: 'approving', timing: 'immediate' },
+      { text: "Marcus watches you work. 'Good hands. You build things right.'", emotion: 'impressed', timing: 'immediate' }
+    ],
+    friction: [
+      // Analytical friction - Marcus wary of pure logic over human needs
+      { text: "Marcus pauses. 'Numbers don't tell the whole story, you know.'", emotion: 'thoughtful', timing: 'immediate' },
+      { text: "'The data's helpful, but... people aren't data points.' Marcus's voice is gentle.", emotion: 'concerned', timing: 'immediate' }
+    ]
+  },
+
+  kai: {
+    high: [
+      // Analytical resonance - Kai connects with systematic thinkers
+      { text: "Kai's posture shifts. 'You see the patterns. Most people don't.'", emotion: 'approving', timing: 'immediate' },
+      { text: "'You think in systems.' Kai sounds almost relieved. 'That's how I stay safe.'", emotion: 'open', timing: 'immediate' },
+      { text: "Kai nods slowly. 'You understand risk. Real risk.'", emotion: 'knowing', timing: 'immediate' }
+    ],
+    secondary: [
+      // Patience resonance
+      { text: "'You don't rush.' Kai relaxes slightly. 'Rushing gets people hurt.'", emotion: 'warm', timing: 'immediate' },
+      { text: "Kai watches your careful approach. 'Good. Careful is good.'", emotion: 'approving', timing: 'immediate' }
+    ],
+    friction: [
+      // Exploring friction - Kai sees curiosity as reckless
+      { text: "Kai tenses. 'Curiosity has costs. Have you counted them?'", emotion: 'guarded', timing: 'immediate' },
+      { text: "'That's... bold.' Kai doesn't sound like it's a compliment.", emotion: 'wary', timing: 'immediate' }
+    ]
+  },
+
+  rohan: {
+    high: [
+      // Patience resonance - Rohan connects with those who take time
+      { text: "Rohan's guard drops slightly. 'You don't demand immediacy. That's... unusual.'", emotion: 'surprised', timing: 'immediate' },
+      { text: "'You understand that some things need space.' Rohan almost smiles.", emotion: 'warm', timing: 'immediate' },
+      { text: "Rohan stops working. 'You let silence exist. Most people can't.'", emotion: 'approving', timing: 'immediate' }
+    ],
+    secondary: [
+      // Exploring resonance
+      { text: "'You're curious about things.' Rohan sounds almost wistful. 'I used to be.'", emotion: 'reflective', timing: 'immediate' },
+      { text: "Rohan's eyes sharpen with interest. 'You ask the deeper questions.'", emotion: 'engaged', timing: 'immediate' }
+    ],
+    friction: [
+      // Building friction - Rohan wary of those who want to fix everything
+      { text: "Rohan pulls back slightly. 'Not everything needs to be built.'", emotion: 'guarded', timing: 'immediate' },
+      { text: "'Sometimes the best thing to build is distance.' Rohan's voice is quiet.", emotion: 'distant', timing: 'immediate' }
+    ]
+  },
+
+  tess: {
+    high: [
+      // Helping resonance - Tess connects with fellow educators
+      { text: "Tess's smile becomes genuine. 'You care about the people, not just the metrics.'", emotion: 'warm', timing: 'immediate' },
+      { text: "'You think about what students actually need.' Tess sounds impressed.", emotion: 'approving', timing: 'immediate' },
+      { text: "Something changes in Tess's expression. 'You're a teacher at heart.'", emotion: 'knowing', timing: 'immediate' }
+    ],
+    secondary: [
+      // Exploring resonance
+      { text: "'You ask good questions.' Tess leans in. 'The kind that make people think.'", emotion: 'curious', timing: 'immediate' },
+      { text: "Tess nods approvingly. 'You're not afraid to dig deeper.'", emotion: 'engaged', timing: 'immediate' }
+    ],
+    friction: [
+      // Analytical friction - Tess wary of reducing education to systems
+      { text: "Tess's smile sharpens. 'Education isn't an optimization problem.'", emotion: 'defensive', timing: 'immediate' },
+      { text: "'The numbers miss the point.' Tess sounds like she's heard this before.", emotion: 'tired', timing: 'immediate' }
+    ]
+  },
+
+  yaquin: {
+    high: [
+      // Building resonance - Yaquin connects with fellow creators
+      { text: "Yaquin's eyes light up. 'You make things. I can tell by how you see the world.'", emotion: 'excited', timing: 'immediate' },
+      { text: "'You understand creation.' Yaquin sounds almost reverent. 'The ache of it.'", emotion: 'moved', timing: 'immediate' },
+      { text: "Yaquin stops mid-sentence. 'You're a maker. The station brought you here for a reason.'", emotion: 'knowing', timing: 'immediate' }
+    ],
+    secondary: [
+      // Exploring resonance
+      { text: "'You're curious about everything.' Yaquin smiles. 'I love that.'", emotion: 'warm', timing: 'immediate' },
+      { text: "Yaquin gestures expansively. 'You see the possibilities, don't you?'", emotion: 'excited', timing: 'immediate' }
+    ],
+    friction: [
+      // Patience friction - Yaquin uncomfortable with those who wait
+      { text: "Yaquin shifts restlessly. 'But why wait? The vision is clear.'", emotion: 'impatient', timing: 'immediate' },
+      { text: "'Sometimes you have to leap.' Yaquin sounds like they're convincing themselves.", emotion: 'defensive', timing: 'immediate' }
+    ]
+  },
+
+  grace: {
+    high: [
+      // Helping resonance - Grace connects with fellow caretakers
+      { text: "Grace's hands still. 'You see the people, not just the problems.'", emotion: 'warm', timing: 'immediate' },
+      { text: "'Your heart leads.' Grace sounds moved. 'That is a gift, and a burden.'", emotion: 'knowing', timing: 'immediate' },
+      { text: "Grace nods slowly. 'You understand that care is a practice, not a feeling.'", emotion: 'approving', timing: 'immediate' }
+    ],
+    secondary: [
+      // Patience resonance
+      { text: "'You know that healing takes time.' Grace's voice softens.", emotion: 'warm', timing: 'immediate' },
+      { text: "Grace watches you quietly. 'You don't rush to fill silences. Good.'", emotion: 'approving', timing: 'immediate' }
+    ],
+    friction: [
+      // Analytical friction - Grace wary of reducing care to systems
+      { text: "Grace pauses. 'Numbers cannot capture suffering.'", emotion: 'sad', timing: 'immediate' },
+      { text: "'Analysis has its place. But not here.' Grace's voice is firm.", emotion: 'guarded', timing: 'immediate' }
+    ]
+  },
+
+  elena: {
+    high: [
+      // Exploring resonance - Elena connects with fellow seekers
+      { text: "Elena looks up from her work. 'You dig for the truth. I can always tell.'", emotion: 'curious', timing: 'immediate' },
+      { text: "'You want to understand the root.' Elena sounds almost excited. 'Not just the surface.'", emotion: 'engaged', timing: 'immediate' },
+      { text: "Elena's guarded expression softens. 'You're a researcher at heart.'", emotion: 'warm', timing: 'immediate' }
+    ],
+    secondary: [
+      // Analytical resonance
+      { text: "'You organize information well.' Elena nods approvingly.", emotion: 'approving', timing: 'immediate' },
+      { text: "Elena watches your process. 'Systematic. I appreciate that.'", emotion: 'impressed', timing: 'immediate' }
+    ],
+    friction: [
+      // Helping friction - Elena uncomfortable with emotional support
+      { text: "Elena stiffens slightly. 'I don't need... I'm fine.'", emotion: 'guarded', timing: 'immediate' },
+      { text: "'The work speaks for itself.' Elena returns to her screen.", emotion: 'distant', timing: 'immediate' }
+    ]
+  },
+
+  alex: {
+    high: [
+      // Analytical resonance - Alex connects with strategic thinkers
+      { text: "Alex nods sharply. 'You see the whole chain. Most people only see their link.'", emotion: 'approving', timing: 'immediate' },
+      { text: "'You think ahead.' Alex sounds almost impressed. 'Three moves, minimum.'", emotion: 'engaged', timing: 'immediate' },
+      { text: "Alex's skeptical expression shifts. 'You run the numbers. I respect that.'", emotion: 'warm', timing: 'immediate' }
+    ],
+    secondary: [
+      // Building resonance
+      { text: "'You fix things.' Alex gives a curt nod. 'Not just talk about them.'", emotion: 'approving', timing: 'immediate' },
+      { text: "Alex watches you work. 'Efficient. I like efficient.'", emotion: 'impressed', timing: 'immediate' }
+    ],
+    friction: [
+      // Patience friction - Alex frustrated by slow approaches
+      { text: "Alex checks the time. 'Some problems can't wait for perfect information.'", emotion: 'impatient', timing: 'immediate' },
+      { text: "'Speed matters here.' Alex's voice is clipped. 'People are waiting.'", emotion: 'tense', timing: 'immediate' }
+    ]
+  },
+
+  jordan: {
+    high: [
+      // Exploring resonance - Jordan connects with fellow seekers
+      { text: "Jordan's eyes brighten. 'You're still looking. Still questioning.'", emotion: 'warm', timing: 'immediate' },
+      { text: "'You don't have it all figured out.' Jordan sounds relieved. 'Neither do I.'", emotion: 'open', timing: 'immediate' },
+      { text: "Jordan stops walking. 'You see paths everywhere. That's how I see it too.'", emotion: 'knowing', timing: 'immediate' }
+    ],
+    secondary: [
+      // Helping resonance
+      { text: "'You think about how choices affect others.' Jordan nods approvingly.", emotion: 'warm', timing: 'immediate' },
+      { text: "Jordan studies you. 'You want to help people find their way. I can tell.'", emotion: 'knowing', timing: 'immediate' }
+    ],
+    friction: [
+      // Building friction - Jordan wary of those who commit too fast
+      { text: "Jordan hesitates. 'What if you build the wrong thing?'", emotion: 'anxious', timing: 'immediate' },
+      { text: "'Sometimes choosing means closing doors.' Jordan sounds uncertain.", emotion: 'conflicted', timing: 'immediate' }
+    ]
+  },
+
+  silas: {
+    high: [
+      // Building resonance - Silas connects with fellow makers
+      { text: "Silas stops tinkering. 'You make things work. Real things.'", emotion: 'approving', timing: 'immediate' },
+      { text: "'You understand the dirt under your fingernails.' Silas almost smiles.", emotion: 'warm', timing: 'immediate' },
+      { text: "Silas nods slowly. 'You know what it costs to build something that lasts.'", emotion: 'knowing', timing: 'immediate' }
+    ],
+    secondary: [
+      // Analytical resonance
+      { text: "'You measure twice.' Silas sounds approving. 'Cut once.'", emotion: 'impressed', timing: 'immediate' },
+      { text: "Silas watches your approach. 'You think it through. Good.'", emotion: 'warm', timing: 'immediate' }
+    ],
+    friction: [
+      // Helping friction - Silas uncomfortable with emotional support
+      { text: "Silas grunts. 'I don't need a pep talk. I need parts.'", emotion: 'gruff', timing: 'immediate' },
+      { text: "'Save the feelings talk.' Silas returns to his work. 'Got machines to fix.'", emotion: 'dismissive', timing: 'immediate' }
+    ]
+  },
+
+  asha: {
+    high: [
+      // Helping resonance - Asha connects with fellow mediators
+      { text: "Asha's energy shifts. 'You listen for what's not being said.'", emotion: 'knowing', timing: 'immediate' },
+      { text: "'You hold space for conflict.' Asha sounds relieved. 'That's rare.'", emotion: 'warm', timing: 'immediate' },
+      { text: "Asha nods slowly. 'You see both sides. That's the hardest part.'", emotion: 'approving', timing: 'immediate' }
+    ],
+    secondary: [
+      // Patience resonance
+      { text: "'You don't rush to judgment.' Asha relaxes. 'Thank you for that.'", emotion: 'grateful', timing: 'immediate' },
+      { text: "Asha watches you carefully. 'You let things unfold. Good instinct.'", emotion: 'warm', timing: 'immediate' }
+    ],
+    friction: [
+      // Analytical friction - Asha wary of reducing conflict to logic
+      { text: "Asha's expression tightens. 'You can't analyze your way through pain.'", emotion: 'concerned', timing: 'immediate' },
+      { text: "'The math doesn't help here.' Asha sounds tired. 'People aren't equations.'", emotion: 'sad', timing: 'immediate' }
+    ]
+  },
+
+  lira: {
+    high: [
+      // Exploring resonance - Lira connects with fellow seekers
+      { text: "Lira's voice lifts. 'You hear the harmonics. The things between the notes.'", emotion: 'excited', timing: 'immediate' },
+      { text: "'You're curious about sound.' Lira looks intrigued. 'Most people just hear noise.'", emotion: 'engaged', timing: 'immediate' },
+      { text: "Lira stops adjusting her equipment. 'You listen. Really listen.'", emotion: 'warm', timing: 'immediate' }
+    ],
+    secondary: [
+      // Building resonance
+      { text: "'You want to make something.' Lira nods. 'I hear that in your questions.'", emotion: 'knowing', timing: 'immediate' },
+      { text: "Lira gestures to her setup. 'You see how it all connects. Good.'", emotion: 'approving', timing: 'immediate' }
+    ],
+    friction: [
+      // Patience friction - Lira frustrated by waiting
+      { text: "Lira shifts restlessly. 'But why not try it now? See what happens?'", emotion: 'impatient', timing: 'immediate' },
+      { text: "'Silence is just... waiting.' Lira looks uncomfortable.", emotion: 'anxious', timing: 'immediate' }
+    ]
+  },
+
+  zara: {
+    high: [
+      // Exploring resonance - Zara connects with fellow questioners
+      { text: "Zara's eyes sharpen. 'You ask the uncomfortable questions. Good.'", emotion: 'approving', timing: 'immediate' },
+      { text: "'You don't accept the surface answer.' Zara sounds almost excited.", emotion: 'engaged', timing: 'immediate' },
+      { text: "Zara puts down her stylus. 'You see the ethics underneath. Most people don't look.'", emotion: 'knowing', timing: 'immediate' }
+    ],
+    secondary: [
+      // Analytical resonance
+      { text: "'You trace the implications.' Zara nods. 'That's how you find the truth.'", emotion: 'warm', timing: 'immediate' },
+      { text: "Zara watches your reasoning. 'Systematic ethics. I appreciate that.'", emotion: 'impressed', timing: 'immediate' }
+    ],
+    friction: [
+      // Building friction - Zara wary of builders who don't question
+      { text: "Zara hesitates. 'But should we build it? That's the real question.'", emotion: 'concerned', timing: 'immediate' },
+      { text: "'Creating has consequences.' Zara's voice carries weight.", emotion: 'serious', timing: 'immediate' }
+    ]
+  },
+
+  quinn: {
+    high: [
+      // Analytical resonance - Quinn connects with systematic thinkers
+      { text: "Quinn's rapid energy focuses. 'You see the patterns in the numbers.'", emotion: 'excited', timing: 'immediate' },
+      { text: "'You think in models.' Quinn sounds relieved. 'Finally, someone who gets it.'", emotion: 'warm', timing: 'immediate' },
+      { text: "Quinn stops typing. 'You understand that everything is a system.'", emotion: 'knowing', timing: 'immediate' }
+    ],
+    secondary: [
+      // Building resonance
+      { text: "'You want to optimize, not just analyze.' Quinn nods approvingly.", emotion: 'approving', timing: 'immediate' },
+      { text: "Quinn gestures at the models. 'You see what we could build here.'", emotion: 'engaged', timing: 'immediate' }
+    ],
+    friction: [
+      // Helping friction - Quinn uncomfortable with emotional priorities
+      { text: "Quinn pauses. 'Feelings are... hard to quantify.'", emotion: 'awkward', timing: 'immediate' },
+      { text: "'The math works better without the sentiment.' Quinn sounds uncertain.", emotion: 'conflicted', timing: 'immediate' }
+    ]
+  },
+
+  dante: {
+    high: [
+      // Exploring resonance - Dante connects with fellow adventurers
+      { text: "Dante's showman facade drops slightly. 'You're curious about what's real.'", emotion: 'genuine', timing: 'immediate' },
+      { text: "'You see past the performance.' Dante sounds almost relieved.", emotion: 'open', timing: 'immediate' },
+      { text: "Dante stops mid-gesture. 'You ask the questions that matter. Not the easy ones.'", emotion: 'knowing', timing: 'immediate' }
+    ],
+    secondary: [
+      // Helping resonance
+      { text: "'You actually care.' Dante's voice softens. 'That's... rare in sales.'", emotion: 'warm', timing: 'immediate' },
+      { text: "Dante studies you. 'You want to help people, not just close deals.'", emotion: 'approving', timing: 'immediate' }
+    ],
+    friction: [
+      // Patience friction - Dante uncomfortable with slowness
+      { text: "Dante shifts restlessly. 'But the moment passes. You have to move.'", emotion: 'anxious', timing: 'immediate' },
+      { text: "'Waiting costs opportunities.' Dante sounds like he's convincing himself.", emotion: 'defensive', timing: 'immediate' }
+    ]
+  },
+
+  nadia: {
+    high: [
+      // Analytical resonance - Nadia connects with systematic thinkers
+      { text: "Nadia's guarded expression shifts. 'You see the patterns. The ones most people miss.'", emotion: 'curious', timing: 'immediate' },
+      { text: "'You think in systems.' Nadia sounds almost relieved. 'That's how I survived.'", emotion: 'open', timing: 'immediate' },
+      { text: "Nadia stops scanning. 'You understand that information is power. And responsibility.'", emotion: 'knowing', timing: 'immediate' }
+    ],
+    secondary: [
+      // Exploring resonance
+      { text: "'You dig deeper.' Nadia nods slowly. 'Not everyone wants the real answer.'", emotion: 'approving', timing: 'immediate' },
+      { text: "Nadia watches your approach. 'You're not afraid of what you might find.'", emotion: 'impressed', timing: 'immediate' }
+    ],
+    friction: [
+      // Helping friction - Nadia wary of emotional approaches
+      { text: "Nadia's walls go up. 'Empathy can be exploited. Be careful.'", emotion: 'guarded', timing: 'immediate' },
+      { text: "'Good intentions don't protect you from being used.' Nadia sounds tired.", emotion: 'wary', timing: 'immediate' }
+    ]
+  },
+
+  isaiah: {
+    high: [
+      // Helping resonance - Isaiah connects with fellow servants
+      { text: "Isaiah's tired eyes warm. 'You see the mission, not just the work.'", emotion: 'moved', timing: 'immediate' },
+      { text: "'You understand service.' Isaiah sounds almost emotional. 'The real kind.'", emotion: 'grateful', timing: 'immediate' },
+      { text: "Isaiah sets down his clipboard. 'You care about the people we're here to help.'", emotion: 'knowing', timing: 'immediate' }
+    ],
+    secondary: [
+      // Building resonance
+      { text: "'You want to build something that lasts.' Isaiah nods approvingly.", emotion: 'warm', timing: 'immediate' },
+      { text: "Isaiah gestures at the organization. 'You see what we could create here.'", emotion: 'hopeful', timing: 'immediate' }
+    ],
+    friction: [
+      // Analytical friction - Isaiah wary of cold analysis
+      { text: "Isaiah pauses. 'The numbers don't capture dignity.'", emotion: 'concerned', timing: 'immediate' },
+      { text: "'Impact isn't just metrics.' Isaiah's voice is gentle but firm.", emotion: 'thoughtful', timing: 'immediate' }
+    ]
   }
 }
 
@@ -1442,6 +1810,222 @@ export const DISCOVERY_HINTS: Record<string, {
         { text: "Devon's jaw tightens at the mention of family calls.", emotion: 'guarded', timing: 'immediate' },
         { text: "The Conversation Optimizer project seems... personal somehow.", emotion: 'curious', timing: 'delayed' },
         { text: "'I'm fine.' Devon says it like he's heard it too many times.", emotion: 'thoughtful', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  marcus: [
+    {
+      vulnerability: 'healthcare_doubt',
+      trustRange: { min: 3, max: 5 },
+      hints: [
+        { text: "Marcus pauses when you mention hospitals. There's a story there.", emotion: 'curious', timing: 'delayed' },
+        { text: "'The system works,' Marcus says. But his hands keep moving, like they're not sure.", emotion: 'thoughtful', timing: 'immediate' },
+        { text: "He asks if you've ever felt like you're fixing the wrong thing.", emotion: 'vulnerable', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  kai: [
+    {
+      vulnerability: 'safety_burden',
+      trustRange: { min: 3, max: 5 },
+      hints: [
+        { text: "Kai's eyes scan the exits. Again. It's automatic.", emotion: 'curious', timing: 'immediate' },
+        { text: "'Someone has to think about what could go wrong.' Kai sounds tired.", emotion: 'thoughtful', timing: 'delayed' },
+        { text: "The weight of watchfulness shows in small ways. Kai carries something.", emotion: 'concerned', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  rohan: [
+    {
+      vulnerability: 'isolation_choice',
+      trustRange: { min: 4, max: 6 },
+      hints: [
+        { text: "Rohan mentions 'before' - then stops himself.", emotion: 'guarded', timing: 'immediate' },
+        { text: "The solitude feels intentional. Protective, maybe.", emotion: 'thoughtful', timing: 'delayed' },
+        { text: "'It's easier this way.' Rohan doesn't elaborate.", emotion: 'sad', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  tess: [
+    {
+      vulnerability: 'founder_loneliness',
+      trustRange: { min: 3, max: 5 },
+      hints: [
+        { text: "Tess's phone buzzes constantly. She doesn't answer any of them.", emotion: 'curious', timing: 'immediate' },
+        { text: "'Building something means burning bridges.' Tess sounds like she knows.", emotion: 'thoughtful', timing: 'delayed' },
+        { text: "There's a photo on her desk. Turned face-down.", emotion: 'sad', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  yaquin: [
+    {
+      vulnerability: 'creative_block',
+      trustRange: { min: 3, max: 5 },
+      hints: [
+        { text: "Yaquin's sketchbook is full of crossed-out ideas.", emotion: 'curious', timing: 'immediate' },
+        { text: "'I used to...' Yaquin trails off, looking at old work.", emotion: 'wistful', timing: 'delayed' },
+        { text: "The spark seems dimmer when Yaquin talks about new projects.", emotion: 'concerned', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  grace: [
+    {
+      vulnerability: 'caregiver_fatigue',
+      trustRange: { min: 3, max: 5 },
+      hints: [
+        { text: "Grace's hands never quite stop moving. Always working.", emotion: 'concerned', timing: 'immediate' },
+        { text: "'Who cares for the caretakers?' Grace asks it like a rhetorical question.", emotion: 'sad', timing: 'delayed' },
+        { text: "There are dark circles under her eyes. She hides them with a smile.", emotion: 'thoughtful', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  elena: [
+    {
+      vulnerability: 'lost_knowledge',
+      trustRange: { min: 4, max: 6 },
+      hints: [
+        { text: "Elena pauses at a certain archive section. Something personal.", emotion: 'curious', timing: 'immediate' },
+        { text: "'Some things can't be recovered.' Elena's voice is quiet.", emotion: 'sad', timing: 'delayed' },
+        { text: "She keeps searching for something. Or someone.", emotion: 'thoughtful', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  alex: [
+    {
+      vulnerability: 'efficiency_cost',
+      trustRange: { min: 3, max: 5 },
+      hints: [
+        { text: "Alex checks the time obsessively. Every few minutes.", emotion: 'curious', timing: 'immediate' },
+        { text: "'Fast is never fast enough.' Alex doesn't sound proud of it.", emotion: 'thoughtful', timing: 'delayed' },
+        { text: "He mentions 'before the optimization.' Like something was lost.", emotion: 'sad', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  jordan: [
+    {
+      vulnerability: 'path_paralysis',
+      trustRange: { min: 3, max: 5 },
+      hints: [
+        { text: "Jordan keeps circling back to the same question: 'But what if?'", emotion: 'curious', timing: 'immediate' },
+        { text: "The map of paths on Jordan's wall is covered in question marks.", emotion: 'thoughtful', timing: 'delayed' },
+        { text: "'Everyone wants me to choose.' Jordan sounds exhausted by options.", emotion: 'overwhelmed', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  silas: [
+    {
+      vulnerability: 'obsolescence_fear',
+      trustRange: { min: 4, max: 6 },
+      hints: [
+        { text: "Silas looks at the new machines differently. Wary.", emotion: 'curious', timing: 'immediate' },
+        { text: "'They're replacing everything.' Silas's hands tighten on his tools.", emotion: 'guarded', timing: 'delayed' },
+        { text: "He mentions training programs he never finished. A door closed.", emotion: 'sad', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  asha: [
+    {
+      vulnerability: 'mediator_burden',
+      trustRange: { min: 3, max: 5 },
+      hints: [
+        { text: "Asha rubs her temples. The headaches seem frequent.", emotion: 'concerned', timing: 'immediate' },
+        { text: "'Everyone's pain becomes your pain.' Asha says it like a fact.", emotion: 'sad', timing: 'delayed' },
+        { text: "She absorbs the tension in every room. It costs something.", emotion: 'thoughtful', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  lira: [
+    {
+      vulnerability: 'voice_lost',
+      trustRange: { min: 4, max: 6 },
+      hints: [
+        { text: "Lira's voice catches when she talks about her old recordings.", emotion: 'curious', timing: 'immediate' },
+        { text: "'I used to sound different.' Lira doesn't explain what changed.", emotion: 'sad', timing: 'delayed' },
+        { text: "There's a song she won't play. The file is there, but locked.", emotion: 'guarded', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  zara: [
+    {
+      vulnerability: 'ethics_compromise',
+      trustRange: { min: 4, max: 6 },
+      hints: [
+        { text: "Zara hesitates before showing certain work. Something's off.", emotion: 'curious', timing: 'immediate' },
+        { text: "'I used to believe it was simpler.' Zara sounds different now.", emotion: 'thoughtful', timing: 'delayed' },
+        { text: "She deletes a file without showing you. 'That one's... complicated.'", emotion: 'guarded', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  quinn: [
+    {
+      vulnerability: 'numbers_trap',
+      trustRange: { min: 3, max: 5 },
+      hints: [
+        { text: "Quinn's eyes glaze when the conversation drifts from data.", emotion: 'curious', timing: 'immediate' },
+        { text: "'The numbers make sense.' Quinn says it like a lifeline.", emotion: 'guarded', timing: 'delayed' },
+        { text: "There's a moment where the models feel like walls, not windows.", emotion: 'sad', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  dante: [
+    {
+      vulnerability: 'authenticity_mask',
+      trustRange: { min: 3, max: 5 },
+      hints: [
+        { text: "Dante's smile flickers. Just for a moment. Then it's back.", emotion: 'curious', timing: 'immediate' },
+        { text: "'This is what people want to see.' Dante sounds practiced.", emotion: 'thoughtful', timing: 'delayed' },
+        { text: "Behind the showmanship, something else waits. Watching.", emotion: 'guarded', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  nadia: [
+    {
+      vulnerability: 'truth_burden',
+      trustRange: { min: 4, max: 6 },
+      hints: [
+        { text: "Nadia triple-checks data before showing it. Even to you.", emotion: 'curious', timing: 'immediate' },
+        { text: "'Some truths are expensive.' Nadia knows the cost personally.", emotion: 'guarded', timing: 'delayed' },
+        { text: "She mentions former colleagues. The past tense is pointed.", emotion: 'sad', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  isaiah: [
+    {
+      vulnerability: 'mission_drift',
+      trustRange: { min: 3, max: 5 },
+      hints: [
+        { text: "Isaiah stares at the mission statement on the wall. A long moment.", emotion: 'thoughtful', timing: 'immediate' },
+        { text: "'We started this because...' Isaiah trails off. The because got complicated.", emotion: 'sad', timing: 'delayed' },
+        { text: "The grant paperwork seems heavier than it should be.", emotion: 'concerned', timing: 'delayed' }
+      ]
+    }
+  ],
+
+  samuel: [
+    {
+      vulnerability: 'station_weight',
+      trustRange: { min: 5, max: 7 },
+      hints: [
+        { text: "Samuel's hand rests on the station wall. Protective. Or tired.", emotion: 'curious', timing: 'immediate' },
+        { text: "'Every traveler leaves something behind.' Samuel sounds like he carries it all.", emotion: 'thoughtful', timing: 'delayed' },
+        { text: "The station keeper's burden shows in quiet moments. When he thinks no one's watching.", emotion: 'sad', timing: 'delayed' }
       ]
     }
   ]

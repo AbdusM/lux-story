@@ -120,7 +120,9 @@ export const silasDialogueNodes: DialogueNode[] = [
         voiceVariations: {
           analytical: "Calibration done. The baseline is wrong.",
           building: "I fixed the drift, but the foundation is off.",
-          exploring: "That wasn't noise. That was a rewrite."
+          exploring: "That wasn't noise. That was a rewrite.",
+          patience: "I waited for the pattern. It finally showed itself.",
+          helping: "The sensors are back. Everyone can trust the readings now."
         }
       }
     ]

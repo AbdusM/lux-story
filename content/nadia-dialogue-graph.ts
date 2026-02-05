@@ -156,7 +156,9 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         voiceVariations: {
           analytical: "Signal stabilized. The pattern is clear.",
           helping: "I see the people behind the data now.",
-          exploring: "That was chaos. But I found the thread."
+          exploring: "That was chaos. But I found the thread.",
+          patience: "Took time, but the signal is clearer now.",
+          building: "I rebuilt the filters. The noise is gone."
         }
       }
     ]
@@ -1343,40 +1345,512 @@ export const nadiaDialogueNodes: DialogueNode[] = [
   // STUB NODES - Fix broken navigation
   // ═══════════════════════════════════════════════════════════════
 
-  { nodeId: 'nadia_already_oracle', speaker: 'Nadia Chen', content: [{ text: "The oracle already exists. It's called an algorithm. The question is who controls it and what values it optimizes for.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "That's a sobering thought.", nextNodeId: 'nadia_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'nadia_bias_possible', speaker: 'Nadia Chen', content: [{ text: "Can we build unbiased AI? Probably not. But we can build AI that's transparent about its biases. That's the realistic goal.", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Transparency over perfection.", nextNodeId: 'nadia_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'nadia_both_paths', speaker: 'Nadia Chen', content: [{ text: "Technical excellence and ethical practice aren't opposing paths. They're the same path, properly understood.", emotion: 'firm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Integration, not choice.", nextNodeId: 'nadia_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'nadia_doubt_authentic', speaker: 'Nadia Chen', content: [{ text: "Doubt is authentic. Anyone who's certain about AI's future isn't paying attention. The honest position is thoughtful uncertainty.", emotion: 'honest', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Uncertainty as wisdom.", nextNodeId: 'nadia_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'nadia_edge_cases', speaker: 'Nadia Chen', content: [{ text: "Edge cases are where ethics live. It's easy to be ethical in obvious situations. The hard work is the margins.", emotion: 'serious', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Ethics at the margins.", nextNodeId: 'nadia_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'nadia_enough_difference', speaker: 'Nadia Chen', content: [{ text: "Am I making enough difference? I ask myself that constantly. The answer is always 'probably not' and 'keep trying anyway.'", emotion: 'vulnerable', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Keep trying anyway.", nextNodeId: 'nadia_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'nadia_ethics_module', speaker: 'Nadia Chen', content: [{ text: "You can't bolt ethics onto AI as an afterthought. It has to be architected in from the beginning. That's the fight I'm in.", emotion: 'passionate', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Ethics by design.", nextNodeId: 'nadia_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'nadia_failures_seen', speaker: 'Nadia Chen', content: [{ text: "I've seen AI failures that never made headlines. Hiring algorithms that rejected every woman. Loan models that redlined neighborhoods.", emotion: 'troubled', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Hidden harms.", nextNodeId: 'nadia_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'nadia_feelings_exist', speaker: 'Nadia Chen', content: [{ text: "Feelings exist in this work whether we acknowledge them or not. Better to work with them than pretend we're purely rational.", emotion: 'warm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Feelings as data.", nextNodeId: 'nadia_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'nadia_fired_story', speaker: 'Nadia Chen', content: [{ text: "I got fired for refusing to launch a system I knew was biased. Best career decision I never made on purpose.", emotion: 'wry', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Integrity has costs.", nextNodeId: 'nadia_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'nadia_forcing_choice', speaker: 'Nadia Chen', content: [{ text: "The industry wants to force a choice: fast or ethical. I refuse that framing. We can be both if we're intentional.", emotion: 'determined', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Refuse the false choice.", nextNodeId: 'nadia_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'nadia_grandmother_story', speaker: 'Nadia Chen', content: [{ text: "My grandmother was a translator. She taught me that translation isn't just words—it's meaning, context, culture. AI needs that wisdom.", emotion: 'tender', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Wisdom from family.", nextNodeId: 'nadia_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'nadia_hard_self', speaker: 'Nadia Chen', content: [{ text: "I'm hard on myself. Probably too hard. But in this field, the stakes are too high for complacency.", emotion: 'serious', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Stakes drive standards.", nextNodeId: 'nadia_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'nadia_human_beauty', speaker: 'Nadia Chen', content: [{ text: "There's beauty in human reasoning that AI can't replicate. The leaps, the intuitions, the creative connections. That's what we're protecting.", emotion: 'warm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Protecting human beauty.", nextNodeId: 'nadia_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'nadia_not_peace', speaker: 'Nadia Chen', content: [{ text: "I'm not at peace with this work. I don't think I should be. Discomfort keeps me sharp, keeps me asking hard questions.", emotion: 'honest', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Productive discomfort.", nextNodeId: 'nadia_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'nadia_noticed', speaker: 'Nadia Chen', content: [{ text: "You notice things. That's rare. Most people skim the surface. You're actually thinking about what I'm saying.", emotion: 'appreciative', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "It's worth thinking about.", nextNodeId: 'nadia_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'nadia_personal_journey', speaker: 'Nadia Chen', content: [{ text: "My journey into AI ethics wasn't planned. I built a system, saw it harm people, and couldn't look away anymore.", emotion: 'vulnerable', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Witness to catalyst.", nextNodeId: 'nadia_hub_return', pattern: 'exploring' }], tags: ['stub'] },
-  { nodeId: 'nadia_policy_path', speaker: 'Nadia Chen', content: [{ text: "Policy is one path to change. Not the only one, maybe not even the best one. But it's where I can make a difference.", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Your path to impact.", nextNodeId: 'nadia_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'nadia_prediction_method', speaker: 'Nadia Chen', content: [{ text: "Predicting AI's future? I don't. I focus on shaping it. Prediction is passive. Shaping is active.", emotion: 'determined', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Shape, don't predict.", nextNodeId: 'nadia_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'nadia_purpose_deep', speaker: 'Nadia Chen', content: [{ text: "Purpose isn't something you find. It's something you build, one decision at a time. Mine is protecting human agency in an AI world.", emotion: 'firm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Built purpose.", nextNodeId: 'nadia_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'nadia_refused', speaker: 'Nadia Chen', content: [{ text: "I've refused projects. Good money, interesting problems. But wrong applications. That refusal is part of who I am now.", emotion: 'peaceful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Refusal as identity.", nextNodeId: 'nadia_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'nadia_resistance', speaker: 'Nadia Chen', content: [{ text: "Resistance is part of the job. People don't want to hear that their system might be harmful. But I say it anyway.", emotion: 'determined', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Saying the hard things.", nextNodeId: 'nadia_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'nadia_shared_blame', speaker: 'Nadia Chen', content: [{ text: "Blame is shared. The engineers who build, the executives who deploy, the users who accept. We're all part of this.", emotion: 'serious', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Collective responsibility.", nextNodeId: 'nadia_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'nadia_sim_promise_response', speaker: 'Nadia Chen', content: [{ text: "You chose to hold them accountable. That's the right instinct. Promise without follow-through is how ethics gets watered down.", emotion: 'appreciative', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Accountability matters.", nextNodeId: 'nadia_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'nadia_sim_walk_response', speaker: 'Nadia Chen', content: [{ text: "Walking away is sometimes the ethical choice. Not every battle can be won from inside. Strategic retreat isn't failure.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Strategic withdrawal.", nextNodeId: 'nadia_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'nadia_stop_them', speaker: 'Nadia Chen', content: [{ text: "Can we stop harmful AI? Not by ourselves. But we can slow it, redirect it, make it costly to deploy carelessly.", emotion: 'determined', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Friction as strategy.", nextNodeId: 'nadia_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'nadia_systems_individual', speaker: 'Nadia Chen', content: [{ text: "Systems thinking and individual ethics aren't opposites. You need both. Systems without ethics scale harm. Ethics without systems stay small.", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Both together.", nextNodeId: 'nadia_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'nadia_team_compromise_response', speaker: 'Nadia Chen', content: [{ text: "Compromise can be wisdom or weakness. The key is knowing what's negotiable and what isn't. Core principles aren't negotiable.", emotion: 'firm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Know your lines.", nextNodeId: 'nadia_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'nadia_team_flag_response', speaker: 'Nadia Chen', content: [{ text: "Flagging concerns early is brave. Most people wait until it's too late. You trusted the team with hard truth.", emotion: 'appreciative', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Early honesty.", nextNodeId: 'nadia_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'nadia_team_ship_response', speaker: 'Nadia Chen', content: [{ text: "Shipping with known issues is a choice. Sometimes it's right, sometimes it's rationalization. The difference is honesty about trade-offs.", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Honest trade-offs.", nextNodeId: 'nadia_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'nadia_technical_path', speaker: 'Nadia Chen', content: [{ text: "Technical skills got me here. But the real work is translation—explaining why bias matrices matter to people who just want the product to ship.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Translation is key.", nextNodeId: 'nadia_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'nadia_terrifying_truth', speaker: 'Nadia Chen', content: [{ text: "The terrifying truth? Most AI systems deployed today have never been audited for bias. We're running an experiment on society.", emotion: 'troubled', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "That is terrifying.", nextNodeId: 'nadia_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'nadia_translation_skill', speaker: 'Nadia Chen', content: [{ text: "Translation between technical and human is my superpower. Making the invisible visible, the abstract concrete.", emotion: 'confident', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Making it real.", nextNodeId: 'nadia_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'nadia_vigilance_methods', speaker: 'Nadia Chen', content: [{ text: "Vigilance methods: audit trails, red teams, diverse testing groups, sunset clauses. Technical solutions for human problems.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Practical safeguards.", nextNodeId: 'nadia_hub_return', pattern: 'building' }], tags: ['stub'] },
+  {
+    nodeId: 'nadia_already_oracle',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "The oracle already exists. It's called an algorithm.\n\nEvery time a bank decides whether to give you a loan. Every time a hospital triages patients. Every time a job application gets filtered. Something is deciding your future based on patterns it learned from the past.\n\nThe question isn't whether oracles exist. It's who controls them and what values they optimize for. Right now? The answer is usually 'shareholders' and 'profit.'",
+      emotion: 'knowing',
+      variation_id: 'nadia_already_oracle_v1'
+    }],
+    choices: [
+      { choiceId: 'oracle_control', text: "How do we change who controls them?", nextNodeId: 'nadia_policy_path', pattern: 'building' },
+      { choiceId: 'oracle_aware', text: "Do most people know this is happening?", nextNodeId: 'nadia_terrifying_truth', pattern: 'exploring' },
+      { choiceId: 'oracle_values', text: "What values should they optimize for?", nextNodeId: 'nadia_ethics_module', pattern: 'analytical' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_bias_possible',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Can we build unbiased AI? Probably not. That's not defeatism—it's honesty.\n\nBias is baked into the data we train on. Historical hiring decisions. Past loan approvals. Old medical studies that excluded women. The past wasn't neutral, so AI trained on it won't be either.\n\nBut we can build AI that's transparent about its biases. Systems that say 'here's what I'm uncertain about' and 'here's where my training data is thin.' That's the realistic goal.",
+      emotion: 'thoughtful',
+      variation_id: 'nadia_bias_possible_v1'
+    }],
+    choices: [
+      { choiceId: 'bias_transparency', text: "How do you make an AI transparent?", nextNodeId: 'nadia_audit_work', pattern: 'analytical' },
+      { choiceId: 'bias_historical', text: "So we're perpetuating old prejudices?", nextNodeId: 'nadia_failures_seen', pattern: 'helping' },
+      { choiceId: 'bias_future', text: "Could future AI be trained differently?", nextNodeId: 'nadia_prediction_method', pattern: 'exploring' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_both_paths',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Technical excellence and ethical practice aren't opposing paths. They're the same path, properly understood.\n\nGood engineering anticipates failure modes. Good ethics asks who gets hurt when systems fail. Both are asking: how do we build something that works for everyone, not just the easy cases?\n\nThe companies that treat ethics as a separate department, something to bolt on at the end? They build fragile systems that break in predictable ways.",
+      emotion: 'firm',
+      variation_id: 'nadia_both_paths_v1'
+    }],
+    choices: [
+      { choiceId: 'paths_integrate', text: "How do you integrate them in practice?", nextNodeId: 'nadia_audit_work', pattern: 'building' },
+      { choiceId: 'paths_companies', text: "Do any companies actually do this well?", nextNodeId: 'nadia_companies_listen', pattern: 'exploring' },
+      { choiceId: 'paths_career', text: "Is that why you chose this path?", nextNodeId: 'nadia_career_path', pattern: 'helping' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_doubt_authentic',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Doubt is authentic. Anyone who's certain about AI's future isn't paying attention.\n\nI've seen too many predictions fail. The 'AI winter' that nobody saw coming. The 'deep learning will plateau' claims from 2015. The 'AGI is five years away' people who've been saying that for thirty years.\n\nThe honest position is thoughtful uncertainty. Not paralysis—you still have to act. But humility about what you don't know.",
+      emotion: 'honest',
+      variation_id: 'nadia_doubt_authentic_v1'
+    }],
+    choices: [
+      { choiceId: 'doubt_act', text: "How do you act with so much uncertainty?", nextNodeId: 'nadia_both_paths', pattern: 'patience' },
+      { choiceId: 'doubt_predictions', text: "What do you think will happen?", nextNodeId: 'nadia_ai_future', pattern: 'exploring' },
+      { choiceId: 'doubt_prepare', text: "How should we prepare for the unknown?", nextNodeId: 'nadia_vigilance_methods', pattern: 'building' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_edge_cases',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Edge cases are where ethics live. It's easy to be ethical in obvious situations.\n\nShould the self-driving car hit the pedestrian or the passenger? Obviously neither—but that's not a real question. The real questions are quieter. Who does the car protect when reaction time is 0.3 seconds and someone's getting hurt regardless?\n\nThe hard work is the margins. The 3% of cases where the algorithm fails. The populations underrepresented in training data. The scenarios nobody thought to test.",
+      emotion: 'serious',
+      variation_id: 'nadia_edge_cases_v1'
+    }],
+    choices: [
+      { choiceId: 'edge_test', text: "How do you test for edge cases?", nextNodeId: 'nadia_vigilance_methods', pattern: 'analytical' },
+      { choiceId: 'edge_who', text: "Who decides what's an edge case?", nextNodeId: 'nadia_shared_blame', pattern: 'exploring' },
+      { choiceId: 'edge_example', text: "Can you give me a real example?", nextNodeId: 'nadia_failures_seen', pattern: 'helping' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_enough_difference',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Am I making enough difference? I ask myself that constantly.\n\nEvery audit I do, every bias I catch—I know there are a hundred more I didn't catch. Every company I convince to slow down, ten more are racing ahead without oversight.\n\nThe answer is always 'probably not' and 'keep trying anyway.' Because the alternative is letting the people who don't ask these questions make all the decisions.",
+      emotion: 'vulnerable',
+      variation_id: 'nadia_enough_difference_v1'
+    }],
+    choices: [
+      { choiceId: 'enough_cope', text: "How do you cope with that weight?", nextNodeId: 'nadia_hard_self', pattern: 'helping' },
+      { choiceId: 'enough_wins', text: "What keeps you going?", nextNodeId: 'nadia_purpose_deep', pattern: 'exploring' },
+      { choiceId: 'enough_scale', text: "How could the work scale better?", nextNodeId: 'nadia_policy_path', pattern: 'building' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_ethics_module',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "You can't bolt ethics onto AI as an afterthought. It has to be architected in from the beginning.\n\nI've seen companies build entire systems, test them, ship them—then realize they're discriminating and try to 'add ethics' at the end. It doesn't work. The foundations are already biased. The training data is already corrupted. You can't fix a building by painting over cracks.\n\nThat's the fight I'm in. Getting to the design phase. Before it's too late.",
+      emotion: 'passionate',
+      variation_id: 'nadia_ethics_module_v1'
+    }],
+    choices: [
+      { choiceId: 'ethics_design', text: "What does ethics-first design look like?", nextNodeId: 'nadia_both_paths', pattern: 'building' },
+      { choiceId: 'ethics_companies', text: "Do companies listen when you push back?", nextNodeId: 'nadia_resistance', pattern: 'exploring' },
+      { choiceId: 'ethics_late', text: "What happens when you arrive too late?", nextNodeId: 'nadia_failures_seen', pattern: 'helping' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_failures_seen',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "I've seen AI failures that never made headlines.\n\nA hiring algorithm that rejected every resume with 'women's basketball' on it. A loan model that learned to redline neighborhoods without ever seeing a map. A predictive policing system that sent officers to the same streets over and over, finding more crime because they were looking harder.\n\nThese aren't hypotheticals. They're systems that ran for years. Affected thousands of people. And the companies involved never told anyone.",
+      emotion: 'troubled',
+      variation_id: 'nadia_failures_seen_v1'
+    }],
+    choices: [
+      { choiceId: 'failures_stop', text: "How did they eventually get caught?", nextNodeId: 'nadia_audit_work', pattern: 'analytical' },
+      { choiceId: 'failures_fix', text: "Can the damage be undone?", nextNodeId: 'nadia_stop_them', pattern: 'helping' },
+      { choiceId: 'failures_prevent', text: "How do we prevent this in the future?", nextNodeId: 'nadia_vigilance_methods', pattern: 'building' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_feelings_exist',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Feelings exist in this work whether we acknowledge them or not.\n\nTech culture pretends we're all Vulcans. Pure logic, no emotion. But I've watched engineers cry when their system hurt someone. I've seen executives get defensive because admitting bias feels like admitting failure.\n\nBetter to work with feelings than pretend we're purely rational. Shame makes people hide mistakes. Pride makes people double down. Compassion makes people fix things.",
+      emotion: 'warm',
+      variation_id: 'nadia_feelings_exist_v1'
+    }],
+    choices: [
+      { choiceId: 'feelings_use', text: "How do you work with feelings in audits?", nextNodeId: 'nadia_companies_listen', pattern: 'helping' },
+      { choiceId: 'feelings_yours', text: "What about your own feelings in this work?", nextNodeId: 'nadia_not_peace', pattern: 'exploring' },
+      { choiceId: 'feelings_data', text: "Should emotion factor into AI decisions?", nextNodeId: 'nadia_human_beauty', pattern: 'analytical' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_fired_story',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "I got fired for refusing to launch a system I knew was biased.\n\nIt was a credit scoring model. The data team had found a proxy for race—not intentional, but it was there. Reject rate for Black applicants was 40% higher than white applicants with identical financials.\n\nI flagged it. Management said launch anyway, we'll fix it in v2. I said no. Two weeks later, I was 'restructured.' Best career decision I never made on purpose.",
+      emotion: 'wry',
+      variation_id: 'nadia_fired_story_v1'
+    }],
+    choices: [
+      { choiceId: 'fired_aftermath', text: "What happened after you left?", nextNodeId: 'nadia_career_path', pattern: 'exploring' },
+      { choiceId: 'fired_system', text: "Did they launch the system anyway?", nextNodeId: 'nadia_terrifying_truth', pattern: 'analytical' },
+      { choiceId: 'fired_worth', text: "Do you ever regret it?", nextNodeId: 'nadia_purpose_deep', pattern: 'patience' }
+    ]
+  },
+  {
+    nodeId: 'nadia_forcing_choice',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "The industry wants to force a choice: fast or ethical. I refuse that framing.\n\nMove fast and break things—that was the motto that built Silicon Valley. But what if the things you break are people's credit scores? Their job prospects? Their freedom?\n\nWe can be both fast and ethical if we're intentional. It means building ethics into the process, not tacking it on at the end. It means hiring diverse teams, not just checking boxes. It takes more thought upfront. But it saves lawsuits later.",
+      emotion: 'determined',
+      variation_id: 'nadia_forcing_choice_v1'
+    }],
+    choices: [
+      { choiceId: 'forcing_companies', text: "Do companies actually change when you explain this?", nextNodeId: 'nadia_companies_listen', pattern: 'exploring' },
+      { choiceId: 'forcing_how', text: "How do you build ethics into the process?", nextNodeId: 'nadia_audit_work', pattern: 'building' },
+      { choiceId: 'forcing_resist', text: "What pushback do you face?", nextNodeId: 'nadia_resistance', pattern: 'patience' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_grandmother_story',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "My grandmother was a translator. Ukrainian to English, back when that was dangerous work.\n\nShe taught me that translation isn't just words—it's meaning, context, culture. The same sentence can be a compliment in one language and an insult in another. You have to understand both worlds to move between them.\n\nAI needs that wisdom. Right now it's translating human complexity into mathematical functions, and losing everything important in the translation.",
+      emotion: 'tender',
+      variation_id: 'nadia_grandmother_story_v1'
+    }],
+    choices: [
+      { choiceId: 'grandmother_translate', text: "Is that why you focus on translation in your work?", nextNodeId: 'nadia_translation_skill', pattern: 'analytical' },
+      { choiceId: 'grandmother_wisdom', text: "What other wisdom did she share?", nextNodeId: 'nadia_purpose_deep', pattern: 'helping' },
+      { choiceId: 'grandmother_loss', text: "What gets lost in AI's translation?", nextNodeId: 'nadia_human_beauty', pattern: 'exploring' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_hard_self',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "I'm hard on myself. Probably too hard.\n\nMy therapist says I have 'superhero syndrome.' The belief that if I just worked harder, thought smarter, I could fix everything. That every failure is evidence I didn't try hard enough.\n\nBut in this field, the stakes are too high for complacency. Every system I don't audit, every bias I miss—real people pay the price. So I push myself. Maybe too much. But what's the alternative?",
+      emotion: 'serious',
+      variation_id: 'nadia_hard_self_v1'
+    }],
+    choices: [
+      { choiceId: 'hard_balance', text: "How do you balance the pressure?", nextNodeId: 'nadia_not_peace', pattern: 'helping' },
+      { choiceId: 'hard_share', text: "Could others share the burden?", nextNodeId: 'nadia_lonely_work', pattern: 'building' },
+      { choiceId: 'hard_enough', text: "When is 'enough' actually enough?", nextNodeId: 'nadia_enough_difference', pattern: 'patience' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_human_beauty',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "There's beauty in human reasoning that AI can't replicate.\n\nThe leaps, the intuitions, the creative connections that seem to come from nowhere. A poet choosing exactly the right word. A doctor sensing something's wrong before the tests show it. A parent knowing their child is struggling from a look across the room.\n\nThat's what we're protecting. Not just efficiency or accuracy—the irreplaceable strangeness of being human.",
+      emotion: 'warm',
+      variation_id: 'nadia_human_beauty_v1'
+    }],
+    choices: [
+      { choiceId: 'beauty_protect', text: "How do we protect that in an AI world?", nextNodeId: 'nadia_purpose_deep', pattern: 'helping' },
+      { choiceId: 'beauty_replace', text: "Could AI ever replicate it?", nextNodeId: 'nadia_doubt_authentic', pattern: 'analytical' },
+      { choiceId: 'beauty_value', text: "Do you think the tech industry values that?", nextNodeId: 'nadia_forcing_choice', pattern: 'exploring' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_not_peace',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "I'm not at peace with this work. I don't think I should be.\n\nPeace implies resolution. That the problem is solved, the battle won. But AI ethics is never 'done.' Every new model, every new application, every new dataset—it all needs scrutiny. The moment I relax is the moment something slips through.\n\nDiscomfort keeps me sharp. Keeps me asking hard questions. The day I feel comfortable is the day I've stopped doing my job.",
+      emotion: 'honest',
+      variation_id: 'nadia_not_peace_v1'
+    }],
+    choices: [
+      { choiceId: 'peace_sustainable', text: "Is that sustainable long-term?", nextNodeId: 'nadia_hard_self', pattern: 'helping' },
+      { choiceId: 'peace_others', text: "How do others in your field cope?", nextNodeId: 'nadia_lonely_work', pattern: 'exploring' },
+      { choiceId: 'peace_drive', text: "What keeps you going despite the discomfort?", nextNodeId: 'nadia_purpose_deep', pattern: 'patience' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_noticed',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "You notice things. That's rare.\n\nMost people I talk to about this work—their eyes glaze over after thirty seconds. Too abstract. Too technical. Not their problem.\n\nBut you're actually thinking about what I'm saying. Asking the follow-up questions that matter. That tells me something about how you approach the world. You don't skim the surface.",
+      emotion: 'appreciative',
+      variation_id: 'nadia_noticed_v1'
+    }],
+    choices: [
+      { choiceId: 'noticed_matters', text: "It matters. What you're saying matters.", nextNodeId: 'nadia_purpose_deep', pattern: 'helping' },
+      { choiceId: 'noticed_more', text: "Tell me more about the challenges you face.", nextNodeId: 'nadia_resistance', pattern: 'exploring' },
+      { choiceId: 'noticed_learn', text: "I want to understand how this all works.", nextNodeId: 'nadia_audit_work', pattern: 'analytical' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_personal_journey',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "My journey into AI ethics wasn't planned. I was a machine learning engineer. Good at my job. Happy to build whatever the product team wanted.\n\nThen I built a recommendation system for a social media platform. Six months later, I found out it was promoting extremist content. Not by design—just optimizing for engagement. Outrage gets clicks.\n\nI saw the system I built harm people, and I couldn't look away anymore. Couldn't pretend it was someone else's problem.",
+      emotion: 'vulnerable',
+      variation_id: 'nadia_personal_journey_v1'
+    }],
+    choices: [
+      { choiceId: 'journey_after', text: "What did you do after that realization?", nextNodeId: 'nadia_fired_story', pattern: 'exploring' },
+      { choiceId: 'journey_fix', text: "Were you able to fix the system?", nextNodeId: 'nadia_stop_them', pattern: 'building' },
+      { choiceId: 'journey_feel', text: "How did it feel to see that?", nextNodeId: 'nadia_feelings_exist', pattern: 'helping' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_policy_path',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Policy is one path to change. Not the only one, maybe not even the best one.\n\nYou can work from inside companies—build ethical AI from the ground up. You can do academic research—create the frameworks others use. You can do journalism—expose the harms so the public demands change.\n\nI chose policy because it's where I can make a difference. I speak both languages—technical and regulatory. That translation is rare, and it matters.",
+      emotion: 'thoughtful',
+      variation_id: 'nadia_policy_path_v1'
+    }],
+    choices: [
+      { choiceId: 'policy_work', text: "What does policy work actually look like?", nextNodeId: 'nadia_audit_work', pattern: 'building' },
+      { choiceId: 'policy_others', text: "What about the other paths?", nextNodeId: 'nadia_both_paths', pattern: 'exploring' },
+      { choiceId: 'policy_translation', text: "Tell me about that translation skill.", nextNodeId: 'nadia_translation_skill', pattern: 'analytical' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_prediction_method',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Predicting AI's future? I don't. I focus on shaping it.\n\nPrediction is passive. It assumes the future is fixed, and we're just guessing at it. But the future of AI isn't predetermined. It's being decided right now, in boardrooms and research labs and policy offices.\n\nI'd rather be in the room where decisions are made than outside, predicting what happens next. Shaping is active.",
+      emotion: 'determined',
+      variation_id: 'nadia_prediction_method_v1'
+    }],
+    choices: [
+      { choiceId: 'predict_shape', text: "How do you actually shape AI's direction?", nextNodeId: 'nadia_policy_path', pattern: 'building' },
+      { choiceId: 'predict_room', text: "Who else is in those decision rooms?", nextNodeId: 'nadia_shared_blame', pattern: 'exploring' },
+      { choiceId: 'predict_outcomes', text: "What outcomes are you shaping toward?", nextNodeId: 'nadia_purpose_deep', pattern: 'analytical' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_purpose_deep',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Purpose isn't something you find. It's something you build, one decision at a time.\n\nI didn't wake up one day knowing I was meant to do AI ethics. I made choices. Took a job. Saw problems. Spoke up. Got fired. Made more choices.\n\nMine is protecting human agency in an AI world. Making sure that as these systems get more powerful, people still get to make their own decisions. That algorithms inform, not control.",
+      emotion: 'firm',
+      variation_id: 'nadia_purpose_deep_v1'
+    }],
+    choices: [
+      { choiceId: 'purpose_how', text: "How do you protect human agency specifically?", nextNodeId: 'nadia_audit_work', pattern: 'analytical' },
+      { choiceId: 'purpose_threat', text: "What's the biggest threat to human agency?", nextNodeId: 'nadia_already_oracle', pattern: 'exploring' },
+      { choiceId: 'purpose_cost', text: "What has that purpose cost you?", nextNodeId: 'nadia_fired_story', pattern: 'helping' }
+    ]
+  },
+  {
+    nodeId: 'nadia_refused',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "I've refused projects. Good money, interesting problems. But wrong applications.\n\nA surveillance company wanted me to audit their facial recognition—not to fix bias, but to defend against lawsuits. A social media platform wanted help optimizing for 'time on app' while knowing it was harming teens. A hedge fund wanted algorithms I knew would destabilize markets.\n\nEvery 'no' was hard. But that refusal is part of who I am now. The lines I won't cross define me.",
+      emotion: 'peaceful',
+      variation_id: 'nadia_refused_v1'
+    }],
+    choices: [
+      { choiceId: 'refused_cost', text: "Was there a cost to those refusals?", nextNodeId: 'nadia_fired_story', pattern: 'patience' },
+      { choiceId: 'refused_know', text: "How do you know where to draw the line?", nextNodeId: 'nadia_edge_cases', pattern: 'analytical' },
+      { choiceId: 'refused_instead', text: "What projects do you say yes to?", nextNodeId: 'nadia_audit_work', pattern: 'exploring' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_resistance',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Resistance is part of the job. People don't want to hear that their system might be harmful.\n\nEngineers get defensive—they built it, so it must be good. Executives get worried—bias findings mean legal risk. Marketing gets angry—I'm slowing down their launch.\n\nBut I say it anyway. Because the alternative is staying quiet while harm scales. I'd rather be the person who warned them than the person who said nothing.",
+      emotion: 'determined',
+      variation_id: 'nadia_resistance_v1'
+    }],
+    choices: [
+      { choiceId: 'resistance_handle', text: "How do you handle the pushback?", nextNodeId: 'nadia_feelings_exist', pattern: 'patience' },
+      { choiceId: 'resistance_listen', text: "Do they ever actually listen?", nextNodeId: 'nadia_companies_listen', pattern: 'exploring' },
+      { choiceId: 'resistance_cost', text: "What has that cost you?", nextNodeId: 'nadia_fired_story', pattern: 'helping' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_shared_blame',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Blame is shared. The engineers who build, the executives who deploy, the users who accept. We're all part of this.\n\nI used to think there were good guys and bad guys. Ethical researchers versus predatory corporations. But it's more complicated. Good people build harmful systems. Harmful systems are built by good intentions.\n\nCollective responsibility doesn't mean no one's accountable. It means everyone has a role in fixing this.",
+      emotion: 'serious',
+      variation_id: 'nadia_shared_blame_v1'
+    }],
+    choices: [
+      { choiceId: 'blame_role', text: "What's your role in the fix?", nextNodeId: 'nadia_policy_path', pattern: 'building' },
+      { choiceId: 'blame_users', text: "What can regular users do?", nextNodeId: 'nadia_stop_them', pattern: 'helping' },
+      { choiceId: 'blame_companies', text: "What about corporate accountability?", nextNodeId: 'nadia_companies_listen', pattern: 'analytical' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_sim_promise_response',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "You chose to hold them accountable. That's the right instinct.\n\nPromise without follow-through is how ethics gets watered down. 'We'll address that in the next version.' 'We're committed to doing better.' 'Ethics is a priority for us.' I've heard it all.\n\nThe companies that actually change are the ones where someone—inside or outside—refuses to let them off the hook. You played that role just now.",
+      emotion: 'appreciative',
+      variation_id: 'nadia_sim_promise_response_v1'
+    }],
+    choices: [
+      { choiceId: 'promise_next', text: "What happens when they don't follow through?", nextNodeId: 'nadia_stop_them', pattern: 'analytical' },
+      { choiceId: 'promise_inside', text: "Can change come from inside companies?", nextNodeId: 'nadia_both_paths', pattern: 'building' },
+      { choiceId: 'promise_tired', text: "Does the constant pushing get exhausting?", nextNodeId: 'nadia_hard_self', pattern: 'helping' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_sim_walk_response',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Walking away is sometimes the ethical choice.\n\nNot every battle can be won from inside. Sometimes the system is too broken, the leadership too committed to the wrong path, the harm too entrenched. Staying means becoming complicit.\n\nStrategic retreat isn't failure. It's recognizing that your integrity is a resource. Spend it where it matters, not where it's wasted.",
+      emotion: 'knowing',
+      variation_id: 'nadia_sim_walk_response_v1'
+    }],
+    choices: [
+      { choiceId: 'walk_when', text: "How do you know when it's time to walk?", nextNodeId: 'nadia_edge_cases', pattern: 'patience' },
+      { choiceId: 'walk_after', text: "What happens after you leave?", nextNodeId: 'nadia_fired_story', pattern: 'exploring' },
+      { choiceId: 'walk_outside', text: "Can you still make change from outside?", nextNodeId: 'nadia_policy_path', pattern: 'building' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_stop_them',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Can we stop harmful AI? Not by ourselves. But we can slow it, redirect it, make it costly to deploy carelessly.\n\nLitigation. Regulation. Public pressure. Whistleblowing. Competitive ethics—showing that responsible AI can also be profitable AI.\n\nI don't have illusions about stopping the tide. But I can change its direction. Make companies think twice. Give affected communities time to organize. That's friction as strategy.",
+      emotion: 'determined',
+      variation_id: 'nadia_stop_them_v1'
+    }],
+    choices: [
+      { choiceId: 'stop_effective', text: "What's been most effective?", nextNodeId: 'nadia_companies_listen', pattern: 'analytical' },
+      { choiceId: 'stop_communities', text: "How do affected communities organize?", nextNodeId: 'nadia_shared_blame', pattern: 'helping' },
+      { choiceId: 'stop_future', text: "Is the tide turning at all?", nextNodeId: 'nadia_ai_future', pattern: 'exploring' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_systems_individual',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Systems thinking and individual ethics aren't opposites. You need both.\n\nSystems without ethics scale harm. A bias baked into an algorithm can discriminate against millions of people in milliseconds. No individual could do that much damage.\n\nBut ethics without systems stay small. One person refusing to build something unethical just gets replaced. You need structures—regulations, audits, accountability—that make ethics systemic.",
+      emotion: 'thoughtful',
+      variation_id: 'nadia_systems_individual_v1'
+    }],
+    choices: [
+      { choiceId: 'systems_build', text: "How do you build ethical systems?", nextNodeId: 'nadia_vigilance_methods', pattern: 'building' },
+      { choiceId: 'systems_individual', text: "Where do individuals fit in?", nextNodeId: 'nadia_shared_blame', pattern: 'helping' },
+      { choiceId: 'systems_now', text: "What systems exist today?", nextNodeId: 'nadia_policy_path', pattern: 'analytical' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_team_compromise_response',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Compromise can be wisdom or weakness. The key is knowing what's negotiable and what isn't.\n\nTimelines? Negotiable. Scope? Negotiable. Features? Negotiable. But core principles—transparency, fairness, accountability—those aren't negotiable.\n\nThe moment you compromise on principles, you've lost. Not just the battle, but who you are. I've seen people do it. They tell themselves it's just this once. It never is.",
+      emotion: 'firm',
+      variation_id: 'nadia_team_compromise_response_v1'
+    }],
+    choices: [
+      { choiceId: 'compromise_line', text: "How do you know where your line is?", nextNodeId: 'nadia_refused', pattern: 'patience' },
+      { choiceId: 'compromise_others', text: "Have you watched others cross their lines?", nextNodeId: 'nadia_failures_seen', pattern: 'exploring' },
+      { choiceId: 'compromise_pressure', text: "How do you resist the pressure to bend?", nextNodeId: 'nadia_resistance', pattern: 'building' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_team_flag_response',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Flagging concerns early is brave. Most people wait until it's too late.\n\nThey see the problem forming. They sense something's off. But they stay quiet because they're not sure, or they're afraid, or they think someone else will speak up.\n\nYou trusted the team with hard truth. That takes courage. And it's the only way problems get fixed—when someone is willing to say 'this isn't right' before the damage is done.",
+      emotion: 'appreciative',
+      variation_id: 'nadia_team_flag_response_v1'
+    }],
+    choices: [
+      { choiceId: 'flag_response', text: "How do teams usually respond to flags?", nextNodeId: 'nadia_resistance', pattern: 'analytical' },
+      { choiceId: 'flag_early', text: "What makes early intervention work?", nextNodeId: 'nadia_ethics_module', pattern: 'building' },
+      { choiceId: 'flag_cost', text: "Is there a cost to flagging concerns?", nextNodeId: 'nadia_fired_story', pattern: 'helping' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_team_ship_response',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Shipping with known issues is a choice. Sometimes it's right, sometimes it's rationalization.\n\nRight: The issue is minor, the harm is limited, and you have a concrete plan to fix it. Wrong: The issue affects vulnerable people, the harm is significant, and 'we'll fix it later' is a lie you're telling yourself.\n\nThe difference is honesty about trade-offs. Are you shipping because it's genuinely the best choice, or because it's the easy one?",
+      emotion: 'thoughtful',
+      variation_id: 'nadia_team_ship_response_v1'
+    }],
+    choices: [
+      { choiceId: 'ship_honest', text: "How do you stay honest with yourself?", nextNodeId: 'nadia_hard_self', pattern: 'patience' },
+      { choiceId: 'ship_pressure', text: "What about pressure from leadership?", nextNodeId: 'nadia_forcing_choice', pattern: 'exploring' },
+      { choiceId: 'ship_fix', text: "Does 'fix it later' ever actually happen?", nextNodeId: 'nadia_sim_promise_response', pattern: 'analytical' }
+    ]
+  },
+  {
+    nodeId: 'nadia_technical_path',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Technical skills got me here. I can read code, understand architectures, spot where bias gets embedded.\n\nBut the real work is translation. Explaining why bias matrices matter to executives who just want the product to ship. Showing engineers how their 'neutral' design choices have consequences. Making lawyers understand what 'proxy discrimination' means in practice.\n\nIf you can't translate, you can't change anything.",
+      emotion: 'knowing',
+      variation_id: 'nadia_technical_path_v1'
+    }],
+    choices: [
+      { choiceId: 'technical_learn', text: "How did you learn to translate?", nextNodeId: 'nadia_grandmother_story', pattern: 'exploring' },
+      { choiceId: 'technical_work', text: "What does that translation look like in practice?", nextNodeId: 'nadia_audit_work', pattern: 'analytical' },
+      { choiceId: 'technical_teach', text: "Can that skill be taught?", nextNodeId: 'nadia_translation_skill', pattern: 'building' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_terrifying_truth',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "The terrifying truth? Most AI systems deployed today have never been audited for bias.\n\nWe're running an experiment on society. No control group, no informed consent, no off switch. Credit decisions, hiring filters, medical diagnoses, criminal sentencing—AI is making calls that shape lives, and nobody's checking the work.\n\nWhen I started this work, I thought I was catching edge cases. Now I know I'm barely scratching the surface.",
+      emotion: 'troubled',
+      variation_id: 'nadia_terrifying_truth_v1'
+    }],
+    choices: [
+      { choiceId: 'truth_why', text: "Why isn't anyone checking?", nextNodeId: 'nadia_forcing_choice', pattern: 'analytical' },
+      { choiceId: 'truth_do', text: "What can be done about it?", nextNodeId: 'nadia_stop_them', pattern: 'building' },
+      { choiceId: 'truth_cope', text: "How do you cope with knowing this?", nextNodeId: 'nadia_not_peace', pattern: 'helping' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_translation_skill',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Translation between technical and human is my superpower. Making the invisible visible, the abstract concrete.\n\n'Your model has a disparate impact on protected classes' means nothing to most people. But 'your hiring AI rejects Black candidates 40% more often than white candidates with identical qualifications'—that they understand.\n\nThe same information, different languages. My job is bridging them.",
+      emotion: 'confident',
+      variation_id: 'nadia_translation_skill_v1'
+    }],
+    choices: [
+      { choiceId: 'translation_learn', text: "Where did you learn this skill?", nextNodeId: 'nadia_grandmother_story', pattern: 'helping' },
+      { choiceId: 'translation_matter', text: "Why does translation matter so much?", nextNodeId: 'nadia_companies_listen', pattern: 'exploring' },
+      { choiceId: 'translation_example', text: "Can you give me another example?", nextNodeId: 'nadia_failures_seen', pattern: 'analytical' }
+    ]
+  },
+
+  {
+    nodeId: 'nadia_vigilance_methods',
+    speaker: 'Nadia Chen',
+    content: [{
+      text: "Vigilance methods: audit trails, red teams, diverse testing groups, sunset clauses.\n\nAudit trails mean every decision can be traced back to why. Red teams attack your system before your enemies do. Diverse testing groups catch biases that homogeneous teams miss. Sunset clauses force you to re-evaluate systems instead of letting them run forever.\n\nTechnical solutions for human problems. None of them perfect. All of them better than nothing.",
+      emotion: 'knowing',
+      variation_id: 'nadia_vigilance_methods_v1'
+    }],
+    choices: [
+      { choiceId: 'vigilance_implement', text: "How hard are these to implement?", nextNodeId: 'nadia_forcing_choice', pattern: 'building' },
+      { choiceId: 'vigilance_adopt', text: "Do companies actually adopt these?", nextNodeId: 'nadia_companies_listen', pattern: 'exploring' },
+      { choiceId: 'vigilance_best', text: "Which method is most effective?", nextNodeId: 'nadia_audit_work', pattern: 'analytical' }
+    ]
+  },
 
   // ============= PHASE 1 SIMULATION: BIAS DETECTION (Trust ≥ 2) =============
   {

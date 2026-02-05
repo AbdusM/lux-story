@@ -178,7 +178,9 @@ const nodes: DialogueNode[] = [
         voiceVariations: {
           analytical: "Logistics optimized. Route clear.",
           helping: "They have what they need. For today.",
-          building: "The chain is fixed. Supplies are moving."
+          building: "The chain is fixed. Supplies are moving.",
+          patience: "Took some doing, but the route's solid now.",
+          exploring: "Found a better path. The supplies will make it."
         }
       }
     ]

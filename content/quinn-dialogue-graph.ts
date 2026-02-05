@@ -2873,27 +2873,319 @@ ALTERNATIVES:
   // STUB NODES - Fix broken navigation
   // ═══════════════════════════════════════════════════════════════
 
-  { nodeId: 'quinn_applying_wisdom', speaker: 'Quinn Rivera', content: [{ text: "Applying wisdom to finance means knowing when NOT to optimize. Some returns aren't worth what they cost.", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Knowing when to stop.", nextNodeId: 'quinn_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'quinn_back_birmingham', speaker: 'Quinn Rivera', content: [{ text: "Coming back to Birmingham wasn't retreat. It was strategy. This is where I can make real change.", emotion: 'determined', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Strategic return.", nextNodeId: 'quinn_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'quinn_build_different', speaker: 'Quinn Rivera', content: [{ text: "Building something different in finance means questioning every assumption. Why does it have to work this way? Usually it doesn't.", emotion: 'passionate', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Question everything.", nextNodeId: 'quinn_hub_return', pattern: 'exploring' }], tags: ['stub'] },
-  { nodeId: 'quinn_change_inside', speaker: 'Quinn Rivera', content: [{ text: "Change from inside is slower but deeper. You have to earn trust before you can challenge assumptions.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Trust before challenge.", nextNodeId: 'quinn_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'quinn_conscience_answer', speaker: 'Quinn Rivera', content: [{ text: "My conscience? It's loud. Every deal, every recommendation—I hear it asking 'who does this really help?'", emotion: 'vulnerable', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "A loud conscience.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'quinn_economy_prediction', speaker: 'Quinn Rivera', content: [{ text: "Predicting the economy? Anyone who claims certainty is selling something. I deal in probabilities and humility.", emotion: 'honest', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Humble predictions.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'quinn_founder_types', speaker: 'Quinn Rivera', content: [{ text: "Three types of founders: dreamers who can't execute, executors who can't dream, and the rare ones who do both. I fund the third.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Finding the rare ones.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'quinn_happiness_research', speaker: 'Quinn Rivera', content: [{ text: "Happiness research says money matters until it doesn't. Past a point, it's relationships, purpose, growth. Finance mostly ignores this.", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "What really matters.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'quinn_harder_investing', speaker: 'Quinn Rivera', content: [{ text: "Ethical investing is harder. More due diligence, more saying no, more complexity. But that's not an excuse to avoid it.", emotion: 'firm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Harder but necessary.", nextNodeId: 'quinn_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'quinn_heavy_living', speaker: 'Quinn Rivera', content: [{ text: "Living with financial knowledge is heavy. I see the systems most people don't. Can't unsee them now.", emotion: 'serious', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Can't unsee it.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'quinn_lonely_now_answer', speaker: 'Quinn Rivera', content: [{ text: "Lonely? Sometimes. This path isn't crowded. But I'd rather be lonely and right than popular and complicit.", emotion: 'honest', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Lonely but right.", nextNodeId: 'quinn_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'quinn_marcus_relationship', speaker: 'Quinn Rivera', content: [{ text: "Marcus and I see different angles of the same problem. He's healing people; I'm trying to heal systems. We need both.", emotion: 'warm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Both are needed.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'quinn_meaningful_weight', speaker: 'Quinn Rivera', content: [{ text: "Meaningful work has weight to it. Lightness is nice but it doesn't build anything that lasts.", emotion: 'reflective', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Weight that builds.", nextNodeId: 'quinn_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'quinn_system_excuse', speaker: 'Quinn Rivera', content: [{ text: "The system is an excuse. People built it. People can rebuild it. Saying 'that's how it works' is a choice.", emotion: 'passionate', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "We can rebuild.", nextNodeId: 'quinn_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'quinn_teach_approach', speaker: 'Quinn Rivera', content: [{ text: "My teaching approach? Show people the real numbers. Not the sanitized version. Real numbers change minds.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Real numbers.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'quinn_teaching_offer', speaker: 'Quinn Rivera', content: [{ text: "I could teach you more. Financial literacy isn't taught because it's dangerous—to the people who profit from confusion.", emotion: 'serious', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "I'd like to learn.", nextNodeId: 'quinn_hub_return', pattern: 'exploring' }], tags: ['stub'] },
-  { nodeId: 'quinn_titusville_history', speaker: 'Quinn Rivera', content: [{ text: "Titusville. Where I grew up. First Black neighborhood in Birmingham. History in every street. That's what I'm fighting for.", emotion: 'proud', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Fighting for history.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'quinn_what_changed', speaker: 'Quinn Rivera', content: [{ text: "What changed me? Seeing the spreadsheets. The actual numbers showing how wealth flows away from people who need it most.", emotion: 'troubled', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "The numbers don't lie.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'quinn_why_understand', speaker: 'Quinn Rivera', content: [{ text: "Understanding why matters more than knowing what. The what changes. The why reveals the system underneath.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Seeing the system.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'quinn_mentor_balance', speaker: 'Quinn Almeida', content: [{ text: "I listen more than I advise. Financial numbers are just one language. People speak in hopes and fears too. A good mentor translates between both.", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Both languages matter.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'quinn_mentor_action', speaker: 'Quinn Almeida', content: [{ text: "That's exactly what I'm doing. Teaching the numbers, yes. But also showing you that behind every number is a person who deserves respect.", emotion: 'confident', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "People over numbers.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] }
+  {
+    nodeId: 'quinn_applying_wisdom',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "Applying wisdom to finance means knowing when NOT to optimize.\n\nI had a client once—solid business, good margins, ready to scale. Every metric said 'grow fast.' But when I talked to the owner, she was already working seventy-hour weeks. Scaling would have broken her.\n\nSome returns aren't worth what they cost. The spreadsheet doesn't show burnout, family strain, or losing yourself in the numbers.",
+      emotion: 'thoughtful',
+      variation_id: 'quinn_applying_wisdom_v1'
+    }],
+    choices: [
+      { choiceId: 'wisdom_measure', text: "How do you measure what doesn't show on spreadsheets?", nextNodeId: 'quinn_evaluation_method', pattern: 'analytical' },
+      { choiceId: 'wisdom_clients', text: "Do clients listen when you tell them to slow down?", nextNodeId: 'quinn_fewer_deals', pattern: 'patience' },
+      { choiceId: 'wisdom_learn', text: "How did you learn to see beyond the numbers?", nextNodeId: 'quinn_grandma_lesson', pattern: 'exploring' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_back_birmingham',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "Coming back to Birmingham wasn't retreat. It was strategy.\n\nWall Street had everything—money, prestige, access. But I was optimizing someone else's game. Moving numbers for people who already had more than they needed.\n\nThis is where I can make real change. Where the money I move actually reaches people. Where I know the names of the founders I fund and the neighborhoods my investments affect.",
+      emotion: 'determined',
+      variation_id: 'quinn_back_birmingham_v1'
+    }],
+    choices: [
+      { choiceId: 'birmingham_difference', text: "What's different about working here?", nextNodeId: 'quinn_current_work', pattern: 'exploring' },
+      { choiceId: 'birmingham_sacrifice', text: "Did you sacrifice anything to come back?", nextNodeId: 'quinn_loneliness', pattern: 'helping' },
+      { choiceId: 'birmingham_roots', text: "Tell me about your roots here.", nextNodeId: 'quinn_titusville_history', pattern: 'patience' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_build_different',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "Building something different in finance means questioning every assumption.\n\nWhy do we measure success by AUM? Why does due diligence take six months for a $50K investment but six weeks for a $50M one? Why do the people with the least capital face the highest interest rates?\n\nUsually 'that's how it works' means 'that's how it profits the people who built it.' Usually it doesn't have to work that way.",
+      emotion: 'passionate',
+      variation_id: 'quinn_build_different_v1'
+    }],
+    choices: [
+      { choiceId: 'different_change', text: "What are you changing specifically?", nextNodeId: 'quinn_social_enterprise', pattern: 'building' },
+      { choiceId: 'different_resist', text: "Does the industry resist your approach?", nextNodeId: 'quinn_change_inside', pattern: 'patience' },
+      { choiceId: 'different_examples', text: "What assumptions have you overturned?", nextNodeId: 'quinn_both_example', pattern: 'analytical' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_change_inside',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "Change from inside is slower but deeper.\n\nI used to think you had to burn down the system to fix it. Revolutionary thinking. But revolutions mostly replace one power structure with another.\n\nNow I earn trust before I challenge assumptions. Learn the language before I critique the grammar. It's slower, but when change happens this way, it sticks.",
+      emotion: 'knowing',
+      variation_id: 'quinn_change_inside_v1'
+    }],
+    choices: [
+      { choiceId: 'inside_trust', text: "How do you earn trust in finance?", nextNodeId: 'quinn_current_work', pattern: 'building' },
+      { choiceId: 'inside_patience', text: "How do you stay patient with slow change?", nextNodeId: 'quinn_meaningful_work', pattern: 'patience' },
+      { choiceId: 'inside_examples', text: "What change have you achieved this way?", nextNodeId: 'quinn_workshops', pattern: 'exploring' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_conscience_answer',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "My conscience? It's loud. Probably too loud.\n\nEvery deal, every recommendation—I hear it asking 'who does this really help?' Not just the pitch deck version of help. The real downstream effects. Will this create jobs or cut them? Build wealth locally or extract it?\n\nSome nights I lie awake running the numbers again. Wondering if I missed something. If my analysis has gaps that hurt people.",
+      emotion: 'vulnerable',
+      variation_id: 'quinn_conscience_answer_v1'
+    }],
+    choices: [
+      { choiceId: 'conscience_cope', text: "How do you cope with that weight?", nextNodeId: 'quinn_loneliness', pattern: 'helping' },
+      { choiceId: 'conscience_certain', text: "Can you ever be certain you're doing good?", nextNodeId: 'quinn_economy_prediction', pattern: 'analytical' },
+      { choiceId: 'conscience_ignore', text: "Have you ever ignored your conscience?", nextNodeId: 'quinn_self_forgiveness', pattern: 'patience' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_economy_prediction',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "Predicting the economy? Anyone who claims certainty is selling something.\n\nI've watched Nobel laureates get blindsided by crises. I've seen confident forecasts become punchlines. The economy is billions of people making trillions of decisions—no model captures that.\n\nI deal in probabilities and humility. Best case, worst case, likely case. Range of outcomes, not point predictions. And always, always acknowledging what I don't know.",
+      emotion: 'honest',
+      variation_id: 'quinn_economy_prediction_v1'
+    }],
+    choices: [
+      { choiceId: 'predict_decide', text: "How do you make decisions with so much uncertainty?", nextNodeId: 'quinn_evaluation_method', pattern: 'analytical' },
+      { choiceId: 'predict_clients', text: "Do clients want more certainty than you can give?", nextNodeId: 'quinn_teach_approach', pattern: 'helping' },
+      { choiceId: 'predict_prepare', text: "How do you prepare for what you can't predict?", nextNodeId: 'quinn_sustainability_lesson', pattern: 'building' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_founder_types',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "Three types of founders cross my desk.\n\nDreamers who can't execute—beautiful visions, no path to reality. Executors who can't dream—efficient machines building something nobody needs. And the rare ones who do both: see the possibility AND map the path to reach it.\n\nI fund the third. They're hard to find. But when you do, they change everything.",
+      emotion: 'knowing',
+      variation_id: 'quinn_founder_types_v1'
+    }],
+    choices: [
+      { choiceId: 'founder_spot', text: "How do you spot the rare ones?", nextNodeId: 'quinn_person_criteria', pattern: 'analytical' },
+      { choiceId: 'founder_help', text: "Can you help dreamers become executors?", nextNodeId: 'quinn_workshops', pattern: 'helping' },
+      { choiceId: 'founder_example', text: "Tell me about one of them.", nextNodeId: 'quinn_both_example', pattern: 'exploring' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_happiness_research',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "Happiness research says money matters until it doesn't.\n\nUp to a point—about $75K in most studies—more money means less stress, better health, real improvement. But past that point? Diminishing returns. What matters then is relationships, purpose, growth.\n\nFinance mostly ignores this. We optimize for wealth accumulation without asking what it's for. Help people retire with millions they're too burnt out to enjoy.",
+      emotion: 'thoughtful',
+      variation_id: 'quinn_happiness_research_v1'
+    }],
+    choices: [
+      { choiceId: 'happiness_clients', text: "Do you talk to clients about this?", nextNodeId: 'quinn_teach_approach', pattern: 'helping' },
+      { choiceId: 'happiness_change', text: "How should finance change?", nextNodeId: 'quinn_build_different', pattern: 'building' },
+      { choiceId: 'happiness_you', text: "Has this shaped your own choices?", nextNodeId: 'quinn_back_birmingham', pattern: 'exploring' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_harder_investing',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "Ethical investing is harder. Full stop.\n\nMore due diligence—you can't just check financials, you need to understand supply chains, labor practices, environmental impact. More saying no—profitable opportunities that fail values tests. More complexity—navigating tradeoffs between different goods.\n\nBut that's not an excuse to avoid it. 'It's hard' has never been a reason to stop doing what's right.",
+      emotion: 'firm',
+      variation_id: 'quinn_harder_investing_v1'
+    }],
+    choices: [
+      { choiceId: 'harder_method', text: "How do you evaluate ethics alongside returns?", nextNodeId: 'quinn_evaluation_method', pattern: 'analytical' },
+      { choiceId: 'harder_tradeoff', text: "What's the hardest tradeoff you've faced?", nextNodeId: 'quinn_conscience_answer', pattern: 'patience' },
+      { choiceId: 'harder_worth', text: "Is it worth the extra effort?", nextNodeId: 'quinn_meaningful_work', pattern: 'helping' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_heavy_living',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "Living with financial knowledge is heavy.\n\nI see the systems most people don't. The way interest compounds against the poor. The hidden fees that drain working-class savings. The tax structures that let wealth shelter itself while labor gets taxed at every turn.\n\nI used to think knowledge was neutral. Now I know it's a weight. Can't unsee it. Can't unlearn what the numbers really mean.",
+      emotion: 'serious',
+      variation_id: 'quinn_heavy_living_v1'
+    }],
+    choices: [
+      { choiceId: 'heavy_share', text: "Why do you share this knowledge?", nextNodeId: 'quinn_teaching_offer', pattern: 'helping' },
+      { choiceId: 'heavy_change', text: "Can knowledge alone change things?", nextNodeId: 'quinn_system_excuse', pattern: 'building' },
+      { choiceId: 'heavy_cope', text: "How do you carry that weight?", nextNodeId: 'quinn_loneliness', pattern: 'patience' }
+    ]
+  },
+  {
+    nodeId: 'quinn_lonely_now_answer',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "Lonely? Sometimes. More often than I admit.\n\nThis path isn't crowded. Most people in finance either don't see the problems or choose not to look. The ones who do see often burn out or sell out.\n\nBut I'd rather be lonely and right than popular and complicit. At least when I look at myself in the mirror, I know whose side I'm on.",
+      emotion: 'honest',
+      variation_id: 'quinn_lonely_now_answer_v1'
+    }],
+    choices: [
+      { choiceId: 'lonely_others', text: "Are there others doing this work?", nextNodeId: 'quinn_marcus_relationship', pattern: 'exploring' },
+      { choiceId: 'lonely_sustain', text: "How do you sustain yourself?", nextNodeId: 'quinn_meaningful_work', pattern: 'helping' },
+      { choiceId: 'lonely_worth', text: "Is the isolation worth it?", nextNodeId: 'quinn_conscience_answer', pattern: 'patience' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_marcus_relationship',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "Marcus and I see different angles of the same problem.\n\nHe's healing people one at a time. Bedside, hands-on, immediate impact. I'm trying to heal systems—the financial structures that determine who gets care and who doesn't.\n\nWe need both. Individual care without systemic change just puts Band-Aids on bullet wounds. Systemic change without individual care loses the human thread.",
+      emotion: 'warm',
+      variation_id: 'quinn_marcus_relationship_v1'
+    }],
+    choices: [
+      { choiceId: 'marcus_learn', text: "What have you learned from each other?", nextNodeId: 'quinn_both_challenge', pattern: 'exploring' },
+      { choiceId: 'marcus_work', text: "Do you ever work together?", nextNodeId: 'quinn_social_enterprise', pattern: 'building' },
+      { choiceId: 'marcus_balance', text: "How do you balance both perspectives?", nextNodeId: 'quinn_applying_wisdom', pattern: 'analytical' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_meaningful_weight',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "Meaningful work has weight to it.\n\nLightness is nice. Easy jobs, quick wins, simple problems. But it doesn't build anything that lasts.\n\nThe work that matters—the kind that actually changes systems—it's heavy. It requires showing up when you don't want to. Saying hard things to powerful people. Carrying the knowledge of what the numbers really mean.",
+      emotion: 'reflective',
+      variation_id: 'quinn_meaningful_weight_v1'
+    }],
+    choices: [
+      { choiceId: 'weight_choose', text: "How do you choose what's worth the weight?", nextNodeId: 'quinn_responsibility', pattern: 'patience' },
+      { choiceId: 'weight_carry', text: "How do you carry it without burning out?", nextNodeId: 'quinn_loneliness', pattern: 'helping' },
+      { choiceId: 'weight_results', text: "What has all that weight built?", nextNodeId: 'quinn_current_work', pattern: 'building' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_system_excuse',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "The system is an excuse.\n\nPeople built it. People can rebuild it. Every rule that exists was written by someone. Every fee that drains working families was designed by someone. Every loophole that shelters wealth was lobbied for by someone.\n\nSaying 'that's how it works' is a choice. A choice to accept what someone else decided. I don't accept it.",
+      emotion: 'passionate',
+      variation_id: 'quinn_system_excuse_v1'
+    }],
+    choices: [
+      { choiceId: 'system_rebuild', text: "How do you actually rebuild systems?", nextNodeId: 'quinn_change_inside', pattern: 'building' },
+      { choiceId: 'system_possible', text: "Is real change possible?", nextNodeId: 'quinn_back_birmingham', pattern: 'exploring' },
+      { choiceId: 'system_start', text: "Where do you start?", nextNodeId: 'quinn_workshops', pattern: 'analytical' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_teach_approach',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "My teaching approach? Show people the real numbers. Not the sanitized version.\n\nFinancial literacy programs often teach budgeting tips while ignoring the structural forces that make budgeting impossible. 'Save more' advice to people who don't earn enough to save.\n\nReal numbers change minds. Show people the actual interest they're paying. The actual wealth gap data. The actual difference between how money works for the rich and everyone else. Truth is the curriculum.",
+      emotion: 'knowing',
+      variation_id: 'quinn_teach_approach_v1'
+    }],
+    choices: [
+      { choiceId: 'teach_react', text: "How do people react to the truth?", nextNodeId: 'quinn_what_changed', pattern: 'exploring' },
+      { choiceId: 'teach_action', text: "Does knowledge lead to action?", nextNodeId: 'quinn_system_excuse', pattern: 'building' },
+      { choiceId: 'teach_example', text: "Can you show me an example?", nextNodeId: 'quinn_numbers_truth', pattern: 'analytical' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_teaching_offer',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "I could teach you more. If you want to learn.\n\nFinancial literacy isn't taught in most schools. Not because it's too complicated—kids can learn it. It's not taught because it's dangerous. Dangerous to the people who profit from confusion.\n\nWhen people understand compound interest, they stop taking predatory loans. When they understand fees, they demand better. Knowledge is power, and some powers don't want to share.",
+      emotion: 'serious',
+      variation_id: 'quinn_teaching_offer_v1'
+    }],
+    choices: [
+      { choiceId: 'teach_start', text: "Where would we start?", nextNodeId: 'quinn_numbers_truth', pattern: 'exploring' },
+      { choiceId: 'teach_dangerous', text: "What makes it dangerous?", nextNodeId: 'quinn_heavy_living', pattern: 'analytical' },
+      { choiceId: 'teach_workshops', text: "Do you teach this to others?", nextNodeId: 'quinn_workshops', pattern: 'helping' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_titusville_history',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "Titusville. Where I grew up.\n\nFirst Black neighborhood in Birmingham. History in every street. Civil rights leaders walked these blocks. Businesses thrived here when they couldn't operate downtown. Community was built brick by brick.\n\nThen came redlining. Disinvestment. Capital flight. The same financial systems I now work within hollowed out my community. That's what I'm fighting for. To reverse that flow.",
+      emotion: 'proud',
+      variation_id: 'quinn_titusville_history_v1'
+    }],
+    choices: [
+      { choiceId: 'titusville_reverse', text: "How do you reverse the flow?", nextNodeId: 'quinn_social_enterprise', pattern: 'building' },
+      { choiceId: 'titusville_family', text: "Is your family still there?", nextNodeId: 'quinn_grandma_lesson', pattern: 'helping' },
+      { choiceId: 'titusville_working', text: "Is it working?", nextNodeId: 'quinn_current_work', pattern: 'exploring' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_what_changed',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "What changed me? Seeing the spreadsheets. The actual numbers.\n\nI was working at a wealth management firm. High net worth clients. One day I pulled the data on where our clients' wealth came from and where it went.\n\nMoney flowing from working neighborhoods into tax shelters. Capital extracted from communities like mine and deposited in offshore accounts. The numbers didn't lie. Wealth flows away from people who need it most.",
+      emotion: 'troubled',
+      variation_id: 'quinn_what_changed_v1'
+    }],
+    choices: [
+      { choiceId: 'changed_after', text: "What did you do after seeing that?", nextNodeId: 'quinn_back_birmingham', pattern: 'exploring' },
+      { choiceId: 'changed_show', text: "Can you show me those patterns?", nextNodeId: 'quinn_numbers_truth', pattern: 'analytical' },
+      { choiceId: 'changed_feel', text: "How did it feel to see that?", nextNodeId: 'quinn_conscience_answer', pattern: 'helping' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_why_understand',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "Understanding why matters more than knowing what.\n\nAnyone can memorize financial formulas. What changes when interest rates rise. What happens in a recession. That's surface knowledge.\n\nThe why reveals the system underneath. Why do interest rates affect poor people differently than rich people? Why do recessions hit some neighborhoods harder? The why shows you the architecture of inequality.",
+      emotion: 'knowing',
+      variation_id: 'quinn_why_understand_v1'
+    }],
+    choices: [
+      { choiceId: 'why_teach', text: "Can you teach me the why?", nextNodeId: 'quinn_teaching_offer', pattern: 'exploring' },
+      { choiceId: 'why_use', text: "How do you use that understanding?", nextNodeId: 'quinn_evaluation_method', pattern: 'analytical' },
+      { choiceId: 'why_change', text: "Does understanding help change things?", nextNodeId: 'quinn_system_excuse', pattern: 'building' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_mentor_balance',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "I listen more than I advise. That's the first rule.\n\nFinancial numbers are just one language. People speak in hopes and fears too. A founder might say 'I need capital for expansion' when they really mean 'I'm scared of failing my employees.' A family might ask about retirement accounts when they're really worried about being a burden on their kids.\n\nA good mentor translates between both languages. Hears what's said and what's meant.",
+      emotion: 'thoughtful',
+      variation_id: 'quinn_mentor_balance_v1'
+    }],
+    choices: [
+      { choiceId: 'mentor_learn', text: "How did you learn to hear both?", nextNodeId: 'quinn_grandma_lesson', pattern: 'patience' },
+      { choiceId: 'mentor_example', text: "Can you give me an example?", nextNodeId: 'quinn_invest_people', pattern: 'exploring' },
+      { choiceId: 'mentor_teach', text: "What do you hope people learn from you?", nextNodeId: 'quinn_teach_approach', pattern: 'helping' }
+    ]
+  },
+
+  {
+    nodeId: 'quinn_mentor_action',
+    speaker: 'Quinn Rivera',
+    content: [{
+      text: "That's exactly what I'm doing. Teaching the numbers, yes. The mechanics of how money works.\n\nBut also showing you that behind every number is a person who deserves respect. A savings account is someone's security. A debt is someone's stress. An investment is someone's dream.\n\nFinance pretends it's about math. It's really about people. The math just helps us see them clearly.",
+      emotion: 'confident',
+      variation_id: 'quinn_mentor_action_v1'
+    }],
+    choices: [
+      { choiceId: 'action_continue', text: "I want to keep learning.", nextNodeId: 'quinn_teaching_offer', pattern: 'exploring' },
+      { choiceId: 'action_apply', text: "How can I apply this?", nextNodeId: 'quinn_applying_wisdom', pattern: 'building' },
+      { choiceId: 'action_why', text: "Why does this matter so much to you?", nextNodeId: 'quinn_titusville_history', pattern: 'helping' }
+    ]
+  }
 ]
 
 // Entry points for navigation
