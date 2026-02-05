@@ -1,12 +1,12 @@
 # Technical Debt Register
 
 > Audited as of commit `33ef4c2` on 2026-01-27
-> Updated: 2026-02-04 (TD-001, TD-002, TD-003, TD-006, TD-008, TD-009, TD-010 resolved)
+> Updated: 2026-02-04 (All 10 items resolved)
 
 ## Summary
 
-10 items tracked. 0 high risk (was 3), 3 medium (was 4), 0 low (was 3).
-**7 items resolved** this sprint. 3 items remaining (all medium risk).
+10 items tracked. 0 high risk, 0 medium, 0 low.
+**All 10 items resolved.** Technical debt backlog is clear.
 
 ---
 
@@ -58,37 +58,37 @@
 
 ## Medium Risk
 
-### TD-004: Orbs Outside GameState
+### TD-004: Orbs Outside GameState ✅ RESOLVED
 
 **Impact:** Orb economy uses independent localStorage keys (`lux-orb-*`), not part of `coreGameState`. Save/load cannot capture orbs atomically with game state.
 
 **Evidence:** `hooks/useOrbs.ts` (grep: `lux-orb-balance`)
 
-**Mitigation:** Orbs are cosmetic/reward, not gameplay-critical. Loss is inconvenient, not game-breaking.
+**Resolution:**
+1. Added `OrbState` interface and `INITIAL_ORB_STATE` to `lib/character-state.ts`
+2. Extended `SerializableGameState` and `GameState` with `orbs` field
+3. Rewrote `useOrbs` hook to read/write through Zustand (preserves public API)
+4. Created migration helper (`lib/migrations/orb-migration.ts`)
+5. Legacy keys migrated and removed on game init
 
-**Resolution path:** Merge orb state into `coreGameState`. Requires migration. See [ADR-005](02-architecture-decisions.md#adr-005).
-
-**Owner:** Core team
-**Trigger:** Before save/load slot feature
-**Risk:** Medium
-**Estimate:** Medium
+**Resolved:** 2026-02-04
 
 ---
 
-### TD-005: Fragmented localStorage Namespace
+### TD-005: Fragmented localStorage Namespace ✅ RESOLVED
 
 **Impact:** 10+ key families across prefixes: `grand-central-*`, `lux-orb-*`, `lux_*`, `lux-*`, `lux_story_v1_*`. No unified namespace makes auditing and cleanup difficult.
 
 **Evidence:** `rg "localStorage\.(setItem|getItem)" --no-filename | sort -u`
 
-**Mitigation:** SafeStorage wrapper (`lib/persistence/storage-manager.ts`, grep: `lux_story_v1_`) handles versioning for its keys. Other keys are standalone.
+**Resolution:**
+1. Created unified storage key registry (`lib/persistence/storage-keys.ts`)
+2. All keys now use `lux_story_v2_*` prefix
+3. Created migration helper (`lib/persistence/storage-migration.ts`)
+4. Updated all direct localStorage access across components/hooks
+5. Legacy keys migrated automatically on first load
 
-**Resolution path:** Consolidate all keys under `lux_story_v2_*` prefix. Requires migration from all existing key names.
-
-**Owner:** Core team
-**Trigger:** Before namespace consolidation or save export feature
-**Risk:** Medium
-**Estimate:** Medium
+**Resolved:** 2026-02-04
 
 ---
 
@@ -108,20 +108,24 @@
 
 ---
 
-### TD-007: Non-Deterministic Randomness in Gameplay
+### TD-007: Non-Deterministic Randomness in Gameplay ✅ RESOLVED
 
 **Impact:** Some gameplay elements use `Math.random()` without seeding. Makes deterministic replay and testing harder.
 
 **Evidence:** Grep for `Math.random()` in `lib/` and `components/`.
 
-**Mitigation:** Core choice logic is deterministic. Randomness is cosmetic (animations, ambient events).
+**Resolution:**
+1. Updated gameplay-affecting calls to use `SeededRandom` from `lib/seeded-random.ts`:
+   - `game-logic.ts` - Pattern sensation (30% chance)
+   - `choice-generator.ts` - Augmentation and pattern selection
+   - `tier2-evaluators.ts` - Probability checks (15%/20%)
+   - `overdensity-system.ts` - Crowd and density calculations
+   - `pattern-voices.ts` - Voice selection and conflict checks
+   - `ambient-events.ts` - Event selection
+2. Added 11 determinism tests (`tests/lib/seeded-determinism.test.ts`)
+3. Cosmetic randomness (animations, IDs) remains with `Math.random()`
 
-**Resolution path:** Replace with seeded PRNG for gameplay-affecting randomness. Keep `Math.random()` for cosmetic.
-
-**Owner:** Core team
-**Trigger:** Before deterministic replay/testing feature
-**Risk:** Medium
-**Estimate:** Small
+**Resolved:** 2026-02-04
 
 ---
 
