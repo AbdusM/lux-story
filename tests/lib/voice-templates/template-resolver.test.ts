@@ -6,11 +6,11 @@ import { describe, it, expect } from 'vitest'
 import {
   resolveVoiceVariation,
   getVoicedText,
-  getDominantPattern,
   detectArchetypeWithConfidence,
   wouldBenefitFromVoice,
   explainResolution
 } from '@/lib/voice-templates/template-resolver'
+import { getDominantPattern } from '@/lib/patterns'
 import type { PlayerPatterns } from '@/lib/character-state'
 
 // Test pattern fixtures
@@ -55,21 +55,26 @@ const lowAll: PlayerPatterns = {
 }
 
 describe('getDominantPattern', () => {
-  it('returns the highest scoring pattern', () => {
-    expect(getDominantPattern(highAnalytical)).toBe('analytical')
-    expect(getDominantPattern(highPatience)).toBe('patience')
-    expect(getDominantPattern(highHelping)).toBe('helping')
+  it('returns the highest scoring pattern above threshold', () => {
+    // Voice templates use threshold 2 for early pattern detection
+    expect(getDominantPattern(highAnalytical, 2)).toBe('analytical')
+    expect(getDominantPattern(highPatience, 2)).toBe('patience')
+    expect(getDominantPattern(highHelping, 2)).toBe('helping')
   })
 
-  it('returns null for balanced patterns (tie)', () => {
-    expect(getDominantPattern(balanced)).toBeNull()
+  it('returns highest pattern even when balanced (all >= threshold)', () => {
+    // With all patterns at 3, returns one of them (deterministic order)
+    const result = getDominantPattern(balanced, 2)
+    expect(result).toBeDefined()
+    expect(['analytical', 'patience', 'exploring', 'helping', 'building']).toContain(result)
   })
 
-  it('returns null for low pattern scores', () => {
-    expect(getDominantPattern(lowAll)).toBeNull()
+  it('returns undefined for low pattern scores below threshold', () => {
+    // All at 1, below threshold 2
+    expect(getDominantPattern(lowAll, 2)).toBeUndefined()
   })
 
-  it('requires minimum score of 2', () => {
+  it('respects threshold parameter', () => {
     const veryLow: PlayerPatterns = {
       analytical: 1,
       patience: 0,
@@ -77,7 +82,10 @@ describe('getDominantPattern', () => {
       helping: 0,
       building: 0
     }
-    expect(getDominantPattern(veryLow)).toBeNull()
+    // With threshold 2, analytical at 1 is below threshold
+    expect(getDominantPattern(veryLow, 2)).toBeUndefined()
+    // With threshold 1, analytical at 1 meets threshold
+    expect(getDominantPattern(veryLow, 1)).toBe('analytical')
   })
 })
 

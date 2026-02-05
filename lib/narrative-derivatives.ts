@@ -12,7 +12,7 @@
  */
 
 import type { CSSProperties } from 'react'
-import { PatternType, PATTERN_THRESHOLDS } from './patterns'
+import { PatternType, PATTERN_THRESHOLDS, getDominantPatternOrFallback } from './patterns'
 import { PlayerPatterns, GameState } from './character-state'
 import { CharacterId } from './graph-registry'
 
@@ -818,27 +818,10 @@ export const NARRATIVE_FRAMINGS: Record<PatternType, NarrativeFraming> = {
 }
 
 /**
- * Get dominant pattern for player
- */
-export function getDominantPattern(patterns: PlayerPatterns): PatternType {
-  let maxPattern: PatternType = 'analytical'
-  let maxValue = -1
-
-  Object.entries(patterns).forEach(([pattern, value]) => {
-    if (value > maxValue) {
-      maxValue = value
-      maxPattern = pattern as PatternType
-    }
-  })
-
-  return maxPattern
-}
-
-/**
  * Get narrative framing for current player state
  */
 export function getNarrativeFraming(patterns: PlayerPatterns): NarrativeFraming {
-  const dominant = getDominantPattern(patterns)
+  const dominant = getDominantPatternOrFallback(patterns, 'analytical')
   return NARRATIVE_FRAMINGS[dominant]
 }
 

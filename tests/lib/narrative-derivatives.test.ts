@@ -28,7 +28,6 @@ import {
 
   // D-064: Narrative Framing
   NARRATIVE_FRAMINGS,
-  getDominantPattern,
   getNarrativeFraming,
   getPatternNarrativeDescriptor,
 
@@ -40,7 +39,7 @@ import {
 } from '@/lib/narrative-derivatives'
 
 import { GameState, GameStateUtils, PlayerPatterns } from '@/lib/character-state'
-import { PATTERN_THRESHOLDS } from '@/lib/patterns'
+import { PATTERN_THRESHOLDS, getDominantPatternOrFallback } from '@/lib/patterns'
 
 // Helper functions
 function createTestState(): GameState {
@@ -326,7 +325,7 @@ describe('D-064: Narrative Framing Based on Dominant Pattern', () => {
     expect(uniqueMetaphors.size).toBe(metaphors.length)
   })
 
-  it('getDominantPattern returns highest pattern', () => {
+  it('getDominantPatternOrFallback returns highest pattern', () => {
     const patterns: PlayerPatterns = {
       analytical: 5,
       patience: 3,
@@ -334,7 +333,8 @@ describe('D-064: Narrative Framing Based on Dominant Pattern', () => {
       helping: 4,
       building: 6
     }
-    expect(getDominantPattern(patterns)).toBe('exploring')
+    // This function always returns a result (used by getNarrativeFraming)
+    expect(getDominantPatternOrFallback(patterns)).toBe('exploring')
   })
 
   it('getNarrativeFraming returns framing for dominant pattern', () => {

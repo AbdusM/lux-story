@@ -13,6 +13,7 @@ import type { SoundType } from './audio-feedback'
 import type { TemplateArchetype, VoiceCharacterId } from './voice-templates/template-types'
 import { resolveVoiceVariation } from './voice-templates/template-resolver'
 import type { DialogueContent } from './dialogue-graph'
+import { getDominantPattern } from './patterns'
 
 // Note: Using string for emotion to support compound emotions in dialogue content
 
@@ -1039,30 +1040,6 @@ export function applyPatternReflection(
   }
 
   return { text: baseText, emotion: baseEmotion }
-}
-
-/**
- * Get the dominant pattern from player patterns
- * Returns the pattern with the highest value, or null if none >= threshold
- */
-export function getDominantPattern(
-  patterns: PlayerPatterns,
-  threshold: number = 5
-): keyof PlayerPatterns | null {
-  const patternKeys: (keyof PlayerPatterns)[] = ['analytical', 'helping', 'building', 'patience', 'exploring']
-
-  let dominant: keyof PlayerPatterns | null = null
-  let maxValue = threshold - 1 // Must be >= threshold
-
-  for (const pattern of patternKeys) {
-    const value = patterns[pattern] || 0
-    if (value >= threshold && value > maxValue) {
-      maxValue = value
-      dominant = pattern
-    }
-  }
-
-  return dominant
 }
 
 /**

@@ -12,7 +12,7 @@
  * - Pattern voice conflicts
  */
 
-import { PatternType, PATTERN_TYPES, PATTERN_THRESHOLDS, PATTERN_METADATA, getPatternColor } from './patterns'
+import { PatternType, PATTERN_TYPES, PATTERN_THRESHOLDS, PATTERN_METADATA, getPatternColor, getDominantPattern } from './patterns'
 import { PlayerPatterns } from './character-state'
 import { } from './constants'
 
@@ -45,7 +45,8 @@ export function calculateTrustDecayRate(
   patterns: PlayerPatterns,
   baseRate: number = BASE_TRUST_DECAY_RATE
 ): number {
-  const dominantPattern = getDominantPatternFromScores(patterns)
+  // Use threshold 3 for early pattern detection
+  const dominantPattern = getDominantPattern(patterns, 3)
   if (!dominantPattern) return baseRate
 
   const modifier = PATTERN_DECAY_MODIFIERS[dominantPattern]
@@ -1020,20 +1021,6 @@ export function getActiveVoiceConflicts(
 // ═══════════════════════════════════════════════════════════════════════════
 // HELPER FUNCTIONS
 // ═══════════════════════════════════════════════════════════════════════════
-
-/**
- * Get dominant pattern from pattern scores
- */
-function getDominantPatternFromScores(patterns: PlayerPatterns): PatternType | null {
-  const entries = Object.entries(patterns) as [PatternType, number][]
-  const sorted = entries.sort((a, b) => b[1] - a[1])
-
-  // Need at least 3 points in dominant pattern
-  if (sorted[0][1] >= 3) {
-    return sorted[0][0]
-  }
-  return null
-}
 
 /**
  * Calculate pattern distribution balance

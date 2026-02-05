@@ -10,7 +10,7 @@
  * These paths only appear when player reaches threshold in the associated pattern.
  */
 
-import type { PatternType } from '../patterns'
+import { type PatternType, getDominantPatternOrFallback } from '../patterns'
 import type { CharacterId } from '../graph-registry'
 
 /**
@@ -234,15 +234,4 @@ export function isPathVisible(
   patterns: Record<PatternType, number>
 ): boolean {
   return patterns[path.requiredPattern] >= path.threshold
-}
-
-/**
- * Get the dominant pattern from pattern levels
- */
-export function getDominantPattern(
-  patterns: Record<PatternType, number>
-): PatternType {
-  const entries = Object.entries(patterns) as [PatternType, number][]
-  const sorted = entries.sort((a, b) => b[1] - a[1])
-  return sorted[0]?.[0] || 'patience'
 }

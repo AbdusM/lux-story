@@ -79,11 +79,13 @@ export {
 export {
   resolveVoiceVariation,
   getVoicedText,
-  getDominantPattern,
   detectArchetypeWithConfidence,
   wouldBenefitFromVoice,
   explainResolution
 } from './template-resolver'
+
+// Re-export getDominantPattern from canonical location
+export { getDominantPattern } from '@/lib/patterns'
 
 export type { VoiceResolutionResult } from './template-resolver'
 

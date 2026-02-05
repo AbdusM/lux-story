@@ -467,6 +467,38 @@ export function getDominantPattern(
 }
 
 /**
+ * Get dominant pattern, always returning a result (for contexts requiring a pattern)
+ *
+ * Unlike getDominantPattern which returns undefined when no pattern meets threshold,
+ * this function always returns the highest pattern regardless of value, with a fallback.
+ *
+ * @param patterns - Player's current pattern levels
+ * @param fallback - Pattern to return if all values are 0 (default: 'patience')
+ * @returns The highest pattern, or fallback if all are 0
+ *
+ * @example
+ * getDominantPatternOrFallback({ analytical: 2, patience: 1, exploring: 0, helping: 3, building: 0 })
+ * // Returns: 'helping' (highest value, even though below identity threshold)
+ */
+export function getDominantPatternOrFallback(
+  patterns: PlayerPatterns | Record<string, number>,
+  fallback: PatternType = 'patience'
+): PatternType {
+  let maxPattern: PatternType = fallback
+  let maxValue = 0
+
+  for (const patternType of PATTERN_TYPES) {
+    const value = patterns[patternType] ?? 0
+    if (value > maxValue) {
+      maxValue = value
+      maxPattern = patternType
+    }
+  }
+
+  return maxPattern
+}
+
+/**
  * Get all patterns that meet the threshold (for complex voice logic)
  *
  * @param patterns - Player's current pattern levels

@@ -10,7 +10,7 @@
 
 import { OrbTier, ORB_TIERS, getOrbTier } from './orbs'
 import { PlayerPatterns } from './character-state'
-import { PatternType } from './patterns'
+import { PatternType, getDominantPattern } from './patterns'
 
 /**
  * Orb resonance state - derived from patterns
@@ -59,26 +59,6 @@ export function calculateTotalOrbs(patterns: PlayerPatterns): number {
 }
 
 /**
- * Get the dominant pattern (highest score)
- */
-export function getDominantPattern(patterns: PlayerPatterns): PatternType | null {
-  const entries: [PatternType, number][] = [
-    ['analytical', patterns.analytical],
-    ['patience', patterns.patience],
-    ['exploring', patterns.exploring],
-    ['helping', patterns.helping],
-    ['building', patterns.building]
-  ]
-
-  const sorted = entries.sort((a, b) => b[1] - a[1])
-
-  // Return null if no patterns yet
-  if (sorted[0][1] === 0) return null
-
-  return sorted[0][0]
-}
-
-/**
  * Calculate orb resonance state from patterns
  */
 export function calculateOrbResonance(
@@ -87,7 +67,8 @@ export function calculateOrbResonance(
 ): OrbResonanceState {
   const totalOrbs = calculateTotalOrbs(patterns)
   const currentTier = getOrbTier(totalOrbs)
-  const dominantPattern = getDominantPattern(patterns)
+  // Use threshold 1 to return any non-zero pattern, convert undefined to null
+  const dominantPattern = getDominantPattern(patterns, 1) ?? null
 
   // Determine previous tier from flags
   let previousTier: OrbTier | null = null

@@ -17,7 +17,7 @@
  * - Variety injection: Hook for future "off-day" character moods
  */
 
-import type { PatternType } from '@/lib/patterns'
+import { type PatternType, getDominantPattern } from '@/lib/patterns'
 import type {
   TemplateArchetype,
   VoiceCharacterId,
@@ -56,30 +56,6 @@ const VARIETY_INJECTION_RATE = 0.2
 // ============================================================
 // PATTERN UTILITIES
 // ============================================================
-
-/**
- * Get the dominant pattern from player's pattern scores
- * Returns null if no clear dominant pattern (all equal or below threshold)
- */
-export function getDominantPattern(patterns: PlayerPatterns): PatternType | null {
-  const entries = Object.entries(patterns) as [PatternType, number][]
-
-  if (entries.length === 0) return null
-
-  // Find maximum score
-  const maxScore = Math.max(...entries.map(([, score]) => score))
-
-  // Need at least some pattern development
-  if (maxScore < 2) return null
-
-  // Find all patterns at max score
-  const dominantPatterns = entries.filter(([, score]) => score === maxScore)
-
-  // If tied, return null (no clear dominant)
-  if (dominantPatterns.length > 1) return null
-
-  return dominantPatterns[0][0]
-}
 
 /**
  * Get secondary pattern for variety injection
@@ -212,7 +188,8 @@ export function resolveVoiceVariation(
   context: VoiceResolutionContext,
   patterns: PlayerPatterns
 ): VoiceResolutionResult {
-  const dominant = getDominantPattern(patterns)
+  // Use threshold 2 for early pattern detection in voice variations
+  const dominant = getDominantPattern(patterns, 2)
 
   // No dominant pattern = use base text
   if (!dominant) {
@@ -421,7 +398,7 @@ export function explainResolution(
   patterns: PlayerPatterns
 ): string {
   const result = resolveVoiceVariation(context, patterns)
-  const dominant = getDominantPattern(patterns)
+  const dominant = getDominantPattern(patterns, 2)
 
   let explanation = `Voice Resolution for: "${context.baseText}"\n`
   explanation += `---\n`

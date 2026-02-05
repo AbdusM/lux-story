@@ -11,7 +11,7 @@
  */
 
 import type { SerializableGameState, PlayerPatterns } from './character-state'
-import { PATTERN_METADATA, type PatternType } from './patterns'
+import { PATTERN_METADATA, type PatternType, getDominantPattern } from './patterns'
 
 // ═══════════════════════════════════════════════════════════════
 // CONFIGURATION
@@ -104,27 +104,6 @@ export function formatTimeAway(ms: number): string {
 }
 
 /**
- * Get dominant pattern from game state
- */
-function getDominantPattern(patterns: PlayerPatterns): PatternType | null {
-  if (!patterns) return null
-
-  const patternTypes: PatternType[] = ['analytical', 'patience', 'exploring', 'helping', 'building']
-  let maxPattern: PatternType | null = null
-  let maxValue = 0
-
-  for (const pattern of patternTypes) {
-    const value = patterns[pattern] || 0
-    if (value > maxValue) {
-      maxValue = value
-      maxPattern = pattern
-    }
-  }
-
-  return maxValue > 0 ? maxPattern : null
-}
-
-/**
  * Get characters with trust in order of trust level
  */
 function getCharactersWithTrust(characters: SerializableGameState['characters']): { name: string; trust: number }[] {
@@ -167,7 +146,8 @@ export function generateSessionSummary(gameState: SerializableGameState | null):
   }
 
   const charactersWithTrust = getCharactersWithTrust(gameState.characters)
-  const dominantPattern = getDominantPattern(gameState.patterns)
+  // Use threshold 1 to return any pattern with progress
+  const dominantPattern = getDominantPattern(gameState.patterns, 1)
 
   // Calculate total trust
   const totalTrust = gameState.characters.reduce((sum, c) => sum + c.trust, 0)

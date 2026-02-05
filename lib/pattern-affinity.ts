@@ -9,7 +9,7 @@
  * - This honors the "silent tracking, feel comes first" principle
  */
 
-import { PatternType, PATTERN_TYPES } from './patterns'
+import { PatternType, PATTERN_TYPES, getDominantPattern } from './patterns'
 
 /**
  * Affinity levels determine trust multipliers
@@ -1049,24 +1049,6 @@ export function getPatternUnlocks(
 }
 
 /**
- * Get the dominant pattern from player's pattern scores
- * Returns null if no clear dominant (need minimum threshold)
- */
-export function getDominantPattern(
-  patterns: Record<PatternType, number>,
-  minThreshold = 3
-): PatternType | null {
-  const entries = Object.entries(patterns) as [PatternType, number][]
-  const sorted = entries.sort((a, b) => b[1] - a[1])
-
-  // Need at least minThreshold points in dominant pattern
-  if (sorted[0][1] >= minThreshold) {
-    return sorted[0][0]
-  }
-  return null
-}
-
-/**
  * Calculate modified trust change based on pattern affinity
  * This is called during StateChange application
  */
@@ -1080,7 +1062,8 @@ export function calculateResonantTrustChange(
   resonanceTriggered: boolean
   resonanceDescription: string | null
 } {
-  const dominantPattern = getDominantPattern(playerPatterns)
+  // Use threshold 3 for early pattern detection in affinity calculations
+  const dominantPattern = getDominantPattern(playerPatterns, 3)
 
   // Start with base trust
   let modifiedTrust = baseTrustChange
