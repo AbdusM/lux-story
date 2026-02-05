@@ -38,7 +38,7 @@ import {
 // queueEchosForFlag moved to arc-completion-processor
 import { UnlockManager } from '@/lib/unlock-manager'
 import { ABILITIES } from '@/lib/abilities'
-import { THOUGHT_REGISTRY } from '@/content/thoughts'
+// THOUGHT_REGISTRY removed - thought-system archived (never integrated)
 // CROSS_CHARACTER_ECHOES, getArcCompletionFlag, detectArcCompletion moved to arc-completion-processor
 import {
   getPatternVoice,
@@ -234,24 +234,9 @@ export function useChoiceHandler({
           audio.actions.triggerIdentitySound()
         }
 
-        // 5. Check for NEW THOUGHT UNLOCKS (P3)
-        // Similar to abilities, check if stats qualify for new thoughts
-        const { checkThoughtTriggers } = await import('@/lib/thought-system')
-        const thoughtCheck = checkThoughtTriggers(newGameState)
-        if (thoughtCheck) {
-          newGameState = { ...newGameState, ...thoughtCheck.updates }
-
-          // Notify player of new thought
-          const thoughtName = THOUGHT_REGISTRY[thoughtCheck.unlockedThoughtIds[0]].title
-          setState(prev => ({
-            ...prev,
-            consequenceFeedback: {
-              message: `New Thought Formed: ${thoughtName}`
-            }
-          }))
-
-          audio.actions.triggerIdentitySound()
-        }
+        // 5. Thought Unlocks - ARCHIVED
+        // See lib/archive/thought-system.legacy.ts for original design
+        // Feature was planned but never integrated into gameplay loop
       }
 
 
