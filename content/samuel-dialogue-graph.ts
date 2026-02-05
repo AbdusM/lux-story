@@ -3319,6 +3319,18 @@ OBSERVATION: He looks tired. Scared. Different.`,
           characterId: 'samuel',
           trustChange: 2
         }
+      },
+      {
+        choiceId: 'samuel_go_deeper',
+        text: "Samuel... twenty-three years following blueprints. What made you finally stop?",
+        nextNodeId: 'samuel_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
       }
     ]
   },

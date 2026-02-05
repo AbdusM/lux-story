@@ -1113,6 +1113,18 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         nextNodeId: 'jordan_final_doubt',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'jordan_go_deeper',
+        text: "Jordan... all those jobs, all that adapting. What were you really running from?",
+        nextNodeId: 'jordan_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 1
+        }
       }
     ],
     tags: ['jordan_arc', 'breakthrough'],

@@ -757,6 +757,18 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 nextNodeId: 'asha_post_success_reflection',
                 pattern: 'building',
                 skills: ['communication']
+            },
+            {
+                choiceId: 'asha_go_deeper',
+                text: "There's something else behind this work, isn't there? Something personal.",
+                nextNodeId: 'asha_vulnerability_arc',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                visibleCondition: { trust: { min: 6 } },
+                consequence: {
+                    characterId: 'asha',
+                    trustChange: 1
+                }
             }
         ]
     },
@@ -990,7 +1002,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 }
             }
         ],
-        tags: ['asha_arc', 'interrupt_response']
+        tags: ['interrupt_target', 'emotional_moment', 'asha_arc']
     },
 
     // ============= VULNERABILITY ARC (Trust >= 6) =============
@@ -998,6 +1010,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
     {
         nodeId: 'asha_vulnerability_arc',
         speaker: 'Asha Patel',
+        requiredState: { trust: { min: 6 } },
         content: [
             {
                 text: "I haven't told anyone this.\n\nTwo years ago, I got my first major commission. City hall. \"Celebrate Birmingham's Future.\"\n\nI painted for six weeks. No AI. Every brushstroke mine. A vision of the city where everyone belonged.\n\nThey painted over it in three days. \"Too political.\" \"Not what we envisioned.\" Someone on the council said it looked \"too diverse.\"\n\nThey replaced it with a generic skyline. Chrome towers. No people.\n\nThat's when I started using AI. Because at least when the algorithm fails, it's not... it's not ME they're rejecting.",
@@ -1039,9 +1052,6 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 ]
             }
         ],
-        requiredState: {
-            trust: { min: 6 }
-        },
         onEnter: [
             {
                 characterId: 'asha',

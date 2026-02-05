@@ -840,7 +840,8 @@ export const devonDialogueNodes: DialogueNode[] = [
           trustChange: 1
         }
       }
-    ]
+    ],
+    tags: ['interrupt_target', 'emotional_moment', 'devon_arc']
   },
   {
     nodeId: 'devon_pause_after_father_reveal',
@@ -922,6 +923,18 @@ export const devonDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'devon',
           trustChange: 2
+        }
+      },
+      {
+        choiceId: 'devon_go_deeper',
+        text: "Devon... what happened the night she died?",
+        nextNodeId: 'devon_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
         }
       }
     ]
@@ -1132,7 +1145,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['devon_arc', 'challenge_interrupt', 'breakthrough']
+    tags: ['interrupt_target', 'devon_arc', 'challenge_interrupt', 'breakthrough']
   },
 
   {
@@ -1832,6 +1845,7 @@ export const devonDialogueNodes: DialogueNode[] = [
   {
     nodeId: 'devon_vulnerability_arc',
     speaker: 'Devon Kumar',
+    requiredState: { trust: { min: 6 } },
     content: [{
       text: "There's something I've never processed.\n\nThe night mom died. I was debugging a production outage. Critical system. Couldn't leave.\n\nDad called. Twice. I silenced both.\n\nThird call. Voicemail. \"Devon, your mother... she's... please come.\"\n\nI optimized for the wrong system. Fixed the server. Lost the goodbye.\n\nTwo hours. That's how long it would have taken to drive home. Two hours I could have had. Instead I watched log files.",
       emotion: 'hollowed',
@@ -1871,9 +1885,6 @@ export const devonDialogueNodes: DialogueNode[] = [
         }
       ]
     }],
-    requiredState: {
-      trust: { min: 6 }
-    },
     onEnter: [
       {
         characterId: 'devon',

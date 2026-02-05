@@ -581,6 +581,18 @@ export const tessDialogueNodes: DialogueNode[] = [
         pattern: 'building',
         archetype: 'OFFER_SUPPORT',
         skills: ['problemSolving', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'tess_go_deeper',
+        text: "Tess... what happened with Elena? The real story.",
+        nextNodeId: 'tess_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
       }
     ],
     tags: ['tess_arc', 'vulnerability']
@@ -961,6 +973,7 @@ RACHEL: What am I missing?
   {
     nodeId: 'tess_vulnerability_arc',
     speaker: 'Tess',
+    requiredState: { trust: { min: 6 } },
     content: [{
       text: "This shop wasn't always mine alone.\n\nElena. My business partner. My best friend. We built this place together. Every shelf, every playlist, every late night wondering if we'd make rent.\n\nThree years in, she got an offer. Corporate gig. Six figures. Benefits. Security.\n\nShe said: \"Come with me. We can do this again later.\"\n\nI said: \"This IS later. This is now.\"\n\nShe left. Took half the startup capital with her. Legally hers. But it felt like she took half my belief too.",
       emotion: 'grief_anger',
@@ -1000,9 +1013,6 @@ RACHEL: What am I missing?
         }
       ]
     }],
-    requiredState: {
-      trust: { min: 6 }
-    },
     onEnter: [
       {
         characterId: 'tess',

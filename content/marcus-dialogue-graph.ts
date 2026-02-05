@@ -213,8 +213,20 @@ const nodes: DialogueNode[] = [
         nextNodeId: 'marcus_why_here',
         pattern: 'patience',
         archetype: 'ACKNOWLEDGE_EMOTION'
+      },
+      {
+        choiceId: 'explore_silence_need',
+        text: "What do those moments of silence teach you? About yourself? About the work?",
+        nextNodeId: 'marcus_why_here',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
       }
-    ]
+    ],
+    tags: ['interrupt_target', 'emotional_moment', 'marcus_arc']
   },
 
   // ============= ORIGIN STORY ARC =============
@@ -312,6 +324,18 @@ const nodes: DialogueNode[] = [
         nextNodeId: 'marcus_automation_lesson',
         pattern: 'building',
         skills: ['collaboration']
+      },
+      {
+        choiceId: 'marcus_go_deeper',
+        text: "Marcus... what happened at the hospital? What did they remove you for?",
+        nextNodeId: 'marcus_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
       }
     ],
     tags: ['marcus_arc', 'foreshadowing']
@@ -423,6 +447,17 @@ const nodes: DialogueNode[] = [
         nextNodeId: 'marcus_automation_lesson',
         pattern: 'analytical',
         skills: ['communication']
+      },
+      {
+        choiceId: 'what_taught_invisible',
+        text: "What else did watching invisible work teach you? Beyond systems?",
+        nextNodeId: 'marcus_automation_lesson',
+        pattern: 'exploring',
+        skills: ['curiosity'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
       }
     ],
     tags: ['marcus_arc', 'backstory']
@@ -471,6 +506,17 @@ const nodes: DialogueNode[] = [
           characterId: 'marcus',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'what_found_station',
+        text: "The station found you. What did it look like when it appeared? What drew you in?",
+        nextNodeId: 'marcus_why_here',
+        pattern: 'exploring',
+        skills: ['curiosity'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
       }
     ],
     tags: ['marcus_arc', 'foreshadowing', 'vulnerability']
@@ -509,6 +555,17 @@ const nodes: DialogueNode[] = [
         pattern: 'analytical',
         skills: ['systemsThinking'],
         archetype: 'CHALLENGE_ASSUMPTION'
+      },
+      {
+        choiceId: 'how_discover_station',
+        text: "How did you discover the station? What was that first moment like?",
+        nextNodeId: 'marcus_automation_lesson',
+        pattern: 'exploring',
+        skills: ['curiosity'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
       }
     ],
     tags: ['marcus_arc', 'philosophy']
@@ -759,6 +816,17 @@ WARNING: Response time > 48h`,
         nextNodeId: 'marcus_tragedy_response',
         pattern: 'analytical',
         skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'what_moment_like',
+        text: "That moment of choosing—what was it like? What do you remember?",
+        nextNodeId: 'marcus_tragedy_response',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
       }
     ],
     tags: ['marcus_arc', 'vulnerability']
@@ -789,6 +857,17 @@ WARNING: Response time > 48h`,
         nextNodeId: 'marcus_jasper_intro',
         pattern: 'building',
         skills: ['resilience']
+      },
+      {
+        choiceId: 'what_word_means',
+        text: "Tragedy. You said you avoided that word. What other words have you been avoiding?",
+        nextNodeId: 'marcus_jasper_intro',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 2
+        }
       }
     ],
     tags: ['marcus_arc', 'healing']
@@ -895,6 +974,17 @@ WARNING: Response time > 48h`,
           characterId: 'marcus',
           trustChange: 2
         }
+      },
+      {
+        choiceId: 'what_radical_about',
+        text: "You said it was 'too radical' before. What made it radical? What pushed back?",
+        nextNodeId: 'marcus_share_knowledge',
+        pattern: 'exploring',
+        skills: ['curiosity', 'criticalThinking'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
       }
     ],
     tags: ['marcus_arc', 'ethics', 'redemption']
@@ -992,6 +1082,17 @@ WARNING: Response time > 48h`,
         nextNodeId: 'marcus_simulation_cursor',
         pattern: 'building',
         skills: ['problemSolving']
+      },
+      {
+        choiceId: 'what_meaning_beyond',
+        text: "You said 'meaning beyond guilt.' What would that meaning look like? Describe it.",
+        nextNodeId: 'marcus_simulation_cursor',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
       }
     ],
     tags: ['marcus_arc', 'connection', 'zara_link']
@@ -1115,6 +1216,17 @@ WARNING: Response time > 48h`,
         consequence: {
           characterId: 'marcus',
           trustChange: 2
+        }
+      },
+      {
+        choiceId: 'what_patterns_detect',
+        text: "What patterns would you detect? Walk me through how an early warning system would work.",
+        nextNodeId: 'marcus_philosophy_close',
+        pattern: 'exploring',
+        skills: ['curiosity', 'technicalLiteracy'],
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
         }
       }
     ],
@@ -1342,6 +1454,7 @@ WARNING: Response time > 48h`,
   {
     nodeId: 'marcus_vulnerability_arc',
     speaker: 'Marcus',
+    requiredState: { trust: { min: 6 } },
     content: [{
       text: "There is something I do not speak of. The incident that brought me to this station.\n\nChildren's Hospital. A ransomware attack. I was lead security. I saw the phishing attempt three days before. Flagged it. Management said the patch could wait until after the quarterly audit.\n\nLife support systems. Eighteen hours offline. Three children did not survive the delay.\n\nI could not prevent what I could not authorize. The breach was not technical. It was bureaucratic.",
       emotion: 'haunted',
@@ -1393,9 +1506,6 @@ WARNING: Response time > 48h`,
         }
       }
     }],
-    requiredState: {
-      trust: { min: 6 }
-    },
     onEnter: [
       {
         characterId: 'marcus',
@@ -1490,7 +1600,7 @@ WARNING: Response time > 48h`,
         }
       }
     ],
-    tags: ['marcus_arc', 'challenge_interrupt', 'breakthrough']
+    tags: ['interrupt_target', 'marcus_arc', 'challenge_interrupt', 'breakthrough']
   },
 
   {

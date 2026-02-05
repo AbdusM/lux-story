@@ -687,6 +687,18 @@ export const alexDialogueNodes: DialogueNode[] = [
         nextNodeId: 'alex_hype_leverage_response',
         pattern: 'analytical',
         skills: ['criticalThinking', 'adaptability']
+      },
+      {
+        choiceId: 'alex_go_deeper',
+        text: "There's something else, isn't there? Something you haven't told anyone.",
+        nextNodeId: 'alex_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
+        consequence: {
+          characterId: 'alex',
+          trustChange: 1
+        }
       }
     ],
     tags: ['alex_arc', 'credential_critique']
@@ -1652,7 +1664,7 @@ export const alexDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['alex_arc', 'interrupt_response']
+    tags: ['interrupt_target', 'emotional_moment', 'alex_arc']
   },
 
   // ============= VULNERABILITY ARC (Trust ≥ 6) =============

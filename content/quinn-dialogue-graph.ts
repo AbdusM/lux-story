@@ -1765,6 +1765,18 @@ export const quinnDialogueNodes: DialogueNode[] = [
           characterId: 'quinn',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'quinn_go_deeper',
+        text: "Quinn... all this financial wisdom. What's the lesson that cost you personally?",
+        nextNodeId: 'quinn_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
+        consequence: {
+          characterId: 'quinn',
+          trustChange: 1
+        }
       }
     ],
     tags: ['quinn_arc', 'finance', 'investing']

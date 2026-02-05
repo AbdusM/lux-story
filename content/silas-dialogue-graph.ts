@@ -174,7 +174,19 @@ export const silasDialogueNodes: DialogueNode[] = [
       }
     ],
     choices: [
-      { choiceId: 'fear_not_wrong', text: "Fear doesn't mean you're wrong.", archetype: 'OFFER_SUPPORT', nextNodeId: 'silas_bankruptcy_reveal' }
+      { choiceId: 'fear_not_wrong', text: "Fear doesn't mean you're wrong.", archetype: 'OFFER_SUPPORT', nextNodeId: 'silas_bankruptcy_reveal' },
+      {
+        choiceId: 'silas_go_deeper',
+        text: "Silas... where did you learn to distrust your instincts? What happened?",
+        nextNodeId: 'silas_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
+        consequence: {
+          characterId: 'silas',
+          trustChange: 1
+        }
+      }
     ]
   },
 
@@ -1102,7 +1114,7 @@ HINT: Sensors measure WHERE they're placed...`,
         }
       }
     ],
-    tags: ['silas_arc', 'interrupt_response']
+    tags: ['interrupt_target', 'emotional_moment', 'silas_arc']
   },
 
   // ============= VULNERABILITY ARC (Trust ≥ 6) =============
@@ -1110,6 +1122,7 @@ HINT: Sensors measure WHERE they're placed...`,
   {
     nodeId: 'silas_vulnerability_arc',
     speaker: 'Silas',
+    requiredState: { trust: { min: 6 } },
     content: [
       {
         text: "There's something I never told anyone.\n\nThe day before Mr. Hawkins died... I was supposed to visit. Bring him the first harvest from my farm. Show him I'd learned something.\n\nI cancelled. Had a \"critical system update\" to run. Told myself I'd go next week.\n\nThere wasn't a next week.\n\nHe died alone in his garden. And I was staring at a dashboard. Making sure my sensors were calibrated.\n\nI never got to say thank you. Never got to show him that his sixty years of wisdom had found a home in someone.",
@@ -1150,9 +1163,6 @@ HINT: Sensors measure WHERE they're placed...`,
         ]
       }
     ],
-    requiredState: {
-      trust: { min: 6 }
-    },
     onEnter: [
       {
         characterId: 'silas',

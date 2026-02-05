@@ -1068,6 +1068,18 @@ export const isaiahDialogueNodes: DialogueNode[] = [
           characterId: 'isaiah',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'isaiah_go_deeper',
+        text: "Isaiah... there's more to this story. What happened with Marcus?",
+        nextNodeId: 'isaiah_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
+        consequence: {
+          characterId: 'isaiah',
+          trustChange: 1
+        }
       }
     ],
     tags: ['isaiah_arc', 'marcus', 'healing', 'connection']

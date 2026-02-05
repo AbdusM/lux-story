@@ -226,6 +226,17 @@ export const danteDialogueNodes: DialogueNode[] = [
         nextNodeId: 'dante_neuro_pause',
         pattern: 'analytical',
         skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'dante_build_this_skill',
+        text: "How would I build this into my own practice? What's the architecture?",
+        nextNodeId: 'dante_honest_discomfort',
+        pattern: 'building',
+        skills: ['systemsThinking', 'learningAgility'],
+        consequence: {
+          characterId: 'dante',
+          trustChange: 1
+        }
       }
     ],
     tags: ['dante_arc', 'exercise', 'silence']
@@ -275,6 +286,17 @@ export const danteDialogueNodes: DialogueNode[] = [
         nextNodeId: 'dante_liability_who',
         pattern: 'patience',
         skills: ['criticalThinking']
+      },
+      {
+        choiceId: 'dante_restraint_system',
+        text: "Have you built a system for restraint? Like guardrails you designed for yourself?",
+        nextNodeId: 'dante_ethics_framework',
+        pattern: 'building',
+        skills: ['systemsThinking', 'integrity'],
+        consequence: {
+          characterId: 'dante',
+          trustChange: 1
+        }
       }
     ],
     tags: ['dante_arc', 'philosophy', 'ethics']
@@ -416,6 +438,13 @@ export const danteDialogueNodes: DialogueNode[] = [
         nextNodeId: 'dante_need_philosophy',
         pattern: 'analytical',
         skills: ['integrity', 'criticalThinking']
+      },
+      {
+        choiceId: 'dante_build_framework',
+        text: "How did you build that line for yourself? The 'never sell what they don't need' rule?",
+        nextNodeId: 'dante_single_mom_story',
+        pattern: 'building',
+        skills: ['systemsThinking', 'integrity']
       }
     ],
     tags: ['dante_arc', 'ethics', 'defining_moment']
@@ -544,6 +573,17 @@ export const danteDialogueNodes: DialogueNode[] = [
         nextNodeId: 'dante_courage_acknowledgment',
         pattern: 'patience',
         skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'dante_rebuild_identity',
+        text: "You're rebuilding your identity. What's the blueprint look like?",
+        nextNodeId: 'dante_beneath_charm',
+        pattern: 'building',
+        skills: ['systemsThinking', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'dante',
+          trustChange: 1
+        }
       }
     ],
     tags: ['dante_arc', 'backstory', 'vulnerability']
@@ -622,6 +662,17 @@ export const danteDialogueNodes: DialogueNode[] = [
           characterId: 'dante',
           trustChange: 2
         }
+      },
+      {
+        choiceId: 'dante_vuln_build_authentic',
+        text: "What if you could build something authentic? Layer by layer, like you build everything else?",
+        nextNodeId: 'dante_something_underneath',
+        pattern: 'building',
+        skills: ['systemsThinking', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'dante',
+          trustChange: 1
+        }
       }
     ],
     tags: ['dante_arc', 'vulnerability', 'deep_trust']
@@ -693,6 +744,13 @@ export const danteDialogueNodes: DialogueNode[] = [
         nextNodeId: 'dante_exploration_hub',
         pattern: 'patience',
         skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'dante_build_listening',
+        text: "How do you build that listening skill? What's the daily practice?",
+        nextNodeId: 'dante_surprise_story',
+        pattern: 'building',
+        skills: ['learningAgility', 'communication']
       }
     ],
     tags: ['dante_arc', 'listening', 'techniques']
@@ -731,6 +789,17 @@ export const danteDialogueNodes: DialogueNode[] = [
           characterId: 'dante',
           trustChange: 1,
           addKnowledgeFlags: ['asked_about_dante_mom']
+        }
+      },
+      {
+        choiceId: 'dante_build_bridge',
+        text: "Teaching the caring part and the winning part to work together—how do you build that bridge?",
+        nextNodeId: 'dante_wise_reflection',
+        pattern: 'building',
+        skills: ['systemsThinking', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'dante',
+          trustChange: 1
         }
       }
     ],
@@ -887,6 +956,18 @@ export const danteDialogueNodes: DialogueNode[] = [
         nextNodeId: 'dante_couple_outcome',
         pattern: 'helping',
         skills: ['empathy'],
+        consequence: {
+          characterId: 'dante',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'dante_go_deeper',
+        text: "There's more you're carrying, isn't there? Something heavier than that one deal.",
+        nextNodeId: 'dante_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
         consequence: {
           characterId: 'dante',
           trustChange: 1

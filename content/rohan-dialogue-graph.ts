@@ -591,7 +591,8 @@ export const rohanDialogueNodes: DialogueNode[] = [
           trustChange: 1
         }
       }
-    ]
+    ],
+    tags: ['interrupt_target', 'emotional_moment', 'rohan_arc']
   },
   {
     nodeId: 'rohan_honor_path',
@@ -617,6 +618,18 @@ export const rohanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'rohan_simulation_setup',
         pattern: 'building',
         skills: ['systemsThinking', 'leadership'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'rohan_go_deeper',
+        text: "Rohan... what happened that drove everyone away? The real story.",
+        nextNodeId: 'rohan_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
         consequence: {
           characterId: 'rohan',
           trustChange: 1
@@ -1280,6 +1293,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
   {
     nodeId: 'rohan_vulnerability_arc',
     speaker: 'Rohan',
+    requiredState: { trust: { min: 6 } },
     content: [
       {
         text: "You want to know why I'm alone down here? It's not just introversion.\n\nI had friends. A girlfriend. A whole life outside the server room.\n\nThen I found it. A flaw in the algorithm that was making hiring decisions for half the Fortune 500. Biased against certain names. Certain zip codes. Automated discrimination at scale.\n\nI reported it. My manager said \"that's just how the data works.\" I showed it to my friends. They worked at the company that built it.\n\nThey said I was being \"difficult.\" That I'd destroy careers if I went public. Including theirs.",
@@ -1321,9 +1335,6 @@ export const rohanDialogueNodes: DialogueNode[] = [
         ]
       }
     ],
-    requiredState: {
-      trust: { min: 6 }
-    },
     onEnter: [
       {
         characterId: 'rohan',

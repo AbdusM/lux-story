@@ -1182,6 +1182,18 @@ Available Components:
         nextNodeId: 'kai_wife_confession',
         pattern: 'helping',
         skills: ['empathy']
+      },
+      {
+        choiceId: 'kai_go_deeper',
+        text: "Kai... this isn't the first time something like this happened, is it?",
+        nextNodeId: 'kai_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
+        consequence: {
+          characterId: 'kai',
+          trustChange: 1
+        }
       }
     ],
     tags: ['kai_arc', 'emotional_core']
@@ -1650,6 +1662,7 @@ Available Components:
   {
     nodeId: 'kai_vulnerability_arc',
     speaker: 'Kai',
+    requiredState: { trust: { min: 6 } },
     content: [
       {
         text: "There's a reason I obsess over every millimeter. Every warning sign.\n\nBuilding 7. I designed the safety training for that crew. Forty-two slides. Perfect compliance scores. The inspection passed with flying colors.\n\nThree months later, a scaffold collapsed. Miguel Rodriguez, father of two, fell four stories because the harness clip I trained him on... wasn't rated for the angle he was working at.\n\nMy training passed inspection. Miguel didn't pass the fall.",
@@ -1691,9 +1704,6 @@ Available Components:
         ]
       }
     ],
-    requiredState: {
-      trust: { min: 6 }
-    },
     onEnter: [
       {
         characterId: 'kai',

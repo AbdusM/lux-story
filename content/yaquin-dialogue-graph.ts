@@ -312,6 +312,18 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         text: "[Continue]",
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'patience'
+      },
+      {
+        choiceId: 'yaquin_go_deeper',
+        text: "Yaquin... eight years is a long time to feel unheard. What kept you going?",
+        nextNodeId: 'yaquin_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -817,7 +829,7 @@ Which opening sells the VALUE of practical experience?`,
         }
       }
     ],
-    tags: ['yaquin_arc', 'interrupt_response']
+    tags: ['interrupt_target', 'emotional_moment', 'yaquin_arc']
   },
 
   // ============= VULNERABILITY ARC (Trust ≥ 6) =============
@@ -825,6 +837,7 @@ Which opening sells the VALUE of practical experience?`,
   {
     nodeId: 'yaquin_vulnerability_arc',
     speaker: 'Yaquin',
+    requiredState: { trust: { min: 6 } },
     content: [
       {
         text: "Can tell you something? Not about course. About me.\n\nMy father came here from Manila. 1989. Worked three jobs. Saved every penny. Sent all four kids to college.\n\nMy sister: engineer. My brother: pharmacist. Other sister: accountant.\n\nMe: dental assistant.\n\nDay I told him I wasn't going to dental school. He looked at me like I'd died.\n\nDidn't speak to me for month. When he finally did, he said: 'You had same chances as your siblings. Why you waste them?'\n\nStill hears that. Every time someone says 'just an assistant.' Every time I doubt myself. His voice.",
@@ -841,9 +854,6 @@ Which opening sells the VALUE of practical experience?`,
         ]
       }
     ],
-    requiredState: {
-      trust: { min: 6 }
-    },
     onEnter: [
       {
         characterId: 'yaquin',

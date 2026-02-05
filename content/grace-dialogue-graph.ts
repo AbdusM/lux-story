@@ -185,6 +185,28 @@ export const graceDialogueNodes: DialogueNode[] = [
           characterId: 'grace',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'grace_wall_built',
+        text: "Fifteen years of building walls. But tonight they cracked.",
+        nextNodeId: 'grace_the_work',
+        pattern: 'building',
+        skills: ['observation'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'grace_what_like_carry',
+        text: "What's it like, carrying people's last moments? I want to understand.",
+        nextNodeId: 'grace_the_work',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2
+        }
       }
     ],
     tags: ['grace_arc', 'pattern_unlock']
@@ -209,6 +231,28 @@ export const graceDialogueNodes: DialogueNode[] = [
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'wisdom'],
         archetype: 'SHARE_PERSPECTIVE',
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'grace_what_build_silence',
+        text: "What will you build in that quiet house? There's space there now.",
+        nextNodeId: 'grace_the_work',
+        pattern: 'building',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'grace_explore_mixed_feeling',
+        text: "Tell me more about that mix—happy and sad at once. What does it feel like?",
+        nextNodeId: 'grace_the_work',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
         consequence: {
           characterId: 'grace',
           trustChange: 1
@@ -410,6 +454,25 @@ export const graceDialogueNodes: DialogueNode[] = [
         pattern: 'analytical',
         skills: ['observation'],
         archetype: 'MAKE_OBSERVATION'
+      },
+      {
+        choiceId: 'grace_what_built',
+        text: "That foundation she gave you—what have you built on it?",
+        nextNodeId: 'grace_grandmother_response',
+        pattern: 'building',
+        skills: ['curiosity'],
+        archetype: 'ASK_FOR_DETAILS'
+      },
+      {
+        choiceId: 'grace_explore_dementia',
+        text: "What was it like, watching her change? I want to understand.",
+        nextNodeId: 'grace_grandmother_response',
+        pattern: 'exploring',
+        skills: ['emotionalIntelligence', 'curiosity'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
       }
     ],
     tags: ['grace_arc', 'backstory', 'emotional_core']
@@ -440,6 +503,24 @@ export const graceDialogueNodes: DialogueNode[] = [
         nextNodeId: 'grace_invisible_skill',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
+      },
+      {
+        choiceId: 'grace_what_preserve',
+        text: "You're preserving something. Building a record of who they were.",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'building',
+        skills: ['observation'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'grace_how_discover_stories',
+        text: "How do you discover their stories? What do you ask?",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'exploring',
+        skills: ['curiosity', 'communication']
       }
     ],
     tags: ['grace_arc', 'dignity']
@@ -504,6 +585,24 @@ export const graceDialogueNodes: DialogueNode[] = [
           characterId: 'grace',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'grace_routine_structure',
+        text: "The routines you've built with them—that's what makes it work, isn't it?",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'building',
+        skills: ['observation', 'systemsThinking']
+      },
+      {
+        choiceId: 'grace_what_learn_staying',
+        text: "What else has staying taught you? About yourself?",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'exploring',
+        skills: ['curiosity'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
       }
     ],
     tags: ['grace_arc', 'meaning']
@@ -564,6 +663,24 @@ export const graceDialogueNodes: DialogueNode[] = [
         nextNodeId: 'grace_invisible_skill',
         pattern: 'helping',
         skills: ['communication']
+      },
+      {
+        choiceId: 'grace_build_that_skill',
+        text: "That's a skill you've constructed over years. It doesn't just happen.",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'building',
+        skills: ['observation']
+      },
+      {
+        choiceId: 'grace_discover_silence',
+        text: "When did you first discover the power of silence?",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'exploring',
+        skills: ['curiosity'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
       }
     ],
     tags: ['grace_arc', 'connection']
@@ -589,6 +706,28 @@ export const graceDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'grace',
           trustChange: 1
+        }
+      },
+      {
+        choiceId: 'grace_rituals_built',
+        text: "The rituals you built with them—Mr. Jefferson's hand, Mrs. Park's home. Those matter.",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'building',
+        skills: ['observation', 'communication'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'grace_what_taught_death',
+        text: "What has being with death taught you about living?",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2
         }
       }
     ],
@@ -638,6 +777,18 @@ export const graceDialogueNodes: DialogueNode[] = [
         nextNodeId: 'grace_the_moment_setup',
         pattern: 'exploring',
         skills: ['curiosity']
+      },
+      {
+        choiceId: 'grace_go_deeper',
+        text: "Grace... this work is costing you something, isn't it? Something personal.",
+        nextNodeId: 'grace_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
       }
     ],
     tags: ['grace_arc', 'invisible_labor']
@@ -668,6 +819,13 @@ export const graceDialogueNodes: DialogueNode[] = [
         nextNodeId: 'grace_vision',
         pattern: 'exploring',
         skills: ['curiosity']
+      },
+      {
+        choiceId: 'grace_tech_complement',
+        text: "Maybe technology could complement you—handle logistics so you have more time for presence.",
+        nextNodeId: 'grace_vision',
+        pattern: 'building',
+        skills: ['technicalLiteracy', 'creativity']
       }
     ],
     tags: ['grace_arc', 'automation']
@@ -698,6 +856,20 @@ export const graceDialogueNodes: DialogueNode[] = [
         nextNodeId: 'grace_vision',
         pattern: 'analytical',
         skills: ['systemsThinking']
+      },
+      {
+        choiceId: 'grace_build_better_system',
+        text: "What would a better system look like? One you'd want to build?",
+        nextNodeId: 'grace_vision',
+        pattern: 'building',
+        skills: ['systemsThinking', 'creativity']
+      },
+      {
+        choiceId: 'grace_other_paths',
+        text: "Have you explored other paths? What kept pulling you back?",
+        nextNodeId: 'grace_why_stay_real',
+        pattern: 'exploring',
+        skills: ['curiosity']
       }
     ],
     tags: ['grace_arc', 'economics', 'labor_reality']
@@ -725,6 +897,24 @@ export const graceDialogueNodes: DialogueNode[] = [
           characterId: 'grace',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'grace_what_constructed',
+        text: "You've built a whole philosophy. Meaning over money. That takes work.",
+        nextNodeId: 'grace_vision',
+        pattern: 'building',
+        skills: ['observation'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'grace_explore_empty',
+        text: "Have you ever felt overpaid and empty? What was that like?",
+        nextNodeId: 'grace_vision',
+        pattern: 'exploring',
+        skills: ['curiosity']
       }
     ],
     tags: ['grace_arc', 'meaning', 'values']
@@ -747,6 +937,24 @@ export const graceDialogueNodes: DialogueNode[] = [
         nextNodeId: 'grace_invisible_skill',
         pattern: 'patience',
         skills: ['communication']
+      },
+      {
+        choiceId: 'grace_relationship_built',
+        text: "You build relationships with people. Nurses don't get that time.",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'building',
+        skills: ['observation']
+      },
+      {
+        choiceId: 'grace_slow_moments',
+        text: "What do the slow moments reveal that emergencies can't?",
+        nextNodeId: 'grace_invisible_skill',
+        pattern: 'exploring',
+        skills: ['curiosity'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
       }
     ],
     tags: ['grace_arc', 'comparison']
@@ -779,6 +987,20 @@ export const graceDialogueNodes: DialogueNode[] = [
         nextNodeId: 'grace_vision',
         pattern: 'analytical',
         skills: ['systemsThinking']
+      },
+      {
+        choiceId: 'grace_build_workforce',
+        text: "So how do we build a workforce? What would it take?",
+        nextNodeId: 'grace_vision',
+        pattern: 'building',
+        skills: ['systemsThinking', 'criticalThinking']
+      },
+      {
+        choiceId: 'grace_what_attracted_you',
+        text: "What attracted you despite the crisis? What keeps others away?",
+        nextNodeId: 'grace_vision',
+        pattern: 'exploring',
+        skills: ['curiosity']
       }
     ],
     tags: ['grace_arc', 'demographics', 'labor_gap']
@@ -933,6 +1155,24 @@ QUESTION: How do you approach her?
         nextNodeId: 'grace_vision',
         pattern: 'helping',
         skills: ['communication']
+      },
+      {
+        choiceId: 'grace_steady_presence_built',
+        text: "You've built something in yourself. That steady presence—it took years.",
+        nextNodeId: 'grace_vision',
+        pattern: 'building',
+        skills: ['observation'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'grace_discover_about_self',
+        text: "What did that moment teach you about yourself?",
+        nextNodeId: 'grace_vision',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence']
       }
     ],
     tags: ['grace_arc', 'the_moment', 'revelation']
@@ -1013,6 +1253,28 @@ QUESTION: How do you approach her?
           trustChange: 1
         }
       },
+      {
+        choiceId: 'grace_foundation_advice',
+        text: "That's a foundation to build a whole life on. Thank you.",
+        nextNodeId: 'grace_farewell',
+        pattern: 'building',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'grace_more_discover',
+        text: "I want to explore this more. Will you tell me about the others you've lost?",
+        nextNodeId: 'grace_farewell',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 2
+        }
+      },
       // Career observation route (ISP: Only visible when pattern combo is achieved)
       {
         choiceId: 'career_coordinator',
@@ -1050,9 +1312,31 @@ QUESTION: How do you approach her?
         nextNodeId: 'grace_vision',
         pattern: 'helping',
         skills: ['communication']
+      },
+      {
+        choiceId: 'grace_comfort_built',
+        text: "The presence you've built in yourself—that's rare. Constructed over years.",
+        nextNodeId: 'grace_vision',
+        pattern: 'building',
+        skills: ['observation'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'grace_when_discover_power',
+        text: "When did you first discover you had this power? To make people feel seen?",
+        nextNodeId: 'grace_vision',
+        pattern: 'exploring',
+        skills: ['curiosity'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
       }
     ],
-    tags: ['grace_arc', 'interrupt_response']
+    tags: ['interrupt_target', 'emotional_moment', 'grace_arc']
   },
 
   {
@@ -1077,9 +1361,27 @@ QUESTION: How do you approach her?
           characterId: 'grace',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'grace_structure_invisible',
+        text: "The structure you've built for others—it should have structure for you too.",
+        nextNodeId: 'grace_vision',
+        pattern: 'building',
+        skills: ['observation', 'systemsThinking']
+      },
+      {
+        choiceId: 'grace_what_see_when_seen',
+        text: "What do you feel when someone actually sees your work? Walk me through it.",
+        nextNodeId: 'grace_vision',
+        pattern: 'exploring',
+        skills: ['curiosity', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'grace',
+          trustChange: 1
+        }
       }
     ],
-    tags: ['grace_arc', 'interrupt_response']
+    tags: ['interrupt_target', 'emotional_moment', 'grace_arc']
   },
 
   {
@@ -1107,7 +1409,7 @@ QUESTION: How do you approach her?
         thoughtId: 'long-game'
       }
     ],
-    tags: ['ending', 'grace_arc', 'interrupt_response']
+    tags: ['interrupt_target', 'emotional_moment', 'ending', 'grace_arc']
   },
 
   // ============= SIMULATION: PATIENT COMFORT =============
@@ -1366,6 +1668,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
   {
     nodeId: 'grace_vulnerability_arc',
     speaker: 'Grace',
+    requiredState: { trust: { min: 6 } },
     content: [
       {
         text: "Can I tell you something I've never told anyone?\n\nThree years ago... I almost quit. Not just the job. Everything.\n\nMrs. Patterson. The jazz singer I mentioned. She'd just passed. Third client that month. And my daughter's school called because I missed her recital. Again.\n\nI sat in my car in the parking lot for two hours. Couldn't go in. Couldn't go home.\n\nNobody sees what this costs. They see the angel. They don't see the woman who forgot her own mother's birthday because she was too busy remembering everyone else's medications.",
@@ -1406,9 +1709,6 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
         ]
       }
     ],
-    requiredState: {
-      trust: { min: 6 }
-    },
     onEnter: [
       {
         characterId: 'grace',

@@ -3164,6 +3164,18 @@ MISSION: Stabilize the wave form within safety limits.`,
           characterId: 'maya',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'maya_go_deeper',
+        text: "Maya... what happened with your parents? The real story.",
+        nextNodeId: 'maya_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1
+        }
       }
     ],
     tags: ['maya_arc', 'family', 'emotional_depth']

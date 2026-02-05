@@ -164,6 +164,18 @@ export const zaraDialogueNodes: DialogueNode[] = [
                     characterId: 'zara',
                     trustChange: 1
                 }
+            },
+            {
+                choiceId: 'zara_go_deeper',
+                text: "Zara... this isn't your first algorithm gone wrong, is it? What happened before?",
+                nextNodeId: 'zara_vulnerability_arc',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                visibleCondition: { trust: { min: 6 } },
+                consequence: {
+                    characterId: 'zara',
+                    trustChange: 1
+                }
             }
         ],
         tags: ['zara_arc', 'pattern_unlock']
@@ -445,7 +457,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 }
             }
         ],
-        tags: ['zara_arc', 'interrupt_response']
+        tags: ['interrupt_target', 'emotional_moment', 'zara_arc']
     },
 
     // ============= VULNERABILITY ARC (Trust ≥ 6) =============
@@ -453,6 +465,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
     {
         nodeId: 'zara_vulnerability_arc',
         speaker: 'Zara El-Amin',
+        requiredState: { trust: { min: 6 } },
         content: [
             {
                 text: "You asked why I do this. Why I spend nights in basements hunting for bias in datasets.\n\nThree years ago. I was a junior analyst at a healthcare company. We built a triage algorithm. It ranked patients by \"urgency.\" The dataset looked clean.\n\nI signed off on it. We deployed to twelve hospitals.\n\nSix months later, the study came back. The algorithm was systematically deprioritizing patients from low-income zip codes. Classifying them as \"low urgency\" even with the same symptoms.\n\nWe thought we were making healthcare more efficient. We were making it more biased.\n\nFourteen patients. Delayed treatment. Three didn't make it.\n\nAnd I signed the deployment approval.",
@@ -493,9 +506,6 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 ]
             }
         ],
-        requiredState: {
-            trust: { min: 6 }
-        },
         onEnter: [
             {
                 characterId: 'zara',
@@ -775,7 +785,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 }
             }
         ],
-        tags: ['zara_arc', 'interrupt_response']
+        tags: ['interrupt_target', 'emotional_moment', 'zara_arc']
     },
 
     {
@@ -1605,7 +1615,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 thoughtId: 'question-everything'
             }
         ],
-        tags: ['ending', 'zara_arc', 'interrupt_response']
+        tags: ['interrupt_target', 'emotional_moment', 'ending', 'zara_arc']
     },
 
     // ============= LOYALTY EXPERIENCE TRIGGER =============

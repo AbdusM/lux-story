@@ -590,6 +590,18 @@ const nodes: DialogueNode[] = [
           characterId: 'elena',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'elena_go_deeper',
+        text: "That pattern you couldn't prove... what happened to her?",
+        nextNodeId: 'elena_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
+        consequence: {
+          characterId: 'elena',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -2127,7 +2139,7 @@ const nodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['elena_arc', 'interrupt_response']
+    tags: ['interrupt_target', 'emotional_moment', 'elena_arc']
   },
 
   // ============= REVISIT NODES =============

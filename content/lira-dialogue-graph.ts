@@ -1365,7 +1365,7 @@ export const liraDialogueNodes: DialogueNode[] = [
                 }
             }
         ],
-        tags: ['lira_arc', 'interrupt_response']
+        tags: ['interrupt_target', 'emotional_moment', 'lira_arc']
     },
 
     // ============= VULNERABILITY ARC (Trust >= 6) =============
@@ -1373,6 +1373,7 @@ export const liraDialogueNodes: DialogueNode[] = [
     {
         nodeId: 'lira_vulnerability_arc',
         speaker: 'Lira Vance',
+        requiredState: { trust: { min: 6 } },
         content: [
             {
                 text: "Can I tell you something? About why I chose this project?\n\nMy grandmother was a pianist. Concert level. She could play Chopin from memory at seventy.\n\nThen she started forgetting. Not the music at first. Just names, faces. But then... piece by piece...\n\nThe last time I visited, she sat at the piano. Her hands moved to a melody I'd never heard. She was trying to play something. Trying so hard. But the notes kept... scattering.\n\nThat's what forgetting sounds like. A song trying to remember itself.\n\nThat's what I'm trying to capture. Not sadness. Memory unraveling.",
@@ -1413,9 +1414,6 @@ export const liraDialogueNodes: DialogueNode[] = [
                 ]
             }
         ],
-        requiredState: {
-            trust: { min: 6 }
-        },
         onEnter: [
             {
                 characterId: 'lira',
@@ -3143,6 +3141,18 @@ Warning: Core Hum saturating mix.`,
                 nextNodeId: 'lira_hub_return',
                 pattern: 'helping',
                 skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'lira',
+                    trustChange: 1
+                }
+            },
+            {
+                choiceId: 'lira_go_deeper',
+                text: "Your grandmother's cassette... there's more to that story, isn't there?",
+                nextNodeId: 'lira_vulnerability_arc',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                visibleCondition: { trust: { min: 6 } },
                 consequence: {
                     characterId: 'lira',
                     trustChange: 1

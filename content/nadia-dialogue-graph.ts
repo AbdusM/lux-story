@@ -1220,6 +1220,18 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         text: "Maybe the best intelligence is the one we build together.",
         nextNodeId: 'nadia_hub_return',
         pattern: 'building'
+      },
+      {
+        choiceId: 'nadia_go_deeper',
+        text: "Nadia... you've built AI systems your whole career. What's the one you regret?",
+        nextNodeId: 'nadia_vulnerability_arc',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 } },
+        consequence: {
+          characterId: 'nadia',
+          trustChange: 1
+        }
       }
     ],
     tags: ['mystery', 'breadcrumb']
