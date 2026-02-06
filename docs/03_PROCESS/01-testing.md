@@ -1,8 +1,7 @@
 # Testing Infrastructure - Grand Central Terminus
 
 **Status:** ✅ PRODUCTION READY
-**Test Coverage:** 91 tests across 5 test suites
-**Test Success Rate:** 100% (91/91 passing)
+**Test Suite:** Vitest (run `npm run test:run` for current totals) + Playwright E2E
 **Coverage Target:** 60% (lines, functions, branches, statements)
 
 ---
@@ -16,7 +15,6 @@ Comprehensive testing infrastructure built to ensure zero data loss, bulletproof
 ### 1. State Persistence Tests (`tests/state-persistence.test.ts`)
 **Purpose:** Validate core game state management and save/load system
 
-**Coverage:** 27 tests
 - GameState creation and validation
 - Save/load cycles with Map and Set serialization
 - State changes (trust, flags, patterns, relationships)
@@ -33,7 +31,6 @@ Comprehensive testing infrastructure built to ensure zero data loss, bulletproof
 ### 2. Ensure User Profile Tests (`tests/ensure-user-profile.test.ts`)
 **Purpose:** Test profile creation and foreign key constraint enforcement
 
-**Coverage:** 27 tests
 - Profile creation with valid/invalid inputs
 - Idempotency (safe to call multiple times)
 - Batch operations
@@ -50,7 +47,6 @@ Comprehensive testing infrastructure built to ensure zero data loss, bulletproof
 ### 3. Sync Queue Tests (`tests/sync-queue.test.ts`)
 **Purpose:** Validate offline-first sync queue for zero data loss
 
-**Coverage:** 26 tests
 - Queue management (add, remove, clear)
 - MAX_QUEUE_SIZE enforcement (500 actions)
 - Stale action cleanup (7 day TTL)
@@ -69,8 +65,6 @@ Comprehensive testing infrastructure built to ensure zero data loss, bulletproof
 
 ### 4. Career Explorations API Tests (`tests/api/career-explorations.test.ts`)
 **Purpose:** Test REST API endpoints for career exploration records
-
-**Coverage:** 11 tests
 
 **POST Endpoint:**
 - Record creation with complete/partial data
@@ -122,7 +116,7 @@ Comprehensive testing infrastructure built to ensure zero data loss, bulletproof
   "test:ui": "vitest --ui",           // Visual UI
   "test:run": "vitest run",           // CI mode
   "test:coverage": "vitest run --coverage",
-  "predeploy": "npm run test:run && npm run build"
+  "predeploy": "npm run validate-env && npm run test:run && npm run build"
 }
 ```
 
@@ -180,17 +174,7 @@ Comprehensive testing infrastructure built to ensure zero data loss, bulletproof
 
 ## Test Statistics
 
-### Total Coverage
-- **Test Files:** 5
-- **Total Tests:** 91
-- **Passing:** 91 (100%)
-- **Failing:** 0 (0%)
-
-### Test Distribution
-- State Persistence: 27 tests
-- Ensure User Profile: 27 tests
-- Sync Queue: 26 tests
-- Career Explorations API: 11 tests
+Run `npm run test:run` to see the current suite size and totals. The test suite has grown significantly beyond the original four core areas above, and the source of truth is always the test runner output.
 
 ### Critical Paths Tested
 1. ✅ State save/load cycle (zero data loss)

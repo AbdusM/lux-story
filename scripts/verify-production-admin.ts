@@ -301,7 +301,15 @@ async function verifyAdminAPI() {
   console.log('')
 
   const vercelUrl = process.env.VERCEL_URL
-  const baseUrl = vercelUrl || 'http://localhost:3003'
+  const resolvedVercelUrl = vercelUrl
+    ? (vercelUrl.startsWith('http://') || vercelUrl.startsWith('https://') ? vercelUrl : `https://${vercelUrl}`)
+    : null
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL ||
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    resolvedVercelUrl ||
+    'http://localhost:3005'
   const adminToken = process.env.ADMIN_API_TOKEN
 
   if (!adminToken) {

@@ -233,7 +233,15 @@ const nodes: DialogueNode[] = [
       taskDescription: 'Stabilize 3 fluctuating data streams.',
       initialContext: {
         label: 'Signal Status',
-        content: 'FLUCTUATING'
+        content: 'FLUCTUATING',
+        items: [
+          { id: 'stream-integrity', label: 'DOC_INTEGRITY', value: 91, priority: 'high', trend: 'down' },
+          { id: 'stream-provenance', label: 'SOURCE_PROVENANCE', value: 27, priority: 'critical', trend: 'up' },
+          { id: 'stream-crossref', label: 'CROSS_REF', value: 68, priority: 'medium', trend: 'down' },
+          { id: 'stream-recency', label: 'RECENCY_INDEX', value: 44, priority: 'medium', trend: 'up' },
+          { id: 'stream-anomaly', label: 'ANOMALY_SCORE', value: 96, priority: 'critical', trend: 'up' },
+          { id: 'stream-context', label: 'CONTEXT_WINDOW', value: 52, priority: 'low', trend: 'stable' }
+        ]
       },
       successFeedback: 'SIGNAL LOCKED. ANOMALY DETECTED.'
     },

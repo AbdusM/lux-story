@@ -36,14 +36,21 @@ export function DataDashboard({ config, onSuccess, variant = 'triage' }: DataDas
     const [score, setScore] = useState(0)
     const [isComplete, setIsComplete] = useState(false)
     const [feedback, setFeedback] = useState<string | null>(null)
+    const [usingFallbackData, setUsingFallbackData] = useState(false)
 
     // Initialize data based on variant or provided context
     useEffect(() => {
         if (config.initialContext?.items && Array.isArray(config.initialContext.items)) {
             setItems(config.initialContext.items as DataItem[])
+            setUsingFallbackData(false)
         } else {
             const initialItems = getInitialItems(variant)
             setItems(initialItems)
+            setUsingFallbackData(true)
+            if (process.env.NODE_ENV !== 'production') {
+                // eslint-disable-next-line no-console
+                console.warn('[DataDashboard] Missing initialContext.items; using variant default dataset.', { variant })
+            }
         }
     }, [variant, config.initialContext])
 
@@ -162,7 +169,14 @@ export function DataDashboard({ config, onSuccess, variant = 'triage' }: DataDas
                 <div className="flex items-center gap-3">
                     <Icon className="w-5 h-5" style={{ color: isComplete ? '#34d399' : currentConfig.color }} />
                     <div>
-                        <div className="text-xs uppercase tracking-widest text-white/50">{currentConfig.title}</div>
+                        <div className="flex items-center gap-2">
+                            <div className="text-xs uppercase tracking-widest text-white/50">{currentConfig.title}</div>
+                            {usingFallbackData && (
+                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300/80 border border-amber-500/20 uppercase tracking-widest font-mono">
+                                    Sample
+                                </span>
+                            )}
+                        </div>
                         <div className={cn("text-sm font-medium", isComplete ? "text-emerald-400" : "text-white")}>
                             {isComplete ? currentConfig.successMessage : "ACTIVE"}
                         </div>

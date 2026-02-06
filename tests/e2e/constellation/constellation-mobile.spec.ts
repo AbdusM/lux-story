@@ -102,7 +102,7 @@ async function seedGameState(page: Page) {
       },
       version: 1
     }
-    localStorage.setItem('grand-central-game-store', JSON.stringify(gameState))
+    localStorage.setItem('lux_story_v2_game_store', JSON.stringify(gameState))
   })
 }
 

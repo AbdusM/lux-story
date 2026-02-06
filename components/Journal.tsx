@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo, useRef } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { usePullToDismiss, pullToDismissPresets } from "@/hooks/usePullToDismiss"
 import { useReaderMode } from "@/hooks/useReaderMode"
@@ -35,6 +35,7 @@ import { useSimulations } from "@/hooks/useSimulations"
 import { useUserRole } from "@/hooks/useUserRole"
 import { useBiology } from "@/hooks/useBiology"
 import { BiologyIndicator } from "./BiologyIndicator"
+import { getBirminghamOpportunities } from "@/content/birmingham-opportunities"
 
 interface JournalProps {
   isOpen: boolean
@@ -62,6 +63,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const [activeTab, setActiveTab] = useState<TabId>('harmonics')
   const [_detailSkillId, setDetailSkillId] = useState<string | null>(null)
   const [detailPattern, setDetailPattern] = useState<PatternType | null>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const lastActiveElementRef = useRef<HTMLElement | null>(null)
 
   // Accessibility
   const prefersReducedMotion = useReducedMotion()
@@ -78,6 +81,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   const insights = useInsights()
   const { hasNewOrbs, markOrbsViewed, balance, tier } = useOrbs()
   const thoughts = useGameSelectors.useThoughts()
+  const patterns = useGameSelectors.usePatterns()
   const { availableCount: availableSimulations } = useSimulations()
   const { isEducator, loading: roleLoading } = useUserRole()
   const { nervousState, lastReaction, isLoading: biologyLoading } = useBiology()
@@ -97,11 +101,19 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   // New: Badge logic for fixed tabs
   const unlockedAchievementsCount = useGameStore(state => state.unlockedAchievements.length)
   const hasNewAchievements = unlockedAchievementsCount > 0 && !viewedTabs.has('mastery')
-  const hasPlayerAnalysis = useInsights() !== null
+  const hasPlayerAnalysis = !!insights
   const hasAnalysisData = hasPlayerAnalysis && !viewedTabs.has('analysis')
   // Cognition badge: show if we have skills but haven't viewed the tab
   const hasCognitionData = skills.length > 0 && !viewedTabs.has('cognition')
-  const hasNewOpportunities = !viewedTabs.has('opportunities') // Simple new indicator for now
+  const unlockedOpportunitiesCount = useMemo(() => {
+    try {
+      const all = getBirminghamOpportunities().getFilteredOpportunities({})
+      return all.filter(op => patterns[op.unlockCondition.pattern] >= op.unlockCondition.minLevel).length
+    } catch {
+      return 0
+    }
+  }, [patterns])
+  const hasNewOpportunities = unlockedOpportunitiesCount > 0 && !viewedTabs.has('opportunities')
   const hasNewCareers = skills.length > 0 && !viewedTabs.has('careers') // Show badge when skills exist
   const hasNewCombos = skills.length > 0 && !viewedTabs.has('combos') // Show badge when skills exist
   const hasNewRanks = balance.totalEarned > 0 && !viewedTabs.has('ranks') // Show badge when orbs earned
@@ -142,6 +154,44 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     setDetailPattern(null)
   }, [activeTab])
 
+  // Focus management: focus close button on open, restore focus on close
+  useEffect(() => {
+    if (!isOpen) return
+
+    lastActiveElementRef.current = document.activeElement as HTMLElement | null
+    const t = window.setTimeout(() => {
+      closeButtonRef.current?.focus()
+    }, 50)
+
+    return () => window.clearTimeout(t)
+  }, [isOpen])
+
+  useEffect(() => {
+    if (isOpen) return
+    lastActiveElementRef.current?.focus?.()
+    lastActiveElementRef.current = null
+  }, [isOpen])
+
+  // Close on Escape (redundant with global shortcut, but more robust for embedded contexts)
+  useEffect(() => {
+    if (!isOpen) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose])
+
+  // Prevent body scroll while the panel is open (mobile iOS especially)
+  useEffect(() => {
+    if (!isOpen) return
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = originalOverflow
+    }
+  }, [isOpen])
+
   // ... (variants)
 
   // New Prism Tabs
@@ -166,7 +216,16 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   // 1. Development mode (always)
   // 2. Production with educator/admin role (authenticated)
   // 3. Production with ?godmode=true URL parameter (fallback for non-authenticated educators)
-  const hasGodModeParam = typeof window !== 'undefined' && window.location.search.includes('godmode=true')
+  const hasGodModeParam = (() => {
+    try {
+      if (typeof window === 'undefined') return false
+      const params = new URLSearchParams(window.location.search)
+      const v = params.get('godmode')
+      return v === '' || v === '1' || v === 'true'
+    } catch {
+      return false
+    }
+  })()
   const showGodMode =
     process.env.NODE_ENV === 'development' ||
     (!roleLoading && isEducator) ||
@@ -198,6 +257,10 @@ export function Journal({ isOpen, onClose }: JournalProps) {
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             {...dragProps}
             onDragEnd={onDragEnd}
+            data-testid="journal-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-label="The Prism"
           >
             {/* Drag handle indicator - hints swipe-to-dismiss */}
             <div className="flex justify-center py-2 sm:hidden" aria-hidden="true">
@@ -252,6 +315,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                     onClick={onClose}
                     className="p-2 rounded-full hover:bg-white/10 transition-colors"
                     aria-label="Close prism"
+                    ref={closeButtonRef}
                   >
                     <X className="w-5 h-5 text-slate-400" />
                   </button>
@@ -279,8 +343,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
             <LogSearch />
             */}
 
-            {/* Navigation Tabs */}
-            <div className="flex border-b border-white/10 overflow-x-auto no-scrollbar">
+            {/* Navigation Tabs (Top)
+               Show on >= sm; on small screens we use the bottom thumb-zone bar to avoid duplicate controls. */}
+            <div className="hidden sm:flex border-b border-white/10 overflow-x-auto no-scrollbar">
               {tabs.map(tab => (
                 <button
                   key={tab.id}
@@ -321,7 +386,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
 
                   {activeTab === tab.id && (
                     <motion.div
-                      layoutId="prism-tab-active"
+                      layoutId="prism-tab-active-top"
                       className="absolute bottom-0 w-full h-0.5 bg-gradient-to-r from-amber-500 to-purple-600"
                     />
                   )}
@@ -387,8 +452,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
               </AnimatePresence>
             </div>
 
-            {/* Navigation Tabs - Bottom position for thumb zone ergonomics */}
-            <div className="flex-shrink-0 border-t border-white/10 overflow-x-auto no-scrollbar bg-slate-900/50">
+            {/* Navigation Tabs (Bottom)
+               Show on < sm for thumb-zone ergonomics; hidden on larger screens to prevent duplicate nav. */}
+            <div className="sm:hidden flex-shrink-0 border-t border-white/10 overflow-x-auto no-scrollbar bg-slate-900/50">
               <div className="flex">
                 {tabs.map(tab => (
                   <button
@@ -430,7 +496,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
 
                     {activeTab === tab.id && (
                       <motion.div
-                        layoutId="prism-tab-active"
+                        layoutId="prism-tab-active-bottom"
                         className="absolute top-0 w-full h-0.5 bg-gradient-to-r from-amber-500 to-purple-600"
                       />
                     )}
@@ -455,6 +521,3 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     </AnimatePresence>
   )
 }
-
-
-

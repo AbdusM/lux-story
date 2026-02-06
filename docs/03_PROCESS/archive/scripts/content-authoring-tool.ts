@@ -301,7 +301,7 @@ async function generateVariations(session: AuthoringSession) {
 
   // For now, just show the command to run
   console.log('\nRun this command in your terminal:')
-  console.log(`GEMINI_API_KEY=AIzaSyDEQloxDXlFD2HnFNUrAIr8aANhvr_Ivxg npx tsx scripts/generate-dialogue-content.ts`)
+  console.log('GEMINI_API_KEY=AIzaSyxxxxx npx tsx scripts/generate-dialogue-content.ts')
 }
 
 /**

@@ -16,7 +16,7 @@ test.describe('Assessment State Integration', () => {
 
     // Check initial state has baseline values
     const state = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -59,7 +59,7 @@ test.describe('Assessment State Integration', () => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     const state = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -107,7 +107,7 @@ test.describe('Assessment State Integration', () => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     const state = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -191,7 +191,7 @@ test.describe('Assessment Flow Prerequisites', () => {
 
     // Verify state persisted
     const state = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 

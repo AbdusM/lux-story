@@ -12,7 +12,7 @@
 
 import type { GameState } from './character-state'
 import type { DialogueNode } from './dialogue-graph'
-import { random, randomPick } from './seeded-random'
+import { randomPick } from './seeded-random'
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES

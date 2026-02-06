@@ -34,7 +34,7 @@ test.skip('Final QA: Game Interface Structure', async ({ page }) => {
       patternScores: { analytical: 0, building: 0, helping: 0, exploring: 0, patience: 0 },
       lastUpdated: Date.now()
     };
-    localStorage.setItem('grand-central-terminus-save', JSON.stringify(gameState));
+    localStorage.setItem('lux_story_v2_game_save', JSON.stringify(gameState));
   });
 
   // Reload to trigger game initialization with saved state
@@ -70,7 +70,7 @@ test.skip('Final QA: UI Components Render', async ({ page }) => {
       patternScores: { analytical: 0, building: 0, helping: 0, exploring: 0, patience: 0 },
       lastUpdated: Date.now()
     };
-    localStorage.setItem('grand-central-terminus-save', JSON.stringify(gameState));
+    localStorage.setItem('lux_story_v2_game_save', JSON.stringify(gameState));
   });
 
   await page.reload();

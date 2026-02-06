@@ -378,6 +378,7 @@ export default function StatefulGameInterface() {
   // Share prompts disabled-too obtrusive
   // isProcessingChoiceRef and choiceAttemptIdRef moved to useChoiceHandler hook
   const contentLoadTimestampRef = useRef<number>(Date.now()) // Track when content appeared
+  const lastAutoRouteRef = useRef<{ nodeId: string; at: number } | null>(null)
   const { queueStats: _queueStats } = useBackgroundSync({ enabled: true })
   const [hasSaveFile, setHasSaveFile] = useState(false)
   const [_saveIsComplete, setSaveIsComplete] = useState(false)
@@ -429,13 +430,40 @@ export default function StatefulGameInterface() {
   useEffect(() => {
     // Navigation shortcuts
     registerHandler('toggleJournal', () => {
-      setState(prev => ({ ...prev, showJournal: !prev.showJournal }))
+      setState(prev => {
+        const nextShow = !prev.showJournal
+        return {
+          ...prev,
+          showJournal: nextShow,
+          showConstellation: nextShow ? false : prev.showConstellation,
+          showReport: nextShow ? false : prev.showReport,
+          showJourneySummary: nextShow ? false : prev.showJourneySummary,
+        }
+      })
     })
     registerHandler('toggleConstellation', () => {
-      setState(prev => ({ ...prev, showConstellation: !prev.showConstellation }))
+      setState(prev => {
+        const nextShow = !prev.showConstellation
+        return {
+          ...prev,
+          showConstellation: nextShow,
+          showJournal: nextShow ? false : prev.showJournal,
+          showReport: nextShow ? false : prev.showReport,
+          showJourneySummary: nextShow ? false : prev.showJourneySummary,
+        }
+      })
     })
     registerHandler('toggleReport', () => {
-      setState(prev => ({ ...prev, showReport: !prev.showReport }))
+      setState(prev => {
+        const nextShow = !prev.showReport
+        return {
+          ...prev,
+          showReport: nextShow,
+          showJournal: nextShow ? false : prev.showJournal,
+          showConstellation: nextShow ? false : prev.showConstellation,
+          showJourneySummary: nextShow ? false : prev.showJourneySummary,
+        }
+      })
     })
 
     // Action shortcuts
@@ -451,22 +479,27 @@ export default function StatefulGameInterface() {
 
     // Choice selection shortcuts
     registerHandler('selectChoice1', () => {
+      if (state.showJournal || state.showConstellation || state.showReport || state.showJourneySummary || showShortcutsHelp) return
       const button = document.querySelector('[data-choice-index="0"]') as HTMLButtonElement
       button?.click()
     })
     registerHandler('selectChoice2', () => {
+      if (state.showJournal || state.showConstellation || state.showReport || state.showJourneySummary || showShortcutsHelp) return
       const button = document.querySelector('[data-choice-index="1"]') as HTMLButtonElement
       button?.click()
     })
     registerHandler('selectChoice3', () => {
+      if (state.showJournal || state.showConstellation || state.showReport || state.showJourneySummary || showShortcutsHelp) return
       const button = document.querySelector('[data-choice-index="2"]') as HTMLButtonElement
       button?.click()
     })
     registerHandler('selectChoice4', () => {
+      if (state.showJournal || state.showConstellation || state.showReport || state.showJourneySummary || showShortcutsHelp) return
       const button = document.querySelector('[data-choice-index="3"]') as HTMLButtonElement
       button?.click()
     })
     registerHandler('focusChoices', () => {
+      if (state.showJournal || state.showConstellation || state.showReport || state.showJourneySummary || showShortcutsHelp) return
       const firstChoice = document.querySelector('[data-choice-index="0"]') as HTMLButtonElement
       firstChoice?.focus()
     })
@@ -478,7 +511,7 @@ export default function StatefulGameInterface() {
       else if (state.showReport) setState(prev => ({ ...prev, showReport: false }))
       else if (showShortcutsHelp) setShowShortcutsHelp(false)
     })
-  }, [registerHandler, state.showJournal, state.showConstellation, state.showReport, showShortcutsHelp, audio.actions])
+  }, [registerHandler, state.showJournal, state.showConstellation, state.showReport, state.showJourneySummary, showShortcutsHelp, audio.actions])
 
   // Keyboard shortcut hint - show after 30 seconds of gameplay (only once)
   useEffect(() => {
@@ -656,6 +689,28 @@ export default function StatefulGameInterface() {
     acknowledgeMilestone,
   })
 
+  // Auto-route system router nodes (e.g. logic-only nodes with a single visible CONTINUE choice).
+  // This prevents placeholder router text like "..." from showing and reduces extra clicks.
+  useEffect(() => {
+    const node = state.currentNode
+    if (!node) return
+    if (state.isProcessing) return
+    if (node.simulation) return
+
+    const tags = node.tags || []
+    if (!tags.includes('router')) return
+    if (state.availableChoices.length !== 1) return
+
+    const last = lastAutoRouteRef.current
+    const now = Date.now()
+    if (last && last.nodeId === node.nodeId && now - last.at < 2000) return
+    lastAutoRouteRef.current = { nodeId: node.nodeId, at: now }
+
+    const choice = state.availableChoices[0]
+    const timer = setTimeout(() => handleChoice(choice), 0)
+    return () => clearTimeout(timer)
+  }, [state.currentNode, state.availableChoices, state.isProcessing, handleChoice])
+
   // ISP: Active Silence Detection - Extracted to useSilenceDetection hook
   useSilenceDetection({
     gameState,
@@ -823,8 +878,8 @@ export default function StatefulGameInterface() {
             toggleMute: () => audio.actions.toggleMute(),
             setVolume: (v) => audio.actions.setVolume(v),
           }}
-          onShowJournal={() => setState(prev => ({ ...prev, showJournal: true }))}
-          onShowConstellation={() => setState(prev => ({ ...prev, showConstellation: true, hasNewTrust: false, hasNewMeeting: false }))}
+          onShowJournal={() => setState(prev => ({ ...prev, showJournal: true, showConstellation: false, showReport: false, showJourneySummary: false }))}
+          onShowConstellation={() => setState(prev => ({ ...prev, showConstellation: true, showJournal: false, showReport: false, showJourneySummary: false, hasNewTrust: false, hasNewMeeting: false }))}
           onShowReport={() => setState(prev => ({ ...prev, showReport: true }))}
         />
 
@@ -832,10 +887,13 @@ export default function StatefulGameInterface() {
           SCROLLABLE DIALOGUE AREA-Middle section
           ══════════════════════════════════════════════════════════════════ */}
         <main
-          className="flex-1 overflow-y-auto overscroll-contain"
-          style={{ WebkitOverflowScrolling: 'touch' }}
+          className="flex-1 min-h-0 mx-3 sm:mx-0"
           data-testid="game-interface"
         >
+          <div
+            className="h-full overflow-y-auto overscroll-contain"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
           <div className="max-w-4xl mx-auto px-3 sm:px-4 py-3 sm:py-4 md:pt-8 lg:pt-12 pb-4 sm:pb-6">
             {/* Dialogue container-STABLE: no animations to prevent layout shifts */}
             <div key="dialogue-wrapper">
@@ -1062,6 +1120,7 @@ export default function StatefulGameInterface() {
               />
             )}
           </div>
+          </div>
         </main >
 
         {/* ══════════════════════════════════════════════════════════════════
@@ -1229,5 +1288,3 @@ export default function StatefulGameInterface() {
 // ═══════════════════════════════════════════════════════════════════════════
 // SUBCOMPONENTS
 // ═══════════════════════════════════════════════════════════════════════════
-
-

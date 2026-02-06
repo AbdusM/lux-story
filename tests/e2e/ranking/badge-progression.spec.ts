@@ -14,7 +14,7 @@ test.describe('Badge Progression Flow', () => {
 
     // Get initial pattern state
     const initialState = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -41,7 +41,7 @@ test.describe('Badge Progression Flow', () => {
 
     // Check state after choice
     const afterState = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -87,7 +87,7 @@ test.describe('Badge Progression Flow', () => {
 
     // Verify accumulated progress
     const finalState = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -115,7 +115,7 @@ test.describe('Badge Progression Flow', () => {
 
     // Get initial trust
     const initialState = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -145,7 +145,7 @@ test.describe('Badge Progression Flow', () => {
 
     // Verify trust potentially changed
     const finalState = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -169,7 +169,7 @@ test.describe('Ranking Tier Thresholds', () => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     const state = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -192,7 +192,7 @@ test.describe('Ranking Tier Thresholds', () => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     const state = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -217,7 +217,7 @@ test.describe('Ranking Tier Thresholds', () => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     const state = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 

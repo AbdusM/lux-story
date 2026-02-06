@@ -40,13 +40,9 @@ export function getSupabaseServerClient(): SupabaseClient {
     const missing: string[] = []
     if (!supabaseUrl) missing.push('NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL')
     if (!serviceRoleKey) missing.push('SUPABASE_SERVICE_ROLE_KEY')
-    // Don't throw - return a mock client that fails gracefully
-    // This prevents 405 errors when Supabase isn't configured
-    console.warn(`[Supabase] Missing environment variables: ${missing.join(', ')}. API routes will return success but skip database operations.`)
-    // Return a mock client that always returns success
-    return createClient('https://placeholder.supabase.co', 'placeholder-key', {
-      auth: { autoRefreshToken: false, persistSession: false }
-    })
+    // IMPORTANT: Throw a deterministic error message so API routes can
+    // gracefully degrade via lib/api/api-utils.ts handleApiError().
+    throw new Error(`Missing Supabase environment variables: ${missing.join(', ')}`)
   }
 
   cachedClient = createClient(supabaseUrl, serviceRoleKey, {

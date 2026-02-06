@@ -13,6 +13,180 @@ import { samuelEntryPoints } from './samuel-dialogue-graph'
 export const devonDialogueNodes: DialogueNode[] = [
   // ============= INTRODUCTION =============
   {
+    nodeId: 'devon_introduction_after_building',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "Pass me the... no, the other wrench. The one that's actually regulation.\n\nShift change isn't for ten minutes. If you're here to complain about the heat, join the queue. If you're here to help, grab the duct tape.",
+        emotion: 'guarded',
+        variation_id: 'intro_after_building_v1',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nOh. You're reading the logic flow, aren't you? Most people don't even see it.\n\nClosed system. But maybe you understand closed systems.", altEmotion: 'curious' },
+          { pattern: 'building', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nDecision tree. Flowchart. You've built things like this before, haven't you?\n\nMost people don't recognize the architecture. But you do.", altEmotion: 'interested' },
+          { pattern: 'patience', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nOh. You're just... waiting. Not rushing me. That's different.\n\nClosed system. Are you a variable I need to account for?", altEmotion: 'guarded' }
+        ]
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'intro_curious_after_building',
+        text: "What are you working on?",
+        nextNodeId: 'devon_explains_system',
+        pattern: 'exploring',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        },
+        voiceVariations: {
+          analytical: "What system is this? Walk me through the logic.",
+          helping: "You look like you're solving something important.",
+          building: "What are you building? I want to see.",
+          exploring: "What are you working on?",
+          patience: "I'm curious about what you're working on."
+        }
+      },
+      {
+        choiceId: 'intro_technical_after_building',
+        text: "That looks like a decision tree. For what?",
+        nextNodeId: 'devon_technical_response',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['recognizes_technical_work']
+        },
+        voiceVariations: {
+          analytical: "That looks like a decision tree. For what?",
+          helping: "That flowchart... it's about people, isn't it?",
+          building: "I recognize that structure. Decision tree. What's the output?",
+          exploring: "Interesting diagram. What does it do?",
+          patience: "That looks complex. A decision tree?"
+        }
+      },
+      {
+        choiceId: 'intro_gentle_after_building',
+        text: "I'm just passing through. You seem focused.",
+        nextNodeId: 'devon_defends_focus',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        },
+        voiceVariations: {
+          analytical: "I won't interrupt your process. Just observing.",
+          helping: "I don't want to disrupt you. You seem deep in something.",
+          building: "I can see you're in the zone. I'll wait.",
+          exploring: "Don't mind me. I'm just curious what's happening here.",
+          patience: "I'm just passing through. You seem focused."
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'devon',
+        setRelationshipStatus: 'stranger'
+      },
+      {
+        platformChanges: [{
+          platformId: 'platform-7',
+          warmthDelta: 1
+        }]
+      }
+    ],
+    tags: ['introduction', 'devon_arc']
+  },
+
+  {
+    nodeId: 'devon_introduction_after_empathy',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "Pass me the... no, the other wrench. The one that's actually regulation.\n\nShift change isn't for ten minutes. If you're here to complain about the heat, join the queue. If you're here to help, grab the duct tape.",
+        emotion: 'guarded',
+        variation_id: 'intro_after_empathy_v1',
+        patternReflection: [
+          { pattern: 'analytical', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nOh. You're reading the logic flow, aren't you? Most people don't even see it.\n\nClosed system. But maybe you understand closed systems.", altEmotion: 'curious' },
+          { pattern: 'building', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nDecision tree. Flowchart. You've built things like this before, haven't you?\n\nMost people don't recognize the architecture. But you do.", altEmotion: 'interested' },
+          { pattern: 'patience', minLevel: 5, altText: "Avondale coffee shop. Back booth. 2 AM.\n\nOh. You're just... waiting. Not rushing me. That's different.\n\nClosed system. Are you a variable I need to account for?", altEmotion: 'guarded' }
+        ]
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'intro_curious_after_empathy',
+        text: "What are you working on?",
+        nextNodeId: 'devon_explains_system',
+        pattern: 'exploring',
+        skills: ['communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1
+        },
+        voiceVariations: {
+          analytical: "What system is this? Walk me through the logic.",
+          helping: "You look like you're solving something important.",
+          building: "What are you building? I want to see.",
+          exploring: "What are you working on?",
+          patience: "I'm curious about what you're working on."
+        }
+      },
+      {
+        choiceId: 'intro_technical_after_empathy',
+        text: "That looks like a decision tree. For what?",
+        nextNodeId: 'devon_technical_response',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'communication'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 1,
+          addKnowledgeFlags: ['recognizes_technical_work']
+        },
+        voiceVariations: {
+          analytical: "That looks like a decision tree. For what?",
+          helping: "That flowchart... it's about people, isn't it?",
+          building: "I recognize that structure. Decision tree. What's the output?",
+          exploring: "Interesting diagram. What does it do?",
+          patience: "That looks complex. A decision tree?"
+        }
+      },
+      {
+        choiceId: 'intro_gentle_after_empathy',
+        text: "I'm just passing through. You seem focused.",
+        nextNodeId: 'devon_defends_focus',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'adaptability'],
+        consequence: {
+          characterId: 'devon',
+          trustChange: 2
+        },
+        voiceVariations: {
+          analytical: "I won't interrupt your process. Just observing.",
+          helping: "I don't want to disrupt you. You seem deep in something.",
+          building: "I can see you're in the zone. I'll wait.",
+          exploring: "Don't mind me. I'm just curious what's happening here.",
+          patience: "I'm just passing through. You seem focused."
+        }
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'devon',
+        setRelationshipStatus: 'stranger'
+      },
+      {
+        platformChanges: [{
+          platformId: 'platform-7',
+          warmthDelta: 1
+        }]
+      }
+    ],
+    tags: ['introduction', 'devon_arc']
+  },
+
+  {
     nodeId: 'devon_introduction',
     speaker: 'Devon Kumar',
     content: [

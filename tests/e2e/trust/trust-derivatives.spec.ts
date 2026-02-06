@@ -35,14 +35,14 @@ test.describe('Trust Derivative Mechanics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -81,14 +81,14 @@ test.describe('Trust Derivative Mechanics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -118,14 +118,14 @@ test.describe('Trust Derivative Mechanics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -161,20 +161,20 @@ test.describe('Trust Derivative Mechanics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
     // Verify state was set correctly
     const actualTrust = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       if (saved) {
         const state = JSON.parse(saved)
         const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
@@ -203,14 +203,14 @@ test.describe('Trust Derivative Mechanics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -220,18 +220,18 @@ test.describe('Trust Derivative Mechanics', () => {
 
     // Trigger anxiety increase to 75 (should stay in safe_and_social)
     await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       if (saved) {
         const state = JSON.parse(saved)
         state.state.anxiety = 75
-        localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+        localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
       }
     })
 
     await page.reload()
 
     const nervousSystemState = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       if (saved) {
         const state = JSON.parse(saved)
         return state.state.nervousSystemState
@@ -262,19 +262,19 @@ test.describe('Trust Derivative Mechanics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
     const nervousSystemState = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       if (saved) {
         const state = JSON.parse(saved)
         return state.state.nervousSystemState
@@ -302,14 +302,14 @@ test.describe('Trust Derivative Mechanics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -323,7 +323,7 @@ test.describe('Trust Derivative Mechanics', () => {
 
       // Check if trust changed (may increase, stay same, or rarely decrease)
       const finalTrust = await page.evaluate(() => {
-        const saved = localStorage.getItem('grand-central-terminus-save')
+        const saved = localStorage.getItem('lux_story_v2_game_save')
         if (saved) {
           const state = JSON.parse(saved)
           const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
@@ -353,14 +353,14 @@ test.describe('Trust Derivative Mechanics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -374,7 +374,7 @@ test.describe('Trust Derivative Mechanics', () => {
 
       // Verify trust doesn't exceed 10
       const finalTrust = await page.evaluate(() => {
-        const saved = localStorage.getItem('grand-central-terminus-save')
+        const saved = localStorage.getItem('lux_story_v2_game_save')
         if (saved) {
           const state = JSON.parse(saved)
           const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
@@ -402,14 +402,14 @@ test.describe('Trust Derivative Mechanics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -440,20 +440,20 @@ test.describe('Trust Derivative Mechanics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
     // Verify all trust levels persisted correctly
     const trustLevels = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       if (saved) {
         const state = JSON.parse(saved)
         return {

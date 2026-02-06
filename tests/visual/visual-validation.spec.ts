@@ -14,8 +14,63 @@ import { createMaxUnlockState } from './max-unlock-generator'
 
 test.describe('Comprehensive Visual Validation', () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to game
-    await page.goto('http://localhost:3005', { waitUntil: 'networkidle' })
+    // `/` is gated behind either an authenticated user or guest-mode cookie.
+    await page.context().addCookies([
+      { name: 'lux_guest_mode', value: 'true', url: 'http://127.0.0.1:3005' },
+      { name: 'lux_guest_mode', value: 'true', url: 'http://localhost:3005' },
+    ])
+
+    // Navigate to game (God Mode opt-in for production builds)
+    await page.goto('/?godmode=true', { waitUntil: 'domcontentloaded' })
+
+    // Seed a minimal game state via localStorage and reload to hydrate.
+    await page.evaluate(() => {
+      localStorage.clear()
+      // Mark as test environment (used by some UI/test harness code)
+      // @ts-ignore - injected by test harness
+      window.__PLAYWRIGHT__ = true
+      localStorage.setItem('lux_story_v2_guest_mode', 'true')
+
+      const initialState = {
+        saveVersion: '1.0',
+        playerId: `visual-${Date.now()}`,
+        currentNodeId: 'samuel_introduction',
+        currentCharacterId: 'samuel',
+        patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
+        characters: [],
+        globalFlags: [],
+        lastSaved: Date.now(),
+        thoughts: [],
+        episodeNumber: 1,
+        sessionStartTime: Date.now(),
+        sessionBoundariesCrossed: 0,
+        platforms: {},
+        careerValues: { directImpact: 0, systemsThinking: 0, dataInsights: 0, futureBuilding: 0, independence: 0 },
+        mysteries: { letterSender: 'unknown', platformSeven: 'stable', samuelsPast: 'hidden', stationNature: 'unknown' },
+        time: { currentDisplay: '23:47', minutesRemaining: 13, flowRate: 1.0, isStopped: false },
+        quietHour: { potential: true, experienced: [] },
+        overdensity: 0.3,
+        items: { letter: 'kept', discoveredPaths: [] },
+        pendingCheckIns: [],
+        unlockedAbilities: [],
+        archivistState: { collectedRecords: [], verifiedLore: [], sensoryCalibration: {} },
+        skillLevels: {},
+        skillUsage: []
+      }
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(initialState))
+    })
+
+    await page.reload({ waitUntil: 'domcontentloaded' })
+
+    // Click through the continue screen if it appears
+    const continueButton = page.getByRole('button', { name: 'Continue Journey' })
+    const hasContinue = await continueButton
+      .waitFor({ state: 'visible', timeout: 15000 })
+      .then(() => true)
+      .catch(() => false)
+    if (hasContinue) {
+      await continueButton.click()
+    }
 
     // Wait for God Mode API to be fully loaded with all functions
     await page.waitForFunction(() => {
@@ -25,41 +80,6 @@ test.describe('Comprehensive Visual Validation', () => {
              typeof godMode.setAllPatterns === 'function' &&
              typeof godMode.demonstrateSkill === 'function'
     }, { timeout: 15000 })
-
-    // Initialize a minimal game state via localStorage to hydrate the store
-    await page.evaluate(() => {
-      const initialState = {
-        state: {
-          currentNodeId: 'samuel_intro_1',
-          currentCharacterId: 'samuel',
-          hasStarted: true,
-          patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
-          characters: [{
-            characterId: 'samuel',
-            trust: 0,
-            knowledgeFlags: []
-          }],
-          globalFlags: [],
-          thoughts: [],
-          mysteries: {},
-          platforms: {},
-          skillDemonstrations: {}
-        },
-        version: 1
-      }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(initialState))
-    })
-
-    // Reload page to hydrate the state from localStorage
-    await page.reload({ waitUntil: 'networkidle' })
-
-    // Wait for God Mode to be ready again
-    await page.waitForFunction(() => {
-      return (window as any).godMode && typeof (window as any).godMode.setTrust === 'function'
-    }, { timeout: 10000 })
-
-    // Small delay to ensure state is fully hydrated
-    await page.waitForTimeout(1000)
 
     // Create maximally unlocked state
     await createMaxUnlockState(page)
@@ -74,24 +94,25 @@ test.describe('Comprehensive Visual Validation', () => {
 
   test('1. Journal - Harmonics Tab', async ({ page }) => {
     // Click Journal button (has title="The Prism")
-    await page.click('[title="The Prism"]')
+    await page.getByLabel('Open Journal').click()
     await page.waitForSelector('[data-testid="journal-panel"]', { state: 'visible' })
     await page.click('text=Harmonics')
     await page.waitForTimeout(500)
 
     // Verify all 5 pattern orbs visible
-    await expect(page.locator('[data-pattern="analytical"]')).toBeVisible()
-    await expect(page.locator('[data-pattern="patience"]')).toBeVisible()
-    await expect(page.locator('[data-pattern="exploring"]')).toBeVisible()
-    await expect(page.locator('[data-pattern="helping"]')).toBeVisible()
-    await expect(page.locator('[data-pattern="building"]')).toBeVisible()
+    const journalPanel = page.getByTestId('journal-panel')
+    await expect(journalPanel.locator('[data-testid="pattern-orb"][data-pattern="analytical"]')).toBeVisible()
+    await expect(journalPanel.locator('[data-testid="pattern-orb"][data-pattern="patience"]')).toBeVisible()
+    await expect(journalPanel.locator('[data-testid="pattern-orb"][data-pattern="exploring"]')).toBeVisible()
+    await expect(journalPanel.locator('[data-testid="pattern-orb"][data-pattern="helping"]')).toBeVisible()
+    await expect(journalPanel.locator('[data-testid="pattern-orb"][data-pattern="building"]')).toBeVisible()
 
     await page.screenshot({ path: 'tests/visual/output/journal-harmonics.png' })
     console.log('✓ Harmonics tab validated')
   })
 
   test('2. Journal - Essence Tab', async ({ page }) => {
-    await page.click('[title="The Prism"]')
+    await page.getByLabel('Open Journal').click()
     await page.waitForSelector('[data-testid="journal-panel"]', { state: 'visible' })
     await page.click('text=Essence')
     await page.waitForTimeout(500)
@@ -101,7 +122,7 @@ test.describe('Comprehensive Visual Validation', () => {
   })
 
   test('3. Journal - Mastery Tab', async ({ page }) => {
-    await page.click('[title="The Prism"]')
+    await page.getByLabel('Open Journal').click()
     await page.waitForSelector('[data-testid="journal-panel"]', { state: 'visible' })
     await page.click('text=Mastery')
     await page.waitForTimeout(500)
@@ -111,7 +132,7 @@ test.describe('Comprehensive Visual Validation', () => {
   })
 
   test('4. Journal - Opportunities Tab', async ({ page }) => {
-    await page.click('[title="The Prism"]')
+    await page.getByLabel('Open Journal').click()
     await page.waitForSelector('[data-testid="journal-panel"]', { state: 'visible' })
     await page.click('text=Opportunities')
     await page.waitForTimeout(500)
@@ -121,7 +142,7 @@ test.describe('Comprehensive Visual Validation', () => {
   })
 
   test('5. Journal - Mind Tab', async ({ page }) => {
-    await page.click('[title="The Prism"]')
+    await page.getByLabel('Open Journal').click()
     await page.waitForSelector('[data-testid="journal-panel"]', { state: 'visible' })
     await page.click('text=Mind')
     await page.waitForTimeout(500)
@@ -131,7 +152,7 @@ test.describe('Comprehensive Visual Validation', () => {
   })
 
   test('6. Journal - Toolkit Tab', async ({ page }) => {
-    await page.click('[title="The Prism"]')
+    await page.getByLabel('Open Journal').click()
     await page.waitForSelector('[data-testid="journal-panel"]', { state: 'visible' })
     await page.click('text=Toolkit')
     await page.waitForTimeout(500)
@@ -141,7 +162,7 @@ test.describe('Comprehensive Visual Validation', () => {
   })
 
   test('7. Journal - Simulations Tab', async ({ page }) => {
-    await page.click('[title="The Prism"]')
+    await page.getByLabel('Open Journal').click()
     await page.waitForSelector('[data-testid="journal-panel"]', { state: 'visible' })
     await page.click('text=Sims')
     await page.waitForTimeout(1000) // Simulations may take longer to render
@@ -155,7 +176,7 @@ test.describe('Comprehensive Visual Validation', () => {
   })
 
   test('8. Journal - Cognition Tab', async ({ page }) => {
-    await page.click('[title="The Prism"]')
+    await page.getByLabel('Open Journal').click()
     await page.waitForSelector('[data-testid="journal-panel"]', { state: 'visible' })
     await page.click('text=Cognition')
     await page.waitForTimeout(500)
@@ -165,7 +186,7 @@ test.describe('Comprehensive Visual Validation', () => {
   })
 
   test('9. Journal - Analysis Tab', async ({ page }) => {
-    await page.click('[title="The Prism"]')
+    await page.getByLabel('Open Journal').click()
     await page.waitForSelector('[data-testid="journal-panel"]', { state: 'visible' })
     await page.click('text=Analysis')
     await page.waitForTimeout(500)
@@ -175,7 +196,7 @@ test.describe('Comprehensive Visual Validation', () => {
   })
 
   test('10. Journal - God Mode Tab', async ({ page }) => {
-    await page.click('[title="The Prism"]')
+    await page.getByLabel('Open Journal').click()
     await page.waitForSelector('[data-testid="journal-panel"]', { state: 'visible' })
     await page.click('text=GOD MODE')
     await page.waitForTimeout(500)
@@ -189,7 +210,7 @@ test.describe('Comprehensive Visual Validation', () => {
   // ═══════════════════════════════════════════════════════════════════════════
 
   test('11. Constellation - People View', async ({ page }) => {
-    await page.click('[title="Your Journey"]')
+    await page.getByLabel('Open Skill Constellation').click()
     await page.waitForSelector('[data-testid="constellation-panel"]', { state: 'visible', timeout: 10000 }).catch(() => null)
 
     // Try alternative selector if first doesn't work
@@ -206,7 +227,7 @@ test.describe('Comprehensive Visual Validation', () => {
   })
 
   test('12. Constellation - Skills View', async ({ page }) => {
-    await page.click('[title="Your Journey"]')
+    await page.getByLabel('Open Skill Constellation').click()
     await page.waitForTimeout(1000)
 
     await page.click('text=Skills').catch(() => console.log('  Note: Skills tab not found'))
@@ -217,7 +238,7 @@ test.describe('Comprehensive Visual Validation', () => {
   })
 
   test('13. Constellation - Quests View', async ({ page }) => {
-    await page.click('[title="Your Journey"]')
+    await page.getByLabel('Open Skill Constellation').click()
     await page.waitForTimeout(1000)
 
     await page.click('text=Quests').catch(() => console.log('  Note: Quests tab not found'))
@@ -255,15 +276,25 @@ test.describe('Comprehensive Visual Validation', () => {
   })
 
   test('15. In-Game - Pattern Orbs', async ({ page }) => {
-    await page.click('[title="The Prism"]')
+    await page.getByLabel('Open Journal').click()
     await page.waitForSelector('[data-testid="journal-panel"]', { state: 'visible' })
     await page.click('text=Harmonics')
     await page.waitForTimeout(500)
 
+    // Framer Motion continuously updates transforms; freeze orb transforms so element screenshots can stabilize.
+    await page.addStyleTag({
+      content: `
+        [data-testid="pattern-orb"] { transform: none !important; }
+        [data-testid="pattern-orb"] *,
+        [data-testid="pattern-orb"] *::before,
+        [data-testid="pattern-orb"] *::after { animation: none !important; transition: none !important; }
+      `
+    })
+
     // Capture each pattern orb individually
     const patterns = ['analytical', 'patience', 'exploring', 'helping', 'building']
     for (const pattern of patterns) {
-      const orb = page.locator(`[data-pattern="${pattern}"]`)
+      const orb = page.getByTestId('journal-panel').locator(`[data-testid="pattern-orb"][data-pattern="${pattern}"]`)
       const isVisible = await orb.isVisible().catch(() => false)
 
       if (isVisible) {
@@ -278,7 +309,7 @@ test.describe('Comprehensive Visual Validation', () => {
   })
 
   test('16. In-Game - Character Avatars', async ({ page }) => {
-    await page.click('[title="The Prism"]')
+    await page.getByLabel('Open Journal').click()
     await page.waitForSelector('[data-testid="journal-panel"]', { state: 'visible' })
     await page.click('text=Essence')
     await page.waitForTimeout(500)
@@ -298,7 +329,7 @@ test.describe('Comprehensive Visual Validation', () => {
     })
 
     // Open Journal and cycle through tabs
-    await page.click('[title="The Prism"]')
+    await page.getByLabel('Open Journal').click()
     await page.waitForSelector('[data-testid="journal-panel"]', { state: 'visible' })
 
     const tabs = ['Harmonics', 'Essence', 'Mastery', 'Toolkit', 'Sims']
@@ -312,7 +343,7 @@ test.describe('Comprehensive Visual Validation', () => {
     await page.waitForTimeout(500)
 
     // Open Constellation and cycle through views
-    await page.click('[title="Your Journey"]')
+    await page.getByLabel('Open Skill Constellation').click()
     await page.waitForTimeout(1000)
 
     const views = ['People', 'Skills', 'Quests']

@@ -30,16 +30,21 @@ import { yaquinDialogueNodes } from '../content/yaquin-dialogue-graph'
 import { alexDialogueNodes } from '../content/alex-dialogue-graph'
 import { mayaRevisitNodes } from '../content/maya-revisit-graph'
 import { yaquinRevisitNodes } from '../content/yaquin-revisit-graph'
+import { devonRevisitNodes } from '../content/devon-revisit-graph'
+import { graceRevisitNodes } from '../content/grace-revisit-graph'
 import { grandHallDialogueNodes } from '../content/grand-hall-graph'
 import { graceDialogueNodes } from '../content/grace-dialogue-graph'
 import { elenaDialogueNodes } from '../content/elena-dialogue-graph'
 import { zaraDialogueNodes } from '../content/zara-dialogue-graph'
 import { ashaDialogueNodes } from '../content/asha-dialogue-graph'
 import { liraDialogueNodes } from '../content/lira-dialogue-graph'
+import { quinnDialogueNodes } from '../content/quinn-dialogue-graph'
+import { danteDialogueNodes } from '../content/dante-dialogue-graph'
+import { nadiaDialogueNodes } from '../content/nadia-dialogue-graph'
+import { isaiahDialogueNodes } from '../content/isaiah-dialogue-graph'
 import { marketDialogueNodes } from '../content/market-graph'
 import { deepStationDialogueNodes } from '../content/deep-station-graph'
-// Note: station-entry-graph uses Map format, skipped for now
-// import { stationEntryDialogueNodes } from '../content/station-entry-graph'
+import { stationEntryGraph } from '../content/station-entry-graph'
 
 // ============= TYPES =============
 
@@ -80,11 +85,22 @@ class DialogueGraphValidator {
   private errors: ValidationError[] = []
   private warnings: ValidationError[] = []
   private stats: GraphStats[] = []
+  private globalNodeIds: Set<string> = new Set()
+  private readonly virtualNodeIds = new Set(['TRAVEL_PENDING', 'SIMULATION_PENDING'])
 
   validate(graphs: { name: string; nodes: DialogueNode[]; startNodeId: string }[]): ValidationResult {
     this.errors = []
     this.warnings = []
     this.stats = []
+    this.globalNodeIds = new Set()
+
+    // Build a master set of node IDs across all loaded graphs so per-graph validation
+    // doesn't incorrectly fail for intentional cross-graph references.
+    for (const graph of graphs) {
+      for (const node of graph.nodes) {
+        this.globalNodeIds.add(node.nodeId)
+      }
+    }
 
     for (const graph of graphs) {
       this.validateGraph(graph.name, graph.nodes, graph.startNodeId)
@@ -331,7 +347,12 @@ class DialogueGraphValidator {
             message: 'Interrupt missing targetNodeId',
             suggestion: 'Every interrupt must point to a target node'
           })
-        } else if (!nodeMap.has(interrupt.targetNodeId) && !this.isExternalReference(interrupt.targetNodeId)) {
+        } else if (
+          !nodeMap.has(interrupt.targetNodeId) &&
+          !this.virtualNodeIds.has(interrupt.targetNodeId) &&
+          !this.globalNodeIds.has(interrupt.targetNodeId) &&
+          !this.isExternalReference(interrupt.targetNodeId)
+        ) {
           this.errors.push({
             severity: 'error',
             graph: graphName,
@@ -417,7 +438,12 @@ class DialogueGraphValidator {
           message: 'Choice missing nextNodeId',
           suggestion: 'Every choice must point to a next node'
         })
-      } else if (!nodeMap.has(choice.nextNodeId) && !this.isExternalReference(choice.nextNodeId)) {
+      } else if (
+        !nodeMap.has(choice.nextNodeId) &&
+        !this.virtualNodeIds.has(choice.nextNodeId) &&
+        !this.globalNodeIds.has(choice.nextNodeId) &&
+        !this.isExternalReference(choice.nextNodeId)
+      ) {
         this.errors.push({
           severity: 'error',
           graph: graphName,
@@ -591,6 +617,7 @@ class DialogueGraphValidator {
       for (const node of graph.nodes) {
         for (const choice of node.choices) {
           if (!choice.nextNodeId) continue // Already validated in validateNode
+          if (this.virtualNodeIds.has(choice.nextNodeId)) continue
 
           // If the reference is external (not in this graph) but also doesn't exist anywhere
           const existsInThisGraph = graph.nodes.some(n => n.nodeId === choice.nextNodeId)
@@ -625,9 +652,11 @@ function main(): void {
 
   const graphs = [
     { name: 'samuel', nodes: samuelDialogueNodes, startNodeId: 'samuel_introduction' },
+    { name: 'station_entry', nodes: Array.from(stationEntryGraph.nodes.values()), startNodeId: stationEntryGraph.startNodeId || 'entry_arrival' },
     { name: 'maya', nodes: mayaDialogueNodes, startNodeId: 'maya_introduction' },
     { name: 'maya-revisit', nodes: mayaRevisitNodes, startNodeId: 'maya_revisit_welcome' },
     { name: 'devon', nodes: devonDialogueNodes, startNodeId: 'devon_introduction' },
+    { name: 'devon-revisit', nodes: devonRevisitNodes, startNodeId: 'devon_revisit_welcome' },
     { name: 'jordan', nodes: jordanDialogueNodes, startNodeId: 'jordan_introduction' },
     { name: 'kai', nodes: kaiDialogueNodes, startNodeId: 'kai_introduction' },
     { name: 'silas', nodes: silasDialogueNodes, startNodeId: 'silas_introduction' },
@@ -640,12 +669,16 @@ function main(): void {
     { name: 'grand_hall', nodes: grandHallDialogueNodes, startNodeId: 'sector_1_hall' },
     { name: 'market', nodes: marketDialogueNodes, startNodeId: 'sector_2_market' },
     { name: 'deep_station', nodes: deepStationDialogueNodes, startNodeId: 'sector_3_office' },
-    // { name: 'station_entry', nodes: stationEntryDialogueNodes, startNodeId: 'entry_arrival' }, // Map format
     { name: 'grace', nodes: graceDialogueNodes, startNodeId: 'grace_introduction' },
+    { name: 'grace-revisit', nodes: graceRevisitNodes, startNodeId: 'grace_revisit_welcome' },
     { name: 'elena', nodes: elenaDialogueNodes, startNodeId: 'elena_intro' },
     { name: 'zara', nodes: zaraDialogueNodes, startNodeId: 'zara_introduction' },
     { name: 'asha', nodes: ashaDialogueNodes, startNodeId: 'asha_introduction' },
     { name: 'lira', nodes: liraDialogueNodes, startNodeId: 'lira_introduction' },
+    { name: 'quinn', nodes: quinnDialogueNodes, startNodeId: 'quinn_introduction' },
+    { name: 'dante', nodes: danteDialogueNodes, startNodeId: 'dante_introduction' },
+    { name: 'nadia', nodes: nadiaDialogueNodes, startNodeId: 'nadia_introduction' },
+    { name: 'isaiah', nodes: isaiahDialogueNodes, startNodeId: 'isaiah_introduction' },
   ]
 
   const validator = new DialogueGraphValidator()

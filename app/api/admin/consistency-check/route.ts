@@ -96,7 +96,8 @@ export async function GET(request: NextRequest) {
     // Step 2: Get all profiles
     const { data: profiles, error: profilesError } = await supabase
       .from('profiles')
-      .select('id, role, created_at, updated_at')
+      // NOTE: profiles PK is user_id (UUID) per supabase/migrations/001_setup.sql
+      .select('user_id, email, role, created_at, updated_at')
       .abortSignal(AbortSignal.timeout(15000))
 
     if (profilesError) {
@@ -123,16 +124,16 @@ export async function GET(request: NextRequest) {
 
     // Create lookup maps for efficient checking
     const authUserIds = new Set(authUsers.users.map(u => u.id))
-    const profileIds = new Set(profiles?.map(p => p.id) || [])
+    const profileUserIds = new Set(profiles?.map(p => p.user_id) || [])
     const playerProfileIds = new Set(playerProfiles?.map(p => p.user_id) || [])
 
     // Check 1: Orphaned profiles (profile exists but no auth.user)
     for (const profile of profiles || []) {
-      if (!authUserIds.has(profile.id)) {
+      if (!authUserIds.has(profile.user_id)) {
         issues.push({
           type: 'orphaned_profile',
-          userId: profile.id,
-          details: `Profile exists without corresponding auth.user (created: ${profile.created_at})`,
+          userId: profile.user_id,
+          details: `Profile exists without corresponding auth.user (email: ${profile.email}, created: ${profile.created_at})`,
           autoFixable: false // Manual intervention required - could be intentional
         })
       }
@@ -153,7 +154,7 @@ export async function GET(request: NextRequest) {
 
     // Check 3: Missing profiles (auth.user exists but no profile)
     for (const authUser of authUsers.users) {
-      if (!profileIds.has(authUser.id)) {
+      if (!profileUserIds.has(authUser.id)) {
         issues.push({
           type: 'missing_profile',
           userId: authUser.id,
@@ -167,7 +168,9 @@ export async function GET(request: NextRequest) {
             const { error: insertError } = await supabase
               .from('profiles')
               .insert({
-                id: authUser.id,
+                user_id: authUser.id,
+                email: authUser.email || 'unknown@example.com',
+                full_name: authUser.user_metadata?.full_name || authUser.email || null,
                 role: 'student', // Default role
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
@@ -194,11 +197,11 @@ export async function GET(request: NextRequest) {
     // This is normal - only create player_profile when user starts playing
     // We'll report it as informational only
     for (const authUser of authUsers.users) {
-      if (profileIds.has(authUser.id) && !playerProfileIds.has(authUser.id)) {
+      if (profileUserIds.has(authUser.id) && !playerProfileIds.has(authUser.id)) {
         // This is informational - not an error
         // Player profiles are created on first game interaction
         // Don't add to issues unless they have very old accounts with no progress
-        const profile = profiles?.find(p => p.id === authUser.id)
+        const profile = profiles?.find(p => p.user_id === authUser.id)
         if (profile) {
           const accountAge = Date.now() - new Date(profile.created_at).getTime()
           const daysSinceCreation = accountAge / (1000 * 60 * 60 * 24)

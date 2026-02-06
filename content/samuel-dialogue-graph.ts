@@ -9,12 +9,106 @@
 
 import {
   DialogueNode,
-  DialogueGraph
+  DialogueGraph,
+  ConditionalChoice
 } from '@/lib/dialogue-graph'
 import { mayaRevisitEntryPoints } from './maya-revisit-graph'
 import { samuelIdentityNodes } from './samuel-identity-nodes'
 import { samuelOrbResonanceNodes } from './samuel-orb-resonance-nodes'
 import { systemicCalibrationNodes } from './systemic-calibration' // ISP: The Grand Convergence
+
+function makeSamuelContextualHubChoices(idPrefix: string): ConditionalChoice[] {
+  const id = (suffix: string) => `${idPrefix}_${suffix}`
+
+  return [
+    {
+      choiceId: id('about_station'),
+      text: "What is this place, really?",
+      nextNodeId: 'samuel_station_deep_explanation',
+      pattern: 'exploring',
+      skills: ['criticalThinking']
+    },
+    {
+      choiceId: id('about_patterns_analytical'),
+      text: "These patterns I'm developing...",
+      nextNodeId: 'samuel_pattern_insight_analytical',
+      pattern: 'analytical',
+      skills: ['criticalThinking'],
+      visibleCondition: {
+        patterns: {
+          analytical: { min: 3 }
+        }
+      }
+    },
+    {
+      choiceId: id('about_patterns_helping'),
+      text: "I keep wanting to help people. Is that a pattern?",
+      nextNodeId: 'samuel_pattern_insight_helping',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence'],
+      visibleCondition: {
+        patterns: {
+          helping: { min: 3 }
+        }
+      }
+    },
+    {
+      choiceId: id('about_patterns_building'),
+      text: "I notice I keep wanting to build things...",
+      nextNodeId: 'samuel_pattern_insight_building',
+      pattern: 'building',
+      skills: ['creativity'],
+      visibleCondition: {
+        patterns: {
+          building: { min: 3 }
+        }
+      }
+    },
+    {
+      choiceId: id('about_people'),
+      text: "Tell me about the people here.",
+      nextNodeId: 'samuel_comprehensive_hub',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence'],
+      visibleCondition: {
+        hasGlobalFlags: ['met_maya']
+      }
+    },
+    {
+      choiceId: id('about_careers'),
+      text: "What careers might fit someone like me?",
+      nextNodeId: 'samuel_career_preview_general',
+      pattern: 'exploring',
+      skills: ['criticalThinking'],
+      visibleCondition: {
+        patterns: {
+          analytical: { min: 4 },
+          building: { min: 4 }
+        }
+      }
+    },
+    {
+      choiceId: id('about_careers_helping'),
+      text: "Are there careers for people who want to help?",
+      nextNodeId: 'samuel_career_preview_helping',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence'],
+      visibleCondition: {
+        patterns: {
+          helping: { min: 4 },
+          patience: { min: 3 }
+        }
+      }
+    },
+    {
+      choiceId: id('meet_someone'),
+      text: "I'd like to meet someone new.",
+      nextNodeId: 'samuel_hub_initial',
+      pattern: 'exploring',
+      skills: ['communication']
+    }
+  ]
+}
 
 export const samuelDialogueNodes: DialogueNode[] = [
   ...systemicCalibrationNodes, // Inject Calibration nodes first
@@ -80,7 +174,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
   // ============= ATMOSPHERIC ARRIVAL =============
   {
     nodeId: 'station_arrival',
-    speaker: '', // No speaker - purely atmospheric
+    speaker: 'Narrator', // Atmospheric narration
     content: [
       {
         text: "The train slows down. Through fogged windows, you catch your first glimpse of the station. High ceilings, warm light spillin' through old glass, sounds of folks talkin' somewhere up ahead.\n\nA figure's waitin' on the platform. Older man, patient stance. Like he's been expectin' you.",
@@ -138,7 +232,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
   // Player chose to look around - reward their patience with atmosphere
   {
     nodeId: 'station_observation',
-    speaker: '', // Atmospheric narration
+    speaker: 'Narrator', // Atmospheric narration
     content: [
       {
         text: "You pause at the train door, taking it in.\n\nThe station's bigger than it looked from outside. Vaulted ceilings stretch up into shadow, old ironwork catching the light. Platform signs point to places you half-recognize—some you don't. The air smells like old wood and something faintly electric, like possibility.\n\nA few travelers drift past, each heading somewhere with quiet purpose.\n\nThe older man on the platform notices you looking. He smiles, patient. No rush.",
@@ -181,7 +275,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
   // Player chose to notice others - reward their awareness
   {
     nodeId: 'observe_passengers',
-    speaker: '', // Atmospheric narration
+    speaker: 'Narrator', // Atmospheric narration
     content: [
       {
         text: "You glance down the train car. A few other passengers are gathering their things.a young woman with paint-stained fingers, a guy in scrubs looking exhausted but focused, someone your age staring out the window like they're working up courage.\n\nEach of them alone. Each of them here for something.\n\nOn the platform, the older man waits. His eyes move across all of you, but when they land on you, something shifts. Recognition, maybe. Or just welcome.",
@@ -240,7 +334,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_what_is_this_patient',
         text: "What is this place exactly?",
-        nextNodeId: 'systemic_calibration_start', // ISP: Reroute to Calibration
+        nextNodeId: 'systemic_calibration_start_place', // ISP: Reroute to Calibration
         pattern: 'exploring',
         skills: ['communication', 'adaptability'],
         voiceVariations: {
@@ -254,7 +348,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_about_platforms_patient',
         text: "The platforms.where do they lead?",
-        nextNodeId: 'systemic_calibration_start', // ISP: Reroute to Calibration
+        nextNodeId: 'systemic_calibration_start_platforms', // ISP: Reroute to Calibration
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
         voiceVariations: {
@@ -483,7 +577,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'sim_reassure_data',
         text: "Check logs. 'Train 415 merged with 530 due to track maintenance.' Tell them they have time for coffee.",
-        nextNodeId: 'samuel_orb_introduction', // Proceed to main flow
+        nextNodeId: 'samuel_orb_introduction_after_sim_reassure', // Proceed to main flow
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'digitalLiteracy'],
         consequence: {
@@ -503,7 +597,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'sim_analyze_pattern',
         text: "Notice this happens every Tuesday. Suggest better signage for the merge.",
-        nextNodeId: 'samuel_orb_introduction',
+        nextNodeId: 'samuel_orb_introduction_after_sim_pattern',
         pattern: 'analytical',
         skills: ['systemsThinking', 'informationLiteracy'],
         consequence: {
@@ -523,7 +617,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'sim_dismiss',
         text: "Tell them to just wait. The board is never wrong.",
-        nextNodeId: 'samuel_orb_introduction',
+        nextNodeId: 'samuel_orb_introduction_after_sim_dismiss',
         pattern: 'patience',
         voiceVariations: {
           analytical: "The board is accurate. They should trust the system.",
@@ -1032,7 +1126,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'ready_after_wisdom',
         text: "I think I understand.",
-        nextNodeId: 'samuel_orb_introduction',
+        nextNodeId: 'samuel_orb_introduction_after_understanding',
         pattern: 'exploring'
       },
       {
@@ -1044,7 +1138,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'pattern_wisdom_deep',
         text: "[Wisdom] You're describing emergence. Patterns that adapt create new possibilities.",
-        nextNodeId: 'samuel_orb_introduction',
+        nextNodeId: 'samuel_orb_introduction_after_wisdom',
         pattern: 'exploring',
         skills: ['systemsThinking', 'criticalThinking'],
         requiredOrbFill: { pattern: 'exploring', threshold: 35 },
@@ -1112,6 +1206,90 @@ OBSERVATION: He looks tired. Scared. Different.`,
   },
 
   // ============= STATION EXPLANATION =============
+  {
+    nodeId: 'samuel_explains_station_fear_failure',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Wastin' time. Yeah... that fear'll put a motor in your chest.\n\nFox Theatre Station. Been here since 1929, y'know, same as the theatre upstairs. Beautiful old building.\n\nEach platform connects you to different folks around the city. People figuring out their own stuff, just like you. Lot of 'em came here because things changed faster than they expected.\n\nYou talk to 'em, see what clicks. That's how you find solid ground when everything's shifting.",
+        emotion: 'warm',
+        variation_id: 'explains_fear_failure_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ask_your_story_fear_failure',
+        text: "You been doing this long?",
+        nextNodeId: 'samuel_backstory_intro',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'ready_to_explore_fear_failure',
+        text: "Alright, let me check out the platforms",
+        nextNodeId: 'samuel_orb_introduction',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_explains_station_fear_invisible',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Invisible. City can do that to you. Even in a crowd.\n\nFox Theatre Station. Been here since 1929, y'know, same as the theatre upstairs. Beautiful old building.\n\nEach platform connects you to different folks around the city. People figuring out their own stuff, just like you. Lot of 'em came here because things changed faster than they expected.\n\nYou talk to 'em, see what clicks. That's how you find solid ground when everything's shifting.",
+        emotion: 'warm',
+        variation_id: 'explains_fear_invisible_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ask_your_story_fear_invisible',
+        text: "You been doing this long?",
+        nextNodeId: 'samuel_backstory_intro',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'ready_to_explore_fear_invisible',
+        text: "Alright, let me check out the platforms",
+        nextNodeId: 'samuel_orb_introduction',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_explains_station_fear_stagnation',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "The weight of what you haven't built yet... that's real.\n\nFox Theatre Station. Been here since 1929, y'know, same as the theatre upstairs. Beautiful old building.\n\nEach platform connects you to different folks around the city. People figuring out their own stuff, just like you. Lot of 'em came here because things changed faster than they expected.\n\nYou talk to 'em, see what clicks. That's how you find solid ground when everything's shifting.",
+        emotion: 'warm',
+        variation_id: 'explains_fear_stagnation_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'ask_your_story_fear_stagnation',
+        text: "You been doing this long?",
+        nextNodeId: 'samuel_backstory_intro',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'ready_to_explore_fear_stagnation',
+        text: "Alright, let me check out the platforms",
+        nextNodeId: 'samuel_orb_introduction',
+        pattern: 'exploring',
+        skills: ['communication']
+      }
+    ]
+  },
+
   {
     nodeId: 'samuel_explains_station',
     speaker: 'Samuel Washington',
@@ -1202,7 +1380,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'ask_why_leave',
         text: "So why'd you leave?",
-        nextNodeId: 'samuel_backstory_revelation',
+        nextNodeId: 'samuel_backstory_revelation_why_leave',
         pattern: 'exploring',
         skills: ['communication'],
         archetype: 'ASK_FOR_DETAILS'
@@ -1210,7 +1388,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'acknowledge',
         text: "Sounds like a solid life",
-        nextNodeId: 'samuel_backstory_revelation',
+        nextNodeId: 'samuel_backstory_revelation_solid_life',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
         archetype: 'SHOW_UNDERSTANDING'
@@ -1221,6 +1399,122 @@ OBSERVATION: He looks tired. Scared. Different.`,
         characterId: 'samuel',
         addKnowledgeFlags: ['knows_backstory'],
         thoughtId: 'industrial-legacy'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_backstory_revelation_why_leave',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Why'd I leave?\n\nIt was solid. But it <shake>wasn't mine</shake>, you know?\n\nOne day I'm standin' up at Vulcan, lookin' down at the whole city. Twenty-three years buildin' other people's systems.\n\nI was good at it. Real good. But I'd never once asked myself what I actually wanted to build.",
+        emotion: 'vulnerable',
+        variation_id: 'revelation_why_leave_v1',
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "Why'd I leave?\n\nIt was solid. But it <shake>wasn't mine</shake>, you know?\n\nTwenty-three years buildin' other people's systems. You understand that, don't you? The difference between making something because you're told to, and building something because it's yours.", altEmotion: 'knowing' },
+          { pattern: 'exploring', minLevel: 4, altText: "Why'd I leave?\n\nIt was solid. But it <shake>wasn't mine</shake>.\n\nI see that same restlessness in you.the need to find your own thing, not just accept what's handed to you. That's not easy. But it's necessary.", altEmotion: 'warm' },
+          { pattern: 'patience', minLevel: 4, altText: "Why'd I leave?\n\nIt was solid. But it <shake>wasn't mine</shake>.\n\nTook me twenty-three years to figure that out. You listening like this.you're doing it faster than I did. That's good.", altEmotion: 'reflective' }
+        ],
+        interrupt: {
+          duration: 3500,
+          type: 'silence',
+          action: 'Hold the silence. Let him know you hear him.',
+          targetNodeId: 'samuel_interrupt_acknowledged',
+          consequence: {
+            characterId: 'samuel',
+            trustChange: 2
+          }
+        }
+      }
+    ],
+    onEnter: [
+      {
+        mysteryChanges: { samuelsPast: 'hinted' }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'what_did_you_want_why_leave',
+        text: "So what did you want to build?",
+        nextNodeId: 'samuel_pause_after_backstory_build',
+        pattern: 'exploring',
+        skills: ['communication', 'criticalThinking'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'relate_why_leave',
+        text: "I understand that feeling.",
+        nextNodeId: 'samuel_pause_after_backstory_relate',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        archetype: 'ACKNOWLEDGE_EMOTION',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2,
+          setRelationshipStatus: 'acquaintance'
+        }
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_backstory_revelation_solid_life',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "It was solid. Couldn't ask for more on paper.\n\nBut it <shake>wasn't mine</shake>, you know?\n\nOne day I'm standin' up at Vulcan, lookin' down at the whole city. Twenty-three years buildin' other people's systems.\n\nI was good at it. Real good. But I'd never once asked myself what I actually wanted to build.",
+        emotion: 'vulnerable',
+        variation_id: 'revelation_solid_life_v1',
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "It was solid. Couldn't ask for more on paper.\n\nBut it <shake>wasn't mine</shake>, you know?\n\nTwenty-three years buildin' other people's systems. You understand that, don't you? The difference between making something because you're told to, and building something because it's yours.", altEmotion: 'knowing' },
+          { pattern: 'exploring', minLevel: 4, altText: "It was solid. Couldn't ask for more on paper.\n\nBut it <shake>wasn't mine</shake>.\n\nI see that same restlessness in you.the need to find your own thing, not just accept what's handed to you. That's not easy. But it's necessary.", altEmotion: 'warm' },
+          { pattern: 'patience', minLevel: 4, altText: "It was solid. Couldn't ask for more on paper.\n\nBut it <shake>wasn't mine</shake>.\n\nTook me twenty-three years to figure that out. You listening like this.you're doing it faster than I did. That's good.", altEmotion: 'reflective' }
+        ],
+        interrupt: {
+          duration: 3500,
+          type: 'silence',
+          action: 'Hold the silence. Let him know you hear him.',
+          targetNodeId: 'samuel_interrupt_acknowledged',
+          consequence: {
+            characterId: 'samuel',
+            trustChange: 2
+          }
+        }
+      }
+    ],
+    onEnter: [
+      {
+        mysteryChanges: { samuelsPast: 'hinted' }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'what_did_you_want_solid_life',
+        text: "So what did you want to build?",
+        nextNodeId: 'samuel_pause_after_backstory_build',
+        pattern: 'exploring',
+        skills: ['communication', 'criticalThinking'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'relate_solid_life',
+        text: "I understand that feeling.",
+        nextNodeId: 'samuel_pause_after_backstory_relate',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        archetype: 'ACKNOWLEDGE_EMOTION',
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2,
+          setRelationshipStatus: 'acquaintance'
+        }
       }
     ]
   },
@@ -1261,7 +1555,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'what_did_you_want',
         text: "So what did you want to build?",
-        nextNodeId: 'samuel_pause_after_backstory',
+        nextNodeId: 'samuel_pause_after_backstory_build',
         pattern: 'exploring',
         skills: ['communication', 'criticalThinking'],
         consequence: {
@@ -1272,7 +1566,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'relate',
         text: "I understand that feeling.",
-        nextNodeId: 'samuel_pause_after_backstory',
+        nextNodeId: 'samuel_pause_after_backstory_relate',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         archetype: 'ACKNOWLEDGE_EMOTION',
@@ -1344,7 +1638,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'vuln_worth_it',
         text: "Was it worth it?",
-        nextNodeId: 'samuel_vulnerability_reflection',
+        nextNodeId: 'samuel_vulnerability_reflection_worth_it',
         pattern: 'analytical',
         skills: ['criticalThinking'],
         archetype: 'ASK_FOR_DETAILS'
@@ -1352,7 +1646,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'vuln_silence',
         text: "[Stay silent. Some grief needs no words.]",
-        nextNodeId: 'samuel_vulnerability_reflection',
+        nextNodeId: 'samuel_vulnerability_reflection_silence',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
         archetype: 'STAY_SILENT',
@@ -1364,7 +1658,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'vuln_empathy',
         text: "I'm sorry, Samuel. That's a heavy weight to carry.",
-        nextNodeId: 'samuel_vulnerability_reflection',
+        nextNodeId: 'samuel_vulnerability_reflection_empathy',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         archetype: 'ACKNOWLEDGE_EMOTION',
@@ -1376,6 +1670,103 @@ OBSERVATION: He looks tired. Scared. Different.`,
     ],
     tags: ['vulnerability_arc', 'samuel_arc', 'emotional_core']
   },
+
+  {
+    nodeId: 'samuel_vulnerability_reflection_worth_it',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Was it worth it?\n\nEvery day I wonder if I chose right. Every traveler that finds their path here... I tell myself that's the answer.\n\nBut late nights, when the station's quiet? I hear her voice in the echo. Askin' why the people who needed me most weren't the ones in front of me.\n\nYou're the first person I've told that to. The station needed a conductor. But conductors still bleed.",
+        emotion: 'vulnerable_resolved',
+        variation_id: 'reflection_worth_it_v1',
+        interrupt: {
+          duration: 3500,
+          type: 'challenge',
+          action: 'Challenge that guilt',
+          targetNodeId: 'samuel_challenge_accepted',
+          consequence: {
+            characterId: 'samuel',
+            trustChange: 2,
+            addKnowledgeFlags: ['player_challenged_samuel_guilt']
+          }
+        }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'vuln_continue_worth_it',
+        text: "(Continue)",
+        nextNodeId: 'samuel_pause_after_backstory',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['vulnerability_arc', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_vulnerability_reflection_silence',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "...\n\nThank you.\n\nEvery day I wonder if I chose right. Every traveler that finds their path here... I tell myself that's the answer.\n\nBut late nights, when the station's quiet? I hear her voice in the echo. Askin' why the people who needed me most weren't the ones in front of me.\n\nYou're the first person I've told that to. The station needed a conductor. But conductors still bleed.",
+        emotion: 'vulnerable_resolved',
+        variation_id: 'reflection_silence_v1',
+        interrupt: {
+          duration: 3500,
+          type: 'challenge',
+          action: 'Challenge that guilt',
+          targetNodeId: 'samuel_challenge_accepted',
+          consequence: {
+            characterId: 'samuel',
+            trustChange: 2,
+            addKnowledgeFlags: ['player_challenged_samuel_guilt']
+          }
+        }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'vuln_continue_silence',
+        text: "(Continue)",
+        nextNodeId: 'samuel_pause_after_backstory',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['vulnerability_arc', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_vulnerability_reflection_empathy',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Yeah. It is.\n\nEvery day I wonder if I chose right. Every traveler that finds their path here... I tell myself that's the answer.\n\nBut late nights, when the station's quiet? I hear her voice in the echo. Askin' why the people who needed me most weren't the ones in front of me.\n\nYou're the first person I've told that to. The station needed a conductor. But conductors still bleed.",
+        emotion: 'vulnerable_resolved',
+        variation_id: 'reflection_empathy_v1',
+        interrupt: {
+          duration: 3500,
+          type: 'challenge',
+          action: 'Challenge that guilt',
+          targetNodeId: 'samuel_challenge_accepted',
+          consequence: {
+            characterId: 'samuel',
+            trustChange: 2,
+            addKnowledgeFlags: ['player_challenged_samuel_guilt']
+          }
+        }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'vuln_continue_empathy',
+        text: "(Continue)",
+        nextNodeId: 'samuel_pause_after_backstory',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['vulnerability_arc', 'samuel_arc']
+  },
+
   {
     nodeId: 'samuel_vulnerability_reflection',
     speaker: 'Samuel Washington',
@@ -1429,7 +1820,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'challenge_calling',
         text: "You answered a calling. That doesn't make you wrong about Dorothy.",
-        nextNodeId: 'samuel_pause_after_backstory',
+        nextNodeId: 'samuel_pause_after_challenge_calling',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -1440,7 +1831,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'challenge_both',
         text: "You couldn't be both people. The station needed who you became.",
-        nextNodeId: 'samuel_pause_after_backstory',
+        nextNodeId: 'samuel_pause_after_challenge_both',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence'],
         consequence: {
@@ -1451,7 +1842,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'challenge_patience',
         text: "[Let the realization settle]",
-        nextNodeId: 'samuel_pause_after_backstory',
+        nextNodeId: 'samuel_pause_after_challenge_settle',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -1495,7 +1886,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'letter_you_wrote_it',
         text: "You wrote it. Didn't you?",
-        nextNodeId: 'samuel_letter_confession',
+        nextNodeId: 'samuel_letter_confession_observed',
         pattern: 'analytical',
         skills: ['criticalThinking', 'observation'],
         archetype: 'MAKE_OBSERVATION'
@@ -1503,7 +1894,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'letter_wait_patiently',
         text: "[Wait for him to continue]",
-        nextNodeId: 'samuel_letter_confession',
+        nextNodeId: 'samuel_letter_confession_waited',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
         archetype: 'STAY_SILENT',
@@ -1515,13 +1906,143 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'letter_why_now',
         text: "Why tell me now?",
-        nextNodeId: 'samuel_letter_confession',
+        nextNodeId: 'samuel_letter_confession_why_now',
         pattern: 'exploring',
         skills: ['communication']
       }
     ],
     tags: ['mystery_reveal', 'letter_sender', 'samuel_arc']
   },
+
+  {
+    nodeId: 'samuel_letter_confession_observed',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Smart. You saw the thread.\n\nThe station... it knows things. Knows when someone's ready. Knows when someone needs to be here.\n\nI don't write the letters. But I know who does. And it ain't any person you'd recognize.\n\nThis place called you here. Same way it called me, all those years ago. Some journeys choose their travelers.",
+        emotion: 'mysterious_reverent',
+        variation_id: 'letter_confession_observed_v1',
+        richEffectContext: 'thinking'
+      }
+    ],
+    onEnter: [
+      {
+        mysteryChanges: { stationNature: 'sensing' }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'station_alive_observed',
+        text: "The station is... alive?",
+        nextNodeId: 'samuel_beat_after_station_called_alive',
+        pattern: 'exploring',
+        skills: ['creativity', 'criticalThinking'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'station_accept_observed',
+        text: "I think I understand. Some things don't need explaining.",
+        nextNodeId: 'samuel_beat_after_station_called_accept',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['mystery_reveal', 'station_nature', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_letter_confession_waited',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Thank you for lettin' me say it.\n\nThe station... it knows things. Knows when someone's ready. Knows when someone needs to be here.\n\nI don't write the letters. But I know who does. And it ain't any person you'd recognize.\n\nThis place called you here. Same way it called me, all those years ago. Some journeys choose their travelers.",
+        emotion: 'mysterious_reverent',
+        variation_id: 'letter_confession_waited_v1',
+        richEffectContext: 'thinking'
+      }
+    ],
+    onEnter: [
+      {
+        mysteryChanges: { stationNature: 'sensing' }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'station_alive_waited',
+        text: "The station is... alive?",
+        nextNodeId: 'samuel_beat_after_station_called_alive',
+        pattern: 'exploring',
+        skills: ['creativity', 'criticalThinking'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'station_accept_waited',
+        text: "I think I understand. Some things don't need explaining.",
+        nextNodeId: 'samuel_beat_after_station_called_accept',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['mystery_reveal', 'station_nature', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_letter_confession_why_now',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Because you're listenin'. And because the station don't waste moments like this.\n\nThe station... it knows things. Knows when someone's ready. Knows when someone needs to be here.\n\nI don't write the letters. But I know who does. And it ain't any person you'd recognize.\n\nThis place called you here. Same way it called me, all those years ago. Some journeys choose their travelers.",
+        emotion: 'mysterious_reverent',
+        variation_id: 'letter_confession_why_now_v1',
+        richEffectContext: 'thinking'
+      }
+    ],
+    onEnter: [
+      {
+        mysteryChanges: { stationNature: 'sensing' }
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'station_alive_why_now',
+        text: "The station is... alive?",
+        nextNodeId: 'samuel_beat_after_station_called_alive',
+        pattern: 'exploring',
+        skills: ['creativity', 'criticalThinking'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'station_accept_why_now',
+        text: "I think I understand. Some things don't need explaining.",
+        nextNodeId: 'samuel_beat_after_station_called_accept',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 2
+        }
+      }
+    ],
+    tags: ['mystery_reveal', 'station_nature', 'samuel_arc']
+  },
+
   {
     nodeId: 'samuel_letter_confession',
     speaker: 'Samuel Washington',
@@ -1542,7 +2063,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'station_alive',
         text: "The station is... alive?",
-        nextNodeId: 'samuel_beat_after_station_called',
+        nextNodeId: 'samuel_beat_after_station_called_alive',
         pattern: 'exploring',
         skills: ['creativity', 'criticalThinking'],
         consequence: {
@@ -1553,7 +2074,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'station_accept',
         text: "I think I understand. Some things don't need explaining.",
-        nextNodeId: 'samuel_beat_after_station_called',
+        nextNodeId: 'samuel_beat_after_station_called_accept',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
         consequence: {
@@ -1566,6 +2087,46 @@ OBSERVATION: He looks tired. Scared. Different.`,
   },
 
   // ============= BEAT: After Station Called You =============
+  {
+    nodeId: 'samuel_beat_after_station_called_alive',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Alive ain't quite the right word. But you're circlin' it.\n\nSome truths are bigger than words, aren't they? The station chose you. And you chose to answer.\n\n[He looks toward the platforms]\n\nThere are others here tonight who were also called.",
+        emotion: 'knowing',
+        variation_id: 'beat_after_station_called_alive_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub_alive',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_beat_after_station_called_accept',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Yeah. That's the kind of understandin' that don't come from explanations.\n\nSome truths are bigger than words, aren't they? The station chose you. And you chose to answer.\n\n[He looks toward the platforms]\n\nThere are others here tonight who were also called.",
+        emotion: 'knowing',
+        variation_id: 'beat_after_station_called_accept_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'continue_to_hub_accept',
+        text: "(Continue)",
+        nextNodeId: 'samuel_hub_after_maya',
+        pattern: 'patience'
+      }
+    ]
+  },
+
   {
     nodeId: 'samuel_beat_after_station_called',
     speaker: 'Samuel Washington',
@@ -1587,6 +2148,111 @@ OBSERVATION: He looks tired. Scared. Different.`,
   },
 
   // ============= PAUSE: After Backstory Revelation (Breathing Room) =============
+  {
+    nodeId: 'samuel_pause_after_backstory_build',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's the question, ain't it?\n\nLong time ago now. But some things stick with you, y'know?",
+        emotion: 'thoughtful',
+        variation_id: 'pause_backstory_build_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'samuel_continue_after_backstory_build',
+        text: "(Continue)",
+        nextNodeId: 'samuel_purpose_found',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['scene_break', 'pacing', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_pause_after_backstory_relate',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Yeah.\n\nLong time ago now. But some things stick with you, y'know?",
+        emotion: 'thoughtful',
+        variation_id: 'pause_backstory_relate_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'samuel_continue_after_backstory_relate',
+        text: "(Continue)",
+        nextNodeId: 'samuel_purpose_found',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['scene_break', 'pacing', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_pause_after_challenge_calling',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Mmm.\n\nLong time ago now. But some things stick with you, y'know?",
+        emotion: 'thoughtful',
+        variation_id: 'pause_after_challenge_calling_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'samuel_continue_after_challenge_calling',
+        text: "(Continue)",
+        nextNodeId: 'samuel_purpose_found',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['scene_break', 'pacing', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_pause_after_challenge_both',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's... a kind way to put it.\n\nLong time ago now. But some things stick with you, y'know?",
+        emotion: 'thoughtful',
+        variation_id: 'pause_after_challenge_both_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'samuel_continue_after_challenge_both',
+        text: "(Continue)",
+        nextNodeId: 'samuel_purpose_found',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['scene_break', 'pacing', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_pause_after_challenge_settle',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "[He lets the silence do its work.]\n\nLong time ago now. But some things stick with you, y'know?",
+        emotion: 'thoughtful',
+        variation_id: 'pause_after_challenge_settle_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'samuel_continue_after_challenge_settle',
+        text: "(Continue)",
+        nextNodeId: 'samuel_purpose_found',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['scene_break', 'pacing', 'samuel_arc']
+  },
+
   {
     nodeId: 'samuel_pause_after_backstory',
     speaker: 'Samuel Washington',
@@ -1629,7 +2295,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'beautiful',
         text: "That's a beautiful purpose.",
-        nextNodeId: 'samuel_orb_introduction',
+        nextNodeId: 'samuel_orb_introduction_purpose_beautiful',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -1640,7 +2306,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'ready_for_my_blueprint',
         text: "I'm ready to find my blueprint.",
-        nextNodeId: 'samuel_orb_introduction',
+        nextNodeId: 'samuel_orb_introduction_blueprint_ready',
         pattern: 'exploring',
         skills: ['communication']
       },
@@ -1680,7 +2346,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'beautiful_3',
         text: "That's a beautiful purpose.",
-        nextNodeId: 'samuel_orb_introduction',
+        nextNodeId: 'samuel_orb_introduction_purpose_beautiful',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -1691,7 +2357,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'ready_for_my_blueprint_3',
         text: "I'm ready to find my blueprint.",
-        nextNodeId: 'samuel_orb_introduction',
+        nextNodeId: 'samuel_orb_introduction_blueprint_ready',
         pattern: 'exploring',
         skills: ['communication']
       },
@@ -1734,7 +2400,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'samuel_origin_curious',
         text: "What was your crossroads?",
-        nextNodeId: 'samuel_origin_choice',
+        nextNodeId: 'samuel_origin_choice_curious',
         pattern: 'exploring',
         skills: ['communication'],
         archetype: 'EXPRESS_CURIOSITY'
@@ -1742,7 +2408,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'samuel_origin_listen',
         text: "[Listen]",
-        nextNodeId: 'samuel_origin_choice',
+        nextNodeId: 'samuel_origin_choice_listen',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
         archetype: 'STAY_SILENT'
@@ -1758,6 +2424,58 @@ OBSERVATION: He looks tired. Scared. Different.`,
     metadata: {
       sessionBoundary: true  // Session 1: Introduction complete
     }
+  },
+
+  {
+    nodeId: 'samuel_origin_choice_curious',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "My crossroads?\n\nVP of Engineering at Southern Company. Corner office downtown, nice view of the Regions Tower. Or stay technical - keep my hands in the work, keep buildin' the grid that powers every light from Irondale to Hoover.\n\nBig money and a fancy title. Or doin' what I actually loved.",
+        emotion: 'reflective',
+        variation_id: 'origin_choice_curious_v1',
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "My crossroads?\n\nVP of Engineering. Corner office. Or stay technical.keep my hands in the work.\n\nYou build things. You understand that choice. The difference between managing builders and being one.\n\nBig money and a fancy title. Or doin' what I actually loved.", altEmotion: 'reflective' },
+          { pattern: 'exploring', minLevel: 4, altText: "My crossroads?\n\nVP of Engineering. Or stay technical.keep buildin' the grid that powers Birmingham.\n\nYou're curious about paths not taken, aren't you? That's the right question.\n\nBig money. Or doin' what I actually loved.", altEmotion: 'knowing' }
+        ]
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'samuel_which_train_curious',
+        text: "Which did you choose?",
+        nextNodeId: 'samuel_origin_wrong_train',
+        pattern: 'analytical',
+        skills: ['communication']
+      }
+    ],
+    tags: ['backstory', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_origin_choice_listen',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "...\n\nVP of Engineering at Southern Company. Corner office downtown, nice view of the Regions Tower. Or stay technical - keep my hands in the work, keep buildin' the grid that powers every light from Irondale to Hoover.\n\nBig money and a fancy title. Or doin' what I actually loved.",
+        emotion: 'reflective',
+        variation_id: 'origin_choice_listen_v1',
+        patternReflection: [
+          { pattern: 'building', minLevel: 4, altText: "...\n\nVP of Engineering. Corner office. Or stay technical.keep my hands in the work.\n\nYou build things. You understand that choice. The difference between managing builders and being one.\n\nBig money and a fancy title. Or doin' what I actually loved.", altEmotion: 'reflective' },
+          { pattern: 'exploring', minLevel: 4, altText: "...\n\nVP of Engineering. Or stay technical.keep buildin' the grid that powers Birmingham.\n\nYou're curious about paths not taken, aren't you? That's the right question.\n\nBig money. Or doin' what I actually loved.", altEmotion: 'knowing' }
+        ]
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'samuel_which_train_listen',
+        text: "Which did you choose?",
+        nextNodeId: 'samuel_origin_wrong_train',
+        pattern: 'analytical',
+        skills: ['communication']
+      }
+    ],
+    tags: ['backstory', 'samuel_arc']
   },
 
   {
@@ -1856,7 +2574,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'samuel_courage_recognition',
         text: "That takes real courage.",
-        nextNodeId: 'samuel_daughter_path',
+        nextNodeId: 'samuel_daughter_path_after_courage',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         archetype: 'ACKNOWLEDGE_EMOTION',
@@ -1868,7 +2586,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'ask_about_daughter_after',
         text: "Where is your daughter now?",
-        nextNodeId: 'samuel_daughter_path',
+        nextNodeId: 'samuel_daughter_path_after_question',
         pattern: 'exploring',
         skills: ['communication'],
         consequence: {
@@ -1892,6 +2610,84 @@ OBSERVATION: He looks tired. Scared. Different.`,
   },
 
   // ============= SAMUEL'S DAUGHTER (Emotional Anchor) =============
+  {
+    nodeId: 'samuel_daughter_path_after_courage',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Appreciate you sayin' that.\n\nBiomedical engineer at the CDC now. Designs diagnostic systems - saves lives, really.\n\nCalls me every Sunday. Still thanks me for bringin' her here.\n\nI wanted her to be a lawyer, honestly. Good money, stable. But she found her own way.\n\nWatchin' her figure that out... that's when I knew what I was supposed to do.",
+        emotion: 'paternal_pride',
+        variation_id: 'daughter_after_courage_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'return_to_purpose_after_courage',
+        text: "So you stayed to give others what you gave her.",
+        nextNodeId: 'samuel_beat_after_daughter_path',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'ask_about_letters_from_daughter_after_courage',
+        text: "And the letters people receive... you send those?",
+        nextNodeId: 'samuel_letter_system',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'communication']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['knows_about_daughter']
+      }
+    ],
+    tags: ['backstory', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_daughter_path_after_question',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Biomedical engineer at the CDC now. Designs diagnostic systems - saves lives, really.\n\nCalls me every Sunday. Still thanks me for bringin' her here.\n\nI wanted her to be a lawyer, honestly. Good money, stable. But she found her own way.\n\nWatchin' her figure that out... that's when I knew what I was supposed to do.",
+        emotion: 'paternal_pride',
+        variation_id: 'daughter_after_question_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'return_to_purpose_after_question',
+        text: "So you stayed to give others what you gave her.",
+        nextNodeId: 'samuel_beat_after_daughter_path',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'samuel',
+          trustChange: 1
+        }
+      },
+      {
+        choiceId: 'ask_about_letters_from_daughter_after_question',
+        text: "And the letters people receive... you send those?",
+        nextNodeId: 'samuel_letter_system',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'communication']
+      }
+    ],
+    onEnter: [
+      {
+        characterId: 'samuel',
+        addKnowledgeFlags: ['knows_about_daughter']
+      }
+    ],
+    tags: ['backstory', 'samuel_arc']
+  },
+
   {
     nodeId: 'samuel_daughter_path',
     speaker: 'Samuel Washington',
@@ -1971,6 +2767,202 @@ OBSERVATION: He looks tired. Scared. Different.`,
   // This scene triggers only once - when player first reaches the hub
   // Samuel narratively introduces orbs as "echoes of who you're becoming"
   {
+    nodeId: 'samuel_orb_introduction_after_understanding',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Mmm. Sounds like you're hearin' me.\n\nHey, before you head off... here, take this.",
+        emotion: 'warm',
+        variation_id: 'orb_intro_after_understanding_v1',
+        interaction: 'bloom'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'orb_what_is_it_after_understanding',
+        text: "What is it?",
+        nextNodeId: 'samuel_orb_explanation_asked',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'orb_accept_quietly_after_understanding',
+        text: "(Accept it)",
+        nextNodeId: 'samuel_orb_explanation_accepted',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['orb_introduction', 'tutorial', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_orb_introduction_after_wisdom',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You got a way of namin' things. I like that.\n\nHey, before you head off... here, take this.",
+        emotion: 'warm',
+        variation_id: 'orb_intro_after_wisdom_v1',
+        interaction: 'bloom'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'orb_what_is_it_after_wisdom',
+        text: "What is it?",
+        nextNodeId: 'samuel_orb_explanation_asked',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'orb_accept_quietly_after_wisdom',
+        text: "(Accept it)",
+        nextNodeId: 'samuel_orb_explanation_accepted',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['orb_introduction', 'tutorial', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_orb_introduction_purpose_beautiful',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's kind of you to say.\n\nHey, before you head off... here, take this.",
+        emotion: 'warm',
+        variation_id: 'orb_intro_purpose_beautiful_v1',
+        interaction: 'bloom'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'orb_what_is_it_purpose_beautiful',
+        text: "What is it?",
+        nextNodeId: 'samuel_orb_explanation_asked',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'orb_accept_quietly_purpose_beautiful',
+        text: "(Accept it)",
+        nextNodeId: 'samuel_orb_explanation_accepted',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['orb_introduction', 'tutorial', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_orb_introduction_blueprint_ready',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Alright then. Let's get you equipped.\n\nHey, before you head off... here, take this.",
+        emotion: 'warm',
+        variation_id: 'orb_intro_blueprint_ready_v1',
+        interaction: 'bloom'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'orb_what_is_it_blueprint_ready',
+        text: "What is it?",
+        nextNodeId: 'samuel_orb_explanation_asked',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'orb_accept_quietly_blueprint_ready',
+        text: "(Accept it)",
+        nextNodeId: 'samuel_orb_explanation_accepted',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['orb_introduction', 'tutorial', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_orb_introduction_after_sim_reassure',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's station sense. You calmed 'em down and gave 'em a path.\n\nHey, before you head off... here, take this.",
+        emotion: 'warm',
+        variation_id: 'orb_intro_after_sim_reassure_v1',
+        interaction: 'bloom'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'orb_what_is_it_after_sim_reassure',
+        text: "What is it?",
+        nextNodeId: 'samuel_orb_explanation_asked',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'orb_accept_quietly_after_sim_reassure',
+        text: "(Accept it)",
+        nextNodeId: 'samuel_orb_explanation_accepted',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['orb_introduction', 'tutorial', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_orb_introduction_after_sim_pattern',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You saw the pattern and the person. That's rare.\n\nHey, before you head off... here, take this.",
+        emotion: 'warm',
+        variation_id: 'orb_intro_after_sim_pattern_v1',
+        interaction: 'bloom'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'orb_what_is_it_after_sim_pattern',
+        text: "What is it?",
+        nextNodeId: 'samuel_orb_explanation_asked',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'orb_accept_quietly_after_sim_pattern',
+        text: "(Accept it)",
+        nextNodeId: 'samuel_orb_explanation_accepted',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['orb_introduction', 'tutorial', 'samuel_arc']
+  },
+
+  {
+    nodeId: 'samuel_orb_introduction_after_sim_dismiss',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Mmm. Next time, don't hide behind the board.\n\nStill. You showed up.\n\nHey, before you head off... here, take this.",
+        emotion: 'warm',
+        variation_id: 'orb_intro_after_sim_dismiss_v1',
+        interaction: 'bloom'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'orb_what_is_it_after_sim_dismiss',
+        text: "What is it?",
+        nextNodeId: 'samuel_orb_explanation_asked',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'orb_accept_quietly_after_sim_dismiss',
+        text: "(Accept it)",
+        nextNodeId: 'samuel_orb_explanation_accepted',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['orb_introduction', 'tutorial', 'samuel_arc']
+  },
+
+  {
     nodeId: 'samuel_orb_introduction',
     speaker: 'Samuel Washington',
     content: [
@@ -1985,14 +2977,14 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'orb_what_is_it',
         text: "What is it?",
-        nextNodeId: 'samuel_orb_explanation',
+        nextNodeId: 'samuel_orb_explanation_asked',
         pattern: 'exploring'
         // No visibleCondition - always available as primary option
       },
       {
         choiceId: 'orb_accept_quietly',
         text: "(Accept it)",
-        nextNodeId: 'samuel_orb_explanation',
+        nextNodeId: 'samuel_orb_explanation_accepted',
         pattern: 'patience'
         // No visibleCondition - always available
       }
@@ -2002,6 +2994,61 @@ OBSERVATION: He looks tired. Scared. Different.`,
       sessionBoundary: true  // Session 2: Deeper engagement
     }
   },
+
+  {
+    nodeId: 'samuel_orb_explanation_asked',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Noticed those patterns already, didn't you? <bloom>Curious things</bloom>, aren't they?\n\nStation's got a way of rememberin'. Every choice you make leaves an echo. Those orbs you're seein'? They're mirrors.not what you've done, but <ripple>who you're becomin'</ripple>.",
+        emotion: 'knowing',
+        variation_id: 'orb_explanation_asked_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'orb_understand_asked',
+        text: "I think I understand.",
+        nextNodeId: 'samuel_orb_gift_complete',
+        pattern: 'patience'
+      },
+      {
+        choiceId: 'orb_ask_more_asked',
+        text: "How does it work?",
+        nextNodeId: 'samuel_orb_mechanics',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['orb_introduction', 'tutorial']
+  },
+
+  {
+    nodeId: 'samuel_orb_explanation_accepted',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You take it without fuss. I like that.\n\nNoticed those patterns already, didn't you? <bloom>Curious things</bloom>, aren't they?\n\nStation's got a way of rememberin'. Every choice you make leaves an echo. Those orbs you're seein'? They're mirrors.not what you've done, but <ripple>who you're becomin'</ripple>.",
+        emotion: 'knowing',
+        variation_id: 'orb_explanation_accepted_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'orb_understand_accepted',
+        text: "I think I understand.",
+        nextNodeId: 'samuel_orb_gift_complete',
+        pattern: 'patience'
+      },
+      {
+        choiceId: 'orb_ask_more_accepted',
+        text: "How does it work?",
+        nextNodeId: 'samuel_orb_mechanics',
+        pattern: 'analytical'
+      }
+    ],
+    tags: ['orb_introduction', 'tutorial']
+  },
+
   {
     nodeId: 'samuel_orb_explanation',
     speaker: 'Samuel Washington',
@@ -2372,7 +3419,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'meet_devon',
         text: "That sounds... familiar. I'll find him.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_introduction_after_building',
         pattern: 'building',
         skills: ['problemSolving'],
         consequence: {
@@ -2382,7 +3429,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'devon_empathy',
         text: "He must feel so lost. Trying to help but not knowing how.",
-        nextNodeId: 'devon_introduction',
+        nextNodeId: 'devon_introduction_after_empathy',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
@@ -8002,27 +9049,6 @@ OBSERVATION: He looks tired. Scared. Different.`,
     ]
   },
 
-  // Grace Placeholder (Temporary)
-  {
-    nodeId: 'grace_revisit_welcome',
-    speaker: 'System',
-    content: [
-      {
-        text: "[Grace's content is currently under construction. Please check back later.]",
-        emotion: 'neutral',
-        variation_id: 'grace_placeholder'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'grace_placeholder_return',
-        text: "Return to Station",
-        nextNodeId: 'samuel_hub_initial'
-        // Removed invalid pattern: 'neutral'
-      }
-    ]
-  },
-
   // ============= PATTERN MILESTONE GREETINGS =============
   // Samuel greets returning players differently based on pattern progress
   // INVISIBLE DEPTH: Player feels recognized without explicit notifications
@@ -8213,13 +9239,13 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'noticing_continue',
         text: "What do you mean?",
-        nextNodeId: 'samuel_contextual_hub',
+        nextNodeId: 'samuel_contextual_hub_noticing_meaning',
         pattern: 'analytical'
       },
       {
         choiceId: 'noticing_accept',
         text: "I feel different here.",
-        nextNodeId: 'samuel_contextual_hub',
+        nextNodeId: 'samuel_contextual_hub_noticing_feel',
         pattern: 'patience'
       }
     ],
@@ -8241,13 +9267,13 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'recognition_curious',
         text: "The Weaver?",
-        nextNodeId: 'samuel_contextual_hub',
+        nextNodeId: 'samuel_contextual_hub_recognition_weaver',
         pattern: 'exploring'
       },
       {
         choiceId: 'recognition_accept',
         text: "I can feel it.",
-        nextNodeId: 'samuel_contextual_hub',
+        nextNodeId: 'samuel_contextual_hub_recognition_feel',
         pattern: 'patience'
       }
     ],
@@ -8269,13 +9295,13 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'mastery_humble',
         text: "I'm just trying to figure things out.",
-        nextNodeId: 'samuel_contextual_hub',
+        nextNodeId: 'samuel_contextual_hub_mastery_humble',
         pattern: 'patience'
       },
       {
         choiceId: 'mastery_curious',
         text: "What does the station remember?",
-        nextNodeId: 'samuel_contextual_hub',
+        nextNodeId: 'samuel_contextual_hub_mastery_remember',
         pattern: 'exploring'
       }
     ],
@@ -8344,6 +9370,90 @@ OBSERVATION: He looks tired. Scared. Different.`,
   // ============= CONTEXTUAL HUB =============
   // Topics appear based on player progress - Invisible Depth in action
   {
+    nodeId: 'samuel_contextual_hub_noticing_meaning',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "I mean you're startin' to carry yourself different. Like you're learnin' your own rhythm.\n\nWhat would you like to know?",
+        emotion: 'attentive',
+        variation_id: 'contextual_hub_noticing_meaning_v1'
+      }
+    ],
+    choices: makeSamuelContextualHubChoices('ctx_notice_meaning'),
+    tags: ['hub', 'contextual', 'greeting_followup']
+  },
+
+  {
+    nodeId: 'samuel_contextual_hub_noticing_feel',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's the station doin' what it's built to do.\n\nWhat would you like to know?",
+        emotion: 'attentive',
+        variation_id: 'contextual_hub_noticing_feel_v1'
+      }
+    ],
+    choices: makeSamuelContextualHubChoices('ctx_notice_feel'),
+    tags: ['hub', 'contextual', 'greeting_followup']
+  },
+
+  {
+    nodeId: 'samuel_contextual_hub_recognition_weaver',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's what some folks call the mind behind the station. I don't pretend to know its whole name.\n\nWhat would you like to know?",
+        emotion: 'attentive',
+        variation_id: 'contextual_hub_recognition_weaver_v1'
+      }
+    ],
+    choices: makeSamuelContextualHubChoices('ctx_recog_weaver'),
+    tags: ['hub', 'contextual', 'greeting_followup']
+  },
+
+  {
+    nodeId: 'samuel_contextual_hub_recognition_feel',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Good. Trust what you feel in here.\n\nWhat would you like to know?",
+        emotion: 'attentive',
+        variation_id: 'contextual_hub_recognition_feel_v1'
+      }
+    ],
+    choices: makeSamuelContextualHubChoices('ctx_recog_feel'),
+    tags: ['hub', 'contextual', 'greeting_followup']
+  },
+
+  {
+    nodeId: 'samuel_contextual_hub_mastery_humble',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "That's all any of us are doin'.\n\nWhat would you like to know?",
+        emotion: 'attentive',
+        variation_id: 'contextual_hub_mastery_humble_v1'
+      }
+    ],
+    choices: makeSamuelContextualHubChoices('ctx_mastery_humble'),
+    tags: ['hub', 'contextual', 'greeting_followup']
+  },
+
+  {
+    nodeId: 'samuel_contextual_hub_mastery_remember',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "It remembers the parts of you you keep showin' on purpose.\n\nWhat would you like to know?",
+        emotion: 'attentive',
+        variation_id: 'contextual_hub_mastery_remember_v1'
+      }
+    ],
+    choices: makeSamuelContextualHubChoices('ctx_mastery_remember'),
+    tags: ['hub', 'contextual', 'greeting_followup']
+  },
+
+  {
     nodeId: 'samuel_contextual_hub',
     speaker: 'Samuel Washington',
     content: [
@@ -8353,94 +9463,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
         variation_id: 'contextual_hub_v1'
       }
     ],
-    choices: [
-      {
-        choiceId: 'ctx_about_station',
-        text: "What is this place, really?",
-        nextNodeId: 'samuel_station_deep_explanation',
-        pattern: 'exploring',
-        skills: ['criticalThinking']
-      },
-      {
-        choiceId: 'ctx_about_patterns',
-        text: "These patterns I'm developing...",
-        nextNodeId: 'samuel_pattern_insight',
-        pattern: 'analytical',
-        skills: ['criticalThinking'],
-        visibleCondition: {
-          patterns: {
-            analytical: { min: 3 }
-          }
-        }
-      },
-      {
-        choiceId: 'ctx_about_patterns_helping',
-        text: "I keep wanting to help people. Is that a pattern?",
-        nextNodeId: 'samuel_pattern_insight',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence'],
-        visibleCondition: {
-          patterns: {
-            helping: { min: 3 }
-          }
-        }
-      },
-      {
-        choiceId: 'ctx_about_patterns_building',
-        text: "I notice I keep wanting to build things...",
-        nextNodeId: 'samuel_pattern_insight',
-        pattern: 'building',
-        skills: ['creativity'],
-        visibleCondition: {
-          patterns: {
-            building: { min: 3 }
-          }
-        }
-      },
-      {
-        choiceId: 'ctx_about_people',
-        text: "Tell me about the people here.",
-        nextNodeId: 'samuel_comprehensive_hub',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence'],
-        visibleCondition: {
-          hasGlobalFlags: ['met_maya']
-        }
-      },
-      {
-        choiceId: 'ctx_about_careers',
-        text: "What careers might fit someone like me?",
-        nextNodeId: 'samuel_career_preview',
-        pattern: 'exploring',
-        skills: ['criticalThinking'],
-        visibleCondition: {
-          patterns: {
-            analytical: { min: 4 },
-            building: { min: 4 }
-          }
-        }
-      },
-      {
-        choiceId: 'ctx_about_careers_helping',
-        text: "Are there careers for people who want to help?",
-        nextNodeId: 'samuel_career_preview',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence'],
-        visibleCondition: {
-          patterns: {
-            helping: { min: 4 },
-            patience: { min: 3 }
-          }
-        }
-      },
-      {
-        choiceId: 'ctx_meet_someone',
-        text: "I'd like to meet someone new.",
-        nextNodeId: 'samuel_hub_initial',
-        pattern: 'exploring',
-        skills: ['communication']
-      }
-    ],
+    choices: makeSamuelContextualHubChoices('ctx'),
     tags: ['hub', 'contextual']
   },
 
@@ -8473,6 +9496,87 @@ OBSERVATION: He looks tired. Scared. Different.`,
   },
 
   // Pattern insight (unlocked at pattern 3+)
+  {
+    nodeId: 'samuel_pattern_insight_analytical',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You keep looking for structure, don't you? Like if you can name the shape of a problem, you can move through it.\n\nEvery choice you make here leaves a trace. Not good or bad.just... true. The station watches how you move through problems, how you connect with people, what questions you ask.\n\nThose patterns? They're not somethin' we give you. They're somethin' you already had. We just help you see 'em clearer.",
+        emotion: 'knowing',
+        variation_id: 'pattern_insight_analytical_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'insight_what_next_analytical',
+        text: "What do I do with that knowledge?",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'building'
+      },
+      {
+        choiceId: 'insight_accept_analytical',
+        text: "I think I understand.",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['patterns', 'insight']
+  },
+
+  {
+    nodeId: 'samuel_pattern_insight_helping',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Yeah. You keep reaching for people. Even when it'd be easier to keep your head down.\n\nEvery choice you make here leaves a trace. Not good or bad.just... true. The station watches how you move through problems, how you connect with people, what questions you ask.\n\nThose patterns? They're not somethin' we give you. They're somethin' you already had. We just help you see 'em clearer.",
+        emotion: 'knowing',
+        variation_id: 'pattern_insight_helping_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'insight_what_next_helping',
+        text: "What do I do with that knowledge?",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'building'
+      },
+      {
+        choiceId: 'insight_accept_helping',
+        text: "I think I understand.",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['patterns', 'insight']
+  },
+
+  {
+    nodeId: 'samuel_pattern_insight_building',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "I hear it in how you talk. You don't just want answers.you want somethin' you can make real.\n\nEvery choice you make here leaves a trace. Not good or bad.just... true. The station watches how you move through problems, how you connect with people, what questions you ask.\n\nThose patterns? They're not somethin' we give you. They're somethin' you already had. We just help you see 'em clearer.",
+        emotion: 'knowing',
+        variation_id: 'pattern_insight_building_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'insight_what_next_building',
+        text: "What do I do with that knowledge?",
+        nextNodeId: 'samuel_hub_initial',
+        pattern: 'building'
+      },
+      {
+        choiceId: 'insight_accept_building',
+        text: "I think I understand.",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['patterns', 'insight']
+  },
+
   {
     nodeId: 'samuel_pattern_insight',
     speaker: 'Samuel Washington',
@@ -8519,7 +9623,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'insight_what_next',
         text: "What do I do with that knowledge?",
-        nextNodeId: 'samuel_contextual_hub',
+        nextNodeId: 'samuel_hub_initial',
         pattern: 'building'
       },
       {
@@ -8533,6 +9637,60 @@ OBSERVATION: He looks tired. Scared. Different.`,
   },
 
   // Career preview (unlocked at pattern 4+ in multiple areas)
+  {
+    nodeId: 'samuel_career_preview_general',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Careers? The station doesn't think in job titles. It thinks in... resonance. What makes your heart beat faster, what problems you can't look away from, what you'd do even if nobody paid you.\n\nTalk to the travelers here. Each one's found their own answer to that question. In their stories, you might hear echoes of your own.",
+        emotion: 'warm',
+        variation_id: 'career_preview_general_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'career_preview_continue_general',
+        text: "I'd like to talk to someone specific.",
+        nextNodeId: 'samuel_comprehensive_hub',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'career_preview_think_general',
+        text: "Let me think about that.",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['careers', 'guidance']
+  },
+
+  {
+    nodeId: 'samuel_career_preview_helping',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "There are. And we need 'em.\n\nCareers? The station doesn't think in job titles. It thinks in... resonance. What makes your heart beat faster, what problems you can't look away from, what you'd do even if nobody paid you.\n\nTalk to the travelers here. Each one's found their own answer to that question. In their stories, you might hear echoes of your own.",
+        emotion: 'warm',
+        variation_id: 'career_preview_helping_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'career_preview_continue_helping',
+        text: "I'd like to talk to someone specific.",
+        nextNodeId: 'samuel_comprehensive_hub',
+        pattern: 'exploring'
+      },
+      {
+        choiceId: 'career_preview_think_helping',
+        text: "Let me think about that.",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['careers', 'guidance']
+  },
+
   {
     nodeId: 'samuel_career_preview',
     speaker: 'Samuel Washington',

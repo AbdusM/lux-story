@@ -50,21 +50,28 @@ test.describe('Character Intro Smoke', () => {
       const choiceCount = await choices.count()
 
       if (choiceCount > 0) {
-        const initialDialogue = await dialogueContent.textContent()
         await choices.first().click()
 
+        // Dialogue content is a running transcript; the most reliable signal that a choice
+        // advanced the story is a node transition being persisted.
         await page.waitForFunction(
-          (initial) => {
-            const current = document.querySelector('[data-testid="dialogue-content"]')?.textContent
-            return current && current !== initial
+          (initialNodeId) => {
+            try {
+              const saved = localStorage.getItem('lux_story_v2_game_save')
+              if (!saved) return false
+              const parsed = JSON.parse(saved) as { currentNodeId?: unknown }
+              return typeof parsed.currentNodeId === 'string' && parsed.currentNodeId !== initialNodeId
+            } catch {
+              return false
+            }
           },
-          initialDialogue,
-          { timeout: 10000 }
+          introNodeId,
+          { timeout: 20000 }
         )
       }
 
       const savedState = await page.evaluate(() => {
-        const saved = localStorage.getItem('grand-central-terminus-save')
+        const saved = localStorage.getItem('lux_story_v2_game_save')
         return saved ? JSON.parse(saved) : null
       })
 

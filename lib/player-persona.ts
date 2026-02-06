@@ -10,6 +10,7 @@ import type { Choice } from './story-engine'
 import { logChoice } from './real-time-monitor'
 import { logger } from './logger'
 import { STORAGE_KEYS } from './persistence/storage-keys'
+import { normalizePatternName } from './patterns'
 
 export interface SkillDemonstrationSummary {
   count: number
@@ -147,8 +148,11 @@ export class PlayerPersonaTracker {
   private extractPatternFromChoice(choice: Choice): string | null {
     if (!choice.consequence) return null
 
-    const patterns = ['exploring', 'helping', 'building', 'analyzing', 'patience', 'rushing', 'independence']
-    return patterns.find(pattern => choice.consequence.includes(pattern)) || null
+    const patterns = ['exploring', 'helping', 'building', 'analyzing', 'analytical', 'patience', 'rushing', 'independence']
+    const raw = patterns.find(pattern => choice.consequence.includes(pattern)) || null
+    if (!raw) return null
+    // Canonicalize legacy labels (e.g., analyzing -> analytical)
+    return normalizePatternName(raw) || raw
   }
 
   /**
@@ -189,7 +193,7 @@ export class PlayerPersonaTracker {
    * Analyze problem approach from choice patterns
    */
   private analyzeProblemApproach(choice: Choice, pattern: string | null, current: PlayerPersona['problemApproach']): PlayerPersona['problemApproach'] {
-    if (pattern === 'analyzing') return 'analytical'
+    if (pattern === 'analytical') return 'analytical'
     if (pattern === 'building') return 'practical'
     if (choice.text.toLowerCase().includes('creative') || choice.text.toLowerCase().includes('different')) return 'creative'
     return current

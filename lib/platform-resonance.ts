@@ -157,7 +157,7 @@ const RESONANCE_PATTERNS: ResonancePattern[] = [
       'building': 0.4,
       'creating': 0.3,
       'designing': 0.2,
-      'analyzing': 0.1,
+      'analytical': 0.1,
       'patience': 0.2
     },
     resonanceThreshold: 0.6,
@@ -165,9 +165,9 @@ const RESONANCE_PATTERNS: ResonancePattern[] = [
   },
   {
     platformId: 'platform-7',
-    triggerPatterns: ['analyzing', 'researching', 'investigating'],
+    triggerPatterns: ['analytical', 'researching', 'investigating'],
     warmthModifiers: {
-      'analyzing': 0.4,
+      'analytical': 0.4,
       'researching': 0.3,
       'investigating': 0.3,
       'patience': 0.2,
@@ -205,7 +205,7 @@ const RESONANCE_PATTERNS: ResonancePattern[] = [
     triggerPatterns: ['pattern_diversity', 'creative_problem_solving'],
     warmthModifiers: {
       'building': 0.2,
-      'analyzing': 0.2,
+      'analytical': 0.2,
       'helping': 0.2,
       'creating': 0.3
     },
@@ -336,7 +336,7 @@ export class PlatformResonanceEngine {
     // Direct pattern extraction from consequence
     if (consequence.includes('helping')) patterns.push('helping')
     if (consequence.includes('building')) patterns.push('building')
-    if (consequence.includes('analyzing')) patterns.push('analyzing')
+    if (consequence.includes('analytical') || consequence.includes('analyzing')) patterns.push('analytical')
     if (consequence.includes('caring')) patterns.push('caring')
     if (consequence.includes('creating')) patterns.push('creating')
     if (consequence.includes('environmental')) patterns.push('environmental')
@@ -344,7 +344,7 @@ export class PlatformResonanceEngine {
     // Pattern inference from choice text
     if (text.includes('help') || text.includes('support')) patterns.push('helping', 'caring')
     if (text.includes('build') || text.includes('create') || text.includes('make')) patterns.push('building', 'creating')
-    if (text.includes('analyze') || text.includes('study') || text.includes('research')) patterns.push('analyzing', 'researching')
+    if (text.includes('analyze') || text.includes('study') || text.includes('research')) patterns.push('analytical', 'researching')
     if (text.includes('wait') || text.includes('carefully') || text.includes('patient')) patterns.push('patience')
     if (text.includes('quick') || text.includes('rush') || text.includes('hurry')) patterns.push('rushing')
     if (text.includes('alone') || text.includes('myself')) patterns.push('independence')

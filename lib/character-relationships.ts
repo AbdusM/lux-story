@@ -1,5 +1,5 @@
 import { GameState } from '@/lib/character-state'
-import { randomPick, randomInt } from './seeded-random'
+import { randomPick } from './seeded-random'
 
 /**
  * Character Relationships System

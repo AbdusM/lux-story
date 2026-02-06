@@ -104,7 +104,7 @@ const createJourneyCompleteState = () => ({
       characterId: 'maya',
       trust: 5,
       anxiety: 50,
-      nervousSystemState: 'regulated',
+      nervousSystemState: 'ventral_vagal',
       lastReaction: null,
       knowledgeFlags: ['maya_family_pressure'],
       relationshipStatus: 'acquaintance',
@@ -114,7 +114,7 @@ const createJourneyCompleteState = () => ({
       characterId: 'marcus',
       trust: 4,
       anxiety: 60,
-      nervousSystemState: 'regulated',
+      nervousSystemState: 'ventral_vagal',
       lastReaction: null,
       knowledgeFlags: ['marcus_healthcare_mission'],
       relationshipStatus: 'acquaintance',
@@ -124,7 +124,7 @@ const createJourneyCompleteState = () => ({
       characterId: 'samuel',
       trust: 3,
       anxiety: 70,
-      nervousSystemState: 'regulated',
+      nervousSystemState: 'ventral_vagal',
       lastReaction: null,
       knowledgeFlags: ['samuel_conductor_role'],
       relationshipStatus: 'acquaintance',
@@ -178,7 +178,7 @@ const createDemonstratedSkillsState = () => ({
       characterId: 'maya',
       trust: 4,
       anxiety: 60,
-      nervousSystemState: 'regulated',
+      nervousSystemState: 'ventral_vagal',
       lastReaction: null,
       knowledgeFlags: ['maya_tech_innovator'],
       relationshipStatus: 'acquaintance',
@@ -188,7 +188,7 @@ const createDemonstratedSkillsState = () => ({
       characterId: 'devon',
       trust: 3,
       anxiety: 70,
-      nervousSystemState: 'regulated',
+      nervousSystemState: 'ventral_vagal',
       lastReaction: null,
       knowledgeFlags: ['devon_systems_engineer'],
       relationshipStatus: 'acquaintance',
@@ -249,7 +249,7 @@ const createHighTrustState = () => ({
       characterId: 'maya',
       trust: 6, // Vulnerability threshold
       anxiety: 40,
-      nervousSystemState: 'regulated',
+      nervousSystemState: 'ventral_vagal',
       lastReaction: null,
       knowledgeFlags: ['maya_family_pressure', 'maya_tech_background', 'maya_personal_story'],
       relationshipStatus: 'confidant',
@@ -285,34 +285,50 @@ const createHighTrustState = () => ({
  * Helper to seed state into localStorage
  */
 async function seedGameState(page: Page, state: any): Promise<void> {
-  await page.goto('/')
-  await page.waitForLoadState('domcontentloaded')
+  // `/` is gated behind either an authenticated Supabase user or the guest-mode
+  // cookie. In E2E we generally run unauthenticated, so ensure the cookie is set
+  // before navigating to `/` to avoid being redirected to `/welcome`.
+  await page.context().addCookies([
+    { name: 'lux_guest_mode', value: 'true', url: 'http://127.0.0.1:3005' },
+    { name: 'lux_guest_mode', value: 'true', url: 'http://localhost:3005' },
+  ])
 
-  await page.evaluate((stateToSeed) => {
-    // Clear existing state
+  // Ensure localStorage access is scoped to the app origin.
+  await page.goto('/', { waitUntil: 'domcontentloaded' })
+
+  // Seed localStorage after initial navigation, then reload once to boot from save.
+  // This approach supports re-seeding multiple times within a single test (e.g.
+  // character-smoke loops), and avoids persistent init scripts that can clobber
+  // state during `page.reload()` assertions.
+  await page.evaluate(({ stateToSeed, guestModeKey }) => {
     localStorage.clear()
-
     // Mark as test environment
+    // @ts-ignore - injected by e2e harness
     window.__PLAYWRIGHT__ = true
+    // Match real guest entry (`/welcome` sets both localStorage + cookie)
+    localStorage.setItem(guestModeKey, 'true')
+    localStorage.setItem('lux_story_v2_game_save', JSON.stringify(stateToSeed))
+  }, { stateToSeed: state, guestModeKey: 'lux_story_v2_guest_mode' })
 
-    // Set new state
-    localStorage.setItem('grand-central-terminus-save', JSON.stringify(stateToSeed))
-  }, state)
+  await page.reload({ waitUntil: 'domcontentloaded' })
 
-  await page.reload()
-  await page.waitForLoadState('networkidle')
+  const gameInterface = page.locator('[data-testid="game-interface"]')
 
-  // Click through the welcome screen if it appears
+  // Click through the continue screen if it appears
   const continueButton = page.getByRole('button', { name: 'Continue Journey' })
-  if (await continueButton.isVisible({ timeout: 5000 }).catch(() => false)) {
+  // The continue screen is rendered client-side, so it can appear a few seconds
+  // after `domcontentloaded` on slower machines / cold Next dev server starts.
+  const hasContinue = await continueButton
+    .waitFor({ state: 'visible', timeout: 15000 })
+    .then(() => true)
+    .catch(() => false)
+
+  if (hasContinue) {
     await continueButton.click()
-    await page.waitForLoadState('networkidle')
-    // Wait for game interface with longer timeout for iPad
-    await page.waitForSelector('[data-testid="game-interface"]', { timeout: 20000 })
-  } else {
-    // If no continue button, game interface should already be visible
-    await page.waitForSelector('[data-testid="game-interface"]', { timeout: 20000 })
   }
+
+  // Wait for game interface with longer timeout for iPad.
+  await gameInterface.waitFor({ state: 'visible', timeout: 20000 })
 }
 
 /**

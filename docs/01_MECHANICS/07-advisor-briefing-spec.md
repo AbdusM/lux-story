@@ -63,7 +63,7 @@ User Journey → SkillTracker → SkillProfile → AI Engine → Briefing
 - **Started with**: Gemini 1.5 Pro integration
 - **Issue**: Multiple API keys failed validation
 - **Keys tested**:
-  - `AIzaSyDEQloxDXlFD2HnFNUrAIr8aANhvr_Ivxg` (invalid)
+  - `AIzaSyxxxxx` (example placeholder)
   - `AQ.Ab8RN6KYorD1DA5QUukOq5SawbNz40ShdYaiZgI_ai55877JtQ` (invalid)
 
 #### Strategic Pivot: Claude (Anthropic)

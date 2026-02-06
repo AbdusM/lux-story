@@ -32,8 +32,8 @@ export const MilestoneTypeSchema = z.enum([
 
 export const PatternNameSchema = z.enum([
   'helping',
-  'analyzing',
-  'analytical', // Legacy name
+  'analytical',
+  'analyzing', // Legacy alias for 'analytical'
   'building',
   'exploring',
   'patience',

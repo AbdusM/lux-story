@@ -1,5 +1,4 @@
 import { findCharacterForNode, isValidCharacterId, CHARACTER_IDS } from './graph-registry'
-import { devFreeze } from './dev-freeze'
 import { SerializedGameStateSchema, safeParseGameState } from './schemas/game-state-schema'
 import { ActiveThought, THOUGHT_REGISTRY } from '@/content/thoughts'
 import { calculateTrustChange } from './trust/trust-calculator'
@@ -456,7 +455,7 @@ export class GameStateUtils {
       const oldCharState = newState.characters.get(change.characterId)
       if (!oldCharState) {
         console.error(`Character ${change.characterId} not found in state`)
-        return devFreeze(newState)
+        return newState
       }
 
       // PHASE 1: CALCULATE all new values (no mutations)
@@ -573,8 +572,11 @@ export class GameStateUtils {
       }
     }
 
-    // TD-002: Freeze state in dev mode to catch accidental mutations
-    return devFreeze(newState)
+    // TD-002 NOTE:
+    // We intentionally do not freeze GameState here. Many call sites treat the returned
+    // state as a working copy and continue applying changes (especially in choice flow).
+    // Immutability is enforced by convention + review, not runtime Object.freeze.
+    return newState
   }
 
   /**

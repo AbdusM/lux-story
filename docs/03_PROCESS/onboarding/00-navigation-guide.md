@@ -42,8 +42,8 @@
 ### For Developers & Engineers
 📂 **Location:** Root directory + `lib/`
 - **Quick context** → `CLAUDE.md` (root directory - PRIMARY reference)
-- **How to build** → `docs/03_PROCESS/20-execution-strategy.md`
-- **Code architecture** → `lib/STATE_ARCHITECTURE.md`
+- **How to build** → `docs/03_PROCESS/00-readme.md`
+- **Code architecture** → `docs/01_MECHANICS/02-state-architecture.md` + `docs/architecture/`
 - **Testing guide** → `docs/03_PROCESS/01-testing.md`
 
 ---
@@ -80,7 +80,7 @@
 |--------------|---------|---------|
 | 00-09 | Testing, Onboarding | `00-readme.md`, `01-testing.md` |
 | 10-19 | Status, Coverage, Audits | `10-system-coverage.md` |
-| 20-29 | Execution, Strategy | `20-execution-strategy.md` |
+| 20-29 | Frameworks, Strategy | `20-lux-story-abc-story-framework.md` |
 | 50-59 | Product Vision (SOURCE OF TRUTH) | `50-isp-comprehensive-prd.md` |
 | 90-99 | Archive Index | `91-docs-reorg-log.md` |
 
@@ -146,9 +146,9 @@ Naming makes things findable:
 
 ### For Developers
 - [ ] Read `CLAUDE.md` - Master context (PRIMARY reference)
-- [ ] Review `lib/STATE_ARCHITECTURE.md` - Code architecture
-- [ ] Run `npm test` - Verify environment (1,129 tests should pass)
-- [ ] Check `docs/03_PROCESS/20-execution-strategy.md` - Build process
+- [ ] Review `docs/01_MECHANICS/02-state-architecture.md` - Code architecture
+- [ ] Run `npm run test:run` - Verify environment (tests should pass)
+- [ ] Check `docs/03_PROCESS/00-readme.md` - Build process
 
 ### For Stakeholders & Educators
 - [ ] Read this navigation guide

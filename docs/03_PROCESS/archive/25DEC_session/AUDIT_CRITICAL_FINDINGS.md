@@ -33,8 +33,8 @@ This comprehensive audit reveals a codebase with **strong foundational design th
 **File:** `.env.production`
 
 Production secrets committed to git:
-- Anthropic API key: `sk-ant-api03-7IAvMz7XCmSaW9...`
-- Google Gemini API key: `AIzaSyDEQloxDXlFD2HnFNUrAIr8aANhvr_Ivxg`
+- Anthropic API key: `sk-ant-api03-xxxxx`
+- Google Gemini API key: `AIzaSyxxxxx`
 - Supabase JWT tokens
 - Vercel OIDC token
 - ADMIN_API_TOKEN: `"admin"` (plaintext weak password)

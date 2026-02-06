@@ -11,7 +11,7 @@
 
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -82,6 +82,8 @@ export function UnifiedMenu({
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [signingOut, setSigningOut] = useState(false)
   const [expandedSection, setExpandedSection] = useState<string | null>(null)
+  const triggerRef = useRef<HTMLButtonElement | null>(null)
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null)
 
   // User auth
   const { user, role, loading: authLoading } = useUserRole()
@@ -110,6 +112,18 @@ export function UnifiedMenu({
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen])
+
+  // Focus management: focus the close button when opening, return focus to trigger on close.
+  useEffect(() => {
+    if (isOpen) {
+      // Let the panel mount first.
+      const t = setTimeout(() => closeButtonRef.current?.focus(), 0)
+      return () => clearTimeout(t)
+    }
+
+    // Restore focus on close (best-effort).
+    triggerRef.current?.focus()
   }, [isOpen])
 
   // Handlers
@@ -148,15 +162,17 @@ export function UnifiedMenu({
   }
 
   return (
-    <>
+    <div className="relative">
       {/* Trigger Button */}
       <Button
+        ref={triggerRef}
         variant="ghost"
         size="icon"
         onClick={() => setIsOpen(!isOpen)}
         className="text-slate-400 hover:text-white hover:bg-white/5 relative"
         aria-label="Settings menu"
         aria-expanded={isOpen}
+        aria-controls="unified-menu-panel"
       >
         <Settings className="w-5 h-5" />
         {/* Badge for logged-in educators/admins */}
@@ -180,7 +196,7 @@ export function UnifiedMenu({
               aria-hidden="true"
             />
 
-            {/* Menu */}
+            {/* Menu (anchored to trigger, not the full header) */}
             <motion.div
               initial={{ opacity: 0, y: -10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -189,13 +205,16 @@ export function UnifiedMenu({
               className="absolute right-0 top-full mt-2 w-72 glass-panel-solid !rounded-xl border border-white/10 shadow-2xl z-[91] overflow-hidden"
               role="dialog"
               aria-label="Settings"
+              id="unified-menu-panel"
             >
               {/* Header */}
               <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
                 <span className="text-sm font-semibold text-white">Settings</span>
                 <button
+                  ref={closeButtonRef}
                   onClick={() => setIsOpen(false)}
                   className="p-1 rounded hover:bg-white/10 transition-colors"
+                  aria-label="Close settings"
                 >
                   <X className="w-4 h-4 text-slate-400" />
                 </button>
@@ -205,11 +224,11 @@ export function UnifiedMenu({
                 {/* ══════════════════════════════════════════════════════════════
                    AUDIO SECTION
                    ══════════════════════════════════════════════════════════════ */}
-                <div className="p-3 border-b border-white/5">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Volume2 className="w-4 h-4 text-amber-400" />
-                    <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">Audio</span>
-                  </div>
+	                <div className="p-3 border-b border-white/5">
+	                  <div className="flex items-center gap-2 mb-3">
+	                    <Volume2 className="w-4 h-4 text-amber-400" />
+	                    <h3 className="text-xs font-medium text-slate-400 uppercase tracking-wider">Audio</h3>
+	                  </div>
 
                   {/* Volume Slider */}
                   {onVolumeChange && (
@@ -269,7 +288,7 @@ export function UnifiedMenu({
                   >
                     <div className="flex items-center gap-2">
                       <Sparkles className="w-4 h-4 text-purple-400" />
-                      <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">Accessibility</span>
+                      <h3 className="text-xs font-medium text-slate-400 uppercase tracking-wider">Accessibility</h3>
                     </div>
                     <ChevronDown className={cn(
                       "w-4 h-4 text-slate-500 transition-transform",
@@ -485,6 +504,6 @@ export function UnifiedMenu({
 
       {/* Login Modal */}
       <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
-    </>
+    </div>
   )
 }

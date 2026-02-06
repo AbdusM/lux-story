@@ -32,20 +32,20 @@ test.describe('Knowledge Flag System', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
     // Verify flags persisted
     const flags = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       if (saved) {
         const state = JSON.parse(saved)
         const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
@@ -73,20 +73,20 @@ test.describe('Knowledge Flag System', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
     // Verify global flags persisted
     const globalFlags = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       if (saved) {
         const state = JSON.parse(saved)
         return state.state.globalFlags || []
@@ -116,7 +116,7 @@ test.describe('Knowledge Flag System', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.goto('/')
@@ -124,13 +124,13 @@ test.describe('Knowledge Flag System', () => {
 
     // Wait for game to load instead of networkidle
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
     // Get initial flag count
     const initialFlags = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       if (saved) {
         const state = JSON.parse(saved)
         const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
@@ -149,7 +149,7 @@ test.describe('Knowledge Flag System', () => {
 
       // Wait for state to update
       await page.waitForFunction(() => {
-        const saved = localStorage.getItem('grand-central-terminus-save')
+        const saved = localStorage.getItem('lux_story_v2_game_save')
         if (!saved) return false
         const state = JSON.parse(saved)
         const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
@@ -158,7 +158,7 @@ test.describe('Knowledge Flag System', () => {
 
       // Verify flags were added
       const updatedFlags = await page.evaluate(() => {
-        const saved = localStorage.getItem('grand-central-terminus-save')
+        const saved = localStorage.getItem('lux_story_v2_game_save')
         if (saved) {
           const state = JSON.parse(saved)
           const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
@@ -196,7 +196,7 @@ test.describe('Knowledge Flag System', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.goto('/')
@@ -204,7 +204,7 @@ test.describe('Knowledge Flag System', () => {
 
     // Wait for game to load instead of networkidle
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -242,7 +242,7 @@ test.describe('Knowledge Flag System', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.goto('/')
@@ -250,7 +250,7 @@ test.describe('Knowledge Flag System', () => {
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -291,7 +291,7 @@ test.describe('Knowledge Flag System', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.goto('/')
@@ -299,7 +299,7 @@ test.describe('Knowledge Flag System', () => {
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -331,7 +331,7 @@ test.describe('Knowledge Flag System', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.goto('/')
@@ -339,7 +339,7 @@ test.describe('Knowledge Flag System', () => {
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -353,7 +353,7 @@ test.describe('Knowledge Flag System', () => {
 
       // Verify original flags are still present plus potentially new ones
       const updatedFlags = await page.evaluate(() => {
-        const saved = localStorage.getItem('grand-central-terminus-save')
+        const saved = localStorage.getItem('lux_story_v2_game_save')
         if (saved) {
           const state = JSON.parse(saved)
           const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
@@ -384,20 +384,20 @@ test.describe('Knowledge Flag System', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
     // Verify golden prompt flag persisted
     const { hasFlag, regulation } = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       if (saved) {
         const state = JSON.parse(saved)
         return {

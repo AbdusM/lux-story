@@ -21,6 +21,7 @@ interface MediaStudioProps extends SimulationComponentProps {
  */
 export function MediaStudio({ config, onSuccess, variant = 'audio_studio' }: MediaStudioProps) {
     // Extract target from config or use defaults
+    const usingDefaultTarget = !config.initialContext?.target
     const targetConfig: SynesthesiaTarget = (config.initialContext?.target as SynesthesiaTarget) || {
         targetState: {
             tempo: 30,    // Slow
@@ -29,6 +30,14 @@ export function MediaStudio({ config, onSuccess, variant = 'audio_studio' }: Med
         },
         tolerance: 10
     }
+
+    useEffect(() => {
+        if (!usingDefaultTarget) return
+        if (process.env.NODE_ENV !== 'production') {
+            // eslint-disable-next-line no-console
+            console.warn('[MediaStudio] Missing initialContext.target; using default target profile.', { variant })
+        }
+    }, [usingDefaultTarget, variant])
 
     const [state, updateState, { resonance, waveform, isLocked }] = useSynesthesiaEngine({
         target: targetConfig,
@@ -102,8 +111,15 @@ export function MediaStudio({ config, onSuccess, variant = 'audio_studio' }: Med
                 <div className="flex items-center gap-3">
                     <labels.mainIcon className={cn("w-5 h-5", isLocked ? "text-emerald-400" : "text-purple-400")} />
                     <div>
-                        <div className="text-xs uppercase tracking-widest text-white/50">
-                            {labels.title}
+                        <div className="flex items-center gap-2">
+                            <div className="text-xs uppercase tracking-widest text-white/50">
+                                {labels.title}
+                            </div>
+                            {usingDefaultTarget && (
+                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300/80 border border-amber-500/20 uppercase tracking-widest font-mono">
+                                    Default
+                                </span>
+                            )}
                         </div>
                         <div className={cn("text-sm font-medium", isLocked ? "text-emerald-400" : "text-purple-400")}>
                             {isLocked ? "RESONANCE ACHIEVED" : "SEARCHING..."}

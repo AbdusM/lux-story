@@ -24,15 +24,15 @@ type AcceptsPageProps<T> = T extends (props: AdminUserPageProps) => unknown ? tr
 type AcceptsLayoutProps<T> = T extends (props: AdminUserLayoutProps) => unknown ? true : false
 
 // Import page default exports
-import type { default as MainPage } from '@/app/admin/[userId]/page'
-import type { default as Layout } from '@/app/admin/[userId]/layout'
-import type { default as ActionPage } from '@/app/admin/[userId]/action/page'
-import type { default as CareersPage } from '@/app/admin/[userId]/careers/page'
-import type { default as EvidencePage } from '@/app/admin/[userId]/evidence/page'
-import type { default as GapsPage } from '@/app/admin/[userId]/gaps/page'
-import type { default as PatternsPage } from '@/app/admin/[userId]/patterns/page'
-import type { default as SkillsPage } from '@/app/admin/[userId]/skills/page'
-import type { default as UrgencyPage } from '@/app/admin/[userId]/urgency/page'
+import type { default as MainPage } from '@/app/admin/(protected)/[userId]/page'
+import type { default as Layout } from '@/app/admin/(protected)/[userId]/layout'
+import type { default as ActionPage } from '@/app/admin/(protected)/[userId]/action/page'
+import type { default as CareersPage } from '@/app/admin/(protected)/[userId]/careers/page'
+import type { default as EvidencePage } from '@/app/admin/(protected)/[userId]/evidence/page'
+import type { default as GapsPage } from '@/app/admin/(protected)/[userId]/gaps/page'
+import type { default as PatternsPage } from '@/app/admin/(protected)/[userId]/patterns/page'
+import type { default as SkillsPage } from '@/app/admin/(protected)/[userId]/skills/page'
+import type { default as UrgencyPage } from '@/app/admin/(protected)/[userId]/urgency/page'
 
 // These assertions fail at type-check if any page doesn't match
 // The variable names are prefixed with _ to indicate they're unused at runtime

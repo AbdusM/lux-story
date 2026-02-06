@@ -37,7 +37,7 @@ test.describe('Pattern Unlock Effects', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -69,7 +69,7 @@ test.describe('Pattern Unlock Effects', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -111,7 +111,7 @@ test.describe('Pattern Unlock Effects', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -147,7 +147,7 @@ test.describe('Pattern Unlock Effects', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -190,7 +190,7 @@ test.describe('Pattern Unlock Effects', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -232,7 +232,7 @@ test.describe('Pattern Unlock Effects', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -271,7 +271,7 @@ test.describe('Pattern Unlock Effects', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -279,7 +279,7 @@ test.describe('Pattern Unlock Effects', () => {
 
     // Verify pattern persisted
     const analyticalLevel = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       if (saved) {
         const state = JSON.parse(saved)
         return state.state.patterns.analytical || 0
@@ -294,7 +294,7 @@ test.describe('Pattern Unlock Effects', () => {
     await page.waitForLoadState('networkidle')
 
     const analyticalLevelAfter = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       if (saved) {
         const state = JSON.parse(saved)
         return state.state.patterns.analytical || 0
@@ -326,7 +326,7 @@ test.describe('Pattern Unlock Effects', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -334,7 +334,7 @@ test.describe('Pattern Unlock Effects', () => {
 
     // Verify all patterns persisted
     const patterns = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       if (saved) {
         const state = JSON.parse(saved)
         return state.state.patterns
@@ -363,7 +363,7 @@ test.describe('Pattern Unlock Effects', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -384,7 +384,7 @@ test.describe('Pattern Unlock Effects', () => {
 
         // Check if analytical increased
         const newAnalytical = await page.evaluate(() => {
-          const saved = localStorage.getItem('grand-central-terminus-save')
+          const saved = localStorage.getItem('lux_story_v2_game_save')
           if (saved) {
             const state = JSON.parse(saved)
             return state.state.patterns.analytical || 0
@@ -413,7 +413,7 @@ test.describe('Pattern Unlock Effects', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -442,7 +442,7 @@ test.describe('Pattern Unlock Effects', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()

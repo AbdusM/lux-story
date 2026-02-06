@@ -17,6 +17,7 @@ import { logSync } from './real-time-monitor'
 import { ensureUserProfile } from './ensure-user-profile'
 import { logger } from './logger'
 import { parseSyncQueue } from './schemas'
+import { normalizePatternName } from './patterns'
 
 const SYNC_QUEUE_KEY = 'lux-sync-queue'
 const STATIC_EXPORT_DETECTED_KEY = 'lux-static-export-detected'
@@ -494,6 +495,29 @@ export class SyncQueue {
           // Success log removed - too verbose
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'platform_state', true)
 
+        } else if (action.type === 'interaction_event') {
+          // Sync interaction event telemetry to Supabase
+          let response: Response
+          try {
+            response = await fetch('/api/user/interaction-events', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(action.data)
+            })
+          } catch (fetchError) {
+            throw new Error(`Network error syncing interaction event: ${fetchError instanceof Error ? fetchError.message : String(fetchError)}`)
+          }
+
+          if (!response.ok) {
+            let errorBody = ''
+            try { errorBody = await response.text() } catch (_e) { /* ignore */ }
+            throw new Error(`Interaction event sync failed: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody.slice(0, 100)}` : ''}`)
+          }
+
+          successfulIds.push(action.id)
+          // Success log removed - too verbose
+          logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'interaction_event', true)
+
         } else {
           console.error(`❌ [SyncQueue] Unknown action type: ${action.type}`)
           failedActions.push({ ...action, retries: action.retries + 1 })
@@ -852,11 +876,13 @@ export function queuePatternDemonstrationSync(data: {
   context: string
   demonstrated_at?: string
 }): void {
+  const normalized = normalizePatternName(data.pattern_name) || data.pattern_name
   SyncQueue.addToQueue({
     id: generateActionId(),
     type: 'pattern_demonstration',
     data: {
       ...data,
+      pattern_name: normalized,
       demonstrated_at: data.demonstrated_at || new Date().toISOString()
     },
     timestamp: Date.now()
@@ -867,6 +893,38 @@ export function queuePatternDemonstrationSync(data: {
     userId: data.user_id,
     pattern: data.pattern_name,
     scene: data.scene_id
+  })
+}
+
+/**
+ * Helper: Queue interaction event telemetry (choice ordering, menu events, etc.)
+ */
+export function queueInteractionEventSync(data: {
+  user_id: string
+  session_id: string
+  event_type: string
+  node_id?: string
+  character_id?: string
+  ordering_variant?: string
+  ordering_seed?: string
+  payload: Record<string, unknown>
+  occurred_at?: string
+}): void {
+  SyncQueue.addToQueue({
+    id: generateActionId(),
+    type: 'interaction_event',
+    data: {
+      ...data,
+      occurred_at: data.occurred_at || new Date().toISOString()
+    },
+    timestamp: Date.now()
+  })
+
+  logger.debug('Queued interaction event sync', {
+    operation: 'sync-queue.queue',
+    userId: data.user_id,
+    eventType: data.event_type,
+    nodeId: data.node_id
   })
 }
 

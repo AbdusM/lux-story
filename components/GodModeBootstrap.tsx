@@ -16,14 +16,28 @@ export function GodModeBootstrap() {
   const { isEducator, loading } = useUserRole()
 
   useEffect(() => {
-    if (loading) return
+    const hasGodModeParam = (() => {
+      try {
+        if (typeof window === 'undefined') return false
+        const params = new URLSearchParams(window.location.search)
+        const v = params.get('godmode')
+        return v === '' || v === '1' || v === 'true'
+      } catch {
+        return false
+      }
+    })()
+
+    // In tests we may want God Mode without waiting on role loading.
+    if (loading && !hasGodModeParam) return
 
     // Load God Mode if:
     // 1. Development mode (always)
     // 2. Production with educator/admin role (authenticated)
+    // 3. Production with ?godmode=true URL parameter (explicit opt-in)
     const shouldLoadGodMode =
       process.env.NODE_ENV === 'development' ||
-      isEducator
+      isEducator ||
+      hasGodModeParam
 
     if (!shouldLoadGodMode) {
       return

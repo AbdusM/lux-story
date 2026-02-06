@@ -28,7 +28,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
             {
                 choiceId: 'calib_defensive',
                 text: "I'm fine. Just let me through.",
-                nextNodeId: 'systemic_calibration_friction',
+                nextNodeId: 'systemic_calibration_friction_defensive',
                 pattern: 'analytical', // SYMPATHETIC ATTRACTOR (If Anxious, this floats to top)
                 skills: ['criticalThinking'],
                 consequence: {
@@ -39,7 +39,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
             {
                 choiceId: 'calib_masking',
                 text: "It's just been a long trip.",
-                nextNodeId: 'systemic_calibration_friction',
+                nextNodeId: 'systemic_calibration_friction_masking',
                 pattern: 'building', // SYMPATHETIC NEUTRAL/REPULSION
                 skills: ['adaptability']
             },
@@ -59,13 +59,101 @@ export const systemicCalibrationNodes: DialogueNode[] = [
     },
 
     {
-        nodeId: 'systemic_calibration_friction',
+        nodeId: 'systemic_calibration_start_place',
         speaker: 'Samuel Washington',
         content: [
             {
-                text: "See? That's the static talking. Tight. Fast. <bloom>Reactive.</bloom>\n\nYou can't find your platform looking like that. The Station won't let you. It responds to what you bring it.",
+                text: "You're askin' the right question. But before we talk platforms and maps...\n\nHold up a second. <shake>You're vibratin' like a tuning fork.</shake>\n\nI can hear it from here. The static. You carryin' a lot of noise with you, traveler.",
+                emotion: 'concerned',
+                variation_id: 'calibration_start_place_v1'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'calib_defensive_place',
+                text: "I'm fine. Just tell me what this place is.",
+                nextNodeId: 'systemic_calibration_friction_defensive',
+                pattern: 'analytical',
+                skills: ['criticalThinking'],
+                consequence: {
+                    characterId: 'samuel',
+                    trustChange: -1
+                }
+            },
+            {
+                choiceId: 'calib_masking_place',
+                text: "It's just been a long trip. Go ahead.",
+                nextNodeId: 'systemic_calibration_friction_masking',
+                pattern: 'building',
+                skills: ['adaptability']
+            },
+            {
+                choiceId: 'calib_vulnerable_place',
+                text: "It is... loud. In my head.",
+                nextNodeId: 'systemic_calibration_acceptance',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'samuel',
+                    trustChange: 1
+                }
+            }
+        ],
+        tags: ['systemic_event', 'calibration']
+    },
+
+    {
+        nodeId: 'systemic_calibration_start_platforms',
+        speaker: 'Samuel Washington',
+        content: [
+            {
+                text: "Platforms come later. First we get you steady.\n\nHold up a second. <shake>You're vibratin' like a tuning fork.</shake>\n\nI can hear it from here. The static. You carryin' a lot of noise with you, traveler.",
+                emotion: 'concerned',
+                variation_id: 'calibration_start_platforms_v1'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'calib_defensive_platforms',
+                text: "I'm fine. Just point me where to go.",
+                nextNodeId: 'systemic_calibration_friction_defensive',
+                pattern: 'analytical',
+                skills: ['criticalThinking'],
+                consequence: {
+                    characterId: 'samuel',
+                    trustChange: -1
+                }
+            },
+            {
+                choiceId: 'calib_masking_platforms',
+                text: "It's just been a long trip. I'm listening.",
+                nextNodeId: 'systemic_calibration_friction_masking',
+                pattern: 'building',
+                skills: ['adaptability']
+            },
+            {
+                choiceId: 'calib_vulnerable_platforms',
+                text: "It is... loud. In my head.",
+                nextNodeId: 'systemic_calibration_acceptance',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'samuel',
+                    trustChange: 1
+                }
+            }
+        ],
+        tags: ['systemic_event', 'calibration']
+    },
+
+    {
+        nodeId: 'systemic_calibration_friction_defensive',
+        speaker: 'Samuel Washington',
+        content: [
+            {
+                text: "Mmm. That's the static talking. Tight. Fast. <bloom>Reactive.</bloom>\n\nYou can't find your platform looking like that. The Station won't let you. It responds to what you bring it.",
                 emotion: 'stern',
-                variation_id: 'friction_v1'
+                variation_id: 'friction_defensive_v1'
             }
         ],
         choices: [
@@ -86,6 +174,39 @@ export const systemicCalibrationNodes: DialogueNode[] = [
                     characterId: 'samuel',
                     trustChange: 1,
                     patternChanges: { patience: 2 } // Boost resilience
+                }
+            }
+        ]
+    },
+
+    {
+        nodeId: 'systemic_calibration_friction_masking',
+        speaker: 'Samuel Washington',
+        content: [
+            {
+                text: "Long trips will do it. But what I'm hearin' ain't just tired.\n\nSee? That's the static talking. Tight. Fast. <bloom>Reactive.</bloom>\n\nYou can't find your platform looking like that. The Station won't let you. It responds to what you bring it.",
+                emotion: 'stern',
+                variation_id: 'friction_masking_v1'
+            }
+        ],
+        choices: [
+            {
+                choiceId: 'calib_force_masking',
+                text: "I act on what I see.",
+                nextNodeId: 'systemic_calibration_fail',
+                pattern: 'analytical',
+                skills: ['criticalThinking']
+            },
+            {
+                choiceId: 'calib_breath_masking',
+                text: "[Take a deep breath] You're right. I'm rushing.",
+                nextNodeId: 'systemic_calibration_test',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'samuel',
+                    trustChange: 1,
+                    patternChanges: { patience: 2 }
                 }
             }
         ]
@@ -126,7 +247,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
             {
                 choiceId: 'calib_fear_failure',
                 text: "The fear that I'm wasting time.",
-                nextNodeId: 'samuel_explains_station', // Loop back to main flow
+                nextNodeId: 'samuel_explains_station_fear_failure', // Loop back to main flow
                 pattern: 'analytical', // Sympathetic Attract
                 skills: ['criticalThinking'],
                 consequence: {
@@ -138,7 +259,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
             {
                 choiceId: 'calib_fear_disconnection',
                 text: "The feeling that I'm invisible.",
-                nextNodeId: 'samuel_explains_station',
+                nextNodeId: 'samuel_explains_station_fear_invisible',
                 pattern: 'helping',
                 skills: ['emotionalIntelligence'],
                 consequence: {
@@ -150,7 +271,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
             {
                 choiceId: 'calib_fear_stagnation',
                 text: "The weight of everything I haven't built yet.",
-                nextNodeId: 'samuel_explains_station',
+                nextNodeId: 'samuel_explains_station_fear_stagnation',
                 pattern: 'building',
                 skills: ['creativity'],
                 consequence: {

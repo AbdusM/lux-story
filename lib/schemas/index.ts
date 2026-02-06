@@ -67,6 +67,7 @@ export {
   PatternDemonstrationDataSchema,
   RelationshipProgressDataSchema,
   PlatformStateDataSchema,
+  InteractionEventDataSchema,
 
   // Action schemas
   QueuedActionBaseSchema,
@@ -92,6 +93,7 @@ export {
   type PatternDemonstrationData,
   type RelationshipProgressData,
   type PlatformStateData,
+  type InteractionEventData,
   type QueuedAction,
   type TypedQueuedAction,
   type SyncResult,

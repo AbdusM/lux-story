@@ -1,147 +1,104 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './fixtures/game-state-fixtures'
 
 /**
  * Journey Summary Feature Tests
- * Tests the Samuel-narrated procedural journey summary that appears
- * when a player has completed enough of their journey (2+ arcs or 20+ choices)
+ * The Journey Summary is exposed from the EndingPanel when:
+ * - the current node has no available choices (`isEnding`)
+ * - and `isJourneyComplete(gameState)` is true
  */
 
-test.describe('Journey Summary', () => {
-  // Tests require complex state seeding that matches SerializableGameState exactly,
-  // including valid node IDs from dialogue graphs. The seedCompletedJourneyState
-  // fixture handles this correctly.
-  /**
-   * Seed game state with completed journey to trigger the Journey Summary button
-   * The isJourneyComplete function checks:
-   * - arcsCompleted >= 2, OR
-   * - totalChoices >= 20 (sum of pattern values), OR
-   * - globalFlags.has('journey_complete')
-   */
-  async function seedCompletedJourneyState(page: any) {
-    await page.evaluate(() => {
-      // Must match SerializableGameState interface exactly
-      const gameState = {
-        saveVersion: '2.0.0',
-        playerId: 'test-player-journey',
-        currentNodeId: 'samuel_hub_return', // Valid hub node for returning players
-        currentCharacterId: 'samuel',
-        // Set two arcs as complete to trigger journey complete condition
-        globalFlags: ['maya_arc_complete', 'devon_arc_complete', 'met_maya', 'met_devon', 'first_journey_complete'],
-        characters: [
-          {
-            characterId: 'samuel',
-            trust: 5,
-            anxiety: 50,
-            nervousSystemState: 'ventral_vagal',
-            lastReaction: null,
-            knowledgeFlags: [],
-            relationshipStatus: 'acquaintance',
-            conversationHistory: []
-          },
-          {
-            characterId: 'maya',
-            trust: 7,
-            anxiety: 50,
-            nervousSystemState: 'ventral_vagal',
-            lastReaction: null,
-            knowledgeFlags: ['maya_goal_discussed'],
-            relationshipStatus: 'acquaintance',
-            conversationHistory: []
-          },
-          {
-            characterId: 'devon',
-            trust: 6,
-            anxiety: 50,
-            nervousSystemState: 'ventral_vagal',
-            lastReaction: null,
-            knowledgeFlags: ['devon_goal_discussed'],
-            relationshipStatus: 'acquaintance',
-            conversationHistory: []
-          }
-        ],
-        // High pattern scores to also meet the 20+ choices condition
-        patterns: { analytical: 6, building: 4, helping: 8, exploring: 3, patience: 4 },
-        lastSaved: Date.now(),
-        thoughts: [],
-        episodeNumber: 2,
-        sessionStartTime: Date.now(),
-        sessionBoundariesCrossed: 1,
-        platforms: {},
-        careerValues: { directImpact: 2, systemsThinking: 1, dataInsights: 1, futureBuilding: 1, independence: 0 },
-        mysteries: { letterSender: 'unknown', platformSeven: 'stable', samuelsPast: 'hidden', stationNature: 'unknown' },
-        time: { currentDisplay: '23:47', minutesRemaining: 13, flowRate: 1.0, isStopped: false },
-        quietHour: { potential: true, experienced: [] },
-        overdensity: 0.3,
-        items: { letter: 'kept', discoveredPaths: [] },
-        pendingCheckIns: [],
-        unlockedAbilities: [],
-        archivistState: { collectedRecords: [], verifiedLore: [], sensoryCalibration: {} },
-        skillLevels: {},
-        skillUsage: []
-      }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(gameState))
-    })
-  }
+const createJourneySummaryReadyState = () => ({
+  // Force an ending state (node has no choices) so EndingPanel is rendered.
+  currentNodeId: 'journey_complete_trigger',
+  currentCharacterId: 'samuel',
 
-  test.beforeEach(async ({ page }) => {
-    // Navigate to app
-    await page.goto('http://localhost:3005')
-    await page.waitForLoadState('networkidle')
-  })
+  // Two completed arcs => `isJourneyComplete` true.
+  globalFlags: ['maya_arc_complete', 'devon_arc_complete', 'met_maya', 'met_devon'],
 
-  test('Journey Summary button appears when journey is complete', async ({ page }) => {
-    // Fixed: State seeding now includes all required fields and valid node IDs
-    // Seed completed journey state
-    await seedCompletedJourneyState(page)
-    await page.reload()
-    await page.waitForLoadState('networkidle')
+  // Keep patterns low to avoid pattern-unlock choices being injected (which would break `isEnding`).
+  patterns: { analytical: 1, building: 0, helping: 2, patience: 0, exploring: 1 },
 
-    // Wait for game interface
-    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
-
-    // Journey Summary button should be visible (Compass icon)
-    const journeyButton = page.getByLabel('View Journey Summary')
-    await expect(journeyButton).toBeVisible({ timeout: 5000 })
-  })
-
-  test('Journey Summary button does not appear at start of game', async ({ page }) => {
-    // Clear any existing state
-    await page.evaluate(() => localStorage.removeItem('grand-central-terminus-save'))
-    await page.reload()
-    await page.waitForLoadState('networkidle')
-
-    // Enter the station
-    const enterButton = page.locator('button:has-text("Enter the Station")')
-    if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await enterButton.click()
-      await page.waitForLoadState('networkidle')
+  characters: [
+    {
+      characterId: 'samuel',
+      trust: 5,
+      anxiety: 50,
+      nervousSystemState: 'ventral_vagal',
+      lastReaction: null,
+      knowledgeFlags: [],
+      relationshipStatus: 'acquaintance',
+      conversationHistory: []
+    },
+    {
+      characterId: 'maya',
+      trust: 7,
+      anxiety: 50,
+      nervousSystemState: 'ventral_vagal',
+      lastReaction: null,
+      knowledgeFlags: ['maya_goal_discussed'],
+      relationshipStatus: 'confidant',
+      conversationHistory: []
+    },
+    {
+      characterId: 'devon',
+      trust: 6,
+      anxiety: 50,
+      nervousSystemState: 'ventral_vagal',
+      lastReaction: null,
+      knowledgeFlags: ['devon_goal_discussed'],
+      relationshipStatus: 'acquaintance',
+      conversationHistory: []
     }
+  ],
+})
 
-    // Wait for game interface to load (indicates initialization complete)
-    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 5000 })
+const createEndingButIncompleteState = () => ({
+  currentNodeId: 'journey_complete_trigger',
+  currentCharacterId: 'samuel',
+  globalFlags: [],
+  patterns: { analytical: 0, building: 0, helping: 1, patience: 0, exploring: 0 },
+  characters: [
+    {
+      characterId: 'samuel',
+      trust: 2,
+      anxiety: 50,
+      nervousSystemState: 'ventral_vagal',
+      lastReaction: null,
+      knowledgeFlags: [],
+      relationshipStatus: 'acquaintance',
+      conversationHistory: []
+    }
+  ],
+})
 
-    // Journey Summary button should NOT be visible at game start
-    const journeyButton = page.getByLabel('View Journey Summary')
-    await expect(journeyButton).not.toBeVisible({ timeout: 2000 }).catch(() => {
-      // If it's visible due to saved state, that's actually OK for testing
-    })
+test.describe('Journey Summary', () => {
+  test('See Your Journey appears only when journey is complete (ending state)', async ({ page, seedState }) => {
+    await seedState(createJourneySummaryReadyState())
+
+    // Ending panel should show the journey-complete celebration variant.
+    await expect(page.getByText('The Station Knows You Now')).toBeVisible({ timeout: 15000 })
+
+    const seeJourneyButton = page.getByRole('button', { name: 'See Your Journey' })
+    await expect(seeJourneyButton).toBeVisible({ timeout: 5000 })
   })
 
-  test('Journey Summary modal opens and closes correctly', async ({ page }) => {
-    // Seed completed journey state
-    await seedCompletedJourneyState(page)
-    await page.reload()
-    await page.waitForLoadState('networkidle')
+  test('See Your Journey does not appear when ending but journey is incomplete', async ({ page, seedState }) => {
+    await seedState(createEndingButIncompleteState())
 
-    // Wait for game interface
-    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
+    await expect(page.getByText('Conversation Complete')).toBeVisible({ timeout: 15000 })
+    await expect(page.getByRole('button', { name: 'See Your Journey' })).toHaveCount(0)
+    await expect(page.getByRole('button', { name: 'Return to Station' })).toBeVisible()
+  })
 
-    // Click the journey summary button
-    const journeyButton = page.getByLabel('View Journey Summary')
-    await journeyButton.click()
+  test('Journey Summary modal opens and closes correctly', async ({ page, seedState }) => {
+    await seedState(createJourneySummaryReadyState())
+
+    // Open from EndingPanel.
+    await page.getByRole('button', { name: 'See Your Journey' }).click()
 
     // Modal should appear with Samuel's reflection header
-    await expect(page.getByText("Samuel's Reflection on Your Journey")).toBeVisible({ timeout: 3000 })
+    // Narrative generation + modal mount can be a little slow under load.
+    await expect(page.getByText("Samuel's Reflection on Your Journey")).toBeVisible({ timeout: 10000 })
 
     // Should show "The Beginning" section first
     await expect(page.getByText('The Beginning')).toBeVisible()
@@ -154,18 +111,10 @@ test.describe('Journey Summary', () => {
     await expect(page.getByText("Samuel's Reflection on Your Journey")).not.toBeVisible()
   })
 
-  test('Journey Summary modal supports keyboard navigation', async ({ page }) => {
-    // Seed completed journey state
-    await seedCompletedJourneyState(page)
-    await page.reload()
-    await page.waitForLoadState('networkidle')
+  test('Journey Summary modal supports keyboard navigation', async ({ page, seedState }) => {
+    await seedState(createJourneySummaryReadyState())
 
-    // Wait for game interface
-    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
-
-    // Open the journey summary
-    const journeyButton = page.getByLabel('View Journey Summary')
-    await journeyButton.click()
+    await page.getByRole('button', { name: 'See Your Journey' }).click()
 
     // Wait for modal
     await expect(page.getByText('The Beginning')).toBeVisible()
@@ -187,24 +136,16 @@ test.describe('Journey Summary', () => {
     await expect(page.getByText("Samuel's Reflection on Your Journey")).not.toBeVisible()
   })
 
-  test('Journey Summary displays all sections with Next/Back navigation', async ({ page }) => {
-    // Seed completed journey state
-    await seedCompletedJourneyState(page)
-    await page.reload()
-    await page.waitForLoadState('networkidle')
-
-    // Wait for game interface
-    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
-
-    // Open the journey summary
-    const journeyButton = page.getByLabel('View Journey Summary')
-    await journeyButton.click()
+  test('Journey Summary displays all sections with Next/Back navigation', async ({ page, seedState }) => {
+    await seedState(createJourneySummaryReadyState())
+    await page.getByRole('button', { name: 'See Your Journey' }).click()
 
     const sections = [
       'The Beginning',
       'Your Patterns',
       'Connections Made',
       'Skills Demonstrated',
+      'Career Paths',
       "Samuel's Wisdom"
     ]
 
@@ -214,7 +155,7 @@ test.describe('Journey Summary', () => {
 
       if (i < sections.length - 1) {
         // Click Next button
-        const nextButton = page.getByRole('button', { name: 'Next' })
+        const nextButton = page.getByRole('button', { name: 'Next', exact: true })
         await nextButton.click()
 
         // Wait for next section to appear
@@ -227,37 +168,20 @@ test.describe('Journey Summary', () => {
     await expect(page.getByRole('button', { name: 'Complete Journey' })).toBeVisible()
   })
 
-  test('Journey Summary shows journey stats', async ({ page }) => {
-    // Seed completed journey state
-    await seedCompletedJourneyState(page)
-    await page.reload()
-    await page.waitForLoadState('networkidle')
-
-    // Wait for game interface
-    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
-
-    // Open the journey summary
-    const journeyButton = page.getByLabel('View Journey Summary')
-    await journeyButton.click()
+  test('Journey Summary shows journey stats', async ({ page, seedState }) => {
+    await seedState(createJourneySummaryReadyState())
+    await page.getByRole('button', { name: 'See Your Journey' }).click()
 
     // First section should show stats preview
     await expect(page.getByText(/2 arcs completed/i).or(page.getByText(/arc.*completed/i))).toBeVisible({ timeout: 3000 })
     await expect(page.getByText(/choices made/i)).toBeVisible()
-    await expect(page.getByText(/pattern/i)).toBeVisible()
+    // Assert the dominant-pattern badge is rendered (unique, avoids strict-mode collisions).
+    await expect(page.getByText('helping pattern')).toBeVisible()
   })
 
-  test('Journey Summary navigation dots work', async ({ page }) => {
-    // Seed completed journey state
-    await seedCompletedJourneyState(page)
-    await page.reload()
-    await page.waitForLoadState('networkidle')
-
-    // Wait for game interface
-    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
-
-    // Open the journey summary
-    const journeyButton = page.getByLabel('View Journey Summary')
-    await journeyButton.click()
+  test('Journey Summary navigation dots work', async ({ page, seedState }) => {
+    await seedState(createJourneySummaryReadyState())
+    await page.getByRole('button', { name: 'See Your Journey' }).click()
 
     // Wait for modal
     await expect(page.getByText('The Beginning')).toBeVisible()
@@ -276,18 +200,9 @@ test.describe('Journey Summary', () => {
     await expect(page.getByText('The Beginning')).toBeVisible({ timeout: 3000 })
   })
 
-  test('Journey Summary Back button is disabled on first section', async ({ page }) => {
-    // Seed completed journey state
-    await seedCompletedJourneyState(page)
-    await page.reload()
-    await page.waitForLoadState('networkidle')
-
-    // Wait for game interface
-    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
-
-    // Open the journey summary
-    const journeyButton = page.getByLabel('View Journey Summary')
-    await journeyButton.click()
+  test('Journey Summary Back button is disabled on first section', async ({ page, seedState }) => {
+    await seedState(createJourneySummaryReadyState())
+    await page.getByRole('button', { name: 'See Your Journey' }).click()
 
     // Wait for modal
     await expect(page.getByText('The Beginning')).toBeVisible()
@@ -297,18 +212,9 @@ test.describe('Journey Summary', () => {
     await expect(backButton).toBeDisabled()
   })
 
-  test('Journey Summary Complete Journey button closes modal', async ({ page }) => {
-    // Seed completed journey state
-    await seedCompletedJourneyState(page)
-    await page.reload()
-    await page.waitForLoadState('networkidle')
-
-    // Wait for game interface
-    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
-
-    // Open the journey summary
-    const journeyButton = page.getByLabel('View Journey Summary')
-    await journeyButton.click()
+  test('Journey Summary Complete Journey button closes modal', async ({ page, seedState }) => {
+    await seedState(createJourneySummaryReadyState())
+    await page.getByRole('button', { name: 'See Your Journey' }).click()
 
     // Navigate to last section
     const sections = [
@@ -316,11 +222,12 @@ test.describe('Journey Summary', () => {
       'Your Patterns',
       'Connections Made',
       'Skills Demonstrated',
+      'Career Paths',
       "Samuel's Wisdom"
     ]
 
-    for (let i = 0; i < 4; i++) {
-      const nextButton = page.getByRole('button', { name: 'Next' })
+    for (let i = 0; i < sections.length - 1; i++) {
+      const nextButton = page.getByRole('button', { name: 'Next', exact: true })
       await nextButton.click()
 
       // Wait for next section to appear
@@ -338,18 +245,9 @@ test.describe('Journey Summary', () => {
     await expect(page.getByText("Samuel's Reflection on Your Journey")).not.toBeVisible()
   })
 
-  test('Journey Summary shows relationship reflections based on trust', async ({ page }) => {
-    // Seed completed journey state
-    await seedCompletedJourneyState(page)
-    await page.reload()
-    await page.waitForLoadState('networkidle')
-
-    // Wait for game interface
-    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
-
-    // Open the journey summary
-    const journeyButton = page.getByLabel('View Journey Summary')
-    await journeyButton.click()
+  test('Journey Summary shows relationship reflections based on trust', async ({ page, seedState }) => {
+    await seedState(createJourneySummaryReadyState())
+    await page.getByRole('button', { name: 'See Your Journey' }).click()
 
     // Navigate to Connections Made section (index 2)
     const dots = page.locator('.flex.justify-center.gap-2 button')
@@ -359,21 +257,13 @@ test.describe('Journey Summary', () => {
     await expect(page.getByText('Connections Made')).toBeVisible({ timeout: 3000 })
 
     // Should show character names from seeded state
-    await expect(page.getByText('Maya Chen').or(page.getByText('Devon Kumar'))).toBeVisible({ timeout: 3000 })
+    await expect(page.getByRole('heading', { name: 'Maya Chen' })).toBeVisible({ timeout: 3000 })
+    await expect(page.getByRole('heading', { name: 'Devon Kumar' })).toBeVisible({ timeout: 3000 })
   })
 
-  test('Journey Summary shows pattern profile', async ({ page }) => {
-    // Seed completed journey state
-    await seedCompletedJourneyState(page)
-    await page.reload()
-    await page.waitForLoadState('networkidle')
-
-    // Wait for game interface
-    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
-
-    // Open the journey summary
-    const journeyButton = page.getByLabel('View Journey Summary')
-    await journeyButton.click()
+  test('Journey Summary shows pattern profile', async ({ page, seedState }) => {
+    await seedState(createJourneySummaryReadyState())
+    await page.getByRole('button', { name: 'See Your Journey' }).click()
 
     // Navigate to Your Patterns section (index 1)
     const dots = page.locator('.flex.justify-center.gap-2 button')

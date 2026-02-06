@@ -108,7 +108,7 @@ test.describe('Ranking Dashboard Golden Flow', () => {
 
     // STEP 7: Verify state was updated
     const savedState = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -130,7 +130,7 @@ test.describe('Ranking Dashboard Golden Flow', () => {
 
     // Get initial state
     const state = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 

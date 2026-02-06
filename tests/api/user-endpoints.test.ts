@@ -283,6 +283,79 @@ describe('Relationship Progress API (/api/user/relationship-progress)', () => {
   })
 })
 
+describe('Interaction Events API (/api/user/interaction-events)', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockSupabaseResponse.data = {
+      id: 'event-1',
+      user_id: 'player_123',
+      session_id: 'sess-1',
+      event_type: 'choice_presented'
+    }
+    mockSupabaseResponse.error = null
+  })
+
+  describe('POST /api/user/interaction-events', () => {
+    test('should reject request without user_id', async () => {
+      const { POST } = await import('@/app/api/user/interaction-events/route')
+
+      const request = createRequest('http://localhost:3000/api/user/interaction-events', {
+        method: 'POST',
+        body: {
+          session_id: 'sess-1',
+          event_type: 'choice_presented',
+          payload: { foo: 'bar' }
+        }
+      })
+
+      const response = await POST(request)
+      const data = await response.json()
+
+      expect(response.status).toBe(400)
+      expect(data.error).toBeTruthy()
+    })
+
+    test('should reject request without required fields', async () => {
+      const { POST } = await import('@/app/api/user/interaction-events/route')
+
+      const request = createRequest('http://localhost:3000/api/user/interaction-events', {
+        method: 'POST',
+        body: { user_id: 'player_123' }
+      })
+
+      const response = await POST(request)
+      const data = await response.json()
+
+      expect(response.status).toBe(400)
+      expect(data.error).toBeTruthy()
+    })
+
+    test('should insert interaction event with valid data', async () => {
+      const { POST } = await import('@/app/api/user/interaction-events/route')
+
+      const request = createRequest('http://localhost:3000/api/user/interaction-events', {
+        method: 'POST',
+        body: {
+          user_id: 'player_123',
+          session_id: 'sess-1',
+          event_type: 'choice_selected_ui',
+          node_id: 'samuel_introduction',
+          character_id: 'samuel',
+          ordering_variant: 'gravity_bucket_shuffle',
+          ordering_seed: 'seed',
+          payload: { selected_index: 0 }
+        }
+      })
+
+      const response = await POST(request)
+      const data = await response.json()
+
+      expect(response.status).toBe(200)
+      expect(data.success).toBe(true)
+    })
+  })
+})
+
 describe('Skill Demonstrations API (/api/user/skill-demonstrations)', () => {
   beforeEach(() => {
     vi.clearAllMocks()

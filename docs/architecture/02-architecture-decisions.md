@@ -109,24 +109,24 @@ Would add CRDTs or server-side conflict resolution if: multi-device sync is requ
 
 ---
 
-## ADR-005: Orbs Outside GameState
+## ADR-005: Orbs Inside GameState (TD-004)
 
-**Status:** Active (tech debt)
-**Date:** 2025-01
+**Status:** Resolved
+**Date:** 2026-02
 
 ### Context
-The orb economy (`useOrbs` hook) was built as a standalone system with its own localStorage keys (`lux-orb-*`). It tracks balance, milestones, and acknowledgment state. It was developed in parallel with the core GameState refactor and was not integrated into `coreGameState`.
+The orb economy (`useOrbs`) initially shipped as a standalone system with independent localStorage keys (`lux-orb-*`). This made it easy to iterate quickly, but it broke atomicity: save/load could restore game state without matching orb state.
 
 ### Decision
-Keep orbs in their own `useOrbs` hook with separate localStorage keys. Do not merge into `coreGameState`.
+Move the orb economy into `coreGameState` (`coreGameState.orbs`) and persist it atomically alongside the rest of game state via the standard commit path. Provide a one-time migration that imports and then deletes legacy `lux-orb-*` keys (`lib/migrations/orb-migration.ts`).
 
 ### Consequences
-- **Positive**: Orb system is self-contained and independently testable. No coupling to GameState serialization format.
-- **Negative**: Save/load does not capture orbs atomically with game state. Orbs can be out of sync after a restore. Cannot roll back orbs when rolling back game state.
-- **Trade-off**: Isolation vs. atomicity. Accepted because orbs are cosmetic/reward, not gameplay-critical.
+- **Positive**: Orbs are now captured in atomic save/load and stay consistent across restores. Storage auditing is simpler.
+- **Negative**: Orb state is coupled to GameState serialization format and slightly increases the size of the persisted core state.
+- **Trade-off**: A small increase in coupling/size is worth consistency and operational simplicity.
 
-### Future
-Should merge into `coreGameState` before: implementing save/load slots, adding save export/import, or if orbs become gameplay-critical.
+### Supersedes
+The previous decision to keep orbs separate (2025-01) is superseded by TD-004 completion.
 
 ---
 

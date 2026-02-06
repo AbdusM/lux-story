@@ -319,6 +319,37 @@ describe('SyncQueue', () => {
       expect(result.failed).toBe(0)
     })
 
+    test('processes interaction_event actions successfully', async () => {
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ success: true })
+      })
+
+      SyncQueue.addToQueue({
+        id: 'test-1',
+        type: 'interaction_event',
+        data: {
+          user_id: 'user123',
+          session_id: 'sess-1',
+          event_type: 'choice_presented',
+          node_id: 'samuel_introduction',
+          payload: { foo: 'bar' }
+        },
+        timestamp: Date.now()
+      })
+
+      const result = await SyncQueue.processQueue()
+
+      expect(result.success).toBe(true)
+      expect(result.processed).toBe(1)
+      expect(result.failed).toBe(0)
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        '/api/user/interaction-events',
+        expect.objectContaining({ method: 'POST' })
+      )
+    })
+
     test('handles failed actions with retry logic', async () => {
       // Mock fetch to return 500 error
       global.fetch = vi.fn().mockResolvedValue({

@@ -1,7 +1,7 @@
 # Lux Story: The Worldbuilding OS
 > A high-fidelity sci-fi RPG that functions as a stealth career assessment platform for the 2030 workforce.
 
-**Status**: ✅ Fully Operational (v1.0)
+**Status**: ✅ Fully Operational (v2.2.0)
 **Live Demo**: [https://career-exploration-birmingha.lux-story.pages.dev](https://career-exploration-birmingha.lux-story.pages.dev)
 
 ---
@@ -40,7 +40,7 @@ We track 50+ granular skills that map to 6 Birmingham-Ready Career Paths:
 ## 🏗️ Technical Architecture
 
 ### Stack
-*   **Core**: Next.js 15, React 18, TypeScript (Strict)
+*   **Core**: Next.js 15, React 19, TypeScript (Strict)
 *   **State**: Zustand + LocalStorage (Persisted Session)
 *   **UI**: Tailwind CSS + Framer Motion (No heavy assets)
 *   **Logic**: Custom `DialogueGraphNavigator` and `SimulationRenderer`

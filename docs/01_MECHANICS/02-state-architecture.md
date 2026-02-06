@@ -17,7 +17,7 @@ For full details, see:
 |------|-------|------|-----------|
 | Player patterns | `coreGameState` | `lib/character-state.ts` (grep: `GameState`) | Journal, Pattern Unlocks |
 | Character trust | `coreGameState` | `lib/character-state.ts` (grep: `characters`) | Constellation, Echoes |
-| Orb balance | `useOrbs` hook | `hooks/useOrbs.ts` (grep: `lux-orb-balance`) | Journal |
+| Orb balance | `coreGameState.orbs` | `hooks/useOrbs.ts`, `lib/game-store.ts`, `lib/character-state.ts` (grep: `OrbState`) | Journal, Milestones |
 | Skills earned | `coreGameState` | `lib/game-store.ts` (grep: `setCoreGameState`) | Journey Summary |
 | Scene history | `coreGameState` | `lib/game-store.ts` | Navigation |
 | Current dialogue node | React state | `components/StatefulGameInterface.tsx` (grep: `currentNodeId`) | SGI |
@@ -40,11 +40,11 @@ For full details, see:
 - Trust bounds, pattern thresholds, animation timings
 
 ### Persistence (`lib/game-store.ts`)
-- Zustand store with `persist` middleware → `localStorage['grand-central-game-store']`
+- Zustand store with `persist` middleware → `localStorage['lux_story_v2_game_store']` (`STORAGE_KEYS.GAME_STORE`)
 - Version 2 with migration from v0→v1→v2
 
 ### Hooks
-- `useOrbs` — Orb balance (independent localStorage keys, not part of coreGameState)
+- `useOrbs` — Orb state + earning logic (stored in `coreGameState` via Zustand for atomic save/load)
 - `useGameState` — Core state hook
 - `useConstellationData` — Character relationship data
 
@@ -59,10 +59,9 @@ For full details, see:
 
 - **Zustand persist v2**: Migrated from flat fields to consolidated `coreGameState`. Legacy fields (top-level trust, patterns) are now derived from `coreGameState` via selectors.
 - **Dual state during session**: React `useState` and Zustand `coreGameState` both hold game state during active play. They should stay in sync but can drift if setState fails.
-- **Orbs outside GameState**: The orb economy (`lux-orb-*` keys) is not part of `coreGameState`. Save/load cannot capture orbs atomically.
+- **TD-004 (Orbs)**: Orb economy moved into `coreGameState` (via Zustand) for atomic save/load. Migration fallbacks remain in `hooks/useOrbs.ts`.
 - **No multi-tab coordination**: Last-write-wins on localStorage. Acceptable for single-player.
 - **Archived code**: `lib/archive/game-state.legacy.ts` (Sprint 1), `lib/archive/orb-allocation-design.ts` (unused allocation).
-- **Deprecated fields**: `OrbBalance.totalAllocated` and `OrbBalance.availableToAllocate` are always 0.
 
 ## Adding New State
 

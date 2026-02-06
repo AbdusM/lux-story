@@ -7,6 +7,7 @@
  */
 
 import { Page } from '@playwright/test'
+import { CHARACTER_IDS } from '@/lib/graph-registry'
 
 export interface MaxUnlockConfig {
   trustLevel: number          // 0-10 (default: 10)
@@ -67,19 +68,18 @@ export async function createMaxUnlockState(
  * Unlock all 20 characters at specified trust level
  */
 async function unlockAllCharacters(page: Page, trustLevel: number) {
-  const count = await page.evaluate(({ trust }) => {
+  const characterIds = [...CHARACTER_IDS]
+  const count = await page.evaluate(({ trust, ids }) => {
     const godMode = (window as any).godMode
-    const characterIds = godMode.listCharacters()
-
-    for (const charId of characterIds) {
+    for (const charId of ids) {
       godMode.setTrust(charId, trust)
       // Add vulnerability flags
       godMode.addKnowledgeFlag(charId, `${charId}_vulnerability_revealed`)
       godMode.addKnowledgeFlag(charId, `${charId}_depth_unlocked`)
     }
 
-    return characterIds.length
-  }, { trust: trustLevel })
+    return ids.length
+  }, { trust: trustLevel, ids: characterIds })
 
   console.log(`  ✓ ${count} characters at trust=${trustLevel}`)
 }

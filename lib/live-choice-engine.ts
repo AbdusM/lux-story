@@ -5,7 +5,6 @@
  * real-time AI generation for hyper-personalized player experiences.
  */
 
-import type { Choice } from './story-engine'
 import { logger } from './logger'
 import { safeStorage } from './safe-storage'
 import { z } from 'zod'

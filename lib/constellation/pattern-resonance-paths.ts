@@ -10,7 +10,7 @@
  * These paths only appear when player reaches threshold in the associated pattern.
  */
 
-import { type PatternType, getDominantPatternOrFallback } from '../patterns'
+import { type PatternType } from '../patterns'
 import type { CharacterId } from '../graph-registry'
 
 /**

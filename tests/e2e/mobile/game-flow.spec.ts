@@ -73,7 +73,7 @@ for (const viewport of MOBILE_VIEWPORTS) {
 
       // Verify state was persisted to localStorage
       const savedState = await page.evaluate(() => {
-        const saved = localStorage.getItem('grand-central-terminus-save')
+        const saved = localStorage.getItem('lux_story_v2_game_save')
         return saved ? JSON.parse(saved) : null
       })
 

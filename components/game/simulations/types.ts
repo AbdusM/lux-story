@@ -140,7 +140,9 @@ export interface SecureTerminalContext extends BaseContext {
  * Context for data_audit, data_ticker
  */
 export interface DataContext extends BaseContext {
-    // Data analysis
+    // Used by data_audit + data_ticker variants.
+    // Keep this lightweight so dialogue nodes can define their own feeds without JSON parsing hacks.
+    items?: DataItem[]
 }
 
 /**

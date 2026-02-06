@@ -1,6 +1,6 @@
 # Analytics & Events - Data Dictionary
 
-**Last Updated:** January 13, 2026
+**Last Updated:** February 6, 2026
 **Source:** `/lib/event-bus.ts`, `/lib/career-analytics.ts`, `/lib/simple-analytics.ts`, `/lib/simple-career-analytics.ts`, `/lib/admin-analytics.ts`
 **Status:** Manual Documentation
 
@@ -26,10 +26,11 @@ The analytics system tracks player behavior, career exploration patterns, and sy
 3. [Simple Analytics](#simple-analytics)
 4. [Simple Career Analytics](#simple-career-analytics)
 5. [Admin Analytics](#admin-analytics)
-6. [Validation Rules](#validation-rules)
-7. [Usage Examples](#usage-examples)
-8. [Cross-References](#cross-references)
-9. [Design Notes](#design-notes)
+6. [Interaction Events Telemetry (Supabase)](#interaction-events-telemetry-supabase)
+7. [Validation Rules](#validation-rules)
+8. [Usage Examples](#usage-examples)
+9. [Cross-References](#cross-references)
+10. [Design Notes](#design-notes)
 
 ---
 
@@ -113,8 +114,8 @@ Analyzes player choice patterns to identify career path resonance and provides e
 | Career Path | Description | Pattern Mappings |
 |-------------|-------------|------------------|
 | **healthcare** | Medical, nursing, pediatric specialties | helping (0.4), caring (0.5), researching (0.2) |
-| **engineering** | Energy infrastructure, manufacturing, electrical | building (0.6), analyzing (0.3), environmental (0.4) |
-| **technology** | Fintech, health tech, startup innovation | analyzing (0.5), creating (0.3), researching (0.4) |
+| **engineering** | Energy infrastructure, manufacturing, electrical | building (0.6), analytical (0.3), environmental (0.4) |
+| **technology** | Fintech, health tech, startup innovation | analytical (0.5), creating (0.3), researching (0.4) |
 | **education** | Teaching, tutoring, education programs | helping (0.3), supporting (0.3), organizing (0.4) |
 | **sustainability** | Renewable energy, green infrastructure | environmental (0.6), growing (0.5) |
 | **entrepreneurship** | Startups, business development, venture capital | leading (0.4), organizing (0.3) |
@@ -129,12 +130,14 @@ Analyzes player choice patterns to identify career path resonance and provides e
 | caring | Healthcare (0.5), Education (0.3), Service (0.2) | Stronger healthcare affinity |
 | building | Engineering (0.6), Technology (0.4) | Construction-oriented |
 | creating | Engineering (0.4), Technology (0.3), Creative (0.3) | Balanced creativity |
-| analyzing | Technology (0.5), Engineering (0.3), Healthcare (0.2) | Data-driven |
+| analytical | Technology (0.5), Engineering (0.3), Healthcare (0.2) | Data-driven |
 | researching | Technology (0.4), Healthcare (0.3), Education (0.3) | Investigation-focused |
 | environmental | Sustainability (0.6), Engineering (0.4) | Green careers |
 | leading | Entrepreneurship (0.4), Education (0.3), Service (0.3) | Leadership roles |
 | expressing | Creative (0.6), Technology (0.2), Education (0.2) | Artistic expression |
 | storytelling | Creative (0.5), Education (0.3), Technology (0.2) | Narrative-driven |
+
+**Note:** Legacy `analyzing` should be treated as canonical `analytical` (see `lib/patterns.ts` `normalizePatternName()`).
 
 ### Birmingham Opportunities (32+ Organizations)
 
@@ -435,6 +438,89 @@ getUserCohort(userState, 'completion') // "veteran"
 ```
 
 ---
+
+## Interaction Events Telemetry (Supabase)
+
+Bias and engagement telemetry is stored in a dedicated table so we can distinguish:
+- what the UI showed (ordering, gravity weights, lock state), from
+- what the player clicked (index + reaction time), and
+- what the game logic awarded (earned pattern, trust delta).
+
+**Client producer (offline-first):**
+- `lib/sync-queue.ts` action type: `interaction_event` (`queueInteractionEventSync()`)
+
+**User ingest API:**
+- `app/api/user/interaction-events/route.ts`
+- Notes:
+  - Stores `payload` as JSONB.
+  - Adds `payload.__gct_validation` when the payload is missing expected keys (soft validation).
+
+**Database table:**
+- `interaction_events` via `supabase/migrations/021_interaction_events_table.sql`
+
+### Table Schema (interaction_events)
+
+| Column | Type | Notes |
+|--------|------|------|
+| `id` | uuid | Primary key |
+| `user_id` | text | Player ID (`player_...` or UUID), FK to `player_profiles.user_id` |
+| `session_id` | text | Session identifier (currently `sessionStartTime` string) |
+| `event_type` | text | e.g. `choice_presented`, `choice_selected_ui`, `choice_selected_result` |
+| `node_id` | text | Dialogue node id (when applicable) |
+| `character_id` | text | Current character id (when applicable) |
+| `ordering_variant` | text | Choice ordering strategy id (e.g. `gravity_bucket_shuffle`) |
+| `ordering_seed` | text | Deterministic seed used for ordering (when applicable) |
+| `payload` | jsonb | Event-specific payload (see below) |
+| `occurred_at` | timestamptz | When the event occurred (client timestamp) |
+
+### Event Types + Payload Shapes
+
+**`choice_presented`** (source of truth for what the player saw)
+- Emitted by: `components/GameChoices.tsx`
+- Payload keys:
+  - `event_id`: string
+  - `presented_at_ms`: number
+  - `nervous_system_state`: string|null
+  - `mercy_unlocked_choice_id`: string|null
+  - `choices`: array of:
+    - `index`: number
+    - `choice_id`: string
+    - `pattern`: string|null
+    - `gravity_weight`: number|null
+    - `gravity_effect`: string|null
+    - `is_locked`: boolean
+
+**`choice_selected_ui`** (what was clicked, at what index, how fast)
+- Emitted by: `components/GameChoices.tsx`
+- Payload keys:
+  - `event_id`: string
+  - `presented_event_id`: string|null (should match `choice_presented.payload.event_id`)
+  - `selected_choice_id`: string
+  - `selected_index`: number|null
+  - `reaction_time_ms`: number
+
+**`choice_selected_result`** (authoritative result from game logic)
+- Emitted by: `hooks/game/useChoiceHandler.ts`
+- Payload keys (subset):
+  - `choice_id`: string|null
+  - `choice_text`: string|null
+  - `choice_pattern`: string|null
+  - `reaction_time_ms`: number
+  - `earned_pattern`: string|null
+  - `trust_delta`: number|null
+  - `nervous_system_state`: string|null
+
+### Join Logic (Position Bias Analysis)
+
+To compute click bias vs position, join:
+- `choice_selected_ui.payload.presented_event_id`
+to
+- `choice_presented.payload.event_id`
+
+This allows analysis like:
+- top-slot click rate (`selected_index === 0`)
+- pattern-by-position pick rates
+- ordering strategy comparisons (`ordering_variant`)
 
 ## Validation Rules
 

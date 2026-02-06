@@ -13,6 +13,7 @@ export const marketDialogueNodes: DialogueNode[] = [
         nodeId: 'market_entry_logic',
         speaker: 'Narrator',
         content: [{ text: "...", variation_id: 'market_logic_dummy' }], // Invisible node
+        tags: ['system', 'router'],
         choices: [
             {
                 choiceId: 'route_to_crowd',
@@ -34,6 +35,7 @@ export const marketDialogueNodes: DialogueNode[] = [
         nodeId: 'market_transit_logic',
         speaker: 'Narrator',
         content: [{ text: "...", variation_id: 'market_transit_dummy' }],
+        tags: ['system', 'router'],
         choices: [
             {
                 choiceId: 'transit_glitch',

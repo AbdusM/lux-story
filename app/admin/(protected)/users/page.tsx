@@ -11,6 +11,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useUserRole } from '@/hooks/useUserRole'
 import { useRouter } from 'next/navigation'
 import { isTestEnvironment } from '@/lib/test-environment'
+import Link from 'next/link'
 
 interface UserProfile {
   user_id: string
@@ -148,7 +149,17 @@ export default function AdminUsersPage() {
       <div className="max-w-5xl mx-auto">
         <div className="mb-6">
           <p className="text-xs uppercase tracking-widest text-slate-500">Admin</p>
-          <h1 className="text-2xl font-semibold text-white">Users</h1>
+          <div className="flex items-center justify-between gap-3">
+            <h1 className="text-2xl font-semibold text-white">Users</h1>
+            <div className="flex gap-2">
+              <Link className="rounded bg-white/10 px-3 py-1 text-xs text-white transition hover:bg-white/20" href="/admin/telemetry">
+                Telemetry
+              </Link>
+              <Link className="rounded bg-white/10 px-3 py-1 text-xs text-white transition hover:bg-white/20" href="/admin/diagnostics">
+                Diagnostics
+              </Link>
+            </div>
+          </div>
           <p className="text-sm text-slate-400">User list</p>
         </div>
 

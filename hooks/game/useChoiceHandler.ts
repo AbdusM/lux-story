@@ -81,6 +81,7 @@ import {
   queuePlatformStateSync,
   queueSkillDemonstrationSync,
   queuePatternDemonstrationSync,
+  queueInteractionEventSync,
 } from '@/lib/sync-queue'
 import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
 import type { useAudioDirector } from '@/hooks/game/useAudioDirector'
@@ -155,6 +156,32 @@ export function useChoiceHandler({
       // patterns is a spread copy of primitives — direct assignment is safe.
       // If cloneGameState depth changes, these assumptions break. See lib/character-state.ts:533.
       const trustDelta = result.trustDelta
+
+      // Telemetry: authoritative choice result (pattern awarded, trust delta, etc.)
+      // This complements the UI-side `choice_selected_ui` event (index + ordering).
+      try {
+        const nowIso = new Date().toISOString()
+        const currentChar = state.currentCharacterId ? gameState.characters.get(state.currentCharacterId) : null
+        queueInteractionEventSync({
+          user_id: gameState.playerId,
+          session_id: String(gameState.sessionStartTime || Date.now()),
+          event_type: 'choice_selected_result',
+          node_id: state.currentNode?.nodeId,
+          character_id: state.currentCharacterId || undefined,
+          payload: {
+            occurred_at: nowIso,
+            choice_id: choice.choice.choiceId || null,
+            choice_text: choice.choice.text?.substring(0, 200) || null,
+            choice_pattern: choice.choice.pattern || null,
+            reaction_time_ms: reactionTime,
+            earned_pattern: result.events.earnOrb || null,
+            trust_delta: trustDelta ?? null,
+            nervous_system_state: currentChar?.nervousSystemState || null,
+          }
+        })
+      } catch {
+        // Telemetry must never break gameplay.
+      }
 
       // ═══════════════════════════════════════════════════════════════════════════
       // STATE DEFINITIONS

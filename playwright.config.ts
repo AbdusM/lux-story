@@ -32,7 +32,7 @@ export default defineConfig({
   // Shared settings for all projects
   use: {
     // Base URL for navigation
-    baseURL: 'http://localhost:3005',
+    baseURL: 'http://127.0.0.1:3005',
 
     // Force headless mode (no visual windows, prevents window jumping)
     headless: true,
@@ -48,6 +48,15 @@ export default defineConfig({
 
     // Action timeout
     actionTimeout: 10 * 1000,
+
+    // Reduce headless throttling artifacts that can cause perf + rAF-based flake.
+    launchOptions: {
+      args: [
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding',
+      ],
+    },
   },
 
   // Global setup for authentication (runs once before all tests)
@@ -93,8 +102,10 @@ export default defineConfig({
         '**/core-game-loop.spec.ts',
         '**/journey-summary.spec.ts'
       ],
-      fullyParallel: true,
-      workers: 2,
+      // Keep this project stable: it heavily exercises client hydration and localStorage.
+      // Running it serially avoids cold-start flakiness against the Next dev server.
+      fullyParallel: false,
+      workers: 1,
       use: {
         ...devices['Desktop Chrome'],
         headless: true,
@@ -250,12 +261,24 @@ export default defineConfig({
     // },
   ],
 
-  // Run local dev server before starting tests
+  // Start a server before running tests.
+  //
+  // We intentionally prefer a production server here (build + start) over
+  // `next dev` because `next dev` file watching + E2E artifact writes can cause
+  // `.next` manifest churn/flakiness under parallel Playwright workers.
+  //
+  // Opt-in to dev server via `E2E_USE_DEV_SERVER=true` when iterating locally.
   webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:3005',
+    // Bind to loopback to avoid sandbox restrictions that can block 0.0.0.0.
+    command: process.env.E2E_USE_DEV_SERVER
+      ? 'npm run dev -- --hostname 127.0.0.1'
+      // Wrap in a shell so `&&` works reliably across environments.
+      : 'bash -lc "npm run build && npm run start -- -p 3005 -H 127.0.0.1"',
+    // Use a non-redirecting URL for readiness checks (the root route can 307 to /welcome).
+    url: 'http://127.0.0.1:3005/api/health',
     reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
+    // Allow extra time for a cold `next build` before the server is ready.
+    timeout: 180 * 1000,
     env: {
       ...process.env,
       E2E_ADMIN_BYPASS_TOKEN: process.env.E2E_ADMIN_BYPASS_TOKEN || 'e2e-admin-bypass',

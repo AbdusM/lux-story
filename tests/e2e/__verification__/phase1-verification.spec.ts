@@ -12,7 +12,7 @@ test.describe('Phase 1 Verification', () => {
 
     // Verify fresh game state is loaded
     const gameState = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -66,7 +66,7 @@ test.describe('Phase 1 Verification', () => {
 
     // Verify journey complete state is loaded
     const gameState = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -80,7 +80,7 @@ test.describe('Phase 1 Verification', () => {
 
     // Verify demonstrated skills state is loaded
     const gameState = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -94,7 +94,7 @@ test.describe('Phase 1 Verification', () => {
 
     // Verify high trust state is loaded
     const gameState = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -102,7 +102,7 @@ test.describe('Phase 1 Verification', () => {
 
     // Check Maya's trust (note: characters is a Map, so we need to access it properly)
     const mayaState = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       if (!saved) return null
       const state = JSON.parse(saved)
       // Characters Map is serialized as array of [key, value] pairs

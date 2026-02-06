@@ -1,6 +1,6 @@
 "use client"
 
-import { memo, useState, useEffect, useCallback, useRef } from 'react'
+import { memo, useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { motion, AnimatePresence } from 'framer-motion'
 import { springs, stagger, signatureChoice } from '@/lib/animations'
@@ -8,6 +8,7 @@ import { Lock, Microscope, Brain, Compass, Heart, Hammer } from 'lucide-react'
 import { useChoiceCommitment } from '@/hooks/useChoiceCommitment'
 import { type PatternType, PATTERN_METADATA, isValidPattern } from '@/lib/patterns'
 import { type GravityResult } from '@/lib/narrative-gravity'
+import { orderChoicesForDisplay, type ChoiceOrderingVariant } from '@/lib/choice-ordering'
 import { getPatternPreviewStyles, getPatternHintText } from '@/lib/pattern-derivatives'
 import { type PlayerPatterns } from '@/lib/character-state'
 import { cn } from '@/lib/utils'
@@ -15,6 +16,7 @@ import { CHOICE_CONTAINER_HEIGHT } from '@/lib/ui-constants'
 
 import { useGameStore } from '@/lib/game-store'
 import { truncateTextForLoad, CognitiveLoadLevel } from '@/lib/cognitive-load'
+import { queueInteractionEventSync, generateActionId } from '@/lib/sync-queue'
 
 // ... (retain pattern styles constants: PATTERN_HOVER_STYLES, DEFAULT_HOVER_STYLE, PATTERN_GLASS_STYLES, DEFAULT_GLASS_STYLE, PATTERN_MARQUEE_COLORS, DEFAULT_MARQUEE_COLORS) ...
 
@@ -351,10 +353,10 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
     },
     // Gravity Effects
     attracted: {
-      scale: [1, 1.02, 1],
       boxShadow: "0px 0px 8px rgba(16, 185, 129, 0.3)",
       borderColor: "rgba(16, 185, 129, 0.5)",
-      transition: { duration: 2, repeat: Infinity }
+      // Keep this static: repeated transforms make E2E click targets "unstable".
+      transition: { duration: 0.15 }
     },
     repelled: {
       opacity: 0.7,
@@ -645,8 +647,6 @@ const groupChoices = (choices: Choice[]) => {
  * - Escape: Clear focus
  */
 export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevels, glass = false, playerPatterns, cognitiveLoad = 'normal' }: GameChoicesProps) => {
-  const { focusedIndex, containerRef } = useKeyboardNavigation(choices, isProcessing, onChoice)
-
   // SIGNATURE CHOICE ANIMATION (Directive B: 30% Budget)
   const {
     animationState,
@@ -655,6 +655,35 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     commitChoice,
     shouldDimScreen
   } = useChoiceCommitment()
+
+  const coreState = useGameStore(s => s.coreGameState)
+
+  const orderingVariant: ChoiceOrderingVariant = 'gravity_bucket_shuffle'
+  const orderingSeed = useMemo(() => {
+    const userId = coreState?.playerId || 'anon'
+    const nodeId = coreState?.currentNodeId || 'unknown'
+    return `${userId}:${nodeId}`
+  }, [coreState?.playerId, coreState?.currentNodeId])
+
+  const { orderedChoices: sortedChoices } = useMemo(() => {
+    return orderChoicesForDisplay(choices, { variant: orderingVariant, seed: orderingSeed })
+  }, [choices, orderingSeed])
+
+  // Determine layout strategy based on count
+  // Smart column logic: avoid orphan on 3 choices (use single column)
+  // 1-3 choices: single column, 4+ choices: 2 columns (pairs work better)
+  const useGrid = sortedChoices.length >= 4
+  const useGrouping = sortedChoices.length > 6 // Group only if many choices (6+) to avoid clutter
+
+  const { nonEmptyGroups, presentedChoicesFlat } = useMemo(() => {
+    if (!useGrouping) {
+      return { nonEmptyGroups: null as null | Array<[string, Choice[]]>, presentedChoicesFlat: sortedChoices }
+    }
+    const groups = groupChoices(sortedChoices)
+    const entries = Object.entries(groups).filter(([_, groupChoices]) => groupChoices.length > 0) as Array<[string, Choice[]]>
+    const flat = entries.flatMap(([, groupChoices]) => groupChoices)
+    return { nonEmptyGroups: entries, presentedChoicesFlat: flat }
+  }, [sortedChoices, useGrouping])
 
   // Wrapped choice handler with signature animation
   const handleChoiceWithAnimation = useCallback((choice: Choice) => {
@@ -673,24 +702,122 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   const unlockedAbilities = useGameStore(state => state.coreGameState?.unlockedAbilities)
   const hasPatternPreview = (unlockedAbilities || []).includes('pattern_preview')
 
+  const getStableChoiceId = (c: Choice): string => {
+    return c.id || c.consequence || c.next || c.text
+  }
+
+  const lastPresentedKeyRef = useRef<string | null>(null)
+  const presentedAtRef = useRef<number>(0)
+  const presentedEventIdRef = useRef<string | null>(null)
+  const presentedChoicesRef = useRef<Choice[]>([])
+
+  const mercyUnlockChoice = useMemo(() => {
+    const choiceStatuses = presentedChoicesFlat.map(c => ({ choice: c, locked: isChoiceLocked(c, orbFillLevels) }))
+    const allLocked = choiceStatuses.length > 0 && choiceStatuses.every(s => s.locked)
+    if (!allLocked) return null
+    return choiceStatuses.sort((a, b) => {
+      const thresholdA = a.choice.requiredOrbFill?.threshold || 0
+      const thresholdB = b.choice.requiredOrbFill?.threshold || 0
+      return thresholdA - thresholdB
+    })[0].choice
+  }, [presentedChoicesFlat, orbFillLevels])
+
+  // Telemetry: log the choice-set as presented (ordered list + gravity + lock state)
+  useEffect(() => {
+    const playerId = coreState?.playerId
+    const nodeId = coreState?.currentNodeId
+    const characterId = coreState?.currentCharacterId
+    if (!playerId || !nodeId) return
+
+    const stableIds = presentedChoicesFlat.map((c) => getStableChoiceId(c))
+    const presentedKey = `${nodeId}|${orderingVariant}|${orderingSeed}|${stableIds.join(',')}`
+    if (presentedKey === lastPresentedKeyRef.current) return
+    lastPresentedKeyRef.current = presentedKey
+
+    const now = Date.now()
+    const eventId = generateActionId()
+    presentedAtRef.current = now
+    presentedEventIdRef.current = eventId
+    presentedChoicesRef.current = presentedChoicesFlat
+
+    const currentChar = coreState?.characters?.find(c => c.characterId === characterId)
+    const nervousSystemState = currentChar?.nervousSystemState || null
+
+    queueInteractionEventSync({
+      user_id: playerId,
+      session_id: String(coreState?.sessionStartTime || now),
+      event_type: 'choice_presented',
+      node_id: nodeId,
+      character_id: characterId,
+      ordering_variant: orderingVariant,
+      ordering_seed: orderingSeed,
+      payload: {
+        event_id: eventId,
+        presented_at_ms: now,
+        nervous_system_state: nervousSystemState,
+        mercy_unlocked_choice_id: mercyUnlockChoice ? getStableChoiceId(mercyUnlockChoice) : null,
+        choices: presentedChoicesFlat.map((c, i) => {
+          const stableId = getStableChoiceId(c)
+          const isLocked = isChoiceLocked(c, orbFillLevels) && c !== mercyUnlockChoice
+          return {
+            index: i,
+            choice_id: stableId,
+            pattern: c.pattern || null,
+            gravity_weight: c.gravity?.weight ?? null,
+            gravity_effect: c.gravity?.effect ?? null,
+            is_locked: isLocked,
+            lock_reason: isLocked ? 'orb' : null,
+            required_orb_fill: c.requiredOrbFill || null,
+          }
+        })
+      }
+    })
+  }, [coreState?.playerId, coreState?.currentNodeId, coreState?.currentCharacterId, coreState?.sessionStartTime, coreState?.characters, orderingSeed, orderingVariant, presentedChoicesFlat, orbFillLevels, mercyUnlockChoice])
+
+  const logChoiceSelectedUi = useCallback((choice: Choice) => {
+    const playerId = coreState?.playerId
+    const nodeId = coreState?.currentNodeId
+    const characterId = coreState?.currentCharacterId
+    if (!playerId || !nodeId) return
+
+    const stableChoiceId = getStableChoiceId(choice)
+    const flat = presentedChoicesRef.current || []
+    const selectedIndex = flat.findIndex((c) => getStableChoiceId(c) === stableChoiceId)
+
+    const now = Date.now()
+    const presentedAt = presentedAtRef.current || now
+    const reactionTimeMs = Math.max(0, now - presentedAt)
+    const eventId = generateActionId()
+
+    queueInteractionEventSync({
+      user_id: playerId,
+      session_id: String(coreState?.sessionStartTime || now),
+      event_type: 'choice_selected_ui',
+      node_id: nodeId,
+      character_id: characterId,
+      ordering_variant: orderingVariant,
+      ordering_seed: orderingSeed,
+      payload: {
+        event_id: eventId,
+        presented_event_id: presentedEventIdRef.current,
+        selected_choice_id: stableChoiceId,
+        selected_index: selectedIndex >= 0 ? selectedIndex : null,
+        reaction_time_ms: reactionTimeMs
+      }
+    })
+  }, [coreState?.playerId, coreState?.currentNodeId, coreState?.currentCharacterId, coreState?.sessionStartTime, orderingSeed, orderingVariant])
+
+  const handleChoiceWithTelemetry = useCallback((choice: Choice) => {
+    if (isProcessing || isCommitting) return
+    logChoiceSelectedUi(choice)
+    handleChoiceWithAnimation(choice)
+  }, [handleChoiceWithAnimation, logChoiceSelectedUi, isProcessing, isCommitting])
+
+  const { focusedIndex, containerRef } = useKeyboardNavigation(presentedChoicesFlat, isProcessing, handleChoiceWithTelemetry)
+
   if (!choices || choices.length === 0) {
     return null
   }
-
-  // ISP UPDATE: Magnetic Sorting
-  // Sort choices by Gravity Weight (descending)
-  // Attracted (1.5) -> Neutral (1.0) -> Repelled (0.6)
-  const sortedChoices = [...choices].sort((a, b) => {
-    const wA = a.gravity?.weight || 1.0
-    const wB = b.gravity?.weight || 1.0
-    return wB - wA
-  })
-
-  // Determine layout strategy based on count
-  // Smart column logic: avoid orphan on 3 choices (use single column)
-  // 1-3 choices: single column, 4+ choices: 2 columns (pairs work better)
-  const useGrid = sortedChoices.length >= 4
-  const useGrouping = sortedChoices.length > 6 // Group only if many choices (6+) to avoid clutter
 
   // Screen dim overlay component for signature animation
   const ScreenDimOverlay = () => (
@@ -709,28 +836,8 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   )
 
   if (useGrouping) {
-    const groups = groupChoices(sortedChoices)
-    const nonEmptyGroups = Object.entries(groups).filter(([_, groupChoices]) => groupChoices.length > 0)
-
     // Track global index for keyboard navigation across groups
     let globalIndex = 0
-
-    // Safety Net: Ensure at least one choice is playable
-    // If all visible choices are locked, unlock the one with the lowest threshold requirement
-    const choiceStatuses = nonEmptyGroups.flatMap(([_, groupChoices]) =>
-      groupChoices.map(c => ({ choice: c, locked: isChoiceLocked(c, orbFillLevels) }))
-    )
-    const allLocked = choiceStatuses.every(s => s.locked)
-    let mercyUnlockChoice: Choice | null = null
-
-    if (allLocked && choiceStatuses.length > 0) {
-      // Find the choice with the lowest threshold to "mercy unlock"
-      mercyUnlockChoice = choiceStatuses.sort((a, b) => {
-        const thresholdA = a.choice.requiredOrbFill?.threshold || 0
-        const thresholdB = b.choice.requiredOrbFill?.threshold || 0
-        return thresholdA - thresholdB
-      })[0].choice
-    }
 
     return (
       <>
@@ -753,7 +860,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
         animate="visible"
         key={`grouped-${choices.map(c => c.consequence || c.text).join(',')}`} // Unique prefix + stable IDs
       >
-        {nonEmptyGroups.map(([title, groupChoices]) => (
+        {(nonEmptyGroups || []).map(([title, groupChoices]) => (
           <div key={title} className="space-y-3" role="group" aria-label={title}>
             {title !== 'Other' && (
               <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1" aria-label={`${title} options`}>
@@ -775,7 +882,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
                     key={stableKey}
                     choice={choice}
                     index={currentGlobalIndex}
-                    onChoice={handleChoiceWithAnimation}
+                    onChoice={handleChoiceWithTelemetry}
                     isProcessing={isProcessing || isCommitting}
                     isFocused={focusedIndex === currentGlobalIndex}
                     isLocked={isLocked}
@@ -821,18 +928,6 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     >
       {(() => {
         // Safety Net Calculation (Duplicated for non-grouped view)
-        const choiceStatuses = sortedChoices.map(c => ({ choice: c, locked: isChoiceLocked(c, orbFillLevels) }))
-        const allLocked = choiceStatuses.every(s => s.locked)
-        let mercyUnlockChoice: Choice | null = null
-
-        if (allLocked && choiceStatuses.length > 0) {
-          mercyUnlockChoice = choiceStatuses.sort((a, b) => {
-            const thresholdA = a.choice.requiredOrbFill?.threshold || 0
-            const thresholdB = b.choice.requiredOrbFill?.threshold || 0
-            return thresholdA - thresholdB
-          })[0].choice
-        }
-
         return sortedChoices.map((choice, index) => {
           const isLocked = isChoiceLocked(choice, orbFillLevels) && choice !== mercyUnlockChoice
 
@@ -845,7 +940,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
               key={stableKey}
               choice={choice}
               index={index}
-              onChoice={handleChoiceWithAnimation}
+              onChoice={handleChoiceWithTelemetry}
               isProcessing={isProcessing || isCommitting}
               isFocused={focusedIndex === index}
               isLocked={isLocked}

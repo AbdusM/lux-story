@@ -70,6 +70,9 @@ playwright-report/
 test-results/
 .playwright-mcp/
 
+# Visual test output screenshots (generated artifacts)
+tests/visual/output/
+
 # Test outputs and validation
 dialogue-length-report.json
 validation_output.txt

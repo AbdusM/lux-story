@@ -78,8 +78,10 @@ export function GameFooter({
                         gameState.patterns
                       ) : c.choice.text
                       return {
+                        id: c.choice.choiceId,
                         text: voicedText,
                         pattern: c.choice.pattern,
+                        gravity: c.gravity,
                         feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
                         pivotal: isNodePivotal,
                         requiredOrbFill: c.choice.requiredOrbFill,

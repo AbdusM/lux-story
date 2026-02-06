@@ -33,14 +33,14 @@ test.describe('Simulation System Progression', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -83,7 +83,7 @@ test.describe('Simulation System Progression', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.goto('/')
@@ -91,7 +91,7 @@ test.describe('Simulation System Progression', () => {
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -139,7 +139,7 @@ test.describe('Simulation System Progression', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.goto('/')
@@ -147,7 +147,7 @@ test.describe('Simulation System Progression', () => {
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -196,7 +196,7 @@ test.describe('Simulation System Progression', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.goto('/')
@@ -204,7 +204,7 @@ test.describe('Simulation System Progression', () => {
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -249,7 +249,7 @@ test.describe('Simulation System Progression', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.goto('/')
@@ -257,7 +257,7 @@ test.describe('Simulation System Progression', () => {
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 
@@ -315,7 +315,7 @@ test.describe('Simulation System Progression', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.goto('/')
@@ -323,7 +323,7 @@ test.describe('Simulation System Progression', () => {
 
     // Wait for state to be loaded
     await page.waitForFunction(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved !== null
     }, { timeout: 10000 })
 

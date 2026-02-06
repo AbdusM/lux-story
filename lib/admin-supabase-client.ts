@@ -23,7 +23,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
 import { logger } from '@/lib/logger'
-import { getAdminAuthStatus, isTestAdminBypass, isE2EAdminBypassEnabled } from '@/lib/admin-auth'
+import { getAdminAuthStatus, isTestAdminBypass } from '@/lib/admin-auth'
 
 // Emergency token fallback rate limiter: 1 per 5 minutes
 const emergencyTokenLimiter = rateLimit({
@@ -47,7 +47,9 @@ export async function requireAdminAuth(request: NextRequest): Promise<NextRespon
   const isPlaywright = userAgent.toLowerCase().includes('playwright')
   const canBypass = process.env.NODE_ENV !== 'production'
 
-  if ((canBypass && isPlaywright) || isE2EAdminBypassEnabled()) {
+  // Non-production convenience: Playwright user-agent shortcut.
+  // Production bypass must be token-based (see `isTestAdminBypass` below).
+  if (canBypass && isPlaywright) {
     return null
   }
 

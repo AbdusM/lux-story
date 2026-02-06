@@ -241,8 +241,8 @@ The app uses **10+ different localStorage key families**, causing:
 
 | Key Pattern | System | Data |
 |-------------|--------|------|
-| `grand-central-terminus-save` | GameStateManager | Core game state |
-| `grand-central-game-store` | Zustand persist | UI state, skills |
+| `lux_story_v2_game_save` (legacy: `grand-central-terminus-save`) | GameStateManager | Core game state |
+| `lux_story_v2_game_store` (legacy: `grand-central-game-store`) | Zustand persist | UI state, skills |
 | `skill_tracker_{userId}` | SkillTracker | Skill demonstrations |
 | `lux-platforms-{playerId}` | PlatformResonance | Platform warmth/resonance |
 | `lux-career-explorations` | CareerExplorer | Career exploration history |

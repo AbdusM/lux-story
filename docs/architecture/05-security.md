@@ -60,8 +60,8 @@ All localStorage keys are readable by any JavaScript on the same origin. If an a
 - **Mitigation**: pseudonymous UUIDs, no real names/locations/ages stored
 
 ### Multi-Tab Race Conditions
-- No `BroadcastChannel` or `StorageEvent` listener
-- Two tabs writing `grand-central-game-store` simultaneously: last write wins
+- `StorageEvent` listener (`hooks/useMultiTabSync.ts`) rehydrates Zustand when another tab writes (TD-006)
+- Two tabs writing `lux_story_v2_game_store` (`STORAGE_KEYS.GAME_STORE`) simultaneously: last write wins
 - Acceptable risk for single-player game; would need fixing for PWA offline mode
 
 ### Device Theft / Shared Device

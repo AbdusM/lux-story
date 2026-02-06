@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-page-custom-font */
 import type { Metadata, Viewport } from 'next'
-import { Inter, Crimson_Pro, Space_Mono, Roboto_Slab } from 'next/font/google'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 
 import { ServiceWorkerProvider } from '@/components/ServiceWorkerProvider'
@@ -16,30 +16,9 @@ import '../styles/narrative-interactions.css'
 // Initialize experience content to avoid circular dependencies
 import '@/lib/init-experiences'
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-})
-
-const crimsonPro = Crimson_Pro({
-  subsets: ['latin'],
-  variable: '--font-crimson-pro',
-  display: 'swap',
-})
-
-const spaceMono = Space_Mono({
-  weight: ['400', '700'],
-  subsets: ['latin'],
-  variable: '--font-space-mono',
-  display: 'swap',
-})
-
-const robotoSlab = Roboto_Slab({
-  subsets: ['latin'],
-  variable: '--font-roboto-slab',
-  display: 'swap',
-})
+// NOTE: We intentionally avoid `next/font/google` here.
+// In restricted build environments, Next's Google Fonts fetch can fail and break `next build`.
+// Fonts are loaded at runtime (with fallbacks) via <link> tags below.
 
 // Helper to safely create URL for metadataBase
 function getMetadataBase(): URL {
@@ -97,7 +76,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${crimsonPro.variable} ${spaceMono.variable} ${robotoSlab.variable}`}>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Crimson+Pro:wght@400;700&family=Roboto+Slab:wght@400;700&family=Space+Mono:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="grand-central-terminus" suppressHydrationWarning style={{
         fontSize: 'var(--font-size-base, 1rem)'
       }}>

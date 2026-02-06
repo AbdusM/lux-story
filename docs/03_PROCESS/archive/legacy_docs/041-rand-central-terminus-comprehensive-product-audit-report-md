@@ -11,7 +11,7 @@
   🚨 Critical Issues Requiring Immediate Action  
   1\. SECURITY VULNERABILITIES ⚠️  
   \- Hardcoded API keys in source code  
-  (AIzaSyDEQloxDXlFD2HnFNUrAIr8aANhvr\_Ivxg)  
+  (AIzaSyxxxxx)  
   \- Next.js vulnerability (CVE-2024-43799) requiring immediate update  
   \- Missing Content Security Policy headers  
   2\. TECHNICAL DEBT ⚠️  
@@ -914,7 +914,7 @@
 │ │ \- Location: /scripts/gemini-crisis-moments.js and                        │ │  
 │ │ /scripts/gemini-chapter-expander.js                                      │ │  
 │ │ \- Issue: Google Gemini API key hardcoded as fallback:                    │ │  
-│ │ AIzaSyDEQloxDXlFD2HnFNUrAIr8aANhvr\_Ivxg                                  │ │  
+│ │ AIzaSyxxxxx                                                               │ │  
 │ │ \- Risk: API key exposure could lead to unauthorized usage, billing       │ │  
 │ │ issues, and potential service abuse                                      │ │  
 │ │ \- Fix: Remove hardcoded keys, enforce environment variables only         │ │  
@@ -1045,7 +1045,7 @@
 │ │ \- Location: /scripts/gemini-crisis-moments.js and                        │ │  
 │ │ /scripts/gemini-chapter-expander.js                                      │ │  
 │ │ \- Issue: Google Gemini API key hardcoded as fallback:                    │ │  
-│ │ AIzaSyDEQloxDXlFD2HnFNUrAIr8aANhvr\_Ivxg                                  │ │  
+│ │ AIzaSyxxxxx                                                               │ │  
 │ │ \- Risk: API key exposure could lead to unauthorized usage, billing       │ │  
 │ │ issues, and potential service abuse                                      │ │  
 │ │ \- Fix: Remove hardcoded keys, enforce environment variables only         │ │  
@@ -1210,4 +1210,3 @@
 │ │ compliance and creating more inclusive user experiences for the Grand    │ │  
 │ │ Central Terminus career exploration game.                                │ │  
 │ ╰─────────────────────────────────────────────
-

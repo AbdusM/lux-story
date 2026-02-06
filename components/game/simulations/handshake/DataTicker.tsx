@@ -8,33 +8,66 @@ export function DataTicker({ config, onSuccess }: SimulationComponentProps) {
     const [items, setItems] = useState<DataItem[]>([])
     const [stabilizedCount, setStabilizedCount] = useState(0)
     const TARGET_COUNT = 3
+    const [missingFeed, setMissingFeed] = useState(false)
 
-    // Initialize data from config or mock
+    function normalizeItems(raw: unknown): DataItem[] {
+        if (!Array.isArray(raw)) return []
+
+        const normalized: DataItem[] = []
+        for (const maybe of raw) {
+            if (!maybe || typeof maybe !== 'object') continue
+            const item = maybe as Partial<DataItem>
+            if (!item.id || !item.label || typeof item.value !== 'number') continue
+
+            const priority = item.priority
+            const safePriority: DataItem['priority'] =
+                priority === 'critical' || priority === 'high' || priority === 'medium' || priority === 'low'
+                    ? priority
+                    : 'medium'
+
+            const trend = item.trend
+            const safeTrend: DataItem['trend'] =
+                trend === 'up' || trend === 'down' || trend === 'stable' ? trend : undefined
+
+            normalized.push({
+                id: String(item.id),
+                label: String(item.label),
+                value: item.value,
+                priority: safePriority,
+                trend: safeTrend,
+                selected: Boolean(item.selected),
+            })
+        }
+
+        return normalized
+    }
+
+    // Initialize data from config (preferred). Avoid random "mock" streams in production UX.
     useEffect(() => {
         let loadedItems: DataItem[] = []
 
-        // Try to parse initialContext if available
+        // Preferred: structured items array in initialContext
+        loadedItems = normalizeItems((config.initialContext as { items?: unknown } | undefined)?.items)
+
+        // Backward compatibility: parse JSON array from initialContext.content if present
         if (config.initialContext?.content) {
             try {
                 const parsed = JSON.parse(config.initialContext.content)
-                if (Array.isArray(parsed) && parsed.length > 0) {
-                    loadedItems = parsed
-                }
+                const parsedItems = normalizeItems(parsed)
+                if (loadedItems.length === 0 && parsedItems.length > 0) loadedItems = parsedItems
             } catch (_e) {
-                // Not JSON, fall back to mock
+                // Not JSON, ignore.
             }
         }
 
-        // Fallback to mock data if no valid context provided
         if (loadedItems.length === 0) {
-            loadedItems = Array.from({ length: 8 }).map((_, i) => ({
-                id: `stream-${i}`,
-                label: `STREAM_0${i + 1}`,
-                value: Math.floor(Math.random() * 100),
-                priority: Math.random() > 0.5 ? 'high' : 'medium',
-                trend: Math.random() > 0.5 ? 'up' : 'down',
-                selected: false
-            }))
+            setMissingFeed(true)
+            if (process.env.NODE_ENV !== 'production') {
+                // eslint-disable-next-line no-console
+                console.warn('[DataTicker] Missing initialContext.items; bypass enabled (no synthetic data).')
+            }
+        } else {
+            setMissingFeed(false)
         }
 
         setItems(loadedItems)
@@ -64,6 +97,24 @@ export function DataTicker({ config, onSuccess }: SimulationComponentProps) {
 
     return (
         <div className="flex flex-col h-full bg-slate-950/50 relative">
+            {missingFeed && (
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 px-6 text-center bg-slate-950/70 backdrop-blur-sm">
+                    <div className="text-xs uppercase tracking-widest text-slate-400 font-mono">
+                        Feed Unavailable
+                    </div>
+                    <div className="text-sm text-slate-200">
+                        This simulation is missing `initialContext.items`.
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => onSuccess({ skipped: true })}
+                        className="px-4 py-2 rounded-md border border-amber-500/40 text-amber-300 hover:bg-amber-500/10 transition-colors text-sm font-medium"
+                    >
+                        Bypass
+                    </button>
+                </div>
+            )}
+
             {/* Ticker Content */}
             <div className="flex-1 flex items-center overflow-x-auto no-scrollbar px-4 gap-4">
                 {items.map((item) => (

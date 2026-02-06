@@ -89,7 +89,10 @@ async function testSingleUserEndpoint() {
     console.log(`   Testing with user: ${testUserId.substring(0, 20)}...`)
 
     // Test the new single-user endpoint
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3003'
+    const baseUrl =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      'http://localhost:3005'
     const authToken = process.env.ADMIN_API_TOKEN
 
     if (!authToken) {

@@ -100,13 +100,14 @@ export const silasDialogueNodes: DialogueNode[] = [
       taskDescription: 'Stabilize sensor inputs to find ground truth.',
       initialContext: {
         label: 'Sensor Array 7',
-        content: JSON.stringify([
-          { id: '1', label: 'MOISTURE_S1', value: 12, priority: 'critical', trend: 'down' },
-          { id: '2', label: 'NITROGEN_S4', value: 45, priority: 'medium', trend: 'stable' },
-          { id: '3', label: 'PH_LEVEL_S2', value: 8.5, priority: 'high', trend: 'up' },
-          { id: '4', label: 'LIGHT_PAR_S3', value: 95, priority: 'critical', trend: 'up' },
-          { id: '5', label: 'TEMP_K_S1', value: 312, priority: 'high', trend: 'up' }
-        ])
+        content: 'RAW FEED: UNCALIBRATED',
+        items: [
+          { id: 'moisture-s1', label: 'MOISTURE_S1', value: 12, priority: 'critical', trend: 'down' },
+          { id: 'nitrogen-s4', label: 'NITROGEN_S4', value: 45, priority: 'medium', trend: 'stable' },
+          { id: 'ph-s2', label: 'PH_LEVEL_S2', value: 9, priority: 'high', trend: 'up' },
+          { id: 'par-s3', label: 'LIGHT_PAR_S3', value: 95, priority: 'critical', trend: 'up' },
+          { id: 'temp-s1', label: 'TEMP_K_S1', value: 312, priority: 'high', trend: 'up' }
+        ]
       },
       successFeedback: 'CALIBRATION COMPLETE. ANOMALY CONFIRMED.'
     },

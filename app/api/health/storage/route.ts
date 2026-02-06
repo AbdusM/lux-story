@@ -12,23 +12,21 @@ export const runtime = 'nodejs';
 
 export async function GET() {
   try {
-    // Server-side check: verify that client storage config is present
     const checks = {
       config: true,
-      localStorage: typeof window !== 'undefined' && 'localStorage' in window,
-      sessionStorage: typeof window !== 'undefined' && 'sessionStorage' in window,
+      // This endpoint runs server-side (Node.js). Browser storage is inherently client-only.
+      localStorage: 'client-only',
+      sessionStorage: 'client-only',
     };
-
-    const allHealthy = Object.values(checks).every(Boolean);
 
     return NextResponse.json(
       {
-        status: allHealthy ? 'healthy' : 'degraded',
+        status: 'healthy',
         timestamp: new Date().toISOString(),
         checks,
-        note: 'Server-side check only. Client-side storage is tested on the client.',
+        note: 'Browser storage is client-only. This endpoint reports server availability and documents client-only checks.',
       },
-      { status: allHealthy ? 200 : 503 }
+      { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(

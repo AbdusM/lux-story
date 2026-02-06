@@ -21,6 +21,15 @@ test.describe('Core Game Loop E2E', () => {
     const initialDialogue = await dialogueContent.textContent()
     expect(initialDialogue).toBeTruthy()
 
+    const initialSavedState = await page.evaluate(() => {
+      const saved = localStorage.getItem('lux_story_v2_game_save')
+      return saved ? JSON.parse(saved) : null
+    })
+    const initialNodeId = initialSavedState?.currentNodeId ?? 'samuel_introduction'
+    const initialPatternSum = initialSavedState?.patterns
+      ? Object.values(initialSavedState.patterns).reduce((sum: number, v: any) => sum + (typeof v === 'number' ? v : 0), 0)
+      : 0
+
     // STEP 3: Wait for choices to appear
     const choicesContainer = page.getByTestId('game-choices')
     await expect(choicesContainer).toBeVisible({ timeout: 5000 })
@@ -36,20 +45,30 @@ test.describe('Core Game Loop E2E', () => {
     await expect(firstChoice).toBeEnabled({ timeout: 5000 })
     await firstChoice.click()
 
-    // STEP 5: Wait for dialogue to update (state transition)
-    // The dialogue should change after choice is processed
+    // STEP 5: Wait for persisted state to change (robust against typewriter/transcript updates)
     await page.waitForFunction(
-      (initial) => {
-        const current = document.querySelector('[data-testid="dialogue-content"]')?.textContent
-        return current && current !== initial
+      ({ initialNodeId: nodeIdBefore, initialPatternSum: patternSumBefore }) => {
+        try {
+          const saved = localStorage.getItem('lux_story_v2_game_save')
+          if (!saved) return false
+          const parsed = JSON.parse(saved) as { currentNodeId?: unknown; patterns?: Record<string, unknown> }
+          const patterns = parsed.patterns || {}
+          const currentSum = Object.values(patterns).reduce(
+            (sum: number, v) => sum + (typeof v === 'number' ? v : 0),
+            0
+          )
+          return (typeof parsed.currentNodeId === 'string' && parsed.currentNodeId !== nodeIdBefore) || currentSum > patternSumBefore
+        } catch {
+          return false
+        }
       },
-      initialDialogue,
-      { timeout: 10000 }
+      { initialNodeId, initialPatternSum },
+      { timeout: 15000 }
     )
 
     // STEP 6: Verify state was persisted to localStorage
     const savedState = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
@@ -68,7 +87,7 @@ test.describe('Core Game Loop E2E', () => {
 
     // Get initial pattern levels
     const initialPatterns = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       if (!saved) return { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 }
       const state = JSON.parse(saved)
       return state.patterns || { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 }
@@ -99,7 +118,7 @@ test.describe('Core Game Loop E2E', () => {
 
     // Get final pattern levels
     const finalPatterns = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       if (!saved) return { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 }
       const state = JSON.parse(saved)
       return state.patterns || { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 }
@@ -137,17 +156,16 @@ test.describe('Core Game Loop E2E', () => {
 
     // Get state before reload
     const stateBeforeReload = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 
-    // Reload page
-    await page.reload()
-    await page.waitForLoadState('networkidle')
+    // Reload page (avoid `networkidle` in dev; HMR can keep connections open)
+    await page.reload({ waitUntil: 'domcontentloaded' })
 
     // Get state after reload
     const stateAfterReload = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
+      const saved = localStorage.getItem('lux_story_v2_game_save')
       return saved ? JSON.parse(saved) : null
     })
 

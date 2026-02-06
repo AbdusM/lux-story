@@ -10,8 +10,8 @@
  * - Progress reminder reinforces loop visibility
  */
 
-import type { SerializableGameState, PlayerPatterns } from './character-state'
-import { PATTERN_METADATA, type PatternType, getDominantPattern } from './patterns'
+import type { SerializableGameState } from './character-state'
+import { PATTERN_METADATA, getDominantPattern } from './patterns'
 
 // ═══════════════════════════════════════════════════════════════
 // CONFIGURATION

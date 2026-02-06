@@ -57,7 +57,8 @@ interface RelationshipProgress {
 // ============================================================================
 
 interface PlayerPattern {
-  patternName: 'helping' | 'analyzing' | 'building' | 'exploring' | 'patience' | 'rushing'
+  // NOTE: 'analyzing' is a legacy alias for 'analytical' (see lib/patterns.ts).
+  patternName: 'helping' | 'analytical' | 'analyzing' | 'building' | 'exploring' | 'patience' | 'rushing'
   patternValue: number // 0.00 to 1.00
   demonstrationCount: number
 }

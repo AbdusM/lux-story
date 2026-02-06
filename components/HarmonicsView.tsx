@@ -245,6 +245,9 @@ const HarmonicOrb = React.memo(function HarmonicOrb({ orb, index, onSelect, care
         <div className="flex flex-col items-center gap-3 z-10">
             <motion.button
                 className="relative rounded-full flex items-center justify-center group outline-none touch-manipulation backdrop-blur-sm"
+                data-testid="pattern-orb"
+                data-pattern={orb.pattern}
+                aria-label={`${orb.label} pattern orb`}
                 style={{
                     width: baseSize,
                     height: baseSize,

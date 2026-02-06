@@ -1,6 +1,6 @@
 # Persistence Model
 
-> Audited as of commit `33ef4c2` on 2026-01-27
+> Audited as of commit `8d02824` on 2026-02-05
 
 ## Overview
 
@@ -13,12 +13,12 @@ The system is **not** a clean single-source-of-truth architecture. It is a pragm
 | # | Layer | File | Key(s) | Owns | Write Freq | Authority |
 |---|-------|------|--------|------|------------|-----------|
 | 1 | **React state** | `components/StatefulGameInterface.tsx` | `useState` hooks | Current dialogue, UI state | Every choice | Authoritative for active session |
-| 2 | **Zustand game store** | `lib/game-store.ts` (grep: `grand-central-game-store`) | `grand-central-game-store` | Core game state (trust, patterns, thoughts, skills, scenes) | Every choice | Authoritative (since v2 migration) |
+| 2 | **Zustand game store** | `lib/game-store.ts` (grep: `STORAGE_KEYS.GAME_STORE`) | `lux_story_v2_game_store` (`STORAGE_KEYS.GAME_STORE`, legacy `grand-central-game-store` migrated) | Core game state (trust, patterns, thoughts, skills, scenes) | Every choice | Authoritative (since v2 migration) |
 | 3 | **Zustand station store** | `lib/station-state.ts` (grep: `station-evolution-store`) | `station-evolution-store` | Station atmosphere, platform visuals, ambient events | On scene change | Authoritative for station state |
-| 4 | **Orb system** | `hooks/useOrbs.ts` (grep: `lux-orb-balance`) | `lux-orb-balance`, `lux-orb-milestones`, `lux-orb-last-viewed`, `lux-orb-last-viewed-balance`, `lux-orb-acknowledged` | Orb economy (balance, milestones) | On orb earn/spend | Authoritative (independent of GameState) |
+| 4 | **Orb system (TD-004 migrated)** | `hooks/useOrbs.ts`, `lib/migrations/orb-migration.ts` | `lux_story_v2_game_store` (field: `orbs`), legacy `lux-orb-*` (migrated once) | Orb economy (balance, milestones) | On orb earn/spend | Authoritative (part of `coreGameState`) |
 | 5 | **Reader mode** | `hooks/useReaderMode.ts` (grep: `lux-reader-mode`) | `lux-reader-mode` | Font preference | On toggle | Authoritative |
-| 6 | **Audio settings** | `app/profile/page.tsx` (grep: `lux_audio_muted`) | `lux_audio_muted`, `lux_audio_volume` | Audio preferences | On change | Authoritative |
-| 7 | **Guest mode** | `app/welcome/page.tsx` (grep: `lux_guest_mode`) | `lux_guest_mode` | Guest mode flag | Once | Authoritative |
+| 6 | **Audio settings** | `app/profile/page.tsx` (grep: `STORAGE_KEYS.AUDIO_`) | `lux_story_v2_audio_muted`, `lux_story_v2_audio_volume` (legacy `lux_audio_*` migrated) | Audio preferences | On change | Authoritative |
+| 7 | **Guest mode** | `app/welcome/page.tsx` (grep: `STORAGE_KEYS.GUEST_MODE`) | `lux_story_v2_guest_mode` (legacy `lux_guest_mode` migrated) | Guest mode flag | Once | Authoritative |
 | 8 | **SafeStorage wrapper** | `lib/persistence/storage-manager.ts` (grep: `lux_story_v1_`) | `lux_story_v1_*` (prefixed) | Versioned storage abstraction | Proxied | Derived (wraps localStorage) |
 | 9 | **SyncQueue** | `lib/sync-queue.ts` (grep: `SyncQueue`) | In-memory queue | Deferred Supabase writes | On choice, batched | Buffered |
 | 10 | **Supabase** | `app/api/user/*/route.ts` | Server-side tables | Durable player data | Async after choice | Authoritative for cross-device |
@@ -28,7 +28,7 @@ The system is **not** a clean single-source-of-truth architecture. It is a pragm
 
 **Authoritative layers** — own their data, other layers read from them:
 - **Zustand game store** (`coreGameState`): trust, patterns, thoughts, skills, scene history. Since v2 migration, all legacy top-level fields consolidated here.
-- **useOrbs**: orb economy. Intentionally separate from GameState (see [ADR-005](02-architecture-decisions.md#adr-005)).
+- **Orb economy** (`coreGameState.orbs`): updated via `useOrbs`, persisted atomically with the rest of game state (TD-004).
 - **Settings hooks**: audio, reader mode, guest mode. Simple key-value, no cross-dependencies.
 
 **Derived layers** — compute or cache from authoritative sources:
@@ -57,12 +57,12 @@ Stage 1: COMPUTE
 
 Stage 2: COMMIT
   → GameStateUtils.applyStateChange(state, change) → new GameState
-  → React setState(newGameState)
-  → useGameStore.setCoreGameState(serialized)
+  → React setState(uiPatch) (transient UI fields)
+  → commitGameState(newGameState) → Zustand + localStorage (atomic)
   → Zustand persist middleware auto-writes to localStorage
 
 Stage 3: BUFFER
-  → Orb transactions queued (useOrbs)
+  → Orb updates applied (`coreGameState.orbs`, via useOrbs)
   → Station state updates (useStationStore)
   → Consequence echoes collected
   → All flushed in single tick
@@ -85,7 +85,6 @@ Stage 5: RENDER
 | COMPUTE | Clone corruption | Wrong state applied | None (silent) |
 | COMMIT | localStorage quota exceeded | Zustand persist fails | SafeStorage clears non-essential keys, retries |
 | COMMIT | Partial write (crash mid-commit) | React state ≠ localStorage | Backup key in GameStateManager |
-| BUFFER | Orb write fails | Orb balance stale | useOrbs re-reads on mount |
 | SYNC | Network failure | Supabase out of date | SyncQueue retries for 7 days |
 | SYNC | API route error | Data lost after 7-day TTL | Manual re-sync required |
 | RENDER | Stale selector cache | UI shows old data | forceRefresh() counter |
@@ -93,16 +92,15 @@ Stage 5: RENDER
 ## Atomic Commit Boundaries
 
 **Committed together** (in `handleChoice` flow):
-- React `setState` + Zustand `setCoreGameState` + Zustand persist → single synchronous flow
+- React `setState` (UI) + `commitGameState` (Zustand + localStorage) → single synchronous flow
 
 **Committed separately** (own lifecycle):
-- Orb system (`useOrbs`) — own hook, own localStorage keys
 - Station state (`useStationStore`) — own Zustand store
 - SyncQueue — deferred, async
 - Settings (audio, reader mode) — on user toggle
 
 **Not coordinated:**
-- Multi-tab writes: last-write-wins, no mutex or BroadcastChannel
+- Multi-tab writes: `useMultiTabSync` rehydrates on other-tab changes, but concurrent edits are still last-write-wins (no mutex/BroadcastChannel)
 - Zustand persist + SafeStorage: both write to localStorage independently
 
 ## Failure Modes
@@ -113,7 +111,7 @@ Stage 5: RENDER
 
 3. **Stale session** — SyncQueue items have timestamps. Items older than 7 days are dropped. No server-side conflict detection.
 
-4. **Multi-tab corruption** — No coordination between tabs. Both tabs write `grand-central-game-store` to localStorage. Last write wins. Known risk, accepted for single-player game.
+4. **Multi-tab corruption** — No coordination between tabs. Both tabs write `lux_story_v2_game_store` (`STORAGE_KEYS.GAME_STORE`) to localStorage. Last write wins. Known risk, accepted for single-player game.
 
 5. **Corrupt JSON** — Zustand persist has custom storage with JSON validation (grep: `game-store.ts` lines 991-1042). Invalid JSON falls back to default state.
 
@@ -121,10 +119,9 @@ Stage 5: RENDER
 
 ## Known Deviations from Ideal
 
-- **Dual source of truth**: Zustand `coreGameState` and React `useState` in SGI both hold game state during active session. Zustand is authoritative for persistence, React for render cycle. They can drift if a setState call fails.
-- **Orbs outside GameState**: The orb economy uses its own localStorage keys, not part of `coreGameState`. This means save/load doesn't capture orbs atomically. See [ADR-005](02-architecture-decisions.md#adr-005).
-- **No immutability enforcement**: `applyStateChange` returns a new object by convention. Nothing prevents direct mutation. No `Object.freeze`, no Immer.
-- **10+ key families**: localStorage namespace is fragmented across `grand-central-*`, `lux-orb-*`, `lux_*`, `lux-*`, and `lux_story_v1_*` prefixes. No unified namespace.
+- **UI state vs game state**: React `useState` in SGI holds only transient UI fields; persisted game data lives in Zustand (`coreGameState`) (TD-001).
+- **Immutability is by convention**: `applyStateChange` returns a new object, but we do not `Object.freeze` game state at runtime. Dev-only freezing was tried and reverted because it broke choice-flow composition in development/E2E (TD-002).
+- **10+ key families**: localStorage namespace is fragmented across multiple prefixes. Legacy `lux-orb-*` keys may still exist on old installs, but are migrated and removed on init (TD-004).
 
 ## Audit Commands
 
@@ -137,8 +134,8 @@ rg "localStorage\.(setItem|getItem|removeItem)" --no-filename | sort -u
 # Zustand persist keys
 rg "name:\s*['\"]" lib/game-store.ts lib/station-state.ts
 
-# Orb system keys
-rg "lux-orb-" hooks/useOrbs.ts
+# Orb migration keys (legacy)
+rg "lux-orb-" lib/migrations/orb-migration.ts
 
 # SafeStorage critical vs non-essential
 rg "CRITICAL_KEYS|NON_ESSENTIAL" lib/persistence/storage-manager.ts
@@ -166,11 +163,11 @@ rg "version.*2|migrate" lib/game-store.ts
 
 3. **Echo cascade** — `lib/consequence-echoes.ts` (grep: `evaluateEchoes`) runs 23 evaluators checking if this choice triggers any echoes (e.g., "Maya noticed your empathy").
 
-4. **React commit** — `setState(newGameState)` triggers re-render. New dialogue node loads.
+4. **React UI commit** — `setState(uiPatch)` triggers re-render. New dialogue node loads.
 
-5. **Zustand commit** — `useGameStore.getState().setCoreGameState(serialize(newGameState))` writes serialized state. Zustand persist middleware auto-writes to `localStorage['grand-central-game-store']`.
+5. **Zustand commit** — `commitGameState(newGameState)` persists to Zustand and localStorage atomically (TD-001). Zustand persist middleware also updates `localStorage['lux_story_v2_game_store']`.
 
-6. **Orb update** — `useOrbs` (grep: `earnOrbs`) adds helping-pattern orbs to `localStorage['lux-orb-balance']`.
+6. **Orb update** — `useOrbs` (grep: `earnOrb`) updates `coreGameState.orbs` via `updateOrbs` (persisted under `lux_story_v2_game_store`).
 
 7. **Station update** — `useStationStore` may update platform warmth if this is a platform-specific interaction.
 
@@ -180,4 +177,4 @@ rg "version.*2|migrate" lib/game-store.ts
 
 10. **Supabase write** — RLS policies enforce `auth.uid()::text = user_id`. Data is now durable server-side.
 
-11. **Next session** — On reload, Zustand `persist` middleware hydrates from `localStorage['grand-central-game-store']`. If localStorage is empty/corrupt, backup key is tried. If authenticated, Supabase data can re-seed.
+11. **Next session** — On reload, Zustand `persist` middleware hydrates from `localStorage['lux_story_v2_game_store']`. If localStorage is empty/corrupt, backup key is tried. If authenticated, Supabase data can re-seed.

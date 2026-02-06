@@ -1,7 +1,7 @@
 # Technical Debt Register
 
 > Audited as of commit `33ef4c2` on 2026-01-27
-> Updated: 2026-02-04 (All 10 items resolved)
+> Updated: 2026-02-05 (All 10 items resolved)
 
 ## Summary
 
@@ -28,15 +28,15 @@
 
 ---
 
-### TD-002: No Immutability Enforcement ✅ RESOLVED
+### TD-002: Dev Freeze Broke Choice Flow ✅ RESOLVED
 
-**Impact:** `GameStateUtils.applyStateChange()` returns a new object by convention, but nothing prevents direct mutation. Subtle bugs possible from accidental state mutation.
+**Impact:** Dev-only `Object.freeze` on the state returned by `GameStateUtils.applyStateChange()` caused runtime failures in development/E2E. Choice handling composes multiple state changes and then performs additional updates (navigation, history, derivatives). Freezing the returned object made those valid updates throw `TypeError` and prevented choices from advancing.
 
-**Evidence:** `lib/character-state.ts` (grep: `applyStateChange`). No `Object.freeze` or Immer usage.
+**Evidence:** `lib/character-state.ts` (grep: `applyStateChange`), Playwright smoke (`tests/e2e/characters/character-smoke.spec.ts`) failures when clicking any choice with consequences.
 
-**Resolution:** Added `devFreeze()` wrapper that applies `Object.freeze` in development mode. All state returned from `applyStateChange()` is now frozen in dev, catching accidental mutations immediately.
+**Resolution:** Removed runtime freezing from `applyStateChange()`. Immutability is enforced by convention + tests; `devFreeze()` remains available for targeted harnesses but is not applied in the core gameplay path.
 
-**Resolved:** 2026-02-04
+**Resolved:** 2026-02-05
 
 ---
 
@@ -60,9 +60,9 @@
 
 ### TD-004: Orbs Outside GameState ✅ RESOLVED
 
-**Impact:** Orb economy uses independent localStorage keys (`lux-orb-*`), not part of `coreGameState`. Save/load cannot capture orbs atomically with game state.
+**Impact (before fix):** Orb economy used independent localStorage keys (`lux-orb-*`), not part of `coreGameState`. Save/load could not capture orbs atomically with game state.
 
-**Evidence:** `hooks/useOrbs.ts` (grep: `lux-orb-balance`)
+**Evidence (legacy keys):** `lib/migrations/orb-migration.ts` (grep: `lux-orb-`)
 
 **Resolution:**
 1. Added `OrbState` interface and `INITIAL_ORB_STATE` to `lib/character-state.ts`
@@ -94,7 +94,7 @@
 
 ### TD-006: Multi-Tab Corruption Risk ✅ RESOLVED
 
-**Impact:** No coordination between browser tabs. Both tabs can write to `grand-central-game-store` simultaneously. Last write wins, potentially losing recent choices.
+**Impact:** No coordination between browser tabs. Both tabs can write to `lux_story_v2_game_store` (`STORAGE_KEYS.GAME_STORE`) simultaneously. Last write wins, potentially losing recent choices.
 
 **Evidence:** No `BroadcastChannel`, `StorageEvent`, or mutex in `lib/game-store.ts`.
 

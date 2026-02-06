@@ -53,29 +53,23 @@ body { font-size: 1rem; }
 
 **Problem:** Unstyled text flashes before custom fonts load, destroying visual consistency.
 
-**Solution:** Use Next.js font optimization with `display: swap` strategy.
+**Solution:** Load fonts with `display=swap` and a CSS-variable font stack with strong fallbacks.
+
+Note: `next/font/google` can self-host fonts, but it fetches from Google during `next build`. In restricted build environments (offline CI, sandboxes), that can break builds. This repo uses runtime `<link>` loading to avoid a build-time network dependency.
 
 ```typescript
 // app/layout.tsx
-import { Inter, Crimson_Pro } from 'next/font/google'
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap', // Show fallback immediately, swap when loaded
-  preload: true    // Critical fonts only
-})
-
-const crimsonPro = Crimson_Pro({
-  subsets: ['latin'],
-  weight: ['400', '600', '700'],
-  variable: '--font-crimson-pro',
-  display: 'swap'
-})
-
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${crimsonPro.variable}`}>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Crimson+Pro:wght@400;700&family=Roboto+Slab:wght@400;700&family=Space+Mono:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="font-sans">{children}</body>
     </html>
   )
@@ -98,7 +92,7 @@ body {
 **Benefits:**
 - **Zero Layout Shift**: Fonts load asynchronously without blocking render
 - **Instant Display**: Fallback fonts shown immediately while custom fonts download
-- **Automatic Optimization**: Next.js inlines critical CSS and self-hosts Google Fonts
+- **Build Resilience**: No build-time font fetch required; builds succeed in restricted environments
 
 ---
 

@@ -38,7 +38,7 @@ test.describe('Career Analytics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -98,7 +98,7 @@ test.describe('Career Analytics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -151,7 +151,7 @@ test.describe('Career Analytics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -201,7 +201,7 @@ test.describe('Career Analytics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -247,7 +247,7 @@ test.describe('Career Analytics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -286,7 +286,7 @@ test.describe('Career Analytics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -334,7 +334,7 @@ test.describe('Career Analytics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -387,7 +387,7 @@ test.describe('Career Analytics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -428,7 +428,7 @@ test.describe('Career Analytics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()
@@ -482,7 +482,7 @@ test.describe('Career Analytics', () => {
         },
         version: 1
       }
-      localStorage.setItem('grand-central-terminus-save', JSON.stringify(state))
+      localStorage.setItem('lux_story_v2_game_save', JSON.stringify(state))
     })
 
     await page.reload()

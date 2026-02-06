@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion'
 import { X, Users, Sparkles, Compass } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -46,7 +46,36 @@ type DetailItem =
 export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps) {
   const [activeTab, setActiveTab] = useState<TabId>('people')
   const [detailItem, setDetailItem] = useState<DetailItem>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const lastActiveElementRef = useRef<HTMLElement | null>(null)
   const data = useConstellationData()
+
+  // Focus management: focus close button on open, restore focus on close
+  useEffect(() => {
+    if (!isOpen) return
+
+    lastActiveElementRef.current = document.activeElement as HTMLElement | null
+    const t = window.setTimeout(() => {
+      closeButtonRef.current?.focus()
+    }, 50)
+    return () => window.clearTimeout(t)
+  }, [isOpen])
+
+  useEffect(() => {
+    if (isOpen) return
+    lastActiveElementRef.current?.focus?.()
+    lastActiveElementRef.current = null
+  }, [isOpen])
+
+  // Prevent body scroll while panel is open (mobile iOS especially)
+  useEffect(() => {
+    if (!isOpen) return
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = originalOverflow
+    }
+  }, [isOpen])
 
 
 
@@ -172,6 +201,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                 // Safe area handled by footer only - prevent nested padding
                 paddingRight: 'env(safe-area-inset-right, 0px)'
               }}
+              data-testid="constellation-panel"
               role="dialog"
               aria-modal="true"
               aria-label="Your Journey - Character and Skill Progress"
@@ -186,6 +216,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                   onClick={onClose}
                   className="min-w-[44px] min-h-[44px] p-2 rounded-full hover:bg-white/5 transition-colors flex items-center justify-center group"
                   aria-label="Close journey panel"
+                  ref={closeButtonRef}
                 >
                   <X className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors" />
                 </button>

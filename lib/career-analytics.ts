@@ -72,7 +72,9 @@ const CAREER_PATTERN_MAPPING: Record<string, Partial<CareerPathAffinities>> = {
   'creating': { engineering: 0.4, technology: 0.3, creative: 0.3 },
   'designing': { engineering: 0.3, technology: 0.3, creative: 0.4 },
 
-  // Analyzing patterns → Technology, Engineering
+  // Analytical patterns → Technology, Engineering
+  // NOTE: 'analyzing' is a legacy alias (see lib/patterns.ts normalizePatternName).
+  'analytical': { technology: 0.5, engineering: 0.3, healthcare: 0.2 },
   'analyzing': { technology: 0.5, engineering: 0.3, healthcare: 0.2 },
   'researching': { technology: 0.4, healthcare: 0.3, education: 0.3 },
   'investigating': { technology: 0.4, engineering: 0.3, service: 0.3 },
@@ -313,11 +315,11 @@ export class CareerAnalyticsEngine {
         break
       case 'engineering':
         if (patterns.includes('building')) evidence.push('Enjoys creating and constructing')
-        if (patterns.includes('analyzing')) evidence.push('Systematic problem-solving approach')
+        if (patterns.includes('analytical') || patterns.includes('analyzing')) evidence.push('Systematic problem-solving approach')
         if (persona.problemApproach === 'analytical') evidence.push('Methodical thinking style')
         break
       case 'technology':
-        if (patterns.includes('analyzing')) evidence.push('Data-driven decision making')
+        if (patterns.includes('analytical') || patterns.includes('analyzing')) evidence.push('Data-driven decision making')
         if (patterns.includes('researching')) evidence.push('Strong research capabilities')
         if (persona.problemApproach === 'analytical') evidence.push('Logical problem-solving')
         break

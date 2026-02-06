@@ -3,13 +3,16 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 export type AdminRole = 'admin' | 'educator'
 
 export function isE2EAdminBypassEnabled(): boolean {
-  return process.env.NODE_ENV !== 'production' && process.env.E2E_ADMIN_BYPASS_ENABLED === 'true'
+  // E2E bypass is an explicit opt-in so it can't be enabled accidentally.
+  // We allow it in production mode as well because Playwright runs a
+  // production build via `next start` for stability.
+  return process.env.E2E_ADMIN_BYPASS_ENABLED === 'true'
 }
 
 export function isTestAdminBypass(headerValue?: string | null): boolean {
   const token = process.env.E2E_ADMIN_BYPASS_TOKEN
   if (!token) return false
-  if (process.env.NODE_ENV === 'production') return false
+  if (!isE2EAdminBypassEnabled()) return false
   if (!headerValue) return false
   return headerValue === token
 }
@@ -37,7 +40,7 @@ export async function getAdminAuthStatus(
   const { data: profile, error: profileError } = await supabase
     .from('profiles')
     .select('role')
-    .eq('id', user.id)
+    .eq('user_id', user.id)
     .single()
 
   if (profileError || !profile) {

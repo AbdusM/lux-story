@@ -12,11 +12,10 @@ test.describe('Admin Users Pagination', () => {
       window.__E2E_ADMIN__ = true
       window.__PLAYWRIGHT__ = true
     })
-    await page.context().addCookies([{
-      name: 'e2e_admin_bypass',
-      value: TEST_ADMIN_TOKEN,
-      url: 'http://localhost:3005'
-    }])
+    await page.context().addCookies([
+      { name: 'e2e_admin_bypass', value: TEST_ADMIN_TOKEN, url: 'http://127.0.0.1:3005' },
+      { name: 'e2e_admin_bypass', value: TEST_ADMIN_TOKEN, url: 'http://localhost:3005' },
+    ])
 
     const users = Array.from({ length: TOTAL_USERS }, (_, index) => ({
       user_id: `user-${String(index).padStart(3, '0')}`,
@@ -79,7 +78,7 @@ test.describe('Admin Users Pagination', () => {
 
     await page.goto('/admin/users')
     await expect(page).toHaveURL(/\/admin\/users/)
-    await expect(page.getByRole('heading', { name: 'User Management' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Users', exact: true })).toBeVisible()
 
     const rows = page.locator('table tbody tr')
     await expect(rows).toHaveCount(PAGE_SIZE)
