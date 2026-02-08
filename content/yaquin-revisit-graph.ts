@@ -34,6 +34,11 @@ I... I don't know what to do.`,
         richEffectContext: 'thinking'
       }
     ],
+    // Belt-and-suspenders: graph registry already only routes here once the arc is complete,
+    // but we still gate the entry node to keep the content contract self-contained.
+    requiredState: {
+      hasGlobalFlags: ['yaquin_arc_complete']
+    },
     choices: [
       {
         choiceId: 'yaquin_celebrate',
