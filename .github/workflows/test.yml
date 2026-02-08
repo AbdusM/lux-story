@@ -47,6 +47,9 @@ jobs:
       - name: Validate dialogue graphs (warnings only)
         run: npm run validate-graphs
 
+      - name: Verify requiredState guarding (no new gaps)
+        run: npm run verify:required-state-guarding
+
       - name: Verify character system coverage
         run: npm run verify:character-coverage
 
