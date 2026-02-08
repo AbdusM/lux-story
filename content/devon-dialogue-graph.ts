@@ -3397,7 +3397,8 @@ export const devonDialogueNodes: DialogueNode[] = [
       emotion: 'thoughtful',
       variation_id: 'hub_return_v1'
     }],
-    choices: []
+    choices: [],
+    tags: ['terminal']
   },
 
   // ============= PHASE 1 SIMULATION: SYSTEM DEBUGGER (Trust ≥ 2) =============

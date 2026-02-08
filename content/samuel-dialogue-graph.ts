@@ -10395,7 +10395,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       { characterId: 'samuel', addKnowledgeFlags: ['journey_complete'] }
     ],
     choices: [],
-    tags: ['ending', 'journey_complete']
+    tags: ['ending', 'journey_complete', 'terminal']
   },
 
   {
@@ -10490,7 +10490,8 @@ OBSERVATION: He looks tired. Scared. Different.`,
     onEnter: [
       { characterId: 'samuel', addKnowledgeFlags: ['samuel_loyalty_accepted'] }
     ],
-    choices: []
+    choices: [],
+    tags: ['terminal']
   },
 
   // ============= TRUST RECOVERY SYSTEM =============

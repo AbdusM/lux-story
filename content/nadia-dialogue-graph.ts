@@ -1036,7 +1036,8 @@ export const nadiaDialogueNodes: DialogueNode[] = [
     onEnter: [
       { characterId: 'nadia', addKnowledgeFlags: ['nadia_loyalty_accepted'] }
     ],
-    choices: []
+    choices: [],
+    tags: ['terminal']
   },
 
   // ============= ADDITIONAL DEPTH NODES =============
@@ -1248,7 +1249,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       variation_id: 'hub_return_v1'
     }],
     choices: [],
-    tags: ['farewell']
+    tags: ['farewell', 'terminal']
   },
 
   // ============= TRUST RECOVERY =============

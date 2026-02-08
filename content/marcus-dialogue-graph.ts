@@ -2278,7 +2278,8 @@ WARNING: Response time > 48h`,
       emotion: 'neutral',
       variation_id: 'hub_return_v1'
     }],
-    choices: []
+    choices: [],
+    tags: ['terminal']
   },
 
   // ============= INSIGHT NODES (Pattern-revealing moments about medical tech ethics) =============
@@ -3134,7 +3135,8 @@ WARNING: Response time > 48h`,
       emotion: 'thoughtful',
       variation_id: 'hub_return_v1'
     }],
-    choices: []
+    choices: [],
+    tags: ['terminal']
   },
 
   // ============= TRUST RECOVERY SYSTEM =============

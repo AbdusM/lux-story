@@ -2201,7 +2201,8 @@ How do you design for genuine learning AND employability?`,
       emotion: 'thoughtful',
       variation_id: 'hub_return_v1'
     }],
-    choices: []
+    choices: [],
+    tags: ['terminal']
   },
 
   // ============= TRUST RECOVERY =============

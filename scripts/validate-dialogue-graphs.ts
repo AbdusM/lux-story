@@ -14,37 +14,140 @@
  * Usage: npx tsx scripts/validate-dialogue-graphs.ts
  */
 
-import { DialogueNode } from '../lib/dialogue-graph'
+import { ConditionalChoice, DialogueNode } from '../lib/dialogue-graph'
 
 // Import all dialogue graphs
 import { samuelDialogueNodes, samuelEntryPoints } from '../content/samuel-dialogue-graph'
-import { mayaDialogueNodes } from '../content/maya-dialogue-graph'
-import { devonDialogueNodes } from '../content/devon-dialogue-graph'
-import { jordanDialogueNodes } from '../content/jordan-dialogue-graph'
-import { kaiDialogueNodes } from '../content/kai-dialogue-graph'
-import { silasDialogueNodes } from '../content/silas-dialogue-graph'
-import { marcusDialogueNodes } from '../content/marcus-dialogue-graph'
-import { tessDialogueNodes } from '../content/tess-dialogue-graph'
-import { rohanDialogueNodes } from '../content/rohan-dialogue-graph'
-import { yaquinDialogueNodes } from '../content/yaquin-dialogue-graph'
-import { alexDialogueNodes } from '../content/alex-dialogue-graph'
-import { mayaRevisitNodes } from '../content/maya-revisit-graph'
-import { yaquinRevisitNodes } from '../content/yaquin-revisit-graph'
-import { devonRevisitNodes } from '../content/devon-revisit-graph'
-import { graceRevisitNodes } from '../content/grace-revisit-graph'
+import { samuelWaitingEntryPoints } from '../content/samuel-waiting-dialogue'
+import { mayaDialogueNodes, mayaEntryPoints } from '../content/maya-dialogue-graph'
+import { devonDialogueNodes, devonEntryPoints } from '../content/devon-dialogue-graph'
+import { jordanDialogueNodes, jordanEntryPoints } from '../content/jordan-dialogue-graph'
+import { kaiDialogueNodes, kaiEntryPoints } from '../content/kai-dialogue-graph'
+import { silasDialogueNodes, silasEntryPoints } from '../content/silas-dialogue-graph'
+import { marcusDialogueNodes, marcusEntryPoints } from '../content/marcus-dialogue-graph'
+import { tessDialogueNodes, tessEntryPoints } from '../content/tess-dialogue-graph'
+import { rohanDialogueNodes, rohanEntryPoints } from '../content/rohan-dialogue-graph'
+import { yaquinDialogueNodes, yaquinEntryPoints } from '../content/yaquin-dialogue-graph'
+import { alexDialogueNodes, alexEntryPoints } from '../content/alex-dialogue-graph'
+import { mayaRevisitNodes, mayaRevisitEntryPoints } from '../content/maya-revisit-graph'
+import { yaquinRevisitNodes, yaquinRevisitEntryPoints } from '../content/yaquin-revisit-graph'
+import { devonRevisitNodes, devonRevisitEntryPoints } from '../content/devon-revisit-graph'
+import { graceRevisitNodes, graceRevisitEntryPoints } from '../content/grace-revisit-graph'
 import { grandHallDialogueNodes } from '../content/grand-hall-graph'
-import { graceDialogueNodes } from '../content/grace-dialogue-graph'
-import { elenaDialogueNodes } from '../content/elena-dialogue-graph'
-import { zaraDialogueNodes } from '../content/zara-dialogue-graph'
-import { ashaDialogueNodes } from '../content/asha-dialogue-graph'
-import { liraDialogueNodes } from '../content/lira-dialogue-graph'
-import { quinnDialogueNodes } from '../content/quinn-dialogue-graph'
-import { danteDialogueNodes } from '../content/dante-dialogue-graph'
-import { nadiaDialogueNodes } from '../content/nadia-dialogue-graph'
-import { isaiahDialogueNodes } from '../content/isaiah-dialogue-graph'
+import { graceDialogueNodes, graceEntryPoints } from '../content/grace-dialogue-graph'
+import { elenaDialogueNodes, elenaEntryPoints } from '../content/elena-dialogue-graph'
+import { zaraDialogueNodes, zaraEntryPoints } from '../content/zara-dialogue-graph'
+import { ashaDialogueNodes, ashaEntryPoints } from '../content/asha-dialogue-graph'
+import { liraDialogueNodes, liraEntryPoints } from '../content/lira-dialogue-graph'
+import { quinnDialogueNodes, quinnEntryPoints } from '../content/quinn-dialogue-graph'
+import { danteDialogueNodes, danteEntryPoints } from '../content/dante-dialogue-graph'
+import { nadiaDialogueNodes, nadiaEntryPoints } from '../content/nadia-dialogue-graph'
+import { isaiahDialogueNodes, isaiahEntryPoints } from '../content/isaiah-dialogue-graph'
 import { marketDialogueNodes } from '../content/market-graph'
 import { deepStationDialogueNodes } from '../content/deep-station-graph'
 import { stationEntryGraph } from '../content/station-entry-graph'
+
+// ============= HELPERS =============
+
+function truncateOneLine(input: string, maxLen: number): string {
+  const s = input.replace(/\s+/g, ' ').trim()
+  if (s.length <= maxLen) return s
+  return `${s.slice(0, Math.max(0, maxLen - 3))}...`
+}
+
+function normalizeChoiceText(input: string): string {
+  return input
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .replace(/[“”]/g, '"')
+    .replace(/[‘’]/g, "'")
+    .trim()
+}
+
+function isExplicitContinueChoice(text: string): boolean {
+  const t = normalizeChoiceText(text)
+  if (t === '...') return true
+  if (t === 'continue') return true
+  if (t === '[continue]') return true
+  if (t.startsWith('[continue]')) return true
+  return false
+}
+
+function stableStringify(value: unknown): string {
+  return JSON.stringify(sortKeysDeep(value))
+}
+
+function sortKeysDeep(value: unknown): unknown {
+  if (value === null) return null
+  if (typeof value !== 'object') return value
+
+  if (Array.isArray(value)) {
+    const mapped = value.map(sortKeysDeep)
+    // If the array is purely primitives, treat it like a set for signature purposes.
+    if (mapped.every(v => v === null || ['string', 'number', 'boolean'].includes(typeof v))) {
+      return [...mapped].sort((a, b) => String(a).localeCompare(String(b)))
+    }
+    return mapped
+  }
+
+  const obj = value as Record<string, unknown>
+  const out: Record<string, unknown> = {}
+  for (const key of Object.keys(obj).sort()) {
+    out[key] = sortKeysDeep(obj[key])
+  }
+  return out
+}
+
+function computeDuplicateChoiceSignature(choice: ConditionalChoice): string {
+  // Include all fields that change the choice's semantics and availability.
+  // We also include the normalized display text; if the text differs, we treat it as intentional "flavor"
+  // even if it converges to the same node.
+  const sig = {
+    nextNodeId: choice.nextNodeId,
+    text: normalizeChoiceText(choice.text),
+    visibleCondition: choice.visibleCondition ?? null,
+    enabledCondition: choice.enabledCondition ?? null,
+    pattern: choice.pattern ?? null,
+    skills: choice.skills ? [...choice.skills].sort() : null,
+    learningObjectiveId: choice.learningObjectiveId ?? null,
+    consequence: choice.consequence ?? null,
+    preview: choice.preview ? normalizeChoiceText(choice.preview) : null,
+    voiceVariations: choice.voiceVariations ?? null,
+    archetype: choice.archetype ?? null,
+    interaction: choice.interaction ?? null,
+    requiredOrbFill: choice.requiredOrbFill ?? null
+  }
+
+  return stableStringify(sig)
+}
+
+const KNOWN_ENTRY_NODE_IDS = new Set<string>([
+  ...Object.values(samuelEntryPoints),
+  ...Object.values(samuelWaitingEntryPoints),
+  ...Object.values(mayaEntryPoints),
+  ...Object.values(mayaRevisitEntryPoints),
+  ...Object.values(devonEntryPoints),
+  ...Object.values(devonRevisitEntryPoints),
+  ...Object.values(jordanEntryPoints),
+  ...Object.values(marcusEntryPoints),
+  ...Object.values(tessEntryPoints),
+  ...Object.values(yaquinEntryPoints),
+  ...Object.values(yaquinRevisitEntryPoints),
+  ...Object.values(kaiEntryPoints),
+  ...Object.values(rohanEntryPoints),
+  ...Object.values(silasEntryPoints),
+  ...Object.values(alexEntryPoints),
+  ...Object.values(elenaEntryPoints),
+  ...Object.values(graceEntryPoints),
+  ...Object.values(graceRevisitEntryPoints),
+  ...Object.values(ashaEntryPoints),
+  ...Object.values(liraEntryPoints),
+  ...Object.values(zaraEntryPoints),
+  ...Object.values(quinnEntryPoints),
+  ...Object.values(danteEntryPoints),
+  ...Object.values(nadiaEntryPoints),
+  ...Object.values(isaiahEntryPoints)
+])
 
 // ============= TYPES =============
 
@@ -76,6 +179,7 @@ interface ValidationResult {
   valid: boolean
   errors: ValidationError[]
   warnings: ValidationError[]
+  infos: ValidationError[]
   stats: GraphStats[]
 }
 
@@ -84,21 +188,47 @@ interface ValidationResult {
 class DialogueGraphValidator {
   private errors: ValidationError[] = []
   private warnings: ValidationError[] = []
+  private infos: ValidationError[] = []
   private stats: GraphStats[] = []
   private globalNodeIds: Set<string> = new Set()
+  private globalIncomingNodeIds: Set<string> = new Set()
   private readonly virtualNodeIds = new Set(['TRAVEL_PENDING', 'SIMULATION_PENDING'])
+  private readonly strictOrphans: boolean
+  private readonly strictQuality: boolean
+
+  constructor(opts?: { strictOrphans?: boolean; strictQuality?: boolean }) {
+    this.strictOrphans = opts?.strictOrphans ?? false
+    this.strictQuality = opts?.strictQuality ?? false
+  }
 
   validate(graphs: { name: string; nodes: DialogueNode[]; startNodeId: string }[]): ValidationResult {
     this.errors = []
     this.warnings = []
+    this.infos = []
     this.stats = []
     this.globalNodeIds = new Set()
+    this.globalIncomingNodeIds = new Set()
 
     // Build a master set of node IDs across all loaded graphs so per-graph validation
     // doesn't incorrectly fail for intentional cross-graph references.
     for (const graph of graphs) {
       for (const node of graph.nodes) {
         this.globalNodeIds.add(node.nodeId)
+      }
+    }
+
+    // Build a global incoming-reference set across all graphs so orphan detection
+    // doesn't incorrectly warn for nodes that are only reached from other graphs.
+    for (const graph of graphs) {
+      for (const node of graph.nodes) {
+        for (const choice of node.choices) {
+          this.globalIncomingNodeIds.add(choice.nextNodeId)
+        }
+        for (const content of node.content || []) {
+          const interrupt = content.interrupt
+          if (interrupt?.targetNodeId) this.globalIncomingNodeIds.add(interrupt.targetNodeId)
+          if (interrupt?.missedNodeId) this.globalIncomingNodeIds.add(interrupt.missedNodeId)
+        }
       }
     }
 
@@ -113,13 +243,13 @@ class DialogueGraphValidator {
       valid: this.errors.length === 0,
       errors: this.errors,
       warnings: this.warnings,
+      infos: this.infos,
       stats: this.stats
     }
   }
 
   private validateGraph(name: string, nodes: DialogueNode[], startNodeId: string): void {
     const nodeMap = new Map<string, DialogueNode>()
-    const allTargetNodeIds = new Set<string>()
     const reachableFromStart = new Set<string>()
     const patternCounts: Record<string, number> = {
       analytical: 0,
@@ -146,7 +276,7 @@ class DialogueGraphValidator {
 
     // Validate each node and detect fake choice clusters
     for (const node of nodes) {
-      this.validateNode(name, node, nodeMap, allTargetNodeIds)
+      this.validateNode(name, node, nodeMap)
 
       // Count patterns
       for (const choice of node.choices) {
@@ -155,34 +285,47 @@ class DialogueGraphValidator {
         }
       }
 
-      // Detect fake choice clusters (2+ choices → same destination)
-      // Exclude explicit [Continue] choices which are intentional
-      const nonContinueChoices = node.choices.filter(c =>
-        !c.text.toLowerCase().includes('[continue]') &&
-        !c.text.toLowerCase().includes('continue') &&
-        c.text.trim() !== '...'
-      )
-
-      if (nonContinueChoices.length >= 2) {
-        // Group by destination
-        const destinationGroups = new Map<string, typeof nonContinueChoices>()
-        for (const choice of nonContinueChoices) {
-          const existing = destinationGroups.get(choice.nextNodeId) || []
+      // Detect fake choice clusters (duplicate choices converging to same destination).
+      //
+      // Old behavior: warn on ANY 2+ choices that lead to the same nextNodeId.
+      // That produced extremely noisy output for intentional narrative convergence
+      // (different flavor lines that all acknowledge and continue).
+      //
+      // New behavior: warn only when the choices are effectively duplicates:
+      // same destination AND same normalized label AND same conditions/effects.
+      const candidates = node.choices.filter(c => !isExplicitContinueChoice(c.text))
+      if (candidates.length >= 2) {
+        const byDest = new Map<string, ConditionalChoice[]>()
+        for (const choice of candidates) {
+          const existing = byDest.get(choice.nextNodeId) || []
           existing.push(choice)
-          destinationGroups.set(choice.nextNodeId, existing)
+          byDest.set(choice.nextNodeId, existing)
         }
 
-        // Flag clusters of 2+ choices to same destination
-        for (const [dest, choices] of destinationGroups) {
-          if (choices.length >= 2) {
+        for (const [dest, choicesToSameDest] of byDest) {
+          if (choicesToSameDest.length < 2) continue
+
+          const bySignature = new Map<string, ConditionalChoice[]>()
+          for (const choice of choicesToSameDest) {
+            const sig = computeDuplicateChoiceSignature(choice)
+            const existing = bySignature.get(sig) || []
+            existing.push(choice)
+            bySignature.set(sig, existing)
+          }
+
+          for (const dupChoices of bySignature.values()) {
+            if (dupChoices.length < 2) continue
             fakeChoiceClusters++
-            const choiceTexts = choices.map(c => `"${c.text.substring(0, 40)}..."`).join(', ')
+            const choiceTexts = dupChoices
+              .map(c => `"${truncateOneLine(c.text, 60)}"`)
+              .join(', ')
+
             this.warnings.push({
               severity: 'warning',
               graph: name,
               nodeId: node.nodeId,
-              message: `FAKE CHOICE: ${choices.length} choices all lead to "${dest}"`,
-              suggestion: `Choices: ${choiceTexts}. Create divergent paths or different acknowledgment.`
+              message: `FAKE CHOICE: ${dupChoices.length} duplicate choices all lead to "${dest}"`,
+              suggestion: `Choices: ${choiceTexts}. Dedupe or change conditions/effects if they are meant to differ.`
             })
           }
         }
@@ -204,25 +347,25 @@ class DialogueGraphValidator {
 
     // Find orphaned nodes
     const orphanedNodes: string[] = []
-    // Cross-graph entry points - these are intentionally reachable from OTHER graphs
-    const crossGraphEntryPoints = new Set<string>(Object.values(samuelEntryPoints))
 
     for (const nodeId of nodeMap.keys()) {
       if (!reachableFromStart.has(nodeId) && nodeId !== startNodeId) {
-        // Check if it's referenced as a target but just unreachable from start
-        if (!allTargetNodeIds.has(nodeId)) {
-          // Skip cross-graph entry points (they're linked from character graphs)
-          if (crossGraphEntryPoints.has(nodeId)) {
-            continue
-          }
+        // Skip known entry points (reachable from system routing / other graphs)
+        if (KNOWN_ENTRY_NODE_IDS.has(nodeId)) continue
+
+        // Check if it's referenced as a target anywhere (including other graphs)
+        if (!this.globalIncomingNodeIds.has(nodeId)) {
           orphanedNodes.push(nodeId)
-          this.warnings.push({
-            severity: 'warning',
+          const severity: ValidationError['severity'] = this.strictOrphans ? 'warning' : 'info'
+          const issue: ValidationError = {
+            severity,
             graph: name,
             nodeId: nodeId,
             message: `Orphaned node: "${nodeId}" has no incoming references`,
             suggestion: 'This node is never reached. Add a choice pointing to it or remove it.'
-          })
+          }
+          if (severity === 'warning') this.warnings.push(issue)
+          else this.infos.push(issue)
         }
       }
     }
@@ -254,12 +397,15 @@ class DialogueGraphValidator {
       for (const [pattern, count] of Object.entries(patternCounts)) {
         const share = count / totalPatterns
         if (share < 0.1 && count > 0) {
-          this.warnings.push({
-            severity: 'warning',
+          const severity: ValidationError['severity'] = this.strictQuality ? 'warning' : 'info'
+          const issue: ValidationError = {
+            severity,
             graph: name,
             message: `Pattern imbalance: "${pattern}" only has ${(share * 100).toFixed(1)}% of choices (${count}/${totalPatterns})`,
             suggestion: 'Consider adding more choices with this pattern for balance'
-          })
+          }
+          if (severity === 'warning') this.warnings.push(issue)
+          else this.infos.push(issue)
         }
       }
     }
@@ -268,8 +414,7 @@ class DialogueGraphValidator {
   private validateNode(
     graphName: string,
     node: DialogueNode,
-    nodeMap: Map<string, DialogueNode>,
-    allTargetNodeIds: Set<string>
+    nodeMap: Map<string, DialogueNode>
   ): void {
     // Check required fields
     if (!node.nodeId) {
@@ -366,25 +511,31 @@ class DialogueGraphValidator {
         const interruptTrustChange = interrupt.consequence?.trustChange
         if (interruptTrustChange !== undefined) {
           if (interruptTrustChange < -2 || interruptTrustChange > 2) {
-            this.warnings.push({
-              severity: 'warning',
+            const severity: ValidationError['severity'] = this.strictQuality ? 'warning' : 'info'
+            const issue: ValidationError = {
+              severity,
               graph: graphName,
               nodeId: node.nodeId,
               message: `Interrupt trust change ${interruptTrustChange} is outside recommended range [-2, 2]`,
               suggestion: 'Large trust changes can feel jarring. Consider smaller incremental changes.'
-            })
+            }
+            if (severity === 'warning') this.warnings.push(issue)
+            else this.infos.push(issue)
           }
         }
 
         // Validate interrupt duration
         if (interrupt.duration && (interrupt.duration < 1000 || interrupt.duration > 10000)) {
-          this.warnings.push({
-            severity: 'warning',
+          const severity: ValidationError['severity'] = this.strictQuality ? 'warning' : 'info'
+          const issue: ValidationError = {
+            severity,
             graph: graphName,
             nodeId: node.nodeId,
             message: `Interrupt duration ${interrupt.duration}ms is outside recommended range [1000, 10000]`,
             suggestion: 'Duration should give players time to react (2000-4000ms recommended)'
-          })
+          }
+          if (severity === 'warning') this.warnings.push(issue)
+          else this.infos.push(issue)
         }
       }
     }
@@ -392,9 +543,6 @@ class DialogueGraphValidator {
     // Validate choices
     const choiceIds = new Set<string>()
     for (const choice of node.choices) {
-      // Track all target nodes for orphan detection
-      allTargetNodeIds.add(choice.nextNodeId)
-
       // Check choice ID
       if (!choice.choiceId) {
         this.errors.push({
@@ -486,20 +634,34 @@ class DialogueGraphValidator {
       const trustChange = choice.consequence?.trustChange
       if (trustChange !== undefined) {
         if (trustChange < -2 || trustChange > 2) {
-          this.warnings.push({
-            severity: 'warning',
+          const severity: ValidationError['severity'] = this.strictQuality ? 'warning' : 'info'
+          const issue: ValidationError = {
+            severity,
             graph: graphName,
             nodeId: node.nodeId,
             choiceId: choice.choiceId,
             message: `Trust change ${trustChange} is outside recommended range [-2, 2]`,
             suggestion: 'Large trust changes can feel jarring. Consider smaller incremental changes.'
-          })
+          }
+          if (severity === 'warning') this.warnings.push(issue)
+          else this.infos.push(issue)
         }
       }
     }
 
     // Warn about terminal nodes (no choices and not explicitly terminal)
-    if (node.choices.length === 0 && !node.tags?.includes('terminal') && !node.tags?.includes('arc_complete')) {
+    const isExperienceBoundary = Boolean(node.metadata?.experienceId)
+    const isSessionBoundary = Boolean(node.metadata?.sessionBoundary)
+    const isSimulationNode = Boolean(node.simulation)
+
+    if (
+      node.choices.length === 0 &&
+      !isExperienceBoundary &&
+      !isSessionBoundary &&
+      !isSimulationNode &&
+      !node.tags?.includes('terminal') &&
+      !node.tags?.includes('arc_complete')
+    ) {
       this.warnings.push({
         severity: 'warning',
         graph: graphName,
@@ -647,41 +809,47 @@ class DialogueGraphValidator {
 // ============= MAIN EXECUTION =============
 
 function main(): void {
+  const args = new Set(process.argv.slice(2))
+  const showInfo = args.has('--info') || args.has('--all')
+  const showAllWarnings = args.has('--all')
+  const strictOrphans = args.has('--strict-orphans')
+  const strictQuality = args.has('--strict-quality')
+
   console.log('\n📊 Dialogue Graph Validator')
   console.log('═'.repeat(50))
 
   const graphs = [
-    { name: 'samuel', nodes: samuelDialogueNodes, startNodeId: 'samuel_introduction' },
+    { name: 'samuel', nodes: samuelDialogueNodes, startNodeId: samuelEntryPoints.ARRIVAL },
     { name: 'station_entry', nodes: Array.from(stationEntryGraph.nodes.values()), startNodeId: stationEntryGraph.startNodeId || 'entry_arrival' },
-    { name: 'maya', nodes: mayaDialogueNodes, startNodeId: 'maya_introduction' },
-    { name: 'maya-revisit', nodes: mayaRevisitNodes, startNodeId: 'maya_revisit_welcome' },
-    { name: 'devon', nodes: devonDialogueNodes, startNodeId: 'devon_introduction' },
-    { name: 'devon-revisit', nodes: devonRevisitNodes, startNodeId: 'devon_revisit_welcome' },
-    { name: 'jordan', nodes: jordanDialogueNodes, startNodeId: 'jordan_introduction' },
-    { name: 'kai', nodes: kaiDialogueNodes, startNodeId: 'kai_introduction' },
-    { name: 'silas', nodes: silasDialogueNodes, startNodeId: 'silas_introduction' },
-    { name: 'marcus', nodes: marcusDialogueNodes, startNodeId: 'marcus_intro' },
-    { name: 'tess', nodes: tessDialogueNodes, startNodeId: 'tess_introduction' },
-    { name: 'rohan', nodes: rohanDialogueNodes, startNodeId: 'rohan_introduction' },
-    { name: 'yaquin', nodes: yaquinDialogueNodes, startNodeId: 'yaquin_introduction' },
-    { name: 'alex', nodes: alexDialogueNodes, startNodeId: 'alex_introduction' },
-    { name: 'yaquin-revisit', nodes: yaquinRevisitNodes, startNodeId: 'yaquin_revisit_welcome' },
+    { name: 'maya', nodes: mayaDialogueNodes, startNodeId: mayaEntryPoints.INTRODUCTION },
+    { name: 'maya-revisit', nodes: mayaRevisitNodes, startNodeId: mayaRevisitEntryPoints.WELCOME },
+    { name: 'devon', nodes: devonDialogueNodes, startNodeId: devonEntryPoints.INTRODUCTION },
+    { name: 'devon-revisit', nodes: devonRevisitNodes, startNodeId: devonRevisitEntryPoints.WELCOME },
+    { name: 'jordan', nodes: jordanDialogueNodes, startNodeId: jordanEntryPoints.INTRODUCTION },
+    { name: 'kai', nodes: kaiDialogueNodes, startNodeId: kaiEntryPoints.INTRODUCTION },
+    { name: 'silas', nodes: silasDialogueNodes, startNodeId: silasEntryPoints.INTRODUCTION },
+    { name: 'marcus', nodes: marcusDialogueNodes, startNodeId: marcusEntryPoints.INTRODUCTION },
+    { name: 'tess', nodes: tessDialogueNodes, startNodeId: tessEntryPoints.INTRODUCTION },
+    { name: 'rohan', nodes: rohanDialogueNodes, startNodeId: rohanEntryPoints.INTRODUCTION },
+    { name: 'yaquin', nodes: yaquinDialogueNodes, startNodeId: yaquinEntryPoints.INTRODUCTION },
+    { name: 'alex', nodes: alexDialogueNodes, startNodeId: alexEntryPoints.INTRODUCTION },
+    { name: 'yaquin-revisit', nodes: yaquinRevisitNodes, startNodeId: yaquinRevisitEntryPoints.WELCOME },
     { name: 'grand_hall', nodes: grandHallDialogueNodes, startNodeId: 'sector_1_hall' },
     { name: 'market', nodes: marketDialogueNodes, startNodeId: 'sector_2_market' },
     { name: 'deep_station', nodes: deepStationDialogueNodes, startNodeId: 'sector_3_office' },
-    { name: 'grace', nodes: graceDialogueNodes, startNodeId: 'grace_introduction' },
-    { name: 'grace-revisit', nodes: graceRevisitNodes, startNodeId: 'grace_revisit_welcome' },
-    { name: 'elena', nodes: elenaDialogueNodes, startNodeId: 'elena_intro' },
-    { name: 'zara', nodes: zaraDialogueNodes, startNodeId: 'zara_introduction' },
-    { name: 'asha', nodes: ashaDialogueNodes, startNodeId: 'asha_introduction' },
-    { name: 'lira', nodes: liraDialogueNodes, startNodeId: 'lira_introduction' },
-    { name: 'quinn', nodes: quinnDialogueNodes, startNodeId: 'quinn_introduction' },
-    { name: 'dante', nodes: danteDialogueNodes, startNodeId: 'dante_introduction' },
-    { name: 'nadia', nodes: nadiaDialogueNodes, startNodeId: 'nadia_introduction' },
-    { name: 'isaiah', nodes: isaiahDialogueNodes, startNodeId: 'isaiah_introduction' },
+    { name: 'grace', nodes: graceDialogueNodes, startNodeId: graceEntryPoints.INTRODUCTION },
+    { name: 'grace-revisit', nodes: graceRevisitNodes, startNodeId: graceRevisitEntryPoints.WELCOME },
+    { name: 'elena', nodes: elenaDialogueNodes, startNodeId: elenaEntryPoints.INTRODUCTION },
+    { name: 'zara', nodes: zaraDialogueNodes, startNodeId: zaraEntryPoints.INTRODUCTION },
+    { name: 'asha', nodes: ashaDialogueNodes, startNodeId: ashaEntryPoints.INTRODUCTION },
+    { name: 'lira', nodes: liraDialogueNodes, startNodeId: liraEntryPoints.INTRODUCTION },
+    { name: 'quinn', nodes: quinnDialogueNodes, startNodeId: quinnEntryPoints.INTRODUCTION },
+    { name: 'dante', nodes: danteDialogueNodes, startNodeId: danteEntryPoints.INTRODUCTION },
+    { name: 'nadia', nodes: nadiaDialogueNodes, startNodeId: nadiaEntryPoints.INTRODUCTION },
+    { name: 'isaiah', nodes: isaiahDialogueNodes, startNodeId: isaiahEntryPoints.INTRODUCTION },
   ]
 
-  const validator = new DialogueGraphValidator()
+  const validator = new DialogueGraphValidator({ strictOrphans, strictQuality })
   const result = validator.validate(graphs)
 
   // Print stats
@@ -746,7 +914,7 @@ function main(): void {
   if (result.warnings.length > 0) {
     console.log('\n⚠️  WARNINGS (' + result.warnings.length + '):')
     console.log('─'.repeat(50))
-    const warningsToShow = result.warnings.slice(0, 20)
+    const warningsToShow = showAllWarnings ? result.warnings : result.warnings.slice(0, 20)
     for (const warning of warningsToShow) {
       console.log(`\n[${warning.graph}] ${warning.nodeId || ''}`)
       console.log(`  ${warning.message}`)
@@ -754,8 +922,25 @@ function main(): void {
         console.log(`  💡 ${warning.suggestion}`)
       }
     }
-    if (result.warnings.length > 20) {
+    if (!showAllWarnings && result.warnings.length > 20) {
       console.log(`\n... and ${result.warnings.length - 20} more warnings`)
+    }
+  }
+
+  // Print infos (off by default to reduce noise)
+  if (showInfo && result.infos.length > 0) {
+    console.log('\nℹ️  INFO (' + result.infos.length + '):')
+    console.log('─'.repeat(50))
+    const infosToShow = args.has('--all') ? result.infos : result.infos.slice(0, 20)
+    for (const info of infosToShow) {
+      console.log(`\n[${info.graph}] ${info.nodeId || ''}`)
+      console.log(`  ${info.message}`)
+      if (info.suggestion) {
+        console.log(`  💡 ${info.suggestion}`)
+      }
+    }
+    if (!args.has('--all') && result.infos.length > 20) {
+      console.log(`\n... and ${result.infos.length - 20} more info`)
     }
   }
 
@@ -770,6 +955,9 @@ function main(): void {
 
   if (result.warnings.length > 0) {
     console.log(`⚠️  ${result.warnings.length} warning(s) - review recommended`)
+  }
+  if (result.infos.length > 0) {
+    console.log(`ℹ️  ${result.infos.length} info item(s)`)
   }
 
   console.log('')

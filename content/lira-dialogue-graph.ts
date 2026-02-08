@@ -3025,7 +3025,8 @@ Warning: Core Hum saturating mix.`,
             emotion: 'encouraging',
             variation_id: 'hub_return_v1'
         }],
-        choices: []
+        choices: [],
+        tags: ['terminal']
     },
 
     // ============= TRUST RECOVERY =============

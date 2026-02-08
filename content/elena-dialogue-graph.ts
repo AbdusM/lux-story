@@ -2783,7 +2783,8 @@ Your curiosity combined with analysis... that's exactly what they need.`,
       emotion: 'thoughtful',
       variation_id: 'hub_return_v1'
     }],
-    choices: []
+    choices: [],
+    tags: ['terminal']
   },
 
   // ============= TRUST RECOVERY =============

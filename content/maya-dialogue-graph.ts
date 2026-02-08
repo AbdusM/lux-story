@@ -4032,7 +4032,8 @@ MISSION: Stabilize the wave form within safety limits.`,
       emotion: 'thoughtful',
       variation_id: 'hub_return_v1'
     }],
-    choices: []
+    choices: [],
+    tags: ['terminal']
   },
 
   // ═══════════════════════════════════════════════════════════════
