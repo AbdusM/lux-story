@@ -6,6 +6,7 @@
  * - Provide deterministic ordering per (user, node) so UI is stable across re-renders.
  *
  * Design:
+ * - "deterministic_shuffle": deterministic shuffle (ignores gravity weight; used to mitigate ordering bias).
  * - "gravity_strict": sort by gravity weight desc, then stable by key.
  * - "gravity_bucket_shuffle": sort by gravity weight desc, then deterministic shuffle within each weight bucket.
  */
@@ -14,6 +15,7 @@ import type { PatternType } from './patterns'
 import type { GravityResult } from './narrative-gravity'
 
 export type ChoiceOrderingVariant =
+  | 'deterministic_shuffle'
   | 'gravity_strict'
   | 'gravity_bucket_shuffle'
 
@@ -66,6 +68,13 @@ function deterministicShuffle<T>(items: T[], seedString: string): T[] {
   return items
 }
 
+function canonicalChoiceKey(choice: ChoiceForOrdering): string {
+  // Prefer explicit ID. Otherwise fall back to text.
+  // We intentionally avoid using array index here so ordering is stable even if upstream
+  // choice evaluation produces the same set in a different original order.
+  return choice.id || choice.text
+}
+
 function getGravityWeight(choice: ChoiceForOrdering): number {
   return choice.gravity?.weight ?? 1.0
 }
@@ -84,6 +93,17 @@ export function orderChoicesForDisplay<TChoice extends ChoiceForOrdering>(
 
   if (choices.length <= 1) {
     return { orderedChoices: [...choices], meta: { variant, seed } }
+  }
+
+  if (variant === 'deterministic_shuffle') {
+    // Canonicalize before shuffle so results depend on set membership + seed, not upstream input order.
+    const canonical = [...choices]
+      .map((c, i) => ({ c, i, k: canonicalChoiceKey(c) }))
+      .sort((a, b) => a.k.localeCompare(b.k) || a.i - b.i)
+      .map(x => x.c)
+
+    const orderedChoices = deterministicShuffle([...canonical], seed)
+    return { orderedChoices, meta: { variant, seed } }
   }
 
   if (variant === 'gravity_strict') {
@@ -127,4 +147,3 @@ export function orderChoicesForDisplay<TChoice extends ChoiceForOrdering>(
 
   return { orderedChoices: ordered, meta: { variant, seed } }
 }
-

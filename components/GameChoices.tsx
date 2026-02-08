@@ -658,7 +658,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
 
   const coreState = useGameStore(s => s.coreGameState)
 
-  const orderingVariant: ChoiceOrderingVariant = 'gravity_bucket_shuffle'
+  const orderingVariant: ChoiceOrderingVariant = 'deterministic_shuffle'
   const orderingSeed = useMemo(() => {
     const userId = coreState?.playerId || 'anon'
     const nodeId = coreState?.currentNodeId || 'unknown'
