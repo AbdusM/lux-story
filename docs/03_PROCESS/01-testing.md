@@ -140,11 +140,13 @@ Comprehensive testing infrastructure built to ensure zero data loss, bulletproof
   8. Validate dialogue graphs (warnings only)
   9. Verify requiredState guarding (no new gaps)
   10. Verify requiredState strict navigation (no new violations)
-  11. Verify character system coverage
-  12. Generate coverage matrix + verify it is up to date
-  13. Validate simulations data dictionary
-  14. Verify analytics dictionary
-  15. Generate coverage report + upload artifacts (30 day retention)
+  11. Verify unreferenced dialogue nodes (no new orphans)
+  12. Verify unreachable dialogue nodes (no new unreachable)
+  13. Verify character system coverage
+  14. Generate coverage matrix + verify it is up to date
+  15. Validate simulations data dictionary
+  16. Verify analytics dictionary
+  17. Generate coverage report + upload artifacts (30 day retention)
 
 **2. Build Job**
 - Runs after: test job success

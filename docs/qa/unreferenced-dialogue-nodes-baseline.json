@@ -1,0 +1,877 @@
+{
+  "generated_at": "2026-02-08T21:32:20.262Z",
+  "nodes": [
+    {
+      "graphKey": "alex",
+      "nodeId": "alex_closing_enough"
+    },
+    {
+      "graphKey": "alex",
+      "nodeId": "alex_sim3_curriculum_intro"
+    },
+    {
+      "graphKey": "alex",
+      "nodeId": "alex_trust_recovery"
+    },
+    {
+      "graphKey": "asha",
+      "nodeId": "asha_challenge_developer_pressure"
+    },
+    {
+      "graphKey": "asha",
+      "nodeId": "asha_connection_mentor_offer"
+    },
+    {
+      "graphKey": "asha",
+      "nodeId": "asha_heartbeat_sync"
+    },
+    {
+      "graphKey": "asha",
+      "nodeId": "asha_insight_listening"
+    },
+    {
+      "graphKey": "asha",
+      "nodeId": "asha_mediation_master"
+    },
+    {
+      "graphKey": "asha",
+      "nodeId": "asha_sim2_community_intro"
+    },
+    {
+      "graphKey": "asha",
+      "nodeId": "asha_sim3_critique_intro"
+    },
+    {
+      "graphKey": "asha",
+      "nodeId": "asha_stillness_observation"
+    },
+    {
+      "graphKey": "asha",
+      "nodeId": "asha_trust_recovery"
+    },
+    {
+      "graphKey": "dante",
+      "nodeId": "dante_simulation_phase1_fail"
+    },
+    {
+      "graphKey": "dante",
+      "nodeId": "dante_simulation_phase1_setup"
+    },
+    {
+      "graphKey": "dante",
+      "nodeId": "dante_simulation_phase2_fail"
+    },
+    {
+      "graphKey": "dante",
+      "nodeId": "dante_simulation_phase2_setup"
+    },
+    {
+      "graphKey": "dante",
+      "nodeId": "dante_simulation_phase3_fail"
+    },
+    {
+      "graphKey": "dante",
+      "nodeId": "dante_simulation_phase3_setup"
+    },
+    {
+      "graphKey": "dante",
+      "nodeId": "dante_trust_recovery"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_best_work"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_birmingham_future"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_birmingham_future_roots"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_birmingham_reward"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_birmingham_roots"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_career_reflection_operations"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_career_reflection_ux"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_coding_escape"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_college_choice"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_crossroads_alt"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_dad_birthday"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_debug_people"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_deep_insight"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_failure_story"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_father_hope"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_father_memory"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_first_debug"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_future_vision"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_gratitude"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_hope"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_identity"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_loneliness"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_mentions_maya"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_mentions_rohan"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_mentors"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_midnight_work"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_mom_final_words"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_mystery_hint_1"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_optimization_trap"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_patterns_reward"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_probability_map"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_process"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_simulation_phase1_fail"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_simulation_phase1_setup"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_simulation_phase2_fail"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_simulation_phase2_setup"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_simulation_phase3_fail"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_simulation_phase3_setup"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_small_joys"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_systems_philosophy"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_trust_recovery"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_uncertainty"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_what_ifs"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_why_systems"
+    },
+    {
+      "graphKey": "elena",
+      "nodeId": "elena_archives_reward"
+    },
+    {
+      "graphKey": "elena",
+      "nodeId": "elena_deep_synthesis"
+    },
+    {
+      "graphKey": "elena",
+      "nodeId": "elena_trust_recovery"
+    },
+    {
+      "graphKey": "grace",
+      "nodeId": "grace_trust_recovery"
+    },
+    {
+      "graphKey": "isaiah",
+      "nodeId": "isaiah_simulation_phase1_fail"
+    },
+    {
+      "graphKey": "isaiah",
+      "nodeId": "isaiah_simulation_phase1_setup"
+    },
+    {
+      "graphKey": "isaiah",
+      "nodeId": "isaiah_simulation_phase2_fail"
+    },
+    {
+      "graphKey": "isaiah",
+      "nodeId": "isaiah_simulation_phase2_setup"
+    },
+    {
+      "graphKey": "isaiah",
+      "nodeId": "isaiah_simulation_phase3_fail"
+    },
+    {
+      "graphKey": "isaiah",
+      "nodeId": "isaiah_simulation_phase3_setup"
+    },
+    {
+      "graphKey": "isaiah",
+      "nodeId": "isaiah_trust_recovery"
+    },
+    {
+      "graphKey": "isaiah",
+      "nodeId": "isaiah_vision"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_alternative_lives"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_farewell_birmingham"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_simulation_phase1_fail"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_simulation_phase1_setup"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_simulation_phase2_fail"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_simulation_phase2_setup"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_simulation_phase3_fail"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_simulation_phase3_setup"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_trust_recovery"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_unexpected_paths"
+    },
+    {
+      "graphKey": "kai",
+      "nodeId": "kai_compliance_trap"
+    },
+    {
+      "graphKey": "kai",
+      "nodeId": "kai_mystery_hint_1"
+    },
+    {
+      "graphKey": "kai",
+      "nodeId": "kai_sim_fail_compliance"
+    },
+    {
+      "graphKey": "kai",
+      "nodeId": "kai_sim3_training_intro"
+    },
+    {
+      "graphKey": "kai",
+      "nodeId": "kai_trust_recovery"
+    },
+    {
+      "graphKey": "lira",
+      "nodeId": "lira_conclusion"
+    },
+    {
+      "graphKey": "lira",
+      "nodeId": "lira_creative_mastery"
+    },
+    {
+      "graphKey": "lira",
+      "nodeId": "lira_silence_comment"
+    },
+    {
+      "graphKey": "lira",
+      "nodeId": "lira_static_navigation"
+    },
+    {
+      "graphKey": "lira",
+      "nodeId": "lira_trust_recovery"
+    },
+    {
+      "graphKey": "marcus",
+      "nodeId": "marcus_mystery_hint_1"
+    },
+    {
+      "graphKey": "marcus",
+      "nodeId": "marcus_translation_master"
+    },
+    {
+      "graphKey": "marcus",
+      "nodeId": "marcus_trust_recovery"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_birmingham_community"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_birmingham_opportunity"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_birmingham_roots"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_career_reflection_robotics_eng"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_career_reflection_ux"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_collaboration_offer"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_competition_memory"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_doubt_spiral"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_failure_story"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_family_deeper"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_first_user"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_future_vision"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_imposter_deep"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_loneliness"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_mentor_devon"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_mentor_tess"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_midnight_coding"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_mystery_hint_1"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_name_meaning"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_parent_conversation_failed"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_parents_together"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_pepper_origin"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_rohan_crossover"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_simulation_phase3_setup"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_tech_philosophy"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_trust_recovery"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_uab_revelation"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_what_if"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_work_doubt"
+    },
+    {
+      "graphKey": "nadia",
+      "nodeId": "nadia_simulation_phase1_fail"
+    },
+    {
+      "graphKey": "nadia",
+      "nodeId": "nadia_simulation_phase1_setup"
+    },
+    {
+      "graphKey": "nadia",
+      "nodeId": "nadia_simulation_phase2_fail"
+    },
+    {
+      "graphKey": "nadia",
+      "nodeId": "nadia_simulation_phase2_setup"
+    },
+    {
+      "graphKey": "nadia",
+      "nodeId": "nadia_simulation_phase3_fail"
+    },
+    {
+      "graphKey": "nadia",
+      "nodeId": "nadia_simulation_phase3_setup"
+    },
+    {
+      "graphKey": "nadia",
+      "nodeId": "nadia_trust_recovery"
+    },
+    {
+      "graphKey": "quinn",
+      "nodeId": "quinn_sim1_budget_intro"
+    },
+    {
+      "graphKey": "quinn",
+      "nodeId": "quinn_sim2_portfolio_intro"
+    },
+    {
+      "graphKey": "quinn",
+      "nodeId": "quinn_sim3_ethics_intro"
+    },
+    {
+      "graphKey": "quinn",
+      "nodeId": "quinn_trust_recovery"
+    },
+    {
+      "graphKey": "quinn",
+      "nodeId": "quinn_wealth_wisdom"
+    },
+    {
+      "graphKey": "rohan",
+      "nodeId": "rohan_academy_challenge"
+    },
+    {
+      "graphKey": "rohan",
+      "nodeId": "rohan_career_reflection_data"
+    },
+    {
+      "graphKey": "rohan",
+      "nodeId": "rohan_career_reflection_devops"
+    },
+    {
+      "graphKey": "rohan",
+      "nodeId": "rohan_career_reflection_documentation"
+    },
+    {
+      "graphKey": "rohan",
+      "nodeId": "rohan_david_memory"
+    },
+    {
+      "graphKey": "rohan",
+      "nodeId": "rohan_mystery_hint_1"
+    },
+    {
+      "graphKey": "rohan",
+      "nodeId": "rohan_platform_journey"
+    },
+    {
+      "graphKey": "rohan",
+      "nodeId": "rohan_platform_mention"
+    },
+    {
+      "graphKey": "rohan",
+      "nodeId": "rohan_platform_reward"
+    },
+    {
+      "graphKey": "rohan",
+      "nodeId": "rohan_sim2_legacy_intro"
+    },
+    {
+      "graphKey": "rohan",
+      "nodeId": "rohan_sim3_prod_intro"
+    },
+    {
+      "graphKey": "rohan",
+      "nodeId": "rohan_trust_recovery"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_acknowledges_family"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_analytical_bonus"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_backstory_revelation"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_beat_after_station_called"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_boundary_philosophy"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_building_bonus"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_burden_reward"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_conductor_god_mode"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_devon_heart_wisdom"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_devon_systems_wisdom"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_exploring_bonus"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_frozen_time"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_helping_bonus"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_hollow_wisdom"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_honesty_mastery"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_hub_fallback"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_hub_fallback_legacy"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_inheritance_wisdom"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_introduction_2"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_jordan_belief_wisdom"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_jordan_city_wisdom"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_jordan_future_wisdom"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_jordan_narrative_wisdom"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_jordan_ripple_wisdom"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_jordan_sovereignty_wisdom"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_letter_confession"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_letter_confrontation"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_listening_wisdom"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_orb_explanation"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_origin_choice"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_patience_bonus"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_patience_wisdom"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_pattern_confirmation"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_pattern_observation_analytical"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_pattern_observation_building"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_pattern_observation_exploring"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_pattern_observation_helping"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_pattern_observation_patience"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_pattern_wisdom"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_platform_7_truth"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_platform_deflect"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_possibility_keeper"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_presence_teaching"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_purpose_found_3"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_reflect_on_influence"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_service_philosophy"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_simulation_crm"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_simulation_phase2"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_simulation_phase3"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_station_knows_passions"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_station_origin_reward"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_station_sees_all"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_struggle_transformation"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_time_loop_dialogue"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_trust_recovery"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_vulnerability_reflection"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_wisdom_complete"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_your_pattern_emerges"
+    },
+    {
+      "graphKey": "silas",
+      "nodeId": "silas_amazon_story"
+    },
+    {
+      "graphKey": "silas",
+      "nodeId": "silas_trust_recovery"
+    },
+    {
+      "graphKey": "station_entry",
+      "nodeId": "sector_0_hub"
+    },
+    {
+      "graphKey": "tess",
+      "nodeId": "tess_trust_recovery"
+    },
+    {
+      "graphKey": "yaquin",
+      "nodeId": "yaquin_trust_recovery"
+    },
+    {
+      "graphKey": "zara",
+      "nodeId": "zara_challenge_complicity"
+    },
+    {
+      "graphKey": "zara",
+      "nodeId": "zara_challenge_efficiency"
+    },
+    {
+      "graphKey": "zara",
+      "nodeId": "zara_deep_ethics"
+    },
+    {
+      "graphKey": "zara",
+      "nodeId": "zara_trust_recovery"
+    }
+  ]
+}
