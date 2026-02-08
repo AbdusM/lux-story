@@ -61,6 +61,15 @@ declare global {
     godMode?: GodModeAPI
 
     /**
+     * Feature Flags API - Development-only console controls
+     */
+    featureFlags?: {
+      list: () => unknown
+      set: (name: string, value: unknown) => void
+      reset: () => void
+    }
+
+    /**
      * User Monitor API - Development-only user tracking dashboard
      * Only available in development mode
      */

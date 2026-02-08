@@ -193,8 +193,6 @@ import { getPatternVoice, incrementPatternVoiceNodeCounter, checkVoiceConflict, 
 import { PATTERN_VOICE_LIBRARY } from '@/content/pattern-voice-library'
 import { PatternVoice } from '@/components/game/PatternVoice'
 import { useOrbs, type OrbMilestones } from '@/hooks/useOrbs'
-// Analytics Hooks
-import { trackUserOnNode, recordVisit } from '@/lib/admin-analytics'
 // Complex Character Hooks
 import { processComplexCharacterTick } from '@/lib/character-complex'
 // D-061: Story Arc System

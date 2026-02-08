@@ -1,7 +1,7 @@
 # Analytics & Events - Data Dictionary
 
 **Last Updated:** February 6, 2026
-**Source:** `/lib/event-bus.ts`, `/lib/career-analytics.ts`, `/lib/simple-analytics.ts`, `/lib/simple-career-analytics.ts`, `/lib/admin-analytics.ts`
+**Source:** `/lib/event-bus.ts`, `/lib/career-analytics.ts`, `/lib/simple-analytics.ts`, `/lib/simple-career-analytics.ts`, `/lib/dev-admin-analytics.ts`
 **Status:** Manual Documentation
 
 ---
@@ -383,7 +383,10 @@ interface SimpleCareerMetrics {
 
 Real-time admin dashboard analytics for tracking player flow, identifying drop-off points, running A/B tests, and analyzing cohorts.
 
-**Source:** `/lib/admin-analytics.ts` (134 lines)
+**Source:** `/lib/dev-admin-analytics.ts` (in-memory; admin/dev only)
+
+**Important:** This is *not* real telemetry. It is an in-memory helper for admin/dev UX.
+Canonical analytics must be emitted to `interaction_events` (see below).
 
 ### Real-Time Flow Tracking (D-011)
 
@@ -486,7 +489,7 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
 | `id` | uuid | Primary key |
 | `user_id` | text | Player ID (`player_...` or UUID), FK to `player_profiles.user_id` |
 | `session_id` | text | Session identifier (currently `sessionStartTime` string) |
-| `event_type` | text | e.g. `choice_presented`, `choice_selected_ui`, `choice_selected_result` |
+| `event_type` | text | e.g. `choice_presented`, `choice_selected_ui`, `choice_selected_result`, `node_entered`, `experiment_assigned` |
 | `node_id` | text | Dialogue node id (when applicable) |
 | `character_id` | text | Current character id (when applicable) |
 | `ordering_variant` | text | Choice ordering strategy id (e.g. `gravity_bucket_shuffle`) |
@@ -530,6 +533,26 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
   - `earned_pattern`: string|null
   - `trust_delta`: number|null
   - `nervous_system_state`: string|null
+
+**`node_entered`** (dialogue navigation truth; emitted once per node change)
+- Emitted by:
+  - `hooks/game/useGameInitializer.ts` (initial load)
+  - `hooks/game/useChoiceHandler.ts` (after resolving next node)
+- Payload keys:
+  - `event_id`: string
+  - `entered_at_ms`: number
+  - `node_id`: string
+  - `character_id`: string|null
+  - `screen`: string|null (e.g. `game_init`, `choice`)
+
+**`experiment_assigned`** (A/B test assignment; deterministic + sticky)
+- Emitted by: `lib/experiments.ts` (on first assignment for a given `(test_id, assignment_version, user_id)`)
+- Payload keys:
+  - `event_id`: string
+  - `assigned_at_ms`: number
+  - `test_id`: string
+  - `variant`: string
+  - `assignment_version`: string
 
 ### Join Logic (Position Bias Analysis)
 
@@ -673,7 +696,7 @@ console.log('Birmingham matches:', insights?.birminghamOpportunities.length)
 ### Example 4: Monitor Drop-Off Rates (Admin)
 
 ```typescript
-import { recordVisit, recordExit, getDropOffRate } from '@/lib/admin-analytics'
+import { recordVisit, recordExit, getDropOffRate } from '@/lib/dev-admin-analytics'
 
 // When player enters node
 recordVisit('maya_vulnerability_arc')
@@ -691,7 +714,7 @@ if (dropOffRate > 0.2) {
 ### Example 5: A/B Testing
 
 ```typescript
-import { ACTIVE_TESTS, assignVariant } from '@/lib/admin-analytics'
+import { ACTIVE_TESTS, assignVariant } from '@/lib/dev-admin-analytics'
 
 // Configure A/B test
 ACTIVE_TESTS['dialogue_style_test'] = {
@@ -715,7 +738,7 @@ if (variant === 'casual') {
 ### Example 6: Cohort Analysis
 
 ```typescript
-import { getUserCohort } from '@/lib/admin-analytics'
+import { getUserCohort } from '@/lib/dev-admin-analytics'
 
 const gameState = getGameState(playerId)
 

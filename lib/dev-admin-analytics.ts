@@ -5,6 +5,16 @@
  * Provides real-time insights, drop-off tracking, A/B testing, and cohort analysis.
  */
 
+/**
+ * DEPRECATED FOR GAMEPLAY TELEMETRY
+ *
+ * This module stores analytics in runtime memory (Maps). It is not durable and
+ * is not the canonical analytics sink.
+ *
+ * Canonical telemetry must be emitted via `interaction_events` (see
+ * `lib/sync-queue.ts` + `app/api/user/interaction-events/route.ts`).
+ */
+
 import { GameState } from './character-state'
 
 // ═══════════════════════════════════════════════════════════════════════════

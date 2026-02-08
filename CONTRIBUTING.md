@@ -172,6 +172,10 @@ Include:
 - Any breaking changes
 - Related issues
 
+For changes that affect flags/experiments/telemetry, also include:
+- `ADR` (see `docs/03_PROCESS/ADR_TEMPLATE.md`)
+- `DoD` checklist (see `docs/03_PROCESS/PR_DEFINITION_OF_DONE.md`)
+
 ### Review Process
 
 - All PRs require at least one review

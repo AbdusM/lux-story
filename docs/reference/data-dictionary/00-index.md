@@ -241,7 +241,7 @@ npx tsc --noEmit
 | Interrupts | `/lib/dialogue-graph.ts` |
 | UI Metadata | `/lib/unlock-effects.ts`, `/lib/ui-constants.ts` |
 | Career Paths | `/content/birmingham-opportunities.ts` |
-| Analytics | `/lib/event-bus.ts`, `/lib/career-analytics.ts`, `/lib/simple-analytics.ts`, `/lib/simple-career-analytics.ts`, `/lib/admin-analytics.ts` |
+| Analytics | `/lib/event-bus.ts`, `/lib/career-analytics.ts`, `/lib/simple-analytics.ts`, `/lib/simple-career-analytics.ts`, `/lib/dev-admin-analytics.ts` |
 
 ### Auto-Generation Strategy
 
