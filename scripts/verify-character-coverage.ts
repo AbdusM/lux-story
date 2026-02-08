@@ -15,13 +15,17 @@
 import { CHARACTER_ECHOES } from '../lib/consequence-echoes'
 import { PATTERN_VOICE_LIBRARY } from '../content/pattern-voice-library'
 import { CHARACTER_DEPTH } from '../content/character-depth'
+import { CHARACTER_IDS } from '../lib/graph-registry'
 
-// The Full Cast List
-const EXPECTED_CHARACTERS = [
-    'samuel', 'maya', 'devon', // The Core
-    'kai', 'rohan', 'tess', 'marcus', 'yaquin', // The Extended Core
-    'elena', 'grace', 'alex', 'asha', 'silas', 'lira', 'zara' // The Missing 7
-]
+const NON_CHARACTER_GRAPHS = new Set([
+    'station_entry',
+    'grand_hall',
+    'market',
+    'deep_station',
+])
+
+// The full cast list, derived from the graph registry (single source of truth).
+const EXPECTED_CHARACTERS = CHARACTER_IDS.filter((id) => !NON_CHARACTER_GRAPHS.has(id))
 
 function verifyCoverage() {
     console.log('🔍 Verifying System Coverage for ' + EXPECTED_CHARACTERS.length + ' Characters...\n')
@@ -39,6 +43,7 @@ function verifyCoverage() {
             const trustUpCount = Object.values(echoes.trustUp || {}).flat().length
             const trustDownCount = Object.values(echoes.trustDown || {}).flat().length
             if (trustUpCount < 3) errors.push(`⚠️ Low Echo Count (TrustUp: ${trustUpCount})`)
+            if (trustDownCount < 3) errors.push(`⚠️ Low Echo Count (TrustDown: ${trustDownCount})`)
         }
 
         // 2. Verify Voices
