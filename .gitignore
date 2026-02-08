@@ -74,6 +74,7 @@ test-results/
 dialogue-length-report.json
 validation_output.txt
 *.log
+docs/qa/required-state-guarding-report.json
 
 # Additional test artifacts
 test-results/.last-run.json

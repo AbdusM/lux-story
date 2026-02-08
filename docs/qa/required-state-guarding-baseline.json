@@ -1,0 +1,245 @@
+{
+  "generated_at": "2026-02-08T13:52:32.210Z",
+  "nodes": [
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_letter_system"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_hub_initial"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_maya_reflection_gateway"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_yaquin_reflection_gateway"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_kai_reflection_gateway"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_rohan_reflection_gateway"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_silas_reflection_gateway"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_alex_reflection_gateway"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_elena_reflection_gateway"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_grace_reflection_gateway"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_devon_reflection_gateway"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_tess_reflection_gateway"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_jordan_reflection_gateway"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_hub_after_maya"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_analytical_bonus_2"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_analytical_bonus_3"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_patience_bonus_2"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_patience_bonus_3"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_exploring_bonus_2"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_exploring_bonus_3"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_helping_bonus_2"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_helping_bonus_3"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_building_bonus_2"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_building_bonus_3"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_studies_response"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_anxiety_reveal"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_robotics_passion"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_family_pressure"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_crossroads"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_simulation_intro"
+    },
+    {
+      "graphKey": "maya",
+      "nodeId": "maya_loyalty_trigger"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_crossroads"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_loyalty_trigger"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_career_question"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_job_reveal_1"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_job_reveal_2"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_job_reveal_3"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_job_reveal_4"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_job_reveal_5"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_job_reveal_6"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_job_reveal_7"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_crossroads"
+    },
+    {
+      "graphKey": "marcus",
+      "nodeId": "marcus_vulnerability_arc"
+    },
+    {
+      "graphKey": "marcus",
+      "nodeId": "marcus_patient_story"
+    },
+    {
+      "graphKey": "tess",
+      "nodeId": "tess_the_pitch_setup"
+    },
+    {
+      "graphKey": "yaquin",
+      "nodeId": "yaquin_curriculum_setup"
+    },
+    {
+      "graphKey": "yaquin",
+      "nodeId": "yaquin_launch_decision"
+    },
+    {
+      "graphKey": "yaquin",
+      "nodeId": "yaquin_loyalty_trigger"
+    },
+    {
+      "graphKey": "kai",
+      "nodeId": "kai_climax_decision"
+    },
+    {
+      "graphKey": "rohan",
+      "nodeId": "rohan_simulation_setup"
+    },
+    {
+      "graphKey": "silas",
+      "nodeId": "silas_simulation_start"
+    },
+    {
+      "graphKey": "elena",
+      "nodeId": "elena_meta_reflection"
+    },
+    {
+      "graphKey": "grace",
+      "nodeId": "grace_loyalty_trigger"
+    },
+    {
+      "graphKey": "asha",
+      "nodeId": "asha_post_success_reflection"
+    },
+    {
+      "graphKey": "asha",
+      "nodeId": "asha_vulnerability_arc"
+    },
+    {
+      "graphKey": "asha",
+      "nodeId": "asha_hardest_case"
+    },
+    {
+      "graphKey": "lira",
+      "nodeId": "lira_vulnerability_arc"
+    },
+    {
+      "graphKey": "lira",
+      "nodeId": "lira_collaboration"
+    },
+    {
+      "graphKey": "zara",
+      "nodeId": "zara_triage_deepdive"
+    },
+    {
+      "graphKey": "isaiah",
+      "nodeId": "isaiah_vulnerability_arc"
+    }
+  ]
+}
