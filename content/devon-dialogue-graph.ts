@@ -1399,11 +1399,6 @@ export const devonDialogueNodes: DialogueNode[] = [
         altEmotion: 'warm_ready'
       }
     ],
-    requiredState: {
-      trust: { min: 6 },
-      hasKnowledgeFlags: ['system_failed'],
-      lacksGlobalFlags: ['devon_chose_logic'] // Only if not failed
-    },
     choices: [
       // Career observation routes (ISP: Only visible when pattern combos are achieved)
       {

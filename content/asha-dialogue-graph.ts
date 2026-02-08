@@ -746,14 +746,44 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 text: "I just described what I wanted to see.",
                 nextNodeId: 'asha_post_success_reflection',
                 pattern: 'helping',
-                skills: ['humility']
+                skills: ['humility'],
+                visibleCondition: { trust: { min: 4 } }
             },
             {
                 choiceId: 'success_pride',
                 text: "It's about knowing the story behind the image.",
                 nextNodeId: 'asha_post_success_reflection',
                 pattern: 'building',
-                skills: ['communication']
+                skills: ['communication'],
+                visibleCondition: { trust: { min: 4 } }
+            },
+            {
+                choiceId: 'success_humble_low',
+                text: "I just described what I wanted to see.",
+                nextNodeId: 'asha_post_success_low_trust',
+                pattern: 'helping',
+                skills: ['humility'],
+                visibleCondition: { trust: { max: 3 } }
+            },
+            {
+                choiceId: 'success_pride_low',
+                text: "It's about knowing the story behind the image.",
+                nextNodeId: 'asha_post_success_low_trust',
+                pattern: 'building',
+                skills: ['communication'],
+                visibleCondition: { trust: { max: 3 } }
+            },
+            {
+                choiceId: 'asha_go_deeper',
+                text: "There's something else behind this work, isn't there? Something personal.",
+                nextNodeId: 'asha_vulnerability_arc',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                visibleCondition: { trust: { min: 6 } },
+                consequence: {
+                    characterId: 'asha',
+                    trustChange: 1
+                }
             }
         ]
     },
