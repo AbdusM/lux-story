@@ -546,22 +546,10 @@ export class GameStateUtils {
       // PHASE 3: REPLACE in Map
       newState.characters.set(change.characterId, updatedCharState)
 
-      // ISP UPDATE: Telemetry Feed (CEO Dashboard)
-      // Emit snapshot AFTER calculating all values
-      if (change.trustChange !== undefined && typeof window !== 'undefined') {
-        const telemetrySnapshot = {
-          characterId: change.characterId,
-          state: updatedNervousSystemState,
-          reaction: updatedLastReaction,
-          trust: updatedTrust,
-          anxiety: updatedAnxiety
-        }
-        import('@/lib/telemetry/dashboard-feed')
-          .then(({ dashboard }) => {
-            dashboard.emit('BIO_STATE_CHANGE', telemetrySnapshot, newState)
-          })
-          .catch(err => console.error('[Telemetry] Failed to load dashboard-feed', err))
-      }
+      // Note: We intentionally do not emit any client-side "dashboard feed" telemetry here.
+      // Interaction telemetry is handled via `interaction_events` (see `components/GameChoices.tsx` and
+      // `app/api/user/interaction-events/route.ts`). Keeping this runtime path free of mock feeds
+      // prevents accidental "fake telemetry" dependencies in production UX.
     }
 
     // Apply mystery state changes

@@ -4,9 +4,9 @@ import { orderChoicesForDisplay } from '@/lib/choice-ordering'
 describe('orderChoicesForDisplay', () => {
   it('gravity_strict sorts by weight desc', () => {
     const choices = [
-      { id: 'a', text: 'A', gravity: { weight: 1.0, effect: 'neutral' as const } },
-      { id: 'b', text: 'B', gravity: { weight: 1.5, effect: 'attract' as const } },
-      { id: 'c', text: 'C', gravity: { weight: 0.6, effect: 'repel' as const } },
+      { id: 'a', text: 'A', gravity: { weight: 1.0, effect: 'neutral' as const, description: 'neutral' } },
+      { id: 'b', text: 'B', gravity: { weight: 1.5, effect: 'attract' as const, description: 'attract' } },
+      { id: 'c', text: 'C', gravity: { weight: 0.6, effect: 'repel' as const, description: 'repel' } },
     ]
 
     const result = orderChoicesForDisplay(choices, { variant: 'gravity_strict', seed: 'seed' })
@@ -15,10 +15,10 @@ describe('orderChoicesForDisplay', () => {
 
   it('gravity_bucket_shuffle is deterministic for same seed', () => {
     const choices = [
-      { id: 'a', text: 'A', gravity: { weight: 1.0, effect: 'neutral' as const } },
-      { id: 'b', text: 'B', gravity: { weight: 1.0, effect: 'neutral' as const } },
-      { id: 'c', text: 'C', gravity: { weight: 1.0, effect: 'neutral' as const } },
-      { id: 'd', text: 'D', gravity: { weight: 1.0, effect: 'neutral' as const } },
+      { id: 'a', text: 'A', gravity: { weight: 1.0, effect: 'neutral' as const, description: 'neutral' } },
+      { id: 'b', text: 'B', gravity: { weight: 1.0, effect: 'neutral' as const, description: 'neutral' } },
+      { id: 'c', text: 'C', gravity: { weight: 1.0, effect: 'neutral' as const, description: 'neutral' } },
+      { id: 'd', text: 'D', gravity: { weight: 1.0, effect: 'neutral' as const, description: 'neutral' } },
     ]
 
     const r1 = orderChoicesForDisplay(choices, { variant: 'gravity_bucket_shuffle', seed: 'user:node' })
@@ -28,10 +28,10 @@ describe('orderChoicesForDisplay', () => {
 
   it('gravity_bucket_shuffle changes with different seed (highly likely)', () => {
     const choices = [
-      { id: 'a', text: 'A', gravity: { weight: 1.0, effect: 'neutral' as const } },
-      { id: 'b', text: 'B', gravity: { weight: 1.0, effect: 'neutral' as const } },
-      { id: 'c', text: 'C', gravity: { weight: 1.0, effect: 'neutral' as const } },
-      { id: 'd', text: 'D', gravity: { weight: 1.0, effect: 'neutral' as const } },
+      { id: 'a', text: 'A', gravity: { weight: 1.0, effect: 'neutral' as const, description: 'neutral' } },
+      { id: 'b', text: 'B', gravity: { weight: 1.0, effect: 'neutral' as const, description: 'neutral' } },
+      { id: 'c', text: 'C', gravity: { weight: 1.0, effect: 'neutral' as const, description: 'neutral' } },
+      { id: 'd', text: 'D', gravity: { weight: 1.0, effect: 'neutral' as const, description: 'neutral' } },
     ]
 
     const r1 = orderChoicesForDisplay(choices, { variant: 'gravity_bucket_shuffle', seed: 'seed-1' })
@@ -43,10 +43,10 @@ describe('orderChoicesForDisplay', () => {
 
   it('gravity_bucket_shuffle preserves bucket ordering by weight', () => {
     const choices = [
-      { id: 'a', text: 'A', gravity: { weight: 1.0, effect: 'neutral' as const } },
-      { id: 'b', text: 'B', gravity: { weight: 1.5, effect: 'attract' as const } },
-      { id: 'c', text: 'C', gravity: { weight: 1.5, effect: 'attract' as const } },
-      { id: 'd', text: 'D', gravity: { weight: 0.6, effect: 'repel' as const } },
+      { id: 'a', text: 'A', gravity: { weight: 1.0, effect: 'neutral' as const, description: 'neutral' } },
+      { id: 'b', text: 'B', gravity: { weight: 1.5, effect: 'attract' as const, description: 'attract' } },
+      { id: 'c', text: 'C', gravity: { weight: 1.5, effect: 'attract' as const, description: 'attract' } },
+      { id: 'd', text: 'D', gravity: { weight: 0.6, effect: 'repel' as const, description: 'repel' } },
     ]
 
     const result = orderChoicesForDisplay(choices, { variant: 'gravity_bucket_shuffle', seed: 'seed' })
@@ -54,4 +54,3 @@ describe('orderChoicesForDisplay', () => {
     expect(weights).toEqual([1.5, 1.5, 1.0, 0.6])
   })
 })
-
