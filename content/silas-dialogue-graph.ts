@@ -207,9 +207,7 @@ export const silasDialogueNodes: DialogueNode[] = [
         nextNodeId: 'silas_action_challenge_response',
         pattern: 'building',
         skills: ['actionOrientation'],
-        visibleCondition: {
-          patterns: { building: { min: 4 } }
-        }
+        // This question is broadly available; do not gate it behind pattern level.
       },
       {
         choiceId: 'silas_fear_paralysis',

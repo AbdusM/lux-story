@@ -200,9 +200,6 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'exploring',
         skills: ['curiosity', 'criticalThinking'],
-        visibleCondition: {
-          patterns: { exploring: { min: 3 } }
-        },
         consequence: {
           characterId: 'yaquin',
           trustChange: 1

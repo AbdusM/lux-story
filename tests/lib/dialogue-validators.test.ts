@@ -131,6 +131,26 @@ describe('validateDialogueGating', () => {
 
     expect(issues.some(i => i.issueType === 'all_choices_gated')).toBe(true)
   })
+
+  it('skips nodes whose requiredState is not met under the provided state', () => {
+    const gatedByTrust: DialogueNode = {
+      nodeId: 'trust_gate',
+      speaker: 'Test',
+      content: [{ text: 'Gate', emotion: 'neutral', variation_id: 'v1' }],
+      requiredState: { trust: { min: 10 } },
+      choices: [
+        createTestChoice('Option A', 'end')
+      ]
+    }
+
+    const graph = createTestGraph([
+      gatedByTrust,
+      createTestNode('end', [])
+    ])
+
+    const issues = validateDialogueGating(graph, 'test_character')
+    expect(issues.find(i => i.nodeId === 'trust_gate')).toBeUndefined()
+  })
 })
 
 // ═══════════════════════════════════════════════════════════════════════════
