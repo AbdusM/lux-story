@@ -609,27 +609,28 @@ const groupChoices = (choices: Choice[]) => {
   const groups: Record<string, Choice[]> = {
     'Career Paths': [],
     'Exploration': [],
-    'Approach': [],
+    'Connection': [],
     'Other': []
   }
 
   choices.forEach(choice => {
-    const p = choice.pattern || ''
-
-    // Core Career Patterns
-    if (['building', 'helping', 'analytical', 'systemsThinking', 'technicalLiteracy', 'leadership', 'creativity', 'crisisManagement'].includes(p)) {
-      groups['Career Paths'].push(choice)
-    }
-    // Exploration & Soft Skills
-    else if (['exploring', 'patience', 'adaptability', 'resilience', 'communication', 'emotionalIntelligence', 'humility', 'wisdom'].includes(p)) {
-      groups['Exploration'].push(choice)
-    }
-    // Approach / Trap Patterns
-    else if (['fairness', 'compliance', 'pragmatism', 'safety', 'efficiency'].includes(p)) {
-      groups['Approach'].push(choice)
-    }
-    else {
-      groups['Other'].push(choice)
+    // `choice.pattern` is `PatternType` (5 canonical patterns) or undefined.
+    // Keep grouping aligned to that contract; avoid dead branches from legacy strings.
+    switch (choice.pattern) {
+      case 'analytical':
+      case 'building':
+        groups['Career Paths'].push(choice)
+        break
+      case 'exploring':
+      case 'patience':
+        groups['Exploration'].push(choice)
+        break
+      case 'helping':
+        groups['Connection'].push(choice)
+        break
+      default:
+        groups['Other'].push(choice)
+        break
     }
   })
 
