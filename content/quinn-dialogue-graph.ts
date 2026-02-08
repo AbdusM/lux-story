@@ -2715,7 +2715,8 @@ ALTERNATIVES:
       emotion: 'determined',
       variation_id: 'hub_return_v1'
     }],
-    choices: []
+    choices: [],
+    tags: ['terminal']
   },
 
   // ============= TRUST RECOVERY =============

@@ -930,7 +930,8 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     onEnter: [
       { characterId: 'isaiah', addKnowledgeFlags: ['isaiah_loyalty_accepted'] }
     ],
-    choices: []
+    choices: [],
+    tags: ['terminal']
   },
 
   // ============= ADDITIONAL DEPTH NODES =============
@@ -1145,7 +1146,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       variation_id: 'hub_return_v1'
     }],
     choices: [],
-    tags: ['farewell']
+    tags: ['farewell', 'terminal']
   },
 
   // ============= TRUST RECOVERY =============

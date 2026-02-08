@@ -844,7 +844,8 @@ export const danteDialogueNodes: DialogueNode[] = [
     onEnter: [
       { characterId: 'dante', addKnowledgeFlags: ['dante_loyalty_accepted'] }
     ],
-    choices: []
+    choices: [],
+    tags: ['terminal']
   },
 
   // ============= ADDITIONAL NODES FOR DEPTH =============
@@ -1218,7 +1219,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       variation_id: 'hub_return_v1'
     }],
     choices: [],
-    tags: ['farewell']
+    tags: ['farewell', 'terminal']
   },
 
   // ============= TRUST RECOVERY =============

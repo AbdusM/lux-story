@@ -8950,7 +8950,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       { characterId: 'samuel', addKnowledgeFlags: ['journey_complete'] }
     ],
     choices: [],
-    tags: ['ending', 'journey_complete']
+    tags: ['ending', 'journey_complete', 'terminal']
   },
 
   {
@@ -9045,7 +9045,8 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     onEnter: [
       { characterId: 'samuel', addKnowledgeFlags: ['samuel_loyalty_accepted'] }
     ],
-    choices: []
+    choices: [],
+    tags: ['terminal']
   },
 
   // ============= TRUST RECOVERY SYSTEM =============
