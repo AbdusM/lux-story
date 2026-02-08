@@ -36,6 +36,8 @@ test.describe('Prism (Journal) on Mobile', () => {
     const harmonicsTab = page.getByRole('button', { name: /harmonics/i }).first()
     const essenceTab = page.getByRole('button', { name: /essence/i }).first()
     const masteryTab = page.getByRole('button', { name: /mastery/i }).first()
+    const ranksTab = page.getByRole('button', { name: /ranks/i }).first()
+    const careersTab = page.getByRole('button', { name: /careers/i }).first()
 
     await expect(harmonicsTab).toBeVisible()
     await essenceTab.click()
@@ -43,6 +45,12 @@ test.describe('Prism (Journal) on Mobile', () => {
 
     await masteryTab.click()
     await expect(page.getByText(/ability mastery/i)).toBeVisible({ timeout: 3000 })
+
+    await ranksTab.click()
+    await expect(page.getByRole('heading', { name: /station ranks/i })).toBeVisible({ timeout: 3000 })
+
+    await careersTab.click()
+    await expect(page.getByRole('heading', { name: /your values/i })).toBeVisible({ timeout: 3000 })
   })
 
   test('shows empty state in Harmonics for fresh game', async ({ page, freshGame }) => {

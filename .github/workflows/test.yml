@@ -51,6 +51,9 @@ jobs:
       - name: Validate simulations data dictionary
         run: npm run validate-simulations-doc
 
+      - name: Verify analytics dictionary
+        run: npm run verify:analytics-dict
+
       - name: Generate coverage report
         run: npm run test:coverage
         continue-on-error: true
