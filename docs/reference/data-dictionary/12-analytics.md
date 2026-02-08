@@ -47,15 +47,21 @@ Type-safe pub/sub event system for cross-component communication with priority-b
 | Event Category | Event Name | Data Shape |
 |----------------|------------|------------|
 | **Game State** | `game:state:changed` | `{ state: string; previousState?: string }` |
-| | `game:choice:made` | `{ choice: unknown; timestamp: number; emotionalState: string }` |
+| | `game:scene:transition` | `{ from: string; to: string; duration?: number }` |
+| | `game:message:received` | `{ message: unknown; timestamp: number }` |
+| | `game:message:streaming` | `{ message: unknown; isComplete: boolean }` |
+| | `game:presence:updated` | `{ presence: unknown }` |
+| | `game:choice:made` | `{ choice: unknown; timestamp: number; emotionalState: string; cognitiveState: string }` |
 | | `game:dialogue:started` | `{ nodeId: string; speaker: string }` |
 | | `game:dialogue:completed` | `{ nodeId: string; duration: number }` |
 | **Character** | `game:character:met` | `{ characterId: string; location: string }` |
 | | `game:trust:changed` | `{ characterId: string; trust: number; delta: number }` |
 | | `game:relationship:updated` | `{ characterId: string; relationshipType: string }` |
-| **Patterns** | `game:pattern:discovered` | `{ pattern: string; level: number }` |
+| **Patterns** | `game:pattern:updated` | `{ pattern: unknown }` |
+| | `game:pattern:discovered` | `{ pattern: string; level: number }` |
 | | `game:pattern:threshold` | `{ pattern: string; threshold: 'emerging' \| 'developing' \| 'flourishing' }` |
 | | `game:skill:unlocked` | `{ skillId: string; pattern?: string }` |
+| **Platforms** | `game:platform:updated` | `{ platform: unknown }` |
 | **Simulations** | `game:simulation:started` | `{ simulationId: string; characterId: string }` |
 | | `game:simulation:completed` | `{ simulationId: string; score: number; duration: number }` |
 | | `game:golden_prompt:achieved` | `{ simulationId: string; reward: number }` |
@@ -65,15 +71,30 @@ Type-safe pub/sub event system for cross-component communication with priority-b
 | **Knowledge** | `game:knowledge:gained` | `{ flag: string; source: string }` |
 | | `game:arc:completed` | `{ characterId: string; arcType: string }` |
 | | `game:vulnerability:revealed` | `{ characterId: string }` |
+| **Cognition** | `game:emotional:stress` | `{ level: string; trigger: string }` |
+| | `game:emotional:calm` | `{ level: string; trigger: string }` |
+| | `game:cognitive:flow` | `{ state: string; awareness: number }` |
+| | `game:skills:updated` | `{ skills: unknown; totalSkills: unknown }` |
 | **UI Events** | `ui:message:show` | `{ message: unknown; duration?: number }` |
+| | `ui:message:hide` | `{ messageId: string }` |
+| | `ui:scene:show` | `{ scene: string; data?: unknown }` |
+| | `ui:scene:hide` | `{ scene: string }` |
+| | `ui:animation:start` | `{ animation: string; element?: HTMLElement }` |
+| | `ui:animation:complete` | `{ animation: string; element?: HTMLElement }` |
+| | `ui:error:show` | `{ error: Error; context?: string }` |
+| | `ui:error:hide` | `{ errorId: string }` |
 | | `ui:notification:display` | `{ title: string; description: string; type: string }` |
 | | `ui:modal:opened` | `{ modalId: string }` |
 | | `ui:modal:closed` | `{ modalId: string }` |
 | **Performance** | `perf:render:slow` | `{ component: string; duration: number }` |
 | | `perf:api:slow` | `{ endpoint: string; duration: number }` |
-| | `perf:memory:warning` | `{ usage: number; threshold: number }` |
+| | `perf:memory:warning` | `{ usage: number; limit: number }` |
+| | `perf:bundle:large` | `{ size: number; threshold: number }` |
+| | `perf:choice:slow` | `{ duration: number; choice: string }` |
 | **System** | `system:error` | `{ error: Error; context: string }` |
 | | `system:warning` | `{ message: string; context: string }` |
+| | `system:info` | `{ message: string; context: string }` |
+| | `system:cleanup` | `{ component: string }` |
 | | `analytics:tracked` | `{ event: string; properties: unknown }` |
 
 ### Event Bus Features

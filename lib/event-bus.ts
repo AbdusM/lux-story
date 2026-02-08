@@ -267,8 +267,8 @@ export interface GameEventMap {
   'game:message:received': { message: unknown; timestamp: number };
   'game:message:streaming': { message: unknown; isComplete: boolean };
   'game:presence:updated': { presence: unknown };
-  'game:trust:changed': { trust: number; delta: number };
-  'game:relationship:updated': { relationship: unknown };
+  'game:trust:changed': { characterId?: string; trust: number; delta: number };
+  'game:relationship:updated': { characterId?: string; relationship: unknown; relationshipType?: string };
   'game:platform:updated': { platform: unknown };
   'game:pattern:updated': { pattern: unknown };
   
@@ -279,6 +279,23 @@ export interface GameEventMap {
   'game:cognitive:flow': { state: string; awareness: number };
   'game:skills:updated': { skills: unknown; totalSkills: unknown };
 
+  // Documented event bus surface (see docs/reference/data-dictionary/12-analytics.md)
+  'game:dialogue:started': { nodeId: string; speaker: string };
+  'game:dialogue:completed': { nodeId: string; duration: number };
+  'game:character:met': { characterId: string; location: string };
+  'game:pattern:discovered': { pattern: string; level: number };
+  'game:pattern:threshold': { pattern: string; threshold: 'emerging' | 'developing' | 'flourishing' };
+  'game:skill:unlocked': { skillId: string; pattern?: string };
+  'game:simulation:started': { simulationId: string; characterId: string };
+  'game:simulation:completed': { simulationId: string; score: number; duration: number };
+  'game:golden_prompt:achieved': { simulationId: string; reward: number };
+  'game:interrupt:available': { interruptType: string; duration: number };
+  'game:interrupt:taken': { interruptType: string; consequence: unknown };
+  'game:interrupt:missed': { interruptType: string };
+  'game:knowledge:gained': { flag: string; source: string };
+  'game:arc:completed': { characterId: string; arcType: string };
+  'game:vulnerability:revealed': { characterId: string };
+
   // UI events
   'ui:message:show': { message: unknown; duration?: number };
   'ui:message:hide': { messageId: string };
@@ -288,18 +305,25 @@ export interface GameEventMap {
   'ui:animation:complete': { animation: string; element?: HTMLElement };
   'ui:error:show': { error: Error; context?: string };
   'ui:error:hide': { errorId: string };
+  'ui:notification:display': { title: string; description: string; type: string };
+  'ui:modal:opened': { modalId: string };
+  'ui:modal:closed': { modalId: string };
 
   // Performance events
   'perf:memory:warning': { usage: number; limit: number };
   'perf:render:slow': { component: string; duration: number };
   'perf:bundle:large': { size: number; threshold: number };
   'perf:choice:slow': { duration: number; choice: string };
+  'perf:api:slow': { endpoint: string; duration: number };
 
   // System events
   'system:error': { error: Error; context: string };
   'system:warning': { message: string; context: string };
   'system:info': { message: string; context: string };
   'system:cleanup': { component: string };
+
+  // Analytics event bus meta
+  'analytics:tracked': { event: string; properties: unknown };
 }
 
 // Global event bus instance
