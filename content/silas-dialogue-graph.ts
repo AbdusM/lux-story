@@ -594,9 +594,6 @@ HINT: Sensors measure WHERE they're placed...`,
       },
       successFeedback: '✓ ROOT CAUSE: Sensor placement error. Moisture sensor at bed edge (wet). Bed center is dry. The map is not the territory.'
     },
-    requiredState: {
-      trust: { min: 1 }
-    },
     choices: [
       {
         choiceId: 'sim_trust_sensor',

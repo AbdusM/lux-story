@@ -659,9 +659,6 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       successFeedback: '✓ AI ACKNOWLEDGED ERROR: "Apologies. Re-checking index... Dependency removed."'
     },
-    requiredState: {
-      trust: { min: 1 }
-    },
     choices: [
       {
         choiceId: 'sim_ask_ai',

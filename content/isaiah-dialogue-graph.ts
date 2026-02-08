@@ -807,6 +807,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
         nextNodeId: 'isaiah_vulnerability_arc',
         pattern: 'helping',
         skills: ['empathy', 'courage'],
+        visibleCondition: { trust: { min: 6 } },
         consequence: {
           characterId: 'isaiah',
           trustChange: 1

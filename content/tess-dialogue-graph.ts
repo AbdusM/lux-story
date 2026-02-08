@@ -670,9 +670,6 @@ RACHEL: What am I missing?
       },
       successFeedback: '✓ RACHEL: "Community hub with vinyl as the hook... that\'s different. Let\'s talk numbers over coffee."'
     },
-    requiredState: {
-      trust: { min: 1 }
-    },
     choices: [
       {
         choiceId: 'pitch_community',

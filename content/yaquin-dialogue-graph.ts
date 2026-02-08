@@ -674,9 +674,6 @@ Which opening sells the VALUE of practical experience?`,
         altEmotion: 'recognized_anxious'
       }
     ],
-    requiredState: {
-      trust: { min: 2 }
-    },
     choices: [
       {
         choiceId: 'launch_now',

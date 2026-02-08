@@ -12,7 +12,6 @@ import { describe, it, expect } from 'vitest'
 import { DIALOGUE_GRAPHS } from '@/lib/graph-registry'
 import { GameState, GameStateUtils } from '@/lib/character-state'
 import { DialogueNode, StateConditionEvaluator } from '@/lib/dialogue-graph'
-import { SeededRandom } from '@/lib/seeded-random'
 
 const VIRTUAL_NODE_IDS = new Set(['TRAVEL_PENDING', 'SIMULATION_PENDING', 'LOYALTY_PENDING'])
 
@@ -62,100 +61,146 @@ function applyStateChanges(state: GameState, changes: Array<unknown> | undefined
   return next
 }
 
-function simulateOnePath(graphKey: string, maxSteps: number): { deadlocks: string[]; invalidRequiredState: string[] } {
+function stableStateHash(state: GameState, characterId: string): string {
+  const char = state.characters.get(characterId)
+  const payload = {
+    trust: char?.trust ?? 0,
+    knowledgeFlags: char ? [...char.knowledgeFlags].sort() : [],
+    globalFlags: [...state.globalFlags].sort(),
+    patterns: state.patterns,
+    mysteries: state.mysteries,
+  }
+
+  const s = JSON.stringify(payload)
+  let h = 2166136261
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i)
+    h = Math.imul(h, 16777619)
+  }
+  return (h >>> 0).toString(16)
+}
+
+type TraceStep = { nodeId: string; choiceId: string; nextNodeId: string }
+
+function exploreForDeadlocks(graphKey: string): { deadlocks: Array<{ nodeId: string; trace: TraceStep[] }>; requiredStateMismatches: string[] } {
   const graph = (DIALOGUE_GRAPHS as any)[graphKey]
   const baseCharId = baseCharacterIdForGraphKey(graphKey)
 
-  let state = GameStateUtils.createNewGameState('path-sim')
   const startNode = graph.nodes.get(graph.startNodeId) as DialogueNode | undefined
   if (!startNode) {
-    return { deadlocks: [`missing_start:${graph.startNodeId}`], invalidRequiredState: [] }
+    return { deadlocks: [{ nodeId: `missing_start:${graph.startNodeId}`, trace: [] }], requiredStateMismatches: [] }
   }
 
+  let state = GameStateUtils.createNewGameState('path-sim-enum')
   ensureRevisitEntryState(graphKey, startNode, state)
 
-  let nodeId: string = graph.startNodeId
-  const deadlocks: string[] = []
-  const invalidRequiredState: string[] = []
+  type QItem = { nodeId: string; state: GameState; trace: TraceStep[]; steps: number }
+  const queue: QItem[] = [{ nodeId: graph.startNodeId, state, trace: [], steps: 0 }]
 
-  for (let step = 0; step < maxSteps; step++) {
-    if (VIRTUAL_NODE_IDS.has(nodeId)) break
+  const visited = new Set<string>()
+  const perNodeStateCount = new Map<string, number>()
 
-    const node: DialogueNode | undefined = graph.nodes.get(nodeId)
-    if (!node) break // Cross-graph or external transition: end the simulation path.
+  const deadlocks: Array<{ nodeId: string; trace: TraceStep[] }> = []
+  const requiredStateMismatches: string[] = []
 
-    // If we don't meet requiredState for a node we've reached, that's a consistency signal:
-    // either incoming choices should enforce the same constraint, or requiredState is stale.
-    // Runtime currently does not hard-block on requiredState during navigation.
-    if (!StateConditionEvaluator.evaluate(node.requiredState, state, baseCharId, state.skillLevels)) {
-      invalidRequiredState.push(node.nodeId)
-      break
+  const MAX_STEPS_PER_PATH = 120
+  const MAX_EXPANSIONS = 6000
+  const MAX_STATES_PER_NODE = 40
+  let expansions = 0
+
+  while (queue.length > 0) {
+    const item = queue.shift()!
+    if (item.steps > MAX_STEPS_PER_PATH) continue
+    if (VIRTUAL_NODE_IDS.has(item.nodeId)) continue
+
+    const node: DialogueNode | undefined = graph.nodes.get(item.nodeId)
+    if (!node) continue
+
+    // If requiredState isn't met, this path is "invalid" under the content contract.
+    // Don't treat it as a deadlock; track it informationally.
+    if (!StateConditionEvaluator.evaluate(node.requiredState, item.state, baseCharId, item.state.skillLevels)) {
+      requiredStateMismatches.push(node.nodeId)
+      continue
     }
 
-    state = applyStateChanges(state, node.onEnter)
+    let nextState = applyStateChanges(item.state, node.onEnter)
 
     if (!node.choices || node.choices.length === 0) {
       if (!isBoundaryNode(node)) {
-        deadlocks.push(node.nodeId)
+        deadlocks.push({ nodeId: node.nodeId, trace: item.trace })
+        break
       }
-      break
+      continue
     }
 
-    // Evaluate visible+enabled choices without relying on auto-fallback.
-    const visibleEnabled = node.choices.filter(choice => {
-      const visible = StateConditionEvaluator.evaluate(choice.visibleCondition, state, baseCharId, state.skillLevels)
-      if (!visible) return false
-      const enabled = StateConditionEvaluator.evaluate(choice.enabledCondition, state, baseCharId, state.skillLevels)
-      return enabled
-    })
+    const visibleEnabled = node.choices
+      .filter(choice => {
+        const visible = StateConditionEvaluator.evaluate(choice.visibleCondition, nextState, baseCharId, nextState.skillLevels)
+        if (!visible) return false
+        const enabled = StateConditionEvaluator.evaluate(choice.enabledCondition, nextState, baseCharId, nextState.skillLevels)
+        return enabled
+      })
+      .slice()
+      .sort((a, b) => a.choiceId.localeCompare(b.choiceId))
 
     if (visibleEnabled.length === 0) {
-      deadlocks.push(node.nodeId)
+      deadlocks.push({ nodeId: node.nodeId, trace: item.trace })
       break
     }
 
-    const picked = visibleEnabled[Math.floor(SeededRandom.random() * visibleEnabled.length)]
+    for (const choice of visibleEnabled) {
+      const nextNodeId = choice.nextNodeId
+      if (!nextNodeId) continue
+      if (VIRTUAL_NODE_IDS.has(nextNodeId)) continue
+      if (!graph.nodes.has(nextNodeId)) continue // cross-graph: stop expansion
 
-    // Apply choice consequence + pattern delta (matches the core gameplay rule).
-    if (picked.consequence) {
-      state = GameStateUtils.applyStateChange(state, picked.consequence)
+      let branched = nextState
+      if (choice.consequence) {
+        branched = GameStateUtils.applyStateChange(branched, choice.consequence as any)
+      }
+      if (choice.pattern) {
+        branched = GameStateUtils.applyStateChange(branched, { patternChanges: { [choice.pattern]: 1 } } as any)
+      }
+      branched = applyStateChanges(branched, node.onExit)
+
+      const stateHash = stableStateHash(branched, baseCharId)
+      const visitKey = `${nextNodeId}|${stateHash}`
+      if (visited.has(visitKey)) continue
+
+      const count = (perNodeStateCount.get(nextNodeId) ?? 0) + 1
+      if (count > MAX_STATES_PER_NODE) continue
+      perNodeStateCount.set(nextNodeId, count)
+
+      visited.add(visitKey)
+      queue.push({
+        nodeId: nextNodeId,
+        state: branched,
+        trace: [...item.trace, { nodeId: node.nodeId, choiceId: choice.choiceId, nextNodeId }],
+        steps: item.steps + 1,
+      })
+
+      if (++expansions > MAX_EXPANSIONS) break
     }
-    if (picked.pattern) {
-      state = GameStateUtils.applyStateChange(state, { patternChanges: { [picked.pattern]: 1 } })
-    }
 
-    state = applyStateChanges(state, node.onExit)
-
-    nodeId = picked.nextNodeId
-    if (!nodeId) break
-    if (VIRTUAL_NODE_IDS.has(nodeId)) break
-    if (!graph.nodes.has(nodeId)) break
+    if (expansions > MAX_EXPANSIONS) break
   }
 
-  return { deadlocks, invalidRequiredState }
+  return { deadlocks, requiredStateMismatches }
 }
 
 describe('Narrative Path Simulation (Headless)', () => {
-  it('does not encounter deadlocks in short simulated runs', () => {
-    const failures: Array<{ graphKey: string; deadlocks: string[] }> = []
+  it('does not encounter deadlocks under bounded enumerative exploration', () => {
+    const failures: Array<{ graphKey: string; nodeId: string; trace: TraceStep[] }> = []
     const requiredStateMismatches: Array<{ graphKey: string; nodes: string[] }> = []
 
-    const graphKeys = Object.keys(DIALOGUE_GRAPHS)
-
-    for (const graphKey of graphKeys) {
-      // Keep runtime bounded: 10 short runs per graph.
-      for (let i = 0; i < 10; i++) {
-        SeededRandom.seed(hashSeed(`${graphKey}:${i}`))
-        const result = simulateOnePath(graphKey, 80)
-        SeededRandom.reset()
-
-        if (result.invalidRequiredState.length > 0) {
-          requiredStateMismatches.push({ graphKey, nodes: result.invalidRequiredState })
-        }
-        if (result.deadlocks.length > 0) {
-          failures.push({ graphKey, deadlocks: result.deadlocks })
-          break // One failure is enough to surface a broken graph.
-        }
+    for (const graphKey of Object.keys(DIALOGUE_GRAPHS)) {
+      const result = exploreForDeadlocks(graphKey)
+      if (result.deadlocks.length > 0) {
+        const first = result.deadlocks[0]
+        failures.push({ graphKey, nodeId: first.nodeId, trace: first.trace })
+      }
+      if (result.requiredStateMismatches.length > 0) {
+        requiredStateMismatches.push({ graphKey, nodes: [...new Set(result.requiredStateMismatches)].slice(0, 5) })
       }
     }
 
@@ -165,9 +210,11 @@ describe('Narrative Path Simulation (Headless)', () => {
       console.log('\nSimulated-path failures:')
       for (const f of failures.slice(0, 10)) {
         // eslint-disable-next-line no-console
-        console.log(
-          `- ${f.graphKey}: deadlocks=[${f.deadlocks.join(', ')}]`
-        )
+        console.log(`- ${f.graphKey}: deadlock=${f.nodeId}`)
+        if (f.trace.length > 0) {
+          // eslint-disable-next-line no-console
+          console.log(`  trace: ${f.trace.map(s => `${s.nodeId}/${s.choiceId}→${s.nextNodeId}`).join(' | ')}`)
+        }
       }
       if (failures.length > 10) {
         // eslint-disable-next-line no-console
@@ -192,12 +239,4 @@ describe('Narrative Path Simulation (Headless)', () => {
   })
 })
 
-function hashSeed(input: string): number {
-  // Cheap stable hash -> 32-bit int for seeding.
-  let h = 2166136261
-  for (let i = 0; i < input.length; i++) {
-    h ^= input.charCodeAt(i)
-    h = Math.imul(h, 16777619)
-  }
-  return h >>> 0
-}
+// Seed hashing removed: exploration is deterministic by choiceId ordering and state hashing.

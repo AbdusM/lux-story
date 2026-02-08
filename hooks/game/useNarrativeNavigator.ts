@@ -28,8 +28,8 @@ import {
 } from '@/lib/graph-registry'
 import { GameState } from '@/lib/character-state'
 import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
-import { applyPatternReflection, applySkillReflection, applyNervousSystemReflection } from '@/lib/consequence-echoes'
-import { logger } from '@/lib/logger'
+import { applyPatternReflection } from '@/lib/consequence-echoes'
+import { isComboUnlocked as isPatternComboUnlocked } from '@/lib/pattern-combos'
 
 export interface NavigationResult {
   success: true
@@ -42,7 +42,18 @@ export interface NavigationResult {
   availableChoices: EvaluatedChoice[]
 }
 
-export type NavigationErrorCode = 'MISSING_GRAPH' | 'MISSING_NODE' | 'MISSING_CHARACTER'
+export type NavigationErrorCode =
+  | 'MISSING_GRAPH'
+  | 'MISSING_NODE'
+  | 'MISSING_CHARACTER'
+  | 'REQUIRED_STATE_VIOLATION'
+
+export type RequiredStateViolationDiagnostic = {
+  nodeId: string
+  targetCharacterId: CharacterId
+  requiredState: unknown
+  missing: Record<string, unknown>
+}
 
 export interface NavigationError {
   success: false
@@ -52,9 +63,20 @@ export interface NavigationError {
     message: string
     severity: 'error' | 'warning' | 'info'
   }
+  diagnostic?: RequiredStateViolationDiagnostic
 }
 
 export type NavigateResult = NavigationResult | NavigationError
+
+export type ResolveNodeOptions = {
+  /**
+   * Strict-mode contract check: if enabled, navigating to a node whose
+   * `requiredState` is not satisfied becomes a hard error.
+   *
+   * Production behavior default remains unchanged (false).
+   */
+  enforceRequiredState?: boolean
+}
 
 /**
  * Resolve a node ID to its full navigation result:
@@ -66,6 +88,7 @@ export function resolveNode(
   nodeId: string,
   gameState: GameState,
   conversationHistory: string[],
+  opts?: ResolveNodeOptions,
 ): NavigateResult {
   const searchResult = findCharacterForNode(nodeId, gameState)
   if (!searchResult) {
@@ -95,6 +118,28 @@ export function resolveNode(
 
   const targetGraph = searchResult.graph
   const targetCharacterId = searchResult.characterId as CharacterId
+
+  if (
+    opts?.enforceRequiredState &&
+    !StateConditionEvaluator.evaluate(nextNode.requiredState, gameState, targetCharacterId, gameState.skillLevels)
+  ) {
+    const missing = describeMissingRequiredState(nextNode.requiredState, gameState, targetCharacterId)
+    return {
+      success: false,
+      errorCode: 'REQUIRED_STATE_VIOLATION',
+      error: {
+        title: 'Navigation Error',
+        message: `Strict navigation blocked at "${nodeId}": requiredState not satisfied.`,
+        severity: 'error',
+      },
+      diagnostic: {
+        nodeId,
+        targetCharacterId,
+        requiredState: nextNode.requiredState ?? {},
+        missing,
+      },
+    }
+  }
 
   // Select content variation
   const content = DialogueGraphNavigator.selectContent(nextNode, conversationHistory, gameState)
@@ -139,6 +184,78 @@ export function resolveNode(
     reflectedEmotion: reflected.emotion,
     availableChoices,
   }
+}
+
+function describeMissingRequiredState(
+  requiredState: DialogueNode['requiredState'] | undefined,
+  gameState: GameState,
+  characterId: CharacterId,
+): Record<string, unknown> {
+  const required = requiredState ?? {}
+  const charState = gameState.characters.get(characterId)
+
+  const missing: Record<string, unknown> = {}
+
+  if (required.trust) {
+    const currentTrust = charState?.trust ?? 0
+    const min = required.trust.min
+    const max = required.trust.max
+    if ((min !== undefined && currentTrust < min) || (max !== undefined && currentTrust > max)) {
+      missing.trust = { current: currentTrust, required: required.trust }
+    }
+  }
+
+  if (required.hasGlobalFlags?.length) {
+    const absent = required.hasGlobalFlags.filter(f => !gameState.globalFlags.has(f))
+    if (absent.length) missing.hasGlobalFlags = absent
+  }
+  if (required.lacksGlobalFlags?.length) {
+    const present = required.lacksGlobalFlags.filter(f => gameState.globalFlags.has(f))
+    if (present.length) missing.lacksGlobalFlags = present
+  }
+
+  if (required.hasKnowledgeFlags?.length) {
+    const absent = required.hasKnowledgeFlags.filter(f => !charState?.knowledgeFlags?.has(f))
+    if (absent.length) missing.hasKnowledgeFlags = absent
+  }
+  if (required.lacksKnowledgeFlags?.length) {
+    const present = required.lacksKnowledgeFlags.filter(f => charState?.knowledgeFlags?.has(f))
+    if (present.length) missing.lacksKnowledgeFlags = present
+  }
+
+  if (required.patterns) {
+    const unmet: Record<string, unknown> = {}
+    for (const [pattern, range] of Object.entries(required.patterns)) {
+      const current = gameState.patterns[pattern as keyof typeof gameState.patterns]
+      if (!range) continue
+      if (range.min !== undefined && current < range.min) {
+        unmet[pattern] = { current, required: range }
+      } else if (range.max !== undefined && current > range.max) {
+        unmet[pattern] = { current, required: range }
+      }
+    }
+    if (Object.keys(unmet).length) missing.patterns = unmet
+  }
+
+  if (required.mysteries) {
+    const unmet: Record<string, unknown> = {}
+    for (const [key, requiredValue] of Object.entries(required.mysteries)) {
+      const current = gameState.mysteries[key as keyof typeof gameState.mysteries]
+      if (current !== requiredValue) {
+        unmet[key] = { current, required: requiredValue }
+      }
+    }
+    if (Object.keys(unmet).length) missing.mysteries = unmet
+  }
+
+  if (required.requiredCombos?.length) {
+    // requiredCombos in StateCondition refers to pattern-combos (not skills).
+    // Keep the missing list actionable for content authors.
+    const absent = required.requiredCombos.filter(comboId => !isPatternComboUnlocked(comboId, gameState.patterns))
+    if (absent.length) missing.requiredCombos = absent
+  }
+
+  return missing
 }
 
 export interface UseNarrativeNavigatorReturn {

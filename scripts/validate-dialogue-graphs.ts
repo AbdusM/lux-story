@@ -342,8 +342,18 @@ class DialogueGraphValidator {
       })
     }
 
-    // Find reachable nodes via BFS
-    this.findReachableNodes(startNodeId, nodeMap, reachableFromStart)
+    // Find reachable nodes via BFS.
+    //
+    // AAA content pipeline reality: many graphs have multiple "entry points" that are
+    // connected via system routing (Samuel hub travel, revisit mounts, etc.), not via a
+    // single linear start chain. Treat known entry nodes as additional roots so we don't
+    // drown authors in false orphan reports.
+    const extraRoots: string[] = []
+    for (const entryId of KNOWN_ENTRY_NODE_IDS) {
+      if (nodeMap.has(entryId)) extraRoots.push(entryId)
+    }
+    const roots = Array.from(new Set([startNodeId, ...extraRoots]))
+    this.findReachableNodes(roots, nodeMap, reachableFromStart)
 
     // Find orphaned nodes
     const orphanedNodes: string[] = []
@@ -383,7 +393,7 @@ class DialogueGraphValidator {
       reachableNodes: reachableFromStart.size,
       orphanedNodes: orphanedNodes.length,
       brokenReferences: this.errors.filter(e => e.graph === name && e.message.includes('points to non-existent')).length,
-      maxDepth: this.calculateMaxDepth(startNodeId, nodeMap),
+      maxDepth: this.calculateMaxDepth(roots, nodeMap),
       trustGatedNodes: nodes.filter(n => n.requiredState?.trust).length,
       flagGatedNodes: nodes.filter(n => n.requiredState?.hasGlobalFlags || n.requiredState?.hasKnowledgeFlags).length,
       fakeChoiceClusters,
@@ -705,11 +715,11 @@ class DialogueGraphValidator {
   }
 
   private findReachableNodes(
-    startNodeId: string,
+    rootNodeIds: string[],
     nodeMap: Map<string, DialogueNode>,
     reachable: Set<string>
   ): void {
-    const queue = [startNodeId]
+    const queue = [...rootNodeIds]
 
     while (queue.length > 0) {
       const nodeId = queue.shift()!
@@ -729,7 +739,7 @@ class DialogueGraphValidator {
   }
 
   private calculateMaxDepth(
-    startNodeId: string,
+    rootNodeIds: string[],
     nodeMap: Map<string, DialogueNode>,
     maxIterations = 1000
   ): number {
@@ -756,7 +766,9 @@ class DialogueGraphValidator {
       visited.delete(nodeId) // Allow revisiting for different paths
     }
 
-    dfs(startNodeId, 0)
+    for (const rootId of rootNodeIds) {
+      dfs(rootId, 0)
+    }
     return maxDepth
   }
 

@@ -50,6 +50,9 @@ jobs:
       - name: Verify requiredState guarding (no new gaps)
         run: npm run verify:required-state-guarding
 
+      - name: Verify requiredState strict navigation (no new violations)
+        run: npm run verify:required-state-strict
+
       - name: Verify character system coverage
         run: npm run verify:character-coverage
 

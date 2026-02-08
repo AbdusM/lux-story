@@ -114,6 +114,11 @@ export const mayaDialogueNodes: DialogueNode[] = [
           building: "Show me the prototype.",
           helping: "I'd love to understand what drives you.",
           patience: "Demonstrate. I'll watch."
+        },
+        consequence: {
+          characterId: 'maya',
+          trustChange: 1,
+          addKnowledgeFlags: ['knows_robotics']
         }
       },
       // Pattern unlock choices - only visible when player has built enough pattern affinity
@@ -182,9 +187,6 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    requiredState: {
-      trust: { max: 2 }
-    },
     choices: [
       {
         choiceId: 'studies_notice_deflection',
@@ -798,8 +800,7 @@ STATUS: Signal fighting itself`,
       }
     ],
     requiredState: {
-      trust: { min: 3 },
-      hasKnowledgeFlags: ['knows_anxiety'],
+      trust: { min: 1 },
       lacksKnowledgeFlags: ['knows_robotics']
     },
     choices: [
@@ -1322,12 +1323,6 @@ STATUS: Signal fighting itself`,
         altEmotion: 'curious_anxious'
       }
     ],
-    requiredState: {
-      trust: { min: 5 },
-      hasKnowledgeFlags: ['knows_robotics', 'knows_family'],
-      relationship: ['confidant'],
-      lacksGlobalFlags: ['maya_failed_robotics'] // Only available if NOT failed
-    },
     choices: [
       // Pattern-enhanced: Analytical players see problem-solving framing
       {
@@ -1975,10 +1970,6 @@ STATUS: Signal fighting itself`,
         richEffectContext: 'warning'
       }
     ],
-    requiredState: {
-      trust: { min: 4 },
-      hasKnowledgeFlags: ['knows_robotics']
-    },
     choices: [
       {
         choiceId: 'sim_help_prepare',
