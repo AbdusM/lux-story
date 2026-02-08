@@ -76,6 +76,8 @@ validation_output.txt
 *.log
 docs/qa/required-state-guarding-report.json
 docs/qa/required-state-strict-report.json
+docs/qa/unreferenced-dialogue-nodes-report.json
+docs/qa/unreachable-dialogue-nodes-report.json
 
 # Additional test artifacts
 test-results/.last-run.json

@@ -53,6 +53,12 @@ jobs:
       - name: Verify requiredState strict navigation (no new violations)
         run: npm run verify:required-state-strict
 
+      - name: Verify unreferenced dialogue nodes (no new orphans)
+        run: npm run verify:unreferenced-dialogue-nodes
+
+      - name: Verify unreachable dialogue nodes (no new unreachable)
+        run: npm run verify:unreachable-dialogue-nodes
+
       - name: Verify character system coverage
         run: npm run verify:character-coverage
 

@@ -52,6 +52,8 @@
     "verify:character-coverage": "node --import tsx scripts/verify-character-coverage.ts",
     "verify:required-state-guarding": "node --import tsx scripts/verify-required-state-guarding.ts",
     "verify:required-state-strict": "node --import tsx scripts/verify-required-state-strict.ts",
+    "verify:unreferenced-dialogue-nodes": "node --import tsx scripts/verify-unreferenced-dialogue-nodes.ts",
+    "verify:unreachable-dialogue-nodes": "node --import tsx scripts/verify-unreachable-dialogue-nodes.ts",
     "check:core-contracts": "node scripts/check-core-gameplay-contracts.js",
     "audit:core-diff": "node scripts/report-core-gameplay-diff.js",
     "verify:analytics-dict": "node --import tsx scripts/verify-analytics-dictionary.ts && node --import tsx scripts/verify-no-inmemory-analytics.ts"
