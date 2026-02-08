@@ -29,9 +29,16 @@ for (const [graphKey, graph] of graphs) {
 
 // 2. Detect duplicate nodeIds across graphs
 const warnings: string[] = []
+const expectedRevisitDuplicates: string[] = []
 for (const [nodeId, sources] of nodeSources) {
   if (sources.length > 1) {
-    warnings.push(`Duplicate nodeId '${nodeId}' found in graphs: ${sources.join(', ')}`)
+    const baseKeys = sources.map((s) => s.replace(/_revisit$/, ''))
+    const isSameBase = baseKeys.every((b) => b === baseKeys[0])
+    if (isSameBase) {
+      expectedRevisitDuplicates.push(`Duplicate nodeId '${nodeId}' found in base/revisit graphs: ${sources.join(', ')}`)
+    } else {
+      warnings.push(`Duplicate nodeId '${nodeId}' found in graphs: ${sources.join(', ')}`)
+    }
   }
 }
 
@@ -107,12 +114,21 @@ console.log('=======================')
 console.log(`Graphs scanned: ${graphs.length}`)
 console.log(`Total nodes: ${totalNodes.toLocaleString()}`)
 console.log(`Total references checked: ${totalReferences.toLocaleString()}`)
-console.log(`Errors: ${errors.length} | Warnings: ${warnings.length}`)
+console.log(`Errors: ${errors.length} | Warnings: ${warnings.length} | Expected (base/revisit) duplicates: ${expectedRevisitDuplicates.length}`)
 console.log('')
 
 if (warnings.length > 0) {
   console.log(`Warnings:`)
   for (const w of warnings) {
+    console.log(`  - ${w}`)
+  }
+  console.log('')
+}
+
+if (expectedRevisitDuplicates.length > 0) {
+  console.log(`Expected base/revisit duplicates:`)
+  console.log(`  (Common when a revisit graph duplicates certain nodes; non-blocking.)`)
+  for (const w of expectedRevisitDuplicates) {
     console.log(`  - ${w}`)
   }
   console.log('')

@@ -41,6 +41,15 @@ jobs:
       - name: Run tests
         run: npm run test:run
 
+      - name: Validate content integrity (node references)
+        run: npm run validate-content
+
+      - name: Validate dialogue graphs (warnings only)
+        run: npm run validate-graphs
+
+      - name: Verify character system coverage
+        run: npm run verify:character-coverage
+
       - name: Generate coverage matrix
         run: npm run generate-coverage-matrix
 
