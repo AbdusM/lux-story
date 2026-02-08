@@ -15,6 +15,8 @@
  */
 
 import { ConditionalChoice, DialogueNode } from '../lib/dialogue-graph'
+import fs from 'node:fs'
+import path from 'node:path'
 
 // Import all dialogue graphs
 import { samuelDialogueNodes, samuelEntryPoints } from '../content/samuel-dialogue-graph'
@@ -167,6 +169,7 @@ interface GraphStats {
   totalInterrupts: number
   reachableNodes: number
   orphanedNodes: number
+  structurallyUnreachableNodes: number
   brokenReferences: number
   maxDepth: number
   trustGatedNodes: number
@@ -342,7 +345,7 @@ class DialogueGraphValidator {
       })
     }
 
-    // Find reachable nodes via BFS.
+    // Find structurally reachable nodes via BFS.
     //
     // AAA content pipeline reality: many graphs have multiple "entry points" that are
     // connected via system routing (Samuel hub travel, revisit mounts, etc.), not via a
@@ -392,6 +395,7 @@ class DialogueGraphValidator {
       totalInterrupts,
       reachableNodes: reachableFromStart.size,
       orphanedNodes: orphanedNodes.length,
+      structurallyUnreachableNodes: Math.max(0, nodes.length - reachableFromStart.size),
       brokenReferences: this.errors.filter(e => e.graph === name && e.message.includes('points to non-existent')).length,
       maxDepth: this.calculateMaxDepth(roots, nodeMap),
       trustGatedNodes: nodes.filter(n => n.requiredState?.trust).length,
@@ -735,6 +739,17 @@ class DialogueGraphValidator {
           queue.push(choice.nextNodeId)
         }
       }
+
+      // Interrupts are also structural edges.
+      for (const content of node.content || []) {
+        const interrupt = content.interrupt
+        if (interrupt?.targetNodeId && nodeMap.has(interrupt.targetNodeId) && !reachable.has(interrupt.targetNodeId)) {
+          queue.push(interrupt.targetNodeId)
+        }
+        if (interrupt?.missedNodeId && nodeMap.has(interrupt.missedNodeId) && !reachable.has(interrupt.missedNodeId)) {
+          queue.push(interrupt.missedNodeId)
+        }
+      }
     }
   }
 
@@ -847,7 +862,7 @@ function main(): void {
     { name: 'alex', nodes: alexDialogueNodes, startNodeId: alexEntryPoints.INTRODUCTION },
     { name: 'yaquin-revisit', nodes: yaquinRevisitNodes, startNodeId: yaquinRevisitEntryPoints.WELCOME },
     { name: 'grand_hall', nodes: grandHallDialogueNodes, startNodeId: 'sector_1_hall' },
-    { name: 'market', nodes: marketDialogueNodes, startNodeId: 'sector_2_market' },
+    { name: 'market', nodes: marketDialogueNodes, startNodeId: 'market_entry_logic' },
     { name: 'deep_station', nodes: deepStationDialogueNodes, startNodeId: 'sector_3_office' },
     { name: 'grace', nodes: graceDialogueNodes, startNodeId: graceEntryPoints.INTRODUCTION },
     { name: 'grace-revisit', nodes: graceRevisitNodes, startNodeId: graceRevisitEntryPoints.WELCOME },
@@ -889,6 +904,9 @@ function main(): void {
     if (stat.orphanedNodes > 0) {
       console.log(`  ⚠️  Orphaned: ${stat.orphanedNodes}`)
     }
+    if (stat.structurallyUnreachableNodes > 0) {
+      console.log(`  ℹ️  Unreachable (structural): ${stat.structurallyUnreachableNodes}`)
+    }
     if (stat.brokenReferences > 0) {
       console.log(`  ❌ Broken refs: ${stat.brokenReferences}`)
     }
@@ -908,6 +926,10 @@ function main(): void {
 
   console.log('\n' + '─'.repeat(50))
   console.log(`TOTAL: ${totalNodes} nodes, ${totalChoices} choices, ${totalInterrupts} interrupts across ${graphs.length} graphs`)
+
+  // Make the output actionable: show baseline deltas for structural reachability and incoming references.
+  // This does not fail validation; CI gates exist as separate regression-only scripts.
+  printContentDebtDelta(graphs)
 
   // Print errors
   if (result.errors.length > 0) {
@@ -976,3 +998,134 @@ function main(): void {
 }
 
 main()
+
+type Baseline = {
+  generated_at: string
+  nodes: Array<{ graphKey: string; nodeId: string }>
+}
+
+function toBaselineGraphKey(graphName: string): string {
+  // scripts/verify-*-dialogue-nodes.ts use DIALOGUE_GRAPHS keys (`maya_revisit`), while this validator
+  // uses human-readable names (`maya-revisit`).
+  return graphName.replace(/-/g, '_')
+}
+
+function readBaselineJson(p: string): Baseline | null {
+  if (!fs.existsSync(p)) return null
+  return JSON.parse(fs.readFileSync(p, 'utf-8')) as Baseline
+}
+
+function printContentDebtDelta(graphs: { name: string; nodes: DialogueNode[]; startNodeId: string }[]): void {
+  const unrefBaselinePath = path.join(process.cwd(), 'docs/qa/unreferenced-dialogue-nodes-baseline.json')
+  const unreachableBaselinePath = path.join(process.cwd(), 'docs/qa/unreachable-dialogue-nodes-baseline.json')
+
+  const unrefBaseline = readBaselineJson(unrefBaselinePath)
+  const unreachableBaseline = readBaselineJson(unreachableBaselinePath)
+
+  if (!unrefBaseline && !unreachableBaseline) return
+
+  // Build global incoming reference set (choices + interrupts) across all loaded graphs.
+  const globalIncoming = new Set<string>()
+  for (const g of graphs) {
+    for (const node of g.nodes) {
+      for (const choice of node.choices) {
+        if (choice.nextNodeId) globalIncoming.add(choice.nextNodeId)
+      }
+      for (const content of node.content || []) {
+        const interrupt = content.interrupt
+        if (interrupt?.targetNodeId) globalIncoming.add(interrupt.targetNodeId)
+        if (interrupt?.missedNodeId) globalIncoming.add(interrupt.missedNodeId)
+      }
+    }
+  }
+
+  // Compute current unreferenced nodes.
+  const currentUnref = new Set<string>()
+  for (const g of graphs) {
+    const graphKey = toBaselineGraphKey(g.name)
+    for (const node of g.nodes) {
+      if (node.nodeId === g.startNodeId) continue
+      if (KNOWN_ENTRY_NODE_IDS.has(node.nodeId)) continue
+      if (!globalIncoming.has(node.nodeId)) {
+        currentUnref.add(`${graphKey}/${node.nodeId}`)
+      }
+    }
+  }
+
+  // Compute current unreachable nodes (structural reachability).
+  const currentUnreachable = new Set<string>()
+  for (const g of graphs) {
+    const graphKey = toBaselineGraphKey(g.name)
+    const nodeMap = new Map<string, DialogueNode>()
+    for (const n of g.nodes) nodeMap.set(n.nodeId, n)
+
+    const roots: string[] = []
+    if (nodeMap.has(g.startNodeId)) roots.push(g.startNodeId)
+    for (const entryId of KNOWN_ENTRY_NODE_IDS) {
+      if (nodeMap.has(entryId)) roots.push(entryId)
+    }
+    const uniqueRoots = Array.from(new Set(roots))
+
+    const reachable = new Set<string>()
+    // Reuse the same reachability logic as the validator: choices + interrupts.
+    const queue = [...uniqueRoots]
+    while (queue.length > 0) {
+      const nodeId = queue.shift()!
+      if (reachable.has(nodeId)) continue
+      const node = nodeMap.get(nodeId)
+      if (!node) continue
+      reachable.add(nodeId)
+
+      for (const choice of node.choices) {
+        if (nodeMap.has(choice.nextNodeId) && !reachable.has(choice.nextNodeId)) {
+          queue.push(choice.nextNodeId)
+        }
+      }
+      for (const content of node.content || []) {
+        const interrupt = content.interrupt
+        if (interrupt?.targetNodeId && nodeMap.has(interrupt.targetNodeId) && !reachable.has(interrupt.targetNodeId)) {
+          queue.push(interrupt.targetNodeId)
+        }
+        if (interrupt?.missedNodeId && nodeMap.has(interrupt.missedNodeId) && !reachable.has(interrupt.missedNodeId)) {
+          queue.push(interrupt.missedNodeId)
+        }
+      }
+    }
+
+    for (const nodeId of nodeMap.keys()) {
+      if (uniqueRoots.includes(nodeId)) continue
+      if (!reachable.has(nodeId)) currentUnreachable.add(`${graphKey}/${nodeId}`)
+    }
+  }
+
+  console.log('\n📎 Content Debt (Baseline Deltas)')
+  console.log('─'.repeat(50))
+
+  if (unrefBaseline) {
+    const baselineSet = new Set(unrefBaseline.nodes.map(n => `${n.graphKey}/${n.nodeId}`))
+    const newOnes = [...currentUnref].filter(k => !baselineSet.has(k))
+    const delta = currentUnref.size - baselineSet.size
+    console.log(`Unreferenced nodes: ${currentUnref.size} (baseline ${baselineSet.size}, delta ${delta >= 0 ? '+' : ''}${delta})`)
+    if (newOnes.length > 0) {
+      console.log(`  New since baseline: ${newOnes.length}`)
+      for (const k of newOnes.slice(0, 10)) console.log(`  - ${k}`)
+      if (newOnes.length > 10) console.log(`  ... and ${newOnes.length - 10} more`)
+    }
+  }
+
+  if (unreachableBaseline) {
+    const baselineSet = new Set(unreachableBaseline.nodes.map(n => `${n.graphKey}/${n.nodeId}`))
+    const newOnes = [...currentUnreachable].filter(k => !baselineSet.has(k))
+    const delta = currentUnreachable.size - baselineSet.size
+    console.log(`Unreachable nodes:   ${currentUnreachable.size} (baseline ${baselineSet.size}, delta ${delta >= 0 ? '+' : ''}${delta})`)
+    if (newOnes.length > 0) {
+      console.log(`  New since baseline: ${newOnes.length}`)
+      for (const k of newOnes.slice(0, 10)) console.log(`  - ${k}`)
+      if (newOnes.length > 10) console.log(`  ... and ${newOnes.length - 10} more`)
+    }
+  }
+
+  console.log('Run:')
+  console.log('  - npm run verify:unreferenced-dialogue-nodes')
+  console.log('  - npm run verify:unreachable-dialogue-nodes')
+}
