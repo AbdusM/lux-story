@@ -5,6 +5,43 @@ import { dirname, resolve } from 'node:path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
+// Local dev machines can end up with a broken global Playwright cache
+// (e.g. wrong-arch browser downloads). When set, use repo-local browsers
+// installed into `node_modules/playwright-core/.local-browsers`.
+const useLocalBrowsers = process.env.E2E_USE_LOCAL_BROWSERS === '1' || process.env.E2E_USE_LOCAL_BROWSERS === 'true'
+if (useLocalBrowsers && !process.env.PLAYWRIGHT_BROWSERS_PATH) {
+  process.env.PLAYWRIGHT_BROWSERS_PATH = '0'
+}
+
+// When browser downloads are flaky locally, allow using a system browser instead.
+// Example: `E2E_CHROMIUM_CHANNEL=chrome npm run test:e2e`.
+const chromiumChannel = (() => {
+  const value = process.env.E2E_CHROMIUM_CHANNEL
+  if (!value) return undefined
+  const allowed = new Set([
+    'chrome',
+    'chrome-beta',
+    'chrome-dev',
+    'chrome-canary',
+    'msedge',
+    'msedge-beta',
+    'msedge-dev',
+    'msedge-canary',
+  ])
+  return allowed.has(value) ? value : undefined
+})()
+const chromiumUseOverrides = chromiumChannel ? { channel: chromiumChannel } : {}
+
+// Allow forcing iOS device projects to run in Chromium when WebKit is unstable locally.
+const iosBrowser = (process.env.E2E_IOS_BROWSER === 'chromium' || process.env.E2E_IOS_BROWSER === 'webkit')
+  ? process.env.E2E_IOS_BROWSER
+  : 'webkit'
+const COMMON_LAUNCH_ARGS = [
+  '--disable-background-timer-throttling',
+  '--disable-backgrounding-occluded-windows',
+  '--disable-renderer-backgrounding',
+]
+
 /**
  * Playwright E2E Testing Configuration
  * Sprint 1.2: User flows, database integration, state persistence
@@ -51,11 +88,7 @@ export default defineConfig({
 
     // Reduce headless throttling artifacts that can cause perf + rAF-based flake.
     launchOptions: {
-      args: [
-        '--disable-background-timer-throttling',
-        '--disable-backgrounding-occluded-windows',
-        '--disable-renderer-backgrounding',
-      ],
+      args: COMMON_LAUNCH_ARGS,
     },
   },
 
@@ -79,7 +112,9 @@ export default defineConfig({
       workers: process.env.CI ? 1 : 2,
       use: {
         ...devices['Desktop Chrome'],
+        ...chromiumUseOverrides,
         headless: true,
+        launchOptions: { args: COMMON_LAUNCH_ARGS },
       },
     },
 
@@ -93,7 +128,9 @@ export default defineConfig({
       workers: 1,
       use: {
         ...devices['Desktop Chrome'],
+        ...chromiumUseOverrides,
         headless: true,
+        launchOptions: { args: COMMON_LAUNCH_ARGS },
       },
     },
     {
@@ -108,7 +145,9 @@ export default defineConfig({
       workers: 1,
       use: {
         ...devices['Desktop Chrome'],
+        ...chromiumUseOverrides,
         headless: true,
+        launchOptions: { args: COMMON_LAUNCH_ARGS },
       },
     },
     {
@@ -121,7 +160,9 @@ export default defineConfig({
       workers: 2,
       use: {
         ...devices['Desktop Chrome'],
+        ...chromiumUseOverrides,
         headless: true,
+        launchOptions: { args: COMMON_LAUNCH_ARGS },
       },
     },
     {
@@ -131,7 +172,9 @@ export default defineConfig({
       workers: 2,
       use: {
         ...devices['Desktop Chrome'],
+        ...chromiumUseOverrides,
         headless: true,
+        launchOptions: { args: COMMON_LAUNCH_ARGS },
       },
     },
     {
@@ -141,7 +184,9 @@ export default defineConfig({
       workers: 2,
       use: {
         ...devices['Desktop Chrome'],
+        ...chromiumUseOverrides,
         headless: true,
+        launchOptions: { args: COMMON_LAUNCH_ARGS },
       },
     },
     {
@@ -151,7 +196,9 @@ export default defineConfig({
       workers: 2,
       use: {
         ...devices['Desktop Chrome'],
+        ...chromiumUseOverrides,
         headless: true,
+        launchOptions: { args: COMMON_LAUNCH_ARGS },
       },
     },
     {
@@ -161,7 +208,9 @@ export default defineConfig({
       workers: 2,
       use: {
         ...devices['Desktop Chrome'],
+        ...chromiumUseOverrides,
         headless: true,
+        launchOptions: { args: COMMON_LAUNCH_ARGS },
       },
     },
     {
@@ -171,7 +220,9 @@ export default defineConfig({
       workers: 2,
       use: {
         ...devices['Desktop Chrome'],
+        ...chromiumUseOverrides,
         headless: true,
+        launchOptions: { args: COMMON_LAUNCH_ARGS },
       },
     },
     {
@@ -181,7 +232,9 @@ export default defineConfig({
       workers: 2,
       use: {
         ...devices['Desktop Chrome'],
+        ...chromiumUseOverrides,
         headless: true,
+        launchOptions: { args: COMMON_LAUNCH_ARGS },
       },
     },
     {
@@ -191,7 +244,9 @@ export default defineConfig({
       workers: 1,
       use: {
         ...devices['Desktop Chrome'],
+        ...chromiumUseOverrides,
         headless: false, // Use headed mode for visual tests
+        launchOptions: { args: COMMON_LAUNCH_ARGS },
       },
     },
 
@@ -203,7 +258,9 @@ export default defineConfig({
       workers: 2,
       use: {
         ...devices['iPhone SE'],
+        browserName: iosBrowser,
         headless: true,
+        ...(iosBrowser === 'chromium' ? chromiumUseOverrides : {}),
       },
     },
     {
@@ -213,7 +270,9 @@ export default defineConfig({
       workers: 2,
       use: {
         ...devices['iPhone 14'],
+        browserName: iosBrowser,
         headless: true,
+        ...(iosBrowser === 'chromium' ? chromiumUseOverrides : {}),
       },
     },
     {
@@ -223,7 +282,9 @@ export default defineConfig({
       workers: 2,
       use: {
         ...devices['iPhone 14 Pro Max'],
+        browserName: iosBrowser,
         headless: true,
+        ...(iosBrowser === 'chromium' ? chromiumUseOverrides : {}),
       },
     },
     {
@@ -233,7 +294,10 @@ export default defineConfig({
       workers: 2,
       use: {
         ...devices['Galaxy S21'],
+        browserName: 'chromium',
         headless: true,
+        ...chromiumUseOverrides,
+        launchOptions: { args: COMMON_LAUNCH_ARGS },
       },
     },
     {
@@ -243,7 +307,9 @@ export default defineConfig({
       workers: 2,
       use: {
         ...devices['iPad (gen 7)'],
+        browserName: iosBrowser,
         headless: true,
+        ...(iosBrowser === 'chromium' ? chromiumUseOverrides : {}),
       },
     },
 
