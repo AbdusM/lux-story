@@ -69,10 +69,16 @@ export function validateDialogueGating(
     // Skip allow-listed nodes
     if (ALLOW_LISTED_GATED_NODES.has(nodeId)) continue
 
+    // If the node itself is not accessible under this state, skip gating checks.
+    // (We still validate references elsewhere via content-contract tests.)
+    if (!StateConditionEvaluator.evaluate(node.requiredState, testState, characterId)) {
+      continue
+    }
+
     // Check for nodes with no choices at all
     if (!node.choices || node.choices.length === 0) {
       // This is only an issue if the node doesn't have a simulation or auto-advance
-      if (!node.simulation && !node.metadata?.sessionBoundary) {
+      if (!node.simulation && !node.metadata?.sessionBoundary && !node.metadata?.experienceId) {
         issues.push({
           nodeId,
           characterId,

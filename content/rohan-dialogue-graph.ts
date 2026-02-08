@@ -180,9 +180,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'rohan_understanding_response',
         pattern: 'building',
         skills: ['wisdom', 'leadership'],
-        visibleCondition: {
-          patterns: { building: { min: 3 } }
-        }
+        // This is a foundational response; keep it always visible to avoid choice deadlocks.
       },
       {
         choiceId: 'rohan_defense',
