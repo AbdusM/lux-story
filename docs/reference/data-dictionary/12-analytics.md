@@ -696,13 +696,14 @@ if (dropOffRate > 0.2) {
 ### Example 5: A/B Testing
 
 ```typescript
-import { ACTIVE_TESTS, assignVariant } from '@/lib/admin-analytics'
+import { ACTIVE_TESTS, assignVariant } from '@/lib/experiments'
 
 // Configure A/B test
 ACTIVE_TESTS['dialogue_style_test'] = {
   id: 'dialogue_style_test',
   variants: ['formal', 'casual', 'playful'],
-  weights: [0.33, 0.33, 0.34]
+  weights: [0.33, 0.33, 0.34],
+  assignment_version: 'v1'
 }
 
 // Assign variant to user

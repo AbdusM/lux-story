@@ -4,6 +4,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { ServiceWorkerProvider } from '@/components/ServiceWorkerProvider'
 import { SVGFilterProvider } from '@/lib/svg-filters'
 import { GodModeBootstrap } from '@/components/GodModeBootstrap'
+import { DevFeatureFlagsGlobal } from '@/components/DevFeatureFlagsGlobal'
 import { ToastProvider } from '@/components/ui/toast'
 // Sentry config is auto-loaded by Next.js - don't import directly
 import './globals.css'
@@ -79,6 +80,8 @@ export default function RootLayout({
         <SVGFilterProvider />
         {/* God Mode API - Development only */}
         <GodModeBootstrap />
+        {/* Feature flag console helpers - Development only */}
+        <DevFeatureFlagsGlobal />
         <ServiceWorkerProvider>
 
           <ErrorBoundary>

@@ -73,28 +73,6 @@ export function getDropOffRate(nodeId: string): number {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// D-014: A/B TESTING FRAMEWORK
-// ═══════════════════════════════════════════════════════════════════════════
-
-export interface ABTest {
-    id: string
-    variants: string[]
-    weights?: number[] // Defaults to equal split
-}
-
-export const ACTIVE_TESTS: Record<string, ABTest> = {}
-
-export function assignVariant(testId: string, userId: string): string {
-    const test = ACTIVE_TESTS[testId]
-    if (!test) return 'control'
-
-    // Simple deterministic hash assignment
-    const hash = userId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
-    const index = hash % test.variants.length
-    return test.variants[index]
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
 // D-015: COHORT ANALYSIS
 // ═══════════════════════════════════════════════════════════════════════════
 
