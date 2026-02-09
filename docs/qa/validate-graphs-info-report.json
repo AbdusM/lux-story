@@ -1,0 +1,15 @@
+{
+  "generated_at": "2026-02-09T19:58:51.011Z",
+  "duration_ms": 443,
+  "baseline": {
+    "generated_at": "2026-02-09T19:58:25.901Z",
+    "info_items": 50,
+    "notes": "Baseline for validate-graphs info item ratchet (fail only on regressions)."
+  },
+  "current": {
+    "info_items": 50
+  },
+  "delta": {
+    "info_items": 0
+  }
+}
