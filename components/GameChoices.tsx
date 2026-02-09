@@ -132,6 +132,10 @@ interface Choice {
   feedback?: 'shake' | 'glow' | 'pulse'
   /** Pivotal choice - triggers marquee effect */
   pivotal?: boolean
+  /** Logic gate: visible but not enabled (disabled) */
+  enabled?: boolean
+  /** Human-readable reason from StateConditionEvaluator when disabled */
+  disabledReason?: string | null
   /** Orb fill requirement - choice is locked until met (KOTOR-style) */
   requiredOrbFill?: OrbRequirement
   /** ISP: Narrative Gravity Weight */ // Added missing property documentation
@@ -500,6 +504,46 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
     )
   }
 
+  const isDisabled = choice.enabled === false
+  if (isDisabled) {
+    return (
+      <div className="w-full">
+        <motion.div
+          variants={combinedVariants}
+          custom={index}
+          className="w-full"
+          data-choice-index={index}
+        >
+          <Button
+            type="button"
+            disabled={true}
+            variant={glass ? "glass" : "outline"}
+            data-testid="choice-button-disabled"
+            aria-label={`Disabled choice: ${choice.text}. ${choice.disabledReason || ''}`.trim()}
+            className={cn(
+              "w-full min-h-[60px] h-auto px-5 py-4",
+              "text-base sm:text-[15px] font-medium text-left justify-start",
+              "break-words whitespace-normal leading-relaxed",
+              "rounded-[14px] touch-manipulation select-none",
+              glass ? "text-slate-400" : "text-stone-400",
+              "opacity-70 cursor-not-allowed",
+            )}
+            title={choice.disabledReason || undefined}
+          >
+            <div className="flex flex-col gap-1 w-full">
+              <span className="flex-1 line-clamp-4">{choice.text}</span>
+              {choice.disabledReason && (
+                <span className={cn("text-xs", glass ? "text-slate-400" : "text-stone-500")}>
+                  Unavailable: {choice.disabledReason}
+                </span>
+              )}
+            </div>
+          </Button>
+        </motion.div>
+      </div>
+    )
+  }
+
   return (
     <div className="w-full">
       <motion.div
@@ -774,8 +818,11 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
             pattern: c.pattern || null,
             gravity_weight: c.gravity?.weight ?? null,
             gravity_effect: c.gravity?.effect ?? null,
+            is_enabled: c.enabled !== false,
             is_locked: isLocked,
             lock_reason: isLocked ? 'NEEDS_ORB_FILL' : null,
+            disabled_reason_code: c.enabled === false ? 'DISABLED_BY_CONDITION' : null,
+            disabled_reason: c.enabled === false ? (c.disabledReason || null) : null,
             required_orb_fill: c.requiredOrbFill || null,
           }
         })
@@ -818,6 +865,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
 
   const handleChoiceWithTelemetry = useCallback((choice: Choice) => {
     if (isProcessing || isCommitting) return
+    if (choice.enabled === false) return
     logChoiceSelectedUi(choice)
     handleChoiceWithAnimation(choice)
   }, [handleChoiceWithAnimation, logChoiceSelectedUi, isProcessing, isCommitting])

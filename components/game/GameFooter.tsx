@@ -103,6 +103,8 @@ export function GameFooter({
                         gravity: c.gravity,
                         feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
                         pivotal: isNodePivotal,
+                        enabled: c.enabled,
+                        disabledReason: c.reason || null,
                         requiredOrbFill: c.choice.requiredOrbFill,
                         next: String(originalIndex)
                       }

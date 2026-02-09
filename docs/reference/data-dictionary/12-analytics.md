@@ -519,7 +519,11 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
     - `pattern`: string|null
     - `gravity_weight`: number|null
     - `gravity_effect`: string|null
+    - `is_enabled`: boolean
     - `is_locked`: boolean
+    - `lock_reason`: string|null (e.g. `NEEDS_ORB_FILL`)
+    - `disabled_reason_code`: string|null (e.g. `DISABLED_BY_CONDITION`)
+    - `disabled_reason`: string|null (human hint)
 
 **`choice_selected_ui`** (what was clicked, at what index, how fast)
 - Emitted by: `components/GameChoices.tsx`
