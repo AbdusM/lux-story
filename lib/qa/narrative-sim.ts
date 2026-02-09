@@ -20,12 +20,17 @@ import { StateConditionEvaluator } from '../dialogue-graph'
 import type { GameState } from '../character-state'
 import type { StateChange } from '../character-state'
 import { GameStateUtils } from '../character-state'
+import { createBaselineEarlyGameV1State } from './baseline-states'
 
 const VIRTUAL_NODE_IDS = new Set(['TRAVEL_PENDING', 'SIMULATION_PENDING', 'LOYALTY_PENDING'])
 
 export type TraceStep = { nodeId: string; choiceId: string; nextNodeId: string }
 
-export type SimFailureKind = 'missing_start' | 'soft_deadlock' | 'hard_dead_end'
+export type SimFailureKind =
+  | 'missing_start'
+  | 'soft_deadlock'
+  | 'hard_dead_end'
+  | 'critical_path_required_state_mismatch'
 
 export type SimFailure = {
   graphKey: string
@@ -156,7 +161,7 @@ function simulateGraph(
     }
   }
 
-  const state = GameStateUtils.createNewGameState('narrative-sim-enum')
+  const state = createBaselineEarlyGameV1State()
   ensureRevisitEntryState(graphKey, startNode, state)
 
   type QItem = { nodeId: string; state: GameState; trace: TraceStep[]; steps: number }
@@ -181,6 +186,15 @@ function simulateGraph(
 
     if (!StateConditionEvaluator.evaluate(node.requiredState, item.state, baseCharId, item.state.skillLevels)) {
       requiredStateMismatches.push(node.nodeId)
+      if (node.metadata?.criticalPath) {
+        failures.push({
+          graphKey,
+          nodeId: node.nodeId,
+          kind: 'critical_path_required_state_mismatch',
+          trace: item.trace,
+        })
+        break
+      }
       continue
     }
 

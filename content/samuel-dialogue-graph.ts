@@ -1912,17 +1912,20 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
   // ============= HUB ROUTER (Auto-route) =============
   // Single entry point for hub navigation across game phases.
   // Tagged `router` so the UI auto-advances when exactly one route is available.
-  {
-    nodeId: 'samuel_hub_router',
-    speaker: 'Samuel Washington',
-    content: [
+	  {
+	    nodeId: 'samuel_hub_router',
+	    speaker: 'Samuel Washington',
+	    content: [
       {
         text: '...',
         emotion: 'neutral',
         variation_id: 'hub_router_v1'
       }
-    ],
-    choices: [
+	    ],
+	    metadata: {
+	      criticalPath: true
+	    },
+	    choices: [
       // If Maya is complete but Devon isn't, route to the Maya hub variant.
       {
         choiceId: 'route_to_hub_after_maya',
@@ -1984,14 +1987,14 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         }
       }
     ],
-    tags: ['hub', 'router']
-  },
+	    tags: ['hub', 'router']
+	  },
 
   // ============= HUB: INITIAL (Conversational 3-step character routing) =============
   // Step 1: Broad category selection (3 choices - best practice compliant)
-  {
-    nodeId: 'samuel_hub_initial',
-    speaker: 'Samuel Washington',
+	  {
+	    nodeId: 'samuel_hub_initial',
+	    speaker: 'Samuel Washington',
     content: [
       {
         text: "{{knows_backstory:Like I was sayin', I spent years buildin' other people's systems. These folks here? They're tryin' to build their own.|{{trust>2:Good to see you gettin' comfortable.|Got a few travelers tonight. Each one at their own crossroads.}}}}\n\nSomebody here you should meet. But first - what's pullin' at you?",
@@ -2020,10 +2023,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         ]
       }
     ],
-    requiredState: {
-      lacksGlobalFlags: ['met_maya', 'met_devon', 'met_jordan']
-    },
-    choices: [
+	    requiredState: {
+	      lacksGlobalFlags: ['met_maya', 'met_devon', 'met_jordan']
+	    },
+	    metadata: {
+	      criticalPath: true
+	    },
+	    choices: [
       {
         choiceId: 'hub_category_heart',
         text: "I want to help people, but I'm not sure how.",
@@ -7940,9 +7946,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
   },
 
   // Grace Placeholder (Temporary)
-  {
-    nodeId: 'grace_revisit_welcome',
-    speaker: 'System',
+	  {
+	    nodeId: 'grace_revisit_welcome',
+	    speaker: 'System',
     content: [
       {
         text: "[Grace's content is currently under construction. Please check back later.]",
@@ -7950,15 +7956,16 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         variation_id: 'grace_placeholder'
       }
     ],
-    choices: [
-      {
-        choiceId: 'grace_placeholder_return',
-        text: "Return to Station",
-        nextNodeId: 'samuel_hub_initial'
-        // Removed invalid pattern: 'neutral'
-      }
-    ]
-  },
+	    choices: [
+	      {
+	        choiceId: 'grace_placeholder_return',
+	        text: "Return to Station",
+	        // Route through the hub router so the correct hub variant is selected for the current state.
+	        nextNodeId: 'samuel_hub_router'
+	        // Removed invalid pattern: 'neutral'
+	      }
+	    ]
+	  },
 
   // ============= PATTERN MILESTONE GREETINGS =============
   // Samuel greets returning players differently based on pattern progress
@@ -8370,16 +8377,17 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           }
         }
       },
-      {
-        choiceId: 'ctx_meet_someone',
-        text: "I'd like to meet someone new.",
-        nextNodeId: 'samuel_hub_initial',
-        pattern: 'exploring',
-        skills: ['communication']
-      }
-    ],
-    tags: ['hub', 'contextual']
-  },
+	      {
+	        choiceId: 'ctx_meet_someone',
+	        text: "I'd like to meet someone new.",
+	        // Route through the hub router so the correct hub variant is selected for the current state.
+	        nextNodeId: 'samuel_hub_router',
+	        pattern: 'exploring',
+	        skills: ['communication']
+	      }
+	    ],
+	    tags: ['hub', 'contextual']
+	  },
 
   // Deep station explanation (unlocked via contextual hub)
   {

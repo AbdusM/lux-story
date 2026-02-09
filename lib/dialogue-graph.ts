@@ -71,6 +71,13 @@ export interface DialogueNode {
   metadata?: {
     sessionBoundary?: boolean
     experienceId?: string
+    /**
+     * Critical-path nodes are expected to always have at least one visible+enabled
+     * choice under the baseline early-game fixture (or they hard-fail in CI).
+     *
+     * Use sparingly: entry points, early hubs, and "must not deadlock" seams.
+     */
+    criticalPath?: boolean
   }
 
   /**
