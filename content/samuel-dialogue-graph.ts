@@ -104,7 +104,7 @@ function makeSamuelContextualHubChoices(idPrefix: string): ConditionalChoice[] {
     {
       choiceId: id('meet_someone'),
       text: "I'd like to meet someone new.",
-      nextNodeId: 'samuel_hub_initial',
+      nextNodeId: 'samuel_hub_router',
       pattern: 'exploring',
       skills: ['communication']
     }
@@ -2102,7 +2102,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub_alive',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -2122,7 +2122,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub_accept',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -2142,7 +2142,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -2599,6 +2599,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
         choiceId: 'ask_about_letters',
         text: "The letters... do you send them?",
         nextNodeId: 'samuel_letter_system',
+        visibleCondition: {
+          trust: { min: 5 }
+        },
         pattern: 'analytical',
         skills: ['criticalThinking'],
         consequence: {
@@ -2637,6 +2640,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
         choiceId: 'ask_about_letters_from_daughter_after_courage',
         text: "And the letters people receive... you send those?",
         nextNodeId: 'samuel_letter_system',
+        visibleCondition: {
+          trust: { min: 5 }
+        },
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication']
       }
@@ -2676,6 +2682,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
         choiceId: 'ask_about_letters_from_daughter_after_question',
         text: "And the letters people receive... you send those?",
         nextNodeId: 'samuel_letter_system',
+        visibleCondition: {
+          trust: { min: 5 }
+        },
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication']
       }
@@ -2715,6 +2724,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
         choiceId: 'ask_about_letters_from_daughter',
         text: "And the letters people receive... you send those?",
         nextNodeId: 'samuel_letter_system',
+        visibleCondition: {
+          trust: { min: 5 }
+        },
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication']
       }
@@ -3110,7 +3122,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'orb_to_hub',
         text: "[Continue]",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ],
@@ -3120,6 +3132,84 @@ OBSERVATION: He looks tired. Scared. Different.`,
       }
     ],
     tags: ['orb_introduction', 'tutorial']
+  },
+
+  // ============= HUB ROUTER (Auto-route) =============
+  // Single entry point for hub navigation across game phases.
+  // Tagged `router` so the UI auto-advances when exactly one route is available.
+  {
+    nodeId: 'samuel_hub_router',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: '...',
+        emotion: 'neutral',
+        variation_id: 'hub_router_v1'
+      }
+    ],
+    choices: [
+      // If Maya is complete but Devon isn't, route to the Maya hub variant.
+      {
+        choiceId: 'route_to_hub_after_maya',
+        text: '[Continue]',
+        nextNodeId: 'samuel_hub_after_maya',
+        visibleCondition: {
+          hasGlobalFlags: ['maya_arc_complete'],
+          lacksGlobalFlags: ['devon_arc_complete']
+        }
+      },
+
+      // Brand-new player: before meeting Maya/Devon/Jordan, use the initial hub.
+      {
+        choiceId: 'route_to_hub_initial',
+        text: '[Continue]',
+        nextNodeId: 'samuel_hub_initial',
+        visibleCondition: {
+          lacksGlobalFlags: ['met_maya', 'met_devon', 'met_jordan']
+        }
+      },
+
+      // Once Devon is complete, the Devon hub is the universal return point.
+      {
+        choiceId: 'route_to_hub_after_devon_complete',
+        text: '[Continue]',
+        nextNodeId: 'samuel_hub_after_devon',
+        visibleCondition: {
+          hasGlobalFlags: ['devon_arc_complete']
+        }
+      },
+
+      // Fallback: if the player has met at least one core traveler, use the Devon hub.
+      // We implement priority without OR by making these mutually exclusive.
+      {
+        choiceId: 'route_to_hub_after_devon_maya',
+        text: '[Continue]',
+        nextNodeId: 'samuel_hub_after_devon',
+        visibleCondition: {
+          hasGlobalFlags: ['met_maya'],
+          lacksGlobalFlags: ['maya_arc_complete', 'devon_arc_complete']
+        }
+      },
+      {
+        choiceId: 'route_to_hub_after_devon_devon',
+        text: '[Continue]',
+        nextNodeId: 'samuel_hub_after_devon',
+        visibleCondition: {
+          hasGlobalFlags: ['met_devon'],
+          lacksGlobalFlags: ['met_maya', 'maya_arc_complete', 'devon_arc_complete']
+        }
+      },
+      {
+        choiceId: 'route_to_hub_after_devon_jordan',
+        text: '[Continue]',
+        nextNodeId: 'samuel_hub_after_devon',
+        visibleCondition: {
+          hasGlobalFlags: ['met_jordan'],
+          lacksGlobalFlags: ['met_maya', 'met_devon', 'maya_arc_complete', 'devon_arc_complete']
+        }
+      }
+    ],
+    tags: ['hub', 'router']
   },
 
   // ============= HUB: INITIAL (Conversational 3-step character routing) =============
@@ -3227,7 +3317,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'hub_heart_other',
         text: "[Consider other paths]",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -3327,7 +3417,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'hub_fallback_explore',
         text: "I'll look around.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]
@@ -3985,7 +4075,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
     ],
     requiredState: {
       hasGlobalFlags: ['maya_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_maya']
+      lacksGlobalFlags: ['reflected_on_maya']
     },
     choices: [
       {
@@ -4014,6 +4104,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_maya']
+      },
+      {
+        addGlobalFlags: ['reflected_on_maya']
       }
     ]
   },
@@ -4140,7 +4233,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -4216,7 +4309,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -4337,7 +4430,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -4398,7 +4491,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -4488,7 +4581,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'ready_for_next',
         text: "I'm ready to meet someone else.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring',
         skills: ['communication', 'collaboration']
       },
@@ -4564,7 +4657,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'ready_now',
         text: "I think I'm ready for the next platform.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring',
         skills: ["communication", "criticalThinking"]
       }
@@ -4614,7 +4707,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -4657,7 +4750,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -4676,7 +4769,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
     ],
     requiredState: {
       hasGlobalFlags: ['yaquin_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_yaquin']
+      lacksGlobalFlags: ['reflected_on_yaquin']
     },
     choices: [
       {
@@ -4715,6 +4808,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_yaquin']
+      },
+      {
+        addGlobalFlags: ['reflected_on_yaquin']
       }
     ]
   },
@@ -4812,7 +4908,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
     ],
     requiredState: {
       hasGlobalFlags: ['kai_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_kai']
+      lacksGlobalFlags: ['reflected_on_kai']
     },
     choices: [
       {
@@ -4841,6 +4937,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_kai']
+      },
+      {
+        addGlobalFlags: ['reflected_on_kai']
       }
     ]
   },
@@ -4898,7 +4997,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
     ],
     requiredState: {
       hasGlobalFlags: ['rohan_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_rohan']
+      lacksGlobalFlags: ['reflected_on_rohan']
     },
     choices: [
       {
@@ -4913,6 +5012,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_rohan']
+      },
+      {
+        addGlobalFlags: ['reflected_on_rohan']
       }
     ]
   },
@@ -4970,7 +5072,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
     ],
     requiredState: {
       hasGlobalFlags: ['silas_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_silas']
+      lacksGlobalFlags: ['reflected_on_silas']
     },
     choices: [
       {
@@ -4985,6 +5087,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_silas']
+      },
+      {
+        addGlobalFlags: ['reflected_on_silas']
       }
     ]
   },
@@ -5042,7 +5147,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
     ],
     requiredState: {
       hasGlobalFlags: ['alex_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_alex']
+      lacksGlobalFlags: ['reflected_on_alex']
     },
     choices: [
       {
@@ -5057,6 +5162,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_alex']
+      },
+      {
+        addGlobalFlags: ['reflected_on_alex']
       }
     ]
   },
@@ -5114,7 +5222,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
     ],
     requiredState: {
       hasGlobalFlags: ['elena_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_elena']
+      lacksGlobalFlags: ['reflected_on_elena']
     },
     choices: [
       {
@@ -5129,6 +5237,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_elena']
+      },
+      {
+        addGlobalFlags: ['reflected_on_elena']
       }
     ]
   },
@@ -5186,7 +5297,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
     ],
     requiredState: {
       hasGlobalFlags: ['grace_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_grace']
+      lacksGlobalFlags: ['reflected_on_grace']
     },
     choices: [
       {
@@ -5201,6 +5312,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_grace']
+      },
+      {
+        addGlobalFlags: ['reflected_on_grace']
       }
     ]
   },
@@ -5316,7 +5430,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -5360,7 +5474,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -5401,7 +5515,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]
@@ -5446,7 +5560,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -5491,7 +5605,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -5557,7 +5671,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -5598,7 +5712,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -5618,7 +5732,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -5659,7 +5773,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -5704,7 +5818,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -5755,7 +5869,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
     ],
     requiredState: {
       hasGlobalFlags: ['devon_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_devon']
+      lacksGlobalFlags: ['reflected_on_devon']
     },
     choices: [
       {
@@ -5784,6 +5898,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_devon']
+      },
+      {
+        addGlobalFlags: ['reflected_on_devon']
       }
     ]
   },
@@ -6070,7 +6187,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
     ],
     requiredState: {
       hasGlobalFlags: ['marcus_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_marcus']
+      lacksGlobalFlags: ['reflected_on_marcus']
     },
     choices: [
       {
@@ -6092,6 +6209,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_marcus']
+      },
+      {
+        addGlobalFlags: ['reflected_on_marcus']
       }
     ]
   },
@@ -6182,7 +6302,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
     ],
     requiredState: {
       hasGlobalFlags: ['tess_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_tess']
+      lacksGlobalFlags: ['reflected_on_tess']
     },
     choices: [
       {
@@ -6210,6 +6330,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_tess']
+      },
+      {
+        addGlobalFlags: ['reflected_on_tess']
       }
     ]
   },
@@ -6339,7 +6462,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
     ],
     requiredState: {
       hasGlobalFlags: ['jordan_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_jordan']
+      lacksGlobalFlags: ['reflected_on_jordan']
     },
     choices: [
       {
@@ -6368,6 +6491,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_jordan']
+      },
+      {
+        addGlobalFlags: ['reflected_on_jordan']
       }
     ]
   },
@@ -6793,7 +6919,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'close_messages',
         text: "Close messages",
-        nextNodeId: 'samuel_hub_initial'
+        nextNodeId: 'samuel_hub_router'
       }
     ],
     tags: ['system', 'messaging']
@@ -6975,7 +7101,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -7022,7 +7148,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]
@@ -7093,7 +7219,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -7558,7 +7684,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'comprehensive_back',
         text: "Actually, let me think about it.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience',
         skills: ['communication']
       }
@@ -7869,7 +7995,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -7911,7 +8037,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8116,7 +8242,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8230,7 +8356,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8344,7 +8470,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8458,7 +8584,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8559,7 +8685,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8635,7 +8761,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8676,7 +8802,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8752,7 +8878,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8793,7 +8919,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8863,7 +8989,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'exploring_continue',
         text: "That's... a lot to think about.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience',
         skills: ['communication']
       }
@@ -8906,7 +9032,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8982,7 +9108,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -9023,7 +9149,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -9511,7 +9637,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'insight_what_next_analytical',
         text: "What do I do with that knowledge?",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'building'
       },
       {
@@ -9538,7 +9664,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'insight_what_next_helping',
         text: "What do I do with that knowledge?",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'building'
       },
       {
@@ -9565,7 +9691,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'insight_what_next_building',
         text: "What do I do with that knowledge?",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'building'
       },
       {
@@ -9624,7 +9750,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'insight_what_next',
         text: "What do I do with that knowledge?",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'building'
       },
       {
@@ -9773,7 +9899,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'samuel_platform_drop',
         text: "Okay. Just asking.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience',
         consequence: {
           characterId: 'samuel',
@@ -9809,7 +9935,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -9840,7 +9966,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -9898,7 +10024,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -9931,7 +10057,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -9963,7 +10089,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -9995,7 +10121,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -10016,7 +10142,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -10037,7 +10163,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -10058,7 +10184,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -10610,7 +10736,7 @@ OBSERVATION: He looks tired. Scared. Different.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -10661,8 +10787,8 @@ export const samuelEntryPoints = {
   /** Samuel's introduction - after stepping onto platform */
   INTRODUCTION: 'samuel_introduction',
 
-  /** Hub shown when player first arrives (only Maya available) */
-  HUB_INITIAL: 'samuel_hub_initial',
+  /** Hub router entry point (auto-routes to the correct hub variant) */
+  HUB_INITIAL: 'samuel_hub_router',
 
   /** Reflection gateway - first return from Maya (mirrors player's influence) */
   MAYA_REFLECTION_GATEWAY: 'samuel_maya_reflection_gateway',

@@ -91,7 +91,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_main',
         text: '"I\'ll remember that"',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience',
         skills: ['emotionalIntelligence']
       }
@@ -121,7 +121,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_main_2',
         text: '"I\'ll think about it"',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience',
         skills: ['emotionalIntelligence']
       }
@@ -142,7 +142,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_main_3',
         text: '"That makes sense"',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'analytical',
         skills: ['criticalThinking']
       }
@@ -216,7 +216,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_main_4',
         text: '"Thank you, Samuel"',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience',
         skills: ['emotionalIntelligence']
       }
@@ -246,7 +246,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_main_5',
         text: '"I\'ll work on that"',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience',
         skills: ['emotionalIntelligence']
       }
@@ -267,7 +267,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_main_6',
         text: '"I never thought of it that way"',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience',
         skills: ['emotionalIntelligence']
       }
@@ -341,7 +341,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_main_7',
         text: '"I will"',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring',
         skills: ['adaptability']
       }
@@ -371,7 +371,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_main_8',
         text: '"That\'s a strange thought"',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'analytical',
         skills: ['criticalThinking']
       }
@@ -392,7 +392,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_main_9',
         text: '"I didn\'t realize I was doing that"',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring',
         skills: ['adaptability']
       }
@@ -466,7 +466,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_main_10',
         text: '"I\'ll remember that"',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
       }
@@ -496,7 +496,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_main_11',
         text: '"How do I know the difference?"',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'analytical',
         skills: ['criticalThinking']
       }
@@ -517,7 +517,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_main_12',
         text: '"I never thought about it like that"',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
       }
@@ -591,7 +591,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_main_13',
         text: '"I will"',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'building',
         skills: ['creativity']
       }
@@ -621,7 +621,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_main_14',
         text: '"That helps"',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience',
         skills: ['emotionalIntelligence']
       }
@@ -642,7 +642,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       {
         choiceId: 'return_to_samuel_main_15',
         text: '"I like that way of thinking"',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'building',
         skills: ['creativity']
       }

@@ -262,7 +262,7 @@ test.describe('Knowledge Flag System', () => {
       // Count visible choices
       const choiceCount = await choices.count()
 
-      // Should still have choices (AUTO-FALLBACK ensures at least some are visible)
+      // Should still have choices (deadlock recovery ensures an escape hatch if gating misconfigures)
       // But conditional choices requiring specific flags should be hidden
       expect(choiceCount).toBeGreaterThan(0)
     }

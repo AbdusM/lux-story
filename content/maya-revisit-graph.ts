@@ -17,7 +17,8 @@ import { buildDialogueNodesMap } from './drafts/draft-filter'
  * samuel-dialogue-graph.ts imports maya-revisit-graph.ts
  * If we import back, we create a cycle
  */
-const SAMUEL_HUB_AFTER_MAYA = 'samuel_hub_after_maya'
+// Avoid circular dependency by using the stable Samuel hub router entrypoint.
+const SAMUEL_HUB_ROUTER = 'samuel_hub_router'
 
 export const mayaRevisitNodes: DialogueNode[] = [
   // ============= WELCOME BACK (Entry Point) =============
@@ -262,7 +263,7 @@ You asked me what I wanted, and I didn't have an answer then. Now I'm actually l
       {
         choiceId: 'return_to_samuel_after_revisit',
         text: "Return to Samuel",
-        nextNodeId: SAMUEL_HUB_AFTER_MAYA, // Avoids circular dependency ✅
+        nextNodeId: SAMUEL_HUB_ROUTER,
         pattern: 'exploring'
       },
       {
@@ -348,7 +349,7 @@ You asked me what I wanted, and I didn't have an answer then. Now I'm actually l
       {
         choiceId: 'loyalty_declined_farewell',
         text: "Go show them who you are.",
-        nextNodeId: SAMUEL_HUB_AFTER_MAYA,
+        nextNodeId: SAMUEL_HUB_ROUTER,
         pattern: 'patience'
       }
     ],

@@ -6,6 +6,7 @@ export const INTERACTION_EVENT_TYPES = [
   'choice_selected_result',
   'node_entered',
   'experiment_assigned',
+  'deadlock_recovery_injected',
 ] as const
 
 export type InteractionEventType = (typeof INTERACTION_EVENT_TYPES)[number]
@@ -27,6 +28,8 @@ const ChoicePresentedPayloadSchema = z.object({
     pattern: z.string().nullable().optional(),
     gravity_weight: z.number().finite().nullable().optional(),
     gravity_effect: z.string().nullable().optional(),
+    is_enabled: z.boolean().optional(),
+    disabled_reason: z.string().nullable().optional(),
     is_locked: z.boolean().optional(),
     lock_reason: z.string().nullable().optional(),
     required_orb_fill: z.unknown().nullable().optional(),
@@ -64,12 +67,23 @@ const ExperimentAssignedPayloadSchema = z.object({
   assignment_version: z.string().min(1),
 }).passthrough()
 
+const DeadlockRecoveryInjectedPayloadSchema = z.object({
+  event_id: z.string().min(1),
+  injected_at_ms: z.number().finite(),
+  // Optional link back to `choice_presented.payload.event_id`.
+  presented_event_id: z.string().min(1).nullable().optional(),
+  recovery_choice_id: z.string().min(1),
+  presented_choices_total: z.number().int().optional(),
+  non_recovery_choices_total: z.number().int().optional(),
+}).passthrough()
+
 const InteractionEventPayloadSchemas: Record<InteractionEventType, z.ZodTypeAny> = {
   choice_presented: ChoicePresentedPayloadSchema,
   choice_selected_ui: ChoiceSelectedUiPayloadSchema,
   choice_selected_result: ChoiceSelectedResultPayloadSchema,
   node_entered: NodeEnteredPayloadSchema,
   experiment_assigned: ExperimentAssignedPayloadSchema,
+  deadlock_recovery_injected: DeadlockRecoveryInjectedPayloadSchema,
 }
 
 export function validateInteractionEventPayload(eventType: string, payload: unknown): string[] {

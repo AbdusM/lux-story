@@ -1355,6 +1355,9 @@ const nodes: DialogueNode[] = [
         nextNodeId: 'elena_meta_reflection',
         pattern: 'analytical',
         skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          trust: { min: 4 }
+        },
         consequence: {
           characterId: 'elena',
           trustChange: 1
@@ -1483,7 +1486,10 @@ const nodes: DialogueNode[] = [
         text: "Maybe both are true. I chose, and the station made sure my choice led here.",
         nextNodeId: 'elena_meta_reflection',
         pattern: 'patience',
-        skills: ['criticalThinking']
+        skills: ['criticalThinking'],
+        visibleCondition: {
+          trust: { min: 5 }
+        }
       }
     ]
   },
@@ -1546,7 +1552,10 @@ const nodes: DialogueNode[] = [
         choiceId: 'continue_observation',
         text: "(Continue)",
         nextNodeId: 'elena_meta_reflection',
-        pattern: 'patience'
+        pattern: 'patience',
+        visibleCondition: {
+          trust: { min: 5 }
+        }
       }
     ]
   },
@@ -1565,7 +1574,10 @@ const nodes: DialogueNode[] = [
         text: "I can live with that complexity.",
         nextNodeId: 'elena_meta_reflection',
         pattern: 'patience',
-        skills: ['adaptability']
+        skills: ['adaptability'],
+        visibleCondition: {
+          trust: { min: 5 }
+        }
       }
     ]
   },
@@ -1584,7 +1596,10 @@ const nodes: DialogueNode[] = [
         text: "Guidance and manipulation aren't always opposites.",
         nextNodeId: 'elena_meta_reflection',
         pattern: 'analytical',
-        skills: ['criticalThinking']
+        skills: ['criticalThinking'],
+        visibleCondition: {
+          trust: { min: 5 }
+        }
       }
     ]
   },
@@ -1603,7 +1618,10 @@ const nodes: DialogueNode[] = [
         text: "Maybe it's about knowing when to analyze and when to trust.",
         nextNodeId: 'elena_meta_reflection',
         pattern: 'patience',
-        skills: ['emotionalIntelligence']
+        skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          trust: { min: 5 }
+        }
       }
     ]
   },
@@ -1622,7 +1640,10 @@ const nodes: DialogueNode[] = [
         text: "Walls are just patterns you haven't decoded yet.",
         nextNodeId: 'elena_meta_reflection',
         pattern: 'building',
-        skills: ['problemSolving']
+        skills: ['problemSolving'],
+        visibleCondition: {
+          trust: { min: 5 }
+        }
       }
     ]
   },
@@ -2198,7 +2219,7 @@ const nodes: DialogueNode[] = [
       {
         choiceId: 'return_to_hub',
         text: "I'll be back. Stay sharp.",
-        nextNodeId: samuelEntryPoints.ELENA_REFLECTION_GATEWAY,
+        nextNodeId: samuelEntryPoints.HUB_INITIAL,
         pattern: 'building',
         consequence: {
           addGlobalFlags: ['elena_arc_progress']
@@ -2458,6 +2479,10 @@ const nodes: DialogueNode[] = [
         choiceId: 'return_to_samuel',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.ELENA_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['elena_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_elena']
+        },
         pattern: 'exploring'
       },
       // Loyalty Experience trigger - only visible at high trust + analytical pattern
@@ -2542,6 +2567,10 @@ const nodes: DialogueNode[] = [
         choiceId: 'loyalty_declined_farewell',
         text: "The pattern is there. You'll find the truth.",
         nextNodeId: samuelEntryPoints.ELENA_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['elena_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_elena']
+        },
         pattern: 'patience'
       }
     ],

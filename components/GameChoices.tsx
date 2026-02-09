@@ -127,6 +127,13 @@ interface Choice {
   next?: string
   consequence?: string
   pattern?: PatternType // Used for grouping - type-safe patterns only
+  /**
+   * Condition gating (non-orb): if false, choice should render as disabled and be non-selectable.
+   * This prevents "silent no-op" clicks and keeps telemetry honest.
+   */
+  enabled?: boolean
+  /** Optional human-readable reason why the choice is disabled (enabled=false). */
+  disabledReason?: string
   /** Visual feedback type */
   feedback?: 'shake' | 'glow' | 'pulse'
   /** Pivotal choice - triggers marquee effect */
@@ -175,7 +182,8 @@ interface GameChoicesProps {
 function useKeyboardNavigation(
   choices: Choice[],
   isProcessing: boolean,
-  onChoice: (choice: Choice) => void
+  onChoice: (choice: Choice) => void,
+  canSelectChoice: (choice: Choice) => boolean,
 ) {
   const [focusedIndex, setFocusedIndex] = useState(-1)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -193,7 +201,8 @@ function useKeyboardNavigation(
       const index = parseInt(e.key) - 1
       if (index < choices.length) {
         e.preventDefault()
-        onChoice(choices[index])
+        const choice = choices[index]
+        if (choice && canSelectChoice(choice)) onChoice(choice)
       }
       return
     }
@@ -219,14 +228,15 @@ function useKeyboardNavigation(
       case ' ':
         if (focusedIndex >= 0 && focusedIndex < choices.length) {
           e.preventDefault()
-          onChoice(choices[focusedIndex])
+          const choice = choices[focusedIndex]
+          if (choice && canSelectChoice(choice)) onChoice(choice)
         }
         break
       case 'Escape':
         setFocusedIndex(-1)
         break
     }
-  }, [choices, focusedIndex, isProcessing, onChoice])
+  }, [choices, focusedIndex, isProcessing, onChoice, canSelectChoice])
 
   // Attach keyboard listener
   useEffect(() => {
@@ -390,6 +400,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
   const choiceId = choice.id || choice.text
   const isSelectedForAnimation = selectedChoiceId === choiceId
   const isOtherDuringAnimation = selectedChoiceId && !isSelectedForAnimation
+  const isDisabledByCondition = choice.enabled === false
 
   // Determine which animation state to use
   // Stagger uses "visible" as base state, then apply feedback or focus
@@ -486,6 +497,47 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
                 </span>
               </div>
             )}
+          </div>
+        </motion.div>
+      </div>
+    )
+  }
+
+  if (isDisabledByCondition) {
+    const disabledMessage = choice.disabledReason || 'Requirements not met'
+    return (
+      <div className="w-full">
+        <motion.div
+          variants={combinedVariants}
+          custom={index}
+          className="w-full"
+          data-choice-index={index}
+          style={{ scrollSnapAlign: 'start' }}
+        >
+          <div
+            className={`
+              w-full min-h-[56px] sm:min-h-[52px] h-auto px-4 sm:px-6 py-4 sm:py-3
+              text-base sm:text-sm font-medium text-left
+              rounded-[14px]
+              flex flex-col gap-2
+              cursor-not-allowed
+              ${glass
+                ? 'text-slate-500 border border-slate-700/50 bg-slate-900/40'
+                : 'text-stone-400 border border-stone-200 bg-stone-50'
+              }
+            `}
+            aria-label={`Disabled choice: ${choice.text}. ${disabledMessage}`}
+            role="button"
+            aria-disabled="true"
+            title={disabledMessage}
+          >
+            <div className="flex items-center gap-3">
+              <Lock className={`w-4 h-4 flex-shrink-0 ${glass ? 'text-slate-500' : 'text-stone-400'}`} />
+              <span className="flex-1 line-clamp-2 grayscale">{choice.text}</span>
+            </div>
+            <div className={`text-xs pl-7 ${glass ? 'text-slate-400' : 'text-stone-500'}`}>
+              <span>{disabledMessage}</span>
+            </div>
           </div>
         </motion.div>
       </div>
@@ -686,9 +738,27 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     return { nonEmptyGroups: entries, presentedChoicesFlat: flat }
   }, [sortedChoices, useGrouping])
 
+  const mercyUnlockChoice = useMemo(() => {
+    const choiceStatuses = presentedChoicesFlat.map(c => ({ choice: c, locked: isChoiceLocked(c, orbFillLevels) }))
+    const allLocked = choiceStatuses.length > 0 && choiceStatuses.every(s => s.locked)
+    if (!allLocked) return null
+    return choiceStatuses.sort((a, b) => {
+      const thresholdA = a.choice.requiredOrbFill?.threshold || 0
+      const thresholdB = b.choice.requiredOrbFill?.threshold || 0
+      return thresholdA - thresholdB
+    })[0].choice
+  }, [presentedChoicesFlat, orbFillLevels])
+
+  const canSelectChoice = useCallback((choice: Choice): boolean => {
+    if (choice.enabled === false) return false
+    const locked = isChoiceLocked(choice, orbFillLevels) && choice !== mercyUnlockChoice
+    return !locked
+  }, [orbFillLevels, mercyUnlockChoice])
+
   // Wrapped choice handler with signature animation
   const handleChoiceWithAnimation = useCallback((choice: Choice) => {
     if (isProcessing || isCommitting) return
+    if (!canSelectChoice(choice)) return
 
     // Use choice.id if available, otherwise fall back to text
     const choiceId = choice.id || choice.text
@@ -696,7 +766,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     commitChoice(choiceId, () => {
       onChoice(choice)
     })
-  }, [isProcessing, isCommitting, commitChoice, onChoice])
+  }, [isProcessing, isCommitting, canSelectChoice, commitChoice, onChoice])
 
   // ABILITY CHECK: Pattern Preview (P0)
   // FIX: Access coreGameState directly and avoid inline default array to prevent infinite loop
@@ -711,17 +781,6 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   const presentedAtRef = useRef<number>(0)
   const presentedEventIdRef = useRef<string | null>(null)
   const presentedChoicesRef = useRef<Choice[]>([])
-
-  const mercyUnlockChoice = useMemo(() => {
-    const choiceStatuses = presentedChoicesFlat.map(c => ({ choice: c, locked: isChoiceLocked(c, orbFillLevels) }))
-    const allLocked = choiceStatuses.length > 0 && choiceStatuses.every(s => s.locked)
-    if (!allLocked) return null
-    return choiceStatuses.sort((a, b) => {
-      const thresholdA = a.choice.requiredOrbFill?.threshold || 0
-      const thresholdB = b.choice.requiredOrbFill?.threshold || 0
-      return thresholdA - thresholdB
-    })[0].choice
-  }, [presentedChoicesFlat, orbFillLevels])
 
   // Telemetry: log the choice-set as presented (ordered list + gravity + lock state)
   useEffect(() => {
@@ -760,12 +819,15 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
         choices: presentedChoicesFlat.map((c, i) => {
           const stableId = getStableChoiceId(c)
           const isLocked = isChoiceLocked(c, orbFillLevels) && c !== mercyUnlockChoice
+          const isEnabled = c.enabled !== false
           return {
             index: i,
             choice_id: stableId,
             pattern: c.pattern || null,
             gravity_weight: c.gravity?.weight ?? null,
             gravity_effect: c.gravity?.effect ?? null,
+            is_enabled: isEnabled,
+            disabled_reason: isEnabled ? null : (c.disabledReason || null),
             is_locked: isLocked,
             lock_reason: isLocked ? 'orb' : null,
             required_orb_fill: c.requiredOrbFill || null,
@@ -773,6 +835,30 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
         })
       }
     })
+
+    // Telemetry: explicit deadlock-recovery injection event.
+    // This prevents "hidden" deadlocks from being silently masked by the recovery UI.
+    const hasDeadlockRecovery = presentedChoicesFlat.some((c) => getStableChoiceId(c) === '__deadlock_recovery__')
+    if (hasDeadlockRecovery) {
+      const nonRecoveryTotal = presentedChoicesFlat.filter((c) => getStableChoiceId(c) !== '__deadlock_recovery__').length
+      queueInteractionEventSync({
+        user_id: playerId,
+        session_id: String(coreState?.sessionStartTime || now),
+        event_type: 'deadlock_recovery_injected',
+        node_id: nodeId,
+        character_id: characterId,
+        ordering_variant: orderingVariant,
+        ordering_seed: orderingSeed,
+        payload: {
+          event_id: generateActionId(),
+          injected_at_ms: now,
+          presented_event_id: eventId,
+          recovery_choice_id: '__deadlock_recovery__',
+          presented_choices_total: presentedChoicesFlat.length,
+          non_recovery_choices_total: nonRecoveryTotal,
+        }
+      })
+    }
   }, [coreState?.playerId, coreState?.currentNodeId, coreState?.currentCharacterId, coreState?.sessionStartTime, coreState?.characters, orderingSeed, orderingVariant, presentedChoicesFlat, orbFillLevels, mercyUnlockChoice])
 
   const logChoiceSelectedUi = useCallback((choice: Choice) => {
@@ -810,11 +896,17 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
 
   const handleChoiceWithTelemetry = useCallback((choice: Choice) => {
     if (isProcessing || isCommitting) return
+    if (!canSelectChoice(choice)) return
     logChoiceSelectedUi(choice)
     handleChoiceWithAnimation(choice)
-  }, [handleChoiceWithAnimation, logChoiceSelectedUi, isProcessing, isCommitting])
+  }, [handleChoiceWithAnimation, logChoiceSelectedUi, isProcessing, isCommitting, canSelectChoice])
 
-  const { focusedIndex, containerRef } = useKeyboardNavigation(presentedChoicesFlat, isProcessing, handleChoiceWithTelemetry)
+  const { focusedIndex, containerRef } = useKeyboardNavigation(
+    presentedChoicesFlat,
+    isProcessing,
+    handleChoiceWithTelemetry,
+    canSelectChoice,
+  )
 
   if (!choices || choices.length === 0) {
     return null

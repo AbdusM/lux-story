@@ -84,7 +84,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
       {
         choiceId: 'orb_emerging_back',
         text: '"I should get back to exploring."',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]
@@ -110,7 +110,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
       {
         choiceId: 'orb_emerging_humble_back',
         text: '"Thanks, Samuel."',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'helping'
       }
     ]
@@ -130,7 +130,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
       {
         choiceId: 'orb_emerging_foreshadow_continue',
         text: 'Continue exploring',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]
@@ -218,7 +218,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
       {
         choiceId: 'orb_developing_patterns_continue',
         text: '"Thank you, Samuel."',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -238,7 +238,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
       {
         choiceId: 'orb_developing_station_continue',
         text: 'Continue exploring',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]
@@ -312,7 +312,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
       {
         choiceId: 'orb_flourishing_trust_continue',
         text: 'Continue exploring',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]
@@ -332,7 +332,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
       {
         choiceId: 'orb_flourishing_future_continue',
         text: 'Continue exploring',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]
@@ -407,7 +407,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
       {
         choiceId: 'orb_mastered_meaning_continue',
         text: 'Continue with quiet appreciation',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -434,7 +434,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
       {
         choiceId: 'orb_mastered_gratitude_continue',
         text: 'Continue exploring with renewed purpose',
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]

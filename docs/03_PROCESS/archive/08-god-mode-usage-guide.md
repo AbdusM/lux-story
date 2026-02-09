@@ -6,6 +6,8 @@
 
 ---
 
+> NOTE (Feb 9, 2026): This archived guide references the old "AUTO-FALLBACK" behavior. That behavior has been removed and replaced with a single safe **Deadlock Recovery** choice (no gated-content reveal). Current contract docs: `docs/reference/data-dictionary/05-dialogue-system.md`.
+
 ## Quick Start
 
 1. Start the development server:

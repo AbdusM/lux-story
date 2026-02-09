@@ -1249,7 +1249,7 @@ RACHEL: What am I missing?
       {
         choiceId: 'return_to_samuel_tess',
         text: "Return to Samuel",
-        nextNodeId: samuelEntryPoints.TESS_REFLECTION_GATEWAY,
+        nextNodeId: samuelEntryPoints.HUB_INITIAL,
         pattern: 'exploring'
       }
     ],
@@ -1898,6 +1898,10 @@ Stakes: Trust, fairness, emotional safety for both students`,
         choiceId: 'return_to_samuel_tess_p2',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.TESS_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['tess_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_tess']
+        },
         pattern: 'exploring'
       },
       // Loyalty Experience trigger - only visible at high trust + helping pattern
@@ -2007,6 +2011,10 @@ Stakes: Trust, fairness, emotional safety for both students`,
         choiceId: 'return_to_samuel_tess_p2_after',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.TESS_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['tess_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_tess']
+        },
         pattern: 'exploring'
       }
     ],
@@ -2369,6 +2377,10 @@ Stakes: Trust, fairness, emotional safety for both students`,
         choiceId: 'loyalty_declined_farewell',
         text: "Your students are lucky to have you. Go build something beautiful.",
         nextNodeId: samuelEntryPoints.TESS_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['tess_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_tess']
+        },
         pattern: 'patience'
       }
     ],

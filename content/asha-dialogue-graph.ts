@@ -89,7 +89,8 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 pattern: 'helping',
                 skills: ['emotionalIntelligence'],
                 visibleCondition: {
-                    patterns: { helping: { min: 50 } }
+                    patterns: { helping: { min: 50 } },
+                    trust: { min: 2 }
                 },
                 consequence: {
                     characterId: 'asha',

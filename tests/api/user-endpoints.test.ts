@@ -343,7 +343,13 @@ describe('Interaction Events API (/api/user/interaction-events)', () => {
           character_id: 'samuel',
           ordering_variant: 'gravity_bucket_shuffle',
           ordering_seed: 'seed',
-          payload: { selected_index: 0 }
+          payload: {
+            event_id: 'evt-1',
+            presented_event_id: 'evt-presented-1',
+            selected_choice_id: 'samuel_choice_1',
+            selected_index: 0,
+            reaction_time_ms: 123,
+          }
         }
       })
 

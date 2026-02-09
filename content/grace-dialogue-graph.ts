@@ -1401,6 +1401,10 @@ QUESTION: How do you approach her?
         choiceId: 'grace_after_hug',
         text: "Take care of yourself, Grace.",
         nextNodeId: samuelEntryPoints.GRACE_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['grace_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_grace']
+        },
         pattern: 'helping'
       }
     ],
@@ -1835,6 +1839,10 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
         choiceId: 'grace_goodbye',
         text: "Take care, Grace.",
         nextNodeId: samuelEntryPoints.GRACE_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['grace_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_grace']
+        },
         pattern: 'helping'
       }
     ],

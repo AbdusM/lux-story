@@ -1619,7 +1619,14 @@ WARNING: Response time > 48h`,
         choiceId: 'vuln_continue',
         text: "(Continue)",
         nextNodeId: 'marcus_patient_story',
-        pattern: 'patience'
+        pattern: 'patience',
+        visibleCondition: {
+          trust: { min: 6 }
+        },
+        consequence: {
+          characterId: 'marcus',
+          trustChange: 1
+        }
       }
     ],
     tags: ['vulnerability_arc', 'marcus_arc']
@@ -2519,6 +2526,9 @@ WARNING: Response time > 48h`,
         nextNodeId: 'marcus_vulnerability_arc',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          trust: { min: 5 }
+        },
         consequence: {
           characterId: 'marcus',
           trustChange: 1
@@ -2626,6 +2636,9 @@ WARNING: Response time > 48h`,
         nextNodeId: 'marcus_vulnerability_arc',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          trust: { min: 5 }
+        },
         consequence: {
           characterId: 'marcus',
           trustChange: 1
@@ -2855,6 +2868,9 @@ WARNING: Response time > 48h`,
         nextNodeId: 'marcus_vulnerability_arc',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          trust: { min: 4 }
+        },
         consequence: {
           characterId: 'marcus',
           trustChange: 2
@@ -3260,7 +3276,10 @@ WARNING: Response time > 48h`,
         text: "How did you learn to explain complex things simply?",
         nextNodeId: 'marcus_patient_story',
         pattern: 'exploring',
-        skills: ['communication']
+        skills: ['communication'],
+        visibleCondition: {
+          trust: { min: 7 }
+        }
       },
       {
         choiceId: 'translation_apply',

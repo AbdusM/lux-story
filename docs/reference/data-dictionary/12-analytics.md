@@ -489,7 +489,7 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
 | `id` | uuid | Primary key |
 | `user_id` | text | Player ID (`player_...` or UUID), FK to `player_profiles.user_id` |
 | `session_id` | text | Session identifier (currently `sessionStartTime` string) |
-| `event_type` | text | e.g. `choice_presented`, `choice_selected_ui`, `choice_selected_result`, `node_entered`, `experiment_assigned` |
+| `event_type` | text | e.g. `choice_presented`, `choice_selected_ui`, `choice_selected_result`, `node_entered`, `experiment_assigned`, `deadlock_recovery_injected` |
 | `node_id` | text | Dialogue node id (when applicable) |
 | `character_id` | text | Current character id (when applicable) |
 | `ordering_variant` | text | Choice ordering strategy id (e.g. `gravity_bucket_shuffle`) |
@@ -512,6 +512,8 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
     - `pattern`: string|null
     - `gravity_weight`: number|null
     - `gravity_effect`: string|null
+    - `is_enabled`: boolean (optional; false if gated by an `enabledCondition`)
+    - `disabled_reason`: string|null (optional; only when `is_enabled=false`)
     - `is_locked`: boolean
 
 **`choice_selected_ui`** (what was clicked, at what index, how fast)
@@ -553,6 +555,16 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
   - `test_id`: string
   - `variant`: string
   - `assignment_version`: string
+
+**`deadlock_recovery_injected`** (content/system anomaly signal; never reveals gated content)
+- Emitted by: `components/GameChoices.tsx` (when the runtime had to inject the `__deadlock_recovery__` choice because no selectable choices existed)
+- Payload keys:
+  - `event_id`: string
+  - `injected_at_ms`: number
+  - `presented_event_id`: string|null (links to `choice_presented.payload.event_id`)
+  - `recovery_choice_id`: string (currently `__deadlock_recovery__`)
+  - `presented_choices_total`: number (optional; includes recovery)
+  - `non_recovery_choices_total`: number (optional)
 
 ### Join Logic (Position Bias Analysis)
 

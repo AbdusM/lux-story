@@ -1815,6 +1815,10 @@ export const alexDialogueNodes: DialogueNode[] = [
         choiceId: 'return_to_samuel_from_alex',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.ALEX_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['alex_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_alex']
+        },
         pattern: 'exploring'
       },
       // Loyalty Experience trigger - only visible at high trust + exploring pattern
@@ -1894,6 +1898,10 @@ export const alexDialogueNodes: DialogueNode[] = [
         choiceId: 'loyalty_declined_farewell',
         text: "Go build something honest. That's what matters.",
         nextNodeId: samuelEntryPoints.ALEX_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['alex_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_alex']
+        },
         pattern: 'patience'
       }
     ],

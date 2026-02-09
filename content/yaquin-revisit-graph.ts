@@ -257,7 +257,11 @@ The sponsorship money is buying me freedom to build something real.|}}\n\nI gues
         choiceId: 'return_to_samuel_revisit',
         text: "That means you're growing.",
         nextNodeId: samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY, // Loops back to Samuel
-        pattern: 'patience'
+        pattern: 'patience',
+        visibleCondition: {
+          hasGlobalFlags: ['yaquin_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_yaquin']
+        }
       },
       // Loyalty Experience trigger - only visible at high trust + building pattern
       {
@@ -359,7 +363,11 @@ Thanks for believing in it. That's enough.`,
         choiceId: 'loyalty_declined_farewell',
         text: "Your students are going to learn so much. Go show them.",
         nextNodeId: samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY,
-        pattern: 'patience'
+        pattern: 'patience',
+        visibleCondition: {
+          hasGlobalFlags: ['yaquin_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_yaquin']
+        }
       }
     ],
     onEnter: [

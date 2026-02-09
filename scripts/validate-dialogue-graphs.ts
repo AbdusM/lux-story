@@ -14,40 +14,38 @@
  * Usage: npx tsx scripts/validate-dialogue-graphs.ts
  */
 
-import { ConditionalChoice, DialogueNode } from '../lib/dialogue-graph'
 import fs from 'node:fs'
 import path from 'node:path'
+import { ConditionalChoice, DialogueNode } from '../lib/dialogue-graph'
+import { DIALOGUE_GRAPHS } from '../lib/graph-registry'
+import { CHARACTER_PATTERN_AFFINITIES } from '../lib/pattern-affinity'
 
-// Import all dialogue graphs
-import { samuelDialogueNodes, samuelEntryPoints } from '../content/samuel-dialogue-graph'
 import { samuelWaitingEntryPoints } from '../content/samuel-waiting-dialogue'
-import { mayaDialogueNodes, mayaEntryPoints } from '../content/maya-dialogue-graph'
-import { devonDialogueNodes, devonEntryPoints } from '../content/devon-dialogue-graph'
-import { jordanDialogueNodes, jordanEntryPoints } from '../content/jordan-dialogue-graph'
-import { kaiDialogueNodes, kaiEntryPoints } from '../content/kai-dialogue-graph'
-import { silasDialogueNodes, silasEntryPoints } from '../content/silas-dialogue-graph'
-import { marcusDialogueNodes, marcusEntryPoints } from '../content/marcus-dialogue-graph'
-import { tessDialogueNodes, tessEntryPoints } from '../content/tess-dialogue-graph'
-import { rohanDialogueNodes, rohanEntryPoints } from '../content/rohan-dialogue-graph'
-import { yaquinDialogueNodes, yaquinEntryPoints } from '../content/yaquin-dialogue-graph'
-import { alexDialogueNodes, alexEntryPoints } from '../content/alex-dialogue-graph'
-import { mayaRevisitNodes, mayaRevisitEntryPoints } from '../content/maya-revisit-graph'
-import { yaquinRevisitNodes, yaquinRevisitEntryPoints } from '../content/yaquin-revisit-graph'
-import { devonRevisitNodes, devonRevisitEntryPoints } from '../content/devon-revisit-graph'
-import { graceRevisitNodes, graceRevisitEntryPoints } from '../content/grace-revisit-graph'
-import { grandHallDialogueNodes } from '../content/grand-hall-graph'
-import { graceDialogueNodes, graceEntryPoints } from '../content/grace-dialogue-graph'
-import { elenaDialogueNodes, elenaEntryPoints } from '../content/elena-dialogue-graph'
-import { zaraDialogueNodes, zaraEntryPoints } from '../content/zara-dialogue-graph'
-import { ashaDialogueNodes, ashaEntryPoints } from '../content/asha-dialogue-graph'
-import { liraDialogueNodes, liraEntryPoints } from '../content/lira-dialogue-graph'
-import { quinnDialogueNodes, quinnEntryPoints } from '../content/quinn-dialogue-graph'
-import { danteDialogueNodes, danteEntryPoints } from '../content/dante-dialogue-graph'
-import { nadiaDialogueNodes, nadiaEntryPoints } from '../content/nadia-dialogue-graph'
-import { isaiahDialogueNodes, isaiahEntryPoints } from '../content/isaiah-dialogue-graph'
-import { marketDialogueNodes } from '../content/market-graph'
-import { deepStationDialogueNodes } from '../content/deep-station-graph'
-import { stationEntryGraph } from '../content/station-entry-graph'
+import { samuelEntryPoints } from '../content/samuel-dialogue-graph'
+import { mayaEntryPoints } from '../content/maya-dialogue-graph'
+import { devonEntryPoints } from '../content/devon-dialogue-graph'
+import { jordanEntryPoints } from '../content/jordan-dialogue-graph'
+import { kaiEntryPoints } from '../content/kai-dialogue-graph'
+import { silasEntryPoints } from '../content/silas-dialogue-graph'
+import { marcusEntryPoints } from '../content/marcus-dialogue-graph'
+import { tessEntryPoints } from '../content/tess-dialogue-graph'
+import { rohanEntryPoints } from '../content/rohan-dialogue-graph'
+import { yaquinEntryPoints } from '../content/yaquin-dialogue-graph'
+import { alexEntryPoints } from '../content/alex-dialogue-graph'
+import { graceEntryPoints } from '../content/grace-dialogue-graph'
+import { elenaEntryPoints } from '../content/elena-dialogue-graph'
+import { zaraEntryPoints } from '../content/zara-dialogue-graph'
+import { ashaEntryPoints } from '../content/asha-dialogue-graph'
+import { liraEntryPoints } from '../content/lira-dialogue-graph'
+import { quinnEntryPoints } from '../content/quinn-dialogue-graph'
+import { danteEntryPoints } from '../content/dante-dialogue-graph'
+import { nadiaEntryPoints } from '../content/nadia-dialogue-graph'
+import { isaiahEntryPoints } from '../content/isaiah-dialogue-graph'
+
+import { mayaRevisitEntryPoints } from '../content/maya-revisit-graph'
+import { yaquinRevisitEntryPoints } from '../content/yaquin-revisit-graph'
+import { devonRevisitEntryPoints } from '../content/devon-revisit-graph'
+import { graceRevisitEntryPoints } from '../content/grace-revisit-graph'
 
 // ============= HELPERS =============
 
@@ -151,6 +149,152 @@ const KNOWN_ENTRY_NODE_IDS = new Set<string>([
   ...Object.values(isaiahEntryPoints)
 ])
 
+const PATTERN_UNLOCK_NODE_IDS = new Set<string>(
+  Object.values(CHARACTER_PATTERN_AFFINITIES)
+    .flatMap((a: any) => (a?.patternUnlocks ?? []).map((u: any) => u.unlockedNodeId))
+    .filter(Boolean)
+)
+
+type GraphInput = { name: string; nodes: DialogueNode[]; startNodeId: string }
+
+function buildNodeOwnerIndex(graphs: GraphInput[]): Map<string, string> {
+  // Node IDs are expected to be globally unique in practice; if duplicates exist,
+  // we pick the first owner deterministically based on graph iteration order.
+  const index = new Map<string, string>()
+  for (const graph of graphs) {
+    for (const node of graph.nodes) {
+      if (!index.has(node.nodeId)) index.set(node.nodeId, graph.name)
+    }
+  }
+  return index
+}
+
+function inGraphRoots(graph: GraphInput, nodeMap: Map<string, DialogueNode>): string[] {
+  const roots: string[] = []
+  if (nodeMap.has(graph.startNodeId)) roots.push(graph.startNodeId)
+
+  for (const entryId of KNOWN_ENTRY_NODE_IDS) {
+    if (nodeMap.has(entryId)) roots.push(entryId)
+  }
+  for (const unlockId of PATTERN_UNLOCK_NODE_IDS) {
+    if (nodeMap.has(unlockId)) roots.push(unlockId)
+  }
+  for (const node of nodeMap.values()) {
+    if ((node as any)?.simulation) roots.push(node.nodeId)
+  }
+
+  return Array.from(new Set(roots))
+}
+
+function outgoingTargets(node: DialogueNode): string[] {
+  const targets: string[] = []
+
+  for (const choice of node.choices ?? []) {
+    if (choice.nextNodeId) targets.push(choice.nextNodeId)
+  }
+
+  for (const content of node.content ?? []) {
+    const interrupt = (content as any).interrupt
+    if (interrupt?.targetNodeId) targets.push(interrupt.targetNodeId)
+    if (interrupt?.missedNodeId) targets.push(interrupt.missedNodeId)
+  }
+
+  return targets
+}
+
+function bfsReachable(nodeMap: Map<string, DialogueNode>, roots: string[]): Set<string> {
+  const reachable = new Set<string>()
+  const queue = [...roots]
+
+  while (queue.length > 0) {
+    const nodeId = queue.shift()!
+    if (reachable.has(nodeId)) continue
+    const node = nodeMap.get(nodeId)
+    if (!node) continue
+
+    reachable.add(nodeId)
+
+    for (const next of outgoingTargets(node)) {
+      if (!nodeMap.has(next)) continue
+      if (!reachable.has(next)) queue.push(next)
+    }
+  }
+
+  return reachable
+}
+
+function computeGlobalReachability(graphs: GraphInput[]): Map<string, Set<string>> {
+  const nodeOwner = buildNodeOwnerIndex(graphs)
+  const nodeMaps = new Map<string, Map<string, DialogueNode>>()
+  const internalRootsByGraph = new Map<string, string[]>()
+
+  for (const g of graphs) {
+    const nodeMap = new Map<string, DialogueNode>(g.nodes.map((n) => [n.nodeId, n]))
+    nodeMaps.set(g.name, nodeMap)
+    internalRootsByGraph.set(g.name, inGraphRoots(g, nodeMap))
+  }
+
+  let externalRootsByGraph = new Map<string, Set<string>>()
+  for (const g of graphs) externalRootsByGraph.set(g.name, new Set())
+
+  let reachableByGraph = new Map<string, Set<string>>()
+
+  for (let iter = 0; iter < 10; iter++) {
+    reachableByGraph = new Map()
+    for (const g of graphs) {
+      const nodeMap = nodeMaps.get(g.name)!
+      const roots = [
+        ...(internalRootsByGraph.get(g.name) ?? []),
+        ...Array.from(externalRootsByGraph.get(g.name) ?? []),
+      ]
+      const uniqueRoots = Array.from(new Set(roots)).filter((id) => nodeMap.has(id))
+      reachableByGraph.set(g.name, bfsReachable(nodeMap, uniqueRoots))
+    }
+
+    const nextExternalRootsByGraph = new Map<string, Set<string>>()
+    for (const g of graphs) nextExternalRootsByGraph.set(g.name, new Set())
+
+    for (const source of graphs) {
+      const sourceMap = nodeMaps.get(source.name)!
+      const reachable = reachableByGraph.get(source.name) ?? new Set<string>()
+      for (const nodeId of reachable) {
+        const node = sourceMap.get(nodeId)
+        if (!node) continue
+        for (const targetId of outgoingTargets(node)) {
+          const owner = nodeOwner.get(targetId)
+          if (!owner) continue
+          if (owner === source.name) continue
+          const targetMap = nodeMaps.get(owner)
+          if (!targetMap?.has(targetId)) continue
+          nextExternalRootsByGraph.get(owner)!.add(targetId)
+        }
+      }
+    }
+
+    let changed = false
+    for (const g of graphs) {
+      const prev = externalRootsByGraph.get(g.name) ?? new Set()
+      const next = nextExternalRootsByGraph.get(g.name) ?? new Set()
+      if (prev.size !== next.size) {
+        changed = true
+        break
+      }
+      for (const v of next) {
+        if (!prev.has(v)) {
+          changed = true
+          break
+        }
+      }
+      if (changed) break
+    }
+
+    externalRootsByGraph = nextExternalRootsByGraph
+    if (!changed) break
+  }
+
+  return reachableByGraph
+}
+
 // ============= TYPES =============
 
 interface ValidationError {
@@ -195,6 +339,7 @@ class DialogueGraphValidator {
   private stats: GraphStats[] = []
   private globalNodeIds: Set<string> = new Set()
   private globalIncomingNodeIds: Set<string> = new Set()
+  private reachableByGraph: Map<string, Set<string>> | null = null
   private readonly virtualNodeIds = new Set(['TRAVEL_PENDING', 'SIMULATION_PENDING'])
   private readonly strictOrphans: boolean
   private readonly strictQuality: boolean
@@ -204,13 +349,14 @@ class DialogueGraphValidator {
     this.strictQuality = opts?.strictQuality ?? false
   }
 
-  validate(graphs: { name: string; nodes: DialogueNode[]; startNodeId: string }[]): ValidationResult {
+  validate(graphs: GraphInput[]): ValidationResult {
     this.errors = []
     this.warnings = []
     this.infos = []
     this.stats = []
     this.globalNodeIds = new Set()
     this.globalIncomingNodeIds = new Set()
+    this.reachableByGraph = computeGlobalReachability(graphs)
 
     // Build a master set of node IDs across all loaded graphs so per-graph validation
     // doesn't incorrectly fail for intentional cross-graph references.
@@ -355,16 +501,25 @@ class DialogueGraphValidator {
     for (const entryId of KNOWN_ENTRY_NODE_IDS) {
       if (nodeMap.has(entryId)) extraRoots.push(entryId)
     }
+    for (const unlockId of PATTERN_UNLOCK_NODE_IDS) {
+      if (nodeMap.has(unlockId)) extraRoots.push(unlockId)
+    }
+    for (const node of nodeMap.values()) {
+      if ((node as any)?.simulation) extraRoots.push(node.nodeId)
+    }
     const roots = Array.from(new Set([startNodeId, ...extraRoots]))
     this.findReachableNodes(roots, nodeMap, reachableFromStart)
+    const reachableForStats = this.reachableByGraph?.get(name) ?? reachableFromStart
 
     // Find orphaned nodes
     const orphanedNodes: string[] = []
 
     for (const nodeId of nodeMap.keys()) {
-      if (!reachableFromStart.has(nodeId) && nodeId !== startNodeId) {
+      if (!reachableForStats.has(nodeId) && nodeId !== startNodeId) {
         // Skip known entry points (reachable from system routing / other graphs)
         if (KNOWN_ENTRY_NODE_IDS.has(nodeId)) continue
+        if (PATTERN_UNLOCK_NODE_IDS.has(nodeId)) continue
+        if ((nodeMap.get(nodeId) as any)?.simulation) continue
 
         // Check if it's referenced as a target anywhere (including other graphs)
         if (!this.globalIncomingNodeIds.has(nodeId)) {
@@ -393,9 +548,9 @@ class DialogueGraphValidator {
       totalNodes: nodes.length,
       totalChoices: nodes.reduce((sum, n) => sum + n.choices.length, 0),
       totalInterrupts,
-      reachableNodes: reachableFromStart.size,
+      reachableNodes: reachableForStats.size,
       orphanedNodes: orphanedNodes.length,
-      structurallyUnreachableNodes: Math.max(0, nodes.length - reachableFromStart.size),
+      structurallyUnreachableNodes: Math.max(0, nodes.length - reachableForStats.size),
       brokenReferences: this.errors.filter(e => e.graph === name && e.message.includes('points to non-existent')).length,
       maxDepth: this.calculateMaxDepth(roots, nodeMap),
       trustGatedNodes: nodes.filter(n => n.requiredState?.trust).length,
@@ -701,21 +856,35 @@ class DialogueGraphValidator {
   }
 
   private getExpectedCharacter(graphName: string): string | null {
-    const map: Record<string, string> = {
-      'samuel': 'samuel',
-      'maya': 'maya',
-      'maya-revisit': 'maya',
-      'devon': 'devon',
-      'jordan': 'jordan',
-      'kai': 'kai',
-      'silas': 'silas',
-      'marcus': 'marcus',
-      'tess': 'tess',
-      'rohan': 'rohan',
-      'yaquin': 'yaquin',
-      'yaquin-revisit': 'yaquin'
-    }
-    return map[graphName] || null
+    // Graph names match DIALOGUE_GRAPHS keys (e.g. `maya_revisit`), but this function
+    // should be resilient to older hyphen naming (e.g. `maya-revisit`).
+    const normalized = graphName.replace(/-/g, '_')
+    const base = normalized.replace(/_revisit$/, '')
+
+    const known = new Set([
+      'samuel',
+      'maya',
+      'devon',
+      'jordan',
+      'kai',
+      'silas',
+      'marcus',
+      'tess',
+      'rohan',
+      'yaquin',
+      'alex',
+      'grace',
+      'elena',
+      'zara',
+      'asha',
+      'lira',
+      'quinn',
+      'dante',
+      'nadia',
+      'isaiah',
+    ])
+
+    return known.has(base) ? base : null
   }
 
   private findReachableNodes(
@@ -845,36 +1014,13 @@ function main(): void {
   console.log('\n📊 Dialogue Graph Validator')
   console.log('═'.repeat(50))
 
-  const graphs = [
-    { name: 'samuel', nodes: samuelDialogueNodes, startNodeId: samuelEntryPoints.ARRIVAL },
-    { name: 'station_entry', nodes: Array.from(stationEntryGraph.nodes.values()), startNodeId: stationEntryGraph.startNodeId || 'entry_arrival' },
-    { name: 'maya', nodes: mayaDialogueNodes, startNodeId: mayaEntryPoints.INTRODUCTION },
-    { name: 'maya-revisit', nodes: mayaRevisitNodes, startNodeId: mayaRevisitEntryPoints.WELCOME },
-    { name: 'devon', nodes: devonDialogueNodes, startNodeId: devonEntryPoints.INTRODUCTION },
-    { name: 'devon-revisit', nodes: devonRevisitNodes, startNodeId: devonRevisitEntryPoints.WELCOME },
-    { name: 'jordan', nodes: jordanDialogueNodes, startNodeId: jordanEntryPoints.INTRODUCTION },
-    { name: 'kai', nodes: kaiDialogueNodes, startNodeId: kaiEntryPoints.INTRODUCTION },
-    { name: 'silas', nodes: silasDialogueNodes, startNodeId: silasEntryPoints.INTRODUCTION },
-    { name: 'marcus', nodes: marcusDialogueNodes, startNodeId: marcusEntryPoints.INTRODUCTION },
-    { name: 'tess', nodes: tessDialogueNodes, startNodeId: tessEntryPoints.INTRODUCTION },
-    { name: 'rohan', nodes: rohanDialogueNodes, startNodeId: rohanEntryPoints.INTRODUCTION },
-    { name: 'yaquin', nodes: yaquinDialogueNodes, startNodeId: yaquinEntryPoints.INTRODUCTION },
-    { name: 'alex', nodes: alexDialogueNodes, startNodeId: alexEntryPoints.INTRODUCTION },
-    { name: 'yaquin-revisit', nodes: yaquinRevisitNodes, startNodeId: yaquinRevisitEntryPoints.WELCOME },
-    { name: 'grand_hall', nodes: grandHallDialogueNodes, startNodeId: 'sector_1_hall' },
-    { name: 'market', nodes: marketDialogueNodes, startNodeId: 'market_entry_logic' },
-    { name: 'deep_station', nodes: deepStationDialogueNodes, startNodeId: 'sector_3_office' },
-    { name: 'grace', nodes: graceDialogueNodes, startNodeId: graceEntryPoints.INTRODUCTION },
-    { name: 'grace-revisit', nodes: graceRevisitNodes, startNodeId: graceRevisitEntryPoints.WELCOME },
-    { name: 'elena', nodes: elenaDialogueNodes, startNodeId: elenaEntryPoints.INTRODUCTION },
-    { name: 'zara', nodes: zaraDialogueNodes, startNodeId: zaraEntryPoints.INTRODUCTION },
-    { name: 'asha', nodes: ashaDialogueNodes, startNodeId: ashaEntryPoints.INTRODUCTION },
-    { name: 'lira', nodes: liraDialogueNodes, startNodeId: liraEntryPoints.INTRODUCTION },
-    { name: 'quinn', nodes: quinnDialogueNodes, startNodeId: quinnEntryPoints.INTRODUCTION },
-    { name: 'dante', nodes: danteDialogueNodes, startNodeId: danteEntryPoints.INTRODUCTION },
-    { name: 'nadia', nodes: nadiaDialogueNodes, startNodeId: nadiaEntryPoints.INTRODUCTION },
-    { name: 'isaiah', nodes: isaiahDialogueNodes, startNodeId: isaiahEntryPoints.INTRODUCTION },
-  ]
+  const graphs = Object.entries(DIALOGUE_GRAPHS)
+    .map(([name, graph]) => ({
+      name,
+      nodes: Array.from(graph.nodes.values()),
+      startNodeId: graph.startNodeId,
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name))
 
   const validator = new DialogueGraphValidator({ strictOrphans, strictQuality })
   const result = validator.validate(graphs)
@@ -1016,6 +1162,10 @@ function readBaselineJson(p: string): Baseline | null {
 }
 
 function printContentDebtDelta(graphs: { name: string; nodes: DialogueNode[]; startNodeId: string }[]): void {
+  // Baselines are snapshots of the raw (draft-inclusive) content debt.
+  // When drafts are excluded (default), the delta is not actionable and can be misleading.
+  if (process.env.NEXT_PUBLIC_INCLUDE_DRAFT_CONTENT !== 'true') return
+
   const unrefBaselinePath = path.join(process.cwd(), 'docs/qa/unreferenced-dialogue-nodes-baseline.json')
   const unreachableBaselinePath = path.join(process.cwd(), 'docs/qa/unreachable-dialogue-nodes-baseline.json')
 
@@ -1046,6 +1196,8 @@ function printContentDebtDelta(graphs: { name: string; nodes: DialogueNode[]; st
     for (const node of g.nodes) {
       if (node.nodeId === g.startNodeId) continue
       if (KNOWN_ENTRY_NODE_IDS.has(node.nodeId)) continue
+      if (PATTERN_UNLOCK_NODE_IDS.has(node.nodeId)) continue
+      if ((node as any)?.simulation) continue
       if (!globalIncoming.has(node.nodeId)) {
         currentUnref.add(`${graphKey}/${node.nodeId}`)
       }
@@ -1063,6 +1215,12 @@ function printContentDebtDelta(graphs: { name: string; nodes: DialogueNode[]; st
     if (nodeMap.has(g.startNodeId)) roots.push(g.startNodeId)
     for (const entryId of KNOWN_ENTRY_NODE_IDS) {
       if (nodeMap.has(entryId)) roots.push(entryId)
+    }
+    for (const unlockId of PATTERN_UNLOCK_NODE_IDS) {
+      if (nodeMap.has(unlockId)) roots.push(unlockId)
+    }
+    for (const node of nodeMap.values()) {
+      if ((node as any)?.simulation) roots.push(node.nodeId)
     }
     const uniqueRoots = Array.from(new Set(roots))
 

@@ -146,7 +146,8 @@ export const liraDialogueNodes: DialogueNode[] = [
                 pattern: 'building',
                 skills: ['creativity'],
                 visibleCondition: {
-                    patterns: { building: { min: 50 } }
+                    patterns: { building: { min: 50 } },
+                    trust: { min: 2 }
                 },
                 consequence: {
                     characterId: 'lira',
