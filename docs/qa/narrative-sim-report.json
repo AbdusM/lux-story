@@ -1,0 +1,215 @@
+{
+  "generated_at": "2026-02-09T19:10:54.863Z",
+  "options": {
+    "max_steps_per_path": 120,
+    "max_expansions": 6000,
+    "max_states_per_node": 40
+  },
+  "totals": {
+    "graphs": 28,
+    "expansions": 22424,
+    "visited_state_pairs": 22424,
+    "failures": 0,
+    "required_state_mismatches": 0
+  },
+  "per_graph": {
+    "alex": {
+      "expansions": 723,
+      "visited_state_pairs": 723,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "asha": {
+      "expansions": 629,
+      "visited_state_pairs": 629,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "dante": {
+      "expansions": 1096,
+      "visited_state_pairs": 1096,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "deep_station": {
+      "expansions": 10,
+      "visited_state_pairs": 10,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "devon": {
+      "expansions": 1317,
+      "visited_state_pairs": 1317,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "devon_revisit": {
+      "expansions": 4,
+      "visited_state_pairs": 4,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "elena": {
+      "expansions": 1004,
+      "visited_state_pairs": 1004,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "grace": {
+      "expansions": 543,
+      "visited_state_pairs": 543,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "grace_revisit": {
+      "expansions": 6,
+      "visited_state_pairs": 6,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "grand_hall": {
+      "expansions": 280,
+      "visited_state_pairs": 280,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "isaiah": {
+      "expansions": 1184,
+      "visited_state_pairs": 1184,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "jordan": {
+      "expansions": 1133,
+      "visited_state_pairs": 1133,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "kai": {
+      "expansions": 1393,
+      "visited_state_pairs": 1393,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "lira": {
+      "expansions": 711,
+      "visited_state_pairs": 711,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "marcus": {
+      "expansions": 1516,
+      "visited_state_pairs": 1516,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "market": {
+      "expansions": 160,
+      "visited_state_pairs": 160,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "maya": {
+      "expansions": 1106,
+      "visited_state_pairs": 1106,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "maya_revisit": {
+      "expansions": 204,
+      "visited_state_pairs": 204,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "nadia": {
+      "expansions": 1303,
+      "visited_state_pairs": 1303,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "quinn": {
+      "expansions": 2727,
+      "visited_state_pairs": 2727,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "rohan": {
+      "expansions": 827,
+      "visited_state_pairs": 827,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "samuel": {
+      "expansions": 1323,
+      "visited_state_pairs": 1323,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "silas": {
+      "expansions": 928,
+      "visited_state_pairs": 928,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "station_entry": {
+      "expansions": 26,
+      "visited_state_pairs": 26,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "tess": {
+      "expansions": 573,
+      "visited_state_pairs": 573,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "yaquin": {
+      "expansions": 1294,
+      "visited_state_pairs": 1294,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "yaquin_revisit": {
+      "expansions": 24,
+      "visited_state_pairs": 24,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    },
+    "zara": {
+      "expansions": 380,
+      "visited_state_pairs": 380,
+      "failures": 0,
+      "required_state_mismatches": 0,
+      "truncated": false
+    }
+  },
+  "failures": [],
+  "required_state_mismatches": []
+}

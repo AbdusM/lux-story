@@ -128,7 +128,7 @@ export const samuelWaitingNodes: DialogueNode[] = [
       {
         choiceId: 'acknowledge_return',
         text: "It's good to be back.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       },
       {
@@ -140,7 +140,7 @@ export const samuelWaitingNodes: DialogueNode[] = [
       {
         choiceId: 'lets_get_going',
         text: "I'm ready to talk to someone.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]
@@ -162,13 +162,13 @@ export const samuelWaitingNodes: DialogueNode[] = [
       {
         choiceId: 'visit_first_waiting',
         text: "I should go see them.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'helping'
       },
       {
         choiceId: 'continue_exploring',
         text: "Thanks, Samuel. I'll make the rounds.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]
@@ -189,7 +189,7 @@ export const samuelWaitingNodes: DialogueNode[] = [
       {
         choiceId: 'short_continue',
         text: "Let's pick up where we left off.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -216,7 +216,7 @@ export const samuelWaitingNodes: DialogueNode[] = [
       {
         choiceId: 'medium_continue',
         text: "I'm ready to continue.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -249,7 +249,7 @@ export const samuelWaitingNodes: DialogueNode[] = [
       {
         choiceId: 'long_ready_now',
         text: "I'm ready now.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]
@@ -270,7 +270,7 @@ export const samuelWaitingNodes: DialogueNode[] = [
       {
         choiceId: 'understanding_hub',
         text: "Show me who's around.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]

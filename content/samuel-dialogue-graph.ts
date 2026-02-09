@@ -9,7 +9,8 @@
 
 import {
   DialogueNode,
-  DialogueGraph
+  DialogueGraph,
+  ConditionalChoice
 } from '@/lib/dialogue-graph'
 import { mayaRevisitEntryPoints } from './maya-revisit-graph'
 import { samuelIdentityNodes } from './samuel-identity-nodes'
@@ -17,6 +18,98 @@ import { samuelOrbResonanceNodes } from './samuel-orb-resonance-nodes'
 import { systemicCalibrationNodes } from './systemic-calibration' // ISP: The Grand Convergence
 import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
+function makeSamuelContextualHubChoices(idPrefix: string): ConditionalChoice[] {
+  const id = (suffix: string) => `${idPrefix}_${suffix}`
+
+  return [
+    {
+      choiceId: id('about_station'),
+      text: "What is this place, really?",
+      nextNodeId: 'samuel_station_deep_explanation',
+      pattern: 'exploring',
+      skills: ['criticalThinking']
+    },
+    {
+      choiceId: id('about_patterns_analytical'),
+      text: "These patterns I'm developing...",
+      nextNodeId: 'samuel_pattern_insight_analytical',
+      pattern: 'analytical',
+      skills: ['criticalThinking'],
+      visibleCondition: {
+        patterns: {
+          analytical: { min: 3 }
+        }
+      }
+    },
+    {
+      choiceId: id('about_patterns_helping'),
+      text: "I keep wanting to help people. Is that a pattern?",
+      nextNodeId: 'samuel_pattern_insight_helping',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence'],
+      visibleCondition: {
+        patterns: {
+          helping: { min: 3 }
+        }
+      }
+    },
+    {
+      choiceId: id('about_patterns_building'),
+      text: "I notice I keep wanting to build things...",
+      nextNodeId: 'samuel_pattern_insight_building',
+      pattern: 'building',
+      skills: ['creativity'],
+      visibleCondition: {
+        patterns: {
+          building: { min: 3 }
+        }
+      }
+    },
+    {
+      choiceId: id('about_people'),
+      text: "Tell me about the people here.",
+      nextNodeId: 'samuel_comprehensive_hub',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence'],
+      visibleCondition: {
+        hasGlobalFlags: ['met_maya']
+      }
+    },
+    {
+      choiceId: id('about_careers'),
+      text: "What careers might fit someone like me?",
+      nextNodeId: 'samuel_career_preview_general',
+      pattern: 'exploring',
+      skills: ['criticalThinking'],
+      visibleCondition: {
+        patterns: {
+          analytical: { min: 4 },
+          building: { min: 4 }
+        }
+      }
+    },
+    {
+      choiceId: id('about_careers_helping'),
+      text: "Are there careers for people who want to help?",
+      nextNodeId: 'samuel_career_preview_helping',
+      pattern: 'helping',
+      skills: ['emotionalIntelligence'],
+      visibleCondition: {
+        patterns: {
+          helping: { min: 4 },
+          patience: { min: 3 }
+        }
+      }
+    },
+    {
+      choiceId: id('meet_someone'),
+      text: "I'd like to meet someone new.",
+      nextNodeId: 'samuel_hub_router',
+      pattern: 'exploring',
+      skills: ['communication']
+    }
+  ]
+}
 export const samuelDialogueNodes: DialogueNode[] = [
   ...systemicCalibrationNodes, // Inject Calibration nodes first
 
@@ -1316,7 +1409,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -1616,6 +1709,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         choiceId: 'ask_about_letters',
         text: "The letters... do you send them?",
         nextNodeId: 'samuel_letter_system',
+        visibleCondition: {
+          trust: { min: 5 }
+        },
         pattern: 'analytical',
         skills: ['criticalThinking'],
         consequence: {
@@ -1654,6 +1750,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         choiceId: 'ask_about_letters_from_daughter',
         text: "And the letters people receive... you send those?",
         nextNodeId: 'samuel_letter_system',
+        visibleCondition: {
+          trust: { min: 5 }
+        },
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication']
       }
@@ -1798,7 +1897,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'orb_to_hub',
         text: "[Continue]",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ],
@@ -1808,6 +1907,84 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       }
     ],
     tags: ['orb_introduction', 'tutorial']
+  },
+
+  // ============= HUB ROUTER (Auto-route) =============
+  // Single entry point for hub navigation across game phases.
+  // Tagged `router` so the UI auto-advances when exactly one route is available.
+  {
+    nodeId: 'samuel_hub_router',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: '...',
+        emotion: 'neutral',
+        variation_id: 'hub_router_v1'
+      }
+    ],
+    choices: [
+      // If Maya is complete but Devon isn't, route to the Maya hub variant.
+      {
+        choiceId: 'route_to_hub_after_maya',
+        text: '[Continue]',
+        nextNodeId: 'samuel_hub_after_maya',
+        visibleCondition: {
+          hasGlobalFlags: ['maya_arc_complete'],
+          lacksGlobalFlags: ['devon_arc_complete']
+        }
+      },
+
+      // Brand-new player: before meeting Maya/Devon/Jordan, use the initial hub.
+      {
+        choiceId: 'route_to_hub_initial',
+        text: '[Continue]',
+        nextNodeId: 'samuel_hub_initial',
+        visibleCondition: {
+          lacksGlobalFlags: ['met_maya', 'met_devon', 'met_jordan']
+        }
+      },
+
+      // Once Devon is complete, the Devon hub is the universal return point.
+      {
+        choiceId: 'route_to_hub_after_devon_complete',
+        text: '[Continue]',
+        nextNodeId: 'samuel_hub_after_devon',
+        visibleCondition: {
+          hasGlobalFlags: ['devon_arc_complete']
+        }
+      },
+
+      // Fallback: if the player has met at least one core traveler, use the Devon hub.
+      // We implement priority without OR by making these mutually exclusive.
+      {
+        choiceId: 'route_to_hub_after_devon_maya',
+        text: '[Continue]',
+        nextNodeId: 'samuel_hub_after_devon',
+        visibleCondition: {
+          hasGlobalFlags: ['met_maya'],
+          lacksGlobalFlags: ['maya_arc_complete', 'devon_arc_complete']
+        }
+      },
+      {
+        choiceId: 'route_to_hub_after_devon_devon',
+        text: '[Continue]',
+        nextNodeId: 'samuel_hub_after_devon',
+        visibleCondition: {
+          hasGlobalFlags: ['met_devon'],
+          lacksGlobalFlags: ['met_maya', 'maya_arc_complete', 'devon_arc_complete']
+        }
+      },
+      {
+        choiceId: 'route_to_hub_after_devon_jordan',
+        text: '[Continue]',
+        nextNodeId: 'samuel_hub_after_devon',
+        visibleCondition: {
+          hasGlobalFlags: ['met_jordan'],
+          lacksGlobalFlags: ['met_maya', 'met_devon', 'maya_arc_complete', 'devon_arc_complete']
+        }
+      }
+    ],
+    tags: ['hub', 'router']
   },
 
   // ============= HUB: INITIAL (Conversational 3-step character routing) =============
@@ -1915,7 +2092,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'hub_heart_other',
         text: "[Consider other paths]",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -2015,7 +2192,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'hub_fallback_explore',
         text: "I'll look around.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]
@@ -2673,7 +2850,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ],
     requiredState: {
       hasGlobalFlags: ['maya_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_maya']
+      lacksGlobalFlags: ['reflected_on_maya']
     },
     choices: [
       {
@@ -2702,6 +2879,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_maya']
+      },
+      {
+        addGlobalFlags: ['reflected_on_maya']
       }
     ]
   },
@@ -2828,7 +3008,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -2904,7 +3084,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -3025,7 +3205,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -3074,7 +3254,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -3164,7 +3344,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ready_for_next',
         text: "I'm ready to meet someone else.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring',
         skills: ['communication', 'collaboration']
       },
@@ -3240,7 +3420,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ready_now',
         text: "I think I'm ready for the next platform.",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring',
         skills: ["communication", "criticalThinking"]
       }
@@ -3290,7 +3470,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -3333,7 +3513,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -3352,7 +3532,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ],
     requiredState: {
       hasGlobalFlags: ['yaquin_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_yaquin']
+      lacksGlobalFlags: ['reflected_on_yaquin']
     },
     choices: [
       {
@@ -3391,6 +3571,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_yaquin']
+      },
+      {
+        addGlobalFlags: ['reflected_on_yaquin']
       }
     ]
   },
@@ -3488,7 +3671,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ],
     requiredState: {
       hasGlobalFlags: ['kai_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_kai']
+      lacksGlobalFlags: ['reflected_on_kai']
     },
     choices: [
       {
@@ -3517,6 +3700,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_kai']
+      },
+      {
+        addGlobalFlags: ['reflected_on_kai']
       }
     ]
   },
@@ -3574,7 +3760,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ],
     requiredState: {
       hasGlobalFlags: ['rohan_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_rohan']
+      lacksGlobalFlags: ['reflected_on_rohan']
     },
     choices: [
       {
@@ -3589,6 +3775,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_rohan']
+      },
+      {
+        addGlobalFlags: ['reflected_on_rohan']
       }
     ]
   },
@@ -3646,7 +3835,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ],
     requiredState: {
       hasGlobalFlags: ['silas_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_silas']
+      lacksGlobalFlags: ['reflected_on_silas']
     },
     choices: [
       {
@@ -3661,6 +3850,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_silas']
+      },
+      {
+        addGlobalFlags: ['reflected_on_silas']
       }
     ]
   },
@@ -3718,7 +3910,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ],
     requiredState: {
       hasGlobalFlags: ['alex_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_alex']
+      lacksGlobalFlags: ['reflected_on_alex']
     },
     choices: [
       {
@@ -3733,6 +3925,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_alex']
+      },
+      {
+        addGlobalFlags: ['reflected_on_alex']
       }
     ]
   },
@@ -3790,7 +3985,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ],
     requiredState: {
       hasGlobalFlags: ['elena_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_elena']
+      lacksGlobalFlags: ['reflected_on_elena']
     },
     choices: [
       {
@@ -3805,6 +4000,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_elena']
+      },
+      {
+        addGlobalFlags: ['reflected_on_elena']
       }
     ]
   },
@@ -3862,7 +4060,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ],
     requiredState: {
       hasGlobalFlags: ['grace_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_grace']
+      lacksGlobalFlags: ['reflected_on_grace']
     },
     choices: [
       {
@@ -3877,6 +4075,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_grace']
+      },
+      {
+        addGlobalFlags: ['reflected_on_grace']
       }
     ]
   },
@@ -3992,7 +4193,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -4036,7 +4237,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -4077,7 +4278,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]
@@ -4122,7 +4323,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -4167,7 +4368,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -4233,7 +4434,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -4274,7 +4475,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -4294,7 +4495,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -4335,7 +4536,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -4380,7 +4581,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -4431,7 +4632,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ],
     requiredState: {
       hasGlobalFlags: ['devon_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_devon']
+      lacksGlobalFlags: ['reflected_on_devon']
     },
     choices: [
       {
@@ -4460,6 +4661,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_devon']
+      },
+      {
+        addGlobalFlags: ['reflected_on_devon']
       }
     ]
   },
@@ -4746,7 +4950,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ],
     requiredState: {
       hasGlobalFlags: ['marcus_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_marcus']
+      lacksGlobalFlags: ['reflected_on_marcus']
     },
     choices: [
       {
@@ -4768,6 +4972,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_marcus']
+      },
+      {
+        addGlobalFlags: ['reflected_on_marcus']
       }
     ]
   },
@@ -4858,7 +5065,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ],
     requiredState: {
       hasGlobalFlags: ['tess_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_tess']
+      lacksGlobalFlags: ['reflected_on_tess']
     },
     choices: [
       {
@@ -4886,6 +5093,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_tess']
+      },
+      {
+        addGlobalFlags: ['reflected_on_tess']
       }
     ]
   },
@@ -5015,7 +5225,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ],
     requiredState: {
       hasGlobalFlags: ['jordan_arc_complete'],
-      lacksKnowledgeFlags: ['reflected_on_jordan']
+      lacksGlobalFlags: ['reflected_on_jordan']
     },
     choices: [
       {
@@ -5044,6 +5254,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         characterId: 'samuel',
         addKnowledgeFlags: ['reflected_on_jordan']
+      },
+      {
+        addGlobalFlags: ['reflected_on_jordan']
       }
     ]
   },
@@ -5469,7 +5682,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'close_messages',
         text: "Close messages",
-        nextNodeId: 'samuel_hub_initial'
+        nextNodeId: 'samuel_hub_router'
       }
     ],
     tags: ['system', 'messaging']
@@ -5651,7 +5864,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -5698,7 +5911,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
     ]
@@ -5769,7 +5982,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -6234,7 +6447,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'comprehensive_back',
         text: "Actually, let me think about it.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience',
         skills: ['communication']
       }
@@ -6545,7 +6758,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -6587,7 +6800,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -6792,7 +7005,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -6906,7 +7119,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -7020,7 +7233,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -7134,7 +7347,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -7235,7 +7448,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -7311,7 +7524,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -7352,7 +7565,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -7428,7 +7641,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -7469,7 +7682,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -7539,7 +7752,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'exploring_continue',
         text: "That's... a lot to think about.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience',
         skills: ['communication']
       }
@@ -7582,7 +7795,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -7658,7 +7871,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -7699,7 +7912,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8196,7 +8409,89 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     tags: ['lore', 'station']
   },
 
-  // Pattern insight (unlocked at pattern 3+)
+  // Pattern insight (unlocked via contextual hub)
+  {
+    nodeId: 'samuel_pattern_insight_analytical',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "You keep looking for structure, don't you? Like if you can name the shape of a problem, you can move through it.\n\nEvery choice you make here leaves a trace. Not good or bad.just... true. The station watches how you move through problems, how you connect with people, what questions you ask.\n\nThose patterns? They're not somethin' we give you. They're somethin' you already had. We just help you see 'em clearer.",
+        emotion: 'knowing',
+        variation_id: 'pattern_insight_analytical_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'insight_what_next_analytical',
+        text: "What do I do with that knowledge?",
+        nextNodeId: 'samuel_hub_router',
+        pattern: 'building'
+      },
+      {
+        choiceId: 'insight_accept_analytical',
+        text: "I think I understand.",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['patterns', 'insight']
+  },
+
+  {
+    nodeId: 'samuel_pattern_insight_helping',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Yeah. You keep reaching for people. Even when it'd be easier to keep your head down.\n\nEvery choice you make here leaves a trace. Not good or bad.just... true. The station watches how you move through problems, how you connect with people, what questions you ask.\n\nThose patterns? They're not somethin' we give you. They're somethin' you already had. We just help you see 'em clearer.",
+        emotion: 'knowing',
+        variation_id: 'pattern_insight_helping_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'insight_what_next_helping',
+        text: "What do I do with that knowledge?",
+        nextNodeId: 'samuel_hub_router',
+        pattern: 'building'
+      },
+      {
+        choiceId: 'insight_accept_helping',
+        text: "I think I understand.",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['patterns', 'insight']
+  },
+
+  {
+    nodeId: 'samuel_pattern_insight_building',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "I hear it in how you talk. You don't just want answers.you want somethin' you can make real.\n\nEvery choice you make here leaves a trace. Not good or bad.just... true. The station watches how you move through problems, how you connect with people, what questions you ask.\n\nThose patterns? They're not somethin' we give you. They're somethin' you already had. We just help you see 'em clearer.",
+        emotion: 'knowing',
+        variation_id: 'pattern_insight_building_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'insight_what_next_building',
+        text: "What do I do with that knowledge?",
+        nextNodeId: 'samuel_hub_router',
+        pattern: 'building'
+      },
+      {
+        choiceId: 'insight_accept_building',
+        text: "I think I understand.",
+        nextNodeId: 'samuel_contextual_hub',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['patterns', 'insight']
+  },
+
+  // Pattern insight (generic; used by non-contextual routes)
   {
     nodeId: 'samuel_pattern_insight',
     speaker: 'Samuel Washington',
@@ -8243,7 +8538,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'insight_what_next',
         text: "What do I do with that knowledge?",
-        nextNodeId: 'samuel_contextual_hub',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'building'
       },
       {
@@ -8338,7 +8633,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'samuel_platform_drop',
         text: "Okay. Just asking.",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience',
         consequence: {
           characterId: 'samuel',
@@ -8374,7 +8669,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8405,7 +8700,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8463,7 +8758,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8496,7 +8791,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8528,7 +8823,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8560,7 +8855,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8581,7 +8876,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8602,7 +8897,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -8623,7 +8918,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_initial',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -9165,7 +9460,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'continue_to_hub',
         text: "(Continue)",
-        nextNodeId: 'samuel_hub_after_maya',
+        nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
     ]
@@ -9216,8 +9511,8 @@ export const samuelEntryPoints = {
   /** Samuel's introduction - after stepping onto platform */
   INTRODUCTION: 'samuel_introduction',
 
-  /** Hub shown when player first arrives (only Maya available) */
-  HUB_INITIAL: 'samuel_hub_initial',
+  /** Hub router entry point (auto-routes to the correct hub variant) */
+  HUB_INITIAL: 'samuel_hub_router',
 
   /** Reflection gateway - first return from Maya (mirrors player's influence) */
   MAYA_REFLECTION_GATEWAY: 'samuel_maya_reflection_gateway',

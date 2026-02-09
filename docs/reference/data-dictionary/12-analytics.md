@@ -434,8 +434,120 @@ getUserCohort(userState, 'pattern') // "analytical"
 getUserCohort(userState, 'completion') // "veteran"
 ```
 
----
+## Interaction Events Telemetry (Supabase)
 
+Bias and engagement telemetry is stored in a dedicated table so we can distinguish:
+- what the UI showed (ordering, gravity weights, lock state), from
+- what the player clicked (index + reaction time), and
+- what the game logic awarded (earned pattern, trust delta).
+
+**Client producer (offline-first):**
+- `lib/sync-queue.ts` action type: `interaction_event` (`queueInteractionEventSync()`)
+
+**User ingest API:**
+- `app/api/user/interaction-events/route.ts`
+- Notes:
+  - Stores `payload` as JSONB.
+  - Adds `payload.__gct_validation` when the payload is missing expected keys (soft validation).
+
+**Database table:**
+- `interaction_events` via `supabase/migrations/021_interaction_events_table.sql`
+
+### Table Schema (interaction_events)
+
+| Column | Type | Notes |
+|--------|------|------|
+| `id` | uuid | Primary key |
+| `user_id` | text | Player ID (`player_...` or UUID), FK to `player_profiles.user_id` |
+| `session_id` | text | Session identifier (currently `sessionStartTime` string) |
+| `event_type` | text | e.g. `choice_presented`, `choice_selected_ui`, `choice_selected_result`, `node_entered`, `experiment_assigned`, `deadlock_recovery_injected` |
+| `node_id` | text | Dialogue node id (when applicable) |
+| `character_id` | text | Current character id (when applicable) |
+| `ordering_variant` | text | Choice ordering strategy id (e.g. `gravity_bucket_shuffle`) |
+| `ordering_seed` | text | Deterministic seed used for ordering (when applicable) |
+| `payload` | jsonb | Event-specific payload (see below) |
+| `occurred_at` | timestamptz | When the event occurred (client timestamp) |
+
+### Event Types + Payload Shapes
+
+**`choice_presented`** (source of truth for what the player saw)
+- Emitted by: `components/GameChoices.tsx`
+- Payload keys:
+  - `event_id`: string
+  - `presented_at_ms`: number
+  - `nervous_system_state`: string|null
+  - `mercy_unlocked_choice_id`: string|null
+  - `choices`: array of:
+    - `index`: number
+    - `choice_id`: string
+    - `pattern`: string|null
+    - `gravity_weight`: number|null
+    - `gravity_effect`: string|null
+    - `is_enabled`: boolean (optional; false if gated by an `enabledCondition`)
+    - `disabled_reason`: string|null (optional; only when `is_enabled=false`)
+    - `is_locked`: boolean
+
+**`choice_selected_ui`** (what was clicked, at what index, how fast)
+- Emitted by: `components/GameChoices.tsx`
+- Payload keys:
+  - `event_id`: string
+  - `presented_event_id`: string|null (should match `choice_presented.payload.event_id`)
+  - `selected_choice_id`: string
+  - `selected_index`: number|null
+  - `reaction_time_ms`: number
+
+**`choice_selected_result`** (authoritative result from game logic)
+- Emitted by: `hooks/game/useChoiceHandler.ts`
+- Payload keys (subset):
+  - `choice_id`: string|null
+  - `choice_text`: string|null
+  - `choice_pattern`: string|null
+  - `reaction_time_ms`: number
+  - `earned_pattern`: string|null
+  - `trust_delta`: number|null
+  - `nervous_system_state`: string|null
+
+**`node_entered`** (dialogue navigation truth; emitted once per node change)
+- Emitted by:
+  - `hooks/game/useGameInitializer.ts` (initial load)
+  - `hooks/game/useChoiceHandler.ts` (after resolving next node)
+- Payload keys:
+  - `event_id`: string
+  - `entered_at_ms`: number
+  - `node_id`: string
+  - `character_id`: string|null
+  - `screen`: string|null (e.g. `game_init`, `choice`)
+
+**`experiment_assigned`** (A/B test assignment; deterministic + sticky)
+- Emitted by: `lib/experiments.ts` (on first assignment for a given `(test_id, assignment_version, user_id)`)
+- Payload keys:
+  - `event_id`: string
+  - `assigned_at_ms`: number
+  - `test_id`: string
+  - `variant`: string
+  - `assignment_version`: string
+
+**`deadlock_recovery_injected`** (content/system anomaly signal; never reveals gated content)
+- Emitted by: `components/GameChoices.tsx` (when the runtime had to inject the `__deadlock_recovery__` choice because no selectable choices existed)
+- Payload keys:
+  - `event_id`: string
+  - `injected_at_ms`: number
+  - `presented_event_id`: string|null (links to `choice_presented.payload.event_id`)
+  - `recovery_choice_id`: string (currently `__deadlock_recovery__`)
+  - `presented_choices_total`: number (optional; includes recovery)
+  - `non_recovery_choices_total`: number (optional)
+
+### Join Logic (Position Bias Analysis)
+
+To compute click bias vs position, join:
+- `choice_selected_ui.payload.presented_event_id`
+to
+- `choice_presented.payload.event_id`
+
+This allows analysis like:
+- top-slot click rate (`selected_index === 0`)
+- pattern-by-position pick rates
+- ordering strategy comparisons (`ordering_variant`)
 ## Validation Rules
 
 ### Event Bus Validation

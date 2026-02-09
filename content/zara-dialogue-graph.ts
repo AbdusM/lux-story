@@ -1000,6 +1000,9 @@ export const zaraDialogueNodes: DialogueNode[] = [
                 nextNodeId: 'zara_triage_deepdive',
                 pattern: 'helping',
                 skills: ['emotionalIntelligence'],
+                visibleCondition: {
+                    trust: { min: 3 }
+                },
                 consequence: {
                     characterId: 'zara',
                     trustChange: 2

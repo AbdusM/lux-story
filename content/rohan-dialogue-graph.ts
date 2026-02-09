@@ -1257,7 +1257,11 @@ export const rohanDialogueNodes: DialogueNode[] = [
         choiceId: 'rohan_leave_bad',
         text: "...",
         nextNodeId: samuelEntryPoints.ROHAN_REFLECTION_GATEWAY,
-        pattern: 'patience'
+        pattern: 'patience',
+        visibleCondition: {
+          hasGlobalFlags: ['rohan_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_rohan']
+        }
       }
     ],
     onEnter: [
@@ -1415,7 +1419,11 @@ export const rohanDialogueNodes: DialogueNode[] = [
         choiceId: 'return_to_samuel_rohan',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.ROHAN_REFLECTION_GATEWAY,
-        pattern: 'exploring'
+        pattern: 'exploring',
+        visibleCondition: {
+          hasGlobalFlags: ['rohan_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_rohan']
+        }
       },
       // Loyalty Experience trigger - only visible at high trust + analytical pattern
       {
@@ -1429,6 +1437,11 @@ export const rohanDialogueNodes: DialogueNode[] = [
           patterns: { analytical: { min: 50 } },
           hasGlobalFlags: ['rohan_arc_complete']
         }
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['rohan_arc_complete']
       }
     ],
     tags: ['transition', 'rohan_arc']
@@ -1494,7 +1507,11 @@ export const rohanDialogueNodes: DialogueNode[] = [
         choiceId: 'loyalty_declined_farewell',
         text: "The truth is there. You'll find it.",
         nextNodeId: samuelEntryPoints.ROHAN_REFLECTION_GATEWAY,
-        pattern: 'patience'
+        pattern: 'patience',
+        visibleCondition: {
+          hasGlobalFlags: ['rohan_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_rohan']
+        }
       }
     ],
     onEnter: [

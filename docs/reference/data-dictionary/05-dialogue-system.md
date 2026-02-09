@@ -679,28 +679,34 @@ consequence: {
 
 ## Safety Mechanisms
 
-### Auto-Fallback System
+### Deadlock Recovery
 
-**Problem:** Misconfigured state conditions could create dead ends (no visible choices).
+**Problem:** Misconfigured state conditions can create dead ends (choices exist, but none are selectable).
 
-**Solution:** If zero choices are visible, show ALL choices as fallback.
+**Solution:** If zero choices are selectable, offer a single safe recovery choice instead of revealing gated content.
 
 ```typescript
 // StateConditionEvaluator.evaluateChoices()
-const visibleCount = evaluated.filter(c => c.visible).length
+const enabledCount = evaluated.filter(c => c.visible && c.enabled).length
 
-if (visibleCount === 0 && node.choices.length > 0) {
-  console.warn(`[AUTO-FALLBACK] No visible choices at node "${node.nodeId}". ` +
-               `Showing all ${node.choices.length} choices as fallback.`)
-  return node.choices.map(choice => ({
-    choice,
-    visible: true,
-    enabled: true
-  }))
+if (enabledCount === 0 && node.choices.length > 0) {
+  console.warn(`[DEADLOCK-RECOVERY] No selectable choices at node "${node.nodeId}".`)
+  return [
+    ...evaluated,
+    {
+      choice: {
+        choiceId: '__deadlock_recovery__',
+        text: 'Return to Samuel',
+        nextNodeId: 'TRAVEL_PENDING'
+      },
+      visible: true,
+      enabled: true
+    }
+  ]
 }
 ```
 
-**Impact:** Zero reported dead ends in 1158 nodes
+**Impact:** Prevents player lock-in without unlocking hidden branches.
 
 ---
 

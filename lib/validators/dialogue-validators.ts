@@ -90,19 +90,25 @@ export function validateDialogueGating(
       continue
     }
 
-    // Evaluate choices under default state WITHOUT auto-fallback
-    const visibleCount = node.choices.filter(choice => (
+    // Evaluate choices under default state, pre-recovery:
+    // A "gated" node here means: there are choices, but none are visible+enabled.
+    const visibleCount = node.choices.filter(choice =>
       StateConditionEvaluator.evaluate(choice.visibleCondition, testState, characterId)
-    )).length
+    ).length
+    const enabledCount = node.choices.filter(choice => {
+      const visible = StateConditionEvaluator.evaluate(choice.visibleCondition, testState, characterId)
+      if (!visible) return false
+      return StateConditionEvaluator.evaluate(choice.enabledCondition, testState, characterId)
+    }).length
 
-    // If all choices are gated off, flag it
-    // Note: evaluateChoices has auto-fallback, so this checks pre-fallback state
-    if (visibleCount === 0) {
+    // If all choices are gated off, flag it.
+    // Runtime deadlock recovery may keep the player from hard-locking, but this indicates a gating/config bug.
+    if (enabledCount === 0) {
       issues.push({
         nodeId,
         characterId,
         issueType: 'all_choices_gated',
-        details: `All ${node.choices.length} choices are gated off under default state. Auto-fallback will show them, but this may indicate misconfiguration.`,
+        details: `No selectable choices under default state (visible=${visibleCount}, enabled=${enabledCount}, total=${node.choices.length}). This indicates a gating/config issue; runtime may inject a deadlock recovery choice, but content should be fixed.`,
         severity: 'warning'
       })
     }

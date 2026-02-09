@@ -1515,6 +1515,9 @@ Available Components:
         nextNodeId: 'kai_climax_decision',
         pattern: 'helping',
         skills: ['wisdom', 'instructionalDesign'],
+        visibleCondition: {
+          lacksGlobalFlags: ['kai_chose_safety']
+        },
         consequence: {
           characterId: 'kai',
           trustChange: 3
@@ -1525,14 +1528,20 @@ Available Components:
         text: "Reach. You can't save everyone, but you can give everyone a chance. Sometimes access matters more than perfection.",
         nextNodeId: 'kai_climax_decision',
         pattern: 'building',
-        skills: ['pragmatism', 'strategicThinking']
+        skills: ['pragmatism', 'strategicThinking'],
+        visibleCondition: {
+          lacksGlobalFlags: ['kai_chose_safety']
+        }
       },
       {
         choiceId: 'kai_choose_both',
         text: "Both. Start deep, then find ways to scale what works. But honestly? I struggle with that balance. I want to do both and end up doing neither well.",
         nextNodeId: 'kai_climax_decision',
         pattern: 'analytical',
-        skills: ['systemsThinking', 'leadership', 'emotionalIntelligence']
+        skills: ['systemsThinking', 'leadership', 'emotionalIntelligence'],
+        visibleCondition: {
+          lacksGlobalFlags: ['kai_chose_safety']
+        }
       },
       {
         choiceId: 'kai_choose_uncertain',
@@ -1540,6 +1549,9 @@ Available Components:
         nextNodeId: 'kai_climax_decision',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'criticalThinking'],
+        visibleCondition: {
+          lacksGlobalFlags: ['kai_chose_safety']
+        },
         consequence: {
           characterId: 'kai',
           trustChange: 2
@@ -1628,7 +1640,11 @@ Available Components:
         choiceId: 'kai_leave_bad',
         text: "...",
         nextNodeId: samuelEntryPoints.KAI_REFLECTION_GATEWAY,
-        pattern: 'patience'
+        pattern: 'patience',
+        visibleCondition: {
+          hasGlobalFlags: ['kai_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_kai']
+        }
       }
     ],
     onEnter: [
@@ -1793,7 +1809,11 @@ Available Components:
         choiceId: 'return_to_samuel_kai',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.KAI_REFLECTION_GATEWAY,
-        pattern: 'exploring'
+        pattern: 'exploring',
+        visibleCondition: {
+          hasGlobalFlags: ['kai_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_kai']
+        }
       },
       // Loyalty Experience trigger - only visible at high trust + building pattern
       {
@@ -1872,7 +1892,11 @@ Available Components:
         choiceId: 'loyalty_declined_farewell',
         text: "You'll make the right calls. You always do.",
         nextNodeId: samuelEntryPoints.KAI_REFLECTION_GATEWAY,
-        pattern: 'patience'
+        pattern: 'patience',
+        visibleCondition: {
+          hasGlobalFlags: ['kai_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_kai']
+        }
       }
     ],
     onEnter: [
@@ -1986,7 +2010,11 @@ Available Components:
         choiceId: 'return_to_samuel_kai_after',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.KAI_REFLECTION_GATEWAY,
-        pattern: 'exploring'
+        pattern: 'exploring',
+        visibleCondition: {
+          hasGlobalFlags: ['kai_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_kai']
+        }
       }
     ],
     tags: ['reciprocity', 'kai_arc']

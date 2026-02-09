@@ -62,6 +62,35 @@ export interface QueuedAction {
   retries: number // How many times we've attempted sync
 }
 
+export type InteractionEventInsert = {
+  user_id: string
+  session_id: string
+  event_type: string
+  node_id?: string | null
+  character_id?: string | null
+  ordering_variant?: string | null
+  ordering_seed?: string | null
+  payload: unknown
+  occurred_at?: string
+}
+
+/**
+ * Queue an interaction event for durable, offline-first ingestion.
+ *
+ * This is the canonical "analytics sink" path.
+ */
+export function queueInteractionEventSync(event: InteractionEventInsert): void {
+  SyncQueue.addToQueue({
+    id: generateActionId(),
+    type: 'interaction_event',
+    data: {
+      ...event,
+      occurred_at: event.occurred_at || new Date().toISOString()
+    },
+    timestamp: Date.now()
+  })
+}
+
 export class SyncQueue {
   /**
    * Get all queued actions from localStorage
@@ -493,6 +522,28 @@ export class SyncQueue {
           successfulIds.push(action.id)
           // Success log removed - too verbose
           logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'platform_state', true)
+
+        } else if (action.type === 'interaction_event') {
+          // Sync interaction telemetry to Supabase
+          let response: Response
+          try {
+            response = await fetch('/api/user/interaction-events', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(action.data)
+            })
+          } catch (fetchError) {
+            throw new Error(`Network error syncing interaction event: ${fetchError instanceof Error ? fetchError.message : String(fetchError)}`)
+          }
+
+          if (!response.ok) {
+            let errorBody = ''
+            try { errorBody = await response.text() } catch (_e) { /* ignore */ }
+            throw new Error(`Interaction event sync failed: ${response.status} ${response.statusText}${errorBody ? ` - ${errorBody.slice(0, 100)}` : ''}`)
+          }
+
+          successfulIds.push(action.id)
+          logSync((action.data as { user_id?: string })?.user_id || 'unknown', 'interaction_event', true)
 
         } else {
           console.error(`❌ [SyncQueue] Unknown action type: ${action.type}`)

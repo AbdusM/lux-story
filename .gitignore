@@ -85,3 +85,6 @@ test-results/.last-run.json
 # Temporary files
 *.temp.*
 temp_*.json
+
+# Generated visual artifacts
+tests/visual/output/

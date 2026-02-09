@@ -1,25 +1,9 @@
 {
-  "generated_at": "2026-02-08T21:37:03.172Z",
+  "generated_at": "2026-02-09T18:36:18.447Z",
   "nodes": [
     {
       "graphKey": "alex",
       "nodeId": "alex_closing_enough"
-    },
-    {
-      "graphKey": "alex",
-      "nodeId": "alex_sim3_curriculum_intro"
-    },
-    {
-      "graphKey": "alex",
-      "nodeId": "alex_sim3_fail"
-    },
-    {
-      "graphKey": "alex",
-      "nodeId": "alex_sim3_partial"
-    },
-    {
-      "graphKey": "alex",
-      "nodeId": "alex_sim3_success"
     },
     {
       "graphKey": "alex",
@@ -95,38 +79,6 @@
     },
     {
       "graphKey": "asha",
-      "nodeId": "asha_sim2_community_intro"
-    },
-    {
-      "graphKey": "asha",
-      "nodeId": "asha_sim2_fail"
-    },
-    {
-      "graphKey": "asha",
-      "nodeId": "asha_sim2_partial"
-    },
-    {
-      "graphKey": "asha",
-      "nodeId": "asha_sim2_success"
-    },
-    {
-      "graphKey": "asha",
-      "nodeId": "asha_sim3_critique_intro"
-    },
-    {
-      "graphKey": "asha",
-      "nodeId": "asha_sim3_defensive"
-    },
-    {
-      "graphKey": "asha",
-      "nodeId": "asha_sim3_partial"
-    },
-    {
-      "graphKey": "asha",
-      "nodeId": "asha_sim3_success"
-    },
-    {
-      "graphKey": "asha",
       "nodeId": "asha_stillness_observation"
     },
     {
@@ -139,23 +91,11 @@
     },
     {
       "graphKey": "dante",
-      "nodeId": "dante_simulation_phase1"
-    },
-    {
-      "graphKey": "dante",
       "nodeId": "dante_simulation_phase1_fail"
     },
     {
       "graphKey": "dante",
       "nodeId": "dante_simulation_phase1_setup"
-    },
-    {
-      "graphKey": "dante",
-      "nodeId": "dante_simulation_phase1_success"
-    },
-    {
-      "graphKey": "dante",
-      "nodeId": "dante_simulation_phase2"
     },
     {
       "graphKey": "dante",
@@ -167,14 +107,6 @@
     },
     {
       "graphKey": "dante",
-      "nodeId": "dante_simulation_phase2_success"
-    },
-    {
-      "graphKey": "dante",
-      "nodeId": "dante_simulation_phase3"
-    },
-    {
-      "graphKey": "dante",
       "nodeId": "dante_simulation_phase3_fail"
     },
     {
@@ -183,23 +115,11 @@
     },
     {
       "graphKey": "dante",
-      "nodeId": "dante_simulation_phase3_success"
-    },
-    {
-      "graphKey": "dante",
       "nodeId": "dante_trust_recovery"
     },
     {
       "graphKey": "dante",
       "nodeId": "dante_trust_restored"
-    },
-    {
-      "graphKey": "deep_station",
-      "nodeId": "deep_station_glitch_entry"
-    },
-    {
-      "graphKey": "deep_station",
-      "nodeId": "sector_3_office_ng"
     },
     {
       "graphKey": "devon",
@@ -295,19 +215,7 @@
     },
     {
       "graphKey": "devon",
-      "nodeId": "devon_hub_return"
-    },
-    {
-      "graphKey": "devon",
       "nodeId": "devon_identity"
-    },
-    {
-      "graphKey": "devon",
-      "nodeId": "devon_introduction_after_building"
-    },
-    {
-      "graphKey": "devon",
-      "nodeId": "devon_introduction_after_empathy"
     },
     {
       "graphKey": "devon",
@@ -316,42 +224,6 @@
     {
       "graphKey": "devon",
       "nodeId": "devon_loneliness_response"
-    },
-    {
-      "graphKey": "devon",
-      "nodeId": "devon_loyalty_crisis_1"
-    },
-    {
-      "graphKey": "devon",
-      "nodeId": "devon_loyalty_declined"
-    },
-    {
-      "graphKey": "devon",
-      "nodeId": "devon_loyalty_fire_first"
-    },
-    {
-      "graphKey": "devon",
-      "nodeId": "devon_loyalty_freeze"
-    },
-    {
-      "graphKey": "devon",
-      "nodeId": "devon_loyalty_partial"
-    },
-    {
-      "graphKey": "devon",
-      "nodeId": "devon_loyalty_servers_first"
-    },
-    {
-      "graphKey": "devon",
-      "nodeId": "devon_loyalty_start"
-    },
-    {
-      "graphKey": "devon",
-      "nodeId": "devon_loyalty_success"
-    },
-    {
-      "graphKey": "devon",
-      "nodeId": "devon_loyalty_trigger"
     },
     {
       "graphKey": "devon",
@@ -383,10 +255,6 @@
     },
     {
       "graphKey": "devon",
-      "nodeId": "devon_optimization_trap"
-    },
-    {
-      "graphKey": "devon",
       "nodeId": "devon_patterns_reward"
     },
     {
@@ -399,23 +267,11 @@
     },
     {
       "graphKey": "devon",
-      "nodeId": "devon_simulation_phase1"
-    },
-    {
-      "graphKey": "devon",
       "nodeId": "devon_simulation_phase1_fail"
     },
     {
       "graphKey": "devon",
       "nodeId": "devon_simulation_phase1_setup"
-    },
-    {
-      "graphKey": "devon",
-      "nodeId": "devon_simulation_phase1_success"
-    },
-    {
-      "graphKey": "devon",
-      "nodeId": "devon_simulation_phase2"
     },
     {
       "graphKey": "devon",
@@ -427,23 +283,11 @@
     },
     {
       "graphKey": "devon",
-      "nodeId": "devon_simulation_phase2_success"
-    },
-    {
-      "graphKey": "devon",
-      "nodeId": "devon_simulation_phase3"
-    },
-    {
-      "graphKey": "devon",
       "nodeId": "devon_simulation_phase3_fail"
     },
     {
       "graphKey": "devon",
       "nodeId": "devon_simulation_phase3_setup"
-    },
-    {
-      "graphKey": "devon",
-      "nodeId": "devon_simulation_phase3_success"
     },
     {
       "graphKey": "devon",
@@ -503,47 +347,11 @@
     },
     {
       "graphKey": "grace",
-      "nodeId": "grace_loyalty_choice"
-    },
-    {
-      "graphKey": "grace",
-      "nodeId": "grace_loyalty_declined"
-    },
-    {
-      "graphKey": "grace",
-      "nodeId": "grace_loyalty_incomplete"
-    },
-    {
-      "graphKey": "grace",
-      "nodeId": "grace_loyalty_partial"
-    },
-    {
-      "graphKey": "grace",
-      "nodeId": "grace_loyalty_start"
-    },
-    {
-      "graphKey": "grace",
-      "nodeId": "grace_loyalty_success"
-    },
-    {
-      "graphKey": "grace",
-      "nodeId": "grace_loyalty_trigger"
-    },
-    {
-      "graphKey": "grace",
-      "nodeId": "grace_loyalty_vigil_begins"
-    },
-    {
-      "graphKey": "grace",
       "nodeId": "grace_trust_recovery"
     },
     {
       "graphKey": "grace",
       "nodeId": "grace_trust_restored"
-    },
-    {
-      "graphKey": "isaiah",
-      "nodeId": "isaiah_simulation_phase1"
     },
     {
       "graphKey": "isaiah",
@@ -555,14 +363,6 @@
     },
     {
       "graphKey": "isaiah",
-      "nodeId": "isaiah_simulation_phase1_success"
-    },
-    {
-      "graphKey": "isaiah",
-      "nodeId": "isaiah_simulation_phase2"
-    },
-    {
-      "graphKey": "isaiah",
       "nodeId": "isaiah_simulation_phase2_fail"
     },
     {
@@ -571,23 +371,11 @@
     },
     {
       "graphKey": "isaiah",
-      "nodeId": "isaiah_simulation_phase2_success"
-    },
-    {
-      "graphKey": "isaiah",
-      "nodeId": "isaiah_simulation_phase3"
-    },
-    {
-      "graphKey": "isaiah",
       "nodeId": "isaiah_simulation_phase3_fail"
     },
     {
       "graphKey": "isaiah",
       "nodeId": "isaiah_simulation_phase3_setup"
-    },
-    {
-      "graphKey": "isaiah",
-      "nodeId": "isaiah_simulation_phase3_success"
     },
     {
       "graphKey": "isaiah",
@@ -627,23 +415,11 @@
     },
     {
       "graphKey": "jordan",
-      "nodeId": "jordan_simulation_phase1"
-    },
-    {
-      "graphKey": "jordan",
       "nodeId": "jordan_simulation_phase1_fail"
     },
     {
       "graphKey": "jordan",
       "nodeId": "jordan_simulation_phase1_setup"
-    },
-    {
-      "graphKey": "jordan",
-      "nodeId": "jordan_simulation_phase1_success"
-    },
-    {
-      "graphKey": "jordan",
-      "nodeId": "jordan_simulation_phase2"
     },
     {
       "graphKey": "jordan",
@@ -655,14 +431,6 @@
     },
     {
       "graphKey": "jordan",
-      "nodeId": "jordan_simulation_phase2_success"
-    },
-    {
-      "graphKey": "jordan",
-      "nodeId": "jordan_simulation_phase3"
-    },
-    {
-      "graphKey": "jordan",
       "nodeId": "jordan_simulation_phase3_fail"
     },
     {
@@ -671,19 +439,11 @@
     },
     {
       "graphKey": "jordan",
-      "nodeId": "jordan_simulation_phase3_success"
-    },
-    {
-      "graphKey": "jordan",
       "nodeId": "jordan_trust_recovery"
     },
     {
       "graphKey": "jordan",
       "nodeId": "jordan_trust_restored"
-    },
-    {
-      "graphKey": "jordan",
-      "nodeId": "jordan_unexpected_paths"
     },
     {
       "graphKey": "kai",
@@ -704,22 +464,6 @@
     {
       "graphKey": "kai",
       "nodeId": "kai_sim_fail_compliance"
-    },
-    {
-      "graphKey": "kai",
-      "nodeId": "kai_sim3_fail"
-    },
-    {
-      "graphKey": "kai",
-      "nodeId": "kai_sim3_partial"
-    },
-    {
-      "graphKey": "kai",
-      "nodeId": "kai_sim3_success"
-    },
-    {
-      "graphKey": "kai",
-      "nodeId": "kai_sim3_training_intro"
     },
     {
       "graphKey": "kai",
@@ -935,10 +679,6 @@
     },
     {
       "graphKey": "maya",
-      "nodeId": "maya_collaboration_offer"
-    },
-    {
-      "graphKey": "maya",
       "nodeId": "maya_competition_memory"
     },
     {
@@ -971,10 +711,6 @@
     },
     {
       "graphKey": "maya",
-      "nodeId": "maya_hub_return"
-    },
-    {
-      "graphKey": "maya",
       "nodeId": "maya_imposter_acceptance"
     },
     {
@@ -996,42 +732,6 @@
     {
       "graphKey": "maya",
       "nodeId": "maya_loneliness_response"
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_loyalty_declined"
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_loyalty_iteration"
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_loyalty_parents_question"
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_loyalty_partial"
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_loyalty_practice"
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_loyalty_shallow"
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_loyalty_start"
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_loyalty_success"
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_loyalty_trigger"
     },
     {
       "graphKey": "maya",
@@ -1095,19 +795,7 @@
     },
     {
       "graphKey": "maya",
-      "nodeId": "maya_simulation_phase3"
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_simulation_phase3_fail"
-    },
-    {
-      "graphKey": "maya",
       "nodeId": "maya_simulation_phase3_setup"
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_simulation_phase3_success"
     },
     {
       "graphKey": "maya",
@@ -1159,23 +847,11 @@
     },
     {
       "graphKey": "nadia",
-      "nodeId": "nadia_simulation_phase1"
-    },
-    {
-      "graphKey": "nadia",
       "nodeId": "nadia_simulation_phase1_fail"
     },
     {
       "graphKey": "nadia",
       "nodeId": "nadia_simulation_phase1_setup"
-    },
-    {
-      "graphKey": "nadia",
-      "nodeId": "nadia_simulation_phase1_success"
-    },
-    {
-      "graphKey": "nadia",
-      "nodeId": "nadia_simulation_phase2"
     },
     {
       "graphKey": "nadia",
@@ -1187,23 +863,11 @@
     },
     {
       "graphKey": "nadia",
-      "nodeId": "nadia_simulation_phase2_success"
-    },
-    {
-      "graphKey": "nadia",
-      "nodeId": "nadia_simulation_phase3"
-    },
-    {
-      "graphKey": "nadia",
       "nodeId": "nadia_simulation_phase3_fail"
     },
     {
       "graphKey": "nadia",
       "nodeId": "nadia_simulation_phase3_setup"
-    },
-    {
-      "graphKey": "nadia",
-      "nodeId": "nadia_simulation_phase3_success"
     },
     {
       "graphKey": "nadia",
@@ -1220,62 +884,6 @@
     {
       "graphKey": "quinn",
       "nodeId": "quinn_mentor_balance"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim1_budget_intro"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim1_diagnosis"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim1_partial"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim1_success"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim2_analysis"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim2_fail"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim2_partial"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim2_portfolio_intro"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim2_success"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim3_balanced"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim3_ethics_intro"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim3_lesson"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim3_pragmatic"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim3_principled"
     },
     {
       "graphKey": "quinn",
@@ -1364,34 +972,6 @@
     {
       "graphKey": "rohan",
       "nodeId": "rohan_platform_reward"
-    },
-    {
-      "graphKey": "rohan",
-      "nodeId": "rohan_sim2_legacy_intro"
-    },
-    {
-      "graphKey": "rohan",
-      "nodeId": "rohan_sim2_partial"
-    },
-    {
-      "graphKey": "rohan",
-      "nodeId": "rohan_sim2_success"
-    },
-    {
-      "graphKey": "rohan",
-      "nodeId": "rohan_sim3_fail"
-    },
-    {
-      "graphKey": "rohan",
-      "nodeId": "rohan_sim3_partial"
-    },
-    {
-      "graphKey": "rohan",
-      "nodeId": "rohan_sim3_prod_intro"
-    },
-    {
-      "graphKey": "rohan",
-      "nodeId": "rohan_sim3_success"
     },
     {
       "graphKey": "rohan",
@@ -1579,10 +1159,6 @@
     },
     {
       "graphKey": "samuel",
-      "nodeId": "samuel_conductor"
-    },
-    {
-      "graphKey": "samuel",
       "nodeId": "samuel_conductor_god_mode"
     },
     {
@@ -1719,18 +1295,6 @@
     },
     {
       "graphKey": "samuel",
-      "nodeId": "samuel_orb_introduction_after_sim_dismiss"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_orb_introduction_after_sim_pattern"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_orb_introduction_after_sim_reassure"
-    },
-    {
-      "graphKey": "samuel",
       "nodeId": "samuel_origin_choice"
     },
     {
@@ -1816,42 +1380,6 @@
     {
       "graphKey": "samuel",
       "nodeId": "samuel_service_philosophy"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_sim2_result_compassion"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_sim2_result_insight"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_sim2_result_neutral"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_sim3_result_confrontation"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_sim3_result_mercy"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_sim3_result_wisdom"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_simulation_crm"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_simulation_phase2"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_simulation_phase3"
     },
     {
       "graphKey": "samuel",
@@ -1958,44 +1486,12 @@
       "nodeId": "silas_trust_restored"
     },
     {
-      "graphKey": "station_entry",
-      "nodeId": "sector_0_hub"
-    },
-    {
       "graphKey": "tess",
       "nodeId": "tess_trust_recovery"
     },
     {
       "graphKey": "tess",
       "nodeId": "tess_trust_restored"
-    },
-    {
-      "graphKey": "yaquin",
-      "nodeId": "yaquin_loyalty_choice"
-    },
-    {
-      "graphKey": "yaquin",
-      "nodeId": "yaquin_loyalty_declined"
-    },
-    {
-      "graphKey": "yaquin",
-      "nodeId": "yaquin_loyalty_partial"
-    },
-    {
-      "graphKey": "yaquin",
-      "nodeId": "yaquin_loyalty_perfectionist"
-    },
-    {
-      "graphKey": "yaquin",
-      "nodeId": "yaquin_loyalty_start"
-    },
-    {
-      "graphKey": "yaquin",
-      "nodeId": "yaquin_loyalty_success"
-    },
-    {
-      "graphKey": "yaquin",
-      "nodeId": "yaquin_loyalty_trigger"
     },
     {
       "graphKey": "yaquin",

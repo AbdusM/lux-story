@@ -1,13 +1,9 @@
 {
-  "generated_at": "2026-02-08T21:32:20.262Z",
+  "generated_at": "2026-02-09T18:36:18.763Z",
   "nodes": [
     {
       "graphKey": "alex",
       "nodeId": "alex_closing_enough"
-    },
-    {
-      "graphKey": "alex",
-      "nodeId": "alex_sim3_curriculum_intro"
     },
     {
       "graphKey": "alex",
@@ -32,14 +28,6 @@
     {
       "graphKey": "asha",
       "nodeId": "asha_mediation_master"
-    },
-    {
-      "graphKey": "asha",
-      "nodeId": "asha_sim2_community_intro"
-    },
-    {
-      "graphKey": "asha",
-      "nodeId": "asha_sim3_critique_intro"
     },
     {
       "graphKey": "asha",
@@ -191,10 +179,6 @@
     },
     {
       "graphKey": "devon",
-      "nodeId": "devon_optimization_trap"
-    },
-    {
-      "graphKey": "devon",
       "nodeId": "devon_patterns_reward"
     },
     {
@@ -338,10 +322,6 @@
       "nodeId": "jordan_trust_recovery"
     },
     {
-      "graphKey": "jordan",
-      "nodeId": "jordan_unexpected_paths"
-    },
-    {
       "graphKey": "kai",
       "nodeId": "kai_compliance_trap"
     },
@@ -352,10 +332,6 @@
     {
       "graphKey": "kai",
       "nodeId": "kai_sim_fail_compliance"
-    },
-    {
-      "graphKey": "kai",
-      "nodeId": "kai_sim3_training_intro"
     },
     {
       "graphKey": "kai",
@@ -412,10 +388,6 @@
     {
       "graphKey": "maya",
       "nodeId": "maya_career_reflection_ux"
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_collaboration_offer"
     },
     {
       "graphKey": "maya",
@@ -539,18 +511,6 @@
     },
     {
       "graphKey": "quinn",
-      "nodeId": "quinn_sim1_budget_intro"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim2_portfolio_intro"
-    },
-    {
-      "graphKey": "quinn",
-      "nodeId": "quinn_sim3_ethics_intro"
-    },
-    {
-      "graphKey": "quinn",
       "nodeId": "quinn_trust_recovery"
     },
     {
@@ -592,14 +552,6 @@
     {
       "graphKey": "rohan",
       "nodeId": "rohan_platform_reward"
-    },
-    {
-      "graphKey": "rohan",
-      "nodeId": "rohan_sim2_legacy_intro"
-    },
-    {
-      "graphKey": "rohan",
-      "nodeId": "rohan_sim3_prod_intro"
     },
     {
       "graphKey": "rohan",
@@ -791,18 +743,6 @@
     },
     {
       "graphKey": "samuel",
-      "nodeId": "samuel_simulation_crm"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_simulation_phase2"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_simulation_phase3"
-    },
-    {
-      "graphKey": "samuel",
       "nodeId": "samuel_station_knows_passions"
     },
     {
@@ -844,10 +784,6 @@
     {
       "graphKey": "silas",
       "nodeId": "silas_trust_recovery"
-    },
-    {
-      "graphKey": "station_entry",
-      "nodeId": "sector_0_hub"
     },
     {
       "graphKey": "tess",

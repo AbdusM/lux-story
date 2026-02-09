@@ -19,7 +19,8 @@ export const ActionTypeSchema = z.enum([
   'career_exploration',
   'pattern_demonstration',
   'relationship_progress',
-  'platform_state'
+  'platform_state',
+  'interaction_event'
 ])
 
 // ============================================================================
@@ -100,6 +101,18 @@ export const PlatformStateDataSchema = z.object({
   updated_at: z.string().optional()
 })
 
+export const InteractionEventDataSchema = z.object({
+  user_id: z.string().min(1),
+  session_id: z.string().min(1),
+  event_type: z.string().min(1),
+  node_id: z.string().optional().nullable(),
+  character_id: z.string().optional().nullable(),
+  ordering_variant: z.string().optional().nullable(),
+  ordering_seed: z.string().optional().nullable(),
+  payload: z.unknown(),
+  occurred_at: z.string().optional()
+})
+
 // ============================================================================
 // QUEUED ACTION SCHEMA
 // ============================================================================
@@ -161,6 +174,10 @@ export const TypedQueuedActionSchema = z.discriminatedUnion('type', [
   QueuedActionBaseSchema.extend({
     type: z.literal('platform_state'),
     data: PlatformStateDataSchema
+  }),
+  QueuedActionBaseSchema.extend({
+    type: z.literal('interaction_event'),
+    data: InteractionEventDataSchema
   })
 ])
 
@@ -199,6 +216,7 @@ export type CareerExplorationData = z.infer<typeof CareerExplorationDataSchema>
 export type PatternDemonstrationData = z.infer<typeof PatternDemonstrationDataSchema>
 export type RelationshipProgressData = z.infer<typeof RelationshipProgressDataSchema>
 export type PlatformStateData = z.infer<typeof PlatformStateDataSchema>
+export type InteractionEventData = z.infer<typeof InteractionEventDataSchema>
 export type QueuedAction = z.infer<typeof QueuedActionSchema>
 export type TypedQueuedAction = z.infer<typeof TypedQueuedActionSchema>
 export type SyncResult = z.infer<typeof SyncResultSchema>

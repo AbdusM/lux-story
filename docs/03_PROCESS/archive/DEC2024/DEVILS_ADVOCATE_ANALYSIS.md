@@ -4,6 +4,8 @@
 
 ---
 
+> NOTE (Feb 9, 2026): This archived document includes examples/logging for the old "AUTO-FALLBACK" behavior. That behavior has been removed and replaced with a single safe **Deadlock Recovery** choice (no gated-content reveal). Current contract docs: `docs/reference/data-dictionary/05-dialogue-system.md`.
+
 ## Executive Summary
 
 This document challenges EVERY assumption about Lux Story's readiness for the Urban Chamber pilot. The goal is to find breaking points BEFORE Anthony's 16 graduates encounter them.

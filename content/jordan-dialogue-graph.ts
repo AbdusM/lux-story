@@ -177,6 +177,10 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_career_question', // Route back to main arc
         pattern: 'building',
         skills: ['systemsThinking'],
+        consequence: {
+          characterId: 'jordan',
+          trustChange: 1
+        },
         voiceVariations: {
           analytical: "Grid secured. Risk minimized.",
           building: "The foundation is safe now. We can build.",
@@ -210,6 +214,10 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_1',
         pattern: 'exploring',
         skills: ['communication'],
+        visibleCondition: {
+          trust: { min: 1 },
+          lacksKnowledgeFlags: ['knows_job_1']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1
@@ -228,6 +236,10 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_1',
         pattern: 'exploring',
         skills: ['curiosity', 'communication', 'leadership'],
+        visibleCondition: {
+          trust: { min: 1 },
+          lacksKnowledgeFlags: ['knows_job_1']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1
@@ -246,6 +258,10 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_1',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
+        visibleCondition: {
+          trust: { min: 1 },
+          lacksKnowledgeFlags: ['knows_job_1']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1
@@ -264,6 +280,10 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_1',
         pattern: 'building',
         skills: ['systemsThinking', 'creativity'],
+        visibleCondition: {
+          trust: { min: 1 },
+          lacksKnowledgeFlags: ['knows_job_1']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1
@@ -307,6 +327,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_2',
         pattern: 'exploring',
         skills: ['communication'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_job_2']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -326,6 +349,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_2',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication', 'leadership'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_job_2']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -346,7 +372,8 @@ export const jordanDialogueNodes: DialogueNode[] = [
         pattern: 'analytical',
         skills: ['criticalThinking', 'adaptability', 'communication'],
         visibleCondition: {
-          patterns: { analytical: { min: 4 } }
+          patterns: { analytical: { min: 4 } },
+          lacksKnowledgeFlags: ['knows_job_2']
         },
         consequence: {
           characterId: 'jordan',
@@ -368,7 +395,8 @@ export const jordanDialogueNodes: DialogueNode[] = [
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
         visibleCondition: {
-          patterns: { patience: { min: 3 } }
+          patterns: { patience: { min: 3 } },
+          lacksKnowledgeFlags: ['knows_job_2']
         },
         consequence: {
           characterId: 'jordan',
@@ -414,6 +442,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_3',
         pattern: 'exploring',
         skills: ['communication'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_job_3']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -433,6 +464,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_3',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_job_3']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -453,7 +487,8 @@ export const jordanDialogueNodes: DialogueNode[] = [
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity', 'communication'],
         visibleCondition: {
-          patterns: { analytical: { min: 3 } }
+          patterns: { analytical: { min: 3 } },
+          lacksKnowledgeFlags: ['knows_job_3']
         },
         consequence: {
           characterId: 'jordan',
@@ -474,6 +509,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_3',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_job_3']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -587,7 +625,12 @@ export const jordanDialogueNodes: DialogueNode[] = [
         choiceId: 'jordan_continue_jobs',
         text: "(Continue)",
         nextNodeId: 'jordan_job_reveal_4',
-        pattern: 'patience'
+        pattern: 'patience',
+        visibleCondition: {
+          trust: { min: 5 },
+          hasKnowledgeFlags: ['knows_job_3'],
+          lacksKnowledgeFlags: ['knows_job_4']
+        }
       }
     ],
     tags: ['engagement', 'jordan_arc']
@@ -660,7 +703,12 @@ export const jordanDialogueNodes: DialogueNode[] = [
         choiceId: 'jordan_continue_after_pause',
         text: "(Continue)",
         nextNodeId: 'jordan_job_reveal_5',
-        pattern: 'patience'
+        pattern: 'patience',
+        visibleCondition: {
+          trust: { min: 6 },
+          hasKnowledgeFlags: ['knows_job_4'],
+          lacksKnowledgeFlags: ['knows_job_5']
+        }
       }
     ],
     tags: ['scene_break', 'pacing', 'jordan_arc']
@@ -686,6 +734,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'exploring',
         skills: ['communication'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_job_6']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -698,6 +749,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'exploring',
         skills: ['curiosity', 'communication'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_job_6']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -710,6 +764,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity', 'communication'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_job_6']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -722,6 +779,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'building',
         skills: ['systemsThinking', 'creativity'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_job_6']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -752,6 +812,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_7',
         pattern: 'exploring',
         skills: ['communication'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_job_7']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -764,6 +827,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_7',
         pattern: 'building',
         skills: ['creativity', 'criticalThinking', 'communication'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_job_7']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -776,6 +842,9 @@ export const jordanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'jordan_job_reveal_7',
         pattern: 'analytical',
         skills: ['criticalThinking', 'problemSolving', 'communication'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_job_7']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 1,
@@ -860,7 +929,12 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         text: "Forget the screen. Think about the person holding the phone.",
         nextNodeId: 'jordan_job_reveal_7', // Retry loop
         pattern: 'helping',
-        skills: ['emotionalIntelligence']
+        skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          trust: { min: 2 },
+          hasKnowledgeFlags: ['knows_job_6'],
+          lacksKnowledgeFlags: ['knows_job_7']
+        }
       },
       {
         choiceId: 'ux_give_up',
@@ -1157,28 +1231,44 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         text: "I try to trust that even wrong turns teach me something.",
         nextNodeId: 'jordan_crossroads',
         pattern: 'exploring',
-        skills: ['adaptability', 'criticalThinking']
+        skills: ['adaptability', 'criticalThinking'],
+        visibleCondition: {
+          trust: { min: 6 },
+          lacksGlobalFlags: ['jordan_chose_shallow']
+        }
       },
       {
         choiceId: 'player_analyze_options',
         text: "I break it down. Research every option, weigh pros and cons. Sometimes I get paralyzed by too much information.",
         nextNodeId: 'jordan_crossroads',
         pattern: 'analytical',
-        skills: ['criticalThinking', 'problemSolving']
+        skills: ['criticalThinking', 'problemSolving'],
+        visibleCondition: {
+          trust: { min: 6 },
+          lacksGlobalFlags: ['jordan_chose_shallow']
+        }
       },
       {
         choiceId: 'player_ask_others',
         text: "I talk to people. See how they handled similar situations. Their stories help me see possibilities I couldn't see alone.",
         nextNodeId: 'jordan_crossroads',
         pattern: 'helping',
-        skills: ['collaboration', 'communication']
+        skills: ['collaboration', 'communication'],
+        visibleCondition: {
+          trust: { min: 6 },
+          lacksGlobalFlags: ['jordan_chose_shallow']
+        }
       },
       {
         choiceId: 'player_feel_stuck',
         text: "Honestly? I freeze. The uncertainty feels heavy, and I end up not choosing anything. That's probably worse than choosing wrong.",
         nextNodeId: 'jordan_crossroads',
         pattern: 'patience',
-        skills: ['emotionalIntelligence', 'communication']
+        skills: ['emotionalIntelligence', 'communication'],
+        visibleCondition: {
+          trust: { min: 6 },
+          lacksGlobalFlags: ['jordan_chose_shallow']
+        }
       }
     ],
     tags: ['reciprocity', 'player_reflection', 'jordan_arc']
@@ -1445,8 +1535,17 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         choiceId: 'jordan_farewell_accumulation_end',
         text: "Good luck with your speech.",
         nextNodeId: samuelEntryPoints.JORDAN_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['jordan_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_jordan']
+        },
         pattern: 'helping',
         skills: ["emotionalIntelligence", "communication"]
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['jordan_arc_complete']
       }
     ],
     tags: ['transition', 'jordan_arc', 'bittersweet'],
@@ -1478,6 +1577,10 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         choiceId: 'jordan_birmingham_farewell',
         text: "Good luck with your speech.",
         nextNodeId: samuelEntryPoints.JORDAN_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['jordan_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_jordan']
+        },
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
       }
@@ -1498,6 +1601,10 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         choiceId: 'jordan_farewell_birmingham_end',
         text: "Maybe so. Good luck with the speech.",
         nextNodeId: samuelEntryPoints.JORDAN_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['jordan_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_jordan']
+        },
         pattern: 'helping',
         skills: ["emotionalIntelligence", "communication"]
       },
@@ -1578,6 +1685,10 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         choiceId: 'loyalty_declined_farewell',
         text: "You'll help her find her path. You always do.",
         nextNodeId: samuelEntryPoints.JORDAN_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['jordan_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_jordan']
+        },
         pattern: 'patience'
       }
     ],
@@ -1643,6 +1754,10 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         choiceId: 'jordan_farewell_internal_end',
         text: "Thank you. I won't forget.",
         nextNodeId: samuelEntryPoints.JORDAN_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['jordan_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_jordan']
+        },
         pattern: 'patience'
       }
     ],
@@ -1663,6 +1778,10 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         choiceId: 'jordan_bad_ending_leave',
         text: "...",
         nextNodeId: samuelEntryPoints.JORDAN_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['jordan_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_jordan']
+        },
         pattern: 'patience'
       }
     ],
@@ -1699,6 +1818,10 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         nextNodeId: 'jordan_crossroads',
         pattern: 'exploring',
         skills: ['communication'],
+        visibleCondition: {
+          trust: { min: 3 },
+          lacksGlobalFlags: ['jordan_chose_shallow']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 3
@@ -1710,6 +1833,10 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         nextNodeId: 'jordan_crossroads',
         pattern: 'analytical',
         skills: ['criticalThinking'],
+        visibleCondition: {
+          trust: { min: 4 },
+          lacksGlobalFlags: ['jordan_chose_shallow']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 2
@@ -1769,6 +1896,10 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         nextNodeId: 'jordan_crossroads',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          trust: { min: 2 },
+          lacksGlobalFlags: ['jordan_chose_shallow']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 4
@@ -1780,6 +1911,10 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         nextNodeId: 'jordan_crossroads',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          trust: { min: 3 },
+          lacksGlobalFlags: ['jordan_chose_shallow']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 3
@@ -1815,6 +1950,10 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         nextNodeId: 'jordan_crossroads',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'leadership'],
+        visibleCondition: {
+          trust: { min: 2 },
+          lacksGlobalFlags: ['jordan_chose_shallow']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 4
@@ -1826,6 +1965,10 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         nextNodeId: 'jordan_crossroads',
         pattern: 'exploring',
         skills: ['communication'],
+        visibleCondition: {
+          trust: { min: 3 },
+          lacksGlobalFlags: ['jordan_chose_shallow']
+        },
         consequence: {
           characterId: 'jordan',
           trustChange: 3
@@ -1867,7 +2010,11 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         choiceId: 'jordan_career_counselor_continue',
         text: "Helping others explore their paths. That resonates.",
         nextNodeId: 'jordan_crossroads',
-        pattern: 'exploring'
+        pattern: 'exploring',
+        visibleCondition: {
+          trust: { min: 6 },
+          lacksGlobalFlags: ['jordan_chose_shallow']
+        }
       }
     ],
     tags: ['career_mention', 'invisible_depth', 'career_services']

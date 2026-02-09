@@ -24,31 +24,9 @@ Key flow points used for the audit:
    The grand‑central story can replace static choices with contextual templates and optional live augmentation.
 
 ### Critical Logic Notes
-- **Auto‑fallback safety** shows all choices if none are visible, preventing dead‑ends but masking gating misconfigurations:
-```619:671:lib/dialogue-graph.ts
-  static evaluateChoices(
-    node: DialogueNode,
-    gameState: GameState,
-    characterId?: string,
-    skillLevels?: Record<string, number>
-  ): EvaluatedChoice[] {
-    ...
-    const visibleCount = evaluated.filter(c => c.visible).length
-    if (visibleCount === 0 && node.choices.length > 0) {
-      console.warn(
-        `[AUTO-FALLBACK] No visible choices at node "${node.nodeId}". ` +
-        `Showing all ${node.choices.length} choices as fallback to prevent deadlock.`
-      )
-      return node.choices.map(choice => ({
-        choice,
-        visible: true,
-        enabled: true,
-        reason: undefined
-      }))
-    }
-    return evaluated
-  }
-```
+- **Deadlock recovery** adds a single safe escape hatch if no choices are selectable. This prevents player lock-in *without* revealing hidden/gated content.
+  - Implemented in `lib/dialogue-graph.ts` (`StateConditionEvaluator.evaluateChoices`).
+  - The recovery choice routes through Conductor Mode via `nextNodeId: 'TRAVEL_PENDING'` (handled in `hooks/game/useChoiceHandler.ts`).
 - **Pattern unlock choices** are synthetic and depend on registry alignment and node existence:
 ```28:83:lib/pattern-unlock-choices.ts
   const unlockedNodeIds = getPatternUnlocks(characterId, patternLevels)
@@ -93,7 +71,7 @@ Key flow points used for the audit:
 - Conditional refs are high in some graphs, implying heavy gating and increased risk of misconfigured conditions.
 
 ### Risks / Gaps (Dialogue)
-- **Auto‑fallback can mask misconfigured visibility**: a node with all choices gated incorrectly will still show all choices, making QA signal weaker.
+- **Deadlock recovery can hide pain but not fix root cause**: if a node ends up with zero selectable choices, the runtime injects a single safe recovery choice (instead of revealing gated content). This prevents hard-locks but still indicates a gating/config bug that should be caught by headless narrative simulation + required-state guarding.
 - **Dynamic choices use a hardcoded `playerId`** in `StoryEngine` (`player-main`) which can diverge from actual auth context.
 - **Semantic filtering can reduce options** and inadvertently collapse narrative branches when dynamic choices are used (no explicit minimum choice count enforced).
 
@@ -140,4 +118,3 @@ Two registries are used:
 3. **Dynamic Choice Integrity**: Semantic filtering may remove meaningful branches.
 4. **Menu Partial Rendering**: Incomplete profile section without empty state.
 5. **God Mode Exposure**: Query param in prod likely intentional but should be documented or gated.
-

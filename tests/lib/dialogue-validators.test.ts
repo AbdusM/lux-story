@@ -55,6 +55,23 @@ function createTestChoice(
   }
 }
 
+function createTestChoiceWithEnabled(
+  text: string,
+  nextNodeId: string,
+  opts?: {
+    visibleCondition?: { trust?: { min?: number } }
+    enabledCondition?: { trust?: { min?: number } }
+  }
+): ConditionalChoice {
+  return {
+    choiceId: `choice_${text.slice(0, 10).replace(/\s/g, '_')}`,
+    text,
+    nextNodeId,
+    visibleCondition: opts?.visibleCondition,
+    enabledCondition: opts?.enabledCondition,
+  }
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // GATING VALIDATION TESTS
 // ═══════════════════════════════════════════════════════════════════════════
@@ -130,6 +147,21 @@ describe('validateDialogueGating', () => {
     const issues = validateDialogueGating(graph, 'test_character')
 
     expect(issues.some(i => i.issueType === 'all_choices_gated')).toBe(true)
+  })
+
+  it('detects choices that are visible but disabled via enabledCondition', () => {
+    const graph = createTestGraph([
+      createTestNode('enabled_gated', [
+        createTestChoiceWithEnabled('Visible but disabled', 'next', {
+          // visibleCondition missing => visible under default state
+          enabledCondition: { trust: { min: 10 } },
+        }),
+      ]),
+      createTestNode('next', [])
+    ])
+
+    const issues = validateDialogueGating(graph, 'test_character')
+    expect(issues.some(i => i.issueType === 'all_choices_gated' && i.nodeId === 'enabled_gated')).toBe(true)
   })
 
   it('skips nodes whose requiredState is not met under the provided state', () => {

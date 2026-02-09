@@ -1228,6 +1228,10 @@ HINT: Sensors measure WHERE they're placed...`,
         choiceId: 'return_to_samuel_silas_good',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.SILAS_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['silas_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_silas']
+        },
         pattern: 'exploring'
       }
     ],
@@ -1259,6 +1263,10 @@ HINT: Sensors measure WHERE they're placed...`,
         choiceId: 'silas_leave_bad',
         text: "...",
         nextNodeId: samuelEntryPoints.SILAS_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['silas_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_silas']
+        },
         pattern: 'patience'
       }
     ],
@@ -1285,6 +1293,10 @@ HINT: Sensors measure WHERE they're placed...`,
         choiceId: 'return_to_samuel_silas',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.SILAS_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['silas_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_silas']
+        },
         pattern: 'exploring'
       },
       // Loyalty Experience trigger - only visible at high trust + patience pattern
@@ -1299,6 +1311,11 @@ HINT: Sensors measure WHERE they're placed...`,
           patterns: { patience: { min: 50 } },
           hasGlobalFlags: ['silas_arc_complete']
         }
+      }
+    ],
+    onEnter: [
+      {
+        addGlobalFlags: ['silas_arc_complete']
       }
     ],
     tags: ['transition', 'silas_arc']
@@ -1364,6 +1381,10 @@ HINT: Sensors measure WHERE they're placed...`,
         choiceId: 'loyalty_declined_farewell',
         text: "Trust the ground. It was right all along.",
         nextNodeId: samuelEntryPoints.SILAS_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['silas_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_silas']
+        },
         pattern: 'patience'
       }
     ],

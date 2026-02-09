@@ -133,7 +133,11 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         },
         nextNodeId: 'yaquin_curriculum_setup',
         pattern: 'building',
-        skills: ['leadership']
+        skills: ['leadership'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
       },
       {
         choiceId: 'yaquin_explore_patient_fear',
@@ -431,7 +435,11 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         text: "You're adding fluff. Let's cut it.",
         nextNodeId: 'yaquin_curriculum_setup',
         pattern: 'building',
-        skills: ['instructionalDesign']
+        skills: ['instructionalDesign'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 1
+        }
       },
       {
         choiceId: 'yaquin_dream_patience',
@@ -540,7 +548,10 @@ Which opening sells the VALUE of practical experience?`,
         choiceId: 'retry_curriculum',
         text: "Cut the history. Teach the skill.",
         nextNodeId: 'yaquin_curriculum_setup',
-        pattern: 'building'
+        pattern: 'building',
+        visibleCondition: {
+          trust: { min: 1 }
+        }
       },
       {
         choiceId: 'give_up_boring',
@@ -772,7 +783,11 @@ Which opening sells the VALUE of practical experience?`,
         choiceId: 'yaquin_leave_bad',
         text: "...",
         nextNodeId: samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY,
-        pattern: 'patience'
+        pattern: 'patience',
+        visibleCondition: {
+          hasGlobalFlags: ['yaquin_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_yaquin']
+        }
       }
     ],
     onEnter: [
@@ -939,7 +954,11 @@ Which opening sells the VALUE of practical experience?`,
         choiceId: 'return_to_samuel_yaquin',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY,
-        pattern: 'exploring'
+        pattern: 'exploring',
+        visibleCondition: {
+          hasGlobalFlags: ['yaquin_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_yaquin']
+        }
       },
       {
         choiceId: 'yaquin_ask_about_course',
@@ -1405,7 +1424,11 @@ Which opening sells the VALUE of practical experience?`,
         choiceId: 'return_to_samuel_yaquin_p2',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY,
-        pattern: 'exploring'
+        pattern: 'exploring',
+        visibleCondition: {
+          hasGlobalFlags: ['yaquin_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_yaquin']
+        }
       }
     ],
     tags: ['phase2', 'yaquin_arc', 'completion']
@@ -1468,7 +1491,11 @@ Which opening sells the VALUE of practical experience?`,
         choiceId: 'return_to_samuel_yaquin_after',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY,
-        pattern: 'exploring'
+        pattern: 'exploring',
+        visibleCondition: {
+          hasGlobalFlags: ['yaquin_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_yaquin']
+        }
       },
       {
         choiceId: 'yaquin_check_reviews',
@@ -1780,7 +1807,11 @@ Which opening sells the VALUE of practical experience?`,
         choiceId: 'aftermath_return',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY,
-        pattern: 'exploring'
+        pattern: 'exploring',
+        visibleCondition: {
+          hasGlobalFlags: ['yaquin_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_yaquin']
+        }
       },
       {
         choiceId: 'aftermath_insight',
@@ -1819,7 +1850,11 @@ Which opening sells the VALUE of practical experience?`,
         choiceId: 'insight_return',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY,
-        pattern: 'exploring'
+        pattern: 'exploring',
+        visibleCondition: {
+          hasGlobalFlags: ['yaquin_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_yaquin']
+        }
       }
     ],
     tags: ['simulation', 'yaquin_arc', 'insight', 'completion']

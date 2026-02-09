@@ -1604,6 +1604,10 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'devon_leave_bad',
         text: "...",
         nextNodeId: samuelEntryPoints.DEVON_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['devon_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_devon']
+        },
         pattern: 'analytical'
       }
     ],
@@ -1646,6 +1650,10 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'return_to_samuel_integration',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.DEVON_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['devon_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_devon']
+        },
         pattern: 'exploring'
       }
     ],
@@ -1668,6 +1676,10 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'return_to_samuel_heart',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.DEVON_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['devon_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_devon']
+        },
         pattern: 'helping'
       }
     ],
@@ -1692,6 +1704,10 @@ export const devonDialogueNodes: DialogueNode[] = [
         choiceId: 'return_to_samuel_presence',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.DEVON_REFLECTION_GATEWAY,
+        visibleCondition: {
+          hasGlobalFlags: ['devon_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_devon']
+        },
         pattern: 'patience'
       }
     ],
@@ -1972,7 +1988,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'revisit_leave',
         text: "I'll let you get back to it.",
-        nextNodeId: samuelEntryPoints.MAYA_REFLECTION_GATEWAY, // Return to hub
+        nextNodeId: samuelEntryPoints.HUB_AFTER_DEVON, // Return to hub
         pattern: 'patience'
       }
     ],

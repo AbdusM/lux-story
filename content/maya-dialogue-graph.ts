@@ -337,6 +337,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
           exploring: "Heavy. Do they know how it feels from your side?",
           building: "They built their dream. But you're carrying it now."
         },
+        visibleCondition: {
+          trust: { min: 1 }
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -447,6 +450,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_robotics']
+        },
         voiceVariations: {
           analytical: "Your voice says something different from your words.",
           helping: "You don't sound happy with that.",
@@ -461,6 +467,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_family_pressure',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'culturalCompetence'],
+        visibleCondition: {
+          trust: { min: 1 }
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -484,7 +493,8 @@ export const mayaDialogueNodes: DialogueNode[] = [
         pattern: 'building',
         skills: ['creativity', 'systemsThinking'],
         visibleCondition: {
-          patterns: { building: { min: 3 } }
+          patterns: { building: { min: 3 } },
+          lacksKnowledgeFlags: ['knows_robotics']
         },
         consequence: {
           characterId: 'maya',
@@ -497,6 +507,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_robotics']
+        },
         requiredOrbFill: { pattern: 'patience', threshold: 25 },
         consequence: {
           characterId: 'maya',
@@ -531,6 +544,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'exploring',
         skills: ['criticalThinking', 'communication'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_robotics']
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 2
@@ -542,6 +558,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_robotics']
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 2
@@ -553,6 +572,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_robotics']
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -600,6 +622,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_robotics']
+        },
         voiceVariations: {
           analytical: "Anxiety is just data. It means something matters to you.",
           helping: "We all have our struggles. No judgment here.",
@@ -617,7 +642,10 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "I understand pressure. Sometimes it helps to share.",
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'patience',
-        skills: ['emotionalIntelligence', 'adaptability']
+        skills: ['emotionalIntelligence', 'adaptability'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_robotics']
+        }
       },
       {
         choiceId: 'anxiety_curious_explore',
@@ -625,6 +653,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'exploring',
         skills: ['curiosity', 'emotionalIntelligence'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_robotics']
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -652,7 +683,9 @@ export const mayaDialogueNodes: DialogueNode[] = [
       }
     ],
     requiredState: {
-      lacksKnowledgeFlags: ['knows_secret']
+      // If the player already saw Maya's robotics side via the early simulation path,
+      // this "secret reveal" beat should not be re-entered.
+      lacksKnowledgeFlags: ['knows_robotics']
     },
     choices: [
       {
@@ -660,7 +693,11 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "What are you actually doing?",
         nextNodeId: 'maya_robotics_passion',
         pattern: 'exploring',
-        skills: ['communication']
+        skills: ['communication'],
+        visibleCondition: {
+          trust: { min: 1 },
+          lacksKnowledgeFlags: ['knows_robotics']
+        }
       },
       {
         choiceId: 'reveal_support',
@@ -727,7 +764,11 @@ export const mayaDialogueNodes: DialogueNode[] = [
         text: "Tell me about the robots.",
         nextNodeId: 'maya_robotics_passion',
         pattern: 'exploring',
-        skills: ['communication']
+        skills: ['communication'],
+        visibleCondition: {
+          trust: { min: 1 },
+          lacksKnowledgeFlags: ['knows_robotics']
+        }
       }
     ],
     tags: ['emotional_intelligence_reward', 'maya_arc']
@@ -977,6 +1018,9 @@ STATUS: Signal fighting itself`,
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_robotics']
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -1110,7 +1154,10 @@ STATUS: Signal fighting itself`,
         text: "How do you think your parents would react?",
         nextNodeId: 'maya_family_pressure',
         pattern: 'exploring',
-        skills: ['communication', 'criticalThinking']
+        skills: ['communication', 'criticalThinking'],
+        visibleCondition: {
+          trust: { min: 2 }
+        }
       },
       {
         choiceId: 'encouraged_future',
@@ -1488,6 +1535,10 @@ STATUS: Signal fighting itself`,
         nextNodeId: samuelEntryPoints.MAYA_REFLECTION_GATEWAY,
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
+        visibleCondition: {
+          hasGlobalFlags: ['maya_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_maya']
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1,
@@ -1498,7 +1549,8 @@ STATUS: Signal fighting itself`,
     onEnter: [
       {
         characterId: 'maya',
-        addKnowledgeFlags: ['early_closure']
+        addKnowledgeFlags: ['early_closure'],
+        addGlobalFlags: ['maya_arc_complete']
       }
     ],
     tags: ['early_ending', 'maya_arc']
@@ -1662,7 +1714,11 @@ STATUS: Signal fighting itself`,
         choiceId: 'return_to_samuel',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.MAYA_REFLECTION_GATEWAY, // Routes through reflection ✅
-        pattern: 'exploring'
+        pattern: 'exploring',
+        visibleCondition: {
+          hasGlobalFlags: ['maya_arc_complete'],
+          lacksGlobalFlags: ['reflected_on_maya']
+        }
       }
     ],
     tags: ['transition', 'maya_arc', 'bittersweet']
@@ -1699,6 +1755,9 @@ STATUS: Signal fighting itself`,
         nextNodeId: 'maya_robotics_passion',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication', 'leadership'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_robotics']
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -1751,7 +1810,10 @@ STATUS: Signal fighting itself`,
         text: "Would your parents approve of that path?",
         nextNodeId: 'maya_family_pressure',
         pattern: 'analytical',
-        skills: ['criticalThinking', 'culturalCompetence']
+        skills: ['criticalThinking', 'culturalCompetence'],
+        visibleCondition: {
+          trust: { min: 2 }
+        }
       }
     ]
   },
@@ -2436,6 +2498,9 @@ STATUS: Signal fighting itself`,
         nextNodeId: 'maya_robotics_passion',
         pattern: 'building',
         skills: ['creativity'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_robotics']
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 3
@@ -2447,6 +2512,9 @@ STATUS: Signal fighting itself`,
         nextNodeId: 'maya_family_pressure',
         pattern: 'exploring',
         skills: ['communication'],
+        visibleCondition: {
+          trust: { min: 1 }
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 1
@@ -2482,6 +2550,9 @@ STATUS: Signal fighting itself`,
         nextNodeId: 'maya_robotics_passion',
         pattern: 'analytical',
         skills: ['systemsThinking', 'criticalThinking'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_robotics']
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 3
@@ -2493,6 +2564,9 @@ STATUS: Signal fighting itself`,
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          lacksKnowledgeFlags: ['knows_robotics']
+        },
         consequence: {
           characterId: 'maya',
           trustChange: 2
@@ -4060,14 +4134,21 @@ MISSION: Stabilize the wave form within safety limits.`,
         text: "Tell me about what you're really passionate about.",
         nextNodeId: 'maya_robotics_passion',
         pattern: 'exploring',
-        skills: ['curiosity', 'communication']
+        skills: ['curiosity', 'communication'],
+        visibleCondition: {
+          trust: { min: 1 },
+          lacksKnowledgeFlags: ['knows_robotics']
+        }
       },
       {
         choiceId: 'continue_from_recovery_family',
         text: "Help me understand your family situation.",
         nextNodeId: 'maya_family_pressure',
         pattern: 'helping',
-        skills: ['emotionalIntelligence']
+        skills: ['emotionalIntelligence'],
+        visibleCondition: {
+          trust: { min: 2 }
+        }
       }
     ],
     tags: ['trust_recovery', 'maya_arc', 'fresh_start']
@@ -4099,14 +4180,21 @@ MISSION: Stabilize the wave form within safety limits.`,
         text: "I want to tell you more about what I want to build.",
         nextNodeId: 'maya_robotics_passion',
         pattern: 'exploring',
-        skills: ['creativity', 'technicalLiteracy', 'visionaryThinking']
+        skills: ['creativity', 'technicalLiteracy', 'visionaryThinking'],
+        visibleCondition: {
+          trust: { min: 1 },
+          lacksKnowledgeFlags: ['knows_robotics']
+        }
       },
       {
         choiceId: 'innovation_face_pressure',
         text: "How do I balance this with what my parents expect?",
         nextNodeId: 'maya_family_pressure',
         pattern: 'patience',
-        skills: ['emotionalIntelligence', 'communication']
+        skills: ['emotionalIntelligence', 'communication'],
+        visibleCondition: {
+          trust: { min: 2 }
+        }
       }
     ],
     tags: ['skill_combo_unlock', 'innovation_catalyst', 'maya_wisdom']

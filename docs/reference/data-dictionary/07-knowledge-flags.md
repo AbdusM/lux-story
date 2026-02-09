@@ -612,8 +612,8 @@ Progress = Knowledge Flags (what you've learned)
 
 **Mitigation:**
 - Naming conventions (predictable patterns)
-- Auto-fallback system (show all choices if zero visible)
-- Validation tools (flag existence checks in dialogue graphs)
+- Deadlock recovery choice (does **not** reveal gated content; injects a single safe escape hatch when no selectable choices exist)
+- Validation tools (required-state guarding + narrative simulation + flag existence checks in dialogue graphs)
 
 ### Golden Prompts: The Nervous System Link
 

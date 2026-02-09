@@ -612,7 +612,7 @@ export class StateConditionEvaluator {
 
   /**
    * Evaluate all choices for a node and determine visibility/availability
-   * INCLUDES AUTO-FALLBACK SAFETY: If no choices visible, shows all as fallback
+   * INCLUDES DEADLOCK RECOVERY: If no choices are selectable, offers a safe escape hatch
    *
    * @param skillLevels - Optional skill levels for combo-gated content (from Zustand store)
    */
@@ -650,23 +650,42 @@ export class StateConditionEvaluator {
       }
     })
 
-    // SAFETY NET: If NO choices are visible, show ALL choices as fallbacks
-    // This prevents dead ends from misconfigured gating
-    const visibleCount = evaluated.filter(c => c.visible).length
+    // DEADLOCK RECOVERY:
+    // If there are choices but none are selectable, do NOT reveal hidden/gated content.
+    // Instead, offer a single safe "return" choice that routes through Conductor Mode.
+    const enabledCount = evaluated.filter(c => c.visible && c.enabled).length
+    if (enabledCount === 0 && node.choices.length > 0) {
+      // Avoid log spam: warn once per node per session.
+      const warnKey = `${characterId ?? 'unknown'}::${node.nodeId}`
+      type LuxGlobal = typeof globalThis & { __lux_deadlock_recovery_warned?: Set<string> }
+      const luxGlobal = globalThis as LuxGlobal
+      luxGlobal.__lux_deadlock_recovery_warned ??= new Set<string>()
+      const warned = luxGlobal.__lux_deadlock_recovery_warned
+      if (!warned.has(warnKey)) {
+        warned.add(warnKey)
+        const visibleCount = evaluated.filter(c => c.visible).length
+        console.warn(
+          `[DEADLOCK-RECOVERY] No selectable choices at node "${node.nodeId}" ` +
+            `(character="${characterId ?? 'unknown'}", visible=${visibleCount}, total=${node.choices.length}). ` +
+            `Offering recovery choice instead of revealing gated content.`
+        )
+      }
 
-    if (visibleCount === 0 && node.choices.length > 0) {
-      console.warn(
-        `[AUTO-FALLBACK] No visible choices at node "${node.nodeId}". ` +
-        `Showing all ${node.choices.length} choices as fallback to prevent deadlock.`
-      )
+      const recoveryChoice: ConditionalChoice = {
+        choiceId: '__deadlock_recovery__',
+        text: 'Return to Samuel',
+        nextNodeId: 'TRAVEL_PENDING',
+      }
 
-      // Return all choices as visible and enabled
-      return node.choices.map(choice => ({
-        choice,
-        visible: true,
-        enabled: true,
-        reason: undefined
-      }))
+      return [
+        ...evaluated,
+        {
+          choice: recoveryChoice,
+          visible: true,
+          enabled: true,
+          reason: undefined,
+        },
+      ]
     }
 
     return evaluated
