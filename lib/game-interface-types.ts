@@ -18,6 +18,8 @@ import type { CharacterWaitingState } from '@/lib/character-waiting'
 import type { DelayedGift } from '@/lib/delayed-gifts'
 import type { ActiveExperienceState } from '@/lib/experience-engine'
 import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
+import type { PrismTabId } from '@/lib/prism-tabs'
+import type { OutcomeCardData } from '@/lib/outcome-card'
 
 export interface GameInterfaceState {
   // TD-001: gameState removed - read from Zustand via useGameSelectors.useCoreGameStateHydrated()
@@ -33,13 +35,14 @@ export interface GameInterfaceState {
   selectedChoice: string | null
   showSaveConfirmation: boolean
   skillToast: { skill: string; message: string } | null
-  consequenceFeedback: { message: string } | null
+  outcomeCard: OutcomeCardData | null
   error: { title: string; message: string; severity: 'error' | 'warning' | 'info' } | null
   previousSpeaker: string | null
   recentSkills: string[]
   showExperienceSummary: boolean
   experienceSummaryData: ExperienceSummaryData | null
   showJournal: boolean
+  journalInitialTab: PrismTabId | null
   showConstellation: boolean
   pendingFloatingModule: null
   showJourneySummary: boolean

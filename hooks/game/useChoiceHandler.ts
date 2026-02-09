@@ -18,8 +18,9 @@ import { useGameStore, commitGameState } from '@/lib/game-store'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { logger } from '@/lib/logger'
 import { CHOICE_HANDLER_TIMEOUT_MS } from '@/lib/constants'
-import { type PatternType, type PlayerPatterns, isValidPattern } from '@/lib/patterns'
+import { PATTERN_METADATA, type PatternType, type PlayerPatterns, isValidPattern } from '@/lib/patterns'
 import { calculatePatternGain } from '@/lib/identity-system'
+import type { OutcomeCardData, OutcomeItem } from '@/lib/outcome-card'
 import {
   applyPatternReflection,
   type ConsequenceEcho,
@@ -156,6 +157,7 @@ export function useChoiceHandler({
       // patterns is a spread copy of primitives — direct assignment is safe.
       // If cloneGameState depth changes, these assumptions break. See lib/character-state.ts:533.
       const trustDelta = result.trustDelta
+      const outcomeItems: OutcomeItem[] = []
 
       // Telemetry: authoritative choice result (pattern awarded, trust delta, etc.)
       // This complements the UI-side `choice_selected_ui` event (index + ordering).
@@ -196,6 +198,12 @@ export function useChoiceHandler({
       // 1. Process Orb Events (Discovery) + Persist Pattern to DB
       if (result.events.earnOrb) {
         const { crossedThreshold5 } = earnOrb(result.events.earnOrb)
+        outcomeItems.push({
+          kind: 'orb',
+          title: 'Orb gained',
+          detail: PATTERN_METADATA[result.events.earnOrb].label,
+          prismTab: 'harmonics',
+        })
 
         // Persist pattern demonstration to database via sync queue
         queuePatternDemonstrationSync({
@@ -252,13 +260,12 @@ export function useChoiceHandler({
         if (unlockCheck) {
           newGameState = { ...newGameState, ...unlockCheck.updates }
 
-          // Notify player of new mastery
-          setState(prev => ({
-            ...prev,
-            consequenceFeedback: {
-              message: `Mastery Unlocked: ${ABILITIES[unlockCheck.unlockedIds[0]].name}`
-            }
-          }))
+          outcomeItems.push({
+            kind: 'unlock',
+            title: 'Mastery Unlocked',
+            detail: ABILITIES[unlockCheck.unlockedIds[0]].name,
+            prismTab: 'mastery',
+          })
 
           audio.actions.triggerIdentitySound()
           hapticFeedback.success() // Success haptic for ability unlock
@@ -280,13 +287,11 @@ export function useChoiceHandler({
         const fromChar = capitalize(update.fromId)
         const toChar = capitalize(update.toId)
 
-        // Show a relationship feedback
-        setState(prev => ({
-          ...prev,
-          consequenceFeedback: {
-            message: `Station Dynamics Shifted: ${fromChar} & ${toChar}`
-          }
-        }))
+        outcomeItems.push({
+          kind: 'info',
+          title: 'Station Dynamics Shifted',
+          detail: `${fromChar} & ${toChar}`,
+        })
 
         audio.actions.triggerIdentitySound()
       }
@@ -295,13 +300,11 @@ export function useChoiceHandler({
       // When player's dominant pattern crosses threshold 5, reveal the voice system
       if (result.events.voiceRevelationEcho) {
         const echo = result.events.voiceRevelationEcho
-        // Show revelation as consequence feedback
-        setState(prev => ({
-          ...prev,
-          consequenceFeedback: {
-            message: echo.text
-          }
-        }))
+        outcomeItems.push({
+          kind: 'info',
+          title: 'New Echo',
+          detail: echo.text.length > 120 ? echo.text.substring(0, 117) + '...' : echo.text,
+        })
         logger.info('[StatefulGameInterface] Voice system revelation triggered:', {
           echoText: echo.text.substring(0, 50)
         })
@@ -749,8 +752,34 @@ export function useChoiceHandler({
 
       const skillsToKeep = skillResult.skillsToKeep
 
-      // Phase 1.2: Trust feedback message extracted to pure function
-      const consequenceFeedback = computeTrustFeedbackMessage(trustDelta, state.currentCharacterId)
+      // Outcome card (player-facing): compact, deterministic "what changed" summary.
+      const trustFeedbackMsg = computeTrustFeedbackMessage(trustDelta, state.currentCharacterId)
+      if (trustFeedbackMsg?.message) {
+        const m = trustFeedbackMsg.message.match(/^Trust \(([^)]+)\):\s*(.*)$/)
+        if (m) {
+          outcomeItems.push({ kind: 'trust', title: `Trust (${m[1]})`, detail: m[2] })
+        } else {
+          outcomeItems.push({ kind: 'trust', title: 'Trust', detail: trustFeedbackMsg.message })
+        }
+      }
+
+      // Only show the "story progressed" fallback when there were no other visible deltas
+      // and we didn't already surface feedback via echo/sensation.
+      if (
+        outcomeItems.length === 0 &&
+        !consequenceEcho &&
+        !patternSensation &&
+        !patternShiftMsg
+      ) {
+        outcomeItems.push({ kind: 'info', title: 'Story progressed', detail: 'No visible changes.' })
+      }
+
+      const outcomeCard: OutcomeCardData | null = outcomeItems.length > 0
+        ? {
+          id: `choice:${state.currentNode?.nodeId || 'node'}:${choice.choice.choiceId || ''}`,
+          items: outcomeItems,
+        }
+        : null
 
 
       // Arc completion results from orchestrator - award bonus orbs silently
@@ -849,7 +878,7 @@ export function useChoiceHandler({
         dialogueContent: content,
         useChatPacing: content.useChatPacing || false,
         // Feedback
-        consequenceFeedback,
+        outcomeCard,
         consequenceEcho,
         patternSensation,
         patternShiftMsg,

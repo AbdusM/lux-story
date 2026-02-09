@@ -248,6 +248,7 @@ import type { GameInterfaceState } from '@/lib/game-interface-types'
 import { GameHeader } from '@/components/game/GameHeader'
 import { GameFooter } from '@/components/game/GameFooter'
 import { EndingPanel } from '@/components/game/EndingPanel'
+import type { PrismTabId } from '@/lib/prism-tabs'
 
 export default function StatefulGameInterface() {
   const safeStart = getSafeStart()
@@ -294,12 +295,13 @@ export default function StatefulGameInterface() {
     selectedChoice: null,
     showSaveConfirmation: false,
     skillToast: null,
-    consequenceFeedback: null,
+    outcomeCard: null,
     error: null,
     recentSkills: [],
     showExperienceSummary: false,
     experienceSummaryData: null,
     showJournal: false,
+    journalInitialTab: null,
     showConstellation: false,
     pendingFloatingModule: null,
     showJourneySummary: false,
@@ -435,6 +437,7 @@ export default function StatefulGameInterface() {
         return {
           ...prev,
           showJournal: nextShow,
+          journalInitialTab: nextShow ? null : prev.journalInitialTab,
           showConstellation: nextShow ? false : prev.showConstellation,
           showReport: nextShow ? false : prev.showReport,
           showJourneySummary: nextShow ? false : prev.showJourneySummary,
@@ -506,7 +509,7 @@ export default function StatefulGameInterface() {
 
     // General shortcuts
     registerHandler('escape', () => {
-      if (state.showJournal) setState(prev => ({ ...prev, showJournal: false }))
+      if (state.showJournal) setState(prev => ({ ...prev, showJournal: false, journalInitialTab: null }))
       else if (state.showConstellation) setState(prev => ({ ...prev, showConstellation: false }))
       else if (state.showReport) setState(prev => ({ ...prev, showReport: false }))
       else if (showShortcutsHelp) setShowShortcutsHelp(false)
@@ -841,6 +844,21 @@ export default function StatefulGameInterface() {
 
   }
 
+  const openPrismTab = (tab: PrismTabId) => {
+    setState(prev => ({
+      ...prev,
+      showJournal: true,
+      journalInitialTab: tab,
+      showConstellation: false,
+      showReport: false,
+      showJourneySummary: false,
+    }))
+  }
+
+  const dismissOutcome = () => {
+    setState(prev => ({ ...prev, outcomeCard: null }))
+  }
+
   return (
     <LivingAtmosphere
       characterId={state.currentCharacterId}
@@ -878,7 +896,7 @@ export default function StatefulGameInterface() {
             toggleMute: () => audio.actions.toggleMute(),
             setVolume: (v) => audio.actions.setVolume(v),
           }}
-          onShowJournal={() => setState(prev => ({ ...prev, showJournal: true, showConstellation: false, showReport: false, showJourneySummary: false }))}
+          onShowJournal={() => setState(prev => ({ ...prev, showJournal: true, journalInitialTab: null, showConstellation: false, showReport: false, showJourneySummary: false }))}
           onShowConstellation={() => setState(prev => ({ ...prev, showConstellation: true, showJournal: false, showReport: false, showJourneySummary: false, hasNewTrust: false, hasNewMeeting: false }))}
           onShowReport={() => setState(prev => ({ ...prev, showReport: true }))}
         />
@@ -1132,6 +1150,9 @@ export default function StatefulGameInterface() {
           currentNode={state.currentNode}
           gameState={gameState}
           isProcessing={state.isProcessing}
+          outcomeCard={state.outcomeCard}
+          onDismissOutcome={dismissOutcome}
+          onOpenPrismTab={openPrismTab}
           orbFillLevels={orbFillLevels}
           cognitiveLoad={cognitiveLoad}
           onChoice={handleChoice}
@@ -1209,7 +1230,9 @@ export default function StatefulGameInterface() {
         <SectionErrorBoundary sectionName="Journal" compact>
           <Journal
             isOpen={state.showJournal}
-            onClose={() => setState(prev => ({ ...prev, showJournal: false }))}
+            initialTab={state.journalInitialTab}
+            onInitialTabConsumed={() => setState(prev => ({ ...prev, journalInitialTab: null }))}
+            onClose={() => setState(prev => ({ ...prev, showJournal: false, journalInitialTab: null }))}
           />
         </SectionErrorBoundary>
 

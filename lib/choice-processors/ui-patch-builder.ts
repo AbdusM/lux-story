@@ -20,6 +20,7 @@ import type { PatternVoiceResult, VoiceConflictResult } from '@/lib/pattern-voic
 import type { DelayedGift } from '@/lib/delayed-gifts'
 import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
 import type { GameInterfaceState } from '@/lib/game-interface-types'
+import type { OutcomeCardData } from '@/lib/outcome-card'
 
 /**
  * Input context for building the UI patch
@@ -38,7 +39,7 @@ export interface UiPatchContext {
   useChatPacing: boolean
 
   // Feedback
-  consequenceFeedback: { message: string } | null
+  outcomeCard: OutcomeCardData | null
   consequenceEcho: ConsequenceEcho | null
   patternSensation: string | null
   patternShiftMsg: string | null
@@ -78,6 +79,7 @@ export interface UiPatchContext {
   previousState: Pick<GameInterfaceState,
     | 'currentNode'
     | 'showJournal'
+    | 'journalInitialTab'
     | 'showConstellation'
     | 'showJourneySummary'
     | 'journeyNarrative'
@@ -134,7 +136,7 @@ export function buildChoiceUiPatch(ctx: UiPatchContext): ChoiceUiPatch {
     skillToast: null,
 
     // Feedback state (active)
-    consequenceFeedback: ctx.consequenceFeedback,
+    outcomeCard: ctx.outcomeCard,
     consequenceEcho: ctx.consequenceEcho,
     patternSensation: ctx.patternShiftMsg || ctx.patternSensation,
 
@@ -154,6 +156,7 @@ export function buildChoiceUiPatch(ctx: UiPatchContext): ChoiceUiPatch {
 
     // Panel state (preserved)
     showJournal: ctx.previousState.showJournal,
+    journalInitialTab: ctx.previousState.journalInitialTab,
     showConstellation: ctx.previousState.showConstellation,
     showJourneySummary: ctx.previousState.showJourneySummary,
     showReport: ctx.previousState.showReport,

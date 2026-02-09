@@ -37,6 +37,7 @@ import { calculateSkillDecay, getSkillDecayNarrative } from '@/lib/assessment-de
 import { migrateOrbsFromLocalStorage } from '@/lib/migrations/orb-migration'
 import { migrateLocalStorageKeys } from '@/lib/persistence/storage-migration'
 import { STORAGE_KEYS } from '@/lib/persistence/storage-keys'
+import type { OutcomeCardData } from '@/lib/outcome-card'
 
 interface UseGameInitializerParams {
   setState: Dispatch<SetStateAction<GameInterfaceState>>
@@ -379,13 +380,19 @@ export function useGameInitializer({
         activeExperience, // Preserve from previous state
         showSaveConfirmation: false,
         skillToast: null,
-        consequenceFeedback: checkInFeedback,
+        outcomeCard: (checkInFeedback
+          ? ({
+            id: 'init:checkin',
+            items: [{ kind: 'info', title: checkInFeedback.message }],
+          } satisfies OutcomeCardData)
+          : null),
         error: null,
         previousSpeaker: null,
         recentSkills: [],
         showExperienceSummary: false,
         experienceSummaryData: null,
         showJournal: false,
+        journalInitialTab: null,
         showConstellation: false,
         pendingFloatingModule: null,
         showJourneySummary: false,
@@ -492,7 +499,8 @@ export function useGameInitializer({
       showJourneySummary: false,
       error: null,
       ambientEvent: null,
-      consequenceFeedback: null,
+      outcomeCard: null,
+      journalInitialTab: null,
       patternSensation: null
     }))
   }, [safeStart.graph, safeStart.characterId])

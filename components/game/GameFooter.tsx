@@ -8,6 +8,9 @@ import type { EvaluatedChoice } from '@/lib/dialogue-graph'
 import type { DialogueNode } from '@/lib/dialogue-graph'
 import type { GameState } from '@/lib/character-state'
 import type { OrbFillLevels } from '@/lib/choice-adapter'
+import type { OutcomeCardData } from '@/lib/outcome-card'
+import type { PrismTabId } from '@/lib/prism-tabs'
+import { OutcomeCard } from '@/components/game/OutcomeCard'
 
 interface GameFooterProps {
   isEnding: boolean
@@ -15,6 +18,9 @@ interface GameFooterProps {
   currentNode: DialogueNode | null
   gameState: GameState | null
   isProcessing: boolean
+  outcomeCard: OutcomeCardData | null
+  onDismissOutcome: () => void
+  onOpenPrismTab: (tab: PrismTabId) => void
   orbFillLevels: OrbFillLevels
   cognitiveLoad: CognitiveLoadLevel
   onChoice: (choice: EvaluatedChoice) => void
@@ -26,6 +32,9 @@ export function GameFooter({
   currentNode,
   gameState,
   isProcessing,
+  outcomeCard,
+  onDismissOutcome,
+  onOpenPrismTab,
   orbFillLevels,
   cognitiveLoad,
   onChoice,
@@ -39,6 +48,16 @@ export function GameFooter({
             paddingBottom: 'max(64px, env(safe-area-inset-bottom, 64px))'
           }}
         >
+          {outcomeCard && (
+            <div className="px-4 sm:px-6 pt-2">
+              <OutcomeCard
+                card={outcomeCard}
+                onDismiss={onDismissOutcome}
+                onOpenPrismTab={onOpenPrismTab}
+              />
+            </div>
+          )}
+
           {/* Response label - compact on mobile */}
           <div className="px-4 sm:px-6 pt-2 pb-0.5 text-center">
             <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 uppercase tracking-[0.1em]">

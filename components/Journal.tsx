@@ -36,13 +36,16 @@ import { useUserRole } from "@/hooks/useUserRole"
 import { useBiology } from "@/hooks/useBiology"
 import { BiologyIndicator } from "./BiologyIndicator"
 import { getBirminghamOpportunities } from "@/content/birmingham-opportunities"
+import type { PrismTabId } from "@/lib/prism-tabs"
 
 interface JournalProps {
   isOpen: boolean
   onClose: () => void
+  initialTab?: PrismTabId | null
+  onInitialTabConsumed?: () => void
 }
 
-type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'toolkit' | 'simulations' | 'cognition' | 'analysis' | 'god_mode' | 'opportunities' | 'careers' | 'combos' | 'mysteries' | 'ranks'
+type TabId = PrismTabId
 
 // Tab content variants - respects prefers-reduced-motion via Framer Motion's global setting
 // but we also pass explicit reduced variants for clarity
@@ -58,7 +61,7 @@ const tabContentVariantsReduced = {
   exit: { opacity: 0, transition: { duration: 0.1 } }
 } as const
 
-export function Journal({ isOpen, onClose }: JournalProps) {
+export function Journal({ isOpen, onClose, initialTab, onInitialTabConsumed }: JournalProps) {
   // "The Prism" Interface
   const [activeTab, setActiveTab] = useState<TabId>('harmonics')
   const [_detailSkillId, setDetailSkillId] = useState<string | null>(null)
@@ -128,6 +131,18 @@ export function Journal({ isOpen, onClose }: JournalProps) {
       markOrbsViewed()
     }
   }
+
+  // Deep-link support (Outcome card): when opening, jump to the requested tab.
+  useEffect(() => {
+    if (!isOpen || !initialTab) return
+    handleTabSelect(initialTab)
+    // One-shot deep link: allow the parent to clear the initialTab so the user
+    // can freely navigate without being forced back on future opens.
+    onInitialTabConsumed?.()
+    // We intentionally do not include handleTabSelect in deps: it is stable enough here and we
+    // want to avoid re-selecting due to non-functional identity changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, initialTab, onInitialTabConsumed])
 
   // Compute badge visibility (show if has content AND not yet viewed)
   const tabBadges: Record<TabId, boolean> = {
