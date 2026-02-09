@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { springs, stagger, signatureChoice } from '@/lib/animations'
 import { Lock, Microscope, Brain, Compass, Heart, Hammer } from 'lucide-react'
 import { useChoiceCommitment } from '@/hooks/useChoiceCommitment'
-import { type PatternType, PATTERN_METADATA, isValidPattern } from '@/lib/patterns'
+import { type PatternType, isValidPattern } from '@/lib/patterns'
 import { type GravityResult } from '@/lib/narrative-gravity'
 import { orderChoicesForDisplay, type ChoiceOrderingVariant } from '@/lib/choice-ordering'
 import { getPatternPreviewStyles, getPatternHintText } from '@/lib/pattern-derivatives'
@@ -17,6 +17,7 @@ import { CHOICE_CONTAINER_HEIGHT } from '@/lib/ui-constants'
 import { useGameStore } from '@/lib/game-store'
 import { truncateTextForLoad, CognitiveLoadLevel } from '@/lib/cognitive-load'
 import { queueInteractionEventSync, generateActionId } from '@/lib/sync-queue'
+import { deriveOrbFillGateReason } from '@/lib/choice-gate-reasons'
 
 // ... (retain pattern styles constants: PATTERN_HOVER_STYLES, DEFAULT_HOVER_STYLE, PATTERN_GLASS_STYLES, DEFAULT_GLASS_STYLE, PATTERN_MARQUEE_COLORS, DEFAULT_MARQUEE_COLORS) ...
 
@@ -303,18 +304,8 @@ function isChoiceLocked(choice: Choice, orbFillLevels?: OrbFillLevels): boolean 
   return currentLevel < threshold
 }
 
-/**
- * Get lock message for a locked choice
- */
-function getLockMessage(choice: Choice): string {
-  if (!choice.requiredOrbFill) return ''
-  const { pattern, threshold } = choice.requiredOrbFill
-  const label = PATTERN_METADATA[pattern].label
-  return `${label} ${threshold}%`
-}
-
 // Memoized choice button component
-const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, isLocked, glass, showPatternIcon, playerPatterns, cognitiveLoad, selectedChoiceId, animationState }: {
+const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, isLocked, glass, showPatternIcon, playerPatterns, cognitiveLoad, selectedChoiceId, animationState, orbFillLevels }: {
   choice: Choice
   index: number
   onChoice: (choice: Choice) => void
@@ -330,6 +321,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
   selectedChoiceId?: string | null
   /** Signature animation: current animation state */
   animationState?: string
+  orbFillLevels?: OrbFillLevels
 }) => {
   // MAGNETIC EFFECT REMOVED for stability and "less disjointed" feel
   // const magnetic = useMagneticElement(...)
@@ -422,9 +414,15 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
 
   // TICKET-003: Locked choice styling with narrative framing
   if (isLocked) {
-    // Use narrative message if available, otherwise fall back to pattern requirement
-    const lockDisplayMessage = choice.narrativeLockMessage || getLockMessage(choice)
-    const hasNarrativeMessage = !!choice.narrativeLockMessage
+    const narrativeMessage = choice.narrativeLockMessage?.trim() || null
+    const reason = choice.requiredOrbFill
+      ? deriveOrbFillGateReason({
+        requiredOrbFill: choice.requiredOrbFill,
+        orbFillLevels,
+        narrativeLockMessage: choice.narrativeLockMessage,
+        lockActionHint: choice.lockActionHint,
+      })
+      : null
 
     return (
       <div className="w-full">
@@ -447,7 +445,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
                 : 'text-stone-400 border border-stone-200 bg-stone-50'
               }
             `}
-            aria-label={`Locked choice: ${choice.text}. ${lockDisplayMessage}`}
+            aria-label={`Locked choice: ${choice.text}. ${reason?.why || ''} ${reason?.how || ''}`.trim()}
             role="button"
             aria-disabled="true"
             title={choice.lockActionHint ? `Tip: ${choice.lockActionHint}` : undefined}
@@ -458,17 +456,27 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
               <span className="flex-1 line-clamp-2 grayscale">{choice.text}</span>
             </div>
 
-            {/* Narrative lock message */}
-            <div className={`text-xs pl-7 ${glass ? 'text-slate-400' : 'text-stone-500'}`}>
-              {hasNarrativeMessage ? (
-                <span className="italic">{lockDisplayMessage}</span>
-              ) : (
-                <span>Requires: {lockDisplayMessage}</span>
-              )}
-            </div>
+            {/* Narrative lock message (flavor) */}
+            {narrativeMessage && (
+              <div className={`text-xs pl-7 ${glass ? 'text-slate-400' : 'text-stone-500'}`}>
+                <span className="italic">{narrativeMessage}</span>
+              </div>
+            )}
 
-            {/* Progress bar and action hint (if narrative message) */}
-            {hasNarrativeMessage && choice.requiredOrbFill && (
+            {/* Canonical why/how */}
+            {reason && (
+              <>
+                <div className={`text-xs pl-7 ${glass ? 'text-slate-300' : 'text-stone-600'}`}>
+                  {reason.why}
+                </div>
+                <div className={`text-xs pl-7 ${glass ? 'text-slate-400' : 'text-stone-500'}`}>
+                  {reason.how}
+                </div>
+              </>
+            )}
+
+            {/* Progress bar */}
+            {reason && (
               <div className="flex items-center gap-2 pl-7">
                 {/* Mini progress bar */}
                 <div className={`flex-1 h-1 rounded-full overflow-hidden ${glass ? 'bg-slate-800' : 'bg-stone-200'}`}>
@@ -477,12 +485,12 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
                       glass ? 'bg-slate-600' : 'bg-stone-400'
                     }`}
                     style={{
-                      width: `${Math.min(100, ((choice.lockProgress || 0) / choice.requiredOrbFill.threshold) * 100)}%`
+                      width: `${Math.min(100, (reason.current / reason.required) * 100)}%`
                     }}
                   />
                 </div>
                 <span className={`text-[10px] ${glass ? 'text-slate-500' : 'text-stone-400'}`}>
-                  {choice.lockProgress || 0}/{choice.requiredOrbFill.threshold}
+                  {reason.current}/{reason.required}
                 </span>
               </div>
             )}
@@ -767,7 +775,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
             gravity_weight: c.gravity?.weight ?? null,
             gravity_effect: c.gravity?.effect ?? null,
             is_locked: isLocked,
-            lock_reason: isLocked ? 'orb' : null,
+            lock_reason: isLocked ? 'NEEDS_ORB_FILL' : null,
             required_orb_fill: c.requiredOrbFill || null,
           }
         })
@@ -893,6 +901,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
                     cognitiveLoad={cognitiveLoad}
                     selectedChoiceId={selectedChoiceId}
                     animationState={animationState}
+                    orbFillLevels={orbFillLevels}
                   />
                 )
               })}
@@ -951,6 +960,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
               cognitiveLoad={cognitiveLoad}
               selectedChoiceId={selectedChoiceId}
               animationState={animationState}
+              orbFillLevels={orbFillLevels}
             />
           )
         })
