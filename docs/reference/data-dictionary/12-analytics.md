@@ -522,8 +522,20 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
     - `is_enabled`: boolean
     - `is_locked`: boolean
     - `lock_reason`: string|null (e.g. `NEEDS_ORB_FILL`)
-    - `disabled_reason_code`: string|null (e.g. `DISABLED_BY_CONDITION`)
+    - `disabled_reason_code`: string|null
+      - Canonical codes (current):
+        - `NEEDS_TRUST`
+        - `NEEDS_RELATIONSHIP`
+        - `NEEDS_GLOBAL_FLAG`
+        - `BLOCKED_BY_GLOBAL_FLAG`
+        - `NEEDS_KNOWLEDGE_FLAG`
+        - `BLOCKED_BY_KNOWLEDGE_FLAG`
+        - `NEEDS_PATTERN_LEVEL`
+        - `NEEDS_COMBO`
+        - `REQUIREMENTS_NOT_MET`
+      - Legacy fallback (avoid adding new usages): `DISABLED_BY_CONDITION`
     - `disabled_reason`: string|null (human hint)
+    - `required_orb_fill`: object|null (if orb-gated choice)
 
 **`choice_selected_ui`** (what was clicked, at what index, how fast)
 - Emitted by: `components/GameChoices.tsx`

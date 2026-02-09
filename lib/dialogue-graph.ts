@@ -18,6 +18,7 @@ import { randomPick } from './seeded-random'
 // Use isValidEmotion() from lib/emotions.ts for runtime validation of core emotions
 
 import { calculateGravity, GravityResult } from './narrative-gravity'
+import { deriveDisabledReason } from './disabled-reasons'
 
 /**
  * A single dialogue node in the narrative graph
@@ -466,6 +467,7 @@ export interface EvaluatedChoice {
   visible: boolean
   enabled: boolean
   reason?: string // Why choice is disabled (for debug/tooltips)
+  reason_code?: string // Canonical disabled reason code (analytics + UX consistency)
   gravity?: GravityResult // ISP: Narrative Gravity Weight
 }
 
@@ -632,8 +634,11 @@ export class StateConditionEvaluator {
 
       // Generate reason if disabled but visible
       let reason: string | undefined
+      let reason_code: string | undefined
       if (visible && !enabled) {
-        reason = this.generateDisabledReason(choice.enabledCondition, gameState, characterId)
+        const d = deriveDisabledReason(choice.enabledCondition, gameState, characterId)
+        reason = d.message
+        reason_code = d.code
       }
 
       // ISP UPDATE: Calculate Narrative Gravity
@@ -647,6 +652,7 @@ export class StateConditionEvaluator {
         visible,
         enabled,
         reason,
+        reason_code,
         gravity
       }
     })

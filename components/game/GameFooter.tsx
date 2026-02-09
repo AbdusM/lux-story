@@ -105,6 +105,7 @@ export function GameFooter({
                         pivotal: isNodePivotal,
                         enabled: c.enabled,
                         disabledReason: c.reason || null,
+                        disabledReasonCode: c.reason_code || null,
                         requiredOrbFill: c.choice.requiredOrbFill,
                         next: String(originalIndex)
                       }

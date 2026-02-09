@@ -136,6 +136,8 @@ interface Choice {
   enabled?: boolean
   /** Human-readable reason from StateConditionEvaluator when disabled */
   disabledReason?: string | null
+  /** Canonical reason code from StateConditionEvaluator (analytics bucketing) */
+  disabledReasonCode?: string | null
   /** Orb fill requirement - choice is locked until met (KOTOR-style) */
   requiredOrbFill?: OrbRequirement
   /** ISP: Narrative Gravity Weight */ // Added missing property documentation
@@ -821,7 +823,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
             is_enabled: c.enabled !== false,
             is_locked: isLocked,
             lock_reason: isLocked ? 'NEEDS_ORB_FILL' : null,
-            disabled_reason_code: c.enabled === false ? 'DISABLED_BY_CONDITION' : null,
+            disabled_reason_code: c.enabled === false ? (c.disabledReasonCode || 'DISABLED_BY_CONDITION') : null,
             disabled_reason: c.enabled === false ? (c.disabledReason || null) : null,
             required_orb_fill: c.requiredOrbFill || null,
           }
