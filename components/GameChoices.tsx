@@ -13,6 +13,7 @@ import { getPatternPreviewStyles, getPatternHintText } from '@/lib/pattern-deriv
 import { type PlayerPatterns } from '@/lib/character-state'
 import { cn } from '@/lib/utils'
 import { CHOICE_CONTAINER_HEIGHT } from '@/lib/ui-constants'
+import { deriveChoiceGateReason, type ChoiceGateReason } from '@/lib/choice-gate-reasons'
 
 import { useGameStore } from '@/lib/game-store'
 import { truncateTextForLoad, CognitiveLoadLevel } from '@/lib/cognitive-load'
@@ -149,6 +150,11 @@ interface Choice {
   lockProgress?: number
   /** Action hint for unlocking */
   lockActionHint?: string
+  /**
+   * Canonical structured gating reason used for consistent rendering and tests.
+   * This is derived at render-time (not authored in content).
+   */
+  gateReason?: ChoiceGateReason
 }
 
 /**
@@ -431,14 +437,17 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
     }
   }
 
-  // TICKET-003: Locked choice styling with narrative framing
-  if (isLocked) {
-    // Use narrative message if available, otherwise fall back to pattern requirement
-    const lockDisplayMessage = choice.narrativeLockMessage || getLockMessage(choice)
-    const hasNarrativeMessage = !!choice.narrativeLockMessage
+	  // TICKET-003: Locked choice styling with narrative framing
+	  if (isLocked) {
+	    // Use narrative message if available, otherwise fall back to pattern requirement
+	    const lockDisplayMessage = choice.narrativeLockMessage || getLockMessage(choice)
+	    const hasNarrativeMessage = !!choice.narrativeLockMessage
+	    const gateReason = choice.gateReason?.kind === 'locked' ? choice.gateReason : null
+	    const lockProgress = choice.lockProgress ?? gateReason?.current ?? 0
+	    const lockHow = choice.lockActionHint || gateReason?.how || 'Choose more aligned responses to build resonance.'
 
-    return (
-      <div className="w-full">
+	    return (
+	      <div className="w-full">
         <motion.div
           variants={combinedVariants}
           custom={index}
@@ -446,7 +455,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
           data-choice-index={index}
           style={{ scrollSnapAlign: 'start' }}
         >
-          <div
+	          <div
             className={`
               w-full min-h-[56px] sm:min-h-[52px] h-auto px-4 sm:px-6 py-4 sm:py-3
               text-base sm:text-sm font-medium text-left
@@ -458,63 +467,68 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
                 : 'text-stone-400 border border-stone-200 bg-stone-50'
               }
             `}
-            aria-label={`Locked choice: ${choice.text}. ${lockDisplayMessage}`}
-            role="button"
-            aria-disabled="true"
-            title={choice.lockActionHint ? `Tip: ${choice.lockActionHint}` : undefined}
-          >
+	            aria-label={`Locked choice: ${choice.text}. ${gateReason?.why || lockDisplayMessage}. ${lockHow}`}
+	            role="button"
+	            aria-disabled="true"
+	            title={choice.lockActionHint ? `Tip: ${choice.lockActionHint}` : undefined}
+	          >
             {/* Choice text with lock icon */}
             <div className="flex items-center gap-3">
               <Lock className={`w-4 h-4 flex-shrink-0 ${glass ? 'text-slate-500' : 'text-stone-400'}`} />
               <span className="flex-1 line-clamp-2 grayscale">{choice.text}</span>
             </div>
 
-            {/* Narrative lock message */}
-            <div className={`text-xs pl-7 ${glass ? 'text-slate-400' : 'text-stone-500'}`}>
-              {hasNarrativeMessage ? (
-                <span className="italic">{lockDisplayMessage}</span>
-              ) : (
-                <span>Requires: {lockDisplayMessage}</span>
-              )}
-            </div>
+	            {/* Narrative lock message */}
+	            <div className={`text-xs pl-7 ${glass ? 'text-slate-400' : 'text-stone-500'}`}>
+	              {hasNarrativeMessage ? (
+	                <span className="italic">{lockDisplayMessage}</span>
+	              ) : (
+	                <span>{gateReason?.why ? gateReason.why : `Requires: ${lockDisplayMessage}`}</span>
+	              )}
+	            </div>
 
-            {/* Progress bar and action hint (if narrative message) */}
-            {hasNarrativeMessage && choice.requiredOrbFill && (
-              <div className="flex items-center gap-2 pl-7">
-                {/* Mini progress bar */}
-                <div className={`flex-1 h-1 rounded-full overflow-hidden ${glass ? 'bg-slate-800' : 'bg-stone-200'}`}>
-                  <div
-                    className={`h-full transition-all duration-300 ${
-                      glass ? 'bg-slate-600' : 'bg-stone-400'
-                    }`}
-                    style={{
-                      width: `${Math.min(100, ((choice.lockProgress || 0) / choice.requiredOrbFill.threshold) * 100)}%`
-                    }}
-                  />
-                </div>
-                <span className={`text-[10px] ${glass ? 'text-slate-500' : 'text-stone-400'}`}>
-                  {choice.lockProgress || 0}/{choice.requiredOrbFill.threshold}
-                </span>
-              </div>
-            )}
-          </div>
-        </motion.div>
-      </div>
+	            {/* Action hint (how to unlock) */}
+	            <div className={`text-[10px] pl-7 ${glass ? 'text-slate-500' : 'text-stone-400'}`}>
+	              <span>{`To unlock: ${lockHow}`}</span>
+	            </div>
+
+	            {/* Progress bar (orb-gated choices) */}
+	            {choice.requiredOrbFill && (
+	              <div className="flex items-center gap-2 pl-7" aria-label="Unlock progress">
+	                {/* Mini progress bar */}
+	                <div className={`flex-1 h-1 rounded-full overflow-hidden ${glass ? 'bg-slate-800' : 'bg-stone-200'}`}>
+	                  <div
+	                    className={`h-full transition-all duration-300 ${
+	                      glass ? 'bg-slate-600' : 'bg-stone-400'
+	                    }`}
+	                    style={{
+	                      width: `${Math.min(100, (lockProgress / choice.requiredOrbFill.threshold) * 100)}%`
+	                    }}
+	                  />
+	                </div>
+	                <span className={`text-[10px] ${glass ? 'text-slate-500' : 'text-stone-400'}`}>
+	                  {lockProgress}/{choice.requiredOrbFill.threshold}
+	                </span>
+	              </div>
+	            )}
+	          </div>
+	        </motion.div>
+	      </div>
     )
   }
 
-  if (isDisabledByCondition) {
-    const disabledMessage = choice.disabledReason || 'Requirements not met'
-    return (
+	  if (isDisabledByCondition) {
+	    const disabledMessage = choice.disabledReason || 'Requirements not met'
+	    return (
       <div className="w-full">
-        <motion.div
+	        <motion.div
           variants={combinedVariants}
           custom={index}
           className="w-full"
           data-choice-index={index}
           style={{ scrollSnapAlign: 'start' }}
         >
-          <div
+	          <div
             className={`
               w-full min-h-[56px] sm:min-h-[52px] h-auto px-4 sm:px-6 py-4 sm:py-3
               text-base sm:text-sm font-medium text-left
@@ -526,7 +540,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
                 : 'text-stone-400 border border-stone-200 bg-stone-50'
               }
             `}
-            aria-label={`Disabled choice: ${choice.text}. ${disabledMessage}`}
+	            aria-label={`Disabled choice: ${choice.text}. ${disabledMessage}`}
             role="button"
             aria-disabled="true"
             title={disabledMessage}
@@ -535,14 +549,14 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
               <Lock className={`w-4 h-4 flex-shrink-0 ${glass ? 'text-slate-500' : 'text-stone-400'}`} />
               <span className="flex-1 line-clamp-2 grayscale">{choice.text}</span>
             </div>
-            <div className={`text-xs pl-7 ${glass ? 'text-slate-400' : 'text-stone-500'}`}>
-              <span>{disabledMessage}</span>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    )
-  }
+	            <div className={`text-xs pl-7 ${glass ? 'text-slate-400' : 'text-stone-500'}`}>
+	              <span>{disabledMessage}</span>
+	            </div>
+	          </div>
+	        </motion.div>
+	      </div>
+	    )
+	  }
 
   return (
     <div className="w-full">
@@ -722,6 +736,9 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     return orderChoicesForDisplay(choices, { variant: orderingVariant, seed: orderingSeed })
   }, [choices, orderingSeed])
 
+  // Canonical gating helper uses a simple Record<PatternType, number>.
+  const orbLevels = orbFillLevels as unknown as Record<PatternType, number> | undefined
+
   // Determine layout strategy based on count
   // Smart column logic: avoid orphan on 3 choices (use single column)
   // 1-3 choices: single column, 4+ choices: 2 columns (pairs work better)
@@ -804,22 +821,23 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     const nervousSystemState = currentChar?.nervousSystemState || null
 
     queueInteractionEventSync({
-      user_id: playerId,
-      session_id: String(coreState?.sessionStartTime || now),
-      event_type: 'choice_presented',
-      node_id: nodeId,
-      character_id: characterId,
-      ordering_variant: orderingVariant,
-      ordering_seed: orderingSeed,
-      payload: {
-        event_id: eventId,
-        presented_at_ms: now,
-        nervous_system_state: nervousSystemState,
-        mercy_unlocked_choice_id: mercyUnlockChoice ? getStableChoiceId(mercyUnlockChoice) : null,
+	      user_id: playerId,
+	      session_id: String(coreState?.sessionStartTime || now),
+	      event_type: 'choice_presented',
+	      node_id: nodeId,
+	      character_id: characterId,
+	      ordering_variant: orderingVariant,
+	      ordering_seed: orderingSeed,
+	      payload: {
+	        event_id: eventId,
+	        presented_at_ms: now,
+	        nervous_system_state: nervousSystemState,
+	        mercy_unlocked_choice_id: mercyUnlockChoice ? getStableChoiceId(mercyUnlockChoice) : null,
         choices: presentedChoicesFlat.map((c, i) => {
           const stableId = getStableChoiceId(c)
           const isLocked = isChoiceLocked(c, orbFillLevels) && c !== mercyUnlockChoice
           const isEnabled = c.enabled !== false
+          const gateReason = isLocked ? deriveChoiceGateReason({ requiredOrbFill: c.requiredOrbFill }, orbLevels) : null
           return {
             index: i,
             choice_id: stableId,
@@ -829,12 +847,12 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
             is_enabled: isEnabled,
             disabled_reason: isEnabled ? null : (c.disabledReason || null),
             is_locked: isLocked,
-            lock_reason: isLocked ? 'orb' : null,
+            lock_reason: gateReason && gateReason.kind === 'locked' ? gateReason.code : (isLocked ? 'orb' : null),
             required_orb_fill: c.requiredOrbFill || null,
           }
         })
-      }
-    })
+	      }
+	    })
 
     // Telemetry: explicit deadlock-recovery injection event.
     // This prevents "hidden" deadlocks from being silently masked by the recovery UI.
@@ -859,7 +877,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
         }
       })
     }
-  }, [coreState?.playerId, coreState?.currentNodeId, coreState?.currentCharacterId, coreState?.sessionStartTime, coreState?.characters, orderingSeed, orderingVariant, presentedChoicesFlat, orbFillLevels, mercyUnlockChoice])
+  }, [coreState?.playerId, coreState?.currentNodeId, coreState?.currentCharacterId, coreState?.sessionStartTime, coreState?.characters, orderingSeed, orderingVariant, presentedChoicesFlat, orbFillLevels, orbLevels, mercyUnlockChoice])
 
   const logChoiceSelectedUi = useCallback((choice: Choice) => {
     const playerId = coreState?.playerId
@@ -961,24 +979,38 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
               </h3>
             )}
             <div className={`grid gap-3 p-2 w-full ${groupChoices.length >= 4 ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
-              {groupChoices.map((choice, _localIndex) => {
-                const currentGlobalIndex = globalIndex++
-                // Apply lock unless it's the mercy override
-                const isLocked = isChoiceLocked(choice, orbFillLevels) && choice !== mercyUnlockChoice
+	              {groupChoices.map((choice, _localIndex) => {
+	                const currentGlobalIndex = globalIndex++
+	                // Apply lock unless it's the mercy override
+	                const rawLocked = isChoiceLocked(choice, orbFillLevels)
+	                const isLocked = rawLocked && choice !== mercyUnlockChoice
+	                const baseReason = deriveChoiceGateReason(choice, orbLevels)
+	                const gateReason: ChoiceGateReason | undefined =
+	                  baseReason?.kind === 'locked' ? (isLocked ? baseReason : undefined) : (baseReason ?? undefined)
+	                const enrichedChoice: Choice = gateReason && gateReason.kind === 'locked'
+	                  ? {
+	                      ...choice,
+	                      gateReason,
+	                      lockProgress: choice.lockProgress ?? gateReason.current,
+	                      lockActionHint: choice.lockActionHint ?? gateReason.how,
+	                    }
+	                  : gateReason
+	                      ? { ...choice, gateReason }
+	                      : choice
 
-                // Stable key priority: consequence > text-based hash
-                const stableKey = choice.consequence
-                  || `choice-${choice.text.slice(0, 30).replace(/\s+/g, '-')}`
+	                // Stable key priority: consequence > text-based hash
+	                const stableKey = choice.consequence
+	                  || `choice-${choice.text.slice(0, 30).replace(/\s+/g, '-')}`
 
                 return (
-                  <ChoiceButton
-                    key={stableKey}
-                    choice={choice}
-                    index={currentGlobalIndex}
-                    onChoice={handleChoiceWithTelemetry}
-                    isProcessing={isProcessing || isCommitting}
-                    isFocused={focusedIndex === currentGlobalIndex}
-                    isLocked={isLocked}
+	                  <ChoiceButton
+	                    key={stableKey}
+	                    choice={enrichedChoice}
+	                    index={currentGlobalIndex}
+	                    onChoice={handleChoiceWithTelemetry}
+	                    isProcessing={isProcessing || isCommitting}
+	                    isFocused={focusedIndex === currentGlobalIndex}
+	                    isLocked={isLocked}
                     glass={glass}
                     showPatternIcon={hasPatternPreview}
                     playerPatterns={playerPatterns}
@@ -1021,21 +1053,35 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     >
       {(() => {
         // Safety Net Calculation (Duplicated for non-grouped view)
-        return sortedChoices.map((choice, index) => {
-          const isLocked = isChoiceLocked(choice, orbFillLevels) && choice !== mercyUnlockChoice
+	        return sortedChoices.map((choice, index) => {
+	          const rawLocked = isChoiceLocked(choice, orbFillLevels)
+	          const isLocked = rawLocked && choice !== mercyUnlockChoice
+	          const baseReason = deriveChoiceGateReason(choice, orbLevels)
+	          const gateReason: ChoiceGateReason | undefined =
+	            baseReason?.kind === 'locked' ? (isLocked ? baseReason : undefined) : (baseReason ?? undefined)
+	          const enrichedChoice: Choice = gateReason && gateReason.kind === 'locked'
+	            ? {
+	                ...choice,
+	                gateReason,
+	                lockProgress: choice.lockProgress ?? gateReason.current,
+	                lockActionHint: choice.lockActionHint ?? gateReason.how,
+	              }
+	            : gateReason
+	                ? { ...choice, gateReason }
+	                : choice
 
-          // Stable key priority: consequence > text-based hash
-          const stableKey = choice.consequence
-            || `choice-${choice.text.slice(0, 30).replace(/\s+/g, '-')}`
+	          // Stable key priority: consequence > text-based hash
+	          const stableKey = choice.consequence
+	            || `choice-${choice.text.slice(0, 30).replace(/\s+/g, '-')}`
 
           return (
-            <ChoiceButton
-              key={stableKey}
-              choice={choice}
-              index={index}
-              onChoice={handleChoiceWithTelemetry}
-              isProcessing={isProcessing || isCommitting}
-              isFocused={focusedIndex === index}
+	            <ChoiceButton
+	              key={stableKey}
+	              choice={enrichedChoice}
+	              index={index}
+	              onChoice={handleChoiceWithTelemetry}
+	              isProcessing={isProcessing || isCommitting}
+	              isFocused={focusedIndex === index}
               isLocked={isLocked}
               glass={glass}
               showPatternIcon={hasPatternPreview}
