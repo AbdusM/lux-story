@@ -193,8 +193,10 @@ export function UnifiedMenu({
               <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
                 <span className="text-sm font-semibold text-white">Settings</span>
                 <button
+                  type="button"
                   onClick={() => setIsOpen(false)}
                   className="p-1 rounded hover:bg-white/10 transition-colors"
+                  aria-label="Close settings menu"
                 >
                   <X className="w-4 h-4 text-slate-400" />
                 </button>

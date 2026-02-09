@@ -29,6 +29,7 @@ import { PatternType } from "@/lib/patterns"
 import { ORB_TIERS } from "@/lib/orbs"
 import { useSimulations } from "@/hooks/useSimulations"
 import { useUserRole } from "@/hooks/useUserRole"
+import { PrismTabs } from "./journal/PrismTabs"
 
 interface JournalProps {
   isOpen: boolean
@@ -262,55 +263,15 @@ export function Journal({ isOpen, onClose }: JournalProps) {
             <LogSearch />
             */}
 
-            {/* Navigation Tabs */}
-            <div className="flex border-b border-white/10 overflow-x-auto no-scrollbar">
-              {tabs.map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => handleTabSelect(tab.id)}
-                  className={cn(
-                    "flex-1 py-4 px-4 text-xs font-medium transition-colors flex flex-col items-center gap-1.5 min-w-[72px] relative",
-                    activeTab === tab.id
-                      ? "text-white"
-                      : "text-slate-500 hover:text-slate-300"
-                  )}
-                >
-                  <tab.icon className={cn("w-5 h-5 transition-transform", activeTab === tab.id && "scale-110")} />
-                  <span>{tab.label}</span>
-
-                  {/* Badge indicator for new content - Marquee style */}
-                  {tabBadges[tab.id] && (
-                    <motion.div
-                      initial={prefersReducedMotion ? false : { scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="absolute top-1.5 right-1.5"
-                    >
-                      {/* Marquee spinning ring */}
-                      <svg className="w-4 h-4 absolute -inset-1" viewBox="0 0 20 20">
-                        <circle
-                          cx="10" cy="10" r="8"
-                          fill="none"
-                          stroke="#f59e0b"
-                          strokeWidth="0.75"
-                          strokeDasharray="2 4"
-                          className={prefersReducedMotion ? "" : "animate-[spin_4s_linear_infinite]"}
-                          opacity="0.6"
-                        />
-                      </svg>
-                      {/* Core dot */}
-                      <div className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
-                    </motion.div>
-                  )}
-
-                  {activeTab === tab.id && (
-                    <motion.div
-                      layoutId="prism-tab-active"
-                      className="absolute bottom-0 w-full h-0.5 bg-gradient-to-r from-amber-500 to-purple-600"
-                    />
-                  )}
-                </button>
-              ))}
-            </div>
+            <PrismTabs
+              tabs={tabs}
+              activeTab={activeTab}
+              onSelect={handleTabSelect}
+              tabBadges={tabBadges}
+              prefersReducedMotion={!!prefersReducedMotion}
+              variant="top"
+              ariaLabel="Prism sections"
+            />
 
             {/* Content Area */}
             <div className="flex-1 overflow-y-auto overflow-x-hidden relative bg-transparent">
@@ -319,11 +280,18 @@ export function Journal({ isOpen, onClose }: JournalProps) {
 
               <AnimatePresence mode="wait">
                 {activeTab === 'harmonics' && detailPattern ? (
-                  <OrbDetailPanel
-                    key="orb-detail"
-                    patternType={detailPattern}
-                    onClose={() => setDetailPattern(null)}
-                  />
+                  <div
+                    role="tabpanel"
+                    id={`prism-panel-${activeTab}`}
+                    aria-labelledby={`prism-tab-top-${activeTab}`}
+                    className="min-h-full"
+                  >
+                    <OrbDetailPanel
+                      key="orb-detail"
+                      patternType={detailPattern}
+                      onClose={() => setDetailPattern(null)}
+                    />
+                  </div>
 
                 ) : (
                   // --- STANDARD TABS ---
@@ -334,6 +302,9 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                     animate="visible"
                     exit="exit"
                     className="min-h-full flex flex-col"
+                    role="tabpanel"
+                    id={`prism-panel-${activeTab}`}
+                    aria-labelledby={`prism-tab-top-${activeTab}`}
                   >
                     {activeTab === 'harmonics' && <HarmonicsView onOrbSelect={setDetailPattern} />}
                     {activeTab === 'essence' && <EssenceSigil />}
@@ -353,56 +324,15 @@ export function Journal({ isOpen, onClose }: JournalProps) {
             </div>
 
             {/* Navigation Tabs - Bottom position for thumb zone ergonomics */}
-            <div className="flex-shrink-0 border-t border-white/10 overflow-x-auto no-scrollbar bg-slate-900/50">
-              <div className="flex">
-                {tabs.map(tab => (
-                  <button
-                    key={tab.id}
-                    onClick={() => handleTabSelect(tab.id)}
-                    className={cn(
-                      "flex-1 py-3 px-2 text-xs font-medium transition-colors flex flex-col items-center gap-1 min-w-[56px] relative",
-                      activeTab === tab.id
-                        ? "text-white"
-                        : "text-slate-500 hover:text-slate-300"
-                    )}
-                  >
-                    <tab.icon className={cn("w-4 h-4 transition-transform", activeTab === tab.id && "scale-110")} />
-                    <span className="text-2xs truncate max-w-full">{tab.label}</span>
-
-                    {/* Badge indicator for new content - Marquee style */}
-                    {tabBadges[tab.id] && (
-                      <motion.div
-                        initial={prefersReducedMotion ? false : { scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="absolute top-1 right-1"
-                      >
-                        {/* Marquee spinning ring */}
-                        <svg className="w-3 h-3 absolute -inset-0.5" viewBox="0 0 20 20">
-                          <circle
-                            cx="10" cy="10" r="8"
-                            fill="none"
-                            stroke="#f59e0b"
-                            strokeWidth="1"
-                            strokeDasharray="2 4"
-                            className={prefersReducedMotion ? "" : "animate-[spin_4s_linear_infinite]"}
-                            opacity="0.6"
-                          />
-                        </svg>
-                        {/* Core dot */}
-                        <div className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.5)]" />
-                      </motion.div>
-                    )}
-
-                    {activeTab === tab.id && (
-                      <motion.div
-                        layoutId="prism-tab-active"
-                        className="absolute top-0 w-full h-0.5 bg-gradient-to-r from-amber-500 to-purple-600"
-                      />
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <PrismTabs
+              tabs={tabs}
+              activeTab={activeTab}
+              onSelect={handleTabSelect}
+              tabBadges={tabBadges}
+              prefersReducedMotion={!!prefersReducedMotion}
+              variant="bottom"
+              ariaLabel="Prism sections (bottom)"
+            />
 
             {/* Footer - minimal branding with safe area */}
             <div
@@ -420,6 +350,3 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     </AnimatePresence>
   )
 }
-
-
-

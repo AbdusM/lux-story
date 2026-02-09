@@ -6,7 +6,7 @@ import type { CharacterWithState } from '@/hooks/useConstellationData'
 import { CHARACTER_CONNECTIONS, CHARACTER_COLORS } from '@/lib/constellation/character-positions'
 import { CHARACTER_RELATIONSHIP_WEB } from '@/lib/character-relationships'
 import { hapticFeedback } from '@/lib/haptic-feedback'
-import { getVisibleResonancePaths, type ResonancePath } from '@/lib/constellation/pattern-resonance-paths'
+import { getVisibleResonancePaths } from '@/lib/constellation/pattern-resonance-paths'
 import { useGameStore } from '@/lib/game-store'
 import type { PatternType } from '@/lib/patterns'
 
