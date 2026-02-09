@@ -81,6 +81,12 @@
   --text-secondary: #B8B8B8;   /* Secondary text - WCAG AA compliant */
   --text-muted: #9CA3AF;       /* Muted text - passes for large text */
   --text-dim: #6B7280;         /* Dim text - use sparingly, decorative only */
+
+  /* Font stacks (offline-safe). These replace next/font/google so builds don't depend on network. */
+  --font-inter: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-crimson-pro: ui-serif, Georgia, "Times New Roman", serif;
+  --font-space-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --font-roboto-slab: ui-serif, Georgia, "Times New Roman", serif;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════

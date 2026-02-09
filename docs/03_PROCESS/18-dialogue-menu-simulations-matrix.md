@@ -6,26 +6,26 @@ Sources: `content/*-dialogue-graph.ts`, `lib/dialogue-graph.ts`, `lib/story-engi
 
 | character | choice_nodes | condition_refs | interrupts | content_sim_id | lib_sim_id | sim_id_match |
 |---|---:|---:|:---:|---|---|:---:|
-| samuel | 551 | 55 | Y | samuel_ops | samuel_ops | Y |
-| maya | 199 | 31 | Y | maya_servo_debugger | maya_servo_debugger | Y |
-| devon | 176 | 29 | Y | devon_logic | devon_logic | Y |
-| quinn | 170 | 7 | Y | quinn_pitch | quinn_pitch | Y |
-| zara | 163 | 6 | Y | zara_audit | zara_audit | Y |
-| marcus | 159 | 18 | Y | marcus_triage | marcus_triage | Y |
-| lira | 148 | 7 | Y | lira_audio | lira_audio | Y |
-| elena | 139 | 12 | Y | elena_market | elena_market | Y |
-| dante | 126 | 7 | Y | dante_pitch | dante_pitch | Y |
-| asha | 125 | 14 | Y | asha_mural | asha_mural | Y |
-| isaiah | 124 | 8 | Y | isaiah_logistics | isaiah_logistics | Y |
-| nadia | 124 | 7 | Y | nadia_news | nadia_news | Y |
-| rohan | 118 | 14 | Y | rohan_nav | rohan_nav | Y |
-| jordan | 115 | 20 | Y | jordan_structural | jordan_structural | Y |
-| kai | 114 | 7 | Y | kai_blueprint | kai_blueprint | Y |
-| tess | 108 | 7 | Y | tess_botany | tess_botany | Y |
-| yaquin | 107 | 7 | Y | yaquin_timeline | yaquin_timeline | Y |
-| alex | 99 | 7 | Y | alex_negotiation | alex_negotiation | Y |
-| grace | 94 | 5 | Y | grace_diagnostics | grace_diagnostics | Y |
-| silas | 72 | 6 | Y | silas_soil | silas_soil | Y |
+| samuel | 400 | 31 | Y | samuel_ops | samuel_ops | Y |
+| quinn | 163 | 5 | Y | quinn_pitch | quinn_pitch | Y |
+| marcus | 149 | 15 | Y | marcus_triage | marcus_triage | Y |
+| maya | 137 | 10 | Y | maya_servo_debugger | maya_servo_debugger | Y |
+| elena | 130 | 10 | Y | elena_market | elena_market | Y |
+| dante | 114 | 3 | Y | dante_pitch | dante_pitch | Y |
+| devon | 110 | 3 | Y | devon_logic | devon_logic | Y |
+| isaiah | 110 | 3 | Y | isaiah_logistics | isaiah_logistics | Y |
+| nadia | 106 | 2 | Y | nadia_news | nadia_news | Y |
+| tess | 101 | 4 | Y | tess_botany | tess_botany | Y |
+| kai | 100 | 4 | Y | kai_blueprint | kai_blueprint | Y |
+| yaquin | 100 | 4 | Y | yaquin_timeline | yaquin_timeline | Y |
+| zara | 97 | 4 | Y | zara_audit | zara_audit | Y |
+| alex | 91 | 5 | Y | alex_negotiation | alex_negotiation | Y |
+| jordan | 90 | 14 | Y | jordan_structural | jordan_structural | Y |
+| asha | 89 | 9 | Y | asha_mural | asha_mural | Y |
+| grace | 86 | 3 | Y | grace_diagnostics | grace_diagnostics | Y |
+| rohan | 82 | 5 | Y | rohan_nav | rohan_nav | Y |
+| lira | 76 | 5 | Y | lira_audio | lira_audio | Y |
+| silas | 53 | 3 | Y | silas_soil | silas_soil | Y |
 
 Notes:
 - `choice_nodes`: Total choices across all dialogue nodes for this character.
@@ -33,4 +33,4 @@ Notes:
 - `interrupts`: Whether the character has interrupt-tagged nodes or interrupt blocks.
 - `sim_id_match`: Whether content and lib simulation IDs are unified.
 
-_Generated: 2026-01-17_
+_Generated: 2026-02-09_

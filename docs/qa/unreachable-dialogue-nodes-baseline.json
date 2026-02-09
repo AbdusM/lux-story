@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-02-09T18:36:18.447Z",
+  "generated_at": "2026-02-09T20:56:09.995Z",
   "nodes": [
     {
       "graphKey": "alex",
@@ -12,6 +12,14 @@
     {
       "graphKey": "alex",
       "nodeId": "alex_trust_restored"
+    },
+    {
+      "graphKey": "alex",
+      "nodeId": "alex_vulnerability_arc"
+    },
+    {
+      "graphKey": "alex",
+      "nodeId": "alex_vulnerability_response"
     },
     {
       "graphKey": "asha",
@@ -183,6 +191,10 @@
     },
     {
       "graphKey": "devon",
+      "nodeId": "devon_farewell"
+    },
+    {
+      "graphKey": "devon",
       "nodeId": "devon_father_distance"
     },
     {
@@ -315,6 +327,14 @@
     },
     {
       "graphKey": "devon",
+      "nodeId": "devon_vulnerability_arc"
+    },
+    {
+      "graphKey": "devon",
+      "nodeId": "devon_vulnerability_reflection"
+    },
+    {
+      "graphKey": "devon",
       "nodeId": "devon_what_ifs"
     },
     {
@@ -352,6 +372,18 @@
     {
       "graphKey": "grace",
       "nodeId": "grace_trust_restored"
+    },
+    {
+      "graphKey": "grace",
+      "nodeId": "grace_vulnerability_arc"
+    },
+    {
+      "graphKey": "grace",
+      "nodeId": "grace_vulnerability_daughter"
+    },
+    {
+      "graphKey": "grace",
+      "nodeId": "grace_vulnerability_what_saved"
     },
     {
       "graphKey": "isaiah",
@@ -446,6 +478,14 @@
       "nodeId": "jordan_trust_restored"
     },
     {
+      "graphKey": "jordan",
+      "nodeId": "jordan_vulnerability_arc"
+    },
+    {
+      "graphKey": "jordan",
+      "nodeId": "jordan_vulnerability_reflection"
+    },
+    {
       "graphKey": "kai",
       "nodeId": "kai_bad_ending"
     },
@@ -472,6 +512,14 @@
     {
       "graphKey": "kai",
       "nodeId": "kai_trust_restored"
+    },
+    {
+      "graphKey": "kai",
+      "nodeId": "kai_vulnerability_arc"
+    },
+    {
+      "graphKey": "kai",
+      "nodeId": "kai_vulnerability_reflection"
     },
     {
       "graphKey": "lira",
@@ -795,10 +843,6 @@
     },
     {
       "graphKey": "maya",
-      "nodeId": "maya_simulation_phase3_setup"
-    },
-    {
-      "graphKey": "maya",
       "nodeId": "maya_tech_philosophy"
     },
     {
@@ -987,6 +1031,14 @@
     },
     {
       "graphKey": "rohan",
+      "nodeId": "rohan_vulnerability_arc"
+    },
+    {
+      "graphKey": "rohan",
+      "nodeId": "rohan_vulnerability_reflection"
+    },
+    {
+      "graphKey": "rohan",
       "nodeId": "rohan_warns_samuel"
     },
     {
@@ -1008,10 +1060,6 @@
     {
       "graphKey": "samuel",
       "nodeId": "samuel_analytical_bonus_3"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_backstory_revelation"
     },
     {
       "graphKey": "samuel",
@@ -1115,10 +1163,6 @@
     },
     {
       "graphKey": "samuel",
-      "nodeId": "samuel_beat_after_station_called"
-    },
-    {
-      "graphKey": "samuel",
       "nodeId": "samuel_beat_after_station_knows_passions"
     },
     {
@@ -1156,6 +1200,14 @@
     {
       "graphKey": "samuel",
       "nodeId": "samuel_burden_reward"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_challenge_accepted"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_conductor"
     },
     {
       "graphKey": "samuel",
@@ -1275,10 +1327,6 @@
     },
     {
       "graphKey": "samuel",
-      "nodeId": "samuel_letter_confession"
-    },
-    {
-      "graphKey": "samuel",
       "nodeId": "samuel_letter_confrontation"
     },
     {
@@ -1288,14 +1336,6 @@
     {
       "graphKey": "samuel",
       "nodeId": "samuel_maya_revisit_guidance"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_orb_explanation"
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_origin_choice"
     },
     {
       "graphKey": "samuel",
@@ -1320,6 +1360,18 @@
     {
       "graphKey": "samuel",
       "nodeId": "samuel_pattern_confirmation"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_pattern_insight_analytical"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_pattern_insight_building"
+    },
+    {
+      "graphKey": "samuel",
+      "nodeId": "samuel_pattern_insight_helping"
     },
     {
       "graphKey": "samuel",
@@ -1431,6 +1483,10 @@
     },
     {
       "graphKey": "samuel",
+      "nodeId": "samuel_vulnerability_arc"
+    },
+    {
+      "graphKey": "samuel",
       "nodeId": "samuel_vulnerability_reflection"
     },
     {
@@ -1486,6 +1542,14 @@
       "nodeId": "silas_trust_restored"
     },
     {
+      "graphKey": "silas",
+      "nodeId": "silas_vulnerability_arc"
+    },
+    {
+      "graphKey": "silas",
+      "nodeId": "silas_vulnerability_response"
+    },
+    {
       "graphKey": "tess",
       "nodeId": "tess_trust_recovery"
     },
@@ -1494,12 +1558,28 @@
       "nodeId": "tess_trust_restored"
     },
     {
+      "graphKey": "tess",
+      "nodeId": "tess_vulnerability_arc"
+    },
+    {
+      "graphKey": "tess",
+      "nodeId": "tess_vulnerability_reflection"
+    },
+    {
       "graphKey": "yaquin",
       "nodeId": "yaquin_trust_recovery"
     },
     {
       "graphKey": "yaquin",
       "nodeId": "yaquin_trust_restored"
+    },
+    {
+      "graphKey": "yaquin",
+      "nodeId": "yaquin_vulnerability_arc"
+    },
+    {
+      "graphKey": "yaquin",
+      "nodeId": "yaquin_vulnerability_response"
     },
     {
       "graphKey": "zara",

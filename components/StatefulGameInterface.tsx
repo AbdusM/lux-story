@@ -113,6 +113,7 @@ import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
 import { StationState, useStationStore } from '@/lib/station-state'
 import { filterChoicesByLoad, CognitiveLoadLevel } from '@/lib/cognitive-load' // Fixed: Top-level import
 import { generateUserId } from '@/lib/safe-storage'
+import { queueInteractionEventSync, generateActionId } from '@/lib/sync-queue'
 import {
   DialogueGraph,
   DialogueNode,
@@ -195,7 +196,6 @@ import { PATTERN_VOICE_LIBRARY } from '@/content/pattern-voice-library'
 import { PatternVoice } from '@/components/game/PatternVoice'
 import { useOrbs } from '@/hooks/useOrbs'
 // Analytics Hooks
-import { trackUserOnNode, recordVisit } from '@/lib/admin-analytics'
 // Complex Character Hooks
 import { processComplexCharacterTick } from '@/lib/character-complex'
 // D-061: Story Arc System
@@ -1169,9 +1169,21 @@ export default function StatefulGameInterface() {
       gameState.currentNodeId = currentNode.nodeId
       gameState.currentCharacterId = actualCharacterId
 
-      // D-011/D-012: Analytics Tracking (Initial Load)
-      trackUserOnNode(gameState.playerId, currentNode.nodeId)
-      recordVisit(currentNode.nodeId)
+      // Canonical telemetry: persist a contract-validated node_entered event.
+      queueInteractionEventSync({
+        user_id: gameState.playerId,
+        session_id: String(gameState.sessionStartTime || Date.now()),
+        event_type: 'node_entered',
+        node_id: currentNode.nodeId,
+        character_id: actualCharacterId,
+        payload: {
+          event_id: generateActionId(),
+          entered_at_ms: Date.now(),
+          node_id: currentNode.nodeId,
+          character_id: actualCharacterId,
+          screen: 'game_init'
+        }
+      })
 
       // Ensure character exists, create if missing
       let character = gameState.characters.get(actualCharacterId)
@@ -1969,9 +1981,21 @@ export default function StatefulGameInterface() {
       newGameState.currentNodeId = nextNode.nodeId
       newGameState.currentCharacterId = targetCharacterId
 
-      // D-011/D-012: Analytics Tracking
-      trackUserOnNode(newGameState.playerId, nextNode.nodeId)
-      recordVisit(nextNode.nodeId)
+      // Canonical telemetry: persist a contract-validated node_entered event.
+      queueInteractionEventSync({
+        user_id: newGameState.playerId,
+        session_id: String(newGameState.sessionStartTime || Date.now()),
+        event_type: 'node_entered',
+        node_id: nextNode.nodeId,
+        character_id: targetCharacterId,
+        payload: {
+          event_id: generateActionId(),
+          entered_at_ms: Date.now(),
+          node_id: nextNode.nodeId,
+          character_id: targetCharacterId,
+          screen: 'choice'
+        }
+      })
 
       // D-018/D-063/D-095: Complex Character Tick
       processComplexCharacterTick(newGameState, targetCharacterId)
@@ -4178,5 +4202,3 @@ export default function StatefulGameInterface() {
 // ═══════════════════════════════════════════════════════════════════════════
 // SUBCOMPONENTS
 // ═══════════════════════════════════════════════════════════════════════════
-
-

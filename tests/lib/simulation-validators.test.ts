@@ -24,15 +24,22 @@ function createTestGraph(characterId: string, nodeIds: string[]): DialogueGraph 
     nodeMap.set(nodeId, {
       nodeId,
       speaker: 'Test',
-      content: [{ text: 'Test', emotion: 'neutral' }],
+      content: [{ text: 'Test', emotion: 'neutral', variation_id: 'v1' }],
       choices: []
     })
   }
   return {
-    graphId: `${characterId}_graph`,
-    characterId,
+    version: 'test',
     nodes: nodeMap,
-    startNodeId: nodeIds[0] ?? 'start'
+    startNodeId: nodeIds[0] ?? 'start',
+    metadata: {
+      title: `${characterId}_graph`,
+      author: 'test',
+      createdAt: Date.now(),
+      lastModified: Date.now(),
+      totalNodes: nodeIds.length,
+      totalChoices: 0
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-02-09T19:10:54.863Z",
+  "generated_at": "2026-02-09T20:56:41.451Z",
   "options": {
     "max_steps_per_path": 120,
     "max_expansions": 6000,
@@ -7,15 +7,15 @@
   },
   "totals": {
     "graphs": 28,
-    "expansions": 22424,
-    "visited_state_pairs": 22424,
+    "expansions": 17735,
+    "visited_state_pairs": 17735,
     "failures": 0,
     "required_state_mismatches": 0
   },
   "per_graph": {
     "alex": {
-      "expansions": 723,
-      "visited_state_pairs": 723,
+      "expansions": 696,
+      "visited_state_pairs": 696,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
@@ -28,8 +28,8 @@
       "truncated": false
     },
     "dante": {
-      "expansions": 1096,
-      "visited_state_pairs": 1096,
+      "expansions": 1095,
+      "visited_state_pairs": 1095,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
@@ -42,8 +42,8 @@
       "truncated": false
     },
     "devon": {
-      "expansions": 1317,
-      "visited_state_pairs": 1317,
+      "expansions": 1205,
+      "visited_state_pairs": 1205,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
@@ -56,22 +56,22 @@
       "truncated": false
     },
     "elena": {
-      "expansions": 1004,
-      "visited_state_pairs": 1004,
+      "expansions": 954,
+      "visited_state_pairs": 954,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
     },
     "grace": {
-      "expansions": 543,
-      "visited_state_pairs": 543,
+      "expansions": 320,
+      "visited_state_pairs": 320,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
     },
     "grace_revisit": {
-      "expansions": 6,
-      "visited_state_pairs": 6,
+      "expansions": 9,
+      "visited_state_pairs": 9,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
@@ -84,15 +84,15 @@
       "truncated": false
     },
     "isaiah": {
-      "expansions": 1184,
-      "visited_state_pairs": 1184,
+      "expansions": 93,
+      "visited_state_pairs": 93,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
     },
     "jordan": {
-      "expansions": 1133,
-      "visited_state_pairs": 1133,
+      "expansions": 1053,
+      "visited_state_pairs": 1053,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
@@ -112,8 +112,8 @@
       "truncated": false
     },
     "marcus": {
-      "expansions": 1516,
-      "visited_state_pairs": 1516,
+      "expansions": 1520,
+      "visited_state_pairs": 1520,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
@@ -140,29 +140,29 @@
       "truncated": false
     },
     "nadia": {
-      "expansions": 1303,
-      "visited_state_pairs": 1303,
+      "expansions": 124,
+      "visited_state_pairs": 124,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
     },
     "quinn": {
-      "expansions": 2727,
-      "visited_state_pairs": 2727,
+      "expansions": 1065,
+      "visited_state_pairs": 1065,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
     },
     "rohan": {
-      "expansions": 827,
-      "visited_state_pairs": 827,
+      "expansions": 820,
+      "visited_state_pairs": 820,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
     },
     "samuel": {
-      "expansions": 1323,
-      "visited_state_pairs": 1323,
+      "expansions": 1117,
+      "visited_state_pairs": 1117,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
@@ -182,8 +182,8 @@
       "truncated": false
     },
     "tess": {
-      "expansions": 573,
-      "visited_state_pairs": 573,
+      "expansions": 515,
+      "visited_state_pairs": 515,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from 'react'
-import { GameState } from '@/lib/character-state'
+import { CharacterState, GameState } from '@/lib/character-state'
 
 export function EnvironmentalEffects({ gameState }: { gameState: GameState | null }) {
 
@@ -45,14 +45,19 @@ export function EnvironmentalEffects({ gameState }: { gameState: GameState | nul
       let activeCharacter = 'samuel' // Default
       let highestTrust = 0
 
-      if (gameState.characters && Array.isArray(gameState.characters)) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        gameState.characters.forEach((char: any) => {
-          if (char.trust > highestTrust) {
-            highestTrust = char.trust
-            activeCharacter = char.characterId
-          }
-        })
+      // Canonical shape is Map<string, CharacterState>. Keep a small guard for legacy arrays.
+      const charValues: CharacterState[] =
+        gameState.characters instanceof Map
+          ? Array.from(gameState.characters.values())
+          : Array.isArray(gameState.characters)
+            ? (gameState.characters as unknown as CharacterState[])
+            : []
+
+      for (const char of charValues) {
+        if (char.trust > highestTrust) {
+          highestTrust = char.trust
+          activeCharacter = char.characterId
+        }
       }
 
       body.classList.add('character-atmosphere')

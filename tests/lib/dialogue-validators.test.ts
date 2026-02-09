@@ -22,11 +22,19 @@ function createTestGraph(nodes: DialogueNode[]): DialogueGraph {
   for (const node of nodes) {
     nodeMap.set(node.nodeId, node)
   }
+  const totalChoices = nodes.reduce((sum, n) => sum + (n.choices?.length || 0), 0)
   return {
-    graphId: 'test_graph',
-    characterId: 'test_character',
+    version: 'test',
     nodes: nodeMap,
-    startNodeId: nodes[0]?.nodeId ?? 'start'
+    startNodeId: nodes[0]?.nodeId ?? 'start',
+    metadata: {
+      title: 'test_graph',
+      author: 'test',
+      createdAt: Date.now(),
+      lastModified: Date.now(),
+      totalNodes: nodes.length,
+      totalChoices
+    }
   }
 }
 
@@ -37,7 +45,7 @@ function createTestNode(
   return {
     nodeId,
     speaker: 'Test',
-    content: [{ text: 'Test content', emotion: 'neutral' }],
+    content: [{ text: 'Test content', emotion: 'neutral', variation_id: 'v1' }],
     choices
   }
 }
@@ -125,6 +133,7 @@ describe('validateDialogueGating', () => {
       type: 'system_architecture',
       title: 'Test Sim',
       taskDescription: 'Test',
+      initialContext: {},
       successFeedback: 'Done'
     }
 

@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Crimson_Pro, Space_Mono, Roboto_Slab } from 'next/font/google'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 
 import { ServiceWorkerProvider } from '@/components/ServiceWorkerProvider'
@@ -15,31 +14,6 @@ import '../styles/environmental-response.css'
 import '../styles/narrative-interactions.css'
 // Initialize experience content to avoid circular dependencies
 import '@/lib/init-experiences'
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-})
-
-const crimsonPro = Crimson_Pro({
-  subsets: ['latin'],
-  variable: '--font-crimson-pro',
-  display: 'swap',
-})
-
-const spaceMono = Space_Mono({
-  weight: ['400', '700'],
-  subsets: ['latin'],
-  variable: '--font-space-mono',
-  display: 'swap',
-})
-
-const robotoSlab = Roboto_Slab({
-  subsets: ['latin'],
-  variable: '--font-roboto-slab',
-  display: 'swap',
-})
 
 // Helper to safely create URL for metadataBase
 function getMetadataBase(): URL {
@@ -97,7 +71,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${crimsonPro.variable} ${spaceMono.variable} ${robotoSlab.variable}`}>
+    <html lang="en">
       <body className="grand-central-terminus" suppressHydrationWarning style={{
         fontSize: 'var(--font-size-base, 1rem)'
       }}>

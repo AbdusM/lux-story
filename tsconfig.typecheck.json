@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "node_modules",
+    "archived-scripts",
+    "scripts",
+    "lib/archive",
+    "docs/03_PROCESS/archive",
+    ".next",
+    "out",
+    "coverage",
+    "playwright-report",
+    "test-results",
+    "tests/e2e",
+    "tests/browser-runtime",
+    "tests/visual"
+  ]
+}

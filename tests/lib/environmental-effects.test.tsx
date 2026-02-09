@@ -9,29 +9,68 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { render, cleanup } from '@testing-library/react'
 import { EnvironmentalEffects } from '@/components/EnvironmentalEffects'
-import type { GameState } from '@/lib/character-state'
+import type { CharacterState, GameState } from '@/lib/character-state'
+import type { NervousSystemState } from '@/lib/emotions'
 
-// Helper to create a minimal gameState for testing
-function createTestGameState(overrides: Partial<GameState> = {}): GameState {
+type CharacterOverride = { characterId: string; trust?: number }
+
+type TestGameStateOverrides = Partial<Omit<GameState, 'characters' | 'globalFlags'>> & {
+  characters?: CharacterOverride[]
+  globalFlags?: string[]
+}
+
+function makeCharacterState(ov: CharacterOverride): CharacterState {
   return {
-    patterns: { analytical: 0, patience: 0, exploring: 0, helping: 0, building: 0 },
-    characters: [],
-    globalFlags: [],
-    thoughts: [],
-    currentCharacterId: 'samuel',
-    currentNodeId: 'test_node',
-    platforms: {},
-    careerValues: { directImpact: 0, systemsThinking: 0, dataInsights: 0, futureBuilding: 0, independence: 0 },
-    mysteries: { letterSender: 'unknown', platformSeven: 'stable', samuelsPast: 'hidden', stationNature: 'unknown' },
-    time: { currentDisplay: '23:47', minutesRemaining: 13, flowRate: 1.0, isStopped: false },
-    quietHour: { potential: true, experienced: [] },
-    overdensity: 0.3,
-    items: { letter: 'kept', discoveredPaths: [] },
-    pendingCheckIns: [],
-    unlockedAbilities: [],
-    archivistState: { collectedRecords: [], verifiedLore: [], sensoryCalibration: {} },
-    ...overrides
-  } as GameState
+    characterId: ov.characterId,
+    trust: ov.trust ?? 0,
+    anxiety: 0,
+    nervousSystemState: 'ventral_vagal' as NervousSystemState,
+    lastReaction: null,
+    knowledgeFlags: new Set<string>(),
+    relationshipStatus: 'stranger',
+    conversationHistory: [],
+  }
+}
+
+// Helper to create a minimal (but type-correct) gameState for testing.
+function createTestGameState(overrides: TestGameStateOverrides = {}): GameState {
+  const now = Date.now()
+  const charMap = new Map<string, CharacterState>()
+  for (const c of overrides.characters ?? []) {
+    charMap.set(c.characterId, makeCharacterState(c))
+  }
+
+  return {
+    saveVersion: 'test',
+    playerId: 'test_player',
+    characters: charMap,
+    globalFlags: new Set(overrides.globalFlags ?? []),
+    patterns: overrides.patterns ?? { analytical: 0, patience: 0, exploring: 0, helping: 0, building: 0 },
+    lastSaved: now,
+    currentNodeId: overrides.currentNodeId ?? 'test_node',
+    currentCharacterId: overrides.currentCharacterId ?? 'samuel',
+    thoughts: overrides.thoughts ?? [],
+    episodeNumber: overrides.episodeNumber ?? 1,
+    sessionStartTime: overrides.sessionStartTime ?? now,
+    sessionBoundariesCrossed: overrides.sessionBoundariesCrossed ?? 0,
+    platforms: overrides.platforms ?? {},
+    careerValues: overrides.careerValues ?? { directImpact: 0, systemsThinking: 0, dataInsights: 0, futureBuilding: 0, independence: 0 },
+    mysteries: overrides.mysteries ?? { letterSender: 'unknown', platformSeven: 'stable', samuelsPast: 'hidden', stationNature: 'unknown' },
+    time: overrides.time ?? { currentDisplay: '23:47', minutesRemaining: 13, flowRate: 1.0, isStopped: false },
+    quietHour: overrides.quietHour ?? { potential: true, experienced: [] },
+    overdensity: overrides.overdensity ?? 0.3,
+    items: overrides.items ?? { letter: 'kept', discoveredPaths: [] },
+    pendingCheckIns: overrides.pendingCheckIns ?? [],
+    unlockedAbilities: overrides.unlockedAbilities ?? [],
+    skillLevels: overrides.skillLevels ?? {},
+    skillUsage: overrides.skillUsage ?? new Map(),
+    archivistState:
+      overrides.archivistState ?? {
+        collectedRecords: new Set<string>(),
+        verifiedLore: new Set<string>(),
+        sensoryCalibration: { engineers: 0, syn_bio: 0, data_flow: 0, station_core: 0 },
+      },
+  }
 }
 
 describe('EnvironmentalEffects', () => {
@@ -138,7 +177,7 @@ describe('EnvironmentalEffects', () => {
           { characterId: 'maya', trust: 5 },
           { characterId: 'devon', trust: 3 },
           { characterId: 'marcus', trust: 7 }
-        ] as GameState['characters']
+        ]
       })
 
       render(<EnvironmentalEffects gameState={gameState} />)
@@ -197,13 +236,13 @@ describe('EnvironmentalEffects', () => {
 
     it('removes old character classes when highest trust changes', () => {
       const mayaState = createTestGameState({
-        characters: [{ characterId: 'maya', trust: 7 }] as GameState['characters']
+        characters: [{ characterId: 'maya', trust: 7 }]
       })
       const devonState = createTestGameState({
         characters: [
           { characterId: 'maya', trust: 3 },
           { characterId: 'devon', trust: 8 }
-        ] as GameState['characters']
+        ]
       })
 
       const { rerender } = render(<EnvironmentalEffects gameState={mayaState} />)

@@ -174,7 +174,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
   // ============= ATMOSPHERIC ARRIVAL =============
   {
     nodeId: 'station_arrival',
-    speaker: '', // No speaker - purely atmospheric
+    speaker: 'Narrator',
     content: [
       {
         text: "The train slows down. Through fogged windows, you catch your first glimpse of the station. High ceilings, warm light spillin' through old glass, sounds of folks talkin' somewhere up ahead.\n\nA figure's waitin' on the platform. Older man, patient stance. Like he's been expectin' you.",
@@ -232,7 +232,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
   // Player chose to look around - reward their patience with atmosphere
   {
     nodeId: 'station_observation',
-    speaker: '', // Atmospheric narration
+    speaker: 'Narrator',
     content: [
       {
         text: "You pause at the train door, taking it in.\n\nThe station's bigger than it looked from outside. Vaulted ceilings stretch up into shadow, old ironwork catching the light. Platform signs point to places you half-recognize—some you don't. The air smells like old wood and something faintly electric, like possibility.\n\nA few travelers drift past, each heading somewhere with quiet purpose.\n\nThe older man on the platform notices you looking. He smiles, patient. No rush.",
@@ -275,7 +275,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
   // Player chose to notice others - reward their awareness
   {
     nodeId: 'observe_passengers',
-    speaker: '', // Atmospheric narration
+    speaker: 'Narrator',
     content: [
       {
         text: "You glance down the train car. A few other passengers are gathering their things.a young woman with paint-stained fingers, a guy in scrubs looking exhausted but focused, someone your age staring out the window like they're working up courage.\n\nEach of them alone. Each of them here for something.\n\nOn the platform, the older man waits. His eyes move across all of you, but when they land on you, something shifts. Recognition, maybe. Or just welcome.",

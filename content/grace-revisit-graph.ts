@@ -15,7 +15,9 @@ import { buildDialogueNodesMap } from './drafts/draft-filter'
  * Samuel Entry Point Constant
  * Used to link back to Samuel without circular imports
  */
-const SAMUEL_HUB_AFTER_GRACE = 'samuel_hub_after_grace'
+// Route back to Samuel's hub router. This avoids broken cross-graph references
+// and keeps return behavior phase-aware (router selects the right hub variant).
+const SAMUEL_HUB_AFTER_GRACE = 'samuel_hub_router'
 
 export const graceRevisitNodes: DialogueNode[] = [
     // ============= WELCOME BACK (Entry Point) =============
@@ -52,8 +54,57 @@ I was just thinking about you. About... how we met.{{player_sat_quietly: Most pe
                 choiceId: 'grace_revisit_ask_state',
                 text: "You look... lighter.",
                 nextNodeId: 'grace_revisit_list',
-                // pattern: 'observing', // Invalid pattern
+                pattern: 'helping',
                 skills: ['emotionalIntelligence']
+            }
+        ]
+    },
+
+    // ============= CHECK-IN LIST (Small hub) =============
+    {
+        nodeId: 'grace_revisit_list',
+        speaker: 'Grace',
+        content: [
+            {
+                text: `*She exhales, like she's been holding something in her chest all day.*
+
+Some days I still feel heavy. But lately... the heaviness doesn't feel like a sentence. More like weather. It passes.
+
+*She taps the edge of the sketchbook.*
+
+What do you want to know?`,
+                emotion: 'reflective',
+                variation_id: 'grace_revisit_list_v1'
+            }
+        ],
+        requiredState: {
+            hasGlobalFlags: ['grace_arc_complete']
+        },
+        choices: [
+            {
+                choiceId: 'grace_revisit_list_sketchbook',
+                text: "Show me what you're writing.",
+                nextNodeId: 'grace_revisit_update',
+                pattern: 'exploring',
+                skills: ['curiosity']
+            },
+            {
+                choiceId: 'grace_revisit_list_presence',
+                text: "I keep thinking about that silence we shared.",
+                nextNodeId: 'grace_revisit_closing',
+                pattern: 'patience',
+                skills: ['emotionalIntelligence']
+            },
+            {
+                choiceId: 'grace_revisit_list_witness',
+                text: "I'm glad you're still here.",
+                nextNodeId: 'grace_revisit_closing',
+                pattern: 'helping',
+                skills: ['emotionalIntelligence'],
+                consequence: {
+                    characterId: 'grace',
+                    trustChange: 1
+                }
             }
         ]
     },
