@@ -4,6 +4,9 @@ import { QUARANTINED_NODE_IDS_BY_GRAPH } from './quarantined-node-ids'
 function shouldIncludeDraftContent(): boolean {
   // Draft content is excluded by default so "shipped graphs" stay clean.
   // Enable explicitly (dev-only) to inspect quarantined nodes locally.
+  //
+  // Production builds should never ship draft content, even if an env var is misconfigured.
+  if (process.env.NODE_ENV === 'production') return false
   return process.env.NEXT_PUBLIC_INCLUDE_DRAFT_CONTENT === 'true'
 }
 
