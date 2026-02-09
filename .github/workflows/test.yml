@@ -59,6 +59,9 @@ jobs:
       - name: Verify unreachable dialogue nodes (no new unreachable)
         run: npm run verify:unreachable-dialogue-nodes
 
+      - name: Verify content quarantine list is up to date
+        run: npm run verify:content-quarantine
+
       - name: Verify character system coverage
         run: npm run verify:character-coverage
 

@@ -7,6 +7,8 @@
  *   when starting from:
  *   - graph.startNodeId
  *   - any known entry nodes that exist in that graph (mounted by routing)
+ *   - any nodes that are entered via cross-graph links from reachable nodes
+ *   - any simulation nodes (entered via the simulation registry / conductor routing)
  *
  * Edges considered:
  * - choice.nextNodeId (in-graph)
@@ -20,6 +22,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { DIALOGUE_GRAPHS } from '../lib/graph-registry'
+import { CHARACTER_PATTERN_AFFINITIES } from '../lib/pattern-affinity'
 
 import { samuelEntryPoints } from '../content/samuel-dialogue-graph'
 import { samuelWaitingEntryPoints } from '../content/samuel-waiting-dialogue'
@@ -111,8 +114,26 @@ const KNOWN_ENTRY_NODE_IDS = new Set<string>([
   ...Object.values(isaiahEntryPoints),
 ])
 
+const PATTERN_UNLOCK_NODE_IDS = new Set<string>(
+  Object.values(CHARACTER_PATTERN_AFFINITIES)
+    .flatMap((a: any) => (a?.patternUnlocks ?? []).map((u: any) => u.unlockedNodeId))
+    .filter(Boolean)
+)
+
 function toKey(graphKey: string, nodeId: string): string {
   return `${graphKey}/${nodeId}`
+}
+
+function buildNodeOwnerIndex(): Map<string, string> {
+  // Node IDs are expected to be globally unique in practice; if duplicates exist,
+  // we pick the first owner deterministically based on object iteration order.
+  const index = new Map<string, string>()
+  for (const [graphKey, graph] of Object.entries(DIALOGUE_GRAPHS as any)) {
+    for (const nodeId of graph.nodes.keys()) {
+      if (!index.has(nodeId)) index.set(nodeId, graphKey)
+    }
+  }
+  return index
 }
 
 function writeJson(p: string, payload: unknown): void {
@@ -131,8 +152,32 @@ function inGraphRoots(graphKey: string, graph: any): string[] {
   for (const entryId of KNOWN_ENTRY_NODE_IDS) {
     if (graph.nodes.has(entryId)) roots.push(entryId)
   }
+  for (const unlockId of PATTERN_UNLOCK_NODE_IDS) {
+    if (graph.nodes.has(unlockId)) roots.push(unlockId)
+  }
+  // Simulation nodes are entered by out-of-band routing (simulation registry),
+  // not necessarily by explicit `choice.nextNodeId` edges.
+  for (const node of graph.nodes.values()) {
+    if ((node as any)?.simulation) roots.push((node as any).nodeId)
+  }
   // Deduplicate but keep stable-ish ordering.
   return Array.from(new Set(roots))
+}
+
+function outgoingTargets(node: any): string[] {
+  const targets: string[] = []
+
+  for (const choice of node.choices ?? []) {
+    if (choice.nextNodeId) targets.push(choice.nextNodeId)
+  }
+
+  for (const content of node.content ?? []) {
+    const interrupt = (content as any).interrupt
+    if (interrupt?.targetNodeId) targets.push(interrupt.targetNodeId)
+    if (interrupt?.missedNodeId) targets.push(interrupt.missedNodeId)
+  }
+
+  return targets
 }
 
 function bfsReachable(graph: any, roots: string[]): Set<string> {
@@ -168,15 +213,101 @@ function bfsReachable(graph: any, roots: string[]): Set<string> {
   return reachable
 }
 
+function computeReachabilityWithCrossGraphEntries(): {
+  rootsByGraph: Map<string, string[]>
+  reachableByGraph: Map<string, Set<string>>
+} {
+  const nodeOwner = buildNodeOwnerIndex()
+
+  const internalRootsByGraph = new Map<string, string[]>()
+  for (const [graphKey, graph] of Object.entries(DIALOGUE_GRAPHS as any)) {
+    internalRootsByGraph.set(graphKey, inGraphRoots(graphKey, graph))
+  }
+
+  let externalRootsByGraph = new Map<string, Set<string>>()
+  let reachableByGraph = new Map<string, Set<string>>()
+
+  for (let iter = 0; iter < 10; iter++) {
+    // 1) Compute reachability within each graph given current roots.
+    reachableByGraph = new Map()
+    for (const [graphKey, graph] of Object.entries(DIALOGUE_GRAPHS as any)) {
+      const roots = [
+        ...(internalRootsByGraph.get(graphKey) ?? []),
+        ...Array.from(externalRootsByGraph.get(graphKey) ?? []),
+      ]
+      const uniqueRoots = Array.from(new Set(roots)).filter((id) => graph.nodes.has(id))
+      reachableByGraph.set(graphKey, bfsReachable(graph, uniqueRoots))
+    }
+
+    // 2) Derive cross-graph entry roots from reachable nodes only.
+    const nextExternalRootsByGraph = new Map<string, Set<string>>()
+    for (const graphKey of Object.keys(DIALOGUE_GRAPHS as any)) {
+      nextExternalRootsByGraph.set(graphKey, new Set())
+    }
+
+    for (const [sourceGraphKey, graph] of Object.entries(DIALOGUE_GRAPHS as any)) {
+      const reachable = reachableByGraph.get(sourceGraphKey) ?? new Set<string>()
+      for (const nodeId of reachable) {
+        const node = graph.nodes.get(nodeId)
+        if (!node) continue
+
+        for (const targetId of outgoingTargets(node)) {
+          const owner = nodeOwner.get(targetId)
+          if (!owner) continue
+          if (owner === sourceGraphKey) continue
+
+          // Only count it as an entry if the target exists in the target graph.
+          const targetGraph = (DIALOGUE_GRAPHS as any)[owner]
+          if (!targetGraph?.nodes?.has(targetId)) continue
+
+          nextExternalRootsByGraph.get(owner)!.add(targetId)
+        }
+      }
+    }
+
+    // 3) Convergence check.
+    let changed = false
+    for (const [graphKey, nextSet] of nextExternalRootsByGraph.entries()) {
+      const prevSet = externalRootsByGraph.get(graphKey) ?? new Set<string>()
+      if (prevSet.size !== nextSet.size) {
+        changed = true
+        break
+      }
+      for (const v of nextSet) {
+        if (!prevSet.has(v)) {
+          changed = true
+          break
+        }
+      }
+      if (changed) break
+    }
+
+    externalRootsByGraph = nextExternalRootsByGraph
+    if (!changed) break
+  }
+
+  const rootsByGraph = new Map<string, string[]>()
+  for (const [graphKey, graph] of Object.entries(DIALOGUE_GRAPHS as any)) {
+    const roots = [
+      ...(internalRootsByGraph.get(graphKey) ?? []),
+      ...Array.from(externalRootsByGraph.get(graphKey) ?? []),
+    ]
+    rootsByGraph.set(graphKey, Array.from(new Set(roots)).filter((id) => graph.nodes.has(id)))
+  }
+
+  return { rootsByGraph, reachableByGraph }
+}
+
 function buildReport(): Report {
   const byGraph: Record<string, { nodes: number; roots: number; reachable: number; unreachable: number }> = {}
   const unreachable: UnreachableNode[] = []
 
   let totalNodes = 0
+  const { rootsByGraph, reachableByGraph } = computeReachabilityWithCrossGraphEntries()
 
   for (const [graphKey, graph] of Object.entries(DIALOGUE_GRAPHS as any)) {
-    const roots = inGraphRoots(graphKey, graph)
-    const reachable = bfsReachable(graph, roots)
+    const roots = rootsByGraph.get(graphKey) ?? inGraphRoots(graphKey, graph)
+    const reachable = reachableByGraph.get(graphKey) ?? bfsReachable(graph, roots)
 
     const graphNodes = graph.nodes.size
     totalNodes += graphNodes
@@ -258,4 +389,3 @@ function main(): void {
 }
 
 main()
-
