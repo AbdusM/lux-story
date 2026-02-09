@@ -2147,33 +2147,6 @@ export const devonDialogueNodes: DialogueNode[] = [
       }
     ]
   },
-  {
-    nodeId: 'devon_revisit_welcome',
-    speaker: 'Devon Kumar',
-    content: [
-      {
-        text: "You're back. I was just optimizing my schedule for next semester.\n\nDid you need something, or just checking if my logic processor is still overheating?",
-        emotion: 'amused',
-        variation_id: 'revisit_v1'
-      }
-    ],
-    choices: [
-      {
-        choiceId: 'revisit_chat',
-        text: "Just wanted to see how you're doing.",
-        nextNodeId: 'devon_father_hint', // Loop back to main loop for now or simple close
-        pattern: 'helping',
-        skills: ['emotionalIntelligence']
-      },
-      {
-        choiceId: 'revisit_leave',
-        text: "I'll let you get back to it.",
-        nextNodeId: samuelEntryPoints.DEVON_REFLECTION_GATEWAY, // Return to hub
-        pattern: 'patience'
-      }
-    ],
-    tags: ['revisit', 'devon_arc']
-  },
 
   // ============= CAREER MENTION NODES (Invisible Depth) =============
   {

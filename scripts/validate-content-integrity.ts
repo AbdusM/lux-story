@@ -28,10 +28,13 @@ for (const [graphKey, graph] of graphs) {
 }
 
 // 2. Detect duplicate nodeIds across graphs
-const warnings: string[] = []
+// AAA mandate: nodeIds must be globally unique because:
+// - telemetry uses node_id directly
+// - graph routing uses a nodeId->character index (duplicates are nondeterministic)
+const duplicateErrors: string[] = []
 for (const [nodeId, sources] of nodeSources) {
   if (sources.length > 1) {
-    warnings.push(`Duplicate nodeId '${nodeId}' found in graphs: ${sources.join(', ')}`)
+    duplicateErrors.push(`Duplicate nodeId '${nodeId}' found in graphs: ${sources.join(', ')}`)
   }
 }
 
@@ -107,22 +110,24 @@ console.log('=======================')
 console.log(`Graphs scanned: ${graphs.length}`)
 console.log(`Total nodes: ${totalNodes.toLocaleString()}`)
 console.log(`Total references checked: ${totalReferences.toLocaleString()}`)
-console.log(`Errors: ${errors.length} | Warnings: ${warnings.length}`)
+console.log(`Errors: ${errors.length + duplicateErrors.length} | Warnings: 0`)
 console.log('')
 
-if (warnings.length > 0) {
-  console.log(`Warnings:`)
-  for (const w of warnings) {
-    console.log(`  - ${w}`)
+if (duplicateErrors.length > 0) {
+  console.log(`Duplicate nodeId errors:`)
+  for (const e of duplicateErrors) {
+    console.log(`  - ${e}`)
   }
   console.log('')
 }
 
-if (errors.length === 0) {
+if (errors.length === 0 && duplicateErrors.length === 0) {
   console.log('✓ All node references valid.')
   process.exit(0)
 } else {
-  console.log(`✗ Found ${errors.length} broken references:`)
+  if (errors.length > 0) {
+    console.log(`✗ Found ${errors.length} broken references:`)
+  }
   for (const e of errors) {
     console.log(`  - [${e.graph}:${e.sourceNode}] ${e.referenceType} '${e.context}' → '${e.brokenId}' NOT FOUND`)
   }
