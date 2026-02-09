@@ -56,7 +56,7 @@
     "validate-simulations-doc": "tsx scripts/validate-simulations-doc.ts",
     "check:core-contracts": "node scripts/check-core-gameplay-contracts.js",
     "audit:core-diff": "node scripts/report-core-gameplay-diff.js",
-    "verify:analytics-dict": "tsx scripts/verify-analytics-dictionary.ts"
+    "verify:analytics-dict": "node --import tsx scripts/verify-analytics-dictionary.ts"
   },
   "keywords": [
     "career-exploration",

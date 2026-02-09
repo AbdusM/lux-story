@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const INTERACTION_EVENT_TYPES = [
+  'node_entered',
   'choice_presented',
   'choice_selected_ui',
   'choice_selected_result',
@@ -31,6 +32,13 @@ const ChoicePresentedPayloadSchema = z.object({
   }).passthrough())
 }).passthrough()
 
+const NodeEnteredPayloadSchema = z.object({
+  event_id: z.string().min(1),
+  entered_at_ms: z.number().finite(),
+  from_node_id: z.string().nullable().optional(),
+  reason: z.enum(['init', 'choice', 'return', 'unknown']).nullable().optional(),
+}).passthrough()
+
 const ChoiceSelectedUiPayloadSchema = z.object({
   event_id: z.string().min(1),
   presented_event_id: z.string().nullable(),
@@ -47,6 +55,7 @@ const ChoiceSelectedResultPayloadSchema = z.object({
 }).passthrough()
 
 const InteractionEventPayloadSchemas: Record<InteractionEventType, z.ZodTypeAny> = {
+  node_entered: NodeEnteredPayloadSchema,
   choice_presented: ChoicePresentedPayloadSchema,
   choice_selected_ui: ChoiceSelectedUiPayloadSchema,
   choice_selected_result: ChoiceSelectedResultPayloadSchema,
@@ -66,4 +75,3 @@ export function validateInteractionEventPayload(eventType: string, payload: unkn
     return `${path}: ${i.message}`
   })
 }
-

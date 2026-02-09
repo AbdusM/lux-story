@@ -25,7 +25,7 @@ import { SkillTracker } from '@/lib/skill-tracker'
 import { CheckInQueue } from '@/lib/character-check-ins'
 import { UnlockManager } from '@/lib/unlock-manager'
 import { logger } from '@/lib/logger'
-import { trackUserOnNode, recordVisit } from '@/lib/admin-analytics'
+import { queueInteractionEventSync, generateActionId } from '@/lib/sync-queue'
 import { shouldShowInterrupt } from '@/lib/interrupt-visibility'
 import { applyPatternReflection, resolveContentVoiceVariation, applySkillReflection, applyNervousSystemReflection, type ConsequenceEcho } from '@/lib/consequence-echoes'
 import { calculateInheritedTrust } from '@/lib/trust-derivatives'
@@ -256,9 +256,25 @@ export function useGameInitializer({
       gameState.currentNodeId = currentNode.nodeId
       gameState.currentCharacterId = actualCharacterId
 
-      // D-011/D-012: Analytics Tracking (Initial Load)
-      trackUserOnNode(gameState.playerId, currentNode.nodeId)
-      recordVisit(currentNode.nodeId)
+      // Telemetry: source-of-truth node entry (replaces legacy in-memory admin analytics).
+      try {
+        const now = Date.now()
+        queueInteractionEventSync({
+          user_id: gameState.playerId,
+          session_id: String(gameState.sessionStartTime || now),
+          event_type: 'node_entered',
+          node_id: currentNode.nodeId,
+          character_id: actualCharacterId,
+          payload: {
+            event_id: generateActionId(),
+            entered_at_ms: now,
+            from_node_id: null,
+            reason: 'init',
+          }
+        })
+      } catch {
+        // Telemetry must never break gameplay initialization.
+      }
 
       // Ensure character exists, create if missing
       let character = gameState.characters.get(actualCharacterId)

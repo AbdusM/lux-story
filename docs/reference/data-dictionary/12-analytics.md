@@ -496,6 +496,16 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
 
 ### Event Types + Payload Shapes
 
+**`node_entered`** (source of truth for node transitions)
+- Emitted by:
+  - `hooks/game/useGameInitializer.ts` (initial node)
+  - `hooks/game/useChoiceHandler.ts` (post-choice navigation)
+- Payload keys:
+  - `event_id`: string
+  - `entered_at_ms`: number
+  - `from_node_id`: string|null (optional)
+  - `reason`: `'init' | 'choice' | 'return' | 'unknown'` (optional)
+
 **`choice_presented`** (source of truth for what the player saw)
 - Emitted by: `components/GameChoices.tsx`
 - Payload keys:

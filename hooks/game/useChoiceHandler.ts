@@ -49,7 +49,6 @@ import {
 } from '@/lib/pattern-voices'
 import { PATTERN_VOICE_LIBRARY } from '@/content/pattern-voice-library'
 import type { OrbMilestones } from '@/hooks/useOrbs'
-import { trackUserOnNode, recordVisit } from '@/lib/admin-analytics'
 import { processComplexCharacterTick } from '@/lib/character-complex'
 // story-arcs, synthesis-puzzles imports moved to choice-processors
 import {
@@ -83,6 +82,7 @@ import {
   queueSkillDemonstrationSync,
   queuePatternDemonstrationSync,
   queueInteractionEventSync,
+  generateActionId,
 } from '@/lib/sync-queue'
 import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
 import type { useAudioDirector } from '@/hooks/game/useAudioDirector'
@@ -632,9 +632,25 @@ export function useChoiceHandler({
       // Safe: primitive assignment on cloned object (not shared reference)
       newGameState.currentCharacterId = targetCharacterId
 
-      // D-011/D-012: Analytics Tracking
-      trackUserOnNode(newGameState.playerId, nextNode.nodeId)
-      recordVisit(nextNode.nodeId)
+      // Telemetry: source-of-truth node entry (replaces legacy in-memory admin analytics).
+      try {
+        const now = Date.now()
+        queueInteractionEventSync({
+          user_id: newGameState.playerId,
+          session_id: String(newGameState.sessionStartTime || now),
+          event_type: 'node_entered',
+          node_id: nextNode.nodeId,
+          character_id: targetCharacterId,
+          payload: {
+            event_id: generateActionId(),
+            entered_at_ms: now,
+            from_node_id: state.currentNode?.nodeId || null,
+            reason: 'choice',
+          }
+        })
+      } catch {
+        // Telemetry must never break gameplay.
+      }
 
       // D-018/D-063/D-095: Complex Character Tick
       processComplexCharacterTick(newGameState, targetCharacterId)
