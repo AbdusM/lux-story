@@ -12,6 +12,7 @@
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const danteDialogueNodes: DialogueNode[] = [
   // ============= INTRODUCTION =============
@@ -2088,14 +2089,14 @@ export const danteEntryPoints = {
 // Build the graph
 export const danteDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(danteDialogueNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('dante', danteDialogueNodes),
   startNodeId: danteEntryPoints.INTRODUCTION,
   metadata: {
     title: "Dante's Stage",
     author: 'Guided Generation',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: danteDialogueNodes.length,
-    totalChoices: danteDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+    totalNodes: filterDraftNodes('dante', danteDialogueNodes).length,
+    totalChoices: filterDraftNodes('dante', danteDialogueNodes).reduce((sum, n) => sum + n.choices.length, 0)
   }
 }

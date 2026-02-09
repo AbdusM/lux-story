@@ -12,6 +12,7 @@
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const nadiaDialogueNodes: DialogueNode[] = [
   // ============= INTRODUCTION =============
@@ -1858,14 +1859,14 @@ export const nadiaEntryPoints = {
 // Build the graph
 export const nadiaDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(nadiaDialogueNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('nadia', nadiaDialogueNodes),
   startNodeId: nadiaEntryPoints.INTRODUCTION,
   metadata: {
     title: "Nadia's Terminal",
     author: 'Guided Generation',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: nadiaDialogueNodes.length,
-    totalChoices: nadiaDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+    totalNodes: filterDraftNodes('nadia', nadiaDialogueNodes).length,
+    totalChoices: filterDraftNodes('nadia', nadiaDialogueNodes).reduce((sum, n) => sum + n.choices.length, 0)
   }
 }

@@ -10,6 +10,7 @@
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const kaiDialogueNodes: DialogueNode[] = [
   // ============= INTRODUCTION (Gradual Reveal) =============
@@ -2337,14 +2338,14 @@ export const kaiEntryPoints = {
 
 export const kaiDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(kaiDialogueNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('kai', kaiDialogueNodes),
   startNodeId: kaiEntryPoints.INTRODUCTION,
   metadata: {
     title: "Kai's Studio",
     author: 'Guided Generation',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: kaiDialogueNodes.length,
-    totalChoices: kaiDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+    totalNodes: filterDraftNodes('kai', kaiDialogueNodes).length,
+    totalChoices: filterDraftNodes('kai', kaiDialogueNodes).reduce((sum, n) => sum + n.choices.length, 0)
   }
 }

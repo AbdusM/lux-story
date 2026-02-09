@@ -15,6 +15,7 @@ import { mayaRevisitEntryPoints } from './maya-revisit-graph'
 import { samuelIdentityNodes } from './samuel-identity-nodes'
 import { samuelOrbResonanceNodes } from './samuel-orb-resonance-nodes'
 import { systemicCalibrationNodes } from './systemic-calibration' // ISP: The Grand Convergence
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const samuelDialogueNodes: DialogueNode[] = [
   ...systemicCalibrationNodes, // Inject Calibration nodes first
@@ -9308,16 +9309,18 @@ export const samuelEntryPoints = {
 // Type export for TypeScript autocomplete
 export type SamuelEntryPoint = typeof samuelEntryPoints[keyof typeof samuelEntryPoints]
 
+const activeSamuelDialogueNodes = filterDraftNodes('samuel', samuelDialogueNodes)
+
 export const samuelDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(samuelDialogueNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('samuel', samuelDialogueNodes),
   startNodeId: samuelEntryPoints.ARRIVAL,
   metadata: {
     title: "Samuel's Guidance",
     author: 'Guided Generation (Build-Time)',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: samuelDialogueNodes.length,
-    totalChoices: samuelDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+    totalNodes: activeSamuelDialogueNodes.length,
+    totalChoices: activeSamuelDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
   }
 }

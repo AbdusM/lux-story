@@ -9,6 +9,7 @@ import {
     DialogueNode,
     DialogueGraph
 } from '@/lib/dialogue-graph'
+import { buildDialogueNodesMap } from './drafts/draft-filter'
 
 const SAMUEL_HUB_AFTER_DEVON = 'samuel_hub_after_devon'
 
@@ -270,7 +271,7 @@ export const devonRevisitEntryPoints = {
 
 export const devonRevisitGraph: DialogueGraph = {
     version: '1.0.0',
-    nodes: new Map(devonRevisitNodes.map(node => [node.nodeId, node])),
+    nodes: buildDialogueNodesMap('devon_revisit', devonRevisitNodes),
     startNodeId: devonRevisitEntryPoints.WELCOME,
     metadata: {
         title: "Devon's Revisit Content",

@@ -10,6 +10,7 @@
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const tessDialogueNodes: DialogueNode[] = [
   // ============= PHASE 1: THE OFFER =============
@@ -2343,14 +2344,14 @@ export const tessEntryPoints = {
 
 export const tessDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(tessDialogueNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('tess', tessDialogueNodes),
   startNodeId: tessEntryPoints.INTRODUCTION,
   metadata: {
     title: "Tess's Vision",
     author: 'Guided Generation',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: tessDialogueNodes.length,
-    totalChoices: tessDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+    totalNodes: filterDraftNodes('tess', tessDialogueNodes).length,
+    totalChoices: filterDraftNodes('tess', tessDialogueNodes).reduce((sum, n) => sum + n.choices.length, 0)
   }
 }

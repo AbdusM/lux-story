@@ -10,6 +10,7 @@
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const yaquinDialogueNodes: DialogueNode[] = [
   // ... [KEEPING INTRO NODES] ...
@@ -2207,14 +2208,14 @@ export const yaquinEntryPoints = {
 
 export const yaquinDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(yaquinDialogueNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('yaquin', yaquinDialogueNodes),
   startNodeId: yaquinEntryPoints.INTRODUCTION,
   metadata: {
     title: "Yaquin's Course",
     author: 'Guided Generation',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: yaquinDialogueNodes.length,
-    totalChoices: yaquinDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+    totalNodes: filterDraftNodes('yaquin', yaquinDialogueNodes).length,
+    totalChoices: filterDraftNodes('yaquin', yaquinDialogueNodes).reduce((sum, n) => sum + n.choices.length, 0)
   }
 }

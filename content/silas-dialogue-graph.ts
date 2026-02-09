@@ -10,6 +10,7 @@
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const silasDialogueNodes: DialogueNode[] = [
   // ============= INTRODUCTION =============
@@ -1671,14 +1672,14 @@ export const silasEntryPoints = {
 
 export const silasDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(silasDialogueNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('silas', silasDialogueNodes),
   startNodeId: silasEntryPoints.INTRODUCTION,
   metadata: {
     title: "Silas's Garden",
     author: 'Guided Generation',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: silasDialogueNodes.length,
-    totalChoices: silasDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+    totalNodes: filterDraftNodes('silas', silasDialogueNodes).length,
+    totalChoices: filterDraftNodes('silas', silasDialogueNodes).reduce((sum, n) => sum + n.choices.length, 0)
   }
 }

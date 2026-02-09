@@ -12,6 +12,7 @@ import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
 // ARC 2 IMPORTS
 import { ALL_STORY_ARCS } from './story-arcs'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 
 export const rohanDialogueNodes: DialogueNode[] = [
@@ -2510,14 +2511,14 @@ export const rohanEntryPoints = {
 
 export const rohanDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(rohanDialogueNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('rohan', rohanDialogueNodes),
   startNodeId: rohanEntryPoints.INTRODUCTION,
   metadata: {
     title: "Rohan's Debug",
     author: 'Guided Generation',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: rohanDialogueNodes.length,
-    totalChoices: rohanDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+    totalNodes: filterDraftNodes('rohan', rohanDialogueNodes).length,
+    totalChoices: filterDraftNodes('rohan', rohanDialogueNodes).reduce((sum, n) => sum + n.choices.length, 0)
   }
 }

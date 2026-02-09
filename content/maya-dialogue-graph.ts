@@ -8,6 +8,7 @@ import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { StateChange } from '../lib/character-state'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
 import { parentalWorkLegacy } from './player-questions'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const mayaDialogueNodes: DialogueNode[] = [
   // ============= INTRODUCTION =============
@@ -4125,16 +4126,18 @@ export const mayaEntryPoints = {
 
 export type MayaEntryPoint = typeof mayaEntryPoints[keyof typeof mayaEntryPoints]
 
+const activeMayaDialogueNodes = filterDraftNodes('maya', mayaDialogueNodes)
+
 export const mayaDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(mayaDialogueNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('maya', mayaDialogueNodes),
   startNodeId: mayaEntryPoints.INTRODUCTION,
   metadata: {
     title: "Maya's Journey",
     author: 'Guided Generation',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: mayaDialogueNodes.length,
-    totalChoices: mayaDialogueNodes.reduce((sum, node) => sum + node.choices.length, 0)
+    totalNodes: activeMayaDialogueNodes.length,
+    totalChoices: activeMayaDialogueNodes.reduce((sum, node) => sum + node.choices.length, 0)
   }
 }
