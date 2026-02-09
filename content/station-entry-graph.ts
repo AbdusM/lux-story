@@ -133,6 +133,12 @@ export const stationEntryGraph: DialogueGraph = {
                     choiceId: 'call_out',
                     text: 'Call out: "Is anyone working?"',
                     nextNodeId: 'entry_samuel_intro'
+                },
+                {
+                    choiceId: 'ng_plus_reentry',
+                    text: '[NEW GAME+] Wake up at the beginning',
+                    nextNodeId: 'sector_0_hub',
+                    visibleCondition: { hasGlobalFlags: ['ng_plus_1'] }
                 }
             ]
         }],

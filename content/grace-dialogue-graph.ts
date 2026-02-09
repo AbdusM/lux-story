@@ -10,6 +10,7 @@
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const graceDialogueNodes: DialogueNode[] = [
   // ============= INTRODUCTION =============
@@ -2378,14 +2379,14 @@ export const graceEntryPoints = {
 
 export const graceDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(graceDialogueNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('grace', graceDialogueNodes),
   startNodeId: graceEntryPoints.INTRODUCTION,
   metadata: {
     title: "Grace's Bench",
     author: 'Guided Generation',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: graceDialogueNodes.length,
-    totalChoices: graceDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+    totalNodes: filterDraftNodes('grace', graceDialogueNodes).length,
+    totalChoices: filterDraftNodes('grace', graceDialogueNodes).reduce((sum, n) => sum + n.choices.length, 0)
   }
 }

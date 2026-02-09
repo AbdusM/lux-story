@@ -1,4 +1,5 @@
 import { DialogueGraph, DialogueNode } from '@/lib/dialogue-graph'
+import { buildDialogueNodesMap } from './drafts/draft-filter'
 
 export const grandHallDialogueNodes: DialogueNode[] = [
     // ==========================================
@@ -222,5 +223,5 @@ export const grandHallGraph: DialogueGraph = {
         totalChoices: grandHallDialogueNodes.reduce((acc, n) => acc + n.choices.length, 0)
     },
     startNodeId: 'sector_1_hall',
-    nodes: new Map(grandHallDialogueNodes.map(n => [n.nodeId, n]))
+    nodes: buildDialogueNodesMap('grand_hall', grandHallDialogueNodes)
 }

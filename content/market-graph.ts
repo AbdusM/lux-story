@@ -1,4 +1,5 @@
 import { DialogueGraph, DialogueNode } from '@/lib/dialogue-graph'
+import { buildDialogueNodesMap } from './drafts/draft-filter'
 
 export const marketDialogueNodes: DialogueNode[] = [
     // ==========================================
@@ -336,5 +337,5 @@ export const marketGraph: DialogueGraph = {
         totalChoices: marketDialogueNodes.reduce((acc, n) => acc + n.choices.length, 0)
     },
     startNodeId: 'market_entry_logic',
-    nodes: new Map(marketDialogueNodes.map(n => [n.nodeId, n]))
+    nodes: buildDialogueNodesMap('market', marketDialogueNodes)
 }

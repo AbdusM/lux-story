@@ -1,5 +1,6 @@
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const zaraDialogueNodes: DialogueNode[] = [
     // ============= INTRODUCTION =============
@@ -3175,14 +3176,14 @@ export const zaraEntryPoints = {
 
 export const zaraDialogueGraph: DialogueGraph = {
     version: '1.0.0',
-    nodes: new Map(zaraDialogueNodes.map(node => [node.nodeId, node])),
+    nodes: buildDialogueNodesMap('zara', zaraDialogueNodes),
     startNodeId: zaraEntryPoints.INTRODUCTION,
     metadata: {
         title: "Zara's Data Audit",
         author: 'Guided Generation',
         createdAt: Date.now(),
         lastModified: Date.now(),
-        totalNodes: zaraDialogueNodes.length,
-        totalChoices: zaraDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+        totalNodes: filterDraftNodes('zara', zaraDialogueNodes).length,
+        totalChoices: filterDraftNodes('zara', zaraDialogueNodes).reduce((sum, n) => sum + n.choices.length, 0)
     }
 }

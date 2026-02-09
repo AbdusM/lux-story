@@ -12,6 +12,7 @@
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const quinnDialogueNodes: DialogueNode[] = [
   // ============= INTRODUCTION =============
@@ -3200,14 +3201,14 @@ export const quinnEntryPoints = {
 // Build the graph
 export const quinnDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(quinnDialogueNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('quinn', quinnDialogueNodes),
   startNodeId: quinnEntryPoints.INTRODUCTION,
   metadata: {
     title: "Quinn's Finance Floor",
     author: 'Guided Generation',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: quinnDialogueNodes.length,
-    totalChoices: quinnDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+    totalNodes: filterDraftNodes('quinn', quinnDialogueNodes).length,
+    totalChoices: filterDraftNodes('quinn', quinnDialogueNodes).reduce((sum, n) => sum + n.choices.length, 0)
   }
 }

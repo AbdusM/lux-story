@@ -1,4 +1,5 @@
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const ashaDialogueNodes: DialogueNode[] = [
     // ============= INTRODUCTION =============
@@ -2720,14 +2721,14 @@ export type AshaEntryPoint = typeof ashaEntryPoints[keyof typeof ashaEntryPoints
 
 export const ashaDialogueGraph: DialogueGraph = {
     version: '1.0.0',
-    nodes: new Map(ashaDialogueNodes.map(node => [node.nodeId, node])),
+    nodes: buildDialogueNodesMap('asha', ashaDialogueNodes),
     startNodeId: ashaEntryPoints.INTRODUCTION,
     metadata: {
         title: "Asha's Vision Studio",
         author: 'Guided Generation',
         createdAt: Date.now(),
         lastModified: Date.now(),
-        totalNodes: ashaDialogueNodes.length,
-        totalChoices: ashaDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+        totalNodes: filterDraftNodes('asha', ashaDialogueNodes).length,
+        totalChoices: filterDraftNodes('asha', ashaDialogueNodes).reduce((sum, n) => sum + n.choices.length, 0)
     }
 }

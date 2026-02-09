@@ -12,6 +12,7 @@ import {
   DialogueGraph
 } from '@/lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const jordanDialogueNodes: DialogueNode[] = [
   // ... [KEEPING INTRO NODES UP TO JOB 7 SCENARIO] ...
@@ -2642,14 +2643,14 @@ export const jordanEntryPoints = {
 
 export const jordanDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(jordanDialogueNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('jordan', jordanDialogueNodes),
   startNodeId: jordanEntryPoints.INTRODUCTION,
   metadata: {
     title: "Jordan's Journey",
     author: 'Guided Generation',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: jordanDialogueNodes.length,
-    totalChoices: jordanDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+    totalNodes: filterDraftNodes('jordan', jordanDialogueNodes).length,
+    totalChoices: filterDraftNodes('jordan', jordanDialogueNodes).reduce((sum, n) => sum + n.choices.length, 0)
   }
 }

@@ -10,6 +10,7 @@
  */
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const liraDialogueNodes: DialogueNode[] = [
     // ============= INTRO HANDSHAKE =============
@@ -3171,14 +3172,14 @@ export const liraEntryPoints = {
 
 export const liraDialogueGraph: DialogueGraph = {
     version: '1.0.0',
-    nodes: new Map(liraDialogueNodes.map(node => [node.nodeId, node])),
+    nodes: buildDialogueNodesMap('lira', liraDialogueNodes),
     startNodeId: 'lira_introduction',
     metadata: {
         title: "Lira's Silent Studio",
         author: 'Guided Generation',
         createdAt: Date.now(),
         lastModified: Date.now(),
-        totalNodes: liraDialogueNodes.length,
-        totalChoices: liraDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+        totalNodes: filterDraftNodes('lira', liraDialogueNodes).length,
+        totalChoices: filterDraftNodes('lira', liraDialogueNodes).reduce((sum, n) => sum + n.choices.length, 0)
     }
 }

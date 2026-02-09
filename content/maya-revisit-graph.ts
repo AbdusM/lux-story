@@ -10,6 +10,7 @@ import {
   DialogueNode,
   DialogueGraph
 } from '@/lib/dialogue-graph'
+import { buildDialogueNodesMap } from './drafts/draft-filter'
 
 /**
  * IMPORTANT: We use string literals for Samuel's entry points to avoid circular dependencies
@@ -493,7 +494,7 @@ export type MayaRevisitEntryPoint = typeof mayaRevisitEntryPoints[keyof typeof m
 
 export const mayaRevisitGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(mayaRevisitNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('maya_revisit', mayaRevisitNodes),
   startNodeId: mayaRevisitEntryPoints.WELCOME,
   metadata: {
     title: "Maya's Revisit Content",

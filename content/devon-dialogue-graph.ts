@@ -9,6 +9,7 @@
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const devonDialogueNodes: DialogueNode[] = [
   // ============= INTRODUCTION =============
@@ -4202,16 +4203,18 @@ export const devonEntryPoints = {
 
 export type DevonEntryPoint = typeof devonEntryPoints[keyof typeof devonEntryPoints]
 
+const activeDevonDialogueNodes = filterDraftNodes('devon', devonDialogueNodes)
+
 export const devonDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(devonDialogueNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('devon', devonDialogueNodes),
   startNodeId: devonEntryPoints.INTRODUCTION,
   metadata: {
     title: "Devon's Journey",
     author: 'Guided Generation (Build-Time)',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: devonDialogueNodes.length,
-    totalChoices: devonDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+    totalNodes: activeDevonDialogueNodes.length,
+    totalChoices: activeDevonDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
   }
 }

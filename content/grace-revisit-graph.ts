@@ -9,6 +9,7 @@ import {
     DialogueNode,
     DialogueGraph
 } from '@/lib/dialogue-graph'
+import { buildDialogueNodesMap } from './drafts/draft-filter'
 
 /**
  * Samuel Entry Point Constant
@@ -254,7 +255,7 @@ export const graceRevisitEntryPoints = {
 
 export const graceRevisitGraph: DialogueGraph = {
     version: '1.0.0',
-    nodes: new Map(graceRevisitNodes.map(node => [node.nodeId, node])),
+    nodes: buildDialogueNodesMap('grace_revisit', graceRevisitNodes),
     startNodeId: graceRevisitEntryPoints.WELCOME,
     metadata: {
         title: "Grace's Revisit Content",

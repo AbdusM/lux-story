@@ -10,6 +10,7 @@
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const alexDialogueNodes: DialogueNode[] = [
   // ============= SCENE 1: THE DISMISSAL =============
@@ -2304,14 +2305,14 @@ export const alexEntryPoints = {
 
 export const alexDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(alexDialogueNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('alex', alexDialogueNodes),
   startNodeId: alexEntryPoints.INTRODUCTION,
   metadata: {
     title: "The Credential Paradox",
     author: 'Guided Generation',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: alexDialogueNodes.length,
-    totalChoices: alexDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+    totalNodes: filterDraftNodes('alex', alexDialogueNodes).length,
+    totalChoices: filterDraftNodes('alex', alexDialogueNodes).reduce((sum, n) => sum + n.choices.length, 0)
   }
 }

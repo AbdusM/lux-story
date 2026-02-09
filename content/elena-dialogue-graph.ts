@@ -11,6 +11,7 @@
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 const nodes: DialogueNode[] = [
   // ============= INTRODUCTION =============
@@ -2941,14 +2942,14 @@ export type ElenaEntryPoint = typeof elenaEntryPoints[keyof typeof elenaEntryPoi
 
 export const elenaDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(nodes.map(n => [n.nodeId, n])),
+  nodes: buildDialogueNodesMap('elena', nodes),
   startNodeId: elenaEntryPoints.INTRODUCTION,
   metadata: {
     title: 'Elena Arc - The Pattern Researcher',
     author: 'System',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: nodes.length,
-    totalChoices: nodes.reduce((acc, n) => acc + n.choices.length, 0)
+    totalNodes: filterDraftNodes('elena', nodes).length,
+    totalChoices: filterDraftNodes('elena', nodes).reduce((acc, n) => acc + n.choices.length, 0)
   }
 }

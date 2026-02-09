@@ -1,4 +1,5 @@
 import { DialogueGraph, DialogueNode } from '@/lib/dialogue-graph'
+import { buildDialogueNodesMap } from './drafts/draft-filter'
 
 export const deepStationDialogueNodes: DialogueNode[] = [
     // ==========================================
@@ -305,6 +306,7 @@ export const deepStationGraph: DialogueGraph = {
         totalNodes: deepStationDialogueNodes.length,
         totalChoices: deepStationDialogueNodes.reduce((acc, n) => acc + n.choices.length, 0)
     },
-    startNodeId: 'sector_3_office',
-    nodes: new Map(deepStationDialogueNodes.map(n => [n.nodeId, n]))
+    // Start at the glitch entry so the full sector-3 flow is structurally reachable.
+    startNodeId: 'deep_station_glitch_entry',
+    nodes: buildDialogueNodesMap('deep_station', deepStationDialogueNodes)
 }

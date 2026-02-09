@@ -12,6 +12,7 @@
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 export const isaiahDialogueNodes: DialogueNode[] = [
   // ============= INTRODUCTION =============
@@ -2213,14 +2214,14 @@ export const isaiahEntryPoints = {
 // Build the graph
 export const isaiahDialogueGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(isaiahDialogueNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('isaiah', isaiahDialogueNodes),
   startNodeId: isaiahEntryPoints.INTRODUCTION,
   metadata: {
     title: "Isaiah's Bench",
     author: 'Guided Generation',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: isaiahDialogueNodes.length,
-    totalChoices: isaiahDialogueNodes.reduce((sum, n) => sum + n.choices.length, 0)
+    totalNodes: filterDraftNodes('isaiah', isaiahDialogueNodes).length,
+    totalChoices: filterDraftNodes('isaiah', isaiahDialogueNodes).reduce((sum, n) => sum + n.choices.length, 0)
   }
 }

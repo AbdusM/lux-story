@@ -1,4 +1,5 @@
 import { DialogueNode, DialogueGraph } from '@/lib/dialogue-graph'
+import { buildDialogueNodesMap, filterDraftNodes } from './drafts/draft-filter'
 
 /**
  * Marcus Chen's Dialogue Graph
@@ -3302,14 +3303,14 @@ export const marcusEntryPoints = {
 
 export const marcusDialogueGraph: DialogueGraph = {
   version: '2.0.0',
-  nodes: new Map(nodes.map(n => [n.nodeId, n])),
+  nodes: buildDialogueNodesMap('marcus', nodes),
   startNodeId: 'marcus_intro',
   metadata: {
     title: 'Marcus Arc - The Breach',
     author: 'System',
     createdAt: Date.now(),
     lastModified: Date.now(),
-    totalNodes: nodes.length,
-    totalChoices: nodes.reduce((acc, n) => acc + n.choices.length, 0)
+    totalNodes: filterDraftNodes('marcus', nodes).length,
+    totalChoices: filterDraftNodes('marcus', nodes).reduce((acc, n) => acc + n.choices.length, 0)
   }
 }

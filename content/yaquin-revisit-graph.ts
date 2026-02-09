@@ -9,6 +9,7 @@
 
 import { DialogueNode, DialogueGraph } from '../lib/dialogue-graph'
 import { samuelEntryPoints } from './samuel-dialogue-graph'
+import { buildDialogueNodesMap } from './drafts/draft-filter'
 
 export const yaquinRevisitNodes: DialogueNode[] = [
   // ============= WELCOME BACK =============
@@ -399,7 +400,7 @@ export const yaquinRevisitEntryPoints = {
 
 export const yaquinRevisitGraph: DialogueGraph = {
   version: '1.0.0',
-  nodes: new Map(yaquinRevisitNodes.map(node => [node.nodeId, node])),
+  nodes: buildDialogueNodesMap('yaquin_revisit', yaquinRevisitNodes),
   startNodeId: yaquinRevisitEntryPoints.WELCOME,
   metadata: {
     title: "Yaquin: Scaling Up",
