@@ -142,11 +142,12 @@ Comprehensive testing infrastructure built to ensure zero data loss, bulletproof
   10. Verify requiredState strict navigation (no new violations)
   11. Verify unreferenced dialogue nodes (no new orphans)
   12. Verify unreachable dialogue nodes (no new unreachable)
-  13. Verify character system coverage
-  14. Generate coverage matrix + verify it is up to date
-  15. Validate simulations data dictionary
-  16. Verify analytics dictionary
-  17. Generate coverage report + upload artifacts (30 day retention)
+  13. Verify content quarantine list is up to date (no silent drift)
+  14. Verify character system coverage
+  15. Generate coverage matrix + verify it is up to date
+  16. Validate simulations data dictionary
+  17. Verify analytics dictionary
+  18. Generate coverage report + upload artifacts (30 day retention)
 
 **2. Build Job**
 - Runs after: test job success
@@ -195,6 +196,30 @@ Run `npm run test:run` to see the current suite size and totals. The test suite 
 7. ✅ Idempotency guarantees
 8. ✅ Input validation
 9. ✅ Edge case handling
+
+---
+
+## Draft Content Quarantine
+
+We maintain an explicit quarantine list for structurally unreachable nodes that
+are not currently shipped as part of the playable graph set.
+
+**Source of truth:**
+- `content/drafts/quarantined-node-ids.ts`
+
+**Default behavior:**
+- Quarantined nodes are excluded from shipped graphs.
+
+**Dev opt-in (inspect drafts locally):**
+- Run with `NEXT_PUBLIC_INCLUDE_DRAFT_CONTENT=true` to include quarantined nodes.
+
+**CI gate (AAA-style “no silent debt growth”):**
+- `npm run verify:content-quarantine` recomputes raw unreachable nodes (with drafts included)
+  and fails if the committed quarantine list is out of date.
+
+**Regenerate quarantine list:**
+1. `NEXT_PUBLIC_INCLUDE_DRAFT_CONTENT=true npm run verify:unreachable-dialogue-nodes`
+2. `npm run write:content-quarantine`
 
 ---
 

@@ -13,6 +13,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { DIALOGUE_GRAPHS } from '../lib/graph-registry'
+import { CHARACTER_PATTERN_AFFINITIES } from '../lib/pattern-affinity'
 
 import { samuelEntryPoints } from '../content/samuel-dialogue-graph'
 import { samuelWaitingEntryPoints } from '../content/samuel-waiting-dialogue'
@@ -104,6 +105,12 @@ const KNOWN_ENTRY_NODE_IDS = new Set<string>([
   ...Object.values(isaiahEntryPoints),
 ])
 
+const PATTERN_UNLOCK_NODE_IDS = new Set<string>(
+  Object.values(CHARACTER_PATTERN_AFFINITIES)
+    .flatMap((a: any) => (a?.patternUnlocks ?? []).map((u: any) => u.unlockedNodeId))
+    .filter(Boolean)
+)
+
 function toKey(graphKey: string, nodeId: string): string {
   return `${graphKey}/${nodeId}`
 }
@@ -155,6 +162,8 @@ function buildReport(): Report {
 
       if (startNodeIds.has(node.nodeId)) continue
       if (KNOWN_ENTRY_NODE_IDS.has(node.nodeId)) continue
+      if (PATTERN_UNLOCK_NODE_IDS.has(node.nodeId)) continue
+      if ((node as any)?.simulation) continue
 
       if (!referenced.has(node.nodeId)) {
         graphUnref++
@@ -225,4 +234,3 @@ function main(): void {
 }
 
 main()
-
