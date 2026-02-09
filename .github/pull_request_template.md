@@ -28,5 +28,11 @@ What could break? What’s the failure mode + impact?
 
 Required when changing flags/experiments/telemetry contracts/CI gates.
 
-- [ ] ADR added using `docs/03_PROCESS/ADR_TEMPLATE.md`
+- [ ] ADR added using `docs/adr/000-template.md`
 
+## Definition Of Done
+
+- [ ] Small + mergeable (change is scoped; easy rollback)
+- [ ] Deterministic (no RNG without seed; stable ordering where required)
+- [ ] Validation gates updated (baselines/ratchets only when justified)
+- [ ] Docs updated (contracts, dictionary, testing notes as needed)
