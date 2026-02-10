@@ -40,6 +40,7 @@ import {
 // queueEchosForFlag moved to arc-completion-processor
 import { UnlockManager } from '@/lib/unlock-manager'
 import { ABILITIES } from '@/lib/abilities'
+import { getPrimaryQuest, getQuestProgress } from '@/lib/quest-system'
 // THOUGHT_REGISTRY removed - thought-system archived (never integrated)
 // CROSS_CHARACTER_ECHOES, getArcCompletionFlag, detectArcCompletion moved to arc-completion-processor
 import {
@@ -786,6 +787,78 @@ export function useChoiceHandler({
       const skillsToKeep = skillResult.skillsToKeep
 
       // Outcome card (player-facing): compact, deterministic "what changed" summary.
+      // Add structural "what changed" items based on state deltas so the player rarely sees an empty outcome.
+      try {
+        const prevFlags = gameState.globalFlags
+        const nextFlags = newGameState.globalFlags
+        const addedFlags: string[] = []
+        for (const f of nextFlags) {
+          if (!prevFlags.has(f)) addedFlags.push(f)
+        }
+
+        const prettyName = (id: string) => id.charAt(0).toUpperCase() + id.slice(1)
+
+        // Canonical, player-facing interpretations for important flags.
+        for (const flag of addedFlags) {
+          // "Met character" is a major progression moment (unlocks an arc).
+          const met = flag.match(/^met_([a-z_]+)$/)
+          if (met) {
+            const who = prettyName(met[1].replace(/_/g, ' '))
+            outcomeItems.push({ kind: 'unlock', title: 'New contact', detail: who, prismTab: 'essence' })
+            continue
+          }
+
+          // "Arc complete" is an explicit victory moment.
+          const arcComplete = flag.match(/^([a-z_]+)_arc_complete$/)
+          if (arcComplete) {
+            const who = prettyName(arcComplete[1].replace(/_/g, ' '))
+            outcomeItems.push({ kind: 'unlock', title: 'Arc complete', detail: who, prismTab: 'essence' })
+            continue
+          }
+
+          // Station secrets are a major discovery unlock.
+          if (flag === 'station_history_revealed') {
+            outcomeItems.push({ kind: 'unlock', title: 'Station secrets', detail: 'History revealed', prismTab: 'mysteries' })
+            continue
+          }
+
+          // Voice system revelation is a new mechanic surface (keep as unlock).
+          if (flag === 'voice_system_revealed') {
+            outcomeItems.push({ kind: 'unlock', title: 'New system', detail: 'Voices revealed', prismTab: 'mind' })
+            continue
+          }
+        }
+
+        // Objective update: surface quest changes as a lightweight info item.
+        const prevQuest = getPrimaryQuest(gameState)
+        const nextQuest = getPrimaryQuest(newGameState)
+        if (nextQuest && (!prevQuest || prevQuest.id !== nextQuest.id || prevQuest.status !== nextQuest.status)) {
+          const prefix = nextQuest.status === 'completed'
+            ? 'Objective complete'
+            : nextQuest.status === 'active'
+              ? 'Objective'
+              : 'New objective'
+          outcomeItems.push({
+            kind: nextQuest.status === 'completed' ? 'unlock' : 'info',
+            title: prefix,
+            detail: nextQuest.title,
+          })
+        }
+
+        // Milestone: completed quest count increase.
+        const prevProg = getQuestProgress(gameState)
+        const nextProg = getQuestProgress(newGameState)
+        if (nextProg.completed > prevProg.completed) {
+          outcomeItems.push({
+            kind: 'info',
+            title: 'Quest progress',
+            detail: `${nextProg.completed}/${nextProg.total} completed`,
+          })
+        }
+      } catch {
+        // Outcome enrichment must never break gameplay.
+      }
+
       const trustFeedbackMsg = computeTrustFeedbackMessage(trustDelta, state.currentCharacterId)
       if (trustFeedbackMsg?.message) {
         const m = trustFeedbackMsg.message.match(/^Trust \(([^)]+)\):\s*(.*)$/)
