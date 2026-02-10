@@ -15,6 +15,7 @@
  */
 
 import { DialogueNode } from '../lib/dialogue-graph'
+import { writeFileSync } from 'fs'
 
 // Import all dialogue graphs
 import { samuelDialogueNodes, samuelEntryPoints } from '../content/samuel-dialogue-graph'
@@ -711,8 +712,10 @@ class DialogueGraphValidator {
 // ============= MAIN EXECUTION =============
 
 function main(): void {
-  console.log('\n📊 Dialogue Graph Validator')
-  console.log('═'.repeat(50))
+  const args = process.argv.slice(2)
+  const jsonMode = args.includes('--json')
+  const outIx = args.indexOf('--out')
+  const outPath = outIx >= 0 ? (args[outIx + 1] || null) : null
 
   const graphs = [
     { name: 'samuel', nodes: samuelDialogueNodes, startNodeId: 'samuel_introduction' },
@@ -747,6 +750,64 @@ function main(): void {
 
   const validator = new DialogueGraphValidator()
   const result = validator.validate(graphs)
+
+  const classifyWarning = (w: ValidationError): { code: string; details?: Record<string, unknown> } => {
+    const msg = w.message || ''
+    if (msg.startsWith('Orphaned node:')) return { code: 'ORPHAN_NODE' }
+    if (msg.startsWith('FAKE CHOICE:')) {
+      const dest = msg.match(/lead to \"([^\"]+)\"/)?.[1] ?? null
+      return { code: 'FAKE_CHOICE', details: dest ? { dest } : undefined }
+    }
+    if (msg === 'Node has no choices (dead end)') return { code: 'DEAD_END' }
+    if (msg.startsWith('Pattern imbalance:')) {
+      const pattern = msg.match(/Pattern imbalance:\s*\"([^\"]+)\"/)?.[1] ?? null
+      return { code: 'PATTERN_IMBALANCE', details: pattern ? { pattern } : undefined }
+    }
+    if (msg.includes('Trust change') && msg.includes('outside recommended range')) return { code: 'TRUST_DELTA_LARGE' }
+    if (msg.includes('Interrupt trust change') && msg.includes('outside recommended range')) return { code: 'INTERRUPT_TRUST_DELTA_LARGE' }
+    if (msg === 'Node missing speaker') return { code: 'MISSING_SPEAKER' }
+    if (msg.startsWith('Content missing variation_id')) return { code: 'MISSING_VARIATION_ID' }
+    if (msg.startsWith('Duplicate variation_id:')) return { code: 'DUPLICATE_VARIATION_ID' }
+    if (msg.startsWith('Invalid pattern:')) return { code: 'INVALID_PATTERN' }
+    return { code: 'OTHER_WARNING' }
+  }
+
+  const warningIdFor = (w: ValidationError, code: string, details?: Record<string, unknown>): string => {
+    const nodeId = w.nodeId ?? 'unknown_node'
+    const choiceId = w.choiceId ?? ''
+    const dest = typeof details?.dest === 'string' ? (details.dest as string) : ''
+    const pattern = typeof details?.pattern === 'string' ? (details.pattern as string) : ''
+    return [code, w.graph, nodeId, choiceId, dest, pattern].filter(Boolean).join('|')
+  }
+
+  if (jsonMode) {
+    const warnings = result.warnings.map((w) => {
+      const c = classifyWarning(w)
+      const warning_id = warningIdFor(w, c.code, c.details)
+      return { ...w, code: c.code, warning_id, details: c.details ?? null }
+    })
+
+    const report = {
+      version: 1,
+      generated_at: new Date().toISOString(),
+      totals: {
+        graphs: graphs.length,
+        errors: result.errors.length,
+        warnings: result.warnings.length,
+      },
+      stats: result.stats,
+      errors: result.errors,
+      warnings,
+    }
+
+    const json = JSON.stringify(report, null, 2) + '\n'
+    if (outPath) writeFileSync(outPath, json, 'utf8')
+    process.stdout.write(json)
+    process.exit(result.valid ? 0 : 1)
+  }
+
+  console.log('\n📊 Dialogue Graph Validator')
+  console.log('═'.repeat(50))
 
   // Print stats
   console.log('\n📈 Graph Statistics:')
