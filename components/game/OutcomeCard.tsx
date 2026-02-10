@@ -83,18 +83,28 @@ export function OutcomeCard({ card, onDismiss, onOpenPrismTab, className }: Outc
             <span>Outcome</span>
           </div>
           <div className="mt-2 space-y-1">
-            {card.items.slice(0, 3).map((item, idx) => {
-              const Icon = iconForItem(item)
-              return (
-                <div key={`${card.id}-${idx}`} className="flex gap-2 text-xs text-slate-200">
-                  <Icon className="h-4 w-4 text-slate-400 flex-shrink-0" aria-hidden="true" />
-                  <div className="min-w-0">
-                    <span className="font-semibold">{item.title}</span>
-                    {item.detail && <span className="text-slate-300">: {item.detail}</span>}
-                  </div>
+            {card.items.length === 0 ? (
+              <div className="flex gap-2 text-xs text-slate-200">
+                <Sparkles className="h-4 w-4 text-slate-400 flex-shrink-0" aria-hidden="true" />
+                <div className="min-w-0">
+                  <span className="font-semibold">Story progressed</span>
+                  <span className="text-slate-300">: No visible changes yet.</span>
                 </div>
-              )
-            })}
+              </div>
+            ) : (
+              card.items.slice(0, 3).map((item, idx) => {
+                const Icon = iconForItem(item)
+                return (
+                  <div key={`${card.id}-${idx}`} className="flex gap-2 text-xs text-slate-200">
+                    <Icon className="h-4 w-4 text-slate-400 flex-shrink-0" aria-hidden="true" />
+                    <div className="min-w-0">
+                      <span className="font-semibold">{item.title}</span>
+                      {item.detail && <span className="text-slate-300">: {item.detail}</span>}
+                    </div>
+                  </div>
+                )
+              })
+            )}
             {card.items.length > 3 && (
               <div className="text-[11px] text-slate-400">
                 +{card.items.length - 3} more

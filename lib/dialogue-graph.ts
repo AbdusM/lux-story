@@ -645,8 +645,12 @@ export class StateConditionEvaluator {
         const d = deriveDisabledReason(choice.enabledCondition, gameState, characterId)
         reason = d.message
         reason_code = d.code
-        if (d.why && d.how) {
-          reason_details = { why: d.why, how: d.how, progress: d.progress }
+        // AAA contract: disabled-but-visible choices must have actionable why/how for UI legibility.
+        // We preserve the back-compat `reason` string, but always provide structured details.
+        reason_details = {
+          why: d.why ?? d.message,
+          how: d.how ?? 'To unlock: Continue the story and explore other options.',
+          progress: d.progress
         }
       }
 

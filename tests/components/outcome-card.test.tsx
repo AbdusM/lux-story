@@ -38,5 +38,11 @@ describe('OutcomeCard', () => {
     await user.click(screen.getByTestId('outcome-deeplink-mastery'))
     expect(onOpenPrismTab).toHaveBeenCalledWith('mastery')
   })
-})
 
+  it('renders a minimal fallback row when there are no visible deltas', () => {
+    const card: OutcomeCardData = { id: 't_empty', items: [] }
+    render(<OutcomeCard card={card} onDismiss={vi.fn()} onOpenPrismTab={vi.fn()} />)
+    expect(screen.getByText(/Story progressed/i)).toBeInTheDocument()
+    expect(screen.getByText(/No visible changes yet/i)).toBeInTheDocument()
+  })
+})
