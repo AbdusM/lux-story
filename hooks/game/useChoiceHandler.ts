@@ -291,6 +291,7 @@ export function useChoiceHandler({
           kind: 'info',
           title: 'Station Dynamics Shifted',
           detail: `${fromChar} & ${toChar}`,
+          prismTab: 'essence',
         })
 
         audio.actions.triggerIdentitySound()
@@ -304,6 +305,7 @@ export function useChoiceHandler({
           kind: 'info',
           title: 'New Echo',
           detail: echo.text.length > 120 ? echo.text.substring(0, 117) + '...' : echo.text,
+          prismTab: 'mind',
         })
         logger.info('[StatefulGameInterface] Voice system revelation triggered:', {
           echoText: echo.text.substring(0, 50)
@@ -773,9 +775,9 @@ export function useChoiceHandler({
       if (trustFeedbackMsg?.message) {
         const m = trustFeedbackMsg.message.match(/^Trust \(([^)]+)\):\s*(.*)$/)
         if (m) {
-          outcomeItems.push({ kind: 'trust', title: `Trust (${m[1]})`, detail: m[2] })
+          outcomeItems.push({ kind: 'trust', title: `Trust (${m[1]})`, detail: m[2], prismTab: 'essence' })
         } else {
-          outcomeItems.push({ kind: 'trust', title: 'Trust', detail: trustFeedbackMsg.message })
+          outcomeItems.push({ kind: 'trust', title: 'Trust', detail: trustFeedbackMsg.message, prismTab: 'essence' })
         }
       }
 

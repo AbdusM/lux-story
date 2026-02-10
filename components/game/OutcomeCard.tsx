@@ -25,7 +25,48 @@ function iconForItem(item: OutcomeItem) {
 }
 
 export function OutcomeCard({ card, onDismiss, onOpenPrismTab, className }: OutcomeCardProps) {
-  const deepLinkTabs = Array.from(new Set(card.items.map(i => i.prismTab).filter(Boolean))) as PrismTabId[]
+  const tabPriority: PrismTabId[] = [
+    // Most "gamey" tabs first.
+    'mastery',
+    'harmonics',
+    'combos',
+    'ranks',
+    'careers',
+    'essence',
+    // Utility tabs.
+    'mind',
+    'toolkit',
+    'simulations',
+    'opportunities',
+    'mysteries',
+    'analysis',
+    'cognition',
+    // Never auto-suggest god mode.
+    'god_mode',
+  ]
+
+  const kindWeight: Record<OutcomeItem['kind'], number> = {
+    unlock: 4,
+    orb: 3,
+    trust: 2,
+    info: 1,
+  }
+
+  const tabWeights = new Map<PrismTabId, number>()
+  for (const item of card.items) {
+    if (!item.prismTab) continue
+    const current = tabWeights.get(item.prismTab) ?? 0
+    tabWeights.set(item.prismTab, Math.max(current, kindWeight[item.kind] ?? 0))
+  }
+
+  const deepLinkTabs = Array.from(tabWeights.keys()).sort((a, b) => {
+    const wa = tabWeights.get(a) ?? 0
+    const wb = tabWeights.get(b) ?? 0
+    if (wa !== wb) return wb - wa
+    const pa = tabPriority.indexOf(a)
+    const pb = tabPriority.indexOf(b)
+    return (pa === -1 ? 999 : pa) - (pb === -1 ? 999 : pb)
+  })
 
   return (
     <div
@@ -90,4 +131,3 @@ export function OutcomeCard({ card, onDismiss, onOpenPrismTab, className }: Outc
     </div>
   )
 }
-
