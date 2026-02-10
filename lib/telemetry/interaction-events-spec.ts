@@ -5,6 +5,7 @@ export const INTERACTION_EVENT_TYPES = [
   'choice_presented',
   'choice_selected_ui',
   'choice_selected_result',
+  'experiment_assigned',
 ] as const
 
 export type InteractionEventType = (typeof INTERACTION_EVENT_TYPES)[number]
@@ -57,11 +58,20 @@ const ChoiceSelectedResultPayloadSchema = z.object({
   trust_delta: z.number().finite().nullable().optional(),
 }).passthrough()
 
+const ExperimentAssignedPayloadSchema = z.object({
+  event_id: z.string().min(1),
+  assigned_at_ms: z.number().finite(),
+  test_id: z.string().min(1),
+  variant: z.string().min(1),
+  assignment_version: z.string().min(1),
+}).passthrough()
+
 const InteractionEventPayloadSchemas: Record<InteractionEventType, z.ZodTypeAny> = {
   node_entered: NodeEnteredPayloadSchema,
   choice_presented: ChoicePresentedPayloadSchema,
   choice_selected_ui: ChoiceSelectedUiPayloadSchema,
   choice_selected_result: ChoiceSelectedResultPayloadSchema,
+  experiment_assigned: ExperimentAssignedPayloadSchema,
 }
 
 export function validateInteractionEventPayload(eventType: string, payload: unknown): string[] {

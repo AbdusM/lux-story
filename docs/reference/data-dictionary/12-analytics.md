@@ -429,11 +429,18 @@ interface ABTest {
   id: string
   variants: string[]
   weights?: number[] // Defaults to equal split
+  assignmentVersion: string // Required; controls stickiness + intentional rerolls
 }
 
-const ACTIVE_TESTS: Record<string, ABTest> = {}
+import { ACTIVE_TESTS, assignVariantAndTrack } from '@/lib/experiments'
 
-assignVariant(testId, userId) // Deterministic hash assignment
+// Deterministic assignment, sticky per assignmentVersion, with canonical telemetry.
+assignVariantAndTrack({
+  testId,
+  userId,
+  user_id: userId,
+  session_id,
+})
 ```
 
 **Use Cases:**
@@ -505,6 +512,15 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
   - `entered_at_ms`: number
   - `from_node_id`: string|null (optional)
   - `reason`: `'init' | 'choice' | 'return' | 'unknown'` (optional)
+
+**`experiment_assigned`** (sticky AB assignment, emitted once per `assignment_version`)
+- Emitted by: `lib/experiments.ts` (`assignVariantAndTrack()`)
+- Payload keys:
+  - `event_id`: string
+  - `assigned_at_ms`: number
+  - `test_id`: string
+  - `variant`: string
+  - `assignment_version`: string
 
 **`choice_presented`** (source of truth for what the player saw)
 - Emitted by: `components/GameChoices.tsx`
@@ -717,17 +733,23 @@ if (dropOffRate > 0.2) {
 ### Example 5: A/B Testing
 
 ```typescript
-import { ACTIVE_TESTS, assignVariant } from '@/lib/admin-analytics'
+import { ACTIVE_TESTS, assignVariantAndTrack } from '@/lib/experiments'
 
 // Configure A/B test
 ACTIVE_TESTS['dialogue_style_test'] = {
   id: 'dialogue_style_test',
   variants: ['formal', 'casual', 'playful'],
-  weights: [0.33, 0.33, 0.34]
+  weights: [0.33, 0.33, 0.34],
+  assignmentVersion: 'v1'
 }
 
 // Assign variant to user
-const variant = assignVariant('dialogue_style_test', playerId)
+const { variant } = assignVariantAndTrack({
+  testId: 'dialogue_style_test',
+  userId: playerId,
+  user_id: playerId,
+  session_id,
+})
 console.log('User variant:', variant) // "formal" | "casual" | "playful"
 
 // Use variant in dialogue
