@@ -21,7 +21,7 @@ import { CHOICE_HANDLER_TIMEOUT_MS } from '@/lib/constants'
 import { PATTERN_METADATA, type PatternType, type PlayerPatterns, isValidPattern } from '@/lib/patterns'
 import { calculatePatternGain } from '@/lib/identity-system'
 import type { OutcomeCardData, OutcomeItem } from '@/lib/outcome-card'
-import { updateRewardFeed } from '@/lib/reward-feed'
+import { compressRewardFeedBatch, updateRewardFeed } from '@/lib/reward-feed'
 import {
   applyPatternReflection,
   type ConsequenceEcho,
@@ -903,8 +903,9 @@ export function useChoiceHandler({
         }
       }
 
-      const nextRewardFeed = feedItems.length > 0
-        ? updateRewardFeed(state.rewardFeed || [], feedItems, nowMs)
+      const batch = compressRewardFeedBatch(feedItems, 2)
+      const nextRewardFeed = batch.length > 0
+        ? updateRewardFeed(state.rewardFeed || [], batch, nowMs)
         : (state.rewardFeed || [])
 
       const outcomeCard: OutcomeCardData | null = cardItems.length > 0
