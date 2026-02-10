@@ -13,5 +13,12 @@ export type OutcomeCardData = {
   // Used as a stable React key; regenerated per choice.
   id: string
   items: OutcomeItem[]
+  /**
+   * Optional deterministic "what next" suggestion.
+   * This is separate from per-item prism deep links.
+   */
+  nextAction?: {
+    label: string
+    prismTab: PrismTabId
+  } | null
 }
-

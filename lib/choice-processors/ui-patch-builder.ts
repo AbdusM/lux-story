@@ -22,6 +22,7 @@ import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
 import type { GameInterfaceState } from '@/lib/game-interface-types'
 import type { OutcomeCardData } from '@/lib/outcome-card'
 import type { RewardFeedItem } from '@/lib/reward-feed'
+import type { AbilityId } from '@/lib/abilities'
 
 /**
  * Input context for building the UI patch
@@ -52,6 +53,8 @@ export interface UiPatchContext {
 
   // Identity
   identityCeremonyPattern: PatternType | null
+  identityOfferingPattern: PatternType | null
+  abilityUnlockId: AbilityId | null
   isJourneyCompleteNode: boolean
   dominantPattern: PatternType | null
 
@@ -110,6 +113,14 @@ export type ChoiceUiPatch = Omit<GameInterfaceState, never>
  * and applied via a coordinator pattern.
  */
 export function buildChoiceUiPatch(ctx: UiPatchContext): ChoiceUiPatch {
+  const showAbilityUnlockCeremony =
+    ctx.abilityUnlockId !== null &&
+    ctx.identityCeremonyPattern === null &&
+    !ctx.isJourneyCompleteNode
+
+  const showIdentityOffering = ctx.identityOfferingPattern !== null
+  const showIdentityCeremony = ctx.identityCeremonyPattern !== null && !showIdentityOffering
+
   return {
     // Navigation state
     currentNode: ctx.nextNode,
@@ -174,8 +185,12 @@ export function buildChoiceUiPatch(ctx: UiPatchContext): ChoiceUiPatch {
     previousTotalNodes: ctx.previousTotalNodes,
 
     // Identity ceremony
-    showIdentityCeremony: ctx.identityCeremonyPattern !== null,
-    ceremonyPattern: ctx.identityCeremonyPattern,
+    showIdentityCeremony,
+    ceremonyPattern: showIdentityCeremony ? ctx.identityCeremonyPattern : null,
+    showIdentityOffering,
+    offeredPattern: ctx.identityOfferingPattern,
+    showAbilityUnlockCeremony,
+    ceremonyAbilityId: showAbilityUnlockCeremony ? ctx.abilityUnlockId : null,
 
     // Pattern ending
     showPatternEnding: ctx.isJourneyCompleteNode,

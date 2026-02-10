@@ -551,6 +551,7 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
       - `progress`: `{ current: number, required: number }` (optional)
     - `disabled_reason_code`: string|null
       - Canonical codes (current):
+        - `NEEDS_FOCUS_POINTS`
         - `NEEDS_TRUST`
         - `NEEDS_RELATIONSHIP`
         - `NEEDS_GLOBAL_FLAG`
@@ -568,6 +569,18 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
       - `how`: string
       - `progress`: `{ current: number, required: number }` (optional)
     - `required_orb_fill`: object|null (if orb-gated choice)
+
+**`choice_compact_toggled`** (player expanded/collapsed the choice list)
+- Emitted by: `components/GameChoices.tsx`
+- Payload keys:
+  - `event_id`: string
+  - `toggled_at_ms`: number
+  - `presented_event_id`: string|null (optional; last `choice_presented.payload.event_id` seen by UI)
+  - `expanded`: boolean
+  - `choices_total_count`: number (optional)
+  - `choices_shown_count`: number (optional)
+  - `compact_max_shown`: number|null (optional)
+  - `compact_hidden_count`: number (optional)
 
 **`choice_selected_ui`** (what was clicked, at what index, how fast)
 - Emitted by: `components/GameChoices.tsx`

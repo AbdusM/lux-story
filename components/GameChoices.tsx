@@ -984,7 +984,40 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
             <button
               type="button"
               className="text-xs font-semibold text-slate-200/90 hover:text-slate-100 border border-white/10 bg-white/5 hover:bg-white/10 rounded-lg px-3 py-1.5 transition-colors"
-              onClick={() => setCompactExpanded((v) => !v)}
+              onClick={() => {
+                const playerId = coreState?.playerId
+                const nodeId = coreState?.currentNodeId
+                const characterId = coreState?.currentCharacterId
+                const now = Date.now()
+                const nextExpanded = !compactExpanded
+                setCompactExpanded(nextExpanded)
+
+                if (playerId && nodeId) {
+                  try {
+                    queueInteractionEventSync({
+                      user_id: playerId,
+                      session_id: String(coreState?.sessionStartTime || now),
+                      event_type: 'choice_compact_toggled',
+                      node_id: nodeId,
+                      character_id: characterId,
+                      ordering_variant: orderingVariant,
+                      ordering_seed: orderingSeed,
+                      payload: {
+                        event_id: generateActionId(),
+                        toggled_at_ms: now,
+                        presented_event_id: presentedEventIdRef.current,
+                        expanded: nextExpanded,
+                        choices_total_count: sortedChoices.length,
+                        choices_shown_count: presentedChoicesFlat.length,
+                        compact_max_shown: typeof compactMaxShown === 'number' ? compactMaxShown : null,
+                        compact_hidden_count: compactHiddenCount,
+                      }
+                    })
+                  } catch {
+                    // Telemetry must never block UI interaction.
+                  }
+                }
+              }}
               disabled={isProcessing || isCommitting}
               aria-controls="game-choices-listbox"
               aria-expanded={compactExpanded}
@@ -1066,7 +1099,40 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
           <button
             type="button"
             className="text-xs font-semibold text-slate-200/90 hover:text-slate-100 border border-white/10 bg-white/5 hover:bg-white/10 rounded-lg px-3 py-1.5 transition-colors"
-            onClick={() => setCompactExpanded((v) => !v)}
+            onClick={() => {
+              const playerId = coreState?.playerId
+              const nodeId = coreState?.currentNodeId
+              const characterId = coreState?.currentCharacterId
+              const now = Date.now()
+              const nextExpanded = !compactExpanded
+              setCompactExpanded(nextExpanded)
+
+              if (playerId && nodeId) {
+                try {
+                  queueInteractionEventSync({
+                    user_id: playerId,
+                    session_id: String(coreState?.sessionStartTime || now),
+                    event_type: 'choice_compact_toggled',
+                    node_id: nodeId,
+                    character_id: characterId,
+                    ordering_variant: orderingVariant,
+                    ordering_seed: orderingSeed,
+                    payload: {
+                      event_id: generateActionId(),
+                      toggled_at_ms: now,
+                      presented_event_id: presentedEventIdRef.current,
+                      expanded: nextExpanded,
+                      choices_total_count: sortedChoices.length,
+                      choices_shown_count: presentedChoicesFlat.length,
+                      compact_max_shown: typeof compactMaxShown === 'number' ? compactMaxShown : null,
+                      compact_hidden_count: compactHiddenCount,
+                    }
+                  })
+                } catch {
+                  // Telemetry must never block UI interaction.
+                }
+              }
+            }}
             disabled={isProcessing || isCommitting}
             aria-controls="game-choices-listbox"
             aria-expanded={compactExpanded}

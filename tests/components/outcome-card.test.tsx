@@ -16,6 +16,7 @@ describe('OutcomeCard', () => {
         { kind: 'orb', title: 'Orb gained', detail: 'The Weaver', prismTab: 'harmonics' },
         { kind: 'unlock', title: 'Mastery Unlocked', detail: 'Pattern Sight', prismTab: 'mastery' },
       ],
+      nextAction: { label: 'Next: Review objective (Test)', prismTab: 'careers' },
     }
 
     render(
@@ -37,6 +38,9 @@ describe('OutcomeCard', () => {
 
     await user.click(screen.getByTestId('outcome-deeplink-mastery'))
     expect(onOpenPrismTab).toHaveBeenCalledWith('mastery')
+
+    await user.click(screen.getByTestId('outcome-next-action'))
+    expect(onOpenPrismTab).toHaveBeenCalledWith('careers')
   })
 
   it('renders a minimal fallback row when there are no visible deltas', () => {

@@ -15,6 +15,15 @@ export const FEATURE_FLAGS = {
 
   // Player-facing: reduce overwhelm when many choices are available.
   CHOICE_COMPACT_MODE: { type: 'boolean', default: false },
+
+  // Systems: opt-in scarcity economy experiments (Persona-like cost).
+  SCARCITY_MODE_V1: { type: 'boolean', default: false },
+
+  // UX: optional accept/reject moment for identity formation (behind a flag).
+  IDENTITY_OFFERING_V1: { type: 'boolean', default: false },
+
+  // Systems: opt-in procedural gossip propagation (in addition to arc-complete echoes).
+  GOSSIP_PROPAGATION_V1: { type: 'boolean', default: false },
 } as const satisfies Record<string, FlagDef>
 
 export type FeatureFlagName = keyof typeof FEATURE_FLAGS

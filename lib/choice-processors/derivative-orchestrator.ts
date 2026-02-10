@@ -26,7 +26,9 @@ import { processSynthesisPuzzles } from './puzzle-processor'
 import { processKnowledgeUpdates } from './knowledge-processor'
 import { processIcebergReferences } from './iceberg-processor'
 import { processArcCompletion } from './arc-completion-processor'
+import { processGossipPropagation } from './gossip-propagation-processor'
 import { runTier2Evaluators, type EvaluatorContext } from '@/lib/evaluators'
+import { isEnabled } from '@/lib/feature-flags'
 import {
   loadEchoQueue,
   saveEchoQueue,
@@ -144,6 +146,7 @@ export interface DerivativeOrchestratorResult {
  * 6. Iceberg References (D-019)
  * 7. Delayed Gifts
  * 8. Arc Completion
+ * 9. Gossip Propagation (V1)
  */
 export function runAllDerivativeProcessors(
   ctx: DerivativeOrchestratorContext
@@ -352,6 +355,24 @@ export function runAllDerivativeProcessors(
   })
   for (const log of arcCompletionResult.logs) {
     logs.push({ processor: 'arcCompletion', type: log.type, data: log.data })
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 9. GOSSIP PROPAGATION (V1)
+  // ═══════════════════════════════════════════════════════════════════════════
+  try {
+    if (isEnabled('GOSSIP_PROPAGATION_V1')) {
+      const gossipResult = processGossipPropagation({
+        newGameState,
+        sourceCharacterId: ctx.previousGameState.currentCharacterId,
+        trustDelta: ctx.trustDelta,
+      })
+      for (const log of gossipResult.logs) {
+        logs.push({ processor: 'gossip', type: log.type, data: log.data })
+      }
+    }
+  } catch {
+    // Gossip should never break core derivatives.
   }
 
   return {

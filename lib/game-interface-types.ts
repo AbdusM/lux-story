@@ -21,6 +21,7 @@ import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
 import type { PrismTabId } from '@/lib/prism-tabs'
 import type { OutcomeCardData } from '@/lib/outcome-card'
 import type { RewardFeedItem } from '@/lib/reward-feed'
+import type { AbilityId } from '@/lib/abilities'
 
 export interface GameInterfaceState {
   // TD-001: gameState removed - read from Zustand via useGameSelectors.useCoreGameStateHydrated()
@@ -58,6 +59,10 @@ export interface GameInterfaceState {
   previousTotalNodes: number
   showIdentityCeremony: boolean
   ceremonyPattern: PatternType | null
+  showIdentityOffering: boolean
+  offeredPattern: PatternType | null
+  showAbilityUnlockCeremony: boolean
+  ceremonyAbilityId: AbilityId | null
   showPatternEnding: boolean
   endingPattern: PatternType | null
   hasNewTrust: boolean

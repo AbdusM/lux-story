@@ -3,6 +3,7 @@ import { z } from 'zod'
 export const INTERACTION_EVENT_TYPES = [
   'node_entered',
   'choice_presented',
+  'choice_compact_toggled',
   'choice_selected_ui',
   'choice_selected_result',
   'experiment_assigned',
@@ -54,6 +55,17 @@ const ChoicePresentedPayloadSchema = z.object({
   }).passthrough())
 }).passthrough()
 
+const ChoiceCompactToggledPayloadSchema = z.object({
+  event_id: z.string().min(1),
+  toggled_at_ms: z.number().finite(),
+  presented_event_id: z.string().nullable().optional(),
+  expanded: z.boolean(),
+  choices_total_count: z.number().int().optional(),
+  choices_shown_count: z.number().int().optional(),
+  compact_max_shown: z.number().int().nullable().optional(),
+  compact_hidden_count: z.number().int().optional(),
+}).passthrough()
+
 const NodeEnteredPayloadSchema = z.object({
   event_id: z.string().min(1),
   entered_at_ms: z.number().finite(),
@@ -87,6 +99,7 @@ const ExperimentAssignedPayloadSchema = z.object({
 const InteractionEventPayloadSchemas: Record<InteractionEventType, z.ZodTypeAny> = {
   node_entered: NodeEnteredPayloadSchema,
   choice_presented: ChoicePresentedPayloadSchema,
+  choice_compact_toggled: ChoiceCompactToggledPayloadSchema,
   choice_selected_ui: ChoiceSelectedUiPayloadSchema,
   choice_selected_result: ChoiceSelectedResultPayloadSchema,
   experiment_assigned: ExperimentAssignedPayloadSchema,

@@ -20,6 +20,7 @@ export * from './puzzle-processor'
 export * from './knowledge-processor'
 export * from './iceberg-processor'
 export * from './arc-completion-processor'
+export * from './gossip-propagation-processor'
 
 // Orchestrator (consolidates all processor calls)
 export * from './derivative-orchestrator'

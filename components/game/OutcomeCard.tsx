@@ -69,6 +69,11 @@ export function OutcomeCard({ card, onDismiss, onOpenPrismTab, className }: Outc
     return (pa === -1 ? 999 : pa) - (pb === -1 ? 999 : pb)
   })
 
+  const nextAction =
+    card.nextAction && card.nextAction.prismTab !== 'god_mode'
+      ? card.nextAction
+      : null
+
   return (
     <div
       className={cn(
@@ -137,6 +142,20 @@ export function OutcomeCard({ card, onDismiss, onOpenPrismTab, className }: Outc
               <ArrowRight className="h-3.5 w-3.5 text-slate-300" aria-hidden="true" />
             </button>
           ))}
+        </div>
+      )}
+
+      {nextAction && (
+        <div className="px-3 pb-3 pt-0">
+          <button
+            type="button"
+            onClick={() => onOpenPrismTab(nextAction.prismTab)}
+            className="w-full inline-flex items-center justify-between gap-2 rounded-lg border border-amber-500/20 bg-gradient-to-r from-amber-500/10 to-white/5 px-3 py-2 text-xs font-semibold text-slate-100 hover:from-amber-500/15 hover:to-white/10 transition-colors"
+            data-testid="outcome-next-action"
+          >
+            <span className="truncate">{nextAction.label}</span>
+            <ArrowRight className="h-4 w-4 text-amber-200" aria-hidden="true" />
+          </button>
         </div>
       )}
     </div>

@@ -207,8 +207,11 @@ import { queueGiftForChoice, queueGiftsForArcComplete, tickGiftCounters, getRead
 import { selectAnnouncement } from '@/lib/platform-announcements'
 import { checkSessionBoundary, incrementBoundaryCounter, getTotalNodesVisited, type SessionAnnouncement } from '@/lib/session-structure'
 import { setupPlayTimeTracking } from '@/lib/session-tracker'
+import { updateRewardFeed } from '@/lib/reward-feed'
 import { SessionBoundaryAnnouncement } from '@/components/SessionBoundaryAnnouncement'
+import { IdentityOffering } from '@/components/IdentityOffering'
 import { IdentityCeremony } from '@/components/IdentityCeremony'
+import { AbilityUnlockCeremony } from '@/components/AbilityUnlockCeremony'
 import { JourneyComplete } from '@/components/JourneyComplete'
 import { useAudioDirector } from '@/hooks/game/useAudioDirector'
 import { useGameInitializer } from '@/hooks/game/useGameInitializer'
@@ -314,6 +317,10 @@ export default function StatefulGameInterface() {
     previousTotalNodes: 0,
     showIdentityCeremony: false,
     ceremonyPattern: null,
+    showIdentityOffering: false,
+    offeredPattern: null,
+    showAbilityUnlockCeremony: false,
+    ceremonyAbilityId: null,
     showPatternEnding: false,
     endingPattern: null,
     hasNewTrust: false,
@@ -1261,10 +1268,61 @@ export default function StatefulGameInterface() {
           )
         }
 
+        <IdentityOffering
+          pattern={state.offeredPattern}
+          isVisible={state.showIdentityOffering}
+          onAccept={() => {
+            const p = state.offeredPattern
+            if (!p || !gameState) return
+            try {
+              const updatedFlags = new Set(gameState.globalFlags)
+              updatedFlags.add(`identity_offering_v1:${p}:accepted`)
+              commitGameState({ ...gameState, globalFlags: updatedFlags })
+            } catch {
+              // Never block UI on save issues.
+            }
+            setState(prev => ({
+              ...prev,
+              showIdentityOffering: false,
+              offeredPattern: null,
+              showIdentityCeremony: true,
+              ceremonyPattern: p,
+            }))
+          }}
+          onReject={() => {
+            const p = state.offeredPattern
+            if (p && gameState) {
+              try {
+                const updatedFlags = new Set(gameState.globalFlags)
+                updatedFlags.add(`identity_offering_v1:${p}:rejected`)
+                commitGameState({ ...gameState, globalFlags: updatedFlags })
+              } catch {
+                // Never block UI on save issues.
+              }
+            }
+            setState(prev => ({
+              ...prev,
+              showIdentityOffering: false,
+              offeredPattern: null,
+              rewardFeed: updateRewardFeed(
+                prev.rewardFeed ?? [],
+                [{ kind: 'info', title: 'Identity resisted', detail: 'You chose not to claim it yet.' }],
+                Date.now()
+              ),
+            }))
+          }}
+        />
+
         <IdentityCeremony
           pattern={state.ceremonyPattern}
           isVisible={state.showIdentityCeremony}
           onComplete={() => setState(prev => ({ ...prev, showIdentityCeremony: false, ceremonyPattern: null }))}
+        />
+
+        <AbilityUnlockCeremony
+          abilityId={state.ceremonyAbilityId}
+          isVisible={state.showAbilityUnlockCeremony}
+          onComplete={() => setState(prev => ({ ...prev, showAbilityUnlockCeremony: false, ceremonyAbilityId: null }))}
         />
 
         {/* Pattern-Based Journey Ending */}

@@ -125,6 +125,15 @@ export interface QuietHourState {
 }
 
 /**
+ * Scarcity economy (V1): Pattern Focus Points
+ * Optional experiment; when enabled, choices can consume focus points.
+ */
+export interface FocusPointsState {
+  current: number
+  max: number
+}
+
+/**
  * Master game state - the source of truth for everything
  * This is what we save, load, and query for all narrative decisions
  */
@@ -179,6 +188,9 @@ export interface GameState {
 
   // TD-004: Orb economy (moved from standalone localStorage)
   orbs: OrbState
+
+  // Scarcity (optional experiment)
+  focusPoints?: FocusPointsState
 }
 
 /**
@@ -350,6 +362,9 @@ export interface SerializableGameState {
 
   // TD-004: Orb economy (moved from standalone localStorage)
   orbs: OrbState
+
+  // Scarcity (optional experiment)
+  focusPoints?: FocusPointsState
 }
 
 
@@ -648,7 +663,8 @@ export class GameStateUtils {
         lastViewed: state.orbs.lastViewed,
         lastViewedBalance: { ...state.orbs.lastViewedBalance },
         acknowledged: { ...state.orbs.acknowledged }
-      }
+      },
+      focusPoints: state.focusPoints ? { ...state.focusPoints } : undefined,
     }
   }
 
@@ -718,6 +734,7 @@ export class GameStateUtils {
         letter: 'kept',
         discoveredPaths: []
       },
+      focusPoints: { current: 7, max: 7 },
       pendingCheckIns: [],
       unlockedAbilities: [],
       archivistState: {
@@ -896,7 +913,8 @@ export class GameStateUtils {
       skillLevels: state.skillLevels,
       skillUsage: Array.from(state.skillUsage.entries()).map(([key, value]) => ({ key, value })),
       // TD-004: Orb economy
-      orbs: state.orbs
+      orbs: state.orbs,
+      focusPoints: state.focusPoints
     }
   }
 
@@ -1005,7 +1023,8 @@ export class GameStateUtils {
       skillLevels: serialized.skillLevels || {},
       skillUsage: new Map((serialized.skillUsage || []).map(item => [item.key, item.value])),
       // TD-004: Orb economy (fallback to initial state for old saves)
-      orbs: serialized.orbs || INITIAL_ORB_STATE
+      orbs: serialized.orbs || INITIAL_ORB_STATE,
+      focusPoints: serialized.focusPoints || { current: 7, max: 7 },
     }
   }
 }

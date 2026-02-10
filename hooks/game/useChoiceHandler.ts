@@ -40,7 +40,7 @@ import {
 // cross-character-memory imports moved to derivative-orchestrator
 // queueEchosForFlag moved to arc-completion-processor
 import { UnlockManager } from '@/lib/unlock-manager'
-import { ABILITIES } from '@/lib/abilities'
+import { ABILITIES, type AbilityId } from '@/lib/abilities'
 import { getPrimaryQuest, getQuestProgress, getQuestPrismTab } from '@/lib/quest-system'
 // THOUGHT_REGISTRY removed - thought-system archived (never integrated)
 // CROSS_CHARACTER_ECHOES, getArcCompletionFlag, detectArcCompletion moved to arc-completion-processor
@@ -79,6 +79,7 @@ import {
 } from '@/lib/choice-processors'
 import { resolveNode } from '@/hooks/game/useNarrativeNavigator'
 import { shouldShowInterrupt } from '@/lib/interrupt-visibility'
+import { isEnabled } from '@/lib/feature-flags'
 import {
   queueRelationshipSync,
   queuePlatformStateSync,
@@ -147,6 +148,59 @@ export function useChoiceHandler({
 
     try {
       // ═══════════════════════════════════════════════════════════════════════════
+      // SCARCITY MODE (V1): Focus Recovery (special UI-only action)
+      // This is intentionally handled before GameLogic so we can "rest" without
+      // requiring a dedicated dialogue node in content.
+      // ═══════════════════════════════════════════════════════════════════════════
+      if (isEnabled('SCARCITY_MODE_V1') && choice.choice.choiceId === 'scarcity_recover_v1') {
+        const fp = gameState.focusPoints ?? { current: 7, max: 7 }
+        const recoveredState: GameState = {
+          ...gameState,
+          focusPoints: { ...fp, current: fp.max },
+          lastSaved: Date.now(),
+        }
+
+        commitGameState(recoveredState)
+
+        // Recompute choices for the current node using recovered focus.
+        const node = state.currentNode
+        let refreshedChoices: EvaluatedChoice[] = state.availableChoices || []
+        if (node) {
+          const characterId = state.currentCharacterId
+          const regular = StateConditionEvaluator
+            .evaluateChoices(node, recoveredState, characterId, recoveredState.skillLevels)
+            .filter(c => c.visible)
+          const targetCharacter = recoveredState.characters.get(characterId)
+          const unlocks = getPatternUnlockChoices(
+            characterId,
+            recoveredState.patterns,
+            state.currentGraph,
+            targetCharacter?.visitedPatternUnlocks,
+          )
+          refreshedChoices = [...regular, ...unlocks]
+        }
+
+        const nowMs = Date.now()
+        const batch = compressRewardFeedBatch(
+          [{ kind: 'info', title: 'Recovered focus', detail: `${fp.max}/${fp.max}` }],
+          1
+        )
+        const nextRewardFeed = updateRewardFeed(state.rewardFeed || [], batch, nowMs)
+
+        clearTimeout(safetyTimeout)
+        isProcessingChoiceRef.current = false
+        setState(prev => ({
+          ...prev,
+          availableChoices: refreshedChoices,
+          rewardFeed: nextRewardFeed,
+          isProcessing: false,
+          isLoading: false,
+          error: null,
+        }))
+        return
+      }
+
+      // ═══════════════════════════════════════════════════════════════════════════
       // THE UNIFIED CALCULATOR
       // All game logic is now centralized in GameLogic.processChoice (Pure Function)
       // ═══════════════════════════════════════════════════════════════════════════
@@ -156,12 +210,22 @@ export function useChoiceHandler({
       const result = GameLogic.processChoice(gameState, choice, reactionTime)
       const previousPatterns = { ...gameState.patterns } // Restored for echo check
       let newGameState = result.newState
+      if (isEnabled('SCARCITY_MODE_V1')) {
+        const fp = newGameState.focusPoints ?? { current: 7, max: 7 }
+        newGameState = {
+          ...newGameState,
+          focusPoints: { ...fp, current: Math.max(0, fp.current - 1) },
+        }
+      }
       // INVARIANT: newGameState is deep-cloned by GameLogic.processChoice (via cloneGameState).
       // globalFlags (Set) and characters (Map) are fresh clones — .add()/.set() mutations are safe.
       // patterns is a spread copy of primitives — direct assignment is safe.
       // If cloneGameState depth changes, these assumptions break. See lib/character-state.ts:533.
       const trustDelta = result.trustDelta
       const outcomeItems: OutcomeItem[] = []
+      let abilityUnlockId: AbilityId | null = null
+      let identityCeremonyPattern: PatternType | null = null
+      let identityOfferingPattern: PatternType | null = null
 
       // Telemetry: authoritative choice result (pattern awarded, trust delta, etc.)
       // This complements the UI-side `choice_selected_ui` event (index + ordering).
@@ -245,12 +309,12 @@ export function useChoiceHandler({
             thoughtId: identityThoughtId
           })
 
-          // Trigger the Identity Ceremony (Visual, Audio, & Haptic)
-          setState(prev => ({
-            ...prev,
-            showIdentityCeremony: true,
-            ceremonyPattern: result.events.earnOrb || null
-          }))
+          if (isEnabled('IDENTITY_OFFERING_V1')) {
+            identityOfferingPattern = result.events.earnOrb || null
+          } else {
+            // Trigger the Identity Ceremony via the final UI patch (prevents it being overwritten).
+            identityCeremonyPattern = result.events.earnOrb || null
+          }
 
           if (result.events.checkIdentityThreshold) {
             audio.actions.triggerIdentitySound()
@@ -263,6 +327,7 @@ export function useChoiceHandler({
         const unlockCheck = UnlockManager.checkUnlockStatus(newGameState)
         if (unlockCheck) {
           newGameState = { ...newGameState, ...unlockCheck.updates }
+          abilityUnlockId = unlockCheck.unlockedIds[0] || null
 
           outcomeItems.push({
             kind: 'unlock',
@@ -526,7 +591,9 @@ export function useChoiceHandler({
       // Navigation: resolve next node via centralized function
       // [] for conversationHistory is intentional — only nextNode/targetGraph/targetCharacterId
       // are used from this result. Content is re-selected later with actual history (line ~2587).
-      const navResult = resolveNode(choice.choice.nextNodeId, newGameState, [])
+      const navResult = resolveNode(choice.choice.nextNodeId, newGameState, [], {
+        enforceRequiredState: isEnabled('ENFORCE_REQUIRED_STATE'),
+      })
       if (!navResult.success) {
         logger.error('[StatefulGameInterface] Navigation failed:', {
           nodeId: choice.choice.nextNodeId,
@@ -559,9 +626,6 @@ export function useChoiceHandler({
           nextActiveExperience = null
         }
       }
-
-      // Track identity internalization for ceremony
-      let identityCeremonyPattern: PatternType | null = null
 
       if (nextNode.onEnter) {
         for (const change of nextNode.onEnter) {
@@ -759,7 +823,44 @@ export function useChoiceHandler({
         targetGraph,
         targetCharacter.visitedPatternUnlocks
       )
-      const newChoices = [...regularNewChoices, ...patternUnlockNewChoices]
+      let newChoices = [...regularNewChoices, ...patternUnlockNewChoices]
+
+      // Scarcity Mode (V1): if focus is exhausted, disable choices with a clear reason and
+      // offer a deterministic recovery action (handled as a special-case choice).
+      if (isEnabled('SCARCITY_MODE_V1')) {
+        const fp = newGameState.focusPoints ?? { current: 7, max: 7 }
+        if (fp.current <= 0) {
+          const details = {
+            code: 'NEEDS_FOCUS_POINTS',
+            why: 'Out of focus',
+            how: 'Recover focus to unlock options.',
+            progress: { current: fp.current, required: 1 },
+          }
+
+          newChoices = newChoices.map((c) => {
+            if (c.enabled === false) return c
+            return {
+              ...c,
+              enabled: false,
+              reason: c.reason || 'Out of focus',
+              reason_code: c.reason_code || 'NEEDS_FOCUS_POINTS',
+              reason_details: c.reason_details || details,
+            }
+          })
+
+          newChoices.push({
+            choice: {
+              choiceId: 'scarcity_recover_v1',
+              text: 'Rest and recover focus',
+              nextNodeId: state.currentNode?.nodeId || nextNode.nodeId,
+              pattern: 'patience',
+              interaction: 'nod',
+            },
+            visible: true,
+            enabled: true,
+          })
+        }
+      }
 
       // Apply pattern reflection to NPC dialogue based on player's patterns
       // Node-level patternReflection takes precedence over content-level
@@ -908,10 +1009,21 @@ export function useChoiceHandler({
         ? updateRewardFeed(state.rewardFeed || [], batch, nowMs)
         : (state.rewardFeed || [])
 
+      const primaryQuestForCard = getPrimaryQuest(newGameState)
+      const objectiveTabForCard = primaryQuestForCard ? getQuestPrismTab(primaryQuestForCard) : null
+
       const outcomeCard: OutcomeCardData | null = cardItems.length > 0
         ? {
           id: `choice:${state.currentNode?.nodeId || 'node'}:${choice.choice.choiceId || ''}`,
           items: cardItems,
+          nextAction: objectiveTabForCard
+            ? {
+              label: primaryQuestForCard?.title
+                ? `Next: Review objective (${primaryQuestForCard.title})`
+                : 'Next: Review objective',
+              prismTab: objectiveTabForCard,
+            }
+            : null,
         }
         : null
 
@@ -1022,6 +1134,8 @@ export function useChoiceHandler({
         previousTotalNodes: getTotalNodesVisited(newGameState),
         // Identity
         identityCeremonyPattern,
+        identityOfferingPattern,
+        abilityUnlockId,
         isJourneyCompleteNode,
         dominantPattern,
         // Trust
