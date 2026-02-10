@@ -78,6 +78,7 @@ dialogue-length-report.json
 validation_output.txt
 *.log
 docs/qa/critical-path-violations.report.json
+docs/qa/dialogue-graph-warnings.report.json
 docs/qa/required-state-guarding-report.json
 docs/qa/unreachable-dialogue-nodes-report.json
 docs/qa/unreferenced-dialogue-nodes-report.json

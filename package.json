@@ -55,6 +55,7 @@
     "health-check": "curl http://localhost:3005/api/health && curl http://localhost:3005/api/health/db",
     "validate-simulations-doc": "node --import tsx scripts/validate-simulations-doc.ts",
     "report:critical-path": "node --import tsx scripts/report-critical-path-violations.ts",
+    "report:graph-warnings": "node --import tsx scripts/validate-dialogue-graphs.ts --json --out docs/qa/dialogue-graph-warnings.report.json",
     "check:core-contracts": "node scripts/check-core-gameplay-contracts.js",
     "audit:core-diff": "node scripts/report-core-gameplay-diff.js",
     "verify:analytics-dict": "node --import tsx scripts/verify-analytics-dictionary.ts"
