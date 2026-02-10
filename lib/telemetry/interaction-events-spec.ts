@@ -30,8 +30,18 @@ const ChoicePresentedPayloadSchema = z.object({
     is_enabled: z.boolean().optional(),
     is_locked: z.boolean().optional(),
     lock_reason: z.string().nullable().optional(),
+    lock_reason_details: z.object({
+      why: z.string().min(1),
+      how: z.string().min(1),
+      progress: z.object({ current: z.number().finite(), required: z.number().finite() }).optional(),
+    }).nullable().optional(),
     disabled_reason_code: z.string().nullable().optional(),
     disabled_reason: z.string().nullable().optional(),
+    disabled_reason_details: z.object({
+      why: z.string().min(1),
+      how: z.string().min(1),
+      progress: z.object({ current: z.number().finite(), required: z.number().finite() }).optional(),
+    }).nullable().optional(),
     required_orb_fill: z.unknown().nullable().optional(),
   }).passthrough())
 }).passthrough()

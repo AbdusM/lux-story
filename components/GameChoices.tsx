@@ -832,25 +832,34 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
         presented_at_ms: now,
         nervous_system_state: nervousSystemState,
         mercy_unlocked_choice_id: mercyUnlockChoice ? getStableChoiceId(mercyUnlockChoice) : null,
-        choices: presentedChoicesFlat.map((c, i) => {
-          const stableId = getStableChoiceId(c)
-          const isLocked = isChoiceLocked(c, orbFillLevels) && c !== mercyUnlockChoice
-          return {
-            index: i,
-            choice_id: stableId,
-            pattern: c.pattern || null,
-            gravity_weight: c.gravity?.weight ?? null,
-            gravity_effect: c.gravity?.effect ?? null,
-            is_enabled: c.enabled !== false,
-            is_locked: isLocked,
-            lock_reason: isLocked ? 'NEEDS_ORB_FILL' : null,
-            disabled_reason_code: c.enabled === false ? (c.disabledReasonCode || 'DISABLED_BY_CONDITION') : null,
-            disabled_reason: c.enabled === false ? (c.disabledReason || null) : null,
-            required_orb_fill: c.requiredOrbFill || null,
-          }
-        })
-      }
-    })
+	        choices: presentedChoicesFlat.map((c, i) => {
+	          const stableId = getStableChoiceId(c)
+	          const isLocked = isChoiceLocked(c, orbFillLevels) && c !== mercyUnlockChoice
+	          const lockDetails =
+	            isLocked && c.requiredOrbFill
+	              ? (() => {
+	                  const d = deriveOrbFillGateReason({ requiredOrbFill: c.requiredOrbFill, orbFillLevels })
+	                  return d ? { why: d.why, how: d.how, progress: { current: d.current, required: d.required } } : null
+	                })()
+	              : null
+	          return {
+	            index: i,
+	            choice_id: stableId,
+	            pattern: c.pattern || null,
+	            gravity_weight: c.gravity?.weight ?? null,
+	            gravity_effect: c.gravity?.effect ?? null,
+	            is_enabled: c.enabled !== false,
+	            is_locked: isLocked,
+	            lock_reason: isLocked ? 'NEEDS_ORB_FILL' : null,
+	            lock_reason_details: lockDetails,
+	            disabled_reason_code: c.enabled === false ? (c.disabledReasonCode || 'DISABLED_BY_CONDITION') : null,
+	            disabled_reason: c.enabled === false ? (c.disabledReason || null) : null,
+	            disabled_reason_details: c.enabled === false ? (c.disabledReasonDetails || null) : null,
+	            required_orb_fill: c.requiredOrbFill || null,
+	          }
+	        })
+	      }
+	    })
   }, [coreState?.playerId, coreState?.currentNodeId, coreState?.currentCharacterId, coreState?.sessionStartTime, coreState?.characters, orderingSeed, orderingVariant, presentedChoicesFlat, orbFillLevels, mercyUnlockChoice])
 
   const logChoiceSelectedUi = useCallback((choice: Choice) => {

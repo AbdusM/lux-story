@@ -538,6 +538,10 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
     - `is_enabled`: boolean
     - `is_locked`: boolean
     - `lock_reason`: string|null (e.g. `NEEDS_ORB_FILL`)
+    - `lock_reason_details`: object|null
+      - `why`: string
+      - `how`: string
+      - `progress`: `{ current: number, required: number }` (optional)
     - `disabled_reason_code`: string|null
       - Canonical codes (current):
         - `NEEDS_TRUST`
@@ -551,6 +555,10 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
         - `REQUIREMENTS_NOT_MET`
       - Legacy fallback (avoid adding new usages): `DISABLED_BY_CONDITION`
     - `disabled_reason`: string|null (human hint)
+    - `disabled_reason_details`: object|null
+      - `why`: string
+      - `how`: string
+      - `progress`: `{ current: number, required: number }` (optional)
     - `required_orb_fill`: object|null (if orb-gated choice)
 
 **`choice_selected_ui`** (what was clicked, at what index, how fast)
