@@ -21,6 +21,12 @@ const ChoicePresentedPayloadSchema = z.object({
   presented_at_ms: z.number().finite(),
   nervous_system_state: z.string().nullable().optional(),
   mercy_unlocked_choice_id: z.string().nullable().optional(),
+  choices_total_count: z.number().int().optional(),
+  choices_shown_count: z.number().int().optional(),
+  compact_mode_enabled: z.boolean().optional(),
+  compact_mode_expanded: z.boolean().optional(),
+  compact_mode_max_shown: z.number().int().nullable().optional(),
+  compact_hidden_count: z.number().int().optional(),
   choices: z.array(z.object({
     index: z.number().int(),
     choice_id: z.string().nullable(),

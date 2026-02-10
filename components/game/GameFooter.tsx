@@ -14,6 +14,7 @@ import { OutcomeCard } from '@/components/game/OutcomeCard'
 import type { RewardFeedItem } from '@/lib/reward-feed'
 import { RewardFeed } from '@/components/game/RewardFeed'
 import { getPrimaryQuest, getQuestPrismTab } from '@/lib/quest-system'
+import { isEnabled } from '@/lib/feature-flags'
 
 interface GameFooterProps {
   isEnding: boolean
@@ -134,7 +135,7 @@ export function GameFooter({
                       ['pivotal', 'defining_moment', 'final_choice', 'climax', 'revelation', 'introduction'].includes(tag)
                     )
 
-                    return filterChoicesByLoad(
+                    const presented = filterChoicesByLoad(
                       availableChoices,
                       cognitiveLoad,
                       undefined, // Todo: Pass dominant pattern
@@ -153,7 +154,7 @@ export function GameFooter({
                         text: voicedText,
                         pattern: c.choice.pattern,
                         gravity: c.gravity,
-                        feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
+                        feedback: c.choice.interaction === 'shake' ? ('shake' as const) : undefined,
                         pivotal: isNodePivotal,
                         enabled: c.enabled,
                         disabledReason: c.reason || null,
@@ -163,6 +164,7 @@ export function GameFooter({
                         next: String(originalIndex)
                       }
                     })
+                    return presented
                   })()}
                   isProcessing={isProcessing}
                   orbFillLevels={orbFillLevels}
@@ -171,6 +173,15 @@ export function GameFooter({
                     const original = availableChoices[index]
                     if (original) onChoice(original)
                   }}
+                  compactMaxShown={(() => {
+                    const nodeTags = currentNode?.tags || []
+                    const isNodePivotal = nodeTags.some(tag =>
+                      ['pivotal', 'defining_moment', 'final_choice', 'climax', 'revelation', 'introduction'].includes(tag)
+                    )
+                    if (isNodePivotal) return undefined
+                    if (!isEnabled('CHOICE_COMPACT_MODE')) return undefined
+                    return 4
+                  })()}
                   // FIX: Always use glass mode for dark theme (prevents white background issue)
                   glass={true}
                   playerPatterns={gameState?.patterns}

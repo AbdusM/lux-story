@@ -529,6 +529,12 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
   - `presented_at_ms`: number
   - `nervous_system_state`: string|null
   - `mercy_unlocked_choice_id`: string|null
+  - `choices_total_count`: number (optional; count before compacting)
+  - `choices_shown_count`: number (optional; count after compacting)
+  - `compact_mode_enabled`: boolean (optional)
+  - `compact_mode_expanded`: boolean (optional)
+  - `compact_mode_max_shown`: number|null (optional)
+  - `compact_hidden_count`: number (optional; `choices_total_count - choices_shown_count`)
   - `choices`: array of:
     - `index`: number
     - `choice_id`: string

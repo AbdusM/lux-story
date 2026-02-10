@@ -176,6 +176,11 @@ interface GameChoicesProps {
   playerPatterns?: PlayerPatterns
   /** Claim 16: Cognitive Load Level (truncates text) */
   cognitiveLoad?: CognitiveLoadLevel
+  /**
+   * Optional compact mode: show only the top N choices initially with an expand control.
+   * The full choice list remains available after expanding.
+   */
+  compactMaxShown?: number
 }
 
 /**
@@ -733,7 +738,7 @@ const groupChoices = (choices: Choice[]) => {
  * - 1-9: Direct selection of choice by number
  * - Escape: Clear focus
  */
-export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevels, glass = false, playerPatterns, cognitiveLoad = 'normal' }: GameChoicesProps) => {
+export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevels, glass = false, playerPatterns, cognitiveLoad = 'normal', compactMaxShown }: GameChoicesProps) => {
   // SIGNATURE CHOICE ANIMATION (Directive B: 30% Budget)
   const {
     animationState,
@@ -756,21 +761,40 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     return orderChoicesForDisplay(choices, { variant: orderingVariant, seed: orderingSeed })
   }, [choices, orderingSeed])
 
+  const shouldOfferCompactMode = useMemo(() => {
+    if (typeof compactMaxShown !== 'number') return false
+    if (!Number.isFinite(compactMaxShown)) return false
+    if (compactMaxShown <= 0) return false
+    return sortedChoices.length > compactMaxShown
+  }, [compactMaxShown, sortedChoices.length])
+
+  const [compactExpanded, setCompactExpanded] = useState(false)
+  useEffect(() => {
+    // Reset expansion when node/choice-set changes.
+    setCompactExpanded(false)
+  }, [coreState?.currentNodeId, coreState?.playerId, compactMaxShown])
+
+  const effectiveChoices = useMemo(() => {
+    if (!shouldOfferCompactMode) return sortedChoices
+    if (compactExpanded) return sortedChoices
+    return sortedChoices.slice(0, compactMaxShown)
+  }, [sortedChoices, shouldOfferCompactMode, compactExpanded, compactMaxShown])
+
   // Determine layout strategy based on count
   // Smart column logic: avoid orphan on 3 choices (use single column)
   // 1-3 choices: single column, 4+ choices: 2 columns (pairs work better)
-  const useGrid = sortedChoices.length >= 4
-  const useGrouping = sortedChoices.length > 6 // Group only if many choices (6+) to avoid clutter
+  const useGrid = effectiveChoices.length >= 4
+  const useGrouping = effectiveChoices.length > 6 // Group only if many choices (6+) to avoid clutter
 
   const { nonEmptyGroups, presentedChoicesFlat } = useMemo(() => {
     if (!useGrouping) {
-      return { nonEmptyGroups: null as null | Array<[string, Choice[]]>, presentedChoicesFlat: sortedChoices }
+      return { nonEmptyGroups: null as null | Array<[string, Choice[]]>, presentedChoicesFlat: effectiveChoices }
     }
-    const groups = groupChoices(sortedChoices)
+    const groups = groupChoices(effectiveChoices)
     const entries = Object.entries(groups).filter(([_, groupChoices]) => groupChoices.length > 0) as Array<[string, Choice[]]>
     const flat = entries.flatMap(([, groupChoices]) => groupChoices)
     return { nonEmptyGroups: entries, presentedChoicesFlat: flat }
-  }, [sortedChoices, useGrouping])
+  }, [effectiveChoices, useGrouping])
 
   // Wrapped choice handler with signature animation
   const handleChoiceWithAnimation = useCallback((choice: Choice) => {
@@ -809,6 +833,11 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     })[0].choice
   }, [presentedChoicesFlat, orbFillLevels])
 
+  const compactHiddenCount = useMemo(() => {
+    if (!shouldOfferCompactMode) return 0
+    return Math.max(0, sortedChoices.length - presentedChoicesFlat.length)
+  }, [shouldOfferCompactMode, sortedChoices.length, presentedChoicesFlat.length])
+
   // Telemetry: log the choice-set as presented (ordered list + gravity + lock state)
   useEffect(() => {
     const playerId = coreState?.playerId
@@ -843,6 +872,12 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
         presented_at_ms: now,
         nervous_system_state: nervousSystemState,
         mercy_unlocked_choice_id: mercyUnlockChoice ? getStableChoiceId(mercyUnlockChoice) : null,
+        choices_total_count: sortedChoices.length,
+        choices_shown_count: presentedChoicesFlat.length,
+        compact_mode_enabled: shouldOfferCompactMode,
+        compact_mode_expanded: shouldOfferCompactMode ? compactExpanded : false,
+        compact_mode_max_shown: shouldOfferCompactMode ? compactMaxShown : null,
+        compact_hidden_count: shouldOfferCompactMode ? compactHiddenCount : 0,
 	        choices: presentedChoicesFlat.map((c, i) => {
 	          const stableId = getStableChoiceId(c)
 	          const isLocked = isChoiceLocked(c, orbFillLevels) && c !== mercyUnlockChoice
@@ -873,7 +908,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
 	        })
 	      }
 	    })
-  }, [coreState?.playerId, coreState?.currentNodeId, coreState?.currentCharacterId, coreState?.sessionStartTime, coreState?.characters, orderingSeed, orderingVariant, presentedChoicesFlat, orbFillLevels, mercyUnlockChoice])
+  }, [coreState?.playerId, coreState?.currentNodeId, coreState?.currentCharacterId, coreState?.sessionStartTime, coreState?.characters, orderingSeed, orderingVariant, presentedChoicesFlat, orbFillLevels, mercyUnlockChoice, sortedChoices.length, shouldOfferCompactMode, compactExpanded, compactMaxShown, compactHiddenCount])
 
   const logChoiceSelectedUi = useCallback((choice: Choice) => {
     const playerId = coreState?.playerId
@@ -944,6 +979,21 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     return (
       <>
         <ScreenDimOverlay />
+        {shouldOfferCompactMode && (
+          <div className="px-2 pb-2 flex items-center justify-center">
+            <button
+              type="button"
+              className="text-xs font-semibold text-slate-200/90 hover:text-slate-100 border border-white/10 bg-white/5 hover:bg-white/10 rounded-lg px-3 py-1.5 transition-colors"
+              onClick={() => setCompactExpanded((v) => !v)}
+              disabled={isProcessing || isCommitting}
+              aria-controls="game-choices-listbox"
+              aria-expanded={compactExpanded}
+              data-testid="choice-compact-toggle"
+            >
+              {compactExpanded ? 'Show fewer options' : `Show all options (+${compactHiddenCount})`}
+            </button>
+          </div>
+        )}
         <motion.div
         className={cn(
           "space-y-8 max-w-full",
@@ -955,13 +1005,14 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
         )}
         style={{ scrollbarGutter: 'stable' }}  // Prevent layout shift when scrollbar appears
         ref={containerRef}
+        id="game-choices-listbox"
         role="listbox"
         aria-activedescendant={focusedIndex >= 0 ? `choice-option-${focusedIndex}` : undefined}
         aria-label="Choose your response"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        key={`grouped-${choices.map(c => c.consequence || c.text).join(',')}`} // Unique prefix + stable IDs
+        key={`grouped-${presentedChoicesFlat.map(getStableChoiceId).join(',')}`} // Unique prefix + stable IDs
       >
         {(nonEmptyGroups || []).map(([title, groupChoices]) => (
           <div key={title} className="space-y-3" role="group" aria-label={title}>
@@ -1010,6 +1061,21 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   return (
     <>
       <ScreenDimOverlay />
+      {shouldOfferCompactMode && (
+        <div className="px-2 pb-2 flex items-center justify-center">
+          <button
+            type="button"
+            className="text-xs font-semibold text-slate-200/90 hover:text-slate-100 border border-white/10 bg-white/5 hover:bg-white/10 rounded-lg px-3 py-1.5 transition-colors"
+            onClick={() => setCompactExpanded((v) => !v)}
+            disabled={isProcessing || isCommitting}
+            aria-controls="game-choices-listbox"
+            aria-expanded={compactExpanded}
+            data-testid="choice-compact-toggle"
+          >
+            {compactExpanded ? 'Show fewer options' : `Show all options (+${compactHiddenCount})`}
+          </button>
+        </div>
+      )}
       <motion.div
         ref={containerRef}
         className={cn(
@@ -1023,17 +1089,18 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
         )}
         style={{ scrollbarGutter: 'stable' }}  // Prevent layout shift when scrollbar appears
         data-testid="game-choices"
+        id="game-choices-listbox"
       role="listbox"
       aria-activedescendant={focusedIndex >= 0 ? `choice-option-${focusedIndex}` : undefined}
       aria-label="Choose your response"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      key={`ungrouped-${choices.map(c => c.consequence || c.text).join(',')}`} // Unique prefix + stable IDs
+      key={`ungrouped-${presentedChoicesFlat.map(getStableChoiceId).join(',')}`} // Unique prefix + stable IDs
     >
       {(() => {
         // Safety Net Calculation (Duplicated for non-grouped view)
-        return sortedChoices.map((choice, index) => {
+        return presentedChoicesFlat.map((choice, index) => {
           const isLocked = isChoiceLocked(choice, orbFillLevels) && choice !== mercyUnlockChoice
 
           // Stable key priority: consequence > text-based hash

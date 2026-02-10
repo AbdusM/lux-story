@@ -12,6 +12,9 @@ export const FEATURE_FLAGS = {
 
   // Runtime enforcement remains opt-in; this flag is for safe staged rollouts.
   ENFORCE_REQUIRED_STATE: { type: 'boolean', default: false },
+
+  // Player-facing: reduce overwhelm when many choices are available.
+  CHOICE_COMPACT_MODE: { type: 'boolean', default: false },
 } as const satisfies Record<string, FlagDef>
 
 export type FeatureFlagName = keyof typeof FEATURE_FLAGS
@@ -124,4 +127,3 @@ export function resetFlags(): void {
     safeStorage.removeItem(storageKey(name))
   }
 }
-
