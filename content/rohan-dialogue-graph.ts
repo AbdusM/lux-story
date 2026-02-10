@@ -63,6 +63,10 @@ export const rohanDialogueNodes: DialogueNode[] = [
           building: "Phantom libraries are a build-time bomb. How do we fix it?",
           exploring: "That's wild. A machine invented a library that never existed?",
           patience: "Let me make sure I understand. The code references something that doesn't exist?"
+        },
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
         }
       },
       {
@@ -221,6 +225,18 @@ export const rohanDialogueNodes: DialogueNode[] = [
         consequence: {
           characterId: 'rohan',
           trustChange: 2
+        }
+      },
+      // Ungated fallback: prevents early-game choice starvation before patterns mature.
+      {
+        choiceId: 'rohan_validate_erasure',
+        text: "That doesn't erase David. You noticed the bug. That matters.",
+        nextNodeId: 'rohan_bug_defense_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'rohan',
+          trustChange: 1
         }
       }
     ],

@@ -42,7 +42,7 @@ export interface NavigationResult {
   availableChoices: EvaluatedChoice[]
 }
 
-export type NavigationErrorCode = 'MISSING_GRAPH' | 'MISSING_NODE' | 'MISSING_CHARACTER'
+export type NavigationErrorCode = 'MISSING_GRAPH' | 'MISSING_NODE' | 'MISSING_CHARACTER' | 'REQUIRED_STATE'
 
 export interface NavigationError {
   success: false
@@ -56,6 +56,14 @@ export interface NavigationError {
 
 export type NavigateResult = NavigationResult | NavigationError
 
+export type ResolveNodeOptions = {
+  /**
+   * Strict-mode contract check: if true, `requiredState` is enforced and navigation fails
+   * when the node's requiredState is not satisfied. Default false to preserve runtime behavior.
+   */
+  enforceRequiredState?: boolean
+}
+
 /**
  * Resolve a node ID to its full navigation result:
  * graph, node, content, choices.
@@ -66,6 +74,7 @@ export function resolveNode(
   nodeId: string,
   gameState: GameState,
   conversationHistory: string[],
+  options?: ResolveNodeOptions,
 ): NavigateResult {
   const searchResult = findCharacterForNode(nodeId, gameState)
   if (!searchResult) {
@@ -95,6 +104,26 @@ export function resolveNode(
 
   const targetGraph = searchResult.graph
   const targetCharacterId = searchResult.characterId as CharacterId
+
+  if (options?.enforceRequiredState && nextNode.requiredState) {
+    const ok = StateConditionEvaluator.evaluate(
+      nextNode.requiredState,
+      gameState,
+      targetCharacterId,
+      gameState.skillLevels,
+    )
+    if (!ok) {
+      return {
+        success: false,
+        errorCode: 'REQUIRED_STATE',
+        error: {
+          title: 'Navigation Error',
+          message: `Node "${nodeId}" requiredState is not satisfied for ${targetCharacterId}.`,
+          severity: 'warning',
+        },
+      }
+    }
+  }
 
   // Select content variation
   const content = DialogueGraphNavigator.selectContent(nextNode, conversationHistory, gameState)

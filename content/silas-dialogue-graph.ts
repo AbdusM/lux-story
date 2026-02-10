@@ -239,6 +239,18 @@ export const silasDialogueNodes: DialogueNode[] = [
         visibleCondition: {
           patterns: { analytical: { min: 5 } }
         }
+      },
+      // Ungated fallback: avoid early-game choice starvation before patterns mature.
+      {
+        choiceId: 'silas_ground_in_reality',
+        text: "Let's stop reading the tablet. What do you see with your own eyes?",
+        nextNodeId: 'silas_action_challenge_response',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 1
+        }
       }
     ]
   },

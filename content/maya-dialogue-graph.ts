@@ -1975,10 +1975,8 @@ STATUS: Signal fighting itself`,
         richEffectContext: 'warning'
       }
     ],
-    requiredState: {
-      trust: { min: 4 },
-      hasKnowledgeFlags: ['knows_robotics']
-    },
+    // Shift-left: this simulation is intentionally accessible from Maya's introduction.
+    // Keep requiredState permissive so strict-mode navigation doesn't contradict content flow.
     choices: [
       {
         choiceId: 'sim_help_prepare',
@@ -2024,7 +2022,7 @@ STATUS: Signal fighting itself`,
     onEnter: [
       {
         characterId: 'maya',
-        addKnowledgeFlags: ['simulation_started']
+        addKnowledgeFlags: ['simulation_started', 'knows_robotics']
       }
     ],
     tags: ['simulation', 'maya_arc', 'tech_demo']
