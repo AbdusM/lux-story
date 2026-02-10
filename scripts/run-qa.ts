@@ -26,6 +26,10 @@ const colors = {
   cyan: '\x1b[36m',
 }
 
+// Next.js build/test output can exceed Node's execSync default maxBuffer (1MB),
+// which leads to false negatives in this QA runner.
+const MAX_BUFFER_BYTES = 1024 * 1024 * 50
+
 function log(message: string, color: keyof typeof colors = 'reset') {
   console.log(`${colors[color]}${message}${colors.reset}`)
 }
@@ -39,7 +43,8 @@ function runCommand(command: string, description: string): { success: boolean; o
     const output = execSync(command, { 
       encoding: 'utf-8',
       stdio: 'pipe',
-      cwd: process.cwd()
+      cwd: process.cwd(),
+      maxBuffer: MAX_BUFFER_BYTES,
     })
     return { success: true, output }
   } catch (error: any) {
@@ -86,7 +91,8 @@ function checkTypeErrors(): { success: boolean; errors: string[] } {
     execSync('npx tsc --noEmit', { 
       encoding: 'utf-8',
       stdio: 'pipe',
-      cwd: process.cwd()
+      cwd: process.cwd(),
+      maxBuffer: MAX_BUFFER_BYTES,
     })
     return { success: true, errors: [] }
   } catch (error: any) {
@@ -107,7 +113,8 @@ function checkLintErrors(): { success: boolean; errors: string[] } {
     execSync('npm run lint', { 
       encoding: 'utf-8',
       stdio: 'pipe',
-      cwd: process.cwd()
+      cwd: process.cwd(),
+      maxBuffer: MAX_BUFFER_BYTES,
     })
     return { success: true, errors: [] }
   } catch (error: any) {
@@ -128,7 +135,8 @@ function checkBuildErrors(): { success: boolean; errors: string[] } {
     execSync('npm run build', { 
       encoding: 'utf-8',
       stdio: 'pipe',
-      cwd: process.cwd()
+      cwd: process.cwd(),
+      maxBuffer: MAX_BUFFER_BYTES,
     })
     return { success: true, errors: [] }
   } catch (error: any) {
