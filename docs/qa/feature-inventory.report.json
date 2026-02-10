@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-02-10T16:09:30.422Z",
-  "git_commit": "8a376419085d6d1dbfcde6921513075a01cdeb03",
+  "generated_at": "2026-02-10T16:42:16.788Z",
+  "git_commit": "6b29860a93814998280b7248b761af78ea82b002",
   "flags": {
     "total": 6,
     "booleans": 5,
@@ -99,5 +99,970 @@
   "experiments": {
     "active_total": 0,
     "rows": []
+  },
+  "storage_keys": {
+    "total": 46,
+    "unused": 19,
+    "unknown_usages": 2,
+    "rows": [
+      {
+        "name": "ADMIN_VIEW_MODE",
+        "value": "lux_story_v2_admin_view_mode",
+        "category": "admin",
+        "usage_count": 3,
+        "usage_count_runtime": 3,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "app/profile/page.tsx",
+          "lib/settings-sync.ts"
+        ]
+      },
+      {
+        "name": "ACTIVE_TABS",
+        "value": "lux_story_v2_active_tabs",
+        "category": "core_game_state",
+        "usage_count": 5,
+        "usage_count_runtime": 5,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "hooks/useMultiTabSync.ts"
+        ]
+      },
+      {
+        "name": "GAME_SAVE",
+        "value": "lux_story_v2_game_save",
+        "category": "core_game_state",
+        "usage_count": 124,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 123,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "lib/game-state-manager.ts",
+          "tests/e2e/__verification__/phase1-verification.spec.ts",
+          "tests/e2e/careers/career-analytics.spec.ts",
+          "tests/e2e/characters/character-smoke.spec.ts",
+          "tests/e2e/core-game-loop.spec.ts",
+          "tests/e2e/final-qa/full-feature.spec.ts",
+          "tests/e2e/fixtures/game-state-fixtures.ts",
+          "tests/e2e/knowledge-flags/flag-persistence.spec.ts",
+          "tests/e2e/mobile/game-flow.spec.ts",
+          "tests/e2e/mobile/performance.spec.ts",
+          "tests/e2e/patterns/pattern-unlocks.spec.ts",
+          "tests/e2e/ranking/assessment-integration.spec.ts",
+          "tests/e2e/ranking/badge-progression.spec.ts",
+          "tests/e2e/ranking/ranking-golden-flow.spec.ts",
+          "tests/e2e/simulations/simulation-progression.spec.ts",
+          "tests/e2e/trust/trust-derivatives.spec.ts",
+          "tests/state-persistence.test.ts",
+          "tests/visual/visual-validation.spec.ts"
+        ]
+      },
+      {
+        "name": "GAME_SAVE_BACKUP",
+        "value": "lux_story_v2_game_save_backup",
+        "category": "core_game_state",
+        "usage_count": 1,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "lib/game-state-manager.ts"
+        ]
+      },
+      {
+        "name": "GAME_STORE",
+        "value": "lux_story_v2_game_store",
+        "category": "core_game_state",
+        "usage_count": 5,
+        "usage_count_runtime": 4,
+        "usage_count_tests": 1,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "hooks/useMultiTabSync.ts",
+          "lib/game-state-manager.ts",
+          "lib/game-store.ts",
+          "tests/e2e/constellation/constellation-mobile.spec.ts"
+        ]
+      },
+      {
+        "name": "DEV:SHOW_HIDDEN_CHOICES",
+        "value": "godMode_showHiddenChoices",
+        "category": "dev_tools",
+        "usage_count": 2,
+        "usage_count_runtime": 2,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "lib/dev-tools/god-mode-api.ts"
+        ]
+      },
+      {
+        "name": "DEV:SKIP_ANIMATIONS",
+        "value": "godMode_skipAnimations",
+        "category": "dev_tools",
+        "usage_count": 2,
+        "usage_count_runtime": 2,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "lib/dev-tools/god-mode-api.ts"
+        ]
+      },
+      {
+        "name": "CURRENT_SCENE_ID",
+        "value": "lux_story_v2_current_scene_id",
+        "category": "error_recovery",
+        "usage_count": 1,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "components/GameErrorBoundary.tsx"
+        ]
+      },
+      {
+        "name": "LAST_KNOWN_SCENE_ID",
+        "value": "lux_story_v2_last_known_scene_id",
+        "category": "error_recovery",
+        "usage_count": 1,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "components/GameErrorBoundary.tsx"
+        ]
+      },
+      {
+        "name": "LEGACY:admin_view_preference",
+        "value": "admin_view_preference",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:currentSceneId",
+        "value": "currentSceneId",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:gameUserId",
+        "value": "gameUserId",
+        "category": "legacy",
+        "usage_count": 1,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "app/student/insights/page.tsx"
+        ]
+      },
+      {
+        "name": "LEGACY:grand-central-game-store",
+        "value": "grand-central-game-store",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:grand-central-terminus-save",
+        "value": "grand-central-terminus-save",
+        "category": "legacy",
+        "usage_count": 11,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 11,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "tests/browser-runtime/game-loop-integration.spec.ts"
+        ]
+      },
+      {
+        "name": "LEGACY:grand-central-terminus-save-backup",
+        "value": "grand-central-terminus-save-backup",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:lastKnownSceneId",
+        "value": "lastKnownSceneId",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:lux_accessibility_profile",
+        "value": "lux_accessibility_profile",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:lux_audio_muted",
+        "value": "lux_audio_muted",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:lux_audio_volume",
+        "value": "lux_audio_volume",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:lux_cognitive_load_level",
+        "value": "lux_cognitive_load_level",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:lux_color_blind_mode",
+        "value": "lux_color_blind_mode",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:lux_guest_mode",
+        "value": "lux_guest_mode",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:lux_keyboard_hint_shown",
+        "value": "lux_keyboard_hint_shown",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:lux_keyboard_shortcuts",
+        "value": "lux_keyboard_shortcuts",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:lux_reduced_motion",
+        "value": "lux_reduced_motion",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:lux_settings_discovered",
+        "value": "lux_settings_discovered",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:lux_text_size",
+        "value": "lux_text_size",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:lux-active-tabs",
+        "value": "lux-active-tabs",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:lux-local-mode-seen",
+        "value": "lux-local-mode-seen",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:lux-player-id",
+        "value": "lux-player-id",
+        "category": "legacy",
+        "usage_count": 3,
+        "usage_count_runtime": 3,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "app/student/insights/page.tsx",
+          "lib/safe-storage.ts"
+        ]
+      },
+      {
+        "name": "LEGACY:lux-story-player-personas",
+        "value": "lux-story-player-personas",
+        "category": "legacy",
+        "usage_count": 0,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": []
+      },
+      {
+        "name": "LEGACY:playerId",
+        "value": "playerId",
+        "category": "legacy",
+        "usage_count": 1,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "app/student/insights/page.tsx"
+        ]
+      },
+      {
+        "name": "PLAYER_ID",
+        "value": "lux_story_v2_player_id",
+        "category": "player_identity",
+        "usage_count": 1,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "app/student/insights/page.tsx"
+        ]
+      },
+      {
+        "name": "PLAYER_PERSONAS",
+        "value": "lux_story_v2_player_personas",
+        "category": "player_identity",
+        "usage_count": 3,
+        "usage_count_runtime": 3,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "lib/player-persona.ts"
+        ]
+      },
+      {
+        "name": "GUEST_MODE",
+        "value": "lux_story_v2_guest_mode",
+        "category": "ui_state",
+        "usage_count": 2,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 1,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "app/welcome/page.tsx",
+          "tests/visual/visual-validation.spec.ts"
+        ]
+      },
+      {
+        "name": "KEYBOARD_HINT_SHOWN",
+        "value": "lux_story_v2_keyboard_hint_shown",
+        "category": "ui_state",
+        "usage_count": 3,
+        "usage_count_runtime": 3,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "components/StatefulGameInterface.tsx"
+        ]
+      },
+      {
+        "name": "LOCAL_MODE_SEEN",
+        "value": "lux_story_v2_local_mode_seen",
+        "category": "ui_state",
+        "usage_count": 2,
+        "usage_count_runtime": 2,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "hooks/game/useGameInitializer.ts"
+        ]
+      },
+      {
+        "name": "SETTINGS_DISCOVERED",
+        "value": "lux_story_v2_settings_discovered",
+        "category": "ui_state",
+        "usage_count": 2,
+        "usage_count_runtime": 2,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "components/InGameSettings.tsx"
+        ]
+      },
+      {
+        "name": "ACCESSIBILITY_PROFILE",
+        "value": "lux_story_v2_accessibility_profile",
+        "category": "user_settings",
+        "usage_count": 3,
+        "usage_count_runtime": 3,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "app/profile/page.tsx",
+          "lib/settings-sync.ts"
+        ]
+      },
+      {
+        "name": "AUDIO_MUTED",
+        "value": "lux_story_v2_audio_muted",
+        "category": "user_settings",
+        "usage_count": 14,
+        "usage_count_runtime": 7,
+        "usage_count_tests": 7,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "app/profile/page.tsx",
+          "hooks/game/useAudioDirector.ts",
+          "lib/settings-sync.ts",
+          "tests/hooks/useAudioDirector.test.ts",
+          "tests/lib/storage-migration.test.ts"
+        ]
+      },
+      {
+        "name": "AUDIO_VOLUME",
+        "value": "lux_story_v2_audio_volume",
+        "category": "user_settings",
+        "usage_count": 10,
+        "usage_count_runtime": 7,
+        "usage_count_tests": 3,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "app/profile/page.tsx",
+          "hooks/game/useAudioDirector.ts",
+          "lib/settings-sync.ts",
+          "tests/hooks/useAudioDirector.test.ts",
+          "tests/lib/storage-migration.test.ts"
+        ]
+      },
+      {
+        "name": "COGNITIVE_LOAD_LEVEL",
+        "value": "lux_story_v2_cognitive_load_level",
+        "category": "user_settings",
+        "usage_count": 3,
+        "usage_count_runtime": 3,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "app/profile/page.tsx",
+          "lib/settings-sync.ts"
+        ]
+      },
+      {
+        "name": "COLOR_BLIND_MODE",
+        "value": "lux_story_v2_color_blind_mode",
+        "category": "user_settings",
+        "usage_count": 3,
+        "usage_count_runtime": 3,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "app/profile/page.tsx",
+          "lib/settings-sync.ts"
+        ]
+      },
+      {
+        "name": "KEYBOARD_SHORTCUTS",
+        "value": "lux_story_v2_keyboard_shortcuts",
+        "category": "user_settings",
+        "usage_count": 3,
+        "usage_count_runtime": 3,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "lib/keyboard-shortcuts.ts"
+        ]
+      },
+      {
+        "name": "REDUCED_MOTION",
+        "value": "lux_story_v2_reduced_motion",
+        "category": "user_settings",
+        "usage_count": 4,
+        "usage_count_runtime": 4,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "components/InGameSettings.tsx",
+          "components/UnifiedMenu.tsx"
+        ]
+      },
+      {
+        "name": "TEXT_SIZE",
+        "value": "lux_story_v2_text_size",
+        "category": "user_settings",
+        "usage_count": 3,
+        "usage_count_runtime": 3,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "app/profile/page.tsx",
+          "lib/settings-sync.ts"
+        ]
+      }
+    ],
+    "unused_keys": [
+      "LEGACY:admin_view_preference",
+      "LEGACY:currentSceneId",
+      "LEGACY:grand-central-game-store",
+      "LEGACY:grand-central-terminus-save-backup",
+      "LEGACY:lastKnownSceneId",
+      "LEGACY:lux-active-tabs",
+      "LEGACY:lux-local-mode-seen",
+      "LEGACY:lux-story-player-personas",
+      "LEGACY:lux_accessibility_profile",
+      "LEGACY:lux_audio_muted",
+      "LEGACY:lux_audio_volume",
+      "LEGACY:lux_cognitive_load_level",
+      "LEGACY:lux_color_blind_mode",
+      "LEGACY:lux_guest_mode",
+      "LEGACY:lux_keyboard_hint_shown",
+      "LEGACY:lux_keyboard_shortcuts",
+      "LEGACY:lux_reduced_motion",
+      "LEGACY:lux_settings_discovered",
+      "LEGACY:lux_text_size"
+    ],
+    "unknown_key_usages": [
+      {
+        "name": "GAME_STATE",
+        "count": 2,
+        "files": [
+          "lib/archive/game-state.legacy.ts"
+        ]
+      },
+      {
+        "name": "PATTERNS",
+        "count": 2,
+        "files": [
+          "lib/archive/game-state.legacy.ts"
+        ]
+      }
+    ]
+  },
+  "env_vars": {
+    "total": 24,
+    "public_total": 8,
+    "server_total": 16,
+    "rows": [
+      {
+        "name": "NEXT_PUBLIC_APP_URL",
+        "kind": "public",
+        "usage_count": 2,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 2,
+        "usage_files": [
+          "scripts/test-admin-improvements.ts",
+          "scripts/verify-production-admin.ts"
+        ]
+      },
+      {
+        "name": "NEXT_PUBLIC_BASE_URL",
+        "kind": "public",
+        "usage_count": 2,
+        "usage_count_runtime": 2,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "app/api/admin-proxy/urgency/route.ts"
+        ]
+      },
+      {
+        "name": "NEXT_PUBLIC_FF_RANKING_V2",
+        "kind": "public",
+        "usage_count": 5,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 5,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "tests/lib/feature-flags.test.ts"
+        ]
+      },
+      {
+        "name": "NEXT_PUBLIC_SENTRY_DSN",
+        "kind": "public",
+        "usage_count": 1,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "lib/env-validation.ts"
+        ]
+      },
+      {
+        "name": "NEXT_PUBLIC_SITE_URL",
+        "kind": "public",
+        "usage_count": 4,
+        "usage_count_runtime": 2,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 2,
+        "usage_files": [
+          "app/layout.tsx",
+          "lib/metadata.ts",
+          "scripts/test-admin-improvements.ts",
+          "scripts/verify-production-admin.ts"
+        ]
+      },
+      {
+        "name": "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        "kind": "public",
+        "usage_count": 11,
+        "usage_count_runtime": 10,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 1,
+        "usage_files": [
+          "app/api/health/db/route.ts",
+          "app/api/test-env/route.ts",
+          "lib/admin-supabase-client.ts",
+          "lib/env-validation.ts",
+          "lib/env.ts",
+          "lib/supabase/client.ts",
+          "lib/supabase/middleware.ts",
+          "lib/supabase/server.ts",
+          "scripts/validate-build-config.cjs"
+        ]
+      },
+      {
+        "name": "NEXT_PUBLIC_SUPABASE_URL",
+        "kind": "public",
+        "usage_count": 19,
+        "usage_count_runtime": 17,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 2,
+        "usage_files": [
+          "app/api/admin-proxy/urgency/route.ts",
+          "app/api/health/db/route.ts",
+          "app/api/test-env/route.ts",
+          "lib/admin-supabase-client.ts",
+          "lib/api/api-utils.ts",
+          "lib/env-validation.ts",
+          "lib/env.ts",
+          "lib/pattern-profile-adapter.ts",
+          "lib/supabase-server.ts",
+          "lib/supabase/client.ts",
+          "lib/supabase/middleware.ts",
+          "lib/supabase/server.ts",
+          "scripts/validate-build-config.cjs",
+          "scripts/verify-production-admin.ts"
+        ]
+      },
+      {
+        "name": "NEXT_PUBLIC_VERBOSE_LOGGING",
+        "kind": "public",
+        "usage_count": 1,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "lib/logger.ts"
+        ]
+      },
+      {
+        "name": "ADMIN_API_TOKEN",
+        "kind": "server",
+        "usage_count": 8,
+        "usage_count_runtime": 4,
+        "usage_count_tests": 2,
+        "usage_count_scripts": 2,
+        "usage_files": [
+          "lib/admin-supabase-client.ts",
+          "lib/auth-utils.ts",
+          "lib/env-validation.ts",
+          "scripts/test-admin-improvements.ts",
+          "scripts/verify-production-admin.ts",
+          "tests/e2e/fixtures/auth-fixtures.ts",
+          "tests/e2e/global-setup.ts"
+        ]
+      },
+      {
+        "name": "ANTHROPIC_API_KEY",
+        "kind": "server",
+        "usage_count": 3,
+        "usage_count_runtime": 3,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "app/api/advisor-briefing/route.ts",
+          "lib/env-validation.ts"
+        ]
+      },
+      {
+        "name": "CHOICE_SIMILARITY_THRESHOLD",
+        "kind": "server",
+        "usage_count": 2,
+        "usage_count_runtime": 2,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "lib/choice-generator.ts",
+          "lib/env-validation.ts"
+        ]
+      },
+      {
+        "name": "CORE_GAMEPLAY_SINCE",
+        "kind": "server",
+        "usage_count": 1,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 1,
+        "usage_files": [
+          "scripts/report-core-gameplay-diff.js"
+        ]
+      },
+      {
+        "name": "CORE_GAMEPLAY_STRICT",
+        "kind": "server",
+        "usage_count": 1,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 1,
+        "usage_files": [
+          "scripts/report-core-gameplay-diff.js"
+        ]
+      },
+      {
+        "name": "E2E_ADMIN_BYPASS_ENABLED",
+        "kind": "server",
+        "usage_count": 1,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "lib/admin-auth.ts"
+        ]
+      },
+      {
+        "name": "E2E_ADMIN_BYPASS_TOKEN",
+        "kind": "server",
+        "usage_count": 4,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 3,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "lib/admin-auth.ts",
+          "tests/e2e/admin/admin-auth.spec.ts",
+          "tests/e2e/admin/admin-users-pagination.spec.ts",
+          "tests/e2e/admin/telemetry.spec.ts"
+        ]
+      },
+      {
+        "name": "ENABLE_SEMANTIC_SIMILARITY",
+        "kind": "server",
+        "usage_count": 3,
+        "usage_count_runtime": 3,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "lib/choice-generator.ts",
+          "lib/env-validation.ts"
+        ]
+      },
+      {
+        "name": "GEMINI_API_KEY",
+        "kind": "server",
+        "usage_count": 6,
+        "usage_count_runtime": 3,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 3,
+        "usage_files": [
+          "app/api/samuel-dialogue/route.ts",
+          "lib/env-validation.ts",
+          "scripts/gemini-chat-interface-master-analyzer.js",
+          "scripts/gemini-skills-dashboard-analyzer.js",
+          "scripts/gemini-typewriter-analysis.js"
+        ]
+      },
+      {
+        "name": "NODE_ENV",
+        "kind": "server",
+        "usage_count": 57,
+        "usage_count_runtime": 53,
+        "usage_count_tests": 1,
+        "usage_count_scripts": 3,
+        "usage_files": [
+          "app/admin/(protected)/[userId]/error.tsx",
+          "app/admin/(protected)/layout.tsx",
+          "app/admin/(protected)/users/page.tsx",
+          "app/admin/error.tsx",
+          "app/api/health/route.ts",
+          "app/api/test-env/route.ts",
+          "app/profile/error.tsx",
+          "app/student/error.tsx",
+          "components/ErrorBoundary.tsx",
+          "components/FeatureFlagsBootstrap.tsx",
+          "components/GodModeBootstrap.tsx",
+          "components/Journal.tsx",
+          "components/JourneySummary.tsx",
+          "components/LayeredErrorBoundaries.tsx",
+          "components/NarrativeAnalysisDisplay.tsx",
+          "components/constellation/ConstellationPanel.tsx",
+          "components/game/simulations/DataDashboard.tsx",
+          "components/game/simulations/MediaStudio.tsx",
+          "components/game/simulations/handshake/DataTicker.tsx",
+          "content/simulation-registry.ts",
+          "hooks/useEvidence.ts",
+          "hooks/useWaitingRoom.ts",
+          "lib/admin-supabase-client.ts",
+          "lib/dev-freeze.ts",
+          "lib/dev-tools/god-mode-api.ts",
+          "lib/emotions.ts",
+          "lib/env-validation.ts",
+          "lib/event-bus.ts",
+          "lib/feature-flags.ts",
+          "lib/logger.ts",
+          "lib/patterns.ts",
+          "lib/simulation-registry.ts",
+          "lib/sync-queue.ts",
+          "lib/urgency-narrative-validator.ts",
+          "lib/user-profile-service.ts",
+          "scripts/audit-configuration.ts",
+          "scripts/validate-build-config.cjs",
+          "scripts/validate-env.ts",
+          "tests/lib/feature-flags.test.ts"
+        ]
+      },
+      {
+        "name": "SENTRY_DSN",
+        "kind": "server",
+        "usage_count": 2,
+        "usage_count_runtime": 2,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "lib/env-validation.ts"
+        ]
+      },
+      {
+        "name": "SUPABASE_ANON_KEY",
+        "kind": "server",
+        "usage_count": 3,
+        "usage_count_runtime": 3,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "app/api/health/db/route.ts",
+          "lib/env-validation.ts",
+          "lib/env.ts"
+        ]
+      },
+      {
+        "name": "SUPABASE_SERVICE_ROLE_KEY",
+        "kind": "server",
+        "usage_count": 14,
+        "usage_count_runtime": 10,
+        "usage_count_tests": 2,
+        "usage_count_scripts": 2,
+        "usage_files": [
+          "app/api/admin-proxy/urgency/route.ts",
+          "lib/admin-supabase-client.ts",
+          "lib/api/api-utils.ts",
+          "lib/env-validation.ts",
+          "lib/env.ts",
+          "lib/pattern-profile-adapter.ts",
+          "lib/supabase-server.ts",
+          "scripts/validate-build-config.cjs",
+          "scripts/verify-production-admin.ts",
+          "tests/api/career-explorations.test.ts"
+        ]
+      },
+      {
+        "name": "SUPABASE_URL",
+        "kind": "server",
+        "usage_count": 14,
+        "usage_count_runtime": 10,
+        "usage_count_tests": 2,
+        "usage_count_scripts": 2,
+        "usage_files": [
+          "app/api/admin-proxy/urgency/route.ts",
+          "lib/admin-supabase-client.ts",
+          "lib/api/api-utils.ts",
+          "lib/env-validation.ts",
+          "lib/env.ts",
+          "lib/pattern-profile-adapter.ts",
+          "lib/supabase-server.ts",
+          "scripts/validate-build-config.cjs",
+          "scripts/verify-production-admin.ts",
+          "tests/api/career-explorations.test.ts"
+        ]
+      },
+      {
+        "name": "VERCEL",
+        "kind": "server",
+        "usage_count": 1,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 1,
+        "usage_files": [
+          "scripts/validate-build-config.cjs"
+        ]
+      },
+      {
+        "name": "VERCEL_URL",
+        "kind": "server",
+        "usage_count": 5,
+        "usage_count_runtime": 2,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 3,
+        "usage_files": [
+          "app/api/admin-proxy/urgency/route.ts",
+          "scripts/verify-production-admin.ts"
+        ]
+      }
+    ]
   }
 }
