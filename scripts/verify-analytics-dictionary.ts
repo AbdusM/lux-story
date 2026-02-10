@@ -22,7 +22,7 @@ const SKIP_DIR_NAMES = new Set([
 
 const CODE_EXTS = new Set(['.ts', '.tsx', '.js', '.cjs', '.mjs'])
 const EVENT_TYPE_REGEX = /event_type\s*:\s*'([^']+)'/g
-const EVENT_NAME_LITERAL_REGEX = /'((?:game|ui|perf|system):[^']+)'/g
+const EVENT_NAME_LITERAL_REGEX = /'((?:game|ui|perf|system|analytics):[^']+)'/g
 
 function extractGameEventNamesFromEventBus(source: string): string[] {
   // Parse keys from `export interface GameEventMap { ... 'x:y': {...} ... }`.
@@ -110,9 +110,12 @@ async function main() {
         const v = match[1]
         if (v) used.add(v)
       }
-      for (const match of text.matchAll(EVENT_NAME_LITERAL_REGEX)) {
-        const v = match[1]
-        if (v) eventBusUsedLiterals.add(v)
+      // Do not count the event bus spec file as "usage".
+      if (path.resolve(filePath) !== path.resolve(EVENT_BUS_PATH)) {
+        for (const match of text.matchAll(EVENT_NAME_LITERAL_REGEX)) {
+          const v = match[1]
+          if (v) eventBusUsedLiterals.add(v)
+        }
       }
     }
   }

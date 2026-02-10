@@ -32,6 +32,11 @@ type FlagInventoryRow = {
   default: boolean | string
   values?: readonly string[]
   off_by_default: boolean
+  lane: string
+  owner: string
+  created_at: string
+  sunset_by: string
+  description: string
   usage_count: number
   usage_count_runtime: number
   usage_count_tests: number
@@ -113,17 +118,22 @@ type InventoryReport = {
     off_by_default: number
     unused: number
     unknown_usages: number
+    paper_flags: number
     rows: FlagInventoryRow[]
     unused_flags: string[]
+    paper_flag_names: string[]
     unknown_flag_usages: Array<{ name: string; count: number; files: string[] }>
   }
   storage_keys: {
     total: number
     unused: number
     unknown_usages: number
+    unknown_usages_active: number
+    unknown_usages_archived: number
     rows: StorageKeyInventoryRow[]
     unused_keys: string[]
     unknown_key_usages: Array<{ name: string; count: number; files: string[] }>
+    unknown_key_usages_archived: Array<{ name: string; count: number; files: string[] }>
   }
   env_vars: {
     total: number
@@ -606,6 +616,11 @@ function main() {
       default: def.default,
       values: def.values,
       off_by_default: offByDefault,
+      lane: def.meta.lane,
+      owner: def.meta.owner,
+      created_at: def.meta.created_at,
+      sunset_by: def.meta.sunset_by,
+      description: def.meta.description,
       usage_count: usageCount,
       usage_count_runtime: dist.runtime,
       usage_count_tests: dist.tests,
@@ -619,6 +634,10 @@ function main() {
   })
 
   const unusedFlags = rows.filter(r => r.usage_count === 0).map(r => r.name).sort()
+  const paperFlags = rows
+    .filter(r => r.lane !== 'test_only' && r.usage_count_runtime === 0)
+    .map(r => r.name)
+    .sort()
 
   // Storage keys (canonical + dev + legacy mapping)
   const declaredStorageKeys: StorageKeyInventoryRow[] = (Object.keys(STORAGE_KEYS) as StorageKey[]).map((k) => {
@@ -687,11 +706,19 @@ function main() {
   ])
 
   const unknownStorageUsages: Array<{ name: string; count: number; files: string[] }> = []
+  const unknownStorageUsagesArchived: Array<{ name: string; count: number; files: string[] }> = []
   for (const [name, u] of storageKeyUsage.entries()) {
     if (declaredStorageKeyNames.has(name)) continue
-    unknownStorageUsages.push({ name, count: u.count, files: Array.from(u.files.keys()).sort() })
+    const files = Array.from(u.files.keys()).sort()
+    const activeFiles = files.filter((f) => !f.startsWith('lib/archive/'))
+    if (activeFiles.length === 0) {
+      unknownStorageUsagesArchived.push({ name, count: u.count, files })
+    } else {
+      unknownStorageUsages.push({ name, count: u.count, files })
+    }
   }
   unknownStorageUsages.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+  unknownStorageUsagesArchived.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
 
   const unusedStorageKeys = storageRows.filter(r => r.usage_count === 0).map(r => r.name).sort()
 
@@ -794,8 +821,10 @@ function main() {
       off_by_default: rows.filter(r => r.off_by_default).length,
       unused: unusedFlags.length,
       unknown_usages: unknownFlagUsages.length,
+      paper_flags: paperFlags.length,
       rows,
       unused_flags: unusedFlags,
+      paper_flag_names: paperFlags,
       unknown_flag_usages: unknownFlagUsages,
     },
     experiments: {
@@ -805,10 +834,13 @@ function main() {
     storage_keys: {
       total: storageRows.length,
       unused: unusedStorageKeys.length,
-      unknown_usages: unknownStorageUsages.length,
+      unknown_usages: unknownStorageUsages.length + unknownStorageUsagesArchived.length,
+      unknown_usages_active: unknownStorageUsages.length,
+      unknown_usages_archived: unknownStorageUsagesArchived.length,
       rows: storageRows,
       unused_keys: unusedStorageKeys,
       unknown_key_usages: unknownStorageUsages,
+      unknown_key_usages_archived: unknownStorageUsagesArchived,
     },
     env_vars: {
       total: envRows.length,
@@ -867,22 +899,29 @@ function main() {
   mdLines.push(`Total: **${report.flags.total}** (booleans: **${report.flags.booleans}**, enums: **${report.flags.enums}**)`)
   mdLines.push(`Off by default: **${report.flags.off_by_default}**`)
   mdLines.push(`Unused (declared but not referenced): **${report.flags.unused}**`)
+  mdLines.push(`Paper flags (non-test lane, runtime usage = 0): **${report.flags.paper_flags}**`)
   mdLines.push(`Unknown usages (referenced but not declared): **${report.flags.unknown_usages}**`)
+  mdLines.push('')
+  mdLines.push('Notes:')
+  mdLines.push('- Runtime usage is best-effort based on string-literal references in source. Indirection can undercount.')
+  mdLines.push('- Flag lifecycle metadata (lane/owner/sunset) is required to prevent long-lived drift.')
   mdLines.push('')
 
   const flagTable = formatMdTable(
     rows.map(r => ({
       Flag: `\`${r.name}\``,
+      Lane: r.lane,
       Type: r.type,
       Default: `\`${String(r.default)}\``,
       Status: r.type === 'boolean'
         ? (r.off_by_default ? 'OFF (default)' : 'ON (default)')
         : `default=\`${String(r.default)}\``,
+      Sunset: `\`${r.sunset_by}\``,
       Used: r.usage_count ? `**${r.usage_count}**` : '0',
       Runtime: r.usage_count_runtime ? `**${r.usage_count_runtime}**` : '0',
       References: r.usage_files.length ? r.usage_files.slice(0, 4).map(f => `\`${f}\``).join(', ') + (r.usage_files.length > 4 ? ` (+${r.usage_files.length - 4})` : '') : '',
     })),
-    ['Flag', 'Type', 'Default', 'Status', 'Used', 'Runtime', 'References']
+    ['Flag', 'Lane', 'Type', 'Default', 'Status', 'Sunset', 'Used', 'Runtime', 'References']
   )
   mdLines.push(flagTable)
   mdLines.push('')
@@ -899,6 +938,16 @@ function main() {
     mdLines.push('### Unused Flags (Debt)')
     mdLines.push('')
     mdLines.push(unusedFlags.map(f => `- \`${f}\``).join('\n'))
+    mdLines.push('')
+  }
+
+  if (paperFlags.length) {
+    mdLines.push('### Paper Flags (Needs Action)')
+    mdLines.push('')
+    mdLines.push('These flags are not marked `test_only` but have **0 runtime references**.')
+    mdLines.push('Either wire them into a real runtime code path or move them to `test_only` lane to avoid misrepresentation.')
+    mdLines.push('')
+    mdLines.push(paperFlags.map(f => `- \`${f}\``).join('\n'))
     mdLines.push('')
   }
 
@@ -1048,7 +1097,10 @@ function main() {
   mdLines.push('')
   mdLines.push(`Total: **${report.storage_keys.total}**`)
   mdLines.push(`Unused (declared but not referenced): **${report.storage_keys.unused}**`)
-  mdLines.push(`Unknown usages (referenced but not declared): **${report.storage_keys.unknown_usages}**`)
+  mdLines.push(`Unknown usages (referenced but not declared): **${report.storage_keys.unknown_usages}** (active: **${report.storage_keys.unknown_usages_active}**, archived: **${report.storage_keys.unknown_usages_archived}**)`)
+  mdLines.push('')
+  mdLines.push('Notes:')
+  mdLines.push('- Do not delete unused keys without a migration policy; older builds/users may still read/write them.')
   mdLines.push('')
 
   const storageTable = formatMdTable(
@@ -1083,6 +1135,20 @@ function main() {
     }
     if (report.storage_keys.unknown_key_usages.length > 30) {
       mdLines.push(`- …and ${report.storage_keys.unknown_key_usages.length - 30} more`)
+    }
+    mdLines.push('')
+  }
+
+  if (report.storage_keys.unknown_key_usages_archived.length) {
+    mdLines.push('### Unknown Key Usages (Archived, Allowed)')
+    mdLines.push('')
+    mdLines.push('These unknown key identifiers occur only under `lib/archive/*` and are treated as non-blocking historical artifacts.')
+    mdLines.push('')
+    for (const u of report.storage_keys.unknown_key_usages_archived.slice(0, 30)) {
+      mdLines.push(`- \`${u.name}\` (${u.count}): ${u.files.slice(0, 6).map(f => `\`${f}\``).join(', ')}${u.files.length > 6 ? ` (+${u.files.length - 6})` : ''}`)
+    }
+    if (report.storage_keys.unknown_key_usages_archived.length > 30) {
+      mdLines.push(`- …and ${report.storage_keys.unknown_key_usages_archived.length - 30} more`)
     }
     mdLines.push('')
   }

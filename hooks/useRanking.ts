@@ -17,10 +17,12 @@
  */
 
 import { useMemo } from 'react'
+import { getFlag } from '@/lib/feature-flags'
 import {
   calculateUnifiedDashboard,
   type UnifiedDashboardInput
 } from '@/lib/ranking/unified-dashboard'
+import { calculateUnifiedDashboardV2Beta } from '@/lib/ranking/unified-dashboard-v2'
 import type {
   PatternMasteryState,
   CareerExpertiseState,
@@ -134,6 +136,8 @@ export function useRanking(
 ): UseRankingReturn {
   // Compute unified dashboard
   const dashboard = useMemo(() => {
+    const rankingVariant = getFlag('RANKING_V2')
+
     // Transform input to dashboard input format
     const dashboardInput: UnifiedDashboardInput = {
       patternOrbs: input.patterns,
@@ -154,7 +158,9 @@ export function useRanking(
       globalFlags: input.globalFlags
     }
 
-    return calculateUnifiedDashboard(dashboardInput, now)
+    return rankingVariant === 'beta'
+      ? calculateUnifiedDashboardV2Beta(dashboardInput, now)
+      : calculateUnifiedDashboard(dashboardInput, now)
   }, [
     input.patterns,
     input.characterStates,

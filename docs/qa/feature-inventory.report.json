@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-02-10T17:22:09.197Z",
-  "git_commit": "07fa57c41339fb2ec3e6b37db8e0048588b42416",
+  "generated_at": "2026-02-10T17:51:02.529Z",
+  "git_commit": "f02147f895b9a7b98fbc6245a809f8b9bd55a072",
   "flags": {
     "total": 6,
     "booleans": 5,
@@ -8,12 +8,18 @@
     "off_by_default": 5,
     "unused": 0,
     "unknown_usages": 0,
+    "paper_flags": 0,
     "rows": [
       {
         "name": "CHOICE_COMPACT_MODE",
         "type": "boolean",
         "default": false,
         "off_by_default": true,
+        "lane": "pilot",
+        "owner": "ux",
+        "created_at": "2026-02-10",
+        "sunset_by": "2026-04-30",
+        "description": "Compact choice list to reduce cognitive overload when many choices exist.",
         "usage_count": 1,
         "usage_count_runtime": 1,
         "usage_count_tests": 0,
@@ -27,6 +33,11 @@
         "type": "boolean",
         "default": false,
         "off_by_default": true,
+        "lane": "pilot",
+        "owner": "core-content-contracts",
+        "created_at": "2026-02-10",
+        "sunset_by": "2026-04-30",
+        "description": "Strictly enforce requiredState in dev/test and staged rollouts (opt-in).",
         "usage_count": 4,
         "usage_count_runtime": 1,
         "usage_count_tests": 3,
@@ -41,6 +52,11 @@
         "type": "boolean",
         "default": false,
         "off_by_default": true,
+        "lane": "pilot",
+        "owner": "narrative-systems",
+        "created_at": "2026-02-10",
+        "sunset_by": "2026-04-30",
+        "description": "Procedural gossip propagation processor (adds cross-character memory echoes).",
         "usage_count": 1,
         "usage_count_runtime": 1,
         "usage_count_tests": 0,
@@ -54,6 +70,11 @@
         "type": "boolean",
         "default": false,
         "off_by_default": true,
+        "lane": "pilot",
+        "owner": "identity",
+        "created_at": "2026-02-10",
+        "sunset_by": "2026-04-30",
+        "description": "Identity offering UX (accept/reject) for staged onboarding improvements.",
         "usage_count": 1,
         "usage_count_runtime": 1,
         "usage_count_tests": 0,
@@ -67,6 +88,11 @@
         "type": "boolean",
         "default": false,
         "off_by_default": true,
+        "lane": "pilot",
+        "owner": "systems",
+        "created_at": "2026-02-10",
+        "sunset_by": "2026-04-30",
+        "description": "Enable scarcity economy (focus points) to shape tradeoffs and pacing.",
         "usage_count": 3,
         "usage_count_runtime": 3,
         "usage_count_tests": 0,
@@ -84,16 +110,23 @@
           "beta"
         ],
         "off_by_default": false,
-        "usage_count": 6,
-        "usage_count_runtime": 0,
+        "lane": "pilot",
+        "owner": "ranking",
+        "created_at": "2026-02-10",
+        "sunset_by": "2026-04-30",
+        "description": "Ranking algorithm selection for staged rollout.",
+        "usage_count": 7,
+        "usage_count_runtime": 1,
         "usage_count_tests": 6,
         "usage_count_scripts": 0,
         "usage_files": [
+          "hooks/useRanking.ts",
           "tests/lib/feature-flags.test.ts"
         ]
       }
     ],
     "unused_flags": [],
+    "paper_flag_names": [],
     "unknown_flag_usages": []
   },
   "experiments": {
@@ -104,6 +137,8 @@
     "total": 46,
     "unused": 19,
     "unknown_usages": 2,
+    "unknown_usages_active": 0,
+    "unknown_usages_archived": 2,
     "rows": [
       {
         "name": "ADMIN_VIEW_MODE",
@@ -677,7 +712,8 @@
       "LEGACY:lux_settings_discovered",
       "LEGACY:lux_text_size"
     ],
-    "unknown_key_usages": [
+    "unknown_key_usages": [],
+    "unknown_key_usages_archived": [
       {
         "name": "GAME_STATE",
         "count": 2,
