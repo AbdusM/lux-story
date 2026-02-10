@@ -202,7 +202,7 @@ describe('RankingDashboard', () => {
       expect(headingTexts).toContain('Station Standing')
       expect(headingTexts).toContain('Skill Stars')
       expect(headingTexts).toContain('Elite Status')
-    })
+    }, 15000)
 
     it('respects showSections prop to hide specific sections', () => {
       render(

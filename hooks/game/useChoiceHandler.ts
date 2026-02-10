@@ -117,6 +117,7 @@ export function useChoiceHandler({
 }: UseChoiceHandlerParams) {
   const isProcessingChoiceRef = useRef(false)
   const choiceAttemptIdRef = useRef(0)
+  const lastProgressOutcomeAtRef = useRef(0)
 
   const handleChoice = useCallback(async (choice: EvaluatedChoice) => {
     // Initialize audio on first user interaction (required for mobile)
@@ -406,6 +407,19 @@ export function useChoiceHandler({
         existingEcho: consequenceEcho,
       })
       let patternShiftMsg: string | null = patternEchoResult.patternShiftMsg
+
+      // Player-facing: surface big pattern shifts as an Outcome item (not just sensation text).
+      if (patternShiftMsg) {
+        const crossed = patternEchoResult.crossedPattern
+        const level = crossed && isValidPattern(crossed) ? newGameState.patterns[crossed as PatternType] : null
+        const label = crossed ? crossed.charAt(0).toUpperCase() + crossed.slice(1) : 'Pattern'
+        outcomeItems.push({
+          kind: 'info',
+          title: 'Worldview Shift',
+          detail: level !== null ? `${label} (Level ${level})` : patternShiftMsg,
+          prismTab: 'harmonics',
+        })
+      }
 
       if (patternEchoResult.consequenceEcho && !consequenceEcho) {
         consequenceEcho = patternEchoResult.consequenceEcho
@@ -781,15 +795,15 @@ export function useChoiceHandler({
         }
       }
 
-      // Only show the "story progressed" fallback when there were no other visible deltas
-      // and we didn't already surface feedback via echo/sensation.
-      if (
-        outcomeItems.length === 0 &&
-        !consequenceEcho &&
-        !patternSensation &&
-        !patternShiftMsg
-      ) {
-        outcomeItems.push({ kind: 'info', title: 'Story progressed', detail: 'No visible changes.' })
+      // Non-spammy fallback: if nothing else surfaced, periodically show "story progressed"
+      // so players still feel forward motion even when changes are subtle.
+      if (outcomeItems.length === 0 && !patternSensation) {
+        const now = Date.now()
+        const cooldownMs = 45_000
+        if (now - lastProgressOutcomeAtRef.current > cooldownMs) {
+          lastProgressOutcomeAtRef.current = now
+          outcomeItems.push({ kind: 'info', title: 'Story progressed', detail: 'No visible changes.' })
+        }
       }
 
       const outcomeCard: OutcomeCardData | null = outcomeItems.length > 0
