@@ -200,9 +200,6 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'exploring',
         skills: ['curiosity', 'criticalThinking'],
-        visibleCondition: {
-          patterns: { exploring: { min: 3 } }
-        },
         consequence: {
           characterId: 'yaquin',
           trustChange: 1
@@ -594,7 +591,11 @@ Which opening sells the VALUE of practical experience?`,
         text: "That's your brand. 'The Cooking Show for Teeth.'",
         nextNodeId: 'yaquin_launch_decision',
         pattern: 'building',
-        skills: ['marketing']
+        skills: ['marketing'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 2
+        }
       }
     ],
     onEnter: [
@@ -623,7 +624,11 @@ Which opening sells the VALUE of practical experience?`,
         text: "That's not dentistry. That's something else.",
         nextNodeId: 'yaquin_launch_decision',
         pattern: 'helping',
-        skills: ['emotionalIntelligence']
+        skills: ['emotionalIntelligence'],
+        consequence: {
+          characterId: 'yaquin',
+          trustChange: 2
+        }
       }
     ],
     onEnter: [

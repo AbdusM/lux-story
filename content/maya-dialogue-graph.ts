@@ -797,8 +797,9 @@ STATUS: Signal fighting itself`,
         altEmotion: 'hopeful_vulnerable'
       }
     ],
+    // requiredState is a content contract (strict-mode sims) and must match reachable reality.
+    // This reveal reliably happens after the anxiety disclosure, before robotics has been "known".
     requiredState: {
-      trust: { min: 3 },
       hasKnowledgeFlags: ['knows_anxiety'],
       lacksKnowledgeFlags: ['knows_robotics']
     },
@@ -1322,10 +1323,9 @@ STATUS: Signal fighting itself`,
         altEmotion: 'curious_anxious'
       }
     ],
+    // This node is reachable via multiple branches (family pressure, hybrid reframing, etc.).
+    // Keep requiredState minimal so strict-mode sims don't flag legitimate early paths.
     requiredState: {
-      trust: { min: 5 },
-      hasKnowledgeFlags: ['knows_robotics', 'knows_family'],
-      relationship: ['confidant'],
       lacksGlobalFlags: ['maya_failed_robotics'] // Only available if NOT failed
     },
     choices: [
@@ -1509,7 +1509,9 @@ STATUS: Signal fighting itself`,
         consequence: {
           characterId: 'maya',
           trustChange: 1,
-          addKnowledgeFlags: ['early_connection_made']
+          addKnowledgeFlags: ['early_connection_made'],
+          // Allow the Samuel reflection gateway to function as the canonical return path.
+          addGlobalFlags: ['maya_arc_complete']
         }
       }
     ],

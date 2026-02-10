@@ -618,7 +618,11 @@ export const tessDialogueNodes: DialogueNode[] = [
         nextNodeId: 'tess_the_pitch_setup',
         pattern: 'building',
         archetype: 'OFFER_SUPPORT',
-        skills: ['problemSolving', 'emotionalIntelligence']
+        skills: ['problemSolving', 'emotionalIntelligence'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
       },
       {
         choiceId: 'tess_go_deeper',
@@ -719,7 +723,11 @@ RACHEL: What am I missing?
         text: "You're right. Think bigger.",
         nextNodeId: 'tess_the_pitch_setup',
         pattern: 'patience',
-        skills: ['adaptability']
+        skills: ['adaptability'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
       },
       {
         choiceId: 'accept_safe',
@@ -993,7 +1001,11 @@ RACHEL: What am I missing?
         text: "Before you decide. What's the worst that happens if you try?",
         nextNodeId: 'tess_the_pitch_setup',
         pattern: 'exploring',
-        skills: ['emotionalIntelligence', 'communication']
+        skills: ['emotionalIntelligence', 'communication'],
+        consequence: {
+          characterId: 'tess',
+          trustChange: 1
+        }
       },
       {
         choiceId: 'cautious_accept',

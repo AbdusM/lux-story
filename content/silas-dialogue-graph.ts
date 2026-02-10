@@ -271,7 +271,16 @@ export const silasDialogueNodes: DialogueNode[] = [
       }
     ],
     choices: [
-      { choiceId: 'hands_tell', text: "So what do your hands tell you?", archetype: 'EXPRESS_CURIOSITY', nextNodeId: 'silas_simulation_start' }
+      {
+        choiceId: 'hands_tell',
+        text: "So what do your hands tell you?",
+        archetype: 'EXPRESS_CURIOSITY',
+        nextNodeId: 'silas_simulation_start',
+        consequence: {
+          characterId: 'silas',
+          trustChange: 1
+        }
+      }
     ]
   },
   {
@@ -296,7 +305,16 @@ export const silasDialogueNodes: DialogueNode[] = [
       }
     ],
     choices: [
-      { choiceId: 'listen_soil', text: "What if you just... listened to the soil?", archetype: 'SHARE_PERSPECTIVE', nextNodeId: 'silas_simulation_start' }
+      {
+        choiceId: 'listen_soil',
+        text: "What if you just... listened to the soil?",
+        archetype: 'SHARE_PERSPECTIVE',
+        nextNodeId: 'silas_simulation_start',
+        consequence: {
+          characterId: 'silas',
+          trustChange: 1
+        }
+      }
     ]
   },
 
@@ -317,7 +335,11 @@ export const silasDialogueNodes: DialogueNode[] = [
         archetype: 'TAKE_ACTION',
         nextNodeId: 'silas_simulation_start',
         pattern: 'helping',
-        skills: ['groundedResearch']
+        skills: ['groundedResearch'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -560,7 +582,11 @@ export const silasDialogueNodes: DialogueNode[] = [
         text: "And now the basil?",
         nextNodeId: 'silas_simulation_start',
         pattern: 'building',
-        skills: ['problemSolving']
+        skills: ['problemSolving'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -664,7 +690,11 @@ HINT: Sensors measure WHERE they're placed...`,
         text: "Stop looking at the screen! Look at the pipe!",
         nextNodeId: 'silas_simulation_start',
         pattern: 'helping',
-        skills: ['urgency']
+        skills: ['urgency'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 1
+        }
       }
     ]
   },
@@ -687,7 +717,11 @@ HINT: Sensors measure WHERE they're placed...`,
         text: "We can drain it. But we need to find the blockage.",
         nextNodeId: 'silas_simulation_start',
         pattern: 'patience',
-        skills: ['resilience']
+        skills: ['resilience'],
+        consequence: {
+          characterId: 'silas',
+          trustChange: 1
+        }
       }
     ]
   },
