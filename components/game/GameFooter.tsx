@@ -13,6 +13,7 @@ import type { PrismTabId } from '@/lib/prism-tabs'
 import { OutcomeCard } from '@/components/game/OutcomeCard'
 import type { RewardFeedItem } from '@/lib/reward-feed'
 import { RewardFeed } from '@/components/game/RewardFeed'
+import { getPrimaryQuest } from '@/lib/quest-system'
 
 interface GameFooterProps {
   isEnding: boolean
@@ -45,6 +46,11 @@ export function GameFooter({
   cognitiveLoad,
   onChoice,
 }: GameFooterProps) {
+  const primaryQuest = gameState ? getPrimaryQuest(gameState) : null
+  const objectiveTab: PrismTabId | null = primaryQuest
+    ? (primaryQuest.type === 'discovery' ? 'mysteries' : 'essence')
+    : null
+
   return (
     <AnimatePresence mode="wait">
       {!isEnding && (
@@ -70,6 +76,39 @@ export function GameFooter({
                 onDismissItem={onDismissRewardItem}
                 onOpenPrismTab={onOpenPrismTab}
               />
+            </div>
+          )}
+
+          {primaryQuest && (
+            <div className="px-4 sm:px-6 pt-2">
+              <div
+                className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-sm flex items-start justify-between gap-3"
+                data-testid="objective-pin"
+              >
+                <div className="min-w-0">
+                  <div className="text-[10px] uppercase tracking-[0.1em] text-slate-400">
+                    Objective
+                  </div>
+                  <div className="mt-0.5 text-xs font-semibold text-slate-200 truncate">
+                    {primaryQuest.title}
+                  </div>
+                  {primaryQuest.description && (
+                    <div className="mt-0.5 text-[11px] text-slate-400 line-clamp-2">
+                      {primaryQuest.description}
+                    </div>
+                  )}
+                </div>
+                {objectiveTab && (
+                  <button
+                    type="button"
+                    className="shrink-0 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-[11px] font-semibold text-slate-200 hover:bg-white/10 transition-colors"
+                    onClick={() => onOpenPrismTab(objectiveTab)}
+                    data-testid="objective-view"
+                  >
+                    View
+                  </button>
+                )}
+              </div>
             </div>
           )}
 
