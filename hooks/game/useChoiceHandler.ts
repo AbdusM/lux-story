@@ -21,6 +21,7 @@ import { CHOICE_HANDLER_TIMEOUT_MS } from '@/lib/constants'
 import { PATTERN_METADATA, type PatternType, type PlayerPatterns, isValidPattern } from '@/lib/patterns'
 import { calculatePatternGain } from '@/lib/identity-system'
 import type { OutcomeCardData, OutcomeItem } from '@/lib/outcome-card'
+import { updateRewardFeed } from '@/lib/reward-feed'
 import {
   applyPatternReflection,
   type ConsequenceEcho,
@@ -795,21 +796,29 @@ export function useChoiceHandler({
         }
       }
 
-      // Non-spammy fallback: if nothing else surfaced, periodically show "story progressed"
-      // so players still feel forward motion even when changes are subtle.
-      if (outcomeItems.length === 0 && !patternSensation) {
-        const now = Date.now()
+      const nowMs = Date.now()
+      const isBigOutcome = (i: OutcomeItem) => i.kind !== 'info' || i.title === 'Worldview Shift'
+
+      const cardItems = outcomeItems.filter(isBigOutcome)
+      const feedItems = outcomeItems.filter(i => !isBigOutcome(i))
+
+      // Rate-limited "story progressed" message goes to RewardFeed (lighter weight than OutcomeCard).
+      if (cardItems.length === 0 && feedItems.length === 0 && !patternSensation) {
         const cooldownMs = 45_000
-        if (now - lastProgressOutcomeAtRef.current > cooldownMs) {
-          lastProgressOutcomeAtRef.current = now
-          outcomeItems.push({ kind: 'info', title: 'Story progressed', detail: 'No visible changes.' })
+        if (nowMs - lastProgressOutcomeAtRef.current > cooldownMs) {
+          lastProgressOutcomeAtRef.current = nowMs
+          feedItems.push({ kind: 'info', title: 'Story progressed', detail: 'No visible changes.' })
         }
       }
 
-      const outcomeCard: OutcomeCardData | null = outcomeItems.length > 0
+      const nextRewardFeed = feedItems.length > 0
+        ? updateRewardFeed(state.rewardFeed || [], feedItems, nowMs)
+        : (state.rewardFeed || [])
+
+      const outcomeCard: OutcomeCardData | null = cardItems.length > 0
         ? {
           id: `choice:${state.currentNode?.nodeId || 'node'}:${choice.choice.choiceId || ''}`,
-          items: outcomeItems,
+          items: cardItems,
         }
         : null
 
@@ -911,6 +920,7 @@ export function useChoiceHandler({
         useChatPacing: content.useChatPacing || false,
         // Feedback
         outcomeCard,
+        rewardFeed: nextRewardFeed,
         consequenceEcho,
         patternSensation,
         patternShiftMsg,

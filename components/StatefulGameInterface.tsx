@@ -294,6 +294,7 @@ export default function StatefulGameInterface() {
     showSaveConfirmation: false,
     skillToast: null,
     outcomeCard: null,
+    rewardFeed: [],
     error: null,
     recentSkills: [],
     showExperienceSummary: false,
@@ -857,6 +858,10 @@ export default function StatefulGameInterface() {
     setState(prev => ({ ...prev, outcomeCard: null }))
   }
 
+  const dismissRewardItem = (id: string) => {
+    setState(prev => ({ ...prev, rewardFeed: (prev.rewardFeed || []).filter(i => i.id !== id) }))
+  }
+
   return (
     <LivingAtmosphere
       characterId={state.currentCharacterId}
@@ -1149,7 +1154,9 @@ export default function StatefulGameInterface() {
           gameState={gameState}
           isProcessing={state.isProcessing}
           outcomeCard={state.outcomeCard}
+          rewardFeed={state.rewardFeed}
           onDismissOutcome={dismissOutcome}
+          onDismissRewardItem={dismissRewardItem}
           onOpenPrismTab={openPrismTab}
           orbFillLevels={orbFillLevels}
           cognitiveLoad={cognitiveLoad}

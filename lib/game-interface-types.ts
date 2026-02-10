@@ -20,6 +20,7 @@ import type { ActiveExperienceState } from '@/lib/experience-engine'
 import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
 import type { PrismTabId } from '@/lib/prism-tabs'
 import type { OutcomeCardData } from '@/lib/outcome-card'
+import type { RewardFeedItem } from '@/lib/reward-feed'
 
 export interface GameInterfaceState {
   // TD-001: gameState removed - read from Zustand via useGameSelectors.useCoreGameStateHydrated()
@@ -36,6 +37,7 @@ export interface GameInterfaceState {
   showSaveConfirmation: boolean
   skillToast: { skill: string; message: string } | null
   outcomeCard: OutcomeCardData | null
+  rewardFeed: RewardFeedItem[]
   error: { title: string; message: string; severity: 'error' | 'warning' | 'info' } | null
   previousSpeaker: string | null
   recentSkills: string[]

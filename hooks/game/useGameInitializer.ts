@@ -402,6 +402,7 @@ export function useGameInitializer({
             items: [{ kind: 'info', title: checkInFeedback.message }],
           } satisfies OutcomeCardData)
           : null),
+        rewardFeed: [],
         error: null,
         previousSpeaker: null,
         recentSkills: [],

@@ -21,6 +21,7 @@ import type { DelayedGift } from '@/lib/delayed-gifts'
 import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
 import type { GameInterfaceState } from '@/lib/game-interface-types'
 import type { OutcomeCardData } from '@/lib/outcome-card'
+import type { RewardFeedItem } from '@/lib/reward-feed'
 
 /**
  * Input context for building the UI patch
@@ -40,6 +41,7 @@ export interface UiPatchContext {
 
   // Feedback
   outcomeCard: OutcomeCardData | null
+  rewardFeed: RewardFeedItem[]
   consequenceEcho: ConsequenceEcho | null
   patternSensation: string | null
   patternShiftMsg: string | null
@@ -78,6 +80,7 @@ export interface UiPatchContext {
   // Previous state (for preserved fields)
   previousState: Pick<GameInterfaceState,
     | 'currentNode'
+    | 'rewardFeed'
     | 'showJournal'
     | 'journalInitialTab'
     | 'showConstellation'
@@ -137,6 +140,7 @@ export function buildChoiceUiPatch(ctx: UiPatchContext): ChoiceUiPatch {
 
     // Feedback state (active)
     outcomeCard: ctx.outcomeCard,
+    rewardFeed: ctx.rewardFeed,
     consequenceEcho: ctx.consequenceEcho,
     patternSensation: ctx.patternShiftMsg || ctx.patternSensation,
 

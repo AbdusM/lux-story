@@ -11,6 +11,8 @@ import type { OrbFillLevels } from '@/lib/choice-adapter'
 import type { OutcomeCardData } from '@/lib/outcome-card'
 import type { PrismTabId } from '@/lib/prism-tabs'
 import { OutcomeCard } from '@/components/game/OutcomeCard'
+import type { RewardFeedItem } from '@/lib/reward-feed'
+import { RewardFeed } from '@/components/game/RewardFeed'
 
 interface GameFooterProps {
   isEnding: boolean
@@ -19,7 +21,9 @@ interface GameFooterProps {
   gameState: GameState | null
   isProcessing: boolean
   outcomeCard: OutcomeCardData | null
+  rewardFeed: RewardFeedItem[]
   onDismissOutcome: () => void
+  onDismissRewardItem: (id: string) => void
   onOpenPrismTab: (tab: PrismTabId) => void
   orbFillLevels: OrbFillLevels
   cognitiveLoad: CognitiveLoadLevel
@@ -33,7 +37,9 @@ export function GameFooter({
   gameState,
   isProcessing,
   outcomeCard,
+  rewardFeed,
   onDismissOutcome,
+  onDismissRewardItem,
   onOpenPrismTab,
   orbFillLevels,
   cognitiveLoad,
@@ -53,6 +59,15 @@ export function GameFooter({
               <OutcomeCard
                 card={outcomeCard}
                 onDismiss={onDismissOutcome}
+                onOpenPrismTab={onOpenPrismTab}
+              />
+            </div>
+          )}
+          {rewardFeed && rewardFeed.length > 0 && (
+            <div className="px-4 sm:px-6 pt-2">
+              <RewardFeed
+                items={rewardFeed}
+                onDismissItem={onDismissRewardItem}
                 onOpenPrismTab={onOpenPrismTab}
               />
             </div>
