@@ -86,6 +86,7 @@ class DialogueGraphValidator {
   private warnings: ValidationError[] = []
   private stats: GraphStats[] = []
   private globalNodeIds: Set<string> = new Set()
+  private globalIncomingCounts: Map<string, number> = new Map()
   private readonly virtualNodeIds = new Set(['TRAVEL_PENDING', 'SIMULATION_PENDING'])
 
   validate(graphs: { name: string; nodes: DialogueNode[]; startNodeId: string }[]): ValidationResult {
@@ -93,12 +94,33 @@ class DialogueGraphValidator {
     this.warnings = []
     this.stats = []
     this.globalNodeIds = new Set()
+    this.globalIncomingCounts = new Map()
 
     // Build a master set of node IDs across all loaded graphs so per-graph validation
     // doesn't incorrectly fail for intentional cross-graph references.
     for (const graph of graphs) {
       for (const node of graph.nodes) {
         this.globalNodeIds.add(node.nodeId)
+      }
+    }
+
+    // Build a master set of incoming references across all graphs.
+    // This prevents false "orphaned node" warnings for nodes that are entered from OTHER graphs.
+    for (const graph of graphs) {
+      for (const node of graph.nodes) {
+        for (const choice of node.choices) {
+          const target = choice.nextNodeId
+          if (this.globalNodeIds.has(target)) {
+            this.globalIncomingCounts.set(target, (this.globalIncomingCounts.get(target) ?? 0) + 1)
+          }
+        }
+
+        for (const content of node.content || []) {
+          const target = content.interrupt?.targetNodeId
+          if (target && this.globalNodeIds.has(target)) {
+            this.globalIncomingCounts.set(target, (this.globalIncomingCounts.get(target) ?? 0) + 1)
+          }
+        }
       }
     }
 
@@ -119,7 +141,6 @@ class DialogueGraphValidator {
 
   private validateGraph(name: string, nodes: DialogueNode[], startNodeId: string): void {
     const nodeMap = new Map<string, DialogueNode>()
-    const allTargetNodeIds = new Set<string>()
     const reachableFromStart = new Set<string>()
     const patternCounts: Record<string, number> = {
       analytical: 0,
@@ -146,7 +167,7 @@ class DialogueGraphValidator {
 
     // Validate each node and detect fake choice clusters
     for (const node of nodes) {
-      this.validateNode(name, node, nodeMap, allTargetNodeIds)
+      this.validateNode(name, node, nodeMap)
 
       // Count patterns
       for (const choice of node.choices) {
@@ -156,7 +177,8 @@ class DialogueGraphValidator {
       }
 
       // Detect fake choice clusters (2+ choices → same destination)
-      // Exclude explicit [Continue] choices which are intentional
+      // AAA definition: "fake" only if the choices are semantically identical (not merely converging).
+      // Exclude explicit [Continue] choices which are intentional.
       const nonContinueChoices = node.choices.filter(c =>
         !c.text.toLowerCase().includes('[continue]') &&
         !c.text.toLowerCase().includes('continue') &&
@@ -172,18 +194,64 @@ class DialogueGraphValidator {
           destinationGroups.set(choice.nextNodeId, existing)
         }
 
-        // Flag clusters of 2+ choices to same destination
+        const stableStringify = (value: unknown): string => {
+          const seen = new WeakSet<object>()
+          const normalize = (v: unknown): unknown => {
+            if (v === null || v === undefined) return v
+            if (typeof v !== 'object') return v
+
+            // Convert Set to sorted array.
+            if (v instanceof Set) return Array.from(v).sort()
+
+            // Array: normalize each entry.
+            if (Array.isArray(v)) return v.map(normalize)
+
+            // Plain object: sort keys for stability.
+            if (seen.has(v as object)) return '[Circular]'
+            seen.add(v as object)
+            const obj = v as Record<string, unknown>
+            const out: Record<string, unknown> = {}
+            for (const k of Object.keys(obj).sort()) {
+              out[k] = normalize(obj[k])
+            }
+            return out
+          }
+          return JSON.stringify(normalize(value))
+        }
+
+        const choiceSemanticSignature = (choice: (typeof nonContinueChoices)[number]): string => {
+          // Note: we intentionally EXCLUDE choiceId/text/nextNodeId from the signature,
+          // because we're trying to detect whether the "game meaning" differs.
+          return stableStringify({
+            visibleCondition: choice.visibleCondition ?? null,
+            enabledCondition: choice.enabledCondition ?? null,
+            pattern: choice.pattern ?? null,
+            skills: choice.skills ?? null,
+            learningObjectiveId: choice.learningObjectiveId ?? null,
+            consequence: (choice as any).consequence ?? null, // legacy safety
+            preview: choice.preview ?? null,
+            voiceVariations: choice.voiceVariations ?? null,
+            archetype: choice.archetype ?? null,
+            interaction: choice.interaction ?? null,
+            requiredOrbFill: choice.requiredOrbFill ?? null,
+          })
+        }
+
+        // Flag clusters of 2+ choices to same destination only if they are semantically identical.
         for (const [dest, choices] of destinationGroups) {
           if (choices.length >= 2) {
-            fakeChoiceClusters++
-            const choiceTexts = choices.map(c => `"${c.text.substring(0, 40)}..."`).join(', ')
-            this.warnings.push({
-              severity: 'warning',
-              graph: name,
-              nodeId: node.nodeId,
-              message: `FAKE CHOICE: ${choices.length} choices all lead to "${dest}"`,
-              suggestion: `Choices: ${choiceTexts}. Create divergent paths or different acknowledgment.`
-            })
+            const signatures = new Set(choices.map(choiceSemanticSignature))
+            if (signatures.size === 1) {
+              fakeChoiceClusters++
+              const choiceTexts = choices.map(c => `"${c.text.substring(0, 40)}..."`).join(', ')
+              this.warnings.push({
+                severity: 'warning',
+                graph: name,
+                nodeId: node.nodeId,
+                message: `FAKE CHOICE: ${choices.length} choices all lead to "${dest}" with identical meaning`,
+                suggestion: `Choices: ${choiceTexts}. Create divergent paths or add consequences/conditions so the choice matters.`
+              })
+            }
           }
         }
       }
@@ -204,26 +272,26 @@ class DialogueGraphValidator {
 
     // Find orphaned nodes
     const orphanedNodes: string[] = []
-    // Cross-graph entry points - these are intentionally reachable from OTHER graphs
-    const crossGraphEntryPoints = new Set<string>(Object.values(samuelEntryPoints))
-
     for (const nodeId of nodeMap.keys()) {
       if (!reachableFromStart.has(nodeId) && nodeId !== startNodeId) {
-        // Check if it's referenced as a target but just unreachable from start
-        if (!allTargetNodeIds.has(nodeId)) {
-          // Skip cross-graph entry points (they're linked from character graphs)
-          if (crossGraphEntryPoints.has(nodeId)) {
-            continue
-          }
-          orphanedNodes.push(nodeId)
-          this.warnings.push({
-            severity: 'warning',
-            graph: name,
-            nodeId: nodeId,
-            message: `Orphaned node: "${nodeId}" has no incoming references`,
-            suggestion: 'This node is never reached. Add a choice pointing to it or remove it.'
-          })
-        }
+        // "Orphaned" means "no incoming edges anywhere", not just within this graph.
+        // This avoids false positives for nodes that are entered from another graph.
+        const incoming = this.globalIncomingCounts.get(nodeId) ?? 0
+        if (incoming > 0) continue
+
+        // Cross-graph entry points - these are intentionally reachable from OTHER graphs
+        // (Kept as a hard skip in case globalIncomingCounts misses legacy cases.)
+        const crossGraphEntryPoints = new Set<string>(Object.values(samuelEntryPoints))
+        if (crossGraphEntryPoints.has(nodeId)) continue
+
+        orphanedNodes.push(nodeId)
+        this.warnings.push({
+          severity: 'warning',
+          graph: name,
+          nodeId: nodeId,
+          message: `Orphaned node: "${nodeId}" has no incoming references`,
+          suggestion: 'This node is never reached. Add a choice pointing to it or remove it.'
+        })
       }
     }
 
@@ -268,8 +336,7 @@ class DialogueGraphValidator {
   private validateNode(
     graphName: string,
     node: DialogueNode,
-    nodeMap: Map<string, DialogueNode>,
-    allTargetNodeIds: Set<string>
+    nodeMap: Map<string, DialogueNode>
   ): void {
     // Check required fields
     if (!node.nodeId) {
@@ -392,9 +459,6 @@ class DialogueGraphValidator {
     // Validate choices
     const choiceIds = new Set<string>()
     for (const choice of node.choices) {
-      // Track all target nodes for orphan detection
-      allTargetNodeIds.add(choice.nextNodeId)
-
       // Check choice ID
       if (!choice.choiceId) {
         this.errors.push({
