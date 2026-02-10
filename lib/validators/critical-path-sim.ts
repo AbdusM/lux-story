@@ -6,6 +6,7 @@ import { deriveDisabledReason } from '@/lib/disabled-reasons'
 import { findCharacterForNode } from '@/lib/graph-registry'
 
 export type SimViolationType = 'required_state_violation' | 'soft_deadlock' | 'missing_node'
+  | 'hard_dead_end'
 
 export type SimChoiceSnapshot = {
   choice_id: string
@@ -42,11 +43,29 @@ export type CriticalPathSimOptions = {
   max_unique_states_per_node?: number
 }
 
+function fnv1a32(str: string, hash = 0x811c9dc5): number {
+  let h = hash >>> 0
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i)
+    h = Math.imul(h, 0x01000193) >>> 0
+  }
+  return h >>> 0
+}
+
+function hashSortedStrings(values: string[]): string {
+  let h = 0x811c9dc5
+  for (const v of values) {
+    h = fnv1a32(v, h)
+    h = fnv1a32('\0', h)
+  }
+  return (h >>> 0).toString(16)
+}
+
 function summarizeStateKey(nodeId: string, state: GameState, characterId: string | null): string {
   const patterns = state.patterns
   const patternKey = `${patterns.analytical},${patterns.helping},${patterns.building},${patterns.patience},${patterns.exploring}`
   const flags = Array.from(state.globalFlags).sort()
-  const flagsKey = flags.join('|')
+  const flagsKey = `${flags.length}:${hashSortedStrings(flags)}`
   const orbs = state.orbs?.balance
   const orbKey = orbs
     ? `${orbs.analytical},${orbs.helping},${orbs.building},${orbs.patience},${orbs.exploring},t${orbs.totalEarned}`
@@ -68,8 +87,14 @@ function summarizeStateKey(nodeId: string, state: GameState, characterId: string
 function isTerminalLike(node: DialogueNode): boolean {
   if (node.simulation) return true
   if (node.metadata?.sessionBoundary) return true
+  if (node.metadata?.experienceId && (node.choices?.length ?? 0) === 0) return true
+  if (node.nodeId === 'hub_return' || node.nodeId.endsWith('_hub_return')) return true
   const tags = node.tags || []
   if (tags.includes('terminal')) return true
+  if (tags.includes('ending')) return true
+  if (tags.includes('arc_complete')) return true
+  if (tags.includes('journey_complete')) return true
+  if (tags.includes('journey_complete_trigger')) return true
   return false
 }
 
@@ -200,6 +225,13 @@ function applyOnEnter(state: GameState, node: DialogueNode): GameState {
   return s
 }
 
+function ensureCharacterState(state: GameState, characterId: string): GameState {
+  if (state.characters.has(characterId)) return state
+  const next = new Map(state.characters)
+  next.set(characterId, GameStateUtils.createCharacterState(characterId))
+  return { ...state, characters: next }
+}
+
 /**
  * Bounded, deterministic BFS. Designed for CI: catches early-game flow breakers
  * without Playwright by simulating enabled choices and state mutations.
@@ -211,7 +243,7 @@ export function simulateCriticalPath(
   const violations: SimViolation[] = []
 
   const strategy = options.strategy ?? 'bfs'
-  const maxUniqueStatesPerNode = options.max_unique_states_per_node ?? Number.POSITIVE_INFINITY
+  const maxUniqueStatesPerNode = options.max_unique_states_per_node ?? 25
 
   const queue: Array<{
     nodeId: string
@@ -219,13 +251,14 @@ export function simulateCriticalPath(
     trace: Array<{ node_id: string; choice_id?: string }>
     depth: number
   }> = [{ nodeId: options.start_node_id, state: initialState, trace: [{ node_id: options.start_node_id }], depth: 0 }]
+  let queueHead = 0
 
   const visited = new Set<string>()
   const uniqueStatesPerNode = new Map<string, number>()
   let expanded = 0
 
-  while (queue.length > 0) {
-    const item = (strategy === 'dfs' ? queue.pop() : queue.shift())!
+  while (strategy === 'dfs' ? queue.length > 0 : queueHead < queue.length) {
+    const item = (strategy === 'dfs' ? queue.pop() : queue[queueHead++])!
     if (item.depth > options.max_steps) continue
     if (expanded >= options.max_states) break
 
@@ -254,7 +287,10 @@ export function simulateCriticalPath(
       continue
     }
 
-    const key = summarizeStateKey(item.nodeId, item.state, characterId)
+    // Align simulation with runtime auto-heal behavior (missing character state in old saves).
+    const healedState = ensureCharacterState(item.state, characterId)
+
+    const key = summarizeStateKey(item.nodeId, healedState, characterId)
     if (visited.has(key)) continue
     visited.add(key)
     expanded++
@@ -268,7 +304,7 @@ export function simulateCriticalPath(
 
     // Strict-mode check: requiredState must hold at the point of entry (pre-onEnter).
     if (node.requiredState) {
-      const ok = StateConditionEvaluator.evaluate(node.requiredState, item.state, characterId, item.state.skillLevels)
+      const ok = StateConditionEvaluator.evaluate(node.requiredState, healedState, characterId, healedState.skillLevels)
       if (!ok) {
         violations.push({
           type: 'required_state_violation',
@@ -282,7 +318,7 @@ export function simulateCriticalPath(
       }
     }
 
-    const enteredState = applyOnEnter(item.state, node)
+    const enteredState = applyOnEnter(healedState, node)
 
     if (node.choices && node.choices.length > 0) {
       const enabledChoiceIds = getEnabledChoiceIds(node, enteredState, characterId)
@@ -308,6 +344,17 @@ export function simulateCriticalPath(
           state: nextState,
           trace: [...item.trace, { node_id: nextNodeId, choice_id: choiceId }],
           depth: item.depth + 1,
+        })
+      }
+    } else {
+      // Hard dead-end: reachable node with no outgoing choices and no valid terminal semantics.
+      if (!isTerminalLike(node)) {
+        violations.push({
+          type: 'hard_dead_end',
+          node_id: node.nodeId,
+          character_id: characterId,
+          details: 'Node has no choices and is not marked terminal/ending/experience/hub_return.',
+          trace: item.trace,
         })
       }
     }

@@ -17,6 +17,7 @@ type Config = {
   start_node_ids: string[]
   max_steps: number
   max_states: number
+  max_unique_states_per_node?: number
 }
 
 function signatureFor(startNodeId: string, v: { type: string; node_id: string; character_id: string | null }): string {
@@ -62,6 +63,7 @@ const baselineOut = readArg('--baseline-out') ?? derived.baselinePath
 
 const maxSteps = Number(readArg('--max-steps') ?? cfg.max_steps)
 const maxStates = Number(readArg('--max-states') ?? cfg.max_states)
+const maxUniqueStatesPerNode = Number(readArg('--max-unique-states-per-node') ?? (cfg.max_unique_states_per_node ?? NaN))
 
 const s = GameStateUtils.createNewGameState(cfg.fixture)
 const startNodeIds = cfg.start_node_ids
@@ -71,6 +73,7 @@ const all = startNodeIds.flatMap((startNodeId) => {
     start_node_id: startNodeId,
     max_steps: Number.isFinite(maxSteps) ? maxSteps : cfg.max_steps,
     max_states: Number.isFinite(maxStates) ? maxStates : cfg.max_states,
+    max_unique_states_per_node: Number.isFinite(maxUniqueStatesPerNode) ? maxUniqueStatesPerNode : cfg.max_unique_states_per_node,
   })
   return violations.map(v => ({ startNodeId, v }))
 })
@@ -81,6 +84,7 @@ const report = {
   start_node_ids: startNodeIds,
   max_steps: maxSteps,
   max_states: maxStates,
+  max_unique_states_per_node: Number.isFinite(maxUniqueStatesPerNode) ? maxUniqueStatesPerNode : (cfg.max_unique_states_per_node ?? null),
   violation_count: all.length,
   violations: all.map(({ startNodeId, v }) => ({ ...v, start_node_id: startNodeId })),
 }

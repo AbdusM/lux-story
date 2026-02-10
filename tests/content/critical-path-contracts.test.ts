@@ -15,10 +15,26 @@ type Config = {
   start_node_ids: string[]
   max_steps: number
   max_states: number
+  max_unique_states_per_node?: number
 }
 
 function signatureFor(startNodeId: string, v: { type: string; node_id: string; character_id: string | null }): string {
   return `${startNodeId}|${v.type}|${v.character_id ?? 'unknown'}|${v.node_id}`
+}
+
+function formatTrace(trace: Array<{ node_id: string; choice_id?: string }>): string {
+  const parts: string[] = []
+  for (let i = 0; i < trace.length; i++) {
+    const t = trace[i]
+    if (i === 0) {
+      parts.push(t.node_id)
+      continue
+    }
+    const prev = trace[i - 1]
+    const via = t.choice_id ?? prev.choice_id
+    parts.push(via ? `-(${via})-> ${t.node_id}` : `-> ${t.node_id}`)
+  }
+  return parts.join(' ')
 }
 
 describe('Critical Path Contracts (AAA)', () => {
@@ -52,6 +68,7 @@ describe('Critical Path Contracts (AAA)', () => {
           start_node_id: startNodeId,
           max_steps: cfg.max_steps,
           max_states: cfg.max_states,
+          max_unique_states_per_node: cfg.max_unique_states_per_node,
         }).violations.map(v => ({ startNodeId, v }))
       })
 
@@ -60,13 +77,23 @@ describe('Critical Path Contracts (AAA)', () => {
       const newOnes = sigs.filter(sig => !baselineSigs.has(sig))
 
       if (newOnes.length > 0) {
+        const bySig = new Map<string, any>()
+        for (const { startNodeId, v } of violations) {
+          const sig = signatureFor(startNodeId, v)
+          if (!bySig.has(sig)) bySig.set(sig, v)
+        }
         failures.push(
           [
             `config=${basename(cfgPath)}`,
             `baseline=${basename(baselinePath)}`,
             `fixture=${cfg.fixture}`,
             `new_violations=${newOnes.length}`,
-            ...newOnes.slice(0, 50).map((s) => `  ${s}`),
+            ...newOnes.slice(0, 25).map((s) => {
+              const v = bySig.get(s)
+              const details = v?.details ? ` :: ${v.details}` : ''
+              const trace = Array.isArray(v?.trace) ? `\n    trace: ${formatTrace(v.trace)}` : ''
+              return `  ${s}${details}${trace}`
+            }),
             newOnes.length > 50 ? `  ... (${newOnes.length - 50} more)` : null,
           ].filter(Boolean).join('\n')
         )

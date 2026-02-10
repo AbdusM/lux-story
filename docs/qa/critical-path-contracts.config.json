@@ -3,5 +3,6 @@
   "fixture": "baseline_early_game_v1",
   "start_node_ids": ["station_arrival", "samuel_comprehensive_hub", "entry_arrival"],
   "max_steps": 20,
-  "max_states": 2000
+  "max_states": 2000,
+  "max_unique_states_per_node": 25
 }

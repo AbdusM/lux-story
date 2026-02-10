@@ -10,6 +10,7 @@
   ],
   "max_steps": 30,
   "max_states": 4000,
+  "max_unique_states_per_node": 25,
   "violation_count": 0,
   "violations": []
 }
