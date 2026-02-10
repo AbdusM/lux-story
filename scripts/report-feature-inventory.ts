@@ -23,6 +23,7 @@ import { listFlags } from '@/lib/feature-flags'
 import { ACTIVE_TESTS } from '@/lib/experiments'
 import { STORAGE_KEYS, DEV_STORAGE_KEYS, LEGACY_KEY_MAP, type StorageKey } from '@/lib/persistence/storage-keys'
 import { INTERACTION_EVENT_TYPES } from '@/lib/telemetry/interaction-events-spec'
+import { EVENT_BUS_EVENT_META, type EventBusEventStatus } from '@/lib/telemetry/event-bus-meta'
 
 type FlagType = 'boolean' | 'enum'
 
@@ -88,6 +89,8 @@ type InteractionEventInventoryRow = {
 
 type EventBusEventInventoryRow = {
   event_name: string
+  status: EventBusEventStatus | 'unknown'
+  owner: string
   documented_in_dictionary: boolean
   literal_usage_count: number
   literal_usage_count_runtime: number
@@ -157,6 +160,10 @@ type InventoryReport = {
     event_bus: {
       declared_total: number
       literal_used_total: number
+      status_counts: Record<string, number>
+      missing_meta: string[]
+      extra_meta: string[]
+      used_but_not_active: string[]
       unknown_literals: Array<{ event_name: string; count: number; files: string[] }>
       missing_in_dictionary: string[]
       rows: EventBusEventInventoryRow[]
@@ -178,6 +185,7 @@ const ANALYTICS_DICTIONARY_REL = 'docs/reference/data-dictionary/12-analytics.md
 const VERIFY_ANALYTICS_SCRIPT_REL = 'scripts/verify-analytics-dictionary.ts'
 const INTERACTION_EVENTS_SPEC_REL = 'lib/telemetry/interaction-events-spec.ts'
 const EVENT_BUS_SPEC_REL = 'lib/event-bus.ts'
+const EVENT_BUS_META_REL = 'lib/telemetry/event-bus-meta.ts'
 const DATA_DICTIONARY_DIR_REL = 'docs/reference/data-dictionary'
 
 const SCAN_DIRS = [
@@ -410,6 +418,10 @@ function main() {
   const eventBusAbs = path.join(REPO_ROOT, EVENT_BUS_SPEC_REL)
   const eventBusDeclared = extractEventBusDeclaredEvents(eventBusAbs)
   const eventBusDeclaredSet = new Set(eventBusDeclared)
+  const eventBusMetaDeclared = Object.keys(EVENT_BUS_EVENT_META).sort()
+  const eventBusMetaSet = new Set(eventBusMetaDeclared)
+  const eventBusMetaMissing = eventBusDeclared.filter((e) => !eventBusMetaSet.has(e)).sort()
+  const eventBusMetaExtra = eventBusMetaDeclared.filter((e) => !eventBusDeclaredSet.has(e)).sort()
 
   const interactionDeclared = Array.from(INTERACTION_EVENT_TYPES)
   const interactionDeclaredSet = new Set<string>(interactionDeclared)
@@ -547,8 +559,8 @@ function main() {
         }
       }
 
-      // Event bus string literal usage anywhere in code (excluding declaration file).
-      if (fileRel !== EVENT_BUS_SPEC_REL) {
+      // Event bus string literal usage anywhere in code (excluding spec/registry files).
+      if (fileRel !== EVENT_BUS_SPEC_REL && fileRel !== EVENT_BUS_META_REL) {
         if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
           const s = node.text
           if (/^(game|ui|perf|system|analytics):/.test(s)) {
@@ -796,12 +808,24 @@ function main() {
 
   const eventBusMissingInDict = eventBusDeclared.filter((t) => !analyticsDoc.includes(t)).sort()
 
+  const usedButNotActive: string[] = []
+  const statusCounts = { active: 0, planned: 0, deprecated: 0, unknown: 0 } as Record<string, number>
+
   const eventBusRows: EventBusEventInventoryRow[] = eventBusDeclared.map((t) => {
     const usage = eventBusLiteralUsage.get(t)
     const usageFiles = usage ? Array.from(usage.files.keys()).sort() : []
     const dist = usage ? usageDist(usage) : { runtime: 0, tests: 0, scripts: 0 }
+    const meta = EVENT_BUS_EVENT_META[t]
+    const status = meta?.status ?? 'unknown'
+    const owner = meta?.owner ?? 'unknown'
+
+    statusCounts[status] = (statusCounts[status] ?? 0) + 1
+    if ((usage?.count ?? 0) > 0 && status !== 'active') usedButNotActive.push(t)
+
     return {
       event_name: t,
+      status,
+      owner,
       documented_in_dictionary: analyticsDoc.includes(t),
       literal_usage_count: usage?.count ?? 0,
       literal_usage_count_runtime: dist.runtime,
@@ -810,6 +834,19 @@ function main() {
       literal_usage_files: usageFiles,
     }
   }).sort((a, b) => a.event_name.localeCompare(b.event_name))
+
+  usedButNotActive.sort()
+
+  // AAA: require a lifecycle entry for every declared event, and prevent "planned" events from being used.
+  if (eventBusMetaMissing.length || eventBusMetaExtra.length || usedButNotActive.length) {
+    // eslint-disable-next-line no-console
+    console.error('[report-feature-inventory] EventBus meta mismatch', {
+      missing_meta: eventBusMetaMissing,
+      extra_meta: eventBusMetaExtra,
+      used_but_not_active: usedButNotActive,
+    })
+    process.exit(1)
+  }
 
   const report: InventoryReport = {
     generated_at: generatedAt,
@@ -864,6 +901,10 @@ function main() {
       event_bus: {
         declared_total: eventBusDeclared.length,
         literal_used_total: new Set(eventBusLiteralUsage.keys()).size,
+        status_counts: statusCounts,
+        missing_meta: eventBusMetaMissing,
+        extra_meta: eventBusMetaExtra,
+        used_but_not_active: usedButNotActive,
         unknown_literals: unknownEventBusLiterals,
         missing_in_dictionary: eventBusMissingInDict,
         rows: eventBusRows,
@@ -1047,6 +1088,7 @@ function main() {
   mdLines.push('')
   mdLines.push(`Declared (spec): **${report.telemetry.event_bus.declared_total}**`)
   mdLines.push(`Literal used (code): **${report.telemetry.event_bus.literal_used_total}**`)
+  mdLines.push(`Status: active **${report.telemetry.event_bus.status_counts.active ?? 0}**, planned **${report.telemetry.event_bus.status_counts.planned ?? 0}**, deprecated **${report.telemetry.event_bus.status_counts.deprecated ?? 0}**`)
   mdLines.push(`Missing in dictionary: **${report.telemetry.event_bus.missing_in_dictionary.length}**`)
   mdLines.push(`Unknown literals (not in spec): **${report.telemetry.event_bus.unknown_literals.length}**`)
   mdLines.push('')
@@ -1070,15 +1112,25 @@ function main() {
     mdLines.push('')
   }
 
+  // If we ever allow planned usage, show it explicitly (but currently this is gated above and will exit 1).
+  if (report.telemetry.event_bus.used_but_not_active.length) {
+    mdLines.push('#### Used But Not Active (Bug)')
+    mdLines.push('')
+    mdLines.push(report.telemetry.event_bus.used_but_not_active.map((t) => `- \`${t}\``).join('\n'))
+    mdLines.push('')
+  }
+
   const eventBusTable = formatMdTable(
     report.telemetry.event_bus.rows.map(r => ({
       Event: `\`${markdownEscape(r.event_name)}\``,
+      Status: r.status,
+      Owner: markdownEscape(r.owner),
       Documented: r.documented_in_dictionary ? 'YES' : 'NO',
       Used: r.literal_usage_count ? `**${r.literal_usage_count}**` : '0',
       Runtime: r.literal_usage_count_runtime ? `**${r.literal_usage_count_runtime}**` : '0',
       References: r.literal_usage_files.length ? r.literal_usage_files.slice(0, 4).map(f => `\`${f}\``).join(', ') + (r.literal_usage_files.length > 4 ? ` (+${r.literal_usage_files.length - 4})` : '') : '',
     })),
-    ['Event', 'Documented', 'Used', 'Runtime', 'References']
+    ['Event', 'Status', 'Owner', 'Documented', 'Used', 'Runtime', 'References']
   )
   mdLines.push(eventBusTable)
   mdLines.push('')

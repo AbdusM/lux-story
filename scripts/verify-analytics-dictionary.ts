@@ -8,6 +8,7 @@ const REPO_ROOT = process.cwd()
 const CODE_DIRS = ['app', 'components', 'hooks', 'lib']
 const DOC_PATH = path.join(REPO_ROOT, 'docs/reference/data-dictionary/12-analytics.md')
 const EVENT_BUS_PATH = path.join(REPO_ROOT, 'lib/event-bus.ts')
+const EVENT_BUS_META_PATH = path.join(REPO_ROOT, 'lib/telemetry/event-bus-meta.ts')
 
 const SKIP_DIR_NAMES = new Set([
   'node_modules',
@@ -110,8 +111,9 @@ async function main() {
         const v = match[1]
         if (v) used.add(v)
       }
-      // Do not count the event bus spec file as "usage".
-      if (path.resolve(filePath) !== path.resolve(EVENT_BUS_PATH)) {
+      // Do not count spec/registry files as "usage".
+      const resolved = path.resolve(filePath)
+      if (resolved !== path.resolve(EVENT_BUS_PATH) && resolved !== path.resolve(EVENT_BUS_META_PATH)) {
         for (const match of text.matchAll(EVENT_NAME_LITERAL_REGEX)) {
           const v = match[1]
           if (v) eventBusUsedLiterals.add(v)

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-02-10T17:51:02.529Z",
-  "git_commit": "f02147f895b9a7b98fbc6245a809f8b9bd55a072",
+  "generated_at": "2026-02-10T18:05:18.546Z",
+  "git_commit": "2f02e09f5e53bae1147c97dd5efe725e922dedab",
   "flags": {
     "total": 6,
     "booleans": 5,
@@ -1185,11 +1185,22 @@
     "event_bus": {
       "declared_total": 50,
       "literal_used_total": 13,
+      "status_counts": {
+        "active": 13,
+        "planned": 37,
+        "deprecated": 0,
+        "unknown": 0
+      },
+      "missing_meta": [],
+      "extra_meta": [],
+      "used_but_not_active": [],
       "unknown_literals": [],
       "missing_in_dictionary": [],
       "rows": [
         {
           "event_name": "analytics:tracked",
+          "status": "planned",
+          "owner": "analytics",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1199,6 +1210,8 @@
         },
         {
           "event_name": "game:arc:completed",
+          "status": "planned",
+          "owner": "narrative",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1208,6 +1221,8 @@
         },
         {
           "event_name": "game:character:met",
+          "status": "planned",
+          "owner": "narrative",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1217,6 +1232,8 @@
         },
         {
           "event_name": "game:choice:made",
+          "status": "planned",
+          "owner": "core",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1226,6 +1243,8 @@
         },
         {
           "event_name": "game:cognitive:flow",
+          "status": "planned",
+          "owner": "systems",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1235,6 +1254,8 @@
         },
         {
           "event_name": "game:dialogue:completed",
+          "status": "planned",
+          "owner": "narrative",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1244,6 +1265,8 @@
         },
         {
           "event_name": "game:dialogue:started",
+          "status": "planned",
+          "owner": "narrative",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1253,6 +1276,8 @@
         },
         {
           "event_name": "game:emotional:calm",
+          "status": "planned",
+          "owner": "systems",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1262,6 +1287,8 @@
         },
         {
           "event_name": "game:emotional:stress",
+          "status": "planned",
+          "owner": "systems",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1271,6 +1298,8 @@
         },
         {
           "event_name": "game:golden_prompt:achieved",
+          "status": "planned",
+          "owner": "simulations",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1280,6 +1309,8 @@
         },
         {
           "event_name": "game:interrupt:available",
+          "status": "planned",
+          "owner": "systems",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1289,6 +1320,8 @@
         },
         {
           "event_name": "game:interrupt:missed",
+          "status": "planned",
+          "owner": "systems",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1298,6 +1331,8 @@
         },
         {
           "event_name": "game:interrupt:taken",
+          "status": "planned",
+          "owner": "systems",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1307,6 +1342,8 @@
         },
         {
           "event_name": "game:knowledge:gained",
+          "status": "planned",
+          "owner": "systems",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1316,6 +1353,8 @@
         },
         {
           "event_name": "game:message:received",
+          "status": "active",
+          "owner": "core",
           "documented_in_dictionary": true,
           "literal_usage_count": 1,
           "literal_usage_count_runtime": 1,
@@ -1327,6 +1366,8 @@
         },
         {
           "event_name": "game:message:streaming",
+          "status": "active",
+          "owner": "core",
           "documented_in_dictionary": true,
           "literal_usage_count": 1,
           "literal_usage_count_runtime": 1,
@@ -1338,6 +1379,8 @@
         },
         {
           "event_name": "game:pattern:discovered",
+          "status": "planned",
+          "owner": "systems",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1347,6 +1390,8 @@
         },
         {
           "event_name": "game:pattern:threshold",
+          "status": "planned",
+          "owner": "systems",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1356,6 +1401,8 @@
         },
         {
           "event_name": "game:pattern:updated",
+          "status": "planned",
+          "owner": "systems",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1365,6 +1412,8 @@
         },
         {
           "event_name": "game:platform:updated",
+          "status": "planned",
+          "owner": "systems",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1374,6 +1423,8 @@
         },
         {
           "event_name": "game:presence:updated",
+          "status": "active",
+          "owner": "core",
           "documented_in_dictionary": true,
           "literal_usage_count": 1,
           "literal_usage_count_runtime": 1,
@@ -1385,6 +1436,8 @@
         },
         {
           "event_name": "game:relationship:updated",
+          "status": "planned",
+          "owner": "narrative-systems",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1394,6 +1447,8 @@
         },
         {
           "event_name": "game:scene:transition",
+          "status": "active",
+          "owner": "core",
           "documented_in_dictionary": true,
           "literal_usage_count": 1,
           "literal_usage_count_runtime": 1,
@@ -1405,6 +1460,8 @@
         },
         {
           "event_name": "game:simulation:completed",
+          "status": "planned",
+          "owner": "simulations",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1414,6 +1471,8 @@
         },
         {
           "event_name": "game:simulation:started",
+          "status": "planned",
+          "owner": "simulations",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1423,6 +1482,8 @@
         },
         {
           "event_name": "game:skill:unlocked",
+          "status": "planned",
+          "owner": "systems",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1432,6 +1493,8 @@
         },
         {
           "event_name": "game:skills:updated",
+          "status": "planned",
+          "owner": "systems",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1441,6 +1504,8 @@
         },
         {
           "event_name": "game:state:changed",
+          "status": "active",
+          "owner": "core",
           "documented_in_dictionary": true,
           "literal_usage_count": 1,
           "literal_usage_count_runtime": 1,
@@ -1452,6 +1517,8 @@
         },
         {
           "event_name": "game:trust:changed",
+          "status": "active",
+          "owner": "core",
           "documented_in_dictionary": true,
           "literal_usage_count": 1,
           "literal_usage_count_runtime": 1,
@@ -1463,6 +1530,8 @@
         },
         {
           "event_name": "game:vulnerability:revealed",
+          "status": "planned",
+          "owner": "narrative",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1472,6 +1541,8 @@
         },
         {
           "event_name": "perf:api:slow",
+          "status": "planned",
+          "owner": "perf",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1481,6 +1552,8 @@
         },
         {
           "event_name": "perf:bundle:large",
+          "status": "planned",
+          "owner": "perf",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1490,6 +1563,8 @@
         },
         {
           "event_name": "perf:choice:slow",
+          "status": "planned",
+          "owner": "perf",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1499,6 +1574,8 @@
         },
         {
           "event_name": "perf:memory:warning",
+          "status": "planned",
+          "owner": "perf",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1508,6 +1585,8 @@
         },
         {
           "event_name": "perf:render:slow",
+          "status": "planned",
+          "owner": "perf",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1517,6 +1596,8 @@
         },
         {
           "event_name": "system:cleanup",
+          "status": "planned",
+          "owner": "infra",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1526,6 +1607,8 @@
         },
         {
           "event_name": "system:error",
+          "status": "active",
+          "owner": "infra",
           "documented_in_dictionary": true,
           "literal_usage_count": 1,
           "literal_usage_count_runtime": 1,
@@ -1537,6 +1620,8 @@
         },
         {
           "event_name": "system:info",
+          "status": "active",
+          "owner": "infra",
           "documented_in_dictionary": true,
           "literal_usage_count": 1,
           "literal_usage_count_runtime": 1,
@@ -1548,6 +1633,8 @@
         },
         {
           "event_name": "system:warning",
+          "status": "active",
+          "owner": "infra",
           "documented_in_dictionary": true,
           "literal_usage_count": 1,
           "literal_usage_count_runtime": 1,
@@ -1559,6 +1646,8 @@
         },
         {
           "event_name": "ui:animation:complete",
+          "status": "planned",
+          "owner": "ui",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1568,6 +1657,8 @@
         },
         {
           "event_name": "ui:animation:start",
+          "status": "planned",
+          "owner": "ui",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1577,6 +1668,8 @@
         },
         {
           "event_name": "ui:error:hide",
+          "status": "planned",
+          "owner": "ui",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1586,6 +1679,8 @@
         },
         {
           "event_name": "ui:error:show",
+          "status": "planned",
+          "owner": "ui",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1595,6 +1690,8 @@
         },
         {
           "event_name": "ui:message:hide",
+          "status": "active",
+          "owner": "ui",
           "documented_in_dictionary": true,
           "literal_usage_count": 1,
           "literal_usage_count_runtime": 1,
@@ -1606,6 +1703,8 @@
         },
         {
           "event_name": "ui:message:show",
+          "status": "active",
+          "owner": "ui",
           "documented_in_dictionary": true,
           "literal_usage_count": 1,
           "literal_usage_count_runtime": 1,
@@ -1617,6 +1716,8 @@
         },
         {
           "event_name": "ui:modal:closed",
+          "status": "planned",
+          "owner": "ui",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1626,6 +1727,8 @@
         },
         {
           "event_name": "ui:modal:opened",
+          "status": "planned",
+          "owner": "ui",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1635,6 +1738,8 @@
         },
         {
           "event_name": "ui:notification:display",
+          "status": "planned",
+          "owner": "ui",
           "documented_in_dictionary": true,
           "literal_usage_count": 0,
           "literal_usage_count_runtime": 0,
@@ -1644,6 +1749,8 @@
         },
         {
           "event_name": "ui:scene:hide",
+          "status": "active",
+          "owner": "ui",
           "documented_in_dictionary": true,
           "literal_usage_count": 1,
           "literal_usage_count_runtime": 1,
@@ -1655,6 +1762,8 @@
         },
         {
           "event_name": "ui:scene:show",
+          "status": "active",
+          "owner": "ui",
           "documented_in_dictionary": true,
           "literal_usage_count": 1,
           "literal_usage_count_runtime": 1,
