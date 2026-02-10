@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "fixture": "baseline_midgame_v1",
+  "start_node_ids": [
+    "station_arrival",
+    "samuel_comprehensive_hub",
+    "entry_arrival",
+    "sector_1_hall",
+    "market_entry_logic",
+    "alex_jordan_intro"
+  ],
+  "max_steps": 30,
+  "max_states": 4000
+}
+

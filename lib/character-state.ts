@@ -657,7 +657,7 @@ export class GameStateUtils {
    * Create a fresh game state for new game
    */
   static createNewGameState(playerId: string): GameState {
-    return {
+    const base: GameState = {
       saveVersion: NARRATIVE_CONSTANTS.SAVE_VERSION,
       playerId,
       characters: new Map(
@@ -741,6 +741,81 @@ export class GameStateUtils {
       // TD-004: Orb economy
       orbs: INITIAL_ORB_STATE
     }
+
+    // Test fixtures (AAA: deterministic validation seams).
+    // This is intentionally keyed off the "playerId" parameter so tests can request fixtures
+    // without adding a separate API. Runtime playerIds will not match these values.
+    if (playerId === 'baseline_midgame_v1') {
+      // Patterns: midgame baseline (enough to exercise gating without implying endgame mastery).
+      base.patterns = {
+        analytical: 3,
+        helping: 3,
+        building: 3,
+        patience: 3,
+        exploring: 3
+      }
+
+      // Global progress: met core cast (unlocks many hub/intersection conditions).
+      ;[
+        'met_maya',
+        'met_devon',
+        'met_jordan',
+        'met_alex',
+        'met_tess',
+        'met_rohan',
+        'met_marcus'
+      ].forEach((f) => base.globalFlags.add(f))
+
+      // Orb economy: enough to hit common `requiredOrbFill` thresholds (20-35) while still leaving higher locks.
+      base.orbs = {
+        ...base.orbs,
+        balance: {
+          ...base.orbs.balance,
+          analytical: 30,
+          helping: 30,
+          building: 30,
+          patience: 30,
+          exploring: 30,
+          totalEarned: 150,
+        }
+      }
+
+      const setTrust = (characterId: string, trust: number) => {
+        const cs = base.characters.get(characterId)
+        if (!cs) return
+        const anxiety = (10 - trust) * 10
+        const nervousSystemState = determineNervousSystemState(
+          anxiety,
+          trust,
+          asPatternRecord(base.patterns),
+          base.globalFlags
+        )
+        const lastReaction = calculateReaction(nervousSystemState, asPatternRecord(base.patterns), trust)
+        const relationshipStatus =
+          trust >= TRUST_THRESHOLDS.close ? 'confidant' : trust >= TRUST_THRESHOLDS.friendly ? 'acquaintance' : 'stranger'
+
+        base.characters.set(characterId, {
+          ...cs,
+          trust,
+          anxiety,
+          nervousSystemState,
+          lastReaction,
+          relationshipStatus,
+        })
+      }
+
+      // Relationship progress: modest trust to exercise trust gates without skipping arcs.
+      setTrust('samuel', 4)
+      setTrust('maya', 3)
+      setTrust('devon', 3)
+      setTrust('jordan', 3)
+      setTrust('alex', 3)
+      setTrust('tess', 3)
+      setTrust('rohan', 3)
+      setTrust('marcus', 3)
+    }
+
+    return base
   }
 
   /**
