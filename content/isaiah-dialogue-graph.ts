@@ -927,6 +927,9 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       emotion: 'warm_grateful',
       variation_id: 'loyalty_start_v1'
     }],
+    metadata: {
+      experienceId: 'the_site_visit' // Experience engine takes over
+    },
     onEnter: [
       { characterId: 'isaiah', addKnowledgeFlags: ['isaiah_loyalty_accepted'] }
     ],

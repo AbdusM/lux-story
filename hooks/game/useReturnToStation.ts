@@ -197,7 +197,8 @@ export function useReturnToStation({ setState, gameState }: UseReturnToStationPa
       )
 
       // P6: Check for Loyalty Experience Trigger
-      if (targetNode.metadata?.experienceId) {
+      // Only auto-start when the node is an experience takeover (choices: []).
+      if (targetNode.metadata?.experienceId && (targetNode.choices?.length ?? 0) === 0) {
         import("@/lib/experience-engine").then(({ ExperienceEngine }) => {
           const expState = ExperienceEngine.startExperience(targetNode.metadata!.experienceId as any)
           if (expState) {

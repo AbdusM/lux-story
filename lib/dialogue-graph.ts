@@ -630,6 +630,28 @@ export class StateConditionEvaluator {
     characterId?: string,
     skillLevels?: Record<string, number>
   ): EvaluatedChoice[] {
+    // Synthetic navigation escape hatch for hub-return nodes that were authored as end caps.
+    // These nodes are intended to send the player back to Samuel's hub, not end the session.
+    if (
+      node.choices.length === 0 &&
+      !node.metadata?.experienceId &&
+      !node.simulation &&
+      !(node.tags || []).includes('terminal') &&
+      !(node.tags || []).includes('arc_complete') &&
+      !(node.tags || []).includes('ending') &&
+      ((node.nodeId && node.nodeId.endsWith('_hub_return')) || node.nodeId === 'hub_return')
+    ) {
+      return [{
+        choice: {
+          choiceId: 'return_to_samuel_hub',
+          text: '(Return to Samuel)',
+          nextNodeId: 'samuel_comprehensive_hub',
+        },
+        visible: true,
+        enabled: true,
+      }]
+    }
+
     const evaluated = node.choices.map(choice => {
       // Check if choice should be visible
       const visible = this.evaluate(choice.visibleCondition, gameState, characterId, skillLevels)

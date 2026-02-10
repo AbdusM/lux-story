@@ -10484,6 +10484,9 @@ OBSERVATION: He looks tired. Scared. Different.`,
       emotion: 'warm_grateful',
       variation_id: 'loyalty_start_v1'
     }],
+    metadata: {
+      experienceId: 'the_quiet_hour' // Experience engine takes over
+    },
     onEnter: [
       { characterId: 'samuel', addKnowledgeFlags: ['samuel_loyalty_accepted'] }
     ],

@@ -69,19 +69,47 @@ export function registerExperience(experience: LoyaltyExperience) {
     EXPERIENCE_REGISTRY[experience.id] = experience
 }
 
+function resolveExperienceId(id: unknown): ExperienceId | null {
+    if (typeof id !== 'string' || id.length === 0) return null
+
+    // If it already exists, accept as-is.
+    if (EXPERIENCE_REGISTRY[id as ExperienceId]) return id as ExperienceId
+
+    // Support newer IDs used by dialogue nodes (e.g. metadata.experienceId = 'the_honest_course').
+    // This matches lib/loyalty-adapter.ts's mapping so runtime doesn't depend on callers knowing engine IDs.
+    const mapping: Record<string, ExperienceId> = {
+        the_demo: 'maya_demo',
+        the_outage: 'devon_outage',
+        the_quiet_hour: 'samuel_quiet_hour',
+    }
+
+    const mapped = mapping[id]
+    if (mapped && EXPERIENCE_REGISTRY[mapped]) return mapped
+
+    if (id.startsWith('the_')) {
+        const guess = (id.replace(/^the_/, '') + '_exp') as ExperienceId
+        if (EXPERIENCE_REGISTRY[guess]) return guess
+    }
+
+    return null
+}
+
 // ============================================================================
 // LOGIC
 // ============================================================================
 
 export class ExperienceEngine {
-    static startExperience(id: ExperienceId): ActiveExperienceState | null {
+    static startExperience(id: ExperienceId | string): ActiveExperienceState | null {
         // Ensure content is loaded
         // In a real app we might lazy load this, but for now we rely on side-effects
-        const exp = EXPERIENCE_REGISTRY[id]
+        const resolved = resolveExperienceId(id)
+        if (!resolved) return null
+
+        const exp = EXPERIENCE_REGISTRY[resolved]
         if (!exp) return null
 
         return {
-            experienceId: id,
+            experienceId: resolved,
             currentStepId: exp.startStepId,
             startTime: Date.now(),
             history: []

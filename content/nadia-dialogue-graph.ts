@@ -1033,6 +1033,9 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       emotion: 'warm_grateful',
       variation_id: 'loyalty_start_v1'
     }],
+    metadata: {
+      experienceId: 'the_whiteboard' // Experience engine takes over
+    },
     onEnter: [
       { characterId: 'nadia', addKnowledgeFlags: ['nadia_loyalty_accepted'] }
     ],

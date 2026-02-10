@@ -26,6 +26,7 @@ import {
   applyPatternReflection,
   type ConsequenceEcho,
 } from '@/lib/consequence-echoes'
+import type { ActiveExperienceState } from '@/lib/experience-engine'
 // trust-derivatives, info-trades, knowledge-items imports moved to choice-processors
 import {
   calculateCharacterTrustDecay,
@@ -543,6 +544,22 @@ export function useChoiceHandler({
 
       const { nextNode, targetGraph, targetCharacterId } = navResult
 
+      // P6: Loyalty experience trigger (ExperienceEngine).
+      // If the node is an experience entrypoint, start the experience immediately.
+      let nextActiveExperience: ActiveExperienceState | null = null
+      // Only auto-start when the node is explicitly handing control to the experience engine.
+      // Many graphs set metadata.experienceId on the *trigger prompt* node as well; those should
+      // still render their accept/decline choices rather than immediately switching UI modes.
+      if (nextNode.metadata?.experienceId && (nextNode.choices?.length ?? 0) === 0) {
+        try {
+          const { ExperienceEngine } = await import('@/lib/experience-engine')
+          nextActiveExperience = ExperienceEngine.startExperience(nextNode.metadata.experienceId)
+        } catch {
+          // Never block gameplay on experience engine issues.
+          nextActiveExperience = null
+        }
+      }
+
       // Track identity internalization for ceremony
       let identityCeremonyPattern: PatternType | null = null
 
@@ -1022,7 +1039,11 @@ export function useChoiceHandler({
         // Previous state
         previousState: state,
       }
-      setState(buildChoiceUiPatch(uiPatchCtx))
+      const patch = buildChoiceUiPatch(uiPatchCtx)
+      if (nextActiveExperience) {
+        patch.activeExperience = nextActiveExperience
+      }
+      setState(patch)
       // COMMIT: Atomic persist to both Zustand and localStorage
       // TD-001: Single commitGameState call replaces the previous dual-write pattern
       commitGameState(newGameState, { reason: 'choice-complete' })

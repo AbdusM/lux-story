@@ -564,7 +564,20 @@ class DialogueGraphValidator {
     }
 
     // Warn about terminal nodes (no choices and not explicitly terminal)
-    if (node.choices.length === 0 && !node.tags?.includes('terminal') && !node.tags?.includes('arc_complete')) {
+    const isExperienceTakeover = node.metadata?.experienceId !== undefined && node.choices.length === 0
+
+    const isTerminalish =
+      node.tags?.includes('terminal') ||
+      node.tags?.includes('arc_complete') ||
+      node.tags?.includes('ending') ||
+      node.tags?.includes('journey_complete') ||
+      node.tags?.includes('journey_complete_trigger') ||
+      isExperienceTakeover
+
+    // Hub return nodes are intentionally author-authored end caps; runtime injects a return choice.
+    const isHubReturn = node.nodeId === 'hub_return' || node.nodeId.endsWith('_hub_return')
+
+    if (node.choices.length === 0 && !isTerminalish && !isHubReturn) {
       this.warnings.push({
         severity: 'warning',
         graph: graphName,

@@ -910,6 +910,9 @@ export const danteDialogueNodes: DialogueNode[] = [
       emotion: 'warm_grateful',
       variation_id: 'loyalty_start_v1'
     }],
+    metadata: {
+      experienceId: 'the_real_pitch' // Experience engine takes over
+    },
     onEnter: [
       { characterId: 'dante', addKnowledgeFlags: ['dante_loyalty_accepted'] }
     ],
