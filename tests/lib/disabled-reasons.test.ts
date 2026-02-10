@@ -23,6 +23,8 @@ describe('deriveDisabledReason', () => {
 
     const r = deriveDisabledReason({ relationship: ['confidant'] }, s, 'samuel')
     expect(r.code).toBe('NEEDS_RELATIONSHIP')
+    expect(r.why).toMatch(/Requires relationship/i)
+    expect(r.how).toMatch(/To unlock:/i)
   })
 
   it('returns NEEDS_GLOBAL_FLAG when required global flag missing', () => {

@@ -76,7 +76,15 @@ export function deriveDisabledReason(
   }
 
   if (condition.relationship && condition.relationship.length > 0) {
-    if (!charState) return { code: 'NEEDS_RELATIONSHIP', message: `Need ${condition.relationship.join(' or ')} relationship` }
+    if (!charState) {
+      const rel = condition.relationship.join(' or ')
+      return {
+        code: 'NEEDS_RELATIONSHIP',
+        message: `Need ${rel} relationship`,
+        why: `Requires relationship: ${rel}`,
+        how: 'To unlock: Deepen your bond through aligned choices and follow-ups.',
+      }
+    }
     if (!condition.relationship.includes(charState.relationshipStatus)) {
       const rel = condition.relationship.join(' or ')
       return {
