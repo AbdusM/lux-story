@@ -1,0 +1,103 @@
+{
+  "generated_at": "2026-02-10T16:09:30.422Z",
+  "git_commit": "8a376419085d6d1dbfcde6921513075a01cdeb03",
+  "flags": {
+    "total": 6,
+    "booleans": 5,
+    "enums": 1,
+    "off_by_default": 5,
+    "unused": 0,
+    "unknown_usages": 0,
+    "rows": [
+      {
+        "name": "CHOICE_COMPACT_MODE",
+        "type": "boolean",
+        "default": false,
+        "off_by_default": true,
+        "usage_count": 1,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "components/game/GameFooter.tsx"
+        ]
+      },
+      {
+        "name": "ENFORCE_REQUIRED_STATE",
+        "type": "boolean",
+        "default": false,
+        "off_by_default": true,
+        "usage_count": 4,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 3,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "hooks/game/useChoiceHandler.ts",
+          "tests/lib/feature-flags.test.ts"
+        ]
+      },
+      {
+        "name": "GOSSIP_PROPAGATION_V1",
+        "type": "boolean",
+        "default": false,
+        "off_by_default": true,
+        "usage_count": 1,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "lib/choice-processors/derivative-orchestrator.ts"
+        ]
+      },
+      {
+        "name": "IDENTITY_OFFERING_V1",
+        "type": "boolean",
+        "default": false,
+        "off_by_default": true,
+        "usage_count": 1,
+        "usage_count_runtime": 1,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "hooks/game/useChoiceHandler.ts"
+        ]
+      },
+      {
+        "name": "SCARCITY_MODE_V1",
+        "type": "boolean",
+        "default": false,
+        "off_by_default": true,
+        "usage_count": 3,
+        "usage_count_runtime": 3,
+        "usage_count_tests": 0,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "hooks/game/useChoiceHandler.ts"
+        ]
+      },
+      {
+        "name": "RANKING_V2",
+        "type": "enum",
+        "default": "control",
+        "values": [
+          "control",
+          "beta"
+        ],
+        "off_by_default": false,
+        "usage_count": 6,
+        "usage_count_runtime": 0,
+        "usage_count_tests": 6,
+        "usage_count_scripts": 0,
+        "usage_files": [
+          "tests/lib/feature-flags.test.ts"
+        ]
+      }
+    ],
+    "unused_flags": [],
+    "unknown_flag_usages": []
+  },
+  "experiments": {
+    "active_total": 0,
+    "rows": []
+  }
+}
