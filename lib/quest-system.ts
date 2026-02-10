@@ -9,6 +9,7 @@
 
 import { GameState } from './character-state'
 import { CharacterId, isValidCharacterId } from './graph-registry'
+import type { PrismTabId } from './prism-tabs'
 
 // ============================================================================
 // QUEST STATE MACHINE
@@ -39,6 +40,16 @@ export interface QuestCondition {
 export interface QuestReward {
   type: 'insight' | 'connection' | 'unlock'
   description: string
+}
+
+// Canonical deep-link mapping for quest-related UI (OutcomeCard, Objective Pin).
+export function getQuestPrismTab(quest: Quest): PrismTabId {
+  if (quest.type === 'discovery') {
+    if (quest.id === 'pattern_mastery') return 'mastery'
+    return 'mysteries'
+  }
+  // Character arcs + return hooks are relationship-centric.
+  return 'essence'
 }
 
 // ============================================================================

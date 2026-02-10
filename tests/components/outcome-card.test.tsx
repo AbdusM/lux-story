@@ -45,4 +45,21 @@ describe('OutcomeCard', () => {
     expect(screen.getByText(/Story progressed/i)).toBeInTheDocument()
     expect(screen.getByText(/No visible changes yet/i)).toBeInTheDocument()
   })
+
+  it('never renders a deep link to god_mode', () => {
+    render(
+      <OutcomeCard
+        card={{
+          id: 't_god',
+          items: [
+            { kind: 'info', title: 'Debug', detail: 'x', prismTab: 'god_mode' },
+          ],
+        }}
+        onDismiss={vi.fn()}
+        onOpenPrismTab={vi.fn()}
+      />
+    )
+
+    expect(screen.queryByTestId('outcome-deeplink-god_mode')).toBeNull()
+  })
 })

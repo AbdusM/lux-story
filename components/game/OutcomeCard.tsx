@@ -55,6 +55,7 @@ export function OutcomeCard({ card, onDismiss, onOpenPrismTab, className }: Outc
   const tabWeights = new Map<PrismTabId, number>()
   for (const item of card.items) {
     if (!item.prismTab) continue
+    if (item.prismTab === 'god_mode') continue
     const current = tabWeights.get(item.prismTab) ?? 0
     tabWeights.set(item.prismTab, Math.max(current, kindWeight[item.kind] ?? 0))
   }

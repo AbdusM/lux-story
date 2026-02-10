@@ -13,7 +13,7 @@ import type { PrismTabId } from '@/lib/prism-tabs'
 import { OutcomeCard } from '@/components/game/OutcomeCard'
 import type { RewardFeedItem } from '@/lib/reward-feed'
 import { RewardFeed } from '@/components/game/RewardFeed'
-import { getPrimaryQuest } from '@/lib/quest-system'
+import { getPrimaryQuest, getQuestPrismTab } from '@/lib/quest-system'
 
 interface GameFooterProps {
   isEnding: boolean
@@ -47,9 +47,7 @@ export function GameFooter({
   onChoice,
 }: GameFooterProps) {
   const primaryQuest = gameState ? getPrimaryQuest(gameState) : null
-  const objectiveTab: PrismTabId | null = primaryQuest
-    ? (primaryQuest.type === 'discovery' ? 'mysteries' : 'essence')
-    : null
+  const objectiveTab: PrismTabId | null = primaryQuest ? getQuestPrismTab(primaryQuest) : null
 
   return (
     <AnimatePresence mode="wait">

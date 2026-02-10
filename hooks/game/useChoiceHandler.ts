@@ -41,7 +41,7 @@ import {
 // queueEchosForFlag moved to arc-completion-processor
 import { UnlockManager } from '@/lib/unlock-manager'
 import { ABILITIES } from '@/lib/abilities'
-import { getPrimaryQuest, getQuestProgress } from '@/lib/quest-system'
+import { getPrimaryQuest, getQuestProgress, getQuestPrismTab } from '@/lib/quest-system'
 // THOUGHT_REGISTRY removed - thought-system archived (never integrated)
 // CROSS_CHARACTER_ECHOES, getArcCompletionFlag, detectArcCompletion moved to arc-completion-processor
 import {
@@ -859,6 +859,7 @@ export function useChoiceHandler({
             kind: nextQuest.status === 'completed' ? 'unlock' : 'info',
             title: prefix,
             detail: nextQuest.title,
+            prismTab: getQuestPrismTab(nextQuest),
           })
         }
 
@@ -870,6 +871,7 @@ export function useChoiceHandler({
             kind: 'info',
             title: 'Quest progress',
             detail: `${nextProg.completed}/${nextProg.total} completed`,
+            prismTab: nextQuest ? getQuestPrismTab(nextQuest) : 'essence',
           })
         }
       } catch {
