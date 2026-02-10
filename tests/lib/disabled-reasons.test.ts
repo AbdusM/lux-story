@@ -11,6 +11,9 @@ describe('deriveDisabledReason', () => {
     const r = deriveDisabledReason({ trust: { min: 2 } }, s, 'samuel')
     expect(r.code).toBe('NEEDS_TRUST')
     expect(r.message).toContain('Need 2 trust')
+    expect(r.why).toBe('Requires Trust 2')
+    expect(r.how).toMatch(/To unlock:/)
+    expect(r.progress).toEqual({ current: 0, required: 2 })
   })
 
   it('returns NEEDS_RELATIONSHIP when relationship status mismatches', () => {
@@ -27,6 +30,8 @@ describe('deriveDisabledReason', () => {
     const r = deriveDisabledReason({ hasGlobalFlags: ['flag_x'] }, s, 'samuel')
     expect(r.code).toBe('NEEDS_GLOBAL_FLAG')
     expect(r.message).toContain('flag_x')
+    expect(r.why).toContain('flag_x')
+    expect(r.how).toMatch(/To unlock:/)
   })
 
   it('returns BLOCKED_BY_GLOBAL_FLAG when forbidden global flag present', () => {
@@ -49,6 +54,9 @@ describe('deriveDisabledReason', () => {
     const r = deriveDisabledReason({ patterns: { analytical: { min: 3 } } }, s, 'samuel')
     expect(r.code).toBe('NEEDS_PATTERN_LEVEL')
     expect(r.message).toContain('analytical')
+    expect(r.why).toContain('analytical')
+    expect(r.how).toMatch(/To unlock:/)
+    expect(r.progress).toEqual({ current: 0, required: 3 })
   })
 
   it('returns NEEDS_COMBO when a combo unlock is required', () => {
@@ -57,4 +65,3 @@ describe('deriveDisabledReason', () => {
     expect(r.code).toBe('NEEDS_COMBO')
   })
 })
-

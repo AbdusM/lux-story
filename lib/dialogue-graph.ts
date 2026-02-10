@@ -468,6 +468,11 @@ export interface EvaluatedChoice {
   enabled: boolean
   reason?: string // Why choice is disabled (for debug/tooltips)
   reason_code?: string // Canonical disabled reason code (analytics + UX consistency)
+  reason_details?: {
+    why: string
+    how: string
+    progress?: { current: number; required: number }
+  }
   gravity?: GravityResult // ISP: Narrative Gravity Weight
 }
 
@@ -635,10 +640,14 @@ export class StateConditionEvaluator {
       // Generate reason if disabled but visible
       let reason: string | undefined
       let reason_code: string | undefined
+      let reason_details: EvaluatedChoice['reason_details'] | undefined
       if (visible && !enabled) {
         const d = deriveDisabledReason(choice.enabledCondition, gameState, characterId)
         reason = d.message
         reason_code = d.code
+        if (d.why && d.how) {
+          reason_details = { why: d.why, how: d.how, progress: d.progress }
+        }
       }
 
       // ISP UPDATE: Calculate Narrative Gravity
@@ -653,6 +662,7 @@ export class StateConditionEvaluator {
         enabled,
         reason,
         reason_code,
+        reason_details,
         gravity
       }
     })

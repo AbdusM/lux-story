@@ -138,6 +138,8 @@ interface Choice {
   disabledReason?: string | null
   /** Canonical reason code from StateConditionEvaluator (analytics bucketing) */
   disabledReasonCode?: string | null
+  /** Structured why/how (+ optional progress) for disabled choices */
+  disabledReasonDetails?: { why: string; how: string; progress?: { current: number; required: number } } | null
   /** Orb fill requirement - choice is locked until met (KOTOR-style) */
   requiredOrbFill?: OrbRequirement
   /** ISP: Narrative Gravity Weight */ // Added missing property documentation
@@ -508,6 +510,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
 
   const isDisabled = choice.enabled === false
   if (isDisabled) {
+    const details = choice.disabledReasonDetails || null
     return (
       <div className="w-full">
         <motion.div
@@ -521,7 +524,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
             disabled={true}
             variant={glass ? "glass" : "outline"}
             data-testid="choice-button-disabled"
-            aria-label={`Disabled choice: ${choice.text}. ${choice.disabledReason || ''}`.trim()}
+            aria-label={`Disabled choice: ${choice.text}. ${details?.why || choice.disabledReason || ''}`.trim()}
             className={cn(
               "w-full min-h-[60px] h-auto px-5 py-4",
               "text-base sm:text-[15px] font-medium text-left justify-start",
@@ -530,15 +533,33 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
               glass ? "text-slate-400" : "text-stone-400",
               "opacity-70 cursor-not-allowed",
             )}
-            title={choice.disabledReason || undefined}
+            title={details?.why || choice.disabledReason || undefined}
           >
             <div className="flex flex-col gap-1 w-full">
               <span className="flex-1 line-clamp-4">{choice.text}</span>
-              {choice.disabledReason && (
+              {details ? (
+                <div className={cn("text-xs", glass ? "text-slate-400" : "text-stone-500")}>
+                  <div>{details.why}</div>
+                  <div>{details.how}</div>
+                  {details.progress && (
+                    <div className="flex items-center gap-2 mt-1">
+                      <div className={`flex-1 h-1 rounded-full overflow-hidden ${glass ? 'bg-slate-800' : 'bg-stone-200'}`}>
+                        <div
+                          className={`h-full transition-all duration-300 ${glass ? 'bg-slate-600' : 'bg-stone-400'}`}
+                          style={{ width: `${Math.min(100, (details.progress.current / details.progress.required) * 100)}%` }}
+                        />
+                      </div>
+                      <span className={`text-[10px] ${glass ? 'text-slate-500' : 'text-stone-400'}`}>
+                        {details.progress.current}/{details.progress.required}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ) : choice.disabledReason ? (
                 <span className={cn("text-xs", glass ? "text-slate-400" : "text-stone-500")}>
                   Unavailable: {choice.disabledReason}
                 </span>
-              )}
+              ) : null}
             </div>
           </Button>
         </motion.div>

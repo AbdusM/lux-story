@@ -106,6 +106,7 @@ export function GameFooter({
                         enabled: c.enabled,
                         disabledReason: c.reason || null,
                         disabledReasonCode: c.reason_code || null,
+                        disabledReasonDetails: c.reason_details || null,
                         requiredOrbFill: c.choice.requiredOrbFill,
                         next: String(originalIndex)
                       }

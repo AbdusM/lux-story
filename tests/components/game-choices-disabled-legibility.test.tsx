@@ -12,6 +12,11 @@ describe('GameChoices (Disabled Choice Legibility)', () => {
             text: 'Ask about the missing shipment.',
             enabled: false,
             disabledReason: 'Need 3 trust (have 0)',
+            disabledReasonDetails: {
+              why: 'Requires Trust 3',
+              how: 'To unlock: Build trust through supportive, consistent choices.',
+              progress: { current: 0, required: 3 },
+            },
           },
         ]}
         isProcessing={false}
@@ -21,7 +26,8 @@ describe('GameChoices (Disabled Choice Legibility)', () => {
     )
 
     expect(screen.getByTestId('choice-button-disabled')).toBeInTheDocument()
-    expect(screen.getByText(/Unavailable: Need 3 trust/)).toBeInTheDocument()
+    expect(screen.getByText('Requires Trust 3')).toBeInTheDocument()
+    expect(screen.getByText(/To unlock:/)).toBeInTheDocument()
+    expect(screen.getByText('0/3')).toBeInTheDocument()
   })
 })
-
