@@ -1,4 +1,14 @@
 {
-  "version": 1,
-  "signatures": []
+  "version": 2,
+  "signatures": [
+    "entry_arrival|required_state_violation|maya|maya_robotics_passion",
+    "entry_arrival|soft_deadlock|yaquin|yaquin_credential_gap",
+    "samuel_comprehensive_hub|required_state_violation|maya|maya_crossroads",
+    "samuel_comprehensive_hub|required_state_violation|maya|maya_robotics_passion",
+    "samuel_comprehensive_hub|required_state_violation|samuel|samuel_maya_reflection_gateway",
+    "samuel_comprehensive_hub|required_state_violation|silas|silas_simulation_start",
+    "samuel_comprehensive_hub|required_state_violation|tess|tess_the_pitch_setup",
+    "samuel_comprehensive_hub|required_state_violation|yaquin|yaquin_launch_decision",
+    "samuel_comprehensive_hub|soft_deadlock|yaquin|yaquin_credential_gap"
+  ]
 }
