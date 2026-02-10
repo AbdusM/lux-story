@@ -114,7 +114,7 @@ export function NarrativeAnalysisDisplay() {
             {tab.label}
             {activeTab === tab.id && (
               <motion.div
-                layoutId="analysis-tab-line"
+                layoutId={process.env.NODE_ENV === 'test' ? undefined : "analysis-tab-line"}
                 className="absolute bottom-0 left-0 right-0 h-px bg-emerald-500"
               />
             )}

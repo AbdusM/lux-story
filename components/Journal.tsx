@@ -401,7 +401,7 @@ export function Journal({ isOpen, onClose, initialTab, onInitialTabConsumed }: J
 
                   {activeTab === tab.id && (
                     <motion.div
-                      layoutId="prism-tab-active-top"
+                      layoutId={process.env.NODE_ENV === 'test' ? undefined : "prism-tab-active-top"}
                       className="absolute bottom-0 w-full h-0.5 bg-gradient-to-r from-amber-500 to-purple-600"
                     />
                   )}
@@ -511,7 +511,7 @@ export function Journal({ isOpen, onClose, initialTab, onInitialTabConsumed }: J
 
                     {activeTab === tab.id && (
                       <motion.div
-                        layoutId="prism-tab-active-bottom"
+                        layoutId={process.env.NODE_ENV === 'test' ? undefined : "prism-tab-active-bottom"}
                         className="absolute top-0 w-full h-0.5 bg-gradient-to-r from-amber-500 to-purple-600"
                       />
                     )}

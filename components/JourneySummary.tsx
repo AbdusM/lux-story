@@ -455,7 +455,7 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
                 />
                 {idx === currentSection && (
                   <motion.div
-                    layoutId="journey-section-indicator"
+                    layoutId={process.env.NODE_ENV === 'test' ? undefined : "journey-section-indicator"}
                     className="absolute inset-0 w-6 h-2 bg-amber-400 rounded-full -left-2"
                     transition={springs.snappy}
                   />

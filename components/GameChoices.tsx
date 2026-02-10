@@ -441,7 +441,9 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
           data-choice-index={index}
           style={{ scrollSnapAlign: 'start' }}
         >
-          <div
+          <button
+            type="button"
+            disabled={true}
             className={`
               w-full min-h-[56px] sm:min-h-[52px] h-auto px-4 sm:px-6 py-4 sm:py-3
               text-base sm:text-sm font-medium text-left
@@ -454,8 +456,11 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
               }
             `}
             aria-label={`Locked choice: ${choice.text}. ${reason?.why || ''} ${reason?.how || ''}`.trim()}
-            role="button"
             aria-disabled="true"
+            role="option"
+            aria-selected={isFocused ? 'true' : 'false'}
+            id={`choice-option-${index}`}
+            data-testid="choice-button-locked"
             title={choice.lockActionHint ? `Tip: ${choice.lockActionHint}` : undefined}
           >
             {/* Choice text with lock icon */}
@@ -502,7 +507,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
                 </span>
               </div>
             )}
-          </div>
+          </button>
         </motion.div>
       </div>
     )
@@ -525,6 +530,9 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
             variant={glass ? "glass" : "outline"}
             data-testid="choice-button-disabled"
             aria-label={`Disabled choice: ${choice.text}. ${details?.why || choice.disabledReason || ''}`.trim()}
+            role="option"
+            aria-selected={isFocused ? 'true' : 'false'}
+            id={`choice-option-${index}`}
             className={cn(
               "w-full min-h-[60px] h-auto px-5 py-4",
               "text-base sm:text-[15px] font-medium text-left justify-start",
@@ -589,6 +597,9 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
           data-pattern={choice.pattern || ''}
           data-pivotal={choice.pivotal ? 'true' : undefined}
           aria-label={`Choice ${index + 1}: ${choice.text}`}
+          role="option"
+          aria-selected={isFocused ? 'true' : 'false'}
+          id={`choice-option-${index}`}
           className={cn(
             // Base sizing and layout (unified 60px height across all breakpoints)
             "w-full min-h-[60px] h-auto px-5 py-4",
@@ -945,6 +956,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
         style={{ scrollbarGutter: 'stable' }}  // Prevent layout shift when scrollbar appears
         ref={containerRef}
         role="listbox"
+        aria-activedescendant={focusedIndex >= 0 ? `choice-option-${focusedIndex}` : undefined}
         aria-label="Choose your response"
         variants={containerVariants}
         initial="hidden"
@@ -1012,6 +1024,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
         style={{ scrollbarGutter: 'stable' }}  // Prevent layout shift when scrollbar appears
         data-testid="game-choices"
       role="listbox"
+      aria-activedescendant={focusedIndex >= 0 ? `choice-option-${focusedIndex}` : undefined}
       aria-label="Choose your response"
       variants={containerVariants}
       initial="hidden"

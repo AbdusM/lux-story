@@ -31,6 +31,7 @@ describe('GameChoices (Locked Choice Legibility)', () => {
       />
     )
 
+    expect(screen.getByTestId('choice-button-locked')).toBeInTheDocument()
     expect(screen.getByText('Requires The Weaver resonance (80%)')).toBeInTheDocument()
     expect(screen.getByText(/To unlock:/)).toBeInTheDocument()
     expect(screen.getByText('10/80')).toBeInTheDocument()
