@@ -182,9 +182,6 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    requiredState: {
-      trust: { max: 2 }
-    },
     choices: [
       {
         choiceId: 'studies_notice_deflection',

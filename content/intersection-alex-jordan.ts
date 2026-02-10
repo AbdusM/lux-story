@@ -309,7 +309,7 @@ ALEX: "Alright. Yeah. Let's go."
       {
         choiceId: 'alex_jordan_complete',
         text: "That's what courage looks like.",
-        nextNodeId: 'RETURN_TO_SAMUEL',
+        nextNodeId: 'samuel_comprehensive_hub',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'leadership']
       }

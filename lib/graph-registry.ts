@@ -37,6 +37,9 @@ import { stationEntryGraph } from '@/content/station-entry-graph'
 import { grandHallGraph } from '@/content/grand-hall-graph'
 import { marketGraph } from '@/content/market-graph'
 import { deepStationGraph } from '@/content/deep-station-graph'
+import { alexJordanIntersectionGraph } from '@/content/intersection-alex-jordan'
+import { mayaDevonIntersectionGraph } from '@/content/intersection-maya-devon'
+import { tessRohanIntersectionGraph } from '@/content/intersection-tess-rohan'
 import { DialogueGraph } from './dialogue-graph'
 import { GameState } from './character-state'
 import { logger } from './logger'
@@ -75,6 +78,14 @@ export const DIALOGUE_GRAPHS = {
   market: marketGraph,
   deep_station: deepStationGraph,
 } as const
+
+// Non-character graphs that still need routing (intersections, one-off scenes, etc.).
+// These are indexed for `findCharacterForNode` but are not selectable "characters".
+const SPECIAL_GRAPHS: Array<{ graph: DialogueGraph; characterId: CharacterId }> = [
+  { graph: alexJordanIntersectionGraph, characterId: 'grand_hall' },
+  { graph: mayaDevonIntersectionGraph, characterId: 'grand_hall' },
+  { graph: tessRohanIntersectionGraph, characterId: 'grand_hall' },
+]
 
 /**
  * Character IDs that can be navigated to
@@ -160,6 +171,14 @@ function getNodeIndex(): Map<string, CharacterId> {
       }
     }
   }
+
+  for (const { graph, characterId } of SPECIAL_GRAPHS) {
+    for (const nodeId of graph.nodes.keys()) {
+      if (!nodeToCharacterIndex.has(nodeId)) {
+        nodeToCharacterIndex.set(nodeId, characterId)
+      }
+    }
+  }
   return nodeToCharacterIndex
 }
 
@@ -202,6 +221,13 @@ export function findCharacterForNode(
   const revisitGraph = DIALOGUE_GRAPHS[revisitKey]
   if (revisitGraph && revisitGraph.nodes.has(nodeId)) {
     return { characterId: charId, graph: revisitGraph }
+  }
+
+  // Special-case graphs (intersections, etc.) that are not part of the base character map.
+  for (const { graph, characterId } of SPECIAL_GRAPHS) {
+    if (graph.nodes.has(nodeId)) {
+      return { characterId, graph }
+    }
   }
 
   return null

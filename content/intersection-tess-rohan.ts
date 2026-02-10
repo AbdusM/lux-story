@@ -297,7 +297,7 @@ ROHAN: *Small smile.* "Yeah. Fuck the algorithm."
       {
         choiceId: 'tess_rohan_complete',
         text: "That connection mattered.",
-        nextNodeId: 'RETURN_TO_SAMUEL',
+        nextNodeId: 'samuel_comprehensive_hub',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
       }

@@ -280,7 +280,7 @@ Go find Samuel. Tell him Maya's got a new plan.`,
       {
         choiceId: 'maya_devon_complete',
         text: "Good luck with the research.",
-        nextNodeId: 'RETURN_TO_SAMUEL', // Will route back to Samuel
+        nextNodeId: 'samuel_comprehensive_hub',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
       }

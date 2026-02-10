@@ -3154,9 +3154,6 @@ OBSERVATION: He looks tired. Scared. Different.`,
         ]
       }
     ],
-    requiredState: {
-      lacksGlobalFlags: ['met_maya', 'met_devon', 'met_jordan']
-    },
     choices: [
       {
         choiceId: 'hub_category_heart',
