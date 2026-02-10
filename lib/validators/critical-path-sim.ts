@@ -34,6 +34,12 @@ export type CriticalPathSimOptions = {
   start_node_id: string
   max_steps: number
   max_states: number
+  strategy?: 'bfs' | 'dfs'
+  /**
+   * Bounds per-node exploration across unique visited states. This prevents state explosion
+   * from flag-heavy content while keeping exploration deterministic.
+   */
+  max_unique_states_per_node?: number
 }
 
 function summarizeStateKey(nodeId: string, state: GameState, characterId: string | null): string {
@@ -204,6 +210,9 @@ export function simulateCriticalPath(
 ): { violations: SimViolation[] } {
   const violations: SimViolation[] = []
 
+  const strategy = options.strategy ?? 'bfs'
+  const maxUniqueStatesPerNode = options.max_unique_states_per_node ?? Number.POSITIVE_INFINITY
+
   const queue: Array<{
     nodeId: string
     state: GameState
@@ -212,10 +221,11 @@ export function simulateCriticalPath(
   }> = [{ nodeId: options.start_node_id, state: initialState, trace: [{ node_id: options.start_node_id }], depth: 0 }]
 
   const visited = new Set<string>()
+  const uniqueStatesPerNode = new Map<string, number>()
   let expanded = 0
 
   while (queue.length > 0) {
-    const item = queue.shift()!
+    const item = (strategy === 'dfs' ? queue.pop() : queue.shift())!
     if (item.depth > options.max_steps) continue
     if (expanded >= options.max_states) break
 
@@ -248,6 +258,13 @@ export function simulateCriticalPath(
     if (visited.has(key)) continue
     visited.add(key)
     expanded++
+
+    const nodeBucket = `${characterId}:${item.nodeId}`
+    const bucketCount = uniqueStatesPerNode.get(nodeBucket) ?? 0
+    if (bucketCount >= maxUniqueStatesPerNode) {
+      continue
+    }
+    uniqueStatesPerNode.set(nodeBucket, bucketCount + 1)
 
     // Strict-mode check: requiredState must hold at the point of entry (pre-onEnter).
     if (node.requiredState) {

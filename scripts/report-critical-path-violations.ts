@@ -32,11 +32,33 @@ function readArg(name: string): string | null {
   return process.argv[ix + 1] ?? null
 }
 
+function deriveOutPaths(qaDir: string, cfgPath: string): { reportPath: string; baselinePath: string } {
+  const cfgBase = cfgPath.split('/').pop() || ''
+  // Default (legacy)
+  if (cfgBase === 'critical-path-contracts.config.json') {
+    return {
+      reportPath: join(qaDir, 'critical-path-violations.report.json'),
+      baselinePath: join(qaDir, 'critical-path-violations.baseline.json'),
+    }
+  }
+
+  // Convention: critical-path-contracts.<name>.config.json -> critical-path-violations.<name>.{report,baseline}.json
+  const m = cfgBase.match(/^critical-path-contracts\.(.+)\.config\.json$/)
+  const tag = m?.[1] || cfgBase.replace(/\.config\.json$/, '').replace(/^critical-path-contracts\./, '')
+  return {
+    reportPath: join(qaDir, `critical-path-violations.${tag}.report.json`),
+    baselinePath: join(qaDir, `critical-path-violations.${tag}.baseline.json`),
+  }
+}
+
 const qaDir = join(process.cwd(), 'docs', 'qa')
 mkdirSync(qaDir, { recursive: true })
 
 const cfgPath = readArg('--config') ?? join(qaDir, 'critical-path-contracts.config.json')
 const cfg: Config = JSON.parse(readFileSync(cfgPath, 'utf8'))
+const derived = deriveOutPaths(qaDir, cfgPath)
+const reportOut = readArg('--report-out') ?? derived.reportPath
+const baselineOut = readArg('--baseline-out') ?? derived.baselinePath
 
 const maxSteps = Number(readArg('--max-steps') ?? cfg.max_steps)
 const maxStates = Number(readArg('--max-states') ?? cfg.max_states)
@@ -63,16 +85,14 @@ const report = {
   violations: all.map(({ startNodeId, v }) => ({ ...v, start_node_id: startNodeId })),
 }
 
-const reportPath = join(qaDir, 'critical-path-violations.report.json')
-writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n', 'utf8')
+writeFileSync(reportOut, JSON.stringify(report, null, 2) + '\n', 'utf8')
 
 console.log(`[critical-path] violations=${all.length}`)
-console.log(`[critical-path] report=${reportPath}`)
+console.log(`[critical-path] report=${reportOut}`)
 console.log(`[critical-path] config=${cfgPath}`)
 
 if (updateBaseline) {
   const baseline: Baseline = { version: 2, signatures }
-  const baselinePath = join(qaDir, 'critical-path-violations.baseline.json')
-  writeFileSync(baselinePath, JSON.stringify(baseline, null, 2) + '\n', 'utf8')
-  console.log(`[critical-path] baseline updated: ${baselinePath}`)
+  writeFileSync(baselineOut, JSON.stringify(baseline, null, 2) + '\n', 'utf8')
+  console.log(`[critical-path] baseline updated: ${baselineOut}`)
 }
