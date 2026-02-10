@@ -130,11 +130,17 @@ type InventoryReport = {
   storage_keys: {
     total: number
     unused: number
+    unused_v2: number
+    unused_dev: number
+    unused_legacy: number
     unknown_usages: number
     unknown_usages_active: number
     unknown_usages_archived: number
     rows: StorageKeyInventoryRow[]
     unused_keys: string[]
+    unused_v2_keys: string[]
+    unused_dev_keys: string[]
+    unused_legacy_keys: string[]
     unknown_key_usages: Array<{ name: string; count: number; files: string[] }>
     unknown_key_usages_archived: Array<{ name: string; count: number; files: string[] }>
   }
@@ -732,7 +738,26 @@ function main() {
   unknownStorageUsages.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
   unknownStorageUsagesArchived.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
 
+  // AAA: unknown key usages in active code should be treated as a real bug (not just "needs review").
+  if (unknownStorageUsages.length > 0) {
+    // eslint-disable-next-line no-console
+    console.error('[report-feature-inventory] Unknown localStorage key usage(s) outside lib/archive/*', unknownStorageUsages)
+    process.exit(1)
+  }
+
   const unusedStorageKeys = storageRows.filter(r => r.usage_count === 0).map(r => r.name).sort()
+  const unusedV2StorageKeys = storageRows
+    .filter((r) => r.usage_count === 0 && r.category !== 'legacy' && r.category !== 'dev_tools')
+    .map((r) => r.name)
+    .sort()
+  const unusedDevStorageKeys = storageRows
+    .filter((r) => r.usage_count === 0 && r.category === 'dev_tools')
+    .map((r) => r.name)
+    .sort()
+  const unusedLegacyStorageKeys = storageRows
+    .filter((r) => r.usage_count === 0 && r.category === 'legacy')
+    .map((r) => r.name)
+    .sort()
 
   // Env vars (anything referenced via process.env)
   const envRows: EnvVarInventoryRow[] = Array.from(envVarUsage.entries()).map(([name, u]) => {
@@ -871,11 +896,17 @@ function main() {
     storage_keys: {
       total: storageRows.length,
       unused: unusedStorageKeys.length,
+      unused_v2: unusedV2StorageKeys.length,
+      unused_dev: unusedDevStorageKeys.length,
+      unused_legacy: unusedLegacyStorageKeys.length,
       unknown_usages: unknownStorageUsages.length + unknownStorageUsagesArchived.length,
       unknown_usages_active: unknownStorageUsages.length,
       unknown_usages_archived: unknownStorageUsagesArchived.length,
       rows: storageRows,
       unused_keys: unusedStorageKeys,
+      unused_v2_keys: unusedV2StorageKeys,
+      unused_dev_keys: unusedDevStorageKeys,
+      unused_legacy_keys: unusedLegacyStorageKeys,
       unknown_key_usages: unknownStorageUsages,
       unknown_key_usages_archived: unknownStorageUsagesArchived,
     },
@@ -1148,7 +1179,7 @@ function main() {
   mdLines.push('## localStorage Keys')
   mdLines.push('')
   mdLines.push(`Total: **${report.storage_keys.total}**`)
-  mdLines.push(`Unused (declared but not referenced): **${report.storage_keys.unused}**`)
+  mdLines.push(`Unused (declared but not referenced): **${report.storage_keys.unused}** (v2: **${report.storage_keys.unused_v2}**, dev: **${report.storage_keys.unused_dev}**, legacy: **${report.storage_keys.unused_legacy}**)`)
   mdLines.push(`Unknown usages (referenced but not declared): **${report.storage_keys.unknown_usages}** (active: **${report.storage_keys.unknown_usages_active}**, archived: **${report.storage_keys.unknown_usages_archived}**)`)
   mdLines.push('')
   mdLines.push('Notes:')
@@ -1169,10 +1200,19 @@ function main() {
   mdLines.push(storageTable)
   mdLines.push('')
 
-  if (report.storage_keys.unused_keys.length) {
-    mdLines.push('### Unused Keys (Debt)')
+  if (report.storage_keys.unused_v2_keys.length) {
+    mdLines.push('### Unused V2 Keys (Debt)')
     mdLines.push('')
-    mdLines.push(report.storage_keys.unused_keys.map(k => `- \`${k}\``).join('\n'))
+    mdLines.push(report.storage_keys.unused_v2_keys.map(k => `- \`${k}\``).join('\n'))
+    mdLines.push('')
+  }
+
+  if (report.storage_keys.unused_legacy_keys.length) {
+    mdLines.push('### Unused Legacy Keys (Expected)')
+    mdLines.push('')
+    mdLines.push('These keys exist only for migration from older builds and may not be referenced in current code.')
+    mdLines.push('')
+    mdLines.push(report.storage_keys.unused_legacy_keys.map(k => `- \`${k}\``).join('\n'))
     mdLines.push('')
   }
 

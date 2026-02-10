@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-02-10T18:05:18.546Z",
-  "git_commit": "2f02e09f5e53bae1147c97dd5efe725e922dedab",
+  "generated_at": "2026-02-10T18:10:00.984Z",
+  "git_commit": "063ee3167a99b87664c05f93f04dbc76d77c173f",
   "flags": {
     "total": 6,
     "booleans": 5,
@@ -136,6 +136,9 @@
   "storage_keys": {
     "total": 46,
     "unused": 19,
+    "unused_v2": 0,
+    "unused_dev": 0,
+    "unused_legacy": 19,
     "unknown_usages": 2,
     "unknown_usages_active": 0,
     "unknown_usages_archived": 2,
@@ -692,6 +695,29 @@
       }
     ],
     "unused_keys": [
+      "LEGACY:admin_view_preference",
+      "LEGACY:currentSceneId",
+      "LEGACY:grand-central-game-store",
+      "LEGACY:grand-central-terminus-save-backup",
+      "LEGACY:lastKnownSceneId",
+      "LEGACY:lux-active-tabs",
+      "LEGACY:lux-local-mode-seen",
+      "LEGACY:lux-story-player-personas",
+      "LEGACY:lux_accessibility_profile",
+      "LEGACY:lux_audio_muted",
+      "LEGACY:lux_audio_volume",
+      "LEGACY:lux_cognitive_load_level",
+      "LEGACY:lux_color_blind_mode",
+      "LEGACY:lux_guest_mode",
+      "LEGACY:lux_keyboard_hint_shown",
+      "LEGACY:lux_keyboard_shortcuts",
+      "LEGACY:lux_reduced_motion",
+      "LEGACY:lux_settings_discovered",
+      "LEGACY:lux_text_size"
+    ],
+    "unused_v2_keys": [],
+    "unused_dev_keys": [],
+    "unused_legacy_keys": [
       "LEGACY:admin_view_preference",
       "LEGACY:currentSceneId",
       "LEGACY:grand-central-game-store",
