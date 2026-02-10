@@ -13,6 +13,7 @@ describe('GameChoices (Disabled Choice Legibility)', () => {
             enabled: false,
             disabledReason: 'Need 3 trust (have 0)',
             disabledReasonDetails: {
+              code: 'NEEDS_TRUST',
               why: 'Requires Trust 3',
               how: 'To unlock: Build trust through supportive, consistent choices.',
               progress: { current: 0, required: 3 },

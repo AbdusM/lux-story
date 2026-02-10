@@ -469,6 +469,7 @@ export interface EvaluatedChoice {
   reason?: string // Why choice is disabled (for debug/tooltips)
   reason_code?: string // Canonical disabled reason code (analytics + UX consistency)
   reason_details?: {
+    code?: string
     why: string
     how: string
     progress?: { current: number; required: number }
@@ -670,6 +671,7 @@ export class StateConditionEvaluator {
         // AAA contract: disabled-but-visible choices must have actionable why/how for UI legibility.
         // We preserve the back-compat `reason` string, but always provide structured details.
         reason_details = {
+          code: d.code,
           why: d.why ?? d.message,
           how: d.how ?? 'To unlock: Continue the story and explore other options.',
           progress: d.progress

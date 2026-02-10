@@ -25,8 +25,8 @@ describe('Choice Reason Details Contract (AAA)', () => {
     expect(evaluated[0]!.visible).toBe(true)
     expect(evaluated[0]!.enabled).toBe(false)
     expect(evaluated[0]!.reason_code).toBeTruthy()
+    expect(evaluated[0]!.reason_details?.code).toBe(evaluated[0]!.reason_code)
     expect(evaluated[0]!.reason_details?.why).toBeTruthy()
     expect(evaluated[0]!.reason_details?.how).toMatch(/To unlock:/i)
   })
 })
-

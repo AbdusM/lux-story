@@ -31,6 +31,7 @@ const ChoicePresentedPayloadSchema = z.object({
     is_locked: z.boolean().optional(),
     lock_reason: z.string().nullable().optional(),
     lock_reason_details: z.object({
+      code: z.string().min(1).optional(),
       why: z.string().min(1),
       how: z.string().min(1),
       progress: z.object({ current: z.number().finite(), required: z.number().finite() }).optional(),
@@ -38,6 +39,7 @@ const ChoicePresentedPayloadSchema = z.object({
     disabled_reason_code: z.string().nullable().optional(),
     disabled_reason: z.string().nullable().optional(),
     disabled_reason_details: z.object({
+      code: z.string().min(1).nullable().optional(),
       why: z.string().min(1),
       how: z.string().min(1),
       progress: z.object({ current: z.number().finite(), required: z.number().finite() }).optional(),

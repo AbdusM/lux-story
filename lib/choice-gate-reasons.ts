@@ -6,10 +6,9 @@ export type ChoiceGateReason =
     kind: 'locked'
     code: 'NEEDS_ORB_FILL'
     pattern: PatternType
-    current: number
-    required: number
     why: string
     how: string
+    progress: { current: number; required: number }
   }
 
 export function deriveOrbFillGateReason(args: {
@@ -33,10 +32,8 @@ export function deriveOrbFillGateReason(args: {
     kind: 'locked',
     code: 'NEEDS_ORB_FILL',
     pattern,
-    current,
-    required: threshold,
     why,
     how,
+    progress: { current, required: threshold },
   }
 }
-

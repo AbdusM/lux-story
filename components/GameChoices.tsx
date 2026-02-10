@@ -139,7 +139,7 @@ interface Choice {
   /** Canonical reason code from StateConditionEvaluator (analytics bucketing) */
   disabledReasonCode?: string | null
   /** Structured why/how (+ optional progress) for disabled choices */
-  disabledReasonDetails?: { why: string; how: string; progress?: { current: number; required: number } } | null
+  disabledReasonDetails?: { code?: string; why: string; how: string; progress?: { current: number; required: number } } | null
   /** Orb fill requirement - choice is locked until met (KOTOR-style) */
   requiredOrbFill?: OrbRequirement
   /** ISP: Narrative Gravity Weight */ // Added missing property documentation
@@ -493,12 +493,12 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
                       glass ? 'bg-slate-600' : 'bg-stone-400'
                     }`}
                     style={{
-                      width: `${Math.min(100, (reason.current / reason.required) * 100)}%`
+                      width: `${Math.min(100, (reason.progress.current / reason.progress.required) * 100)}%`
                     }}
                   />
                 </div>
                 <span className={`text-[10px] ${glass ? 'text-slate-500' : 'text-stone-400'}`}>
-                  {reason.current}/{reason.required}
+                  {reason.progress.current}/{reason.progress.required}
                 </span>
               </div>
             )}
@@ -839,7 +839,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
 	            isLocked && c.requiredOrbFill
 	              ? (() => {
 	                  const d = deriveOrbFillGateReason({ requiredOrbFill: c.requiredOrbFill, orbFillLevels })
-	                  return d ? { why: d.why, how: d.how, progress: { current: d.current, required: d.required } } : null
+	                  return d ? { code: d.code, why: d.why, how: d.how, progress: d.progress } : null
 	                })()
 	              : null
 	          return {
@@ -854,7 +854,9 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
 	            lock_reason_details: lockDetails,
 	            disabled_reason_code: c.enabled === false ? (c.disabledReasonCode || 'DISABLED_BY_CONDITION') : null,
 	            disabled_reason: c.enabled === false ? (c.disabledReason || null) : null,
-	            disabled_reason_details: c.enabled === false ? (c.disabledReasonDetails || null) : null,
+	            disabled_reason_details: c.enabled === false
+                ? (c.disabledReasonDetails ? { ...c.disabledReasonDetails, code: c.disabledReasonDetails.code ?? c.disabledReasonCode ?? null } : null)
+                : null,
 	            required_orb_fill: c.requiredOrbFill || null,
 	          }
 	        })
