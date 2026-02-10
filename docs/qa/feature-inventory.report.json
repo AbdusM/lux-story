@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-02-10T16:42:16.788Z",
-  "git_commit": "6b29860a93814998280b7248b761af78ea82b002",
+  "generated_at": "2026-02-10T17:22:09.197Z",
+  "git_commit": "07fa57c41339fb2ec3e6b37db8e0048588b42416",
   "flags": {
     "total": 6,
     "booleans": 5,
@@ -1063,6 +1063,592 @@
           "scripts/verify-production-admin.ts"
         ]
       }
+    ]
+  },
+  "telemetry": {
+    "analytics_dictionary_path": "docs/reference/data-dictionary/12-analytics.md",
+    "verify_script_path": "scripts/verify-analytics-dictionary.ts",
+    "interaction_events_spec_path": "lib/telemetry/interaction-events-spec.ts",
+    "event_bus_spec_path": "lib/event-bus.ts",
+    "interaction_events": {
+      "declared_total": 6,
+      "used_total": 6,
+      "unused_declared": [],
+      "unknown_used": [],
+      "missing_in_dictionary": [],
+      "rows": [
+        {
+          "event_type": "choice_compact_toggled",
+          "documented_in_dictionary": true,
+          "usage_count": 2,
+          "usage_count_runtime": 2,
+          "usage_count_tests": 0,
+          "usage_count_scripts": 0,
+          "usage_files": [
+            "components/GameChoices.tsx"
+          ]
+        },
+        {
+          "event_type": "choice_presented",
+          "documented_in_dictionary": true,
+          "usage_count": 1,
+          "usage_count_runtime": 1,
+          "usage_count_tests": 0,
+          "usage_count_scripts": 0,
+          "usage_files": [
+            "components/GameChoices.tsx"
+          ]
+        },
+        {
+          "event_type": "choice_selected_result",
+          "documented_in_dictionary": true,
+          "usage_count": 1,
+          "usage_count_runtime": 1,
+          "usage_count_tests": 0,
+          "usage_count_scripts": 0,
+          "usage_files": [
+            "hooks/game/useChoiceHandler.ts"
+          ]
+        },
+        {
+          "event_type": "choice_selected_ui",
+          "documented_in_dictionary": true,
+          "usage_count": 1,
+          "usage_count_runtime": 1,
+          "usage_count_tests": 0,
+          "usage_count_scripts": 0,
+          "usage_files": [
+            "components/GameChoices.tsx"
+          ]
+        },
+        {
+          "event_type": "experiment_assigned",
+          "documented_in_dictionary": true,
+          "usage_count": 1,
+          "usage_count_runtime": 1,
+          "usage_count_tests": 0,
+          "usage_count_scripts": 0,
+          "usage_files": [
+            "lib/experiments.ts"
+          ]
+        },
+        {
+          "event_type": "node_entered",
+          "documented_in_dictionary": true,
+          "usage_count": 2,
+          "usage_count_runtime": 2,
+          "usage_count_tests": 0,
+          "usage_count_scripts": 0,
+          "usage_files": [
+            "hooks/game/useChoiceHandler.ts",
+            "hooks/game/useGameInitializer.ts"
+          ]
+        }
+      ]
+    },
+    "event_bus": {
+      "declared_total": 50,
+      "literal_used_total": 13,
+      "unknown_literals": [],
+      "missing_in_dictionary": [],
+      "rows": [
+        {
+          "event_name": "analytics:tracked",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:arc:completed",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:character:met",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:choice:made",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:cognitive:flow",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:dialogue:completed",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:dialogue:started",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:emotional:calm",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:emotional:stress",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:golden_prompt:achieved",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:interrupt:available",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:interrupt:missed",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:interrupt:taken",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:knowledge:gained",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:message:received",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 1,
+          "literal_usage_count_runtime": 1,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": [
+            "hooks/useEventBus.ts"
+          ]
+        },
+        {
+          "event_name": "game:message:streaming",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 1,
+          "literal_usage_count_runtime": 1,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": [
+            "hooks/useEventBus.ts"
+          ]
+        },
+        {
+          "event_name": "game:pattern:discovered",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:pattern:threshold",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:pattern:updated",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:platform:updated",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:presence:updated",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 1,
+          "literal_usage_count_runtime": 1,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": [
+            "hooks/useEventBus.ts"
+          ]
+        },
+        {
+          "event_name": "game:relationship:updated",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:scene:transition",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 1,
+          "literal_usage_count_runtime": 1,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": [
+            "hooks/useEventBus.ts"
+          ]
+        },
+        {
+          "event_name": "game:simulation:completed",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:simulation:started",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:skill:unlocked",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:skills:updated",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "game:state:changed",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 1,
+          "literal_usage_count_runtime": 1,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": [
+            "hooks/useEventBus.ts"
+          ]
+        },
+        {
+          "event_name": "game:trust:changed",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 1,
+          "literal_usage_count_runtime": 1,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": [
+            "hooks/useEventBus.ts"
+          ]
+        },
+        {
+          "event_name": "game:vulnerability:revealed",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "perf:api:slow",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "perf:bundle:large",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "perf:choice:slow",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "perf:memory:warning",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "perf:render:slow",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "system:cleanup",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "system:error",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 1,
+          "literal_usage_count_runtime": 1,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": [
+            "hooks/useEventBus.ts"
+          ]
+        },
+        {
+          "event_name": "system:info",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 1,
+          "literal_usage_count_runtime": 1,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": [
+            "hooks/useEventBus.ts"
+          ]
+        },
+        {
+          "event_name": "system:warning",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 1,
+          "literal_usage_count_runtime": 1,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": [
+            "hooks/useEventBus.ts"
+          ]
+        },
+        {
+          "event_name": "ui:animation:complete",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "ui:animation:start",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "ui:error:hide",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "ui:error:show",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "ui:message:hide",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 1,
+          "literal_usage_count_runtime": 1,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": [
+            "hooks/useEventBus.ts"
+          ]
+        },
+        {
+          "event_name": "ui:message:show",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 1,
+          "literal_usage_count_runtime": 1,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": [
+            "hooks/useEventBus.ts"
+          ]
+        },
+        {
+          "event_name": "ui:modal:closed",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "ui:modal:opened",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "ui:notification:display",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 0,
+          "literal_usage_count_runtime": 0,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": []
+        },
+        {
+          "event_name": "ui:scene:hide",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 1,
+          "literal_usage_count_runtime": 1,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": [
+            "hooks/useEventBus.ts"
+          ]
+        },
+        {
+          "event_name": "ui:scene:show",
+          "documented_in_dictionary": true,
+          "literal_usage_count": 1,
+          "literal_usage_count_runtime": 1,
+          "literal_usage_count_tests": 0,
+          "literal_usage_count_scripts": 0,
+          "literal_usage_files": [
+            "hooks/useEventBus.ts"
+          ]
+        }
+      ]
+    }
+  },
+  "data_dictionaries": {
+    "directory": "docs/reference/data-dictionary",
+    "files": [
+      "docs/reference/data-dictionary/00-core-gameplay.md",
+      "docs/reference/data-dictionary/00-index.md",
+      "docs/reference/data-dictionary/01-emotions.md",
+      "docs/reference/data-dictionary/02-skills.md",
+      "docs/reference/data-dictionary/03-patterns.md",
+      "docs/reference/data-dictionary/04-characters.md",
+      "docs/reference/data-dictionary/05-dialogue-system.md",
+      "docs/reference/data-dictionary/06-simulations.md",
+      "docs/reference/data-dictionary/07-knowledge-flags.md",
+      "docs/reference/data-dictionary/08-trust-system.md",
+      "docs/reference/data-dictionary/09-interrupts.md",
+      "docs/reference/data-dictionary/10-ui-metadata.md",
+      "docs/reference/data-dictionary/11-careers.md",
+      "docs/reference/data-dictionary/12-analytics.md",
+      "docs/reference/data-dictionary/CORE_GAMEPLAY_DATA_DICTIONARY.md"
     ]
   }
 }

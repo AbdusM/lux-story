@@ -2,11 +2,12 @@
 /**
  * Feature Inventory (AAA)
  *
- * Generates an inventory of feature flags + experiments, including:
+ * Generates an inventory of feature flags + experiments + telemetry contracts, including:
  * - defaults (on/off)
  * - usage counts + references in code
  * - unused flags (declared but never referenced)
  * - unknown flag usage (referenced in code but not declared)
+ * - telemetry contract coverage vs docs/reference/data-dictionary/12-analytics.md
  *
  * Outputs:
  * - docs/qa/feature-inventory.report.json
@@ -21,6 +22,7 @@ import * as ts from 'typescript'
 import { listFlags } from '@/lib/feature-flags'
 import { ACTIVE_TESTS } from '@/lib/experiments'
 import { STORAGE_KEYS, DEV_STORAGE_KEYS, LEGACY_KEY_MAP, type StorageKey } from '@/lib/persistence/storage-keys'
+import { INTERACTION_EVENT_TYPES } from '@/lib/telemetry/interaction-events-spec'
 
 type FlagType = 'boolean' | 'enum'
 
@@ -69,6 +71,26 @@ type EnvVarInventoryRow = {
   usage_files: string[]
 }
 
+type InteractionEventInventoryRow = {
+  event_type: string
+  documented_in_dictionary: boolean
+  usage_count: number
+  usage_count_runtime: number
+  usage_count_tests: number
+  usage_count_scripts: number
+  usage_files: string[]
+}
+
+type EventBusEventInventoryRow = {
+  event_name: string
+  documented_in_dictionary: boolean
+  literal_usage_count: number
+  literal_usage_count_runtime: number
+  literal_usage_count_tests: number
+  literal_usage_count_scripts: number
+  literal_usage_files: string[]
+}
+
 type ExperimentInventoryRow = {
   id: string
   variants: readonly string[]
@@ -109,6 +131,31 @@ type InventoryReport = {
     server_total: number
     rows: EnvVarInventoryRow[]
   }
+  telemetry: {
+    analytics_dictionary_path: string
+    verify_script_path: string
+    interaction_events_spec_path: string
+    event_bus_spec_path: string
+    interaction_events: {
+      declared_total: number
+      used_total: number
+      unused_declared: string[]
+      unknown_used: Array<{ event_type: string; count: number; files: string[] }>
+      missing_in_dictionary: string[]
+      rows: InteractionEventInventoryRow[]
+    }
+    event_bus: {
+      declared_total: number
+      literal_used_total: number
+      unknown_literals: Array<{ event_name: string; count: number; files: string[] }>
+      missing_in_dictionary: string[]
+      rows: EventBusEventInventoryRow[]
+    }
+  }
+  data_dictionaries: {
+    directory: string
+    files: string[]
+  }
   experiments: {
     active_total: number
     rows: ExperimentInventoryRow[]
@@ -116,6 +163,12 @@ type InventoryReport = {
 }
 
 const REPO_ROOT = process.cwd()
+
+const ANALYTICS_DICTIONARY_REL = 'docs/reference/data-dictionary/12-analytics.md'
+const VERIFY_ANALYTICS_SCRIPT_REL = 'scripts/verify-analytics-dictionary.ts'
+const INTERACTION_EVENTS_SPEC_REL = 'lib/telemetry/interaction-events-spec.ts'
+const EVENT_BUS_SPEC_REL = 'lib/event-bus.ts'
+const DATA_DICTIONARY_DIR_REL = 'docs/reference/data-dictionary'
 
 const SCAN_DIRS = [
   'app',
@@ -310,9 +363,58 @@ function isSafeStorageExpr(expr: ts.Expression): boolean {
   return isIdentifierNamed(expr, 'safeStorage')
 }
 
+function extractEventBusDeclaredEvents(eventBusAbsPath: string): string[] {
+  let src = ''
+  try {
+    src = readFileSync(eventBusAbsPath, 'utf8')
+  } catch {
+    return []
+  }
+
+  const sf = ts.createSourceFile(eventBusAbsPath, src, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS)
+  const events = new Set<string>()
+
+  const visit = (node: ts.Node) => {
+    if (ts.isInterfaceDeclaration(node) && node.name.text === 'GameEventMap') {
+      for (const member of node.members) {
+        if (!ts.isPropertySignature(member)) continue
+        const n = member.name
+        if (ts.isStringLiteral(n)) events.add(n.text)
+        if (ts.isNoSubstitutionTemplateLiteral(n)) events.add(n.text)
+      }
+    }
+    ts.forEachChild(node, visit)
+  }
+  ts.forEachChild(sf, visit)
+
+  return Array.from(events).sort()
+}
+
 function main() {
   const generatedAt = new Date().toISOString()
   const gitCommit = getGitCommit()
+
+  const analyticsDocAbs = path.join(REPO_ROOT, ANALYTICS_DICTIONARY_REL)
+  const analyticsDoc = safeRead(analyticsDocAbs) ?? ''
+
+  const eventBusAbs = path.join(REPO_ROOT, EVENT_BUS_SPEC_REL)
+  const eventBusDeclared = extractEventBusDeclaredEvents(eventBusAbs)
+  const eventBusDeclaredSet = new Set(eventBusDeclared)
+
+  const interactionDeclared = Array.from(INTERACTION_EVENT_TYPES)
+  const interactionDeclaredSet = new Set<string>(interactionDeclared)
+
+  const dataDictionaryDirAbs = path.join(REPO_ROOT, DATA_DICTIONARY_DIR_REL)
+  const dataDictionaryFiles = (() => {
+    try {
+      return readdirSync(dataDictionaryDirAbs)
+        .filter((f) => f.endsWith('.md'))
+        .map((f) => path.posix.join(DATA_DICTIONARY_DIR_REL, f))
+        .sort()
+    } catch {
+      return [] as string[]
+    }
+  })()
 
   const files: string[] = []
   for (const d of SCAN_DIRS) {
@@ -325,6 +427,8 @@ function main() {
   const expUsage = new Map<string, { count: number; files: Map<string, number> }>()
   const storageKeyUsage = new Map<string, { count: number; files: Map<string, number> }>()
   const envVarUsage = new Map<string, { count: number; files: Map<string, number> }>()
+  const interactionEventUsage = new Map<string, { count: number; files: Map<string, number> }>()
+  const eventBusLiteralUsage = new Map<string, { count: number; files: Map<string, number> }>()
 
   const storageKeyNameByValue = new Map<string, string>()
   for (const k of Object.keys(STORAGE_KEYS) as StorageKey[]) storageKeyNameByValue.set(STORAGE_KEYS[k], k)
@@ -342,6 +446,8 @@ function main() {
     const recordExp = (id: string) => addUsage(expUsage, id, fileRel)
     const recordStorageKey = (name: string) => addUsage(storageKeyUsage, name, fileRel)
     const recordEnv = (name: string) => addUsage(envVarUsage, name, fileRel)
+    const recordInteractionEvent = (eventType: string) => addUsage(interactionEventUsage, eventType, fileRel)
+    const recordEventBusLiteral = (eventName: string) => addUsage(eventBusLiteralUsage, eventName, fileRel)
 
     const visit = (node: ts.Node) => {
       // Feature flags
@@ -408,6 +514,35 @@ function main() {
                 if (name) recordStorageKey(name)
               }
             }
+          }
+        }
+
+        // Interaction events: queueInteractionEventSync({ event_type: '...' })
+        const isQueueInteractionEventCall =
+          (ts.isIdentifier(callee) && callee.text === 'queueInteractionEventSync') ||
+          (ts.isPropertyAccessExpression(callee) && callee.name.text === 'queueInteractionEventSync')
+
+        if (isQueueInteractionEventCall) {
+          const obj = arg0
+          if (obj && ts.isObjectLiteralExpression(obj)) {
+            for (const prop of obj.properties) {
+              if (!ts.isPropertyAssignment(prop)) continue
+              const key = prop.name
+              const keyText = ts.isIdentifier(key) ? key.text : ts.isStringLiteral(key) ? key.text : null
+              if (keyText !== 'event_type') continue
+              const v = stringText(prop.initializer)
+              if (v) recordInteractionEvent(v)
+            }
+          }
+        }
+      }
+
+      // Event bus string literal usage anywhere in code (excluding declaration file).
+      if (fileRel !== EVENT_BUS_SPEC_REL) {
+        if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
+          const s = node.text
+          if (/^(game|ui|perf|system|analytics):/.test(s)) {
+            recordEventBusLiteral(s)
           }
         }
       }
@@ -595,6 +730,60 @@ function main() {
     }
   }).sort((a, b) => a.id.localeCompare(b.id))
 
+  // Telemetry: interaction events (canonical analytics sink)
+  const unknownInteractionUsed: Array<{ event_type: string; count: number; files: string[] }> = []
+  for (const [eventType, u] of interactionEventUsage.entries()) {
+    if (interactionDeclaredSet.has(eventType)) continue
+    unknownInteractionUsed.push({ event_type: eventType, count: u.count, files: Array.from(u.files.keys()).sort() })
+  }
+  unknownInteractionUsed.sort((a, b) => b.count - a.count || a.event_type.localeCompare(b.event_type))
+
+  const unusedInteractionDeclared = interactionDeclared
+    .filter((t) => !interactionEventUsage.has(t))
+    .sort()
+
+  const interactionMissingInDict = interactionDeclared.filter((t) => !analyticsDoc.includes(t)).sort()
+
+  const interactionRows: InteractionEventInventoryRow[] = interactionDeclared.map((t) => {
+    const usage = interactionEventUsage.get(t)
+    const usageFiles = usage ? Array.from(usage.files.keys()).sort() : []
+    const dist = usage ? usageDist(usage) : { runtime: 0, tests: 0, scripts: 0 }
+    return {
+      event_type: t,
+      documented_in_dictionary: analyticsDoc.includes(t),
+      usage_count: usage?.count ?? 0,
+      usage_count_runtime: dist.runtime,
+      usage_count_tests: dist.tests,
+      usage_count_scripts: dist.scripts,
+      usage_files: usageFiles,
+    }
+  }).sort((a, b) => a.event_type.localeCompare(b.event_type))
+
+  // Telemetry: EventBus events (local observers + UI/system instrumentation)
+  const unknownEventBusLiterals: Array<{ event_name: string; count: number; files: string[] }> = []
+  for (const [eventName, u] of eventBusLiteralUsage.entries()) {
+    if (eventBusDeclaredSet.has(eventName)) continue
+    unknownEventBusLiterals.push({ event_name: eventName, count: u.count, files: Array.from(u.files.keys()).sort() })
+  }
+  unknownEventBusLiterals.sort((a, b) => b.count - a.count || a.event_name.localeCompare(b.event_name))
+
+  const eventBusMissingInDict = eventBusDeclared.filter((t) => !analyticsDoc.includes(t)).sort()
+
+  const eventBusRows: EventBusEventInventoryRow[] = eventBusDeclared.map((t) => {
+    const usage = eventBusLiteralUsage.get(t)
+    const usageFiles = usage ? Array.from(usage.files.keys()).sort() : []
+    const dist = usage ? usageDist(usage) : { runtime: 0, tests: 0, scripts: 0 }
+    return {
+      event_name: t,
+      documented_in_dictionary: analyticsDoc.includes(t),
+      literal_usage_count: usage?.count ?? 0,
+      literal_usage_count_runtime: dist.runtime,
+      literal_usage_count_tests: dist.tests,
+      literal_usage_count_scripts: dist.scripts,
+      literal_usage_files: usageFiles,
+    }
+  }).sort((a, b) => a.event_name.localeCompare(b.event_name))
+
   const report: InventoryReport = {
     generated_at: generatedAt,
     git_commit: gitCommit,
@@ -626,6 +815,31 @@ function main() {
       public_total: envRows.filter(e => e.kind === 'public').length,
       server_total: envRows.filter(e => e.kind === 'server').length,
       rows: envRows,
+    },
+    telemetry: {
+      analytics_dictionary_path: ANALYTICS_DICTIONARY_REL,
+      verify_script_path: VERIFY_ANALYTICS_SCRIPT_REL,
+      interaction_events_spec_path: INTERACTION_EVENTS_SPEC_REL,
+      event_bus_spec_path: EVENT_BUS_SPEC_REL,
+      interaction_events: {
+        declared_total: interactionDeclared.length,
+        used_total: new Set(interactionEventUsage.keys()).size,
+        unused_declared: unusedInteractionDeclared,
+        unknown_used: unknownInteractionUsed,
+        missing_in_dictionary: interactionMissingInDict,
+        rows: interactionRows,
+      },
+      event_bus: {
+        declared_total: eventBusDeclared.length,
+        literal_used_total: new Set(eventBusLiteralUsage.keys()).size,
+        unknown_literals: unknownEventBusLiterals,
+        missing_in_dictionary: eventBusMissingInDict,
+        rows: eventBusRows,
+      },
+    },
+    data_dictionaries: {
+      directory: DATA_DICTIONARY_DIR_REL,
+      files: dataDictionaryFiles,
     },
   }
 
@@ -722,6 +936,114 @@ function main() {
     mdLines.push('')
   }
 
+  mdLines.push('## Telemetry')
+  mdLines.push('')
+  mdLines.push('Analytics contract sources:')
+  mdLines.push(`- Analytics dictionary: \`${report.telemetry.analytics_dictionary_path}\``)
+  mdLines.push(`- Verifier: \`npm run verify:analytics-dict\` (\`${report.telemetry.verify_script_path}\`)`)
+  mdLines.push(`- Interaction events spec: \`${report.telemetry.interaction_events_spec_path}\``)
+  mdLines.push(`- Event bus spec: \`${report.telemetry.event_bus_spec_path}\``)
+  mdLines.push('')
+
+  mdLines.push('### Interaction Events (Supabase)')
+  mdLines.push('')
+  mdLines.push(`Declared (spec): **${report.telemetry.interaction_events.declared_total}**`)
+  mdLines.push(`Used (code): **${report.telemetry.interaction_events.used_total}**`)
+  mdLines.push(`Missing in dictionary: **${report.telemetry.interaction_events.missing_in_dictionary.length}**`)
+  mdLines.push(`Unknown used (not in spec): **${report.telemetry.interaction_events.unknown_used.length}**`)
+  mdLines.push('')
+
+  if (report.telemetry.interaction_events.missing_in_dictionary.length) {
+    mdLines.push('#### Missing In Dictionary (Bug)')
+    mdLines.push('')
+    mdLines.push(report.telemetry.interaction_events.missing_in_dictionary.map((t) => `- \`${t}\``).join('\n'))
+    mdLines.push('')
+  }
+
+  if (report.telemetry.interaction_events.unknown_used.length) {
+    mdLines.push('#### Unknown Used (Bug)')
+    mdLines.push('')
+    for (const u of report.telemetry.interaction_events.unknown_used.slice(0, 30)) {
+      mdLines.push(`- \`${u.event_type}\` (${u.count}): ${u.files.slice(0, 6).map(f => `\`${f}\``).join(', ')}${u.files.length > 6 ? ` (+${u.files.length - 6})` : ''}`)
+    }
+    if (report.telemetry.interaction_events.unknown_used.length > 30) {
+      mdLines.push(`- …and ${report.telemetry.interaction_events.unknown_used.length - 30} more`)
+    }
+    mdLines.push('')
+  }
+
+  if (report.telemetry.interaction_events.unused_declared.length) {
+    mdLines.push('#### Unused Declared (Debt)')
+    mdLines.push('')
+    mdLines.push(report.telemetry.interaction_events.unused_declared.map((t) => `- \`${t}\``).join('\n'))
+    mdLines.push('')
+  }
+
+  const interactionEventTable = formatMdTable(
+    report.telemetry.interaction_events.rows.map(r => ({
+      Event: `\`${markdownEscape(r.event_type)}\``,
+      Documented: r.documented_in_dictionary ? 'YES' : 'NO',
+      Used: r.usage_count ? `**${r.usage_count}**` : '0',
+      Runtime: r.usage_count_runtime ? `**${r.usage_count_runtime}**` : '0',
+      References: r.usage_files.length ? r.usage_files.slice(0, 4).map(f => `\`${f}\``).join(', ') + (r.usage_files.length > 4 ? ` (+${r.usage_files.length - 4})` : '') : '',
+    })),
+    ['Event', 'Documented', 'Used', 'Runtime', 'References']
+  )
+  mdLines.push(interactionEventTable)
+  mdLines.push('')
+
+  mdLines.push('### Event Bus Events')
+  mdLines.push('')
+  mdLines.push('Note: usage is detected via string-literal event names in code (emit/on/off/once and similar), excluding the declaration file itself.')
+  mdLines.push('')
+  mdLines.push(`Declared (spec): **${report.telemetry.event_bus.declared_total}**`)
+  mdLines.push(`Literal used (code): **${report.telemetry.event_bus.literal_used_total}**`)
+  mdLines.push(`Missing in dictionary: **${report.telemetry.event_bus.missing_in_dictionary.length}**`)
+  mdLines.push(`Unknown literals (not in spec): **${report.telemetry.event_bus.unknown_literals.length}**`)
+  mdLines.push('')
+
+  if (report.telemetry.event_bus.missing_in_dictionary.length) {
+    mdLines.push('#### Missing In Dictionary (Bug)')
+    mdLines.push('')
+    mdLines.push(report.telemetry.event_bus.missing_in_dictionary.map((t) => `- \`${t}\``).join('\n'))
+    mdLines.push('')
+  }
+
+  if (report.telemetry.event_bus.unknown_literals.length) {
+    mdLines.push('#### Unknown Literals (Bug)')
+    mdLines.push('')
+    for (const u of report.telemetry.event_bus.unknown_literals.slice(0, 30)) {
+      mdLines.push(`- \`${u.event_name}\` (${u.count}): ${u.files.slice(0, 6).map(f => `\`${f}\``).join(', ')}${u.files.length > 6 ? ` (+${u.files.length - 6})` : ''}`)
+    }
+    if (report.telemetry.event_bus.unknown_literals.length > 30) {
+      mdLines.push(`- …and ${report.telemetry.event_bus.unknown_literals.length - 30} more`)
+    }
+    mdLines.push('')
+  }
+
+  const eventBusTable = formatMdTable(
+    report.telemetry.event_bus.rows.map(r => ({
+      Event: `\`${markdownEscape(r.event_name)}\``,
+      Documented: r.documented_in_dictionary ? 'YES' : 'NO',
+      Used: r.literal_usage_count ? `**${r.literal_usage_count}**` : '0',
+      Runtime: r.literal_usage_count_runtime ? `**${r.literal_usage_count_runtime}**` : '0',
+      References: r.literal_usage_files.length ? r.literal_usage_files.slice(0, 4).map(f => `\`${f}\``).join(', ') + (r.literal_usage_files.length > 4 ? ` (+${r.literal_usage_files.length - 4})` : '') : '',
+    })),
+    ['Event', 'Documented', 'Used', 'Runtime', 'References']
+  )
+  mdLines.push(eventBusTable)
+  mdLines.push('')
+
+  mdLines.push('## Data Dictionaries')
+  mdLines.push('')
+  mdLines.push(`Directory: \`${report.data_dictionaries.directory}\``)
+  mdLines.push(`Files: **${report.data_dictionaries.files.length}**`)
+  mdLines.push('')
+  if (report.data_dictionaries.files.length) {
+    mdLines.push(report.data_dictionaries.files.map((f) => `- \`${f}\``).join('\n'))
+    mdLines.push('')
+  }
+
   mdLines.push('## localStorage Keys')
   mdLines.push('')
   mdLines.push(`Total: **${report.storage_keys.total}**`)
@@ -751,7 +1073,10 @@ function main() {
   }
 
   if (report.storage_keys.unknown_key_usages.length) {
-    mdLines.push('### Unknown Key Usages (Bug)')
+    mdLines.push('### Unknown Key Usages (Needs Review)')
+    mdLines.push('')
+    mdLines.push('These are key registry identifiers found in code that are not present in `STORAGE_KEYS` / `DEV_STORAGE_KEYS` / `LEGACY_KEY_MAP`.')
+    mdLines.push('They are often from archived/legacy modules and may not be runtime bugs, but should be reviewed.')
     mdLines.push('')
     for (const u of report.storage_keys.unknown_key_usages.slice(0, 30)) {
       mdLines.push(`- \`${u.name}\` (${u.count}): ${u.files.slice(0, 6).map(f => `\`${f}\``).join(', ')}${u.files.length > 6 ? ` (+${u.files.length - 6})` : ''}`)
