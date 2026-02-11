@@ -163,7 +163,7 @@ jobs:
     runs-on: ubuntu-latest
     # WebKit (iPhone device profiles) can be significantly slower on shared CI runners,
     # especially with retries enabled. Keep this generous to avoid "cancelled" runs.
-    timeout-minutes: 25
+    timeout-minutes: 35
     strategy:
       fail-fast: false
       matrix:
