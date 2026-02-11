@@ -24,7 +24,8 @@ jobs:
       run: npm ci
 
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps chromium
+      # Mobile projects (iPhone) use WebKit; install it alongside Chromium.
+      run: npx playwright install --with-deps chromium webkit
 
     - name: Cache Playwright browsers
       uses: actions/cache@v3
