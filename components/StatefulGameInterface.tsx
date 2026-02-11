@@ -3789,7 +3789,8 @@ export default function StatefulGameInterface() {
           SCROLLABLE DIALOGUE AREA-Middle section
           ══════════════════════════════════════════════════════════════════ */}
         <main
-          className="flex-1 overflow-y-auto overscroll-contain"
+          // Mobile safe-area/corner padding: tests assert the game interface box is inset from edges.
+          className="flex-1 overflow-y-auto overscroll-contain mx-2 sm:mx-0"
           style={{ WebkitOverflowScrolling: 'touch' }}
           data-testid="game-interface"
         >
