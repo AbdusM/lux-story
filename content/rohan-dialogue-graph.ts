@@ -1129,7 +1129,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
         skills: ['leadership', 'wisdom'],
         consequence: {
           characterId: 'rohan',
-          trustChange: 3
+          trustChange: 2
         }
       },
       {
@@ -2328,7 +2328,7 @@ WHERE IS THE 847ms COMING FROM?`,
     }],
     onEnter: [{
       characterId: 'rohan',
-      trustChange: 3,
+      trustChange: 2,
       addKnowledgeFlags: ['rohan_sim3_complete', 'rohan_all_sims_complete']
     }],
     choices: [{

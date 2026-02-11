@@ -420,7 +420,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         requiredOrbFill: { pattern: 'helping', threshold: 30 },
         consequence: {
           characterId: 'devon',
-          trustChange: 3
+          trustChange: 2
         }
       }
     ]
@@ -1228,7 +1228,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         skills: ['emotionalIntelligence', 'adaptability'],
         consequence: {
           characterId: 'devon',
-          trustChange: 3
+          trustChange: 2
         }
       },
       {
@@ -3113,7 +3113,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         skills: ['wisdom'],
         consequence: {
           characterId: 'devon',
-          trustChange: 3,
+          trustChange: 2,
           addGlobalFlags: ['devon_chose_stay']
         }
       },
@@ -3641,7 +3641,7 @@ What communication approach balances these?`,
         skills: ['emotionalIntelligence'],
         consequence: {
           characterId: 'devon',
-          trustChange: 3,
+          trustChange: 2,
           addGlobalFlags: ['devon_human_systems_mastery']
         }
       }
@@ -3854,7 +3854,7 @@ What communication approach balances these?`,
     onEnter: [
       {
         characterId: 'devon',
-        trustChange: 3,
+        trustChange: 2,
         addKnowledgeFlags: ['devon_loyalty_complete'],
         addGlobalFlags: ['devon_outage_mastery']
       }

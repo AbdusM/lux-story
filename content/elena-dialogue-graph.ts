@@ -866,7 +866,7 @@ const nodes: DialogueNode[] = [
         skills: ['promptEngineering'],
         consequence: {
           characterId: 'elena',
-          trustChange: 10,
+          trustChange: 2,
           addKnowledgeFlags: ['unlocked_perplexity', 'elena_simulation_phase1_complete'],
           addGlobalFlags: ['golden_prompt_deep_search']
         }
@@ -962,7 +962,7 @@ const nodes: DialogueNode[] = [
         skills: ['informationLiteracy'],
         consequence: {
           characterId: 'elena',
-          trustChange: 10,
+          trustChange: 2,
           addKnowledgeFlags: ['unlocked_notebooklm'],
           addGlobalFlags: ['golden_prompt_notebooklm']
         }
@@ -1059,7 +1059,7 @@ const nodes: DialogueNode[] = [
         skills: ['creativity', 'promptEngineering'],
         consequence: {
           characterId: 'elena',
-          trustChange: 15,
+          trustChange: 2,
           addKnowledgeFlags: ['unlocked_midjourney'],
           addGlobalFlags: ['golden_prompt_midjourney']
         }
@@ -1164,7 +1164,7 @@ const nodes: DialogueNode[] = [
         skills: ['collaboration'],
         consequence: {
           characterId: 'elena',
-          trustChange: 3
+          trustChange: 2
         }
       }
     ]
@@ -1211,7 +1211,7 @@ const nodes: DialogueNode[] = [
         skills: ['leadership', 'collaboration'],
         consequence: {
           characterId: 'elena',
-          trustChange: 4
+          trustChange: 2
         }
       }
     ]
@@ -1891,7 +1891,7 @@ const nodes: DialogueNode[] = [
         pattern: 'helping',
         consequence: {
           characterId: 'elena',
-          trustChange: 3
+          trustChange: 2
         }
       }
     ]
@@ -2035,7 +2035,7 @@ const nodes: DialogueNode[] = [
         skills: ['collaboration'],
         consequence: {
           characterId: 'elena',
-          trustChange: 3
+          trustChange: 2
         }
       }
     ]

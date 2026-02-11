@@ -2503,7 +2503,7 @@ STATUS: Signal fighting itself`,
         },
         consequence: {
           characterId: 'maya',
-          trustChange: 3
+          trustChange: 2
         }
       },
       {
@@ -2555,7 +2555,7 @@ STATUS: Signal fighting itself`,
         },
         consequence: {
           characterId: 'maya',
-          trustChange: 3
+          trustChange: 2
         }
       },
       {
@@ -2606,7 +2606,7 @@ STATUS: Signal fighting itself`,
         skills: ['leadership', 'collaboration'],
         consequence: {
           characterId: 'maya',
-          trustChange: 4
+          trustChange: 2
         }
       },
       {
@@ -2617,7 +2617,7 @@ STATUS: Signal fighting itself`,
         skills: ['systemsThinking'],
         consequence: {
           characterId: 'maya',
-          trustChange: 3
+          trustChange: 2
         }
       }
     ],
@@ -4009,7 +4009,7 @@ MISSION: Stabilize the wave form within safety limits.`,
     onEnter: [
       {
         characterId: 'maya',
-        trustChange: 3,
+        trustChange: 2,
         addKnowledgeFlags: ['maya_loyalty_complete'],
         addGlobalFlags: ['maya_demo_triumph']
       }

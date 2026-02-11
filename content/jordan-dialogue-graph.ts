@@ -1824,7 +1824,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         },
         consequence: {
           characterId: 'jordan',
-          trustChange: 3
+          trustChange: 2
         }
       },
       {
@@ -1902,7 +1902,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         },
         consequence: {
           characterId: 'jordan',
-          trustChange: 4
+          trustChange: 2
         }
       },
       {
@@ -1917,7 +1917,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         },
         consequence: {
           characterId: 'jordan',
-          trustChange: 3
+          trustChange: 2
         }
       }
     ],
@@ -1956,7 +1956,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         },
         consequence: {
           characterId: 'jordan',
-          trustChange: 4
+          trustChange: 2
         }
       },
       {
@@ -1971,7 +1971,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         },
         consequence: {
           characterId: 'jordan',
-          trustChange: 3
+          trustChange: 2
         }
       }
     ],
@@ -2741,7 +2741,7 @@ What does Jordan say this time?`,
     }],
     onEnter: [{
       characterId: 'jordan',
-      trustChange: 3,
+      trustChange: 2,
       addGlobalFlags: ['jordan_mastery_achieved']
     }],
     tags: ['simulation', 'phase3', 'success', 'transformation']

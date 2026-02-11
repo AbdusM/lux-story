@@ -1676,7 +1676,7 @@ What honors both Elizabeth\'s grief and Isaiah\'s without breaking either?`,
     }],
     onEnter: [{
       characterId: 'isaiah',
-      trustChange: 3,
+      trustChange: 2,
       addGlobalFlags: ['isaiah_mastery_achieved']
     }],
     tags: ['simulation', 'phase3', 'success', 'transformation']

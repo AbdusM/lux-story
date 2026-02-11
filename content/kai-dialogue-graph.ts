@@ -1520,7 +1520,7 @@ Available Components:
         },
         consequence: {
           characterId: 'kai',
-          trustChange: 3
+          trustChange: 2
         }
       },
       {
@@ -1970,7 +1970,7 @@ Available Components:
         skills: ['emotionalIntelligence', 'adaptability'],
         consequence: {
           characterId: 'kai',
-          trustChange: 3
+          trustChange: 2
         }
       },
       // Career observation route (ISP: Only visible when pattern combo is achieved)
@@ -2203,7 +2203,7 @@ Which approach actually reduces injuries?`,
     }],
     onEnter: [{
       characterId: 'kai',
-      trustChange: 3,
+      trustChange: 2,
       addKnowledgeFlags: ['kai_sim3_complete', 'kai_all_sims_complete']
     }],
     choices: [{

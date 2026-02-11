@@ -1507,7 +1507,7 @@ export const alexDialogueNodes: DialogueNode[] = [
         skills: ['communication', 'leadership'],
         consequence: {
           characterId: 'alex',
-          trustChange: 3
+          trustChange: 2
         }
       },
       {

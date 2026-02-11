@@ -1816,7 +1816,7 @@ Which path balances personal risk and moral responsibility?`,
         skills: ['ethicalReasoning', 'courage'],
         consequence: {
           characterId: 'nadia',
-          trustChange: 3,
+          trustChange: 2,
           addGlobalFlags: ['nadia_whistleblower_mastery']
         }
       }

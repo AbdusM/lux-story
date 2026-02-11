@@ -171,7 +171,7 @@ export const marketDialogueNodes: DialogueNode[] = [
                 consequence: {
                     addGlobalFlags: ['sold_technocrat_blueprint', 'item_black_market_access'],
                     characterId: 'kai',
-                    trustChange: -5 // Mild betrayal of safety protocols
+                    trustChange: -2 // Mild betrayal of safety protocols
                 },
                 skills: ['financialLiteracy', 'strategicThinking'] // Valid 2030 skill
             },
@@ -196,7 +196,7 @@ export const marketDialogueNodes: DialogueNode[] = [
                 consequence: {
                     addGlobalFlags: ['sold_naturalist_location', 'item_bounty_hunter_contact'],
                     characterId: 'yaquin',
-                    trustChange: -15 // Major betrayal of nature
+                    trustChange: -2 // Major betrayal of nature
                 },
                 skills: ['financialLiteracy', 'culturalCompetence'] // Valid 2030 skill
             },
@@ -221,7 +221,7 @@ export const marketDialogueNodes: DialogueNode[] = [
                 consequence: {
                     addGlobalFlags: ['sold_samuel_secret', 'has_access_sector_3'],
                     characterId: 'samuel',
-                    trustChange: -20 // Major Betrayal
+                    trustChange: -2 // Major Betrayal
                 }
             },
 
@@ -237,7 +237,7 @@ export const marketDialogueNodes: DialogueNode[] = [
                 consequence: {
                     addGlobalFlags: ['sold_maya_secret', 'item_battery_pack'],
                     characterId: 'maya',
-                    trustChange: -10
+                    trustChange: -2
                 }
             },
 
