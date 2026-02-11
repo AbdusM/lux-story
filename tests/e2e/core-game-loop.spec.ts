@@ -142,6 +142,13 @@ test.describe('Core Game Loop E2E', () => {
     // Reload page
     await page.reload()
     await page.waitForLoadState('domcontentloaded')
+
+    // After reload, the app shows the "Welcome back" screen again; re-enter the game loop.
+    const continueBtn = page.getByRole('button', { name: /continue journey|continue your journey/i })
+    if (await continueBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await continueBtn.click()
+    }
+
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 20000 })
 
     // Get state after reload

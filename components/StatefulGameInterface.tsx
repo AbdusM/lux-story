@@ -3690,6 +3690,7 @@ export default function StatefulGameInterface() {
                     "relative h-9 w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md",
                     hasNewOrbs ? "text-amber-400 nav-attention-halo nav-attention-halo-amber" : ""
                   )}
+                  aria-label="Open Journal"
                   title="The Prism"
                 >
                   <BookOpen className="h-4 w-4" />
@@ -3702,6 +3703,7 @@ export default function StatefulGameInterface() {
                     "relative h-9 w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md",
                     (state.hasNewTrust || state.hasNewMeeting) ? "text-purple-400 nav-attention-marquee nav-attention-halo nav-attention-halo-purple" : ""
                   )}
+                  aria-label="Open Skill Constellation"
                   title="Your Journey"
                 >
                   <Stars className="h-4 w-4" />
