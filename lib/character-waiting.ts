@@ -169,7 +169,7 @@ export function detectReturningPlayer(
   gameState.characters.forEach((charState, charId) => {
     // Deterministic: a character counts as "visited this session" if their last
     // interaction timestamp is >= the session start time.
-    const ts = (charState as any).lastInteractionTimestamp
+    const ts = charState.lastInteractionTimestamp
     if (typeof ts === 'number' && Number.isFinite(ts) && ts >= sessionStart) {
       currentSessionCharacters.add(charId)
     }
