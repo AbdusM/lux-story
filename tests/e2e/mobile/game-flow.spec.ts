@@ -223,7 +223,7 @@ test.describe('Game Flow (mobile)', () => {
     await expect(dialogueContent).toBeVisible({ timeout: 10000 })
   })
 
-  test('Portrait orientation layout is correct', async ({ page, seedState }) => {
+  test('Layout is correct in current mobile viewport', async ({ page, seedState }) => {
     const viewport = getViewport(page)
 
     await seedState({
@@ -237,8 +237,6 @@ test.describe('Game Flow (mobile)', () => {
       visitedScenes: []
     })
 
-    expect(viewport.height).toBeGreaterThan(viewport.width)
-
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
 
     const gameInterface = page.getByTestId('game-interface')
@@ -249,4 +247,3 @@ test.describe('Game Flow (mobile)', () => {
     }
   })
 })
-

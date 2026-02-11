@@ -258,25 +258,27 @@ const createHighTrustState = () => ({
  * Helper to seed state into localStorage
  */
 async function seedGameState(page: Page, state: any): Promise<void> {
-  // Avoid `networkidle` on WebKit/mobile: the app can keep connections open which makes it flaky.
-  await page.goto('/', { waitUntil: 'domcontentloaded' })
-
-  await page.evaluate((stateToSeed) => {
-    // Clear existing state
+  // Seed state before app code executes (CI-stable). The previous "goto -> eval -> reload"
+  // approach was prone to flake on mobile Chromium/WebKit in CI due to redirects/onboarding
+  // screens executing before localStorage was updated.
+  //
+  // Note: `addInitScript` stacks if `seedGameState` is called multiple times. That's OK for
+  // our usage (one seed per test). If that changes, consider using a dedicated storageState.
+  await page.goto('about:blank')
+  await page.addInitScript((stateToSeed) => {
     localStorage.clear()
-
-    // Mark as test environment
-    window.__PLAYWRIGHT__ = true
-
-    // Set new state
+    ;(window as any).__PLAYWRIGHT__ = true
     localStorage.setItem('grand-central-terminus-save', JSON.stringify(stateToSeed))
   }, state)
 
-  await page.reload({ waitUntil: 'domcontentloaded' })
+  // Avoid `networkidle` on WebKit/mobile: the app can keep connections open which makes it flaky.
+  await page.goto('/', { waitUntil: 'domcontentloaded' })
 
   const gameInterface = page.locator('[data-testid="game-interface"]')
   const continueButton = page.getByRole('button', { name: /continue journey|continue your journey/i })
-  const enterStationButton = page.getByRole('button', { name: /enter( the)? station/i })
+  // The intro CTA uses an aria-label ("Begin your journey at Terminus"), so match that too.
+  const enterStationButton = page.getByRole('button', { name: /enter( the)? station|begin your journey/i })
+  const beginExploringButton = page.getByRole('button', { name: /begin exploring/i })
 
   // Some routes show a welcome/intro screen even when a save is present; click through if needed.
   for (let attempt = 0; attempt < 4; attempt++) {
@@ -284,20 +286,24 @@ async function seedGameState(page: Page, state: any): Promise<void> {
 
     if (await continueButton.isVisible({ timeout: 500 }).catch(() => false)) {
       await continueButton.click()
-      await page.waitForLoadState('domcontentloaded')
       continue
     }
 
     if (await enterStationButton.isVisible({ timeout: 500 }).catch(() => false)) {
       await enterStationButton.click()
-      await page.waitForLoadState('domcontentloaded')
+      continue
+    }
+
+    if (await beginExploringButton.isVisible({ timeout: 500 }).catch(() => false)) {
+      await beginExploringButton.click()
       continue
     }
 
     await page.waitForTimeout(250)
   }
 
-  await gameInterface.waitFor({ state: 'visible', timeout: 30000 })
+  // CI mobile runs can be slow; prefer a slightly more generous wait over flake.
+  await gameInterface.waitFor({ state: 'visible', timeout: 45000 })
 }
 
 /**
