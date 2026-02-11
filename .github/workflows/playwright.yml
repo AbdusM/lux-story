@@ -161,7 +161,9 @@ jobs:
   test-mobile:
     needs: setup
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # WebKit (iPhone device profiles) can be significantly slower on shared CI runners,
+    # especially with retries enabled. Keep this generous to avoid "cancelled" runs.
+    timeout-minutes: 25
     strategy:
       matrix:
         device: [mobile-iphone-se, mobile-iphone-14, mobile-galaxy-s21]
