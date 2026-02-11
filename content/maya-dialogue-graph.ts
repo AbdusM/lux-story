@@ -4365,6 +4365,10 @@ MISSION: Stabilize the wave form within safety limits.`,
     requiredState: {
       requiredCombos: ['innovation_catalyst']
     },
+    onEnter: [{
+      characterId: 'maya',
+      addKnowledgeFlags: ['skill_combo_unlock_seen_maya_rohan_crossover']
+    }],
     content: [
       {
         text: "I've been thinking about what Rohan said—about how the best ideas come from weird intersections.\n\nI used to think innovation meant choosing between being technical OR creative. But that's not it at all.\n\nIt's about being both. And knowing when to switch between them. That's the real skill—not the tools or the code, but the rhythm of creative thinking combined with technical rigor.\n\nI feel like I'm actually starting to understand how to build things that matter now.",

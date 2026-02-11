@@ -231,6 +231,7 @@ import { SimulationRenderer } from '@/components/game/SimulationRenderer'
 import { GameErrorBoundary } from '@/components/GameErrorBoundary'
 import { ChatPacedDialogue } from '@/components/ChatPacedDialogue'
 import { ConsequenceEchoDisplay } from '@/components/game/ConsequenceEchoDisplay'
+import { ReturnHookPrompt } from '@/components/game/ReturnHookPrompt'
 import { useWaitingRoom } from '@/hooks/useWaitingRoom'
 import { WaitingRoomIndicator, WaitingRoomRevealToast } from '@/components/ui/WaitingRoomIndicator'
 import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
@@ -333,6 +334,7 @@ export default function StatefulGameInterface() {
     waitingCharacters: [],
     pendingGift: null,
     isReturningPlayer: false,
+    returnHookDismissed: true,
     // activeExperience: null
   })
 
@@ -869,6 +871,10 @@ export default function StatefulGameInterface() {
     setState(prev => ({ ...prev, rewardFeed: (prev.rewardFeed || []).filter(i => i.id !== id) }))
   }
 
+  const dismissReturnHook = () => {
+    setState(prev => ({ ...prev, returnHookDismissed: true }))
+  }
+
   return (
     <LivingAtmosphere
       characterId={state.currentCharacterId}
@@ -910,6 +916,24 @@ export default function StatefulGameInterface() {
           onShowConstellation={() => setState(prev => ({ ...prev, showConstellation: true, showJournal: false, showReport: false, showJourneySummary: false, hasNewTrust: false, hasNewMeeting: false }))}
           onShowReport={() => setState(prev => ({ ...prev, showReport: true }))}
         />
+
+        {gameState && !state.returnHookDismissed && (
+          <ReturnHookPrompt
+            gameState={gameState}
+            isReturningPlayer={state.isReturningPlayer}
+            waitingCharacters={state.waitingCharacters}
+            onOpenJourney={() => {
+              dismissReturnHook()
+              setState(prev => ({ ...prev, showConstellation: true, showJournal: false, showReport: false, showJourneySummary: false, hasNewTrust: false, hasNewMeeting: false }))
+            }}
+            onVisitCharacter={(characterId) => {
+              dismissReturnHook()
+              // Uses existing Constellation navigation bridge (Conductor Mode).
+              useGameStore.getState().setCurrentScene(characterId)
+            }}
+            onDismiss={dismissReturnHook}
+          />
+        )}
 
         {/* ══════════════════════════════════════════════════════════════════
           SCROLLABLE DIALOGUE AREA-Middle section

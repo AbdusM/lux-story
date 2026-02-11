@@ -3251,6 +3251,10 @@ WARNING: Response time > 48h`,
       emotion: 'admiring',
       variation_id: 'translation_master_v1'
     }],
+    onEnter: [{
+      characterId: 'marcus',
+      addKnowledgeFlags: ['skill_combo_unlock_seen_marcus_translation_master']
+    }],
     choices: [
       {
         choiceId: 'translation_how',

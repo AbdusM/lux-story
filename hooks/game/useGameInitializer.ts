@@ -30,8 +30,9 @@ import { shouldShowInterrupt } from '@/lib/interrupt-visibility'
 import { applyPatternReflection, resolveContentVoiceVariation, applySkillReflection, applyNervousSystemReflection, type ConsequenceEcho } from '@/lib/consequence-echoes'
 import { calculateInheritedTrust } from '@/lib/trust-derivatives'
 import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
+import { getSkillComboUnlockChoices } from '@/lib/skill-combo-unlock-choices'
 import { selectAnnouncement } from '@/lib/platform-announcements'
-import { getTotalNodesVisited } from '@/lib/session-structure'
+import { getTotalNodesVisited, resetSessionTimer } from '@/lib/session-structure'
 import { detectReturningPlayer, getWaitingCharacters, getSamuelWaitingSummary } from '@/lib/character-waiting'
 import { calculateSkillDecay, getSkillDecayNarrative } from '@/lib/assessment-derivatives'
 import { migrateOrbsFromLocalStorage } from '@/lib/migrations/orb-migration'
@@ -71,6 +72,10 @@ export function useGameInitializer({
         const userId = generateUserId()
         gameState = GameStateUtils.createNewGameState(userId)
       }
+
+      // Session semantics: a "session" is a runtime boot (page load), not the persisted save.
+      // This keeps returning-player detection deterministic and debuggable.
+      gameState = resetSessionTimer(gameState)
 
       // TD-004: Migrate orb state from legacy localStorage keys
       // This runs once per save if legacy keys exist, then removes them
@@ -303,7 +308,12 @@ export function useGameInitializer({
         actualGraph,
         character.visitedPatternUnlocks
       )
-      const choices = [...regularChoices, ...patternUnlockChoices]
+      const comboUnlockChoices = getSkillComboUnlockChoices(
+        gameState.skillLevels,
+        actualGraph,
+        character.knowledgeFlags
+      )
+      const choices = [...regularChoices, ...patternUnlockChoices, ...comboUnlockChoices]
 
       // Session Boundary Detection (clean, minimal)
       // If this node is marked as a session boundary, show atmospheric announcement
@@ -437,7 +447,8 @@ export function useGameInitializer({
         activeComboChain: null,
         waitingCharacters,
         pendingGift: null,
-        isReturningPlayer: waitingContext.isReturningPlayer
+        isReturningPlayer: waitingContext.isReturningPlayer,
+        returnHookDismissed: !waitingContext.isReturningPlayer
       })
 
       // One-time local mode notice via Samuel (replaces persistent banner)

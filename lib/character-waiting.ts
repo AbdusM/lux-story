@@ -167,11 +167,12 @@ export function detectReturningPlayer(
   // Get characters visited in current session
   const currentSessionCharacters = new Set<string>()
   gameState.characters.forEach((charState, charId) => {
-    // If conversation history grew since session start, they were visited
-    // For simplicity, check if they have ANY history (we'll refine this)
-    if (charState.conversationHistory.length > 0) {
-      // Check if most recent visit was this session
-      // This is approximate - for better tracking, we'd add timestamps per character
+    // A character was "visited this session" only if we have a timestamp inside
+    // the current session window. Do not treat "ever met" (conversation history)
+    // as "visited this session" - that weakens the waiting/return loop and makes
+    // behavior non-deterministic.
+    const lastTs = charState.lastInteractionTimestamp
+    if (typeof lastTs === 'number' && lastTs >= sessionStart) {
       currentSessionCharacters.add(charId)
     }
   })

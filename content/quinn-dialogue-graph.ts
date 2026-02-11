@@ -2841,6 +2841,10 @@ ALTERNATIVES:
       requiredCombos: ['financial_mentor']
     },
     speaker: 'Quinn Almeida',
+    onEnter: [{
+      characterId: 'quinn',
+      addKnowledgeFlags: ['skill_combo_unlock_seen_quinn_wealth_wisdom']
+    }],
     content: [{
       text: "You know what makes a real mentor in finance?\n\nIt's not the biggest portfolio or the fastest trades. It's knowing that wealth without relationships is just numbers on a screen. And that relationships without wisdom become codependency.\n\nA financial mentor has to see both—the math AND the person. Financial literacy opens the door. But emotional intelligence teaches you when to stop knocking.",
       emotion: 'sincere',

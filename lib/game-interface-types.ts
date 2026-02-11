@@ -75,6 +75,7 @@ export interface GameInterfaceState {
   waitingCharacters: CharacterWaitingState[]
   pendingGift: DelayedGift | null
   isReturningPlayer: boolean
+  returnHookDismissed: boolean
   activeExperience: ActiveExperienceState | null
 }
 

@@ -2178,6 +2178,10 @@ What honors both Elizabeth\'s grief and Isaiah\'s without breaking either?`,
       requiredCombos: ['community_architect']
     },
     speaker: 'Isaiah Greene',
+    onEnter: [{
+      characterId: 'isaiah',
+      addKnowledgeFlags: ['skill_combo_unlock_seen_isaiah_vision']
+    }],
     content: [{
       text: "You know what I\'ve been missing all these years?\n\nI\'ve been treating systems like problems to solve through individual heroism. One donor. One scholarship. One life changed at a time.\n\nBut you understand something I\'m still learning. Systems work when they\'re collaborative. When the people inside them—donors, staff, young people, community leaders—are all part of building the structure, not just benefiting from it.\n\nThat\'s a community architect. Someone who builds systems where everyone\'s voice matters. Where the work can scale because it\'s rooted in relationships, not just resources.\n\nI think... I think that\'s how we actually transform things. Not by saving people. By building systems that help people save each other.",
       emotion: 'inspired',

@@ -10622,6 +10622,10 @@ OBSERVATION: He looks tired. Scared. Different.`,
     requiredState: {
       requiredCombos: ['holistic_systems_thinker']
     },
+    onEnter: [{
+      characterId: 'samuel',
+      addKnowledgeFlags: ['skill_combo_unlock_seen_samuel_wisdom_complete']
+    }],
     content: [{
       text: "Now you're beginning to see what I've tried to understand all these years.\n\nA system isn't just gears and logic. It's people. It's rules written into stone and hearts breaking against them. It's the engineer who codes the safety check—and the nurse who overrides it because a patient's suffering.\n\nYou've learned to think in complexity. To see how technical choices ripple through lives. To hold both the blueprint and the human cost in your mind at the same time.\n\nThat's the rarest kind of wisdom. Not head knowledge or heart knowledge. Both, dancing together.\n\nFolks like you don't just solve problems. You heal systems. And that's what the world needs most.",
       emotion: 'profound',

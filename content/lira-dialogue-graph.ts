@@ -3115,6 +3115,10 @@ Warning: Core Hum saturating mix.`,
         nodeId: 'lira_creative_mastery',
         speaker: 'Lira Vance',
         requiredState: { requiredCombos: ['adaptive_creator'] },
+        onEnter: [{
+            characterId: 'lira',
+            addKnowledgeFlags: ['skill_combo_unlock_seen_lira_creative_mastery']
+        }],
         content: [
             {
                 text: "[She's at the mixer, but she's different now. Relaxed. Energized.]\n\nYou know what I've learned? The best creators aren't rigid. They adapt.\n\nYou start with your grandmother's cassette—a memory, a foundation. But then you layer it with AI prompts that capture what she felt. Then you adjust based on what the station whispers. Then you rebuild based on what the listener needs.\n\nIt's not about perfection. It's about responsive creation. Creativity that listens.\n\nThat's what separates a craftsperson from a real artist. The willingness to let the work evolve. To be adaptable without losing your voice.",

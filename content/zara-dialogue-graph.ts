@@ -3139,6 +3139,10 @@ export const zaraDialogueNodes: DialogueNode[] = [
         requiredState: {
             requiredCombos: ['ethical_analyst']
         },
+        onEnter: [{
+            characterId: 'zara',
+            addKnowledgeFlags: ['skill_combo_unlock_seen_zara_deep_ethics']
+        }],
         content: [{
             text: "You've got something rare.\n\nYou don't just question the data. You question who it serves.\n\nThat's the marriage that actually changes things—rigor without cruelty, moral clarity without self-righteousness. You analyze systems AND you understand the humans inside them.\n\nThat's an ethical analyst. Not a rule-follower pretending to be principled. Someone who actually sees the whole picture.",
             emotion: 'thoughtful',

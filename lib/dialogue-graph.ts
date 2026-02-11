@@ -12,7 +12,7 @@ import {
 } from './character-state'
 import { FutureSkills } from './2030-skills-system'
 import { PatternType } from './patterns'
-import { isComboUnlocked } from './pattern-combos'
+import { isComboUnlocked as isSkillComboUnlocked } from './skill-combo-detector'
 import { randomPick } from './seeded-random'
 // Note: Emotions use string type to support compound emotions like 'anxious_hopeful'
 // Use isValidEmotion() from lib/emotions.ts for runtime validation of core emotions
@@ -495,7 +495,7 @@ export class StateConditionEvaluator {
     condition: StateCondition | undefined,
     gameState: GameState,
     characterId?: string,
-    _skillLevels?: Record<string, number>
+    skillLevels?: Record<string, number>
   ): boolean {
     // No condition means always true
     if (!condition) {
@@ -608,8 +608,12 @@ export class StateConditionEvaluator {
     // Evaluate pattern combo conditions
     // Requires specific pattern combos to be unlocked (from lib/pattern-combos.ts)
     if (condition.requiredCombos !== undefined && condition.requiredCombos.length > 0) {
+      if (!skillLevels) {
+        console.warn('Combo condition requires skillLevels but none provided')
+        return false
+      }
       for (const comboId of condition.requiredCombos) {
-        if (!isComboUnlocked(comboId, gameState.patterns)) {
+        if (!isSkillComboUnlocked(comboId, skillLevels)) {
           return false
         }
       }

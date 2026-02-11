@@ -14,6 +14,7 @@ import { useGameSelectors } from '@/lib/game-store'
 import type { GameState } from '@/lib/character-state'
 import type { DialogueNode } from '@/lib/dialogue-graph'
 import type { CharacterId } from '@/lib/graph-registry'
+import { ContinuityStrip } from '@/components/game/ContinuityStrip'
 
 interface GameHeaderProps {
   gameState: GameState | null
@@ -138,6 +139,14 @@ export function GameHeader({
               {/* Trust Label hidden for immersion */}
             </div>
           </div>
+        )}
+
+        {/* Continuity seam: quiet by default, appears only when useful (re-meet or check-in ready). */}
+        {hasCurrentCharacter && (
+          <ContinuityStrip
+            gameState={gameState}
+            characterId={currentCharacterId}
+          />
         )}
       </div>
     </header>

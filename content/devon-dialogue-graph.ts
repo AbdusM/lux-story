@@ -1622,6 +1622,28 @@ export const devonDialogueNodes: DialogueNode[] = [
           lacksGlobalFlags: ['devon_mentioned_career']
         }
       },
+      {
+        choiceId: 'crossroads_career_ux',
+        text: "You keep thinking about the human at the end of the system.",
+        nextNodeId: 'devon_career_reflection_ux',
+        pattern: 'helping',
+        skills: ['systemsThinking'],
+        visibleCondition: {
+          patterns: { helping: { min: 5 }, building: { min: 4 } },
+          lacksGlobalFlags: ['devon_mentioned_career']
+        }
+      },
+      {
+        choiceId: 'crossroads_career_operations',
+        text: "You see how the whole machine fits together.",
+        nextNodeId: 'devon_career_reflection_operations',
+        pattern: 'analytical',
+        skills: ['systemsThinking'],
+        visibleCondition: {
+          patterns: { analytical: { min: 5 }, patience: { min: 4 } },
+          lacksGlobalFlags: ['devon_mentioned_career']
+        }
+      },
       // Pattern-enhanced: Analytical players see integration as system upgrade
       {
         choiceId: 'crossroads_integrated_analytical',
@@ -1690,9 +1712,165 @@ export const devonDialogueNodes: DialogueNode[] = [
         visibleCondition: {
           patterns: { patience: { max: 2 } }  // Only show when enhanced version doesn't
         }
+      },
+      {
+        choiceId: 'crossroads_optional_topics',
+        text: "Before you go, can I ask you something else?",
+        nextNodeId: 'devon_optional_topics_menu',
+        pattern: 'exploring',
+        skills: ['curiosity']
       }
     ],
     tags: ['climax', 'devon_arc', 'pattern_enhanced']
+  },
+
+  // ============= OPTIONAL TOPICS (Depth Menu) =============
+  // A compact way to surface optional Devon depth without bloating the crossroads choice list.
+  {
+    nodeId: 'devon_optional_topics_menu',
+    speaker: 'Devon Kumar',
+    content: [
+      {
+        text: "Devon hesitates, like there's more he could say.\n\n\"What else do you want to understand?\"",
+        emotion: 'reflective',
+        variation_id: 'optional_topics_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'topic_systems_philosophy',
+        text: "Tell me what you believe about systems.",
+        nextNodeId: 'devon_systems_philosophy',
+        pattern: 'analytical',
+        skills: ['systemsThinking'],
+        visibleCondition: { lacksKnowledgeFlags: ['seen_devon_systems_philosophy'] },
+        consequence: { characterId: 'devon', addKnowledgeFlags: ['seen_devon_systems_philosophy'] }
+      },
+      {
+        choiceId: 'topic_debug_people',
+        text: "You said you can't debug people. What did you mean?",
+        nextNodeId: 'devon_debug_people',
+        pattern: 'helping',
+        skills: ['wisdom'],
+        visibleCondition: { lacksKnowledgeFlags: ['seen_devon_debug_people'] },
+        consequence: { characterId: 'devon', addKnowledgeFlags: ['seen_devon_debug_people'] }
+      },
+      {
+        choiceId: 'topic_why_systems',
+        text: "Why did you start thinking in systems?",
+        nextNodeId: 'devon_why_systems',
+        pattern: 'exploring',
+        skills: ['curiosity'],
+        visibleCondition: { lacksKnowledgeFlags: ['seen_devon_why_systems'] },
+        consequence: { characterId: 'devon', addKnowledgeFlags: ['seen_devon_why_systems'] }
+      },
+      {
+        choiceId: 'topic_process',
+        text: "Show me your process.",
+        nextNodeId: 'devon_process',
+        pattern: 'building',
+        skills: ['systemsThinking'],
+        visibleCondition: { lacksKnowledgeFlags: ['seen_devon_process'] },
+        consequence: { characterId: 'devon', addKnowledgeFlags: ['seen_devon_process'] }
+      },
+      {
+        choiceId: 'topic_best_work',
+        text: "What's the best thing you've ever built?",
+        nextNodeId: 'devon_best_work',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 5 }, lacksKnowledgeFlags: ['seen_devon_best_work'] },
+        consequence: { characterId: 'devon', addKnowledgeFlags: ['seen_devon_best_work'] }
+      },
+      {
+        choiceId: 'topic_father_memory',
+        text: "What was your dad like when you were young?",
+        nextNodeId: 'devon_father_memory',
+        pattern: 'exploring',
+        skills: ['communication'],
+        visibleCondition: { trust: { min: 5 }, lacksKnowledgeFlags: ['seen_devon_father_memory'] },
+        consequence: { characterId: 'devon', addKnowledgeFlags: ['seen_devon_father_memory'] }
+      },
+      {
+        choiceId: 'topic_father_hope',
+        text: "What do you hope happens when you call him?",
+        nextNodeId: 'devon_father_hope',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 }, lacksKnowledgeFlags: ['seen_devon_father_hope'] },
+        consequence: { characterId: 'devon', addKnowledgeFlags: ['seen_devon_father_hope'] }
+      },
+      {
+        choiceId: 'topic_loneliness',
+        text: "Do you ever feel lonely in all this?",
+        nextNodeId: 'devon_loneliness',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 }, lacksKnowledgeFlags: ['seen_devon_loneliness'] },
+        consequence: { characterId: 'devon', addKnowledgeFlags: ['seen_devon_loneliness'] }
+      },
+      {
+        choiceId: 'topic_identity',
+        text: "Who are you when you're not optimizing?",
+        nextNodeId: 'devon_identity',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 6 }, lacksKnowledgeFlags: ['seen_devon_identity'] },
+        consequence: { characterId: 'devon', addKnowledgeFlags: ['seen_devon_identity'] }
+      },
+      {
+        choiceId: 'topic_station_mystery',
+        text: "You said the station feels like a waiting room. For what?",
+        nextNodeId: 'devon_mystery_hint_1',
+        pattern: 'exploring',
+        skills: ['curiosity'],
+        visibleCondition: { trust: { min: 5 }, lacksKnowledgeFlags: ['seen_devon_mystery_hint_1'] },
+        consequence: { characterId: 'devon', addKnowledgeFlags: ['seen_devon_mystery_hint_1'] }
+      },
+      {
+        choiceId: 'topic_probability_map',
+        text: "Show me that probability map you mentioned.",
+        nextNodeId: 'devon_probability_map',
+        pattern: 'analytical',
+        skills: ['systemsThinking'],
+        visibleCondition: { lacksKnowledgeFlags: ['seen_devon_probability_map'] },
+        consequence: { characterId: 'devon', addKnowledgeFlags: ['seen_devon_probability_map'] }
+      },
+      {
+        choiceId: 'topic_sim_phase1',
+        text: "Run a small system debug together.",
+        nextNodeId: 'devon_simulation_phase1_setup',
+        pattern: 'analytical',
+        skills: ['problemSolving'],
+        visibleCondition: { trust: { min: 2 }, lacksKnowledgeFlags: ['seen_devon_simulation_phase1_setup'] },
+        consequence: { characterId: 'devon', addKnowledgeFlags: ['seen_devon_simulation_phase1_setup'] }
+      },
+      {
+        choiceId: 'topic_sim_phase2',
+        text: "Try a higher-stakes architecture problem.",
+        nextNodeId: 'devon_simulation_phase2_setup',
+        pattern: 'building',
+        skills: ['systemsThinking'],
+        visibleCondition: { trust: { min: 5 }, hasKnowledgeFlags: ['devon_simulation_phase1_complete'], lacksKnowledgeFlags: ['seen_devon_simulation_phase2_setup'] },
+        consequence: { characterId: 'devon', addKnowledgeFlags: ['seen_devon_simulation_phase2_setup'] }
+      },
+      {
+        choiceId: 'topic_sim_phase3',
+        text: "Help you design a better approach with your dad.",
+        nextNodeId: 'devon_simulation_phase3_setup',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence'],
+        visibleCondition: { trust: { min: 8 }, hasGlobalFlags: ['devon_vulnerability_revealed'], hasKnowledgeFlags: ['devon_simulation_phase2_complete'], lacksKnowledgeFlags: ['seen_devon_simulation_phase3_setup'] },
+        consequence: { characterId: 'devon', addKnowledgeFlags: ['seen_devon_simulation_phase3_setup'] }
+      },
+      {
+        choiceId: 'topics_back',
+        text: "(Back)",
+        nextNodeId: 'devon_crossroads',
+        pattern: 'patience'
+      }
+    ],
+    tags: ['devon_arc', 'optional_depth']
   },
 
   // ============= ENDINGS =============
@@ -1965,7 +2143,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'player_try_to_fix',
         text: "I try to fix it anyway. Offer solutions, try to make it better. Sometimes I make it worse because I can't just... be there.",
-        nextNodeId: 'devon_crossroads',
+        nextNodeId: 'devon_crossroads_alt',
         pattern: 'building',
         skills: ['emotionalIntelligence', 'communication']
       },
@@ -3447,6 +3625,13 @@ Hint: Check the hysteresis logic`,
         nextNodeId: 'devon_simulation_phase1_success',
         pattern: 'analytical',
         skills: ['problemSolving']
+      },
+      {
+        choiceId: 'phase1_fail',
+        text: "I couldn't crack it.",
+        nextNodeId: 'devon_simulation_phase1_fail',
+        pattern: 'patience',
+        skills: ['resilience']
       }
     ],
     onEnter: [{
@@ -3587,6 +3772,13 @@ Which architecture balances the constraints?`,
         nextNodeId: 'devon_simulation_phase2_success',
         pattern: 'analytical',
         skills: ['systemsThinking', 'problemSolving']
+      },
+      {
+        choiceId: 'phase2_fail',
+        text: "I don't think I have the right architecture.",
+        nextNodeId: 'devon_simulation_phase2_fail',
+        pattern: 'patience',
+        skills: ['resilience']
       }
     ],
     onEnter: [{
@@ -3734,6 +3926,13 @@ What communication approach balances these?`,
         nextNodeId: 'devon_simulation_phase3_success',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'phase3_fail',
+        text: "I can't find a framework that doesn't feel like control.",
+        nextNodeId: 'devon_simulation_phase3_fail',
+        pattern: 'patience',
+        skills: ['emotionalIntelligence']
       }
     ],
     onEnter: [{
@@ -4151,6 +4350,10 @@ What communication approach balances these?`,
       text: "You know what I've realized?\n\nSystems aren't cold. They're not just logic and efficiency. Every system has people in it, and those people have feelings, fears, dreams.\n\nWhen I started seeing systems through both lenses—the structural AND the emotional—everything changed.\n\nThe best systems don't optimize against human nature. They work with it.",
       emotion: 'insightful',
       variation_id: 'deep_insight_v1'
+    }],
+    onEnter: [{
+      characterId: 'devon',
+      addKnowledgeFlags: ['skill_combo_unlock_seen_devon_deep_insight']
     }],
     choices: [
       {

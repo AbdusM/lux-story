@@ -95,6 +95,7 @@ export interface UiPatchContext {
     | 'activeComboChain'
     | 'waitingCharacters'
     | 'isReturningPlayer'
+    | 'returnHookDismissed'
     | 'activeExperience'
   >
 }
@@ -220,5 +221,6 @@ export function buildChoiceUiPatch(ctx: UiPatchContext): ChoiceUiPatch {
     waitingCharacters: ctx.previousState.waitingCharacters,
     pendingGift: ctx.pendingGift,
     isReturningPlayer: ctx.previousState.isReturningPlayer,
+    returnHookDismissed: ctx.previousState.returnHookDismissed,
   }
 }

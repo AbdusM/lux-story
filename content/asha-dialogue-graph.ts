@@ -2662,6 +2662,10 @@ YOUR RESPONSE OPTIONS:
         requiredState: {
             requiredCombos: ['cultural_bridge']
         },
+        onEnter: [{
+            characterId: 'asha',
+            addKnowledgeFlags: ['skill_combo_unlock_seen_asha_mediation_master']
+        }],
         content: [{
             text: "You know what my grandmother taught me that took years to understand?\n\nConflict lives in the spaces between people. In the words we can't quite say. In the cultures we carry without naming them.\n\nWhen you learn to speak to someone's heart—not just their mind—when you honor where they come from while holding space for where they're going... that's when resolution becomes real.\n\nIt's not about winning the argument. It's about building the bridge strong enough for both of you.",
             emotion: 'warm',

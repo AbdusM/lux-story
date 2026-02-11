@@ -2889,6 +2889,10 @@ Your curiosity combined with analysis... that's exactly what they need.`,
       emotion: 'contemplative',
       variation_id: 'deep_synthesis_v1'
     }],
+    onEnter: [{
+      characterId: 'elena',
+      addKnowledgeFlags: ['skill_combo_unlock_seen_elena_deep_synthesis']
+    }],
     choices: [
       {
         choiceId: 'synthesis_learn_process',
