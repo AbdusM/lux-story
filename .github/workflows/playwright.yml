@@ -31,7 +31,9 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.cache/ms-playwright
-        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+        # Include browser set in the key so cache upgrades (e.g., adding WebKit for mobile)
+        # don't silently reuse an older Chromium-only cache.
+        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-chromium-webkit
 
   # Parallel test jobs
   test-auth:
@@ -55,7 +57,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.cache/ms-playwright
-        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-chromium-webkit
 
     - name: Run auth tests
       run: npx playwright test --project=auth
@@ -91,7 +93,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.cache/ms-playwright
-        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-chromium-webkit
 
     - name: Run core game tests
       run: npx playwright test --project=core-game
@@ -127,7 +129,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.cache/ms-playwright
-        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-chromium-webkit
 
     - name: Run UI component tests
       run: npx playwright test --project=ui-components
@@ -166,7 +168,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.cache/ms-playwright
-        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-chromium-webkit
 
     - name: Run mobile tests on ${{ matrix.device }}
       run: npx playwright test --project=${{ matrix.device }}
