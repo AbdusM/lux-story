@@ -19,16 +19,7 @@ test.describe('Game Flow (mobile)', () => {
   test('Complete dialogue → choice → state update cycle', async ({ page, seedState }) => {
     const viewport = getViewport(page)
 
-    await seedState({
-      currentNodeId: 'samuel_introduction',
-      hasStarted: true,
-      showIntro: false,
-      patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
-      globalFlags: [],
-      knowledgeFlags: [],
-      characters: [],
-      visitedScenes: []
-    })
+    await seedState({ currentCharacterId: 'samuel', currentNodeId: 'samuel_introduction' })
 
     // Wait for game interface
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
@@ -87,16 +78,7 @@ test.describe('Game Flow (mobile)', () => {
   test('Choices stack vertically without horizontal overflow', async ({ page, seedState }) => {
     const viewport = getViewport(page)
 
-    await seedState({
-      currentNodeId: 'samuel_introduction',
-      hasStarted: true,
-      showIntro: false,
-      patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
-      globalFlags: [],
-      knowledgeFlags: [],
-      characters: [],
-      visitedScenes: []
-    })
+    await seedState({ currentCharacterId: 'samuel', currentNodeId: 'samuel_introduction' })
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
 
@@ -134,16 +116,7 @@ test.describe('Game Flow (mobile)', () => {
   test('Dialogue card is readable and properly sized', async ({ page, seedState }) => {
     const viewport = getViewport(page)
 
-    await seedState({
-      currentNodeId: 'samuel_introduction',
-      hasStarted: true,
-      showIntro: false,
-      patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
-      globalFlags: [],
-      knowledgeFlags: [],
-      characters: [],
-      visitedScenes: []
-    })
+    await seedState({ currentCharacterId: 'samuel', currentNodeId: 'samuel_introduction' })
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
 
@@ -160,16 +133,7 @@ test.describe('Game Flow (mobile)', () => {
   })
 
   test('Navigation buttons are accessible', async ({ page, seedState }) => {
-    await seedState({
-      currentNodeId: 'samuel_introduction',
-      hasStarted: true,
-      showIntro: false,
-      patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
-      globalFlags: [],
-      knowledgeFlags: [],
-      characters: [],
-      visitedScenes: []
-    })
+    await seedState({ currentCharacterId: 'samuel', currentNodeId: 'samuel_introduction' })
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
 
@@ -195,16 +159,7 @@ test.describe('Game Flow (mobile)', () => {
   })
 
   test('Multiple rapid taps do not cause errors', async ({ page, seedState }) => {
-    await seedState({
-      currentNodeId: 'samuel_introduction',
-      hasStarted: true,
-      showIntro: false,
-      patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
-      globalFlags: [],
-      knowledgeFlags: [],
-      characters: [],
-      visitedScenes: []
-    })
+    await seedState({ currentCharacterId: 'samuel', currentNodeId: 'samuel_introduction' })
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
 
@@ -226,16 +181,7 @@ test.describe('Game Flow (mobile)', () => {
   test('Layout is correct in current mobile viewport', async ({ page, seedState }) => {
     const viewport = getViewport(page)
 
-    await seedState({
-      currentNodeId: 'samuel_introduction',
-      hasStarted: true,
-      showIntro: false,
-      patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 },
-      globalFlags: [],
-      knowledgeFlags: [],
-      characters: [],
-      visitedScenes: []
-    })
+    await seedState({ currentCharacterId: 'samuel', currentNodeId: 'samuel_introduction' })
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
 

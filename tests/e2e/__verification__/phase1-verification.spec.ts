@@ -17,14 +17,12 @@ test.describe('Phase 1 Verification', () => {
     })
 
     expect(gameState).toBeDefined()
-    expect(gameState.state.hasStarted).toBe(true)
-    expect(gameState.state.patterns.analytical).toBe(0)
+    expect(gameState.saveVersion).toBeDefined()
+    expect(gameState.currentNodeId).toBeDefined()
+    expect(gameState.patterns?.analytical ?? 0).toBe(0)
   })
 
   test('should have stable testid selectors', async ({ page, freshGame }) => {
-    // Wait for page to load
-    await page.waitForLoadState('networkidle')
-
     // Verify dialogue-card testid exists
     const dialogueCard = page.getByTestId('dialogue-card')
     await expect(dialogueCard).toBeVisible({ timeout: 10000 })
@@ -39,8 +37,6 @@ test.describe('Phase 1 Verification', () => {
   })
 
   test('should have choice buttons with testid', async ({ page, freshGame }) => {
-    await page.waitForLoadState('networkidle')
-
     // Wait for dialogue to appear
     await expect(page.getByTestId('dialogue-content')).toBeVisible({ timeout: 10000 })
 
@@ -62,8 +58,6 @@ test.describe('Phase 1 Verification', () => {
   })
 
   test('should have journeyComplete fixture with developed patterns', async ({ page, journeyComplete }) => {
-    await page.waitForLoadState('networkidle')
-
     // Verify journey complete state is loaded
     const gameState = await page.evaluate(() => {
       const saved = localStorage.getItem('grand-central-terminus-save')
@@ -71,13 +65,11 @@ test.describe('Phase 1 Verification', () => {
     })
 
     expect(gameState).toBeDefined()
-    expect(gameState.state.patterns.analytical).toBeGreaterThan(0)
-    expect(gameState.state.globalFlags).toContain('first_journey_complete')
+    expect(gameState.patterns.analytical).toBeGreaterThan(0)
+    expect(gameState.globalFlags).toContain('first_journey_complete')
   })
 
   test('should have withDemonstratedSkills fixture', async ({ page, withDemonstratedSkills }) => {
-    await page.waitForLoadState('networkidle')
-
     // Verify demonstrated skills state is loaded
     const gameState = await page.evaluate(() => {
       const saved = localStorage.getItem('grand-central-terminus-save')
@@ -85,13 +77,11 @@ test.describe('Phase 1 Verification', () => {
     })
 
     expect(gameState).toBeDefined()
-    expect(gameState.state.demonstratedSkills).toBeDefined()
-    expect(gameState.state.demonstratedSkills.length).toBeGreaterThanOrEqual(5)
+    expect(gameState.skillLevels).toBeDefined()
+    expect(Object.keys(gameState.skillLevels || {}).length).toBeGreaterThanOrEqual(5)
   })
 
   test('should have withHighTrust fixture for Maya', async ({ page, withHighTrust }) => {
-    await page.waitForLoadState('networkidle')
-
     // Verify high trust state is loaded
     const gameState = await page.evaluate(() => {
       const saved = localStorage.getItem('grand-central-terminus-save')
@@ -100,14 +90,12 @@ test.describe('Phase 1 Verification', () => {
 
     expect(gameState).toBeDefined()
 
-    // Check Maya's trust (note: characters is a Map, so we need to access it properly)
+    // Check Maya's trust (characters are stored as an array in SerializableGameState)
     const mayaState = await page.evaluate(() => {
       const saved = localStorage.getItem('grand-central-terminus-save')
       if (!saved) return null
       const state = JSON.parse(saved)
-      // Characters Map is serialized as array of [key, value] pairs
-      const mayaEntry = state.state.characters?.find((c: any) => c[0] === 'maya')
-      return mayaEntry ? mayaEntry[1] : null
+      return state.characters?.find((c: any) => c.characterId === 'maya') || null
     })
 
     expect(mayaState).toBeDefined()

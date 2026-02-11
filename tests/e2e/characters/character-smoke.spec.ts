@@ -30,15 +30,13 @@ const CHARACTER_IDS = [
 
 test.describe('Character Intro Smoke', () => {
   test('All character intros render and advance', async ({ page, seedState }) => {
-    for (const characterId of CHARACTER_IDS) {
-      const introNodeId = `${characterId}_introduction`
+      for (const characterId of CHARACTER_IDS) {
+        const introNodeId = `${characterId}_introduction`
 
-      await seedState({
-        currentSceneId: introNodeId,
-        hasStarted: true,
-        showIntro: false,
-        visitedScenes: [introNodeId]
-      })
+        await seedState({
+          currentCharacterId: characterId as any,
+          currentNodeId: introNodeId
+        })
 
       await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 

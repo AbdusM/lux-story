@@ -127,14 +127,16 @@ test.describe('Touch Target Validation', () => {
   test('Cluster filter chips meet 44px minimum', async ({ page, seedState }) => {
     // Seed state with demonstrated skills
     await seedState({
+      currentCharacterId: 'samuel',
       currentNodeId: 'samuel_introduction',
-      hasStarted: true,
-      showIntro: false,
-      patterns: { analytical: 3, building: 2, helping: 0, patience: 0, exploring: 0 },
-      globalFlags: [],
-      knowledgeFlags: [],
-      characters: [],
-      visitedScenes: []
+      patterns: { analytical: 3, building: 2 },
+      skillLevels: {
+        systems_thinking: 2,
+        analytical_reasoning: 2,
+        active_listening: 1,
+        empathy: 1,
+        pattern_recognition: 1
+      }
     })
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })

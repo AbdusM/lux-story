@@ -141,7 +141,8 @@ test.describe('Core Game Loop E2E', () => {
 
     // Reload page
     await page.reload()
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
+    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 20000 })
 
     // Get state after reload
     const stateAfterReload = await page.evaluate(() => {

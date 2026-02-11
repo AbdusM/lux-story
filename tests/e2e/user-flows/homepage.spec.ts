@@ -10,7 +10,7 @@ test.describe('Homepage', () => {
     await page.goto('/')
 
     // Wait for page to finish loading
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
     // Take a screenshot to see what's actually rendered
     await page.screenshot({ path: 'test-results/homepage-loaded.png', fullPage: true })
@@ -26,7 +26,7 @@ test.describe('Homepage', () => {
 
   test('should have title', async ({ page }) => {
     await page.goto('/')
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
     const title = await page.title()
     console.log('Page title:', title)
@@ -35,7 +35,7 @@ test.describe('Homepage', () => {
 
   test('should render game interface or intro screen', async ({ page }) => {
     await page.goto('/')
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
     // Wait for dynamic content by checking for one of the expected elements
     await Promise.race([
