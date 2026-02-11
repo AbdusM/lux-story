@@ -21,10 +21,13 @@ test.describe('Prism (Journal) on Mobile', () => {
     // Use heading role to avoid strict mode violation (multiple "The Prism" elements)
     await expect(page.getByRole('heading', { name: 'The Prism' })).toBeVisible()
 
+    // Use the top tablist; there is also a bottom tab bar.
+    const tablist = page.getByRole('tablist', { name: 'Prism sections' })
+
     // Navigate to a few tabs
-    const harmonicsTab = page.getByRole('button', { name: /harmonics/i })
-    const essenceTab = page.getByRole('button', { name: /essence/i })
-    const masteryTab = page.getByRole('button', { name: /mastery/i })
+    const harmonicsTab = tablist.getByRole('tab', { name: /harmonics/i })
+    const essenceTab = tablist.getByRole('tab', { name: /essence/i })
+    const masteryTab = tablist.getByRole('tab', { name: /mastery/i })
 
     await expect(harmonicsTab).toBeVisible()
     await essenceTab.click()
@@ -39,7 +42,7 @@ test.describe('Prism (Journal) on Mobile', () => {
     await prismTrigger.click()
 
     // Harmonics should show empty state
-    await expect(page.getByText(/patterns are waiting to emerge/i)).toBeVisible({ timeout: 3000 })
+    await expect(page.getByText(/patterns are forming/i)).toBeVisible({ timeout: 3000 })
   })
 
   test('closes Prism with close button', async ({ page, freshGame }) => {
