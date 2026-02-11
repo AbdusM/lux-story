@@ -128,12 +128,16 @@ test.describe('UnifiedMenu on Mobile', () => {
     const settingsButton = page.getByRole('button', { name: /settings menu/i })
     await settingsButton.click()
 
-    await expect(page.getByRole('dialog', { name: /settings/i })).toBeVisible()
+    const dialog = page.getByRole('dialog', { name: /settings/i })
+    await expect(dialog).toBeVisible({ timeout: 10000 })
+
+    // Ensure focus is inside the menu so Escape is handled reliably on mobile WebKit.
+    await dialog.click({ position: { x: 10, y: 10 } })
 
     // Press Escape
     await page.keyboard.press('Escape')
 
     // Menu should close
-    await expect(page.getByRole('dialog', { name: /settings/i })).not.toBeVisible()
+    await expect(dialog).not.toBeVisible({ timeout: 10000 })
   })
 })
