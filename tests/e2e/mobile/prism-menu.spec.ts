@@ -31,7 +31,14 @@ test.describe('Prism (Journal) on Mobile', () => {
 
     await expect(harmonicsTab).toBeVisible()
     await essenceTab.click()
-    await expect(page.getByText(/essence awaits|skills emerge/i)).toBeVisible({ timeout: 10000 })
+    await expect(essenceTab).toHaveAttribute('aria-selected', 'true')
+    const essencePanel = page.locator('#prism-panel-essence')
+    await expect(essencePanel).toBeVisible({ timeout: 10000 })
+    // Essence panel can render either a loading/empty message or the radar SVG depending on timing.
+    const essenceReady = page
+      .getByText(/your essence awaits discovery/i)
+      .or(essencePanel.locator('svg[viewBox="0 0 300 300"]'))
+    await expect(essenceReady).toBeVisible({ timeout: 10000 })
 
     await masteryTab.click()
     await expect(page.getByText(/ability mastery/i)).toBeVisible({ timeout: 10000 })
