@@ -20,6 +20,9 @@ export function isInteractionEventType(v: string): v is InteractionEventType {
 const ChoicePresentedPayloadSchema = z.object({
   event_id: z.string().min(1),
   presented_at_ms: z.number().finite(),
+  presentation_mode: z.enum(['full', 'compact']).optional(),
+  hidden_count: z.number().int().optional(),
+  hidden_reason: z.enum(['compact_mode']).nullable().optional(),
   nervous_system_state: z.string().nullable().optional(),
   mercy_unlocked_choice_id: z.string().nullable().optional(),
   choices_total_count: z.number().int().optional(),

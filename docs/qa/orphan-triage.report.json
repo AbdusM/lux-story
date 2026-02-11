@@ -1,0 +1,1023 @@
+{
+  "version": 1,
+  "generated_at": "2026-02-11T03:44:21.331Z",
+  "warnings_source": "/Users/abdusmuwwakkil/Development/30_lux-story/docs/qa/dialogue-graph-warnings.report.json",
+  "graphs": [
+    "samuel",
+    "devon",
+    "maya"
+  ],
+  "orphan_count": 101,
+  "orphans": [
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_birmingham_future",
+      "graph": "devon",
+      "node_id": "devon_birmingham_future",
+      "group_key": "devon_birmingham_future",
+      "message": "Orphaned node: \"devon_birmingham_future\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 2728
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_birmingham_future_roots",
+      "graph": "devon",
+      "node_id": "devon_birmingham_future_roots",
+      "group_key": "devon_birmingham_future",
+      "message": "Orphaned node: \"devon_birmingham_future_roots\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 3228
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_birmingham_roots",
+      "graph": "devon",
+      "node_id": "devon_birmingham_roots",
+      "group_key": "devon_birmingham_roots",
+      "message": "Orphaned node: \"devon_birmingham_roots\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 2702
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_coding_escape",
+      "graph": "devon",
+      "node_id": "devon_coding_escape",
+      "group_key": "devon_coding_escape",
+      "message": "Orphaned node: \"devon_coding_escape\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 3199
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_college_choice",
+      "graph": "devon",
+      "node_id": "devon_college_choice",
+      "group_key": "devon_college_choice",
+      "message": "Orphaned node: \"devon_college_choice\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 3109
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_dad_birthday",
+      "graph": "devon",
+      "node_id": "devon_dad_birthday",
+      "group_key": "devon_dad_birthday",
+      "message": "Orphaned node: \"devon_dad_birthday\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 3309
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_failure_story",
+      "graph": "devon",
+      "node_id": "devon_failure_story",
+      "group_key": "devon_failure_story",
+      "message": "Orphaned node: \"devon_failure_story\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 2859
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_first_debug",
+      "graph": "devon",
+      "node_id": "devon_first_debug",
+      "group_key": "devon_first_debug",
+      "message": "Orphaned node: \"devon_first_debug\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 3138
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_future_vision",
+      "graph": "devon",
+      "node_id": "devon_future_vision",
+      "group_key": "devon_future_vision",
+      "message": "Orphaned node: \"devon_future_vision\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 3338
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_gratitude",
+      "graph": "devon",
+      "node_id": "devon_gratitude",
+      "group_key": "devon_gratitude",
+      "message": "Orphaned node: \"devon_gratitude\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 3367
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_hope",
+      "graph": "devon",
+      "node_id": "devon_hope",
+      "group_key": "devon_hope",
+      "message": "Orphaned node: \"devon_hope\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 3079
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_mentions_maya",
+      "graph": "devon",
+      "node_id": "devon_mentions_maya",
+      "group_key": "devon_mentions_maya",
+      "message": "Orphaned node: \"devon_mentions_maya\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 2751
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_mentions_rohan",
+      "graph": "devon",
+      "node_id": "devon_mentions_rohan",
+      "group_key": "devon_mentions_rohan",
+      "message": "Orphaned node: \"devon_mentions_rohan\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 2776
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_mentors",
+      "graph": "devon",
+      "node_id": "devon_mentors",
+      "group_key": "devon_mentors",
+      "message": "Orphaned node: \"devon_mentors\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 3028
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_midnight_work",
+      "graph": "devon",
+      "node_id": "devon_midnight_work",
+      "group_key": "devon_midnight_work",
+      "message": "Orphaned node: \"devon_midnight_work\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 3006
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_mom_final_words",
+      "graph": "devon",
+      "node_id": "devon_mom_final_words",
+      "group_key": "devon_mom_final",
+      "message": "Orphaned node: \"devon_mom_final_words\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 3164
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_small_joys",
+      "graph": "devon",
+      "node_id": "devon_small_joys",
+      "group_key": "devon_small_joys",
+      "message": "Orphaned node: \"devon_small_joys\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 3283
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_trust_recovery",
+      "graph": "devon",
+      "node_id": "devon_trust_recovery",
+      "group_key": "devon_trust_recovery",
+      "message": "Orphaned node: \"devon_trust_recovery\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 4242
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_uncertainty",
+      "graph": "devon",
+      "node_id": "devon_uncertainty",
+      "group_key": "devon_uncertainty",
+      "message": "Orphaned node: \"devon_uncertainty\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 3254
+    },
+    {
+      "warning_id": "ORPHAN_NODE|devon|devon_what_ifs",
+      "graph": "devon",
+      "node_id": "devon_what_ifs",
+      "group_key": "devon_what_ifs",
+      "message": "Orphaned node: \"devon_what_ifs\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/devon-dialogue-graph.ts",
+      "line": 2885
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_birmingham_community",
+      "graph": "maya",
+      "node_id": "maya_birmingham_community",
+      "group_key": "maya_birmingham_community",
+      "message": "Orphaned node: \"maya_birmingham_community\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3523
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_birmingham_opportunity",
+      "graph": "maya",
+      "node_id": "maya_birmingham_opportunity",
+      "group_key": "maya_birmingham_opportunity",
+      "message": "Orphaned node: \"maya_birmingham_opportunity\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 1777
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_birmingham_roots",
+      "graph": "maya",
+      "node_id": "maya_birmingham_roots",
+      "group_key": "maya_birmingham_roots",
+      "message": "Orphaned node: \"maya_birmingham_roots\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3494
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_career_reflection_robotics_eng",
+      "graph": "maya",
+      "node_id": "maya_career_reflection_robotics_eng",
+      "group_key": "maya_career_reflection",
+      "message": "Orphaned node: \"maya_career_reflection_robotics_eng\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3076
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_career_reflection_ux",
+      "graph": "maya",
+      "node_id": "maya_career_reflection_ux",
+      "group_key": "maya_career_reflection",
+      "message": "Orphaned node: \"maya_career_reflection_ux\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3045
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_competition_memory",
+      "graph": "maya",
+      "node_id": "maya_competition_memory",
+      "group_key": "maya_competition_memory",
+      "message": "Orphaned node: \"maya_competition_memory\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3683
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_doubt_spiral",
+      "graph": "maya",
+      "node_id": "maya_doubt_spiral",
+      "group_key": "maya_doubt_spiral",
+      "message": "Orphaned node: \"maya_doubt_spiral\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3786
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_failure_story",
+      "graph": "maya",
+      "node_id": "maya_failure_story",
+      "group_key": "maya_failure_story",
+      "message": "Orphaned node: \"maya_failure_story\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3657
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_family_deeper",
+      "graph": "maya",
+      "node_id": "maya_family_deeper",
+      "group_key": "maya_family_deeper",
+      "message": "Orphaned node: \"maya_family_deeper\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3108
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_first_user",
+      "graph": "maya",
+      "node_id": "maya_first_user",
+      "group_key": "maya_first_user",
+      "message": "Orphaned node: \"maya_first_user\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3815
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_future_vision",
+      "graph": "maya",
+      "node_id": "maya_future_vision",
+      "group_key": "maya_future_vision",
+      "message": "Orphaned node: \"maya_future_vision\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3550
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_imposter_deep",
+      "graph": "maya",
+      "node_id": "maya_imposter_deep",
+      "group_key": "maya_imposter_deep",
+      "message": "Orphaned node: \"maya_imposter_deep\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3231
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_loneliness",
+      "graph": "maya",
+      "node_id": "maya_loneliness",
+      "group_key": "maya_loneliness",
+      "message": "Orphaned node: \"maya_loneliness\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3706
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_mentor_devon",
+      "graph": "maya",
+      "node_id": "maya_mentor_devon",
+      "group_key": "maya_mentor_devon",
+      "message": "Orphaned node: \"maya_mentor_devon\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3580
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_mentor_tess",
+      "graph": "maya",
+      "node_id": "maya_mentor_tess",
+      "group_key": "maya_mentor_tess",
+      "message": "Orphaned node: \"maya_mentor_tess\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3605
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_midnight_coding",
+      "graph": "maya",
+      "node_id": "maya_midnight_coding",
+      "group_key": "maya_midnight_coding",
+      "message": "Orphaned node: \"maya_midnight_coding\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3764
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_mystery_hint_1",
+      "graph": "maya",
+      "node_id": "maya_mystery_hint_1",
+      "group_key": "maya_mystery_hint",
+      "message": "Orphaned node: \"maya_mystery_hint_1\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3971
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_name_meaning",
+      "graph": "maya",
+      "node_id": "maya_name_meaning",
+      "group_key": "maya_name_meaning",
+      "message": "Orphaned node: \"maya_name_meaning\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3844
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_parent_conversation_failed",
+      "graph": "maya",
+      "node_id": "maya_parent_conversation_failed",
+      "group_key": "maya_parent_conversation",
+      "message": "Orphaned node: \"maya_parent_conversation_failed\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 1913
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_parents_together",
+      "graph": "maya",
+      "node_id": "maya_parents_together",
+      "group_key": "maya_parents_together",
+      "message": "Orphaned node: \"maya_parents_together\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3208
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_pepper_origin",
+      "graph": "maya",
+      "node_id": "maya_pepper_origin",
+      "group_key": "maya_pepper_origin",
+      "message": "Orphaned node: \"maya_pepper_origin\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3348
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_simulation_phase3_setup",
+      "graph": "maya",
+      "node_id": "maya_simulation_phase3_setup",
+      "group_key": "maya_simulation_phase3",
+      "message": "Orphaned node: \"maya_simulation_phase3_setup\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 2438
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_tech_philosophy",
+      "graph": "maya",
+      "node_id": "maya_tech_philosophy",
+      "group_key": "maya_tech_philosophy",
+      "message": "Orphaned node: \"maya_tech_philosophy\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3631
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_trust_recovery",
+      "graph": "maya",
+      "node_id": "maya_trust_recovery",
+      "group_key": "maya_trust_recovery",
+      "message": "Orphaned node: \"maya_trust_recovery\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 4259
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_uab_revelation",
+      "graph": "maya",
+      "node_id": "maya_uab_revelation",
+      "group_key": "maya_uab_revelation",
+      "message": "Orphaned node: \"maya_uab_revelation\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 1823
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_what_if",
+      "graph": "maya",
+      "node_id": "maya_what_if",
+      "group_key": "maya_what_if",
+      "message": "Orphaned node: \"maya_what_if\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3866
+    },
+    {
+      "warning_id": "ORPHAN_NODE|maya|maya_work_doubt",
+      "graph": "maya",
+      "node_id": "maya_work_doubt",
+      "group_key": "maya_work_doubt",
+      "message": "Orphaned node: \"maya_work_doubt\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/maya-dialogue-graph.ts",
+      "line": 3901
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_acknowledges_family",
+      "graph": "samuel",
+      "node_id": "samuel_acknowledges_family",
+      "group_key": "samuel_acknowledges_family",
+      "message": "Orphaned node: \"samuel_acknowledges_family\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 6898
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_analytical_bonus",
+      "graph": "samuel",
+      "node_id": "samuel_analytical_bonus",
+      "group_key": "samuel_analytical_bonus",
+      "message": "Orphaned node: \"samuel_analytical_bonus\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 7921
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_backstory_revelation",
+      "graph": "samuel",
+      "node_id": "samuel_backstory_revelation",
+      "group_key": "samuel_backstory_revelation",
+      "message": "Orphaned node: \"samuel_backstory_revelation\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 1523
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_beat_after_station_called",
+      "graph": "samuel",
+      "node_id": "samuel_beat_after_station_called",
+      "group_key": "samuel_beat_after",
+      "message": "Orphaned node: \"samuel_beat_after_station_called\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 2131
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_boundary_philosophy",
+      "graph": "samuel",
+      "node_id": "samuel_boundary_philosophy",
+      "group_key": "samuel_boundary_philosophy",
+      "message": "Orphaned node: \"samuel_boundary_philosophy\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 5665
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_building_bonus",
+      "graph": "samuel",
+      "node_id": "samuel_building_bonus",
+      "group_key": "samuel_building_bonus",
+      "message": "Orphaned node: \"samuel_building_bonus\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 8350
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_conductor_god_mode",
+      "graph": "samuel",
+      "node_id": "samuel_conductor_god_mode",
+      "group_key": "samuel_conductor_god",
+      "message": "Orphaned node: \"samuel_conductor_god_mode\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 147
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_devon_heart_wisdom",
+      "graph": "samuel",
+      "node_id": "samuel_devon_heart_wisdom",
+      "group_key": "samuel_devon_heart",
+      "message": "Orphaned node: \"samuel_devon_heart_wisdom\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 5984
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_devon_systems_wisdom",
+      "graph": "samuel",
+      "node_id": "samuel_devon_systems_wisdom",
+      "group_key": "samuel_devon_systems",
+      "message": "Orphaned node: \"samuel_devon_systems_wisdom\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 5943
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_exploring_bonus",
+      "graph": "samuel",
+      "node_id": "samuel_exploring_bonus",
+      "group_key": "samuel_exploring_bonus",
+      "message": "Orphaned node: \"samuel_exploring_bonus\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 8122
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_frozen_time",
+      "graph": "samuel",
+      "node_id": "samuel_frozen_time",
+      "group_key": "samuel_frozen_time",
+      "message": "Orphaned node: \"samuel_frozen_time\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 9847
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_helping_bonus",
+      "graph": "samuel",
+      "node_id": "samuel_helping_bonus",
+      "group_key": "samuel_helping_bonus",
+      "message": "Orphaned node: \"samuel_helping_bonus\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 8236
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_hollow_wisdom",
+      "graph": "samuel",
+      "node_id": "samuel_hollow_wisdom",
+      "group_key": "samuel_hollow_wisdom",
+      "message": "Orphaned node: \"samuel_hollow_wisdom\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 5563
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_honesty_mastery",
+      "graph": "samuel",
+      "node_id": "samuel_honesty_mastery",
+      "group_key": "samuel_honesty_mastery",
+      "message": "Orphaned node: \"samuel_honesty_mastery\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 5624
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_hub_fallback",
+      "graph": "samuel",
+      "node_id": "samuel_hub_fallback",
+      "group_key": "samuel_hub_fallback",
+      "message": "Orphaned node: \"samuel_hub_fallback\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 3706
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_hub_fallback_legacy",
+      "graph": "samuel",
+      "node_id": "samuel_hub_fallback_legacy",
+      "group_key": "samuel_hub_fallback",
+      "message": "Orphaned node: \"samuel_hub_fallback_legacy\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 3313
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_inheritance_wisdom",
+      "graph": "samuel",
+      "node_id": "samuel_inheritance_wisdom",
+      "group_key": "samuel_inheritance_wisdom",
+      "message": "Orphaned node: \"samuel_inheritance_wisdom\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 5274
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_introduction_2",
+      "graph": "samuel",
+      "node_id": "samuel_introduction_2",
+      "group_key": "samuel_introduction_2",
+      "message": "Orphaned node: \"samuel_introduction_2\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 1155
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_jordan_belief_wisdom",
+      "graph": "samuel",
+      "node_id": "samuel_jordan_belief_wisdom",
+      "group_key": "samuel_jordan_belief",
+      "message": "Orphaned node: \"samuel_jordan_belief_wisdom\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 6558
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_jordan_city_wisdom",
+      "graph": "samuel",
+      "node_id": "samuel_jordan_city_wisdom",
+      "group_key": "samuel_jordan_city",
+      "message": "Orphaned node: \"samuel_jordan_city_wisdom\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 6600
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_jordan_future_wisdom",
+      "graph": "samuel",
+      "node_id": "samuel_jordan_future_wisdom",
+      "group_key": "samuel_jordan_future",
+      "message": "Orphaned node: \"samuel_jordan_future_wisdom\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 6579
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_jordan_narrative_wisdom",
+      "graph": "samuel",
+      "node_id": "samuel_jordan_narrative_wisdom",
+      "group_key": "samuel_jordan_narrative",
+      "message": "Orphaned node: \"samuel_jordan_narrative_wisdom\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 6642
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_jordan_ripple_wisdom",
+      "graph": "samuel",
+      "node_id": "samuel_jordan_ripple_wisdom",
+      "group_key": "samuel_jordan_ripple",
+      "message": "Orphaned node: \"samuel_jordan_ripple_wisdom\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 6621
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_jordan_sovereignty_wisdom",
+      "graph": "samuel",
+      "node_id": "samuel_jordan_sovereignty_wisdom",
+      "group_key": "samuel_jordan_sovereignty",
+      "message": "Orphaned node: \"samuel_jordan_sovereignty_wisdom\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 6663
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_letter_confession",
+      "graph": "samuel",
+      "node_id": "samuel_letter_confession",
+      "group_key": "samuel_letter_confession",
+      "message": "Orphaned node: \"samuel_letter_confession\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 2047
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_letter_confrontation",
+      "graph": "samuel",
+      "node_id": "samuel_letter_confrontation",
+      "group_key": "samuel_letter_confrontation",
+      "message": "Orphaned node: \"samuel_letter_confrontation\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 10106
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_listening_wisdom",
+      "graph": "samuel",
+      "node_id": "samuel_listening_wisdom",
+      "group_key": "samuel_listening_wisdom",
+      "message": "Orphaned node: \"samuel_listening_wisdom\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 6981
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_orb_explanation",
+      "graph": "samuel",
+      "node_id": "samuel_orb_explanation",
+      "group_key": "samuel_orb_explanation",
+      "message": "Orphaned node: \"samuel_orb_explanation\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 3053
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_origin_choice",
+      "graph": "samuel",
+      "node_id": "samuel_origin_choice",
+      "group_key": "samuel_origin_choice",
+      "message": "Orphaned node: \"samuel_origin_choice\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 2482
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_patience_bonus",
+      "graph": "samuel",
+      "node_id": "samuel_patience_bonus",
+      "group_key": "samuel_patience_bonus",
+      "message": "Orphaned node: \"samuel_patience_bonus\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 8008
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_patience_wisdom",
+      "graph": "samuel",
+      "node_id": "samuel_patience_wisdom",
+      "group_key": "samuel_patience_wisdom",
+      "message": "Orphaned node: \"samuel_patience_wisdom\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 4243
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_pattern_confirmation",
+      "graph": "samuel",
+      "node_id": "samuel_pattern_confirmation",
+      "group_key": "samuel_pattern_confirmation",
+      "message": "Orphaned node: \"samuel_pattern_confirmation\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 5322
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_pattern_observation_analytical",
+      "graph": "samuel",
+      "node_id": "samuel_pattern_observation_analytical",
+      "group_key": "samuel_pattern_observation",
+      "message": "Orphaned node: \"samuel_pattern_observation_analytical\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 7573
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_pattern_observation_building",
+      "graph": "samuel",
+      "node_id": "samuel_pattern_observation_building",
+      "group_key": "samuel_pattern_observation",
+      "message": "Orphaned node: \"samuel_pattern_observation_building\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 7741
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_pattern_observation_exploring",
+      "graph": "samuel",
+      "node_id": "samuel_pattern_observation_exploring",
+      "group_key": "samuel_pattern_observation",
+      "message": "Orphaned node: \"samuel_pattern_observation_exploring\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 7657
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_pattern_observation_helping",
+      "graph": "samuel",
+      "node_id": "samuel_pattern_observation_helping",
+      "group_key": "samuel_pattern_observation",
+      "message": "Orphaned node: \"samuel_pattern_observation_helping\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 7615
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_pattern_observation_patience",
+      "graph": "samuel",
+      "node_id": "samuel_pattern_observation_patience",
+      "group_key": "samuel_pattern_observation",
+      "message": "Orphaned node: \"samuel_pattern_observation_patience\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 7699
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_pattern_wisdom",
+      "graph": "samuel",
+      "node_id": "samuel_pattern_wisdom",
+      "group_key": "samuel_pattern_wisdom",
+      "message": "Orphaned node: \"samuel_pattern_wisdom\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 5366
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_platform_7_truth",
+      "graph": "samuel",
+      "node_id": "samuel_platform_7_truth",
+      "group_key": "samuel_platform_7",
+      "message": "Orphaned node: \"samuel_platform_7_truth\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 9815
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_platform_deflect",
+      "graph": "samuel",
+      "node_id": "samuel_platform_deflect",
+      "group_key": "samuel_platform_deflect",
+      "message": "Orphaned node: \"samuel_platform_deflect\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 9750
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_possibility_keeper",
+      "graph": "samuel",
+      "node_id": "samuel_possibility_keeper",
+      "group_key": "samuel_possibility_keeper",
+      "message": "Orphaned node: \"samuel_possibility_keeper\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 5407
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_presence_teaching",
+      "graph": "samuel",
+      "node_id": "samuel_presence_teaching",
+      "group_key": "samuel_presence_teaching",
+      "message": "Orphaned node: \"samuel_presence_teaching\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 5518
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_purpose_found_3",
+      "graph": "samuel",
+      "node_id": "samuel_purpose_found_3",
+      "group_key": "samuel_purpose_found",
+      "message": "Orphaned node: \"samuel_purpose_found_3\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 2336
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_reflect_on_influence",
+      "graph": "samuel",
+      "node_id": "samuel_reflect_on_influence",
+      "group_key": "samuel_reflect_on",
+      "message": "Orphaned node: \"samuel_reflect_on_influence\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 4060
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_service_philosophy",
+      "graph": "samuel",
+      "node_id": "samuel_service_philosophy",
+      "group_key": "samuel_service_philosophy",
+      "message": "Orphaned node: \"samuel_service_philosophy\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 5497
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_simulation_crm",
+      "graph": "samuel",
+      "node_id": "samuel_simulation_crm",
+      "group_key": "samuel_simulation_crm",
+      "message": "Orphaned node: \"samuel_simulation_crm\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 553
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_simulation_phase2",
+      "graph": "samuel",
+      "node_id": "samuel_simulation_phase2",
+      "group_key": "samuel_simulation_phase2",
+      "message": "Orphaned node: \"samuel_simulation_phase2\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 636
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_simulation_phase3",
+      "graph": "samuel",
+      "node_id": "samuel_simulation_phase3",
+      "group_key": "samuel_simulation_phase3",
+      "message": "Orphaned node: \"samuel_simulation_phase3\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 767
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_station_knows_passions",
+      "graph": "samuel",
+      "node_id": "samuel_station_knows_passions",
+      "group_key": "samuel_station_knows",
+      "message": "Orphaned node: \"samuel_station_knows_passions\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 6940
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_station_sees_all",
+      "graph": "samuel",
+      "node_id": "samuel_station_sees_all",
+      "group_key": "samuel_station_sees",
+      "message": "Orphaned node: \"samuel_station_sees_all\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 4223
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_struggle_transformation",
+      "graph": "samuel",
+      "node_id": "samuel_struggle_transformation",
+      "group_key": "samuel_struggle_transformation",
+      "message": "Orphaned node: \"samuel_struggle_transformation\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 5452
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_trust_recovery",
+      "graph": "samuel",
+      "node_id": "samuel_trust_recovery",
+      "group_key": "samuel_trust_recovery",
+      "message": "Orphaned node: \"samuel_trust_recovery\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 10498
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_vulnerability_reflection",
+      "graph": "samuel",
+      "node_id": "samuel_vulnerability_reflection",
+      "group_key": "samuel_vulnerability_reflection",
+      "message": "Orphaned node: \"samuel_vulnerability_reflection\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 1771
+    },
+    {
+      "warning_id": "ORPHAN_NODE|samuel|samuel_your_pattern_emerges",
+      "graph": "samuel",
+      "node_id": "samuel_your_pattern_emerges",
+      "group_key": "samuel_your_pattern",
+      "message": "Orphaned node: \"samuel_your_pattern_emerges\" has no incoming references",
+      "suggestion": "This node is never reached. Add a choice pointing to it or remove it.",
+      "file": "content/samuel-dialogue-graph.ts",
+      "line": 4404
+    }
+  ]
+}

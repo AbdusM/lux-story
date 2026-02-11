@@ -1,0 +1,317 @@
+# Orphan Triage Report
+
+Generated: `2026-02-11T03:44:21.331Z`
+Source: `/Users/abdusmuwwakkil/Development/30_lux-story/docs/qa/dialogue-graph-warnings.report.json`
+Graphs: `samuel`, `devon`, `maya`
+Total ORPHAN_NODE: **101**
+
+## devon
+
+- `devon_birmingham_future` (content/devon-dialogue-graph.ts:2728)
+  - Orphaned node: "devon_birmingham_future" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_birmingham_future_roots` (content/devon-dialogue-graph.ts:3228)
+  - Orphaned node: "devon_birmingham_future_roots" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_birmingham_roots` (content/devon-dialogue-graph.ts:2702)
+  - Orphaned node: "devon_birmingham_roots" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_coding_escape` (content/devon-dialogue-graph.ts:3199)
+  - Orphaned node: "devon_coding_escape" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_college_choice` (content/devon-dialogue-graph.ts:3109)
+  - Orphaned node: "devon_college_choice" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_dad_birthday` (content/devon-dialogue-graph.ts:3309)
+  - Orphaned node: "devon_dad_birthday" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_failure_story` (content/devon-dialogue-graph.ts:2859)
+  - Orphaned node: "devon_failure_story" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_first_debug` (content/devon-dialogue-graph.ts:3138)
+  - Orphaned node: "devon_first_debug" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_future_vision` (content/devon-dialogue-graph.ts:3338)
+  - Orphaned node: "devon_future_vision" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_gratitude` (content/devon-dialogue-graph.ts:3367)
+  - Orphaned node: "devon_gratitude" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_hope` (content/devon-dialogue-graph.ts:3079)
+  - Orphaned node: "devon_hope" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_mentions_maya` (content/devon-dialogue-graph.ts:2751)
+  - Orphaned node: "devon_mentions_maya" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_mentions_rohan` (content/devon-dialogue-graph.ts:2776)
+  - Orphaned node: "devon_mentions_rohan" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_mentors` (content/devon-dialogue-graph.ts:3028)
+  - Orphaned node: "devon_mentors" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_midnight_work` (content/devon-dialogue-graph.ts:3006)
+  - Orphaned node: "devon_midnight_work" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_mom_final_words` (content/devon-dialogue-graph.ts:3164)
+  - Orphaned node: "devon_mom_final_words" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_small_joys` (content/devon-dialogue-graph.ts:3283)
+  - Orphaned node: "devon_small_joys" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_trust_recovery` (content/devon-dialogue-graph.ts:4242)
+  - Orphaned node: "devon_trust_recovery" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_uncertainty` (content/devon-dialogue-graph.ts:3254)
+  - Orphaned node: "devon_uncertainty" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `devon_what_ifs` (content/devon-dialogue-graph.ts:2885)
+  - Orphaned node: "devon_what_ifs" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+## maya
+
+- `maya_birmingham_community` (content/maya-dialogue-graph.ts:3523)
+  - Orphaned node: "maya_birmingham_community" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_birmingham_opportunity` (content/maya-dialogue-graph.ts:1777)
+  - Orphaned node: "maya_birmingham_opportunity" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_birmingham_roots` (content/maya-dialogue-graph.ts:3494)
+  - Orphaned node: "maya_birmingham_roots" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_career_reflection_robotics_eng` (content/maya-dialogue-graph.ts:3076)
+  - Orphaned node: "maya_career_reflection_robotics_eng" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_career_reflection_ux` (content/maya-dialogue-graph.ts:3045)
+  - Orphaned node: "maya_career_reflection_ux" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_competition_memory` (content/maya-dialogue-graph.ts:3683)
+  - Orphaned node: "maya_competition_memory" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_doubt_spiral` (content/maya-dialogue-graph.ts:3786)
+  - Orphaned node: "maya_doubt_spiral" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_failure_story` (content/maya-dialogue-graph.ts:3657)
+  - Orphaned node: "maya_failure_story" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_family_deeper` (content/maya-dialogue-graph.ts:3108)
+  - Orphaned node: "maya_family_deeper" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_first_user` (content/maya-dialogue-graph.ts:3815)
+  - Orphaned node: "maya_first_user" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_future_vision` (content/maya-dialogue-graph.ts:3550)
+  - Orphaned node: "maya_future_vision" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_imposter_deep` (content/maya-dialogue-graph.ts:3231)
+  - Orphaned node: "maya_imposter_deep" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_loneliness` (content/maya-dialogue-graph.ts:3706)
+  - Orphaned node: "maya_loneliness" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_mentor_devon` (content/maya-dialogue-graph.ts:3580)
+  - Orphaned node: "maya_mentor_devon" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_mentor_tess` (content/maya-dialogue-graph.ts:3605)
+  - Orphaned node: "maya_mentor_tess" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_midnight_coding` (content/maya-dialogue-graph.ts:3764)
+  - Orphaned node: "maya_midnight_coding" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_mystery_hint_1` (content/maya-dialogue-graph.ts:3971)
+  - Orphaned node: "maya_mystery_hint_1" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_name_meaning` (content/maya-dialogue-graph.ts:3844)
+  - Orphaned node: "maya_name_meaning" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_parent_conversation_failed` (content/maya-dialogue-graph.ts:1913)
+  - Orphaned node: "maya_parent_conversation_failed" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_parents_together` (content/maya-dialogue-graph.ts:3208)
+  - Orphaned node: "maya_parents_together" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_pepper_origin` (content/maya-dialogue-graph.ts:3348)
+  - Orphaned node: "maya_pepper_origin" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_simulation_phase3_setup` (content/maya-dialogue-graph.ts:2438)
+  - Orphaned node: "maya_simulation_phase3_setup" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_tech_philosophy` (content/maya-dialogue-graph.ts:3631)
+  - Orphaned node: "maya_tech_philosophy" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_trust_recovery` (content/maya-dialogue-graph.ts:4259)
+  - Orphaned node: "maya_trust_recovery" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_uab_revelation` (content/maya-dialogue-graph.ts:1823)
+  - Orphaned node: "maya_uab_revelation" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_what_if` (content/maya-dialogue-graph.ts:3866)
+  - Orphaned node: "maya_what_if" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `maya_work_doubt` (content/maya-dialogue-graph.ts:3901)
+  - Orphaned node: "maya_work_doubt" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+## samuel
+
+- `samuel_acknowledges_family` (content/samuel-dialogue-graph.ts:6898)
+  - Orphaned node: "samuel_acknowledges_family" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_analytical_bonus` (content/samuel-dialogue-graph.ts:7921)
+  - Orphaned node: "samuel_analytical_bonus" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_backstory_revelation` (content/samuel-dialogue-graph.ts:1523)
+  - Orphaned node: "samuel_backstory_revelation" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_beat_after_station_called` (content/samuel-dialogue-graph.ts:2131)
+  - Orphaned node: "samuel_beat_after_station_called" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_boundary_philosophy` (content/samuel-dialogue-graph.ts:5665)
+  - Orphaned node: "samuel_boundary_philosophy" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_building_bonus` (content/samuel-dialogue-graph.ts:8350)
+  - Orphaned node: "samuel_building_bonus" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_conductor_god_mode` (content/samuel-dialogue-graph.ts:147)
+  - Orphaned node: "samuel_conductor_god_mode" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_devon_heart_wisdom` (content/samuel-dialogue-graph.ts:5984)
+  - Orphaned node: "samuel_devon_heart_wisdom" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_devon_systems_wisdom` (content/samuel-dialogue-graph.ts:5943)
+  - Orphaned node: "samuel_devon_systems_wisdom" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_exploring_bonus` (content/samuel-dialogue-graph.ts:8122)
+  - Orphaned node: "samuel_exploring_bonus" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_frozen_time` (content/samuel-dialogue-graph.ts:9847)
+  - Orphaned node: "samuel_frozen_time" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_helping_bonus` (content/samuel-dialogue-graph.ts:8236)
+  - Orphaned node: "samuel_helping_bonus" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_hollow_wisdom` (content/samuel-dialogue-graph.ts:5563)
+  - Orphaned node: "samuel_hollow_wisdom" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_honesty_mastery` (content/samuel-dialogue-graph.ts:5624)
+  - Orphaned node: "samuel_honesty_mastery" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_hub_fallback` (content/samuel-dialogue-graph.ts:3706)
+  - Orphaned node: "samuel_hub_fallback" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_hub_fallback_legacy` (content/samuel-dialogue-graph.ts:3313)
+  - Orphaned node: "samuel_hub_fallback_legacy" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_inheritance_wisdom` (content/samuel-dialogue-graph.ts:5274)
+  - Orphaned node: "samuel_inheritance_wisdom" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_introduction_2` (content/samuel-dialogue-graph.ts:1155)
+  - Orphaned node: "samuel_introduction_2" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_jordan_belief_wisdom` (content/samuel-dialogue-graph.ts:6558)
+  - Orphaned node: "samuel_jordan_belief_wisdom" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_jordan_city_wisdom` (content/samuel-dialogue-graph.ts:6600)
+  - Orphaned node: "samuel_jordan_city_wisdom" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_jordan_future_wisdom` (content/samuel-dialogue-graph.ts:6579)
+  - Orphaned node: "samuel_jordan_future_wisdom" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_jordan_narrative_wisdom` (content/samuel-dialogue-graph.ts:6642)
+  - Orphaned node: "samuel_jordan_narrative_wisdom" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_jordan_ripple_wisdom` (content/samuel-dialogue-graph.ts:6621)
+  - Orphaned node: "samuel_jordan_ripple_wisdom" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_jordan_sovereignty_wisdom` (content/samuel-dialogue-graph.ts:6663)
+  - Orphaned node: "samuel_jordan_sovereignty_wisdom" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_letter_confession` (content/samuel-dialogue-graph.ts:2047)
+  - Orphaned node: "samuel_letter_confession" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_letter_confrontation` (content/samuel-dialogue-graph.ts:10106)
+  - Orphaned node: "samuel_letter_confrontation" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_listening_wisdom` (content/samuel-dialogue-graph.ts:6981)
+  - Orphaned node: "samuel_listening_wisdom" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_orb_explanation` (content/samuel-dialogue-graph.ts:3053)
+  - Orphaned node: "samuel_orb_explanation" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_origin_choice` (content/samuel-dialogue-graph.ts:2482)
+  - Orphaned node: "samuel_origin_choice" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_patience_bonus` (content/samuel-dialogue-graph.ts:8008)
+  - Orphaned node: "samuel_patience_bonus" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_patience_wisdom` (content/samuel-dialogue-graph.ts:4243)
+  - Orphaned node: "samuel_patience_wisdom" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_pattern_confirmation` (content/samuel-dialogue-graph.ts:5322)
+  - Orphaned node: "samuel_pattern_confirmation" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_pattern_observation_analytical` (content/samuel-dialogue-graph.ts:7573)
+  - Orphaned node: "samuel_pattern_observation_analytical" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_pattern_observation_building` (content/samuel-dialogue-graph.ts:7741)
+  - Orphaned node: "samuel_pattern_observation_building" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_pattern_observation_exploring` (content/samuel-dialogue-graph.ts:7657)
+  - Orphaned node: "samuel_pattern_observation_exploring" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_pattern_observation_helping` (content/samuel-dialogue-graph.ts:7615)
+  - Orphaned node: "samuel_pattern_observation_helping" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_pattern_observation_patience` (content/samuel-dialogue-graph.ts:7699)
+  - Orphaned node: "samuel_pattern_observation_patience" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_pattern_wisdom` (content/samuel-dialogue-graph.ts:5366)
+  - Orphaned node: "samuel_pattern_wisdom" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_platform_7_truth` (content/samuel-dialogue-graph.ts:9815)
+  - Orphaned node: "samuel_platform_7_truth" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_platform_deflect` (content/samuel-dialogue-graph.ts:9750)
+  - Orphaned node: "samuel_platform_deflect" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_possibility_keeper` (content/samuel-dialogue-graph.ts:5407)
+  - Orphaned node: "samuel_possibility_keeper" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_presence_teaching` (content/samuel-dialogue-graph.ts:5518)
+  - Orphaned node: "samuel_presence_teaching" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_purpose_found_3` (content/samuel-dialogue-graph.ts:2336)
+  - Orphaned node: "samuel_purpose_found_3" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_reflect_on_influence` (content/samuel-dialogue-graph.ts:4060)
+  - Orphaned node: "samuel_reflect_on_influence" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_service_philosophy` (content/samuel-dialogue-graph.ts:5497)
+  - Orphaned node: "samuel_service_philosophy" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_simulation_crm` (content/samuel-dialogue-graph.ts:553)
+  - Orphaned node: "samuel_simulation_crm" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_simulation_phase2` (content/samuel-dialogue-graph.ts:636)
+  - Orphaned node: "samuel_simulation_phase2" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_simulation_phase3` (content/samuel-dialogue-graph.ts:767)
+  - Orphaned node: "samuel_simulation_phase3" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_station_knows_passions` (content/samuel-dialogue-graph.ts:6940)
+  - Orphaned node: "samuel_station_knows_passions" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_station_sees_all` (content/samuel-dialogue-graph.ts:4223)
+  - Orphaned node: "samuel_station_sees_all" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_struggle_transformation` (content/samuel-dialogue-graph.ts:5452)
+  - Orphaned node: "samuel_struggle_transformation" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_trust_recovery` (content/samuel-dialogue-graph.ts:10498)
+  - Orphaned node: "samuel_trust_recovery" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_vulnerability_reflection` (content/samuel-dialogue-graph.ts:1771)
+  - Orphaned node: "samuel_vulnerability_reflection" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+- `samuel_your_pattern_emerges` (content/samuel-dialogue-graph.ts:4404)
+  - Orphaned node: "samuel_your_pattern_emerges" has no incoming references
+  - Suggestion: This node is never reached. Add a choice pointing to it or remove it.
+

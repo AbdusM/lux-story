@@ -46,6 +46,9 @@ import { isaiahDialogueNodes } from '../content/isaiah-dialogue-graph'
 import { marketDialogueNodes } from '../content/market-graph'
 import { deepStationDialogueNodes } from '../content/deep-station-graph'
 import { stationEntryGraph } from '../content/station-entry-graph'
+import { SYNTHESIS_PUZZLES } from '../content/synthesis-puzzles'
+import { CHARACTER_PATTERN_AFFINITIES } from '../lib/pattern-affinity'
+import { SKILL_COMBOS } from '../lib/skill-combos'
 
 // ============= TYPES =============
 
@@ -123,6 +126,37 @@ class DialogueGraphValidator {
           }
         }
       }
+    }
+
+    // External entry points:
+    // Some nodes are intentionally entered outside the core choice graph, so they will not have
+    // a static `nextNodeId` reference. We still treat them as "reachable" for orphan detection.
+    const externallyEnteredNodeIds = new Set<string>()
+
+    // 1) Synthesis puzzles unlock specific dialogue reward nodes.
+    for (const puzzle of SYNTHESIS_PUZZLES) {
+      const nodeId = puzzle.reward?.unlockNodeId
+      if (nodeId) externallyEnteredNodeIds.add(nodeId)
+    }
+
+    // 2) Pattern unlocks inject synthetic choices at runtime.
+    for (const affinity of Object.values(CHARACTER_PATTERN_AFFINITIES)) {
+      for (const unlock of (affinity?.patternUnlocks || [])) {
+        externallyEnteredNodeIds.add(unlock.unlockedNodeId)
+      }
+    }
+
+    // 3) Skill combos inject synthetic choices at runtime (dialogue unlocks).
+    for (const combo of SKILL_COMBOS) {
+      for (const unlock of combo.unlocks) {
+        if (unlock.type === 'dialogue') externallyEnteredNodeIds.add(unlock.id)
+      }
+    }
+
+    for (const nodeId of externallyEnteredNodeIds) {
+      if (!this.globalNodeIds.has(nodeId)) continue
+      if ((this.globalIncomingCounts.get(nodeId) ?? 0) > 0) continue
+      this.globalIncomingCounts.set(nodeId, 1)
     }
 
     for (const graph of graphs) {

@@ -527,6 +527,9 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
 - Payload keys:
   - `event_id`: string
   - `presented_at_ms`: number
+  - `presentation_mode`: `'full' | 'compact'` (optional)
+  - `hidden_count`: number (optional; hidden due to presentation mode)
+  - `hidden_reason`: `'compact_mode' | null` (optional)
   - `nervous_system_state`: string|null
   - `mercy_unlocked_choice_id`: string|null
   - `choices_total_count`: number (optional; count before compacting)

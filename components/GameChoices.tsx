@@ -859,6 +859,10 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     const currentChar = coreState?.characters?.find(c => c.characterId === characterId)
     const nervousSystemState = currentChar?.nervousSystemState || null
 
+    const presentationMode = shouldOfferCompactMode && !compactExpanded ? 'compact' : 'full'
+    const hiddenReason = presentationMode === 'compact' ? 'compact_mode' : null
+    const hiddenCount = presentationMode === 'compact' ? compactHiddenCount : 0
+
     queueInteractionEventSync({
       user_id: playerId,
       session_id: String(coreState?.sessionStartTime || now),
@@ -870,6 +874,9 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
       payload: {
         event_id: eventId,
         presented_at_ms: now,
+        presentation_mode: presentationMode,
+        hidden_count: hiddenCount,
+        hidden_reason: hiddenReason,
         nervous_system_state: nervousSystemState,
         mercy_unlocked_choice_id: mercyUnlockChoice ? getStableChoiceId(mercyUnlockChoice) : null,
         choices_total_count: sortedChoices.length,
