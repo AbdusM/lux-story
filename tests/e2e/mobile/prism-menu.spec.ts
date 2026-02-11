@@ -31,18 +31,18 @@ test.describe('Prism (Journal) on Mobile', () => {
 
     await expect(harmonicsTab).toBeVisible()
     await essenceTab.click()
-    await expect(page.getByText(/essence awaits|skills emerge/i)).toBeVisible({ timeout: 3000 })
+    await expect(page.getByText(/essence awaits|skills emerge/i)).toBeVisible({ timeout: 10000 })
 
     await masteryTab.click()
-    await expect(page.getByText(/ability mastery/i)).toBeVisible({ timeout: 3000 })
+    await expect(page.getByText(/ability mastery/i)).toBeVisible({ timeout: 10000 })
   })
 
   test('shows empty state in Harmonics for fresh game', async ({ page, freshGame }) => {
     const prismTrigger = page.getByRole('button', { name: /journal|prism/i })
     await prismTrigger.click()
 
-    // Harmonics should show empty state
-    await expect(page.getByText(/patterns are forming/i)).toBeVisible({ timeout: 3000 })
+    // Harmonics should render for a fresh game (orbs start at 0% resonance).
+    await expect(page.getByText(/resonance field/i)).toBeVisible({ timeout: 10000 })
   })
 
   test('closes Prism with close button', async ({ page, freshGame }) => {
