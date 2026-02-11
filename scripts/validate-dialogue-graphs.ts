@@ -19,6 +19,7 @@ import path from 'node:path'
 import { ConditionalChoice, DialogueNode } from '../lib/dialogue-graph'
 import { DIALOGUE_GRAPHS } from '../lib/graph-registry'
 import { CHARACTER_PATTERN_AFFINITIES } from '../lib/pattern-affinity'
+import { SKILL_COMBOS } from '../lib/skill-combos'
 
 import { samuelWaitingEntryPoints } from '../content/samuel-waiting-dialogue'
 import { samuelEntryPoints } from '../content/samuel-dialogue-graph'
@@ -46,6 +47,7 @@ import { mayaRevisitEntryPoints } from '../content/maya-revisit-graph'
 import { yaquinRevisitEntryPoints } from '../content/yaquin-revisit-graph'
 import { devonRevisitEntryPoints } from '../content/devon-revisit-graph'
 import { graceRevisitEntryPoints } from '../content/grace-revisit-graph'
+import { SYNTHESIS_PUZZLES } from '../content/synthesis-puzzles'
 
 // ============= HELPERS =============
 
@@ -155,6 +157,18 @@ const PATTERN_UNLOCK_NODE_IDS = new Set<string>(
     .filter(Boolean)
 )
 
+const SYNTHESIS_UNLOCK_NODE_IDS = new Set<string>(
+  SYNTHESIS_PUZZLES
+    .map((p: any) => p?.reward?.unlockNodeId)
+    .filter(Boolean)
+)
+
+const SKILL_COMBO_UNLOCK_NODE_IDS = new Set<string>(
+  SKILL_COMBOS
+    .flatMap((c: any) => (c?.unlocks ?? []).filter((u: any) => u?.type === 'dialogue').map((u: any) => u.id))
+    .filter(Boolean)
+)
+
 type GraphInput = { name: string; nodes: DialogueNode[]; startNodeId: string }
 
 function buildNodeOwnerIndex(graphs: GraphInput[]): Map<string, string> {
@@ -177,6 +191,12 @@ function inGraphRoots(graph: GraphInput, nodeMap: Map<string, DialogueNode>): st
     if (nodeMap.has(entryId)) roots.push(entryId)
   }
   for (const unlockId of PATTERN_UNLOCK_NODE_IDS) {
+    if (nodeMap.has(unlockId)) roots.push(unlockId)
+  }
+  for (const unlockId of SYNTHESIS_UNLOCK_NODE_IDS) {
+    if (nodeMap.has(unlockId)) roots.push(unlockId)
+  }
+  for (const unlockId of SKILL_COMBO_UNLOCK_NODE_IDS) {
     if (nodeMap.has(unlockId)) roots.push(unlockId)
   }
   for (const node of nodeMap.values()) {
@@ -504,6 +524,12 @@ class DialogueGraphValidator {
     for (const unlockId of PATTERN_UNLOCK_NODE_IDS) {
       if (nodeMap.has(unlockId)) extraRoots.push(unlockId)
     }
+    for (const unlockId of SYNTHESIS_UNLOCK_NODE_IDS) {
+      if (nodeMap.has(unlockId)) extraRoots.push(unlockId)
+    }
+    for (const unlockId of SKILL_COMBO_UNLOCK_NODE_IDS) {
+      if (nodeMap.has(unlockId)) extraRoots.push(unlockId)
+    }
     for (const node of nodeMap.values()) {
       if ((node as any)?.simulation) extraRoots.push(node.nodeId)
     }
@@ -519,6 +545,8 @@ class DialogueGraphValidator {
         // Skip known entry points (reachable from system routing / other graphs)
         if (KNOWN_ENTRY_NODE_IDS.has(nodeId)) continue
         if (PATTERN_UNLOCK_NODE_IDS.has(nodeId)) continue
+        if (SYNTHESIS_UNLOCK_NODE_IDS.has(nodeId)) continue
+        if (SKILL_COMBO_UNLOCK_NODE_IDS.has(nodeId)) continue
         if ((nodeMap.get(nodeId) as any)?.simulation) continue
 
         // Check if it's referenced as a target anywhere (including other graphs)

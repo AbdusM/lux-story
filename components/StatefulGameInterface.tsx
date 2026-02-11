@@ -219,7 +219,10 @@ import { playPatternSound, playTrustSound, playIdentitySound, playMilestoneSound
 import { ExperienceRenderer } from '@/components/game/ExperienceRenderer'
 import { SimulationRenderer } from '@/components/game/SimulationRenderer'
 import { GameErrorBoundary } from '@/components/GameErrorBoundary'
+import { ContinuityStrip } from '@/components/game/ContinuityStrip'
+import { ReturnHookPrompt } from '@/components/game/ReturnHookPrompt'
 import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
+import { getSkillComboUnlockChoices } from '@/lib/skill-combo-unlock-choices'
 import { calculateSkillDecay, getSkillDecayNarrative } from '@/lib/assessment-derivatives'
 // Share prompts removed-too obtrusive
 
@@ -276,6 +279,7 @@ interface GameInterfaceState {
   waitingCharacters: CharacterWaitingState[]  // Characters "waiting" for returning player
   pendingGift: DelayedGift | null  // Gift ready to deliver
   isReturningPlayer: boolean  // True if player returned after absence
+  returnHookDismissed: boolean
 
   // P6: Loyalty Experience System
   activeExperience: import("@/lib/experience-engine").ActiveExperienceState | null
@@ -431,6 +435,7 @@ export default function StatefulGameInterface() {
     waitingCharacters: [],
     pendingGift: null,
     isReturningPlayer: false,
+    returnHookDismissed: true,
     // activeExperience: null
   })
 
@@ -1212,7 +1217,12 @@ export default function StatefulGameInterface() {
         actualGraph,
         character.visitedPatternUnlocks
       )
-      const choices = [...regularChoices, ...patternUnlockChoices]
+      const skillComboUnlockChoices = getSkillComboUnlockChoices(
+        gameState.skillLevels,
+        actualGraph,
+        character.conversationHistory
+      )
+      const choices = [...regularChoices, ...patternUnlockChoices, ...skillComboUnlockChoices]
 
       // Session Boundary Detection (clean, minimal)
       // If this node is marked as a session boundary, show atmospheric announcement
@@ -1337,7 +1347,9 @@ export default function StatefulGameInterface() {
         activeComboChain: null,
         waitingCharacters,
         pendingGift: null,
-        isReturningPlayer: waitingContext.isReturningPlayer
+        isReturningPlayer: waitingContext.isReturningPlayer,
+        // Show return hook once per session if they are truly returning.
+        returnHookDismissed: !waitingContext.isReturningPlayer,
       })
 
       // One-time local mode notice via Samuel (replaces persistent banner)
@@ -2715,7 +2727,12 @@ export default function StatefulGameInterface() {
         targetGraph,
         targetCharacter.visitedPatternUnlocks
       )
-      const newChoices = [...regularNewChoices, ...patternUnlockNewChoices]
+      const skillComboUnlockNewChoices = getSkillComboUnlockChoices(
+        newGameState.skillLevels,
+        targetGraph,
+        newGameState.characters.get(targetCharacterId)?.conversationHistory || []
+      )
+      const newChoices = [...regularNewChoices, ...patternUnlockNewChoices, ...skillComboUnlockNewChoices]
 
       // Apply pattern reflection to NPC dialogue based on player's patterns
       // Node-level patternReflection takes precedence over content-level
@@ -2948,7 +2965,8 @@ export default function StatefulGameInterface() {
         // Engagement Loop State (preserved across choice)
         waitingCharacters: state.waitingCharacters,
         pendingGift,
-        isReturningPlayer: state.isReturningPlayer
+        isReturningPlayer: state.isReturningPlayer,
+        returnHookDismissed: state.returnHookDismissed,
       })
       GameStateManager.saveGameState(newGameState)
 
@@ -3186,7 +3204,12 @@ export default function StatefulGameInterface() {
       searchResult.graph,
       interruptCharState?.visitedPatternUnlocks
     )
-    const choices = [...regularInterruptChoices, ...patternUnlockInterruptChoices]
+    const skillComboUnlockInterruptChoices = getSkillComboUnlockChoices(
+      newGameState.skillLevels,
+      searchResult.graph,
+      interruptCharState?.conversationHistory || []
+    )
+    const choices = [...regularInterruptChoices, ...patternUnlockInterruptChoices, ...skillComboUnlockInterruptChoices]
     const reflected = applyPatternReflection(content.text, content.emotion, content.patternReflection, newGameState.patterns)
 
     setState(prev => ({
@@ -3232,7 +3255,12 @@ export default function StatefulGameInterface() {
             searchResult.graph,
             missedCharState?.visitedPatternUnlocks
           )
-          const choices = [...regularMissedChoices, ...patternUnlockMissedChoices]
+          const skillComboUnlockMissedChoices = getSkillComboUnlockChoices(
+            state.gameState.skillLevels,
+            searchResult.graph,
+            missedCharState?.conversationHistory || []
+          )
+          const choices = [...regularMissedChoices, ...patternUnlockMissedChoices, ...skillComboUnlockMissedChoices]
           const reflected = applyPatternReflection(content.text, content.emotion, content.patternReflection, state.gameState.patterns)
 
           // D-084: Reset combo chain when interrupt is missed
@@ -3319,7 +3347,12 @@ export default function StatefulGameInterface() {
             samuelGraph,
             samuelChar.visitedPatternUnlocks
           )
-          const choices = [...regularSamuelChoices, ...patternUnlockSamuelChoices]
+          const skillComboUnlockSamuelChoices = getSkillComboUnlockChoices(
+            newGameState.skillLevels,
+            samuelGraph,
+            samuelChar.conversationHistory
+          )
+          const choices = [...regularSamuelChoices, ...patternUnlockSamuelChoices, ...skillComboUnlockSamuelChoices]
 
           // Apply pattern reflection
           const reflected = applyPatternReflection(
@@ -3419,7 +3452,12 @@ export default function StatefulGameInterface() {
         targetGraph,
         targetCharacter.visitedPatternUnlocks
       )
-      const choices = [...regularNavChoices, ...patternUnlockNavChoices]
+      const skillComboUnlockNavChoices = getSkillComboUnlockChoices(
+        newGameState.skillLevels,
+        targetGraph,
+        targetCharacter.conversationHistory
+      )
+      const choices = [...regularNavChoices, ...patternUnlockNavChoices, ...skillComboUnlockNavChoices]
 
       // Apply pattern reflection
       const reflected = applyPatternReflection(
@@ -3715,8 +3753,37 @@ export default function StatefulGameInterface() {
                 </div>
               </div>
             )}
+
+            {state.gameState && (
+              <ContinuityStrip
+                gameState={state.gameState}
+                characterId={state.currentCharacterId}
+              />
+            )}
           </div>
         </header>
+
+        {state.gameState && !state.returnHookDismissed && (
+          <ReturnHookPrompt
+            gameState={state.gameState}
+            isReturningPlayer={state.isReturningPlayer}
+            waitingCharacters={state.waitingCharacters}
+            onOpenJourney={() => {
+              setState(prev => ({
+                ...prev,
+                returnHookDismissed: true,
+                showConstellation: true,
+                hasNewTrust: false,
+                hasNewMeeting: false,
+              }))
+            }}
+            onVisitCharacter={(characterId) => {
+              setState(prev => ({ ...prev, returnHookDismissed: true }))
+              useGameStore.getState().setCurrentScene(characterId)
+            }}
+            onDismiss={() => setState(prev => ({ ...prev, returnHookDismissed: true }))}
+          />
+        )}
 
         {/* ══════════════════════════════════════════════════════════════════
           SCROLLABLE DIALOGUE AREA-Middle section
