@@ -84,7 +84,7 @@ test.describe('Touch Target Validation', () => {
       await expect(dialog).toBeVisible({ timeout: 5000 })
 
       // Check close button
-      const closeBtn = page.getByLabel(/close/i)
+      const closeBtn = page.getByLabel('Close journey panel')
       const closeBtnBox = await closeBtn.boundingBox()
       expect(closeBtnBox).not.toBeNull()
       if (closeBtnBox) {
@@ -106,20 +106,31 @@ test.describe('Touch Target Validation', () => {
       const dialog = page.getByRole('dialog')
       await expect(dialog).toBeVisible({ timeout: 5000 })
 
-      // Check People tab
-      const peopleTab = page.getByRole('tab', { name: /people/i })
-      const peopleTabBox = await peopleTab.boundingBox()
-      expect(peopleTabBox).not.toBeNull()
-      if (peopleTabBox) {
-        expect(peopleTabBox.height).toBeGreaterThanOrEqual(MINIMUM_TOUCH_TARGET)
+      // Check Network tab (People)
+      const networkTab = page.getByRole('tab', { name: /network/i })
+      await expect(networkTab).toBeVisible({ timeout: 10000 })
+      const networkTabBox = await networkTab.boundingBox()
+      expect(networkTabBox).not.toBeNull()
+      if (networkTabBox) {
+        expect(networkTabBox.height).toBeGreaterThanOrEqual(MINIMUM_TOUCH_TARGET)
       }
 
       // Check Skills tab
       const skillsTab = page.getByRole('tab', { name: /skills/i })
+      await expect(skillsTab).toBeVisible({ timeout: 10000 })
       const skillsTabBox = await skillsTab.boundingBox()
       expect(skillsTabBox).not.toBeNull()
       if (skillsTabBox) {
         expect(skillsTabBox.height).toBeGreaterThanOrEqual(MINIMUM_TOUCH_TARGET)
+      }
+
+      // Check Quests tab
+      const questsTab = page.getByRole('tab', { name: /quests/i })
+      await expect(questsTab).toBeVisible({ timeout: 10000 })
+      const questsTabBox = await questsTab.boundingBox()
+      expect(questsTabBox).not.toBeNull()
+      if (questsTabBox) {
+        expect(questsTabBox.height).toBeGreaterThanOrEqual(MINIMUM_TOUCH_TARGET)
       }
     }
   })
@@ -183,18 +194,17 @@ test.describe('Touch Target Validation', () => {
       await journalBtn.click()
 
       // Wait for journal to open
-      const journal = page.locator('[role="dialog"]').or(page.locator('[data-testid="journal"]'))
-      await expect(journal.first()).toBeVisible({ timeout: 5000 })
+      const prismHeading = page.getByRole('heading', { name: 'The Prism' })
+      await expect(prismHeading).toBeVisible({ timeout: 15000 })
 
       // Check close button
-      const closeBtn = page.getByLabel(/close/i).first()
-      if (await closeBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
-        const closeBtnBox = await closeBtn.boundingBox()
-        expect(closeBtnBox).not.toBeNull()
-        if (closeBtnBox) {
-          expect(closeBtnBox.width).toBeGreaterThanOrEqual(MINIMUM_TOUCH_TARGET)
-          expect(closeBtnBox.height).toBeGreaterThanOrEqual(MINIMUM_TOUCH_TARGET)
-        }
+      const closeBtn = page.getByRole('button', { name: /close prism/i })
+      await expect(closeBtn).toBeVisible({ timeout: 10000 })
+      const closeBtnBox = await closeBtn.boundingBox()
+      expect(closeBtnBox).not.toBeNull()
+      if (closeBtnBox) {
+        expect(closeBtnBox.width).toBeGreaterThanOrEqual(MINIMUM_TOUCH_TARGET)
+        expect(closeBtnBox.height).toBeGreaterThanOrEqual(MINIMUM_TOUCH_TARGET)
       }
     }
   })

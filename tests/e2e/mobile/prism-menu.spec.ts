@@ -13,13 +13,13 @@ test.describe('Prism (Journal) on Mobile', () => {
 
   test('opens Prism and navigates tabs', async ({ page, freshGame }) => {
     // Prism trigger should be visible
-    const prismTrigger = page.getByRole('button', { name: /journal|prism/i })
-    await expect(prismTrigger).toBeVisible()
+    const prismTrigger = page.getByLabel('Open Journal')
+    await expect(prismTrigger).toBeVisible({ timeout: 15000 })
 
     // Open Prism
     await prismTrigger.click()
     // Use heading role to avoid strict mode violation (multiple "The Prism" elements)
-    await expect(page.getByRole('heading', { name: 'The Prism' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'The Prism' })).toBeVisible({ timeout: 15000 })
 
     // Use the top tablist; there is also a bottom tab bar.
     const tablist = page.getByRole('tablist', { name: 'Prism sections', exact: true })
@@ -45,7 +45,7 @@ test.describe('Prism (Journal) on Mobile', () => {
   })
 
   test('shows empty state in Harmonics for fresh game', async ({ page, freshGame }) => {
-    const prismTrigger = page.getByRole('button', { name: /journal|prism/i })
+    const prismTrigger = page.getByLabel('Open Journal')
     await prismTrigger.click()
 
     // Harmonics should render for a fresh game (orbs start at 0% resonance).
@@ -53,10 +53,10 @@ test.describe('Prism (Journal) on Mobile', () => {
   })
 
   test('closes Prism with close button', async ({ page, freshGame }) => {
-    const prismTrigger = page.getByRole('button', { name: /journal|prism/i })
+    const prismTrigger = page.getByLabel('Open Journal')
     await prismTrigger.click()
     // Use heading role to avoid strict mode violation
-    await expect(page.getByRole('heading', { name: 'The Prism' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'The Prism' })).toBeVisible({ timeout: 15000 })
 
     // Close button
     const closeButton = page.getByRole('button', { name: /close prism/i })
