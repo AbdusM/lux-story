@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
 
 export type UserRole = 'student' | 'educator' | 'admin'
@@ -66,7 +67,7 @@ export function useUserRole(): UserRoleData {
     fetchRole()
 
     // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
       console.log('[useUserRole] Auth state changed:', event, session?.user?.email || 'none')
 
       if (!session?.user) {

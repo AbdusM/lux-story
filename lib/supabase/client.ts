@@ -5,30 +5,7 @@
 
 import { createBrowserClient } from '@supabase/ssr'
 
-type DisabledQueryResult = { data: null; error: Error }
-
-type DisabledQueryBuilder = {
-  single: () => Promise<DisabledQueryResult>
-  maybeSingle: () => Promise<DisabledQueryResult>
-  then: PromiseLike<DisabledQueryResult>['then']
-  catch: Promise<DisabledQueryResult>['catch']
-  finally: Promise<DisabledQueryResult>['finally']
-  // Allow chaining methods (eq/order/select/etc) without modeling full Postgrest API.
-  [key: string]: unknown
-}
-
-type DisabledSupabaseClient = {
-  auth: {
-    getUser: () => Promise<{ data: { user: null }; error: null }>
-    onAuthStateChange: (cb: (event: string, session: unknown) => void) => { data: { subscription: { unsubscribe: () => void } } }
-    signOut: () => Promise<{ data: null; error: Error }>
-    signInWithOAuth: (args: unknown) => Promise<{ data: null; error: Error }>
-    signInWithPassword: (args: unknown) => Promise<{ data: null; error: Error }>
-    signUp: (args: unknown) => Promise<{ data: null; error: Error }>
-    resend: (args: unknown) => Promise<{ data: null; error: Error }>
-  }
-  from: (table: string) => DisabledQueryBuilder
-}
+type BrowserSupabaseClient = ReturnType<typeof createBrowserClient>
 
 function isBrowserSupabaseConfigured(): boolean {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -39,7 +16,7 @@ function isBrowserSupabaseConfigured(): boolean {
   return true
 }
 
-function createDisabledClient(): DisabledSupabaseClient {
+function createDisabledClient(): BrowserSupabaseClient {
   const err = new Error('Supabase not configured')
 
   const auth = {
@@ -52,10 +29,11 @@ function createDisabledClient(): DisabledSupabaseClient {
     signInWithPassword: async (_args: unknown) => ({ data: null, error: err }),
     signUp: async (_args: unknown) => ({ data: null, error: err }),
     resend: async (_args: unknown) => ({ data: null, error: err }),
+    updateUser: async (_args: unknown) => ({ data: null, error: err }),
   }
 
-  const makeBuilder = (): DisabledQueryBuilder => {
-    const handler: ProxyHandler<DisabledQueryBuilder> = {
+  const makeBuilder = (): unknown => {
+    const handler: ProxyHandler<Record<string, unknown>> = {
       get(_t, prop: string | symbol) {
         // Make the builder awaitable (Supabase builders are thenable).
         if (prop === 'then') {
@@ -70,24 +48,28 @@ function createDisabledClient(): DisabledSupabaseClient {
         }
 
         if (prop === 'single' || prop === 'maybeSingle') {
-          return async (): Promise<DisabledQueryResult> => ({ data: null, error: err })
+          return async (): Promise<{ data: null; error: Error }> => ({ data: null, error: err })
         }
 
         // Any query modifier just returns the same builder for chaining.
         return (..._args: readonly unknown[]) => proxy
       },
     }
-    const proxy = new Proxy({} as DisabledQueryBuilder, handler)
+    const proxy = new Proxy({} as Record<string, unknown>, handler)
     return proxy
   }
 
-  return {
+  const disabled = {
     auth,
     from: (_table: string) => makeBuilder(),
   }
+
+  // Keep the exported `createClient()` type stable so call sites don't see a union
+  // when Supabase isn't configured.
+  return disabled as unknown as BrowserSupabaseClient
 }
 
-export function createClient() {
+export function createClient(): BrowserSupabaseClient {
   if (!isBrowserSupabaseConfigured()) return createDisabledClient()
 
   return createBrowserClient(
