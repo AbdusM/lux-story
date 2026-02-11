@@ -10,13 +10,6 @@ import { test, expect } from '../fixtures/game-state-fixtures'
 const MINIMUM_TOUCH_TARGET = 44 // Apple HIG recommendation
 
 test.describe('Touch Target Validation', () => {
-  test.beforeEach(async ({ page }) => {
-    // Viewport is set by Playwright project config (iPhone SE, iPhone 14, iPad, etc.)
-    // Don't override it here - let the project device config handle viewport sizing
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-  })
-
   test('Choice buttons meet 44px minimum', async ({ page, freshGame }) => {
     // Use freshGame fixture to ensure game state is properly initialized
     // Wait for game interface and choices
@@ -65,6 +58,7 @@ test.describe('Touch Target Validation', () => {
   })
 
   test('Enter Station button meets 44px minimum', async ({ page }) => {
+    await page.goto('/', { waitUntil: 'domcontentloaded' })
     // Check the initial entry button
     const enterButton = page.getByRole('button', { name: /enter.*station/i })
     if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {

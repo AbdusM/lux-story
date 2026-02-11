@@ -165,6 +165,7 @@ jobs:
     # especially with retries enabled. Keep this generous to avoid "cancelled" runs.
     timeout-minutes: 25
     strategy:
+      fail-fast: false
       matrix:
         device: [mobile-iphone-se, mobile-iphone-14, mobile-galaxy-s21]
     steps:

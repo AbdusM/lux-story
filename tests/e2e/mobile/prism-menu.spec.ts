@@ -116,8 +116,7 @@ test.describe('UnifiedMenu on Mobile', () => {
 
   test('shows unavailable states for profile items without game start', async ({ page }) => {
     // Navigate to welcome page (no game state)
-    await page.goto('/welcome')
-    await page.waitForLoadState('networkidle')
+    await page.goto('/welcome', { waitUntil: 'domcontentloaded' })
 
     // Settings button might not be on welcome page, so we test on the game page
     // but with no playerId prop passed

@@ -258,8 +258,8 @@ const createHighTrustState = () => ({
  * Helper to seed state into localStorage
  */
 async function seedGameState(page: Page, state: any): Promise<void> {
-  await page.goto('/')
-  await page.waitForLoadState('domcontentloaded')
+  // Avoid `networkidle` on WebKit/mobile: the app can keep connections open which makes it flaky.
+  await page.goto('/', { waitUntil: 'domcontentloaded' })
 
   await page.evaluate((stateToSeed) => {
     // Clear existing state
@@ -272,20 +272,32 @@ async function seedGameState(page: Page, state: any): Promise<void> {
     localStorage.setItem('grand-central-terminus-save', JSON.stringify(stateToSeed))
   }, state)
 
-  await page.reload()
-  await page.waitForLoadState('networkidle')
+  await page.reload({ waitUntil: 'domcontentloaded' })
 
-  // Click through the welcome screen if it appears
-  const continueButton = page.getByRole('button', { name: 'Continue Journey' })
-  if (await continueButton.isVisible({ timeout: 5000 }).catch(() => false)) {
-    await continueButton.click()
-    await page.waitForLoadState('networkidle')
-    // Wait for game interface with longer timeout for iPad
-    await page.waitForSelector('[data-testid="game-interface"]', { timeout: 20000 })
-  } else {
-    // If no continue button, game interface should already be visible
-    await page.waitForSelector('[data-testid="game-interface"]', { timeout: 20000 })
+  const gameInterface = page.locator('[data-testid="game-interface"]')
+  const continueButton = page.getByRole('button', { name: /continue journey|continue your journey/i })
+  const enterStationButton = page.getByRole('button', { name: /enter( the)? station/i })
+
+  // Some routes show a welcome/intro screen even when a save is present; click through if needed.
+  for (let attempt = 0; attempt < 4; attempt++) {
+    if (await gameInterface.isVisible({ timeout: 500 }).catch(() => false)) break
+
+    if (await continueButton.isVisible({ timeout: 500 }).catch(() => false)) {
+      await continueButton.click()
+      await page.waitForLoadState('domcontentloaded')
+      continue
+    }
+
+    if (await enterStationButton.isVisible({ timeout: 500 }).catch(() => false)) {
+      await enterStationButton.click()
+      await page.waitForLoadState('domcontentloaded')
+      continue
+    }
+
+    await page.waitForTimeout(250)
   }
+
+  await gameInterface.waitFor({ state: 'visible', timeout: 30000 })
 }
 
 /**
