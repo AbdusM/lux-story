@@ -1633,7 +1633,7 @@ export const liraDialogueNodes: DialogueNode[] = [
                 skills: ['emotionalIntelligence'],
                 consequence: {
                     characterId: 'lira',
-                    trustChange: 3
+                    trustChange: 2
                 }
             },
             {
@@ -2084,7 +2084,7 @@ export const liraDialogueNodes: DialogueNode[] = [
                 skills: ['emotionalIntelligence'],
                 consequence: {
                     characterId: 'lira',
-                    trustChange: 3
+                    trustChange: 2
                 }
             }
         ],
@@ -2117,7 +2117,7 @@ export const liraDialogueNodes: DialogueNode[] = [
                 skills: ['emotionalIntelligence'],
                 consequence: {
                     characterId: 'lira',
-                    trustChange: 3
+                    trustChange: 2
                 }
             },
             {
@@ -2272,7 +2272,7 @@ export const liraDialogueNodes: DialogueNode[] = [
                 skills: ['emotionalIntelligence'],
                 consequence: {
                     characterId: 'lira',
-                    trustChange: 3
+                    trustChange: 2
                 }
             },
             {
@@ -2427,7 +2427,7 @@ export const liraDialogueNodes: DialogueNode[] = [
                 skills: ['integrity'],
                 consequence: {
                     characterId: 'lira',
-                    trustChange: 3
+                    trustChange: 2
                 }
             },
             {
@@ -2741,7 +2741,7 @@ export const liraDialogueNodes: DialogueNode[] = [
                 skills: ['creativity'],
                 consequence: {
                     characterId: 'lira',
-                    trustChange: 3
+                    trustChange: 2
                 }
             },
             {
@@ -2789,7 +2789,7 @@ export const liraDialogueNodes: DialogueNode[] = [
                 skills: ['creativity', 'collaboration'],
                 consequence: {
                     characterId: 'lira',
-                    trustChange: 4
+                    trustChange: 2
                 }
             },
             {
@@ -2813,7 +2813,7 @@ export const liraDialogueNodes: DialogueNode[] = [
                 skills: ['emotionalIntelligence'],
                 consequence: {
                     characterId: 'lira',
-                    trustChange: 3
+                    trustChange: 2
                 }
             }
         ],

@@ -2046,7 +2046,7 @@ Which structure creates genuine persuasion without manipulation?`,
         skills: ['emotionalIntelligence'],
         consequence: {
           characterId: 'dante',
-          trustChange: 3,
+          trustChange: 2,
           addGlobalFlags: ['dante_authentic_selling_mastery']
         }
       }

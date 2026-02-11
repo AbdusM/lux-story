@@ -669,7 +669,7 @@ WARNING: Response time > 48h`,
         skills: ['systemsThinking'],
         consequence: {
           characterId: 'marcus',
-          trustChange: 10,
+          trustChange: 2,
           addKnowledgeFlags: ['unlocked_hubspot_breeze', 'marcus_simulation_phase1_complete'],
           addGlobalFlags: ['golden_prompt_workflow']
         }
@@ -1023,7 +1023,7 @@ WARNING: Response time > 48h`,
         skills: ['technicalLiteracy', 'problemSolving'],
         consequence: {
           characterId: 'marcus',
-          trustChange: 10,
+          trustChange: 2,
           addKnowledgeFlags: ['unlocked_cursor'],
           addGlobalFlags: ['golden_prompt_cursor']
         }
@@ -1061,7 +1061,7 @@ WARNING: Response time > 48h`,
         nextNodeId: 'marcus_philosophy_close',
         consequence: {
           characterId: 'marcus',
-          trustChange: 5
+          trustChange: 2
         }
       },
       {
@@ -1526,7 +1526,7 @@ WARNING: Response time > 48h`,
         skills: ['emotionalIntelligence'],
         consequence: {
           characterId: 'marcus',
-          trustChange: 3
+          trustChange: 2
         }
       },
       {
@@ -1578,7 +1578,7 @@ WARNING: Response time > 48h`,
         skills: ['collaboration'],
         consequence: {
           characterId: 'marcus',
-          trustChange: 3
+          trustChange: 2
         }
       }
     ],
@@ -1654,7 +1654,7 @@ WARNING: Response time > 48h`,
         skills: ['emotionalIntelligence'],
         consequence: {
           characterId: 'marcus',
-          trustChange: 3
+          trustChange: 2
         }
       }
     ],
@@ -2700,7 +2700,7 @@ WARNING: Response time > 48h`,
         skills: ['emotionalIntelligence'],
         consequence: {
           characterId: 'marcus',
-          trustChange: 3
+          trustChange: 2
         }
       },
       {

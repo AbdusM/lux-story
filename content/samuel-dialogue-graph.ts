@@ -8984,21 +8984,25 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         emotion: 'resigned'
       }
     ],
-    choices: [
-      {
-        choiceId: 'sam_admission_why',
-        text: 'Why me?',
-        nextNodeId: 'samuel_admission',
-        visibleCondition: undefined
-      },
-      {
-        choiceId: 'sam_admission_anger',
-        text: 'You manipulated my life.',
-        nextNodeId: 'samuel_admission',
-        visibleCondition: undefined
-      }
-    ]
-  },
+	    choices: [
+	      {
+	        choiceId: 'sam_admission_why',
+	        text: 'Why me?',
+	        nextNodeId: 'samuel_admission',
+	        pattern: 'analytical',
+	        skills: ['criticalThinking'],
+	        visibleCondition: undefined
+	      },
+	      {
+	        choiceId: 'sam_admission_anger',
+	        text: 'You manipulated my life.',
+	        nextNodeId: 'samuel_admission',
+	        pattern: 'patience',
+	        skills: ['emotionalIntelligence'],
+	        visibleCondition: undefined
+	      }
+	    ]
+	  },
   {
     nodeId: 'samuel_admission',
     speaker: 'Samuel (The Conductor)',

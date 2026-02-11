@@ -217,7 +217,7 @@ export const deepStationDialogueNodes: DialogueNode[] = [
                 text: '[Argue] "If you reset, you kill everyone. I won\'t let you."',
                 nextNodeId: 'logic_cascade_failure',
                 skills: ['courage'],
-                consequence: { characterId: 'samuel', trustChange: -50 } // Instant Enemy
+                consequence: { characterId: 'samuel', trustChange: -2 } // Instant Enemy
             }
         ]
     },

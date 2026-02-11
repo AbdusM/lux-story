@@ -2085,7 +2085,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     }],
     onEnter: [{
       characterId: 'grace',
-      trustChange: 3,
+      trustChange: 2,
       addKnowledgeFlags: ['grace_loyalty_complete'],
       addGlobalFlags: ['grace_vigil_triumph']
     }],

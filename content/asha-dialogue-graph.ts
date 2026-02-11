@@ -2130,7 +2130,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 skills: ['emotionalIntelligence'],
                 consequence: {
                     characterId: 'asha',
-                    trustChange: 3
+                    trustChange: 2
                 }
             },
             {
@@ -2178,7 +2178,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 skills: ['emotionalIntelligence'],
                 consequence: {
                     characterId: 'asha',
-                    trustChange: 4
+                    trustChange: 2
                 }
             },
             {
@@ -2189,7 +2189,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 skills: ['emotionalIntelligence'],
                 consequence: {
                     characterId: 'asha',
-                    trustChange: 3
+                    trustChange: 2
                 }
             }
         ],
@@ -2269,22 +2269,24 @@ export const ashaDialogueNodes: DialogueNode[] = [
                 variation_id: 'mystery_hint_v2'
             }
         ],
-        choices: [
-            {
-                choiceId: 'asha_mystery_dig',
-                text: "Maybe the station learned from people like you.",
-                nextNodeId: 'asha_mystery_response',
-                pattern: 'helping'
-            },
-            {
-                choiceId: 'asha_mystery_feel',
-                text: "You create that feeling too. I've felt it talking with you.",
-                nextNodeId: 'asha_mystery_response',
-                pattern: 'helping'
-            }
-        ],
-        tags: ['mystery', 'breadcrumb']
-    },
+	        choices: [
+	            {
+	                choiceId: 'asha_mystery_dig',
+	                text: "Maybe the station learned from people like you.",
+	                nextNodeId: 'asha_mystery_response',
+	                pattern: 'analytical',
+	                skills: ['criticalThinking']
+	            },
+	            {
+	                choiceId: 'asha_mystery_feel',
+	                text: "You create that feeling too. I've felt it talking with you.",
+	                nextNodeId: 'asha_mystery_response',
+	                pattern: 'helping',
+	                skills: ['emotionalIntelligence']
+	            }
+	        ],
+	        tags: ['mystery', 'breadcrumb']
+	    },
 
     {
         nodeId: 'asha_mystery_response',
