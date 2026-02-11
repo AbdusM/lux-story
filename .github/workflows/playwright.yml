@@ -67,6 +67,8 @@ jobs:
       run: npx playwright test --project=auth
       env:
         CI: true
+        # Keep admin auth E2E deterministic in CI; app expects this value server-side.
+        ADMIN_API_TOKEN: admin
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
@@ -106,6 +108,7 @@ jobs:
       run: npx playwright test --project=core-game
       env:
         CI: true
+        ADMIN_API_TOKEN: admin
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
@@ -145,6 +148,7 @@ jobs:
       run: npx playwright test --project=ui-components
       env:
         CI: true
+        ADMIN_API_TOKEN: admin
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
@@ -187,6 +191,7 @@ jobs:
       run: npx playwright test --project=${{ matrix.device }}
       env:
         CI: true
+        ADMIN_API_TOKEN: admin
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
