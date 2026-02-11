@@ -22,7 +22,7 @@ test.describe('Prism (Journal) on Mobile', () => {
     await expect(page.getByRole('heading', { name: 'The Prism' })).toBeVisible()
 
     // Use the top tablist; there is also a bottom tab bar.
-    const tablist = page.getByRole('tablist', { name: 'Prism sections' })
+    const tablist = page.getByRole('tablist', { name: 'Prism sections', exact: true })
 
     // Navigate to a few tabs
     const harmonicsTab = tablist.getByRole('tab', { name: /harmonics/i })
