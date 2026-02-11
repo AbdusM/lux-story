@@ -11,6 +11,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
 import { syncSettings, pushSettingsToCloud, pullSettingsFromCloud } from '@/lib/settings-sync'
 
@@ -46,7 +47,7 @@ export function useSettingsSync(): UseSettingsSyncReturn {
     checkAuthStatus()
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: AuthChangeEvent, session: Session | null) => {
       setIsOnline(!!session?.user)
     })
 
@@ -135,7 +136,7 @@ export function useSettingsSync(): UseSettingsSyncReturn {
     initSync()
 
     // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session: Session | null) => {
       if (!mounted) return
 
       if (event === 'SIGNED_IN' && session?.user) {

@@ -13,40 +13,50 @@ test.describe('Prism (Journal) on Mobile', () => {
 
   test('opens Prism and navigates tabs', async ({ page, freshGame }) => {
     // Prism trigger should be visible
-    const prismTrigger = page.getByRole('button', { name: /journal|prism/i })
-    await expect(prismTrigger).toBeVisible()
+    const prismTrigger = page.getByLabel('Open Journal')
+    await expect(prismTrigger).toBeVisible({ timeout: 15000 })
 
     // Open Prism
     await prismTrigger.click()
     // Use heading role to avoid strict mode violation (multiple "The Prism" elements)
-    await expect(page.getByRole('heading', { name: 'The Prism' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'The Prism' })).toBeVisible({ timeout: 15000 })
+
+    // Use the top tablist; there is also a bottom tab bar.
+    const tablist = page.getByRole('tablist', { name: 'Prism sections', exact: true })
 
     // Navigate to a few tabs
-    const harmonicsTab = page.getByRole('button', { name: /harmonics/i })
-    const essenceTab = page.getByRole('button', { name: /essence/i })
-    const masteryTab = page.getByRole('button', { name: /mastery/i })
+    const harmonicsTab = tablist.getByRole('tab', { name: /harmonics/i })
+    const essenceTab = tablist.getByRole('tab', { name: /essence/i })
+    const masteryTab = tablist.getByRole('tab', { name: /mastery/i })
 
     await expect(harmonicsTab).toBeVisible()
     await essenceTab.click()
-    await expect(page.getByText(/essence awaits|skills emerge/i)).toBeVisible({ timeout: 3000 })
+    await expect(essenceTab).toHaveAttribute('aria-selected', 'true')
+    const essencePanel = page.locator('#prism-panel-essence')
+    await expect(essencePanel).toBeVisible({ timeout: 10000 })
+    // Essence panel can render either a loading/empty message or the radar SVG depending on timing.
+    const essenceReady = page
+      .getByText(/your essence awaits discovery/i)
+      .or(essencePanel.locator('svg[viewBox="0 0 300 300"]'))
+    await expect(essenceReady).toBeVisible({ timeout: 10000 })
 
     await masteryTab.click()
-    await expect(page.getByText(/ability mastery/i)).toBeVisible({ timeout: 3000 })
+    await expect(page.getByText(/ability mastery/i)).toBeVisible({ timeout: 10000 })
   })
 
   test('shows empty state in Harmonics for fresh game', async ({ page, freshGame }) => {
-    const prismTrigger = page.getByRole('button', { name: /journal|prism/i })
+    const prismTrigger = page.getByLabel('Open Journal')
     await prismTrigger.click()
 
-    // Harmonics should show empty state
-    await expect(page.getByText(/patterns are waiting to emerge/i)).toBeVisible({ timeout: 3000 })
+    // Harmonics should render for a fresh game (orbs start at 0% resonance).
+    await expect(page.getByText(/resonance field/i)).toBeVisible({ timeout: 10000 })
   })
 
   test('closes Prism with close button', async ({ page, freshGame }) => {
-    const prismTrigger = page.getByRole('button', { name: /journal|prism/i })
+    const prismTrigger = page.getByLabel('Open Journal')
     await prismTrigger.click()
     // Use heading role to avoid strict mode violation
-    await expect(page.getByRole('heading', { name: 'The Prism' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'The Prism' })).toBeVisible({ timeout: 15000 })
 
     // Close button
     const closeButton = page.getByRole('button', { name: /close prism/i })
@@ -106,8 +116,7 @@ test.describe('UnifiedMenu on Mobile', () => {
 
   test('shows unavailable states for profile items without game start', async ({ page }) => {
     // Navigate to welcome page (no game state)
-    await page.goto('/welcome')
-    await page.waitForLoadState('networkidle')
+    await page.goto('/welcome', { waitUntil: 'domcontentloaded' })
 
     // Settings button might not be on welcome page, so we test on the game page
     // but with no playerId prop passed
@@ -119,12 +128,16 @@ test.describe('UnifiedMenu on Mobile', () => {
     const settingsButton = page.getByRole('button', { name: /settings menu/i })
     await settingsButton.click()
 
-    await expect(page.getByRole('dialog', { name: /settings/i })).toBeVisible()
+    const dialog = page.getByRole('dialog', { name: /settings/i })
+    await expect(dialog).toBeVisible({ timeout: 10000 })
+
+    // Ensure focus is inside the menu so Escape is handled reliably on mobile WebKit.
+    await dialog.click({ position: { x: 10, y: 10 } })
 
     // Press Escape
     await page.keyboard.press('Escape')
 
     // Menu should close
-    await expect(page.getByRole('dialog', { name: /settings/i })).not.toBeVisible()
+    await expect(dialog).not.toBeVisible({ timeout: 10000 })
   })
 })

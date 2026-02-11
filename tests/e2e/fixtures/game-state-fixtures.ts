@@ -4,7 +4,19 @@
  */
 
 import { test as base, Page } from '@playwright/test'
-import type { GameState } from '@/lib/character-state'
+import { GameStateUtils } from '@/lib/character-state'
+import type { GameState, SerializableGameState } from '@/lib/character-state'
+
+// Keep the fixture API JSON-friendly: tests can pass plain objects/arrays, and we
+// convert them into a valid, schema-checked SerializableGameState for the app.
+export type SeedOverrides = {
+  currentNodeId?: string
+  currentCharacterId?: GameState['currentCharacterId']
+  patterns?: Partial<GameState['patterns']>
+  globalFlags?: string[]
+  characterTrust?: Record<string, number>
+  skillLevels?: Record<string, number>
+}
 
 /**
  * Available game state fixtures
@@ -43,71 +55,59 @@ interface GameStateFixtures {
   /**
    * Seed custom state - Generic state seeding utility
    */
-  seedState: (state: Partial<GameState>) => Promise<void>
+  seedState: (state: SeedOverrides) => Promise<void>
 }
 
 /**
- * Minimal game state template
+ * Convert overrides into a valid GameState (then serialize it for storage).
  */
-const createFreshGameState = () => ({
-  state: {
-    currentSceneId: 'samuel_introduction',
-    hasStarted: true,
-    showIntro: false,
-    patterns: {
-      analytical: 0,
-      building: 0,
-      helping: 0,
-      patience: 0,
-      exploring: 0
-    },
-    characters: new Map(),
-    globalFlags: [],
-    knowledgeFlags: [],
-    visitedScenes: ['samuel_introduction']
-  },
-  version: 1
-})
+function applySeedOverrides(base: GameState, overrides: SeedOverrides): GameState {
+  if (overrides.currentNodeId) base.currentNodeId = overrides.currentNodeId
+  if (overrides.currentCharacterId) base.currentCharacterId = overrides.currentCharacterId
+
+  if (overrides.patterns) base.patterns = { ...base.patterns, ...overrides.patterns }
+  if (overrides.globalFlags) base.globalFlags = new Set(overrides.globalFlags)
+  if (overrides.skillLevels) base.skillLevels = { ...base.skillLevels, ...overrides.skillLevels }
+
+  if (overrides.characterTrust) {
+    for (const [characterId, trust] of Object.entries(overrides.characterTrust)) {
+      const cs = base.characters.get(characterId)
+      if (cs) {
+        cs.trust = trust
+        cs.lastInteractionTimestamp = Date.now() - 60_000
+      }
+    }
+  }
+
+  base.lastSaved = Date.now()
+  return base
+}
+
+function buildSerializableState(playerId: string, overrides: SeedOverrides): SerializableGameState {
+  const gs = GameStateUtils.createNewGameState(playerId)
+  applySeedOverrides(gs, overrides)
+  return GameStateUtils.serialize(gs)
+}
+
+/**
+ * Minimal game state template (fresh game, already inside the dialogue loop)
+ */
+const createFreshGameState = (): SerializableGameState =>
+  buildSerializableState('player_e2e_fresh', {
+    currentCharacterId: 'samuel',
+    currentNodeId: 'samuel_introduction',
+    patterns: { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 }
+  })
 
 /**
  * Complete journey state template
  * Represents a player who has completed 2 character arcs
  */
-const createJourneyCompleteState = () => ({
-  state: {
-    currentSceneId: 'station_hub',
-    hasStarted: true,
-    showIntro: false,
-    patterns: {
-      analytical: 3,
-      building: 2,
-      helping: 4,
-      patience: 2,
-      exploring: 3
-    },
-    characters: new Map([
-      ['maya', {
-        characterId: 'maya',
-        trust: 5,
-        lastInteractionTimestamp: Date.now() - 3600000, // 1 hour ago
-        encounterCount: 8,
-        currentNodeId: 'maya_pattern_reflection_analytical_3'
-      }],
-      ['marcus', {
-        characterId: 'marcus',
-        trust: 4,
-        lastInteractionTimestamp: Date.now() - 7200000, // 2 hours ago
-        encounterCount: 6,
-        currentNodeId: 'marcus_trust_4'
-      }],
-      ['samuel', {
-        characterId: 'samuel',
-        trust: 3,
-        lastInteractionTimestamp: Date.now() - 1800000, // 30 min ago
-        encounterCount: 12,
-        currentNodeId: 'samuel_hub_wisdom'
-      }]
-    ]),
+const createJourneyCompleteState = (): SerializableGameState =>
+  buildSerializableState('player_e2e_journey_complete', {
+    currentCharacterId: 'samuel',
+    currentNodeId: 'station_hub',
+    patterns: { analytical: 3, building: 2, helping: 4, patience: 2, exploring: 3 },
     globalFlags: [
       'first_journey_complete',
       'met_maya',
@@ -116,176 +116,102 @@ const createJourneyCompleteState = () => ({
       'analytical_threshold_reached',
       'helping_threshold_reached'
     ],
-    knowledgeFlags: [
-      'maya_family_pressure',
-      'marcus_healthcare_mission',
-      'samuel_conductor_role'
-    ],
-    visitedScenes: [
-      'samuel_introduction',
-      'station_hub',
-      'maya_introduction',
-      'maya_tech_discussion',
-      'marcus_introduction',
-      'marcus_healthcare_vision'
-    ],
-    demonstratedSkills: [
-      'active_listening',
-      'systems_thinking',
-      'empathy',
-      'analytical_reasoning',
-      'problem_solving',
-      'patience'
-    ]
-  },
-  version: 1
-})
+    characterTrust: { maya: 5, marcus: 4, samuel: 3 }
+  })
 
 /**
  * State with demonstrated skills for constellation
  */
-const createDemonstratedSkillsState = () => ({
-  state: {
-    currentSceneId: 'station_hub',
-    hasStarted: true,
-    showIntro: false,
-    patterns: {
-      analytical: 4,
-      building: 3,
-      helping: 3,
-      patience: 2,
-      exploring: 4
-    },
-    characters: new Map([
-      ['maya', {
-        characterId: 'maya',
-        trust: 4,
-        lastInteractionTimestamp: Date.now() - 3600000,
-        encounterCount: 5,
-        currentNodeId: 'maya_pattern_reflection_analytical_3'
-      }],
-      ['devon', {
-        characterId: 'devon',
-        trust: 3,
-        lastInteractionTimestamp: Date.now() - 5400000,
-        encounterCount: 4,
-        currentNodeId: 'devon_systems_thinking'
-      }]
-    ]),
-    globalFlags: [
-      'constellation_unlocked',
-      'skills_revealed',
-      'met_maya',
-      'met_devon',
-      'analytical_threshold_reached'
-    ],
-    knowledgeFlags: [
-      'maya_tech_innovator',
-      'devon_systems_engineer'
-    ],
-    visitedScenes: [
-      'samuel_introduction',
-      'station_hub',
-      'maya_introduction',
-      'devon_introduction'
-    ],
-    demonstratedSkills: [
-      'systems_thinking',
-      'analytical_reasoning',
-      'creative_problem_solving',
-      'technical_communication',
-      'pattern_recognition',
-      'active_listening',
-      'empathy'
-    ]
-  },
-  version: 1
-})
+const createDemonstratedSkillsState = (): SerializableGameState =>
+  buildSerializableState('player_e2e_skills', {
+    currentCharacterId: 'samuel',
+    currentNodeId: 'station_hub',
+    patterns: { analytical: 4, building: 3, helping: 3, patience: 2, exploring: 4 },
+    globalFlags: ['constellation_unlocked', 'skills_revealed', 'met_maya', 'met_devon', 'analytical_threshold_reached'],
+    characterTrust: { maya: 4, devon: 3 },
+    skillLevels: {
+      systems_thinking: 2,
+      analytical_reasoning: 2,
+      creative_problem_solving: 2,
+      technical_communication: 2,
+      pattern_recognition: 2,
+      active_listening: 2,
+      empathy: 2
+    }
+  })
 
 /**
  * High trust with Maya - Vulnerability arc accessible
  */
-const createHighTrustState = () => ({
-  state: {
-    currentSceneId: 'maya_vulnerability_setup',
-    hasStarted: true,
-    showIntro: false,
-    patterns: {
-      analytical: 5,
-      building: 3,
-      helping: 4,
-      patience: 3,
-      exploring: 2
-    },
-    characters: new Map([
-      ['maya', {
-        characterId: 'maya',
-        trust: 6, // Vulnerability threshold
-        lastInteractionTimestamp: Date.now() - 1800000,
-        encounterCount: 10,
-        currentNodeId: 'maya_trust_6'
-      }]
-    ]),
-    globalFlags: [
-      'met_maya',
-      'maya_trust_high',
-      'vulnerability_arc_accessible',
-      'analytical_threshold_reached'
-    ],
-    knowledgeFlags: [
-      'maya_family_pressure',
-      'maya_tech_background',
-      'maya_personal_story'
-    ],
-    visitedScenes: [
-      'samuel_introduction',
-      'station_hub',
-      'maya_introduction',
-      'maya_tech_discussion',
-      'maya_deep_conversation'
-    ],
-    demonstratedSkills: [
-      'active_listening',
-      'empathy',
-      'analytical_reasoning',
-      'systems_thinking'
-    ]
-  },
-  version: 1
-})
+const createHighTrustState = (): SerializableGameState =>
+  buildSerializableState('player_e2e_high_trust', {
+    currentCharacterId: 'maya',
+    currentNodeId: 'maya_trust_6',
+    patterns: { analytical: 5, building: 3, helping: 4, patience: 3, exploring: 2 },
+    globalFlags: ['met_maya', 'maya_trust_high', 'vulnerability_arc_accessible', 'analytical_threshold_reached'],
+    characterTrust: { maya: 6 },
+    skillLevels: { active_listening: 2, empathy: 2, analytical_reasoning: 2, systems_thinking: 2 }
+  })
 
 /**
  * Helper to seed state into localStorage
  */
-async function seedGameState(page: Page, state: any): Promise<void> {
-  await page.goto('/')
-  await page.waitForLoadState('domcontentloaded')
-
-  await page.evaluate((stateToSeed) => {
-    // Clear existing state
+async function seedGameState(page: Page, state: SerializableGameState): Promise<void> {
+  // Seed state before app code executes (CI-stable). The previous "goto -> eval -> reload"
+  // approach was prone to flake on mobile Chromium/WebKit in CI due to redirects/onboarding
+  // screens executing before localStorage was updated.
+  //
+  // Note: `addInitScript` stacks if `seedGameState` is called multiple times. That's OK for
+  // our usage (one seed per test). If that changes, consider using a dedicated storageState.
+  await page.goto('about:blank')
+  await page.addInitScript((stateToSeed) => {
     localStorage.clear()
-
-    // Mark as test environment
-    window.__PLAYWRIGHT__ = true
-
-    // Set new state
+    ;(window as any).__PLAYWRIGHT__ = true
     localStorage.setItem('grand-central-terminus-save', JSON.stringify(stateToSeed))
   }, state)
 
-  await page.reload()
-  await page.waitForLoadState('networkidle')
+  // Avoid `networkidle` on WebKit/mobile: the app can keep connections open which makes it flaky.
+  await page.goto('/', { waitUntil: 'domcontentloaded' })
 
-  // Click through the welcome screen if it appears
-  const continueButton = page.getByRole('button', { name: 'Continue Journey' })
-  if (await continueButton.isVisible({ timeout: 5000 }).catch(() => false)) {
-    await continueButton.click()
-    await page.waitForLoadState('networkidle')
-    // Wait for game interface with longer timeout for iPad
-    await page.waitForSelector('[data-testid="game-interface"]', { timeout: 20000 })
-  } else {
-    // If no continue button, game interface should already be visible
-    await page.waitForSelector('[data-testid="game-interface"]', { timeout: 20000 })
+  const gameInterface = page.locator('[data-testid="game-interface"]')
+  const continueButton = page.getByRole('button', { name: /continue journey|continue your journey/i })
+  // The intro CTA uses an aria-label ("Begin your journey at Terminus"), so match that too.
+  const enterStationButton = page.getByRole('button', { name: /enter( the)? station|begin your journey/i })
+  const beginExploringButton = page.getByRole('button', { name: /begin exploring/i })
+
+  const tryClick = async (locator: ReturnType<Page['getByRole']>) => {
+    try {
+      await locator.click({ timeout: 750 })
+      return true
+    } catch {
+      return false
+    }
   }
+
+  // Some routes show a welcome/intro screen even when a save is present; click through if needed.
+  for (let attempt = 0; attempt < 20; attempt++) {
+    if (await gameInterface.isVisible({ timeout: 500 }).catch(() => false)) break
+
+    if (await tryClick(continueButton)) {
+      await page.waitForTimeout(250)
+      continue
+    }
+
+    if (await tryClick(beginExploringButton)) {
+      await page.waitForTimeout(250)
+      continue
+    }
+
+    if (await tryClick(enterStationButton)) {
+      await page.waitForTimeout(250)
+      continue
+    }
+
+    await page.waitForTimeout(250)
+  }
+
+  // CI runs can be slow; prefer a generous wait over flake.
+  await gameInterface.waitFor({ state: 'visible', timeout: 60000 })
 }
 
 /**
@@ -317,16 +243,14 @@ export const test = base.extend<GameStateFixtures>({
   },
 
   seedState: async ({ page }, use) => {
-    const seedFn = async (customState: Partial<GameState>) => {
-      const baseState = createFreshGameState()
-      const mergedState = {
-        ...baseState,
-        state: {
-          ...baseState.state,
-          ...customState
-        }
+    const seedFn = async (custom: SeedOverrides) => {
+      const merged: SeedOverrides = {
+        currentCharacterId: 'samuel',
+        currentNodeId: 'samuel_introduction',
+        ...custom
       }
-      await seedGameState(page, mergedState)
+      const state = buildSerializableState('player_e2e_seed', merged)
+      await seedGameState(page, state)
     }
 
     await use(seedFn)

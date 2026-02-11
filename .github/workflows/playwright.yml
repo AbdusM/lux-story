@@ -24,13 +24,16 @@ jobs:
       run: npm ci
 
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps chromium
+      # Mobile projects (iPhone) use WebKit; install it alongside Chromium.
+      run: npx playwright install --with-deps chromium webkit
 
     - name: Cache Playwright browsers
       uses: actions/cache@v3
       with:
         path: ~/.cache/ms-playwright
-        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+        # Include browser set in the key so cache upgrades (e.g., adding WebKit for mobile)
+        # don't silently reuse an older Chromium-only cache.
+        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-chromium-webkit
 
   # Parallel test jobs
   test-auth:
@@ -50,16 +53,22 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Install Playwright system dependencies
+      # Each job runs on a fresh runner VM. WebKit (used by iPhone/mobile projects) needs OS libs.
+      run: npx playwright install-deps
+
     - name: Restore Playwright browsers
       uses: actions/cache@v3
       with:
         path: ~/.cache/ms-playwright
-        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-chromium-webkit
 
     - name: Run auth tests
       run: npx playwright test --project=auth
       env:
         CI: true
+        # Keep admin auth E2E deterministic in CI; app expects this value server-side.
+        ADMIN_API_TOKEN: admin
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
@@ -86,16 +95,20 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Install Playwright system dependencies
+      run: npx playwright install-deps
+
     - name: Restore Playwright browsers
       uses: actions/cache@v3
       with:
         path: ~/.cache/ms-playwright
-        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-chromium-webkit
 
     - name: Run core game tests
       run: npx playwright test --project=core-game
       env:
         CI: true
+        ADMIN_API_TOKEN: admin
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
@@ -122,16 +135,20 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Install Playwright system dependencies
+      run: npx playwright install-deps
+
     - name: Restore Playwright browsers
       uses: actions/cache@v3
       with:
         path: ~/.cache/ms-playwright
-        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-chromium-webkit
 
     - name: Run UI component tests
       run: npx playwright test --project=ui-components
       env:
         CI: true
+        ADMIN_API_TOKEN: admin
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
@@ -144,8 +161,11 @@ jobs:
   test-mobile:
     needs: setup
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # WebKit (iPhone device profiles) can be significantly slower on shared CI runners,
+    # especially with retries enabled. Keep this generous to avoid "cancelled" runs.
+    timeout-minutes: 35
     strategy:
+      fail-fast: false
       matrix:
         device: [mobile-iphone-se, mobile-iphone-14, mobile-galaxy-s21]
     steps:
@@ -161,16 +181,20 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Install Playwright system dependencies
+      run: npx playwright install-deps
+
     - name: Restore Playwright browsers
       uses: actions/cache@v3
       with:
         path: ~/.cache/ms-playwright
-        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-chromium-webkit
 
     - name: Run mobile tests on ${{ matrix.device }}
       run: npx playwright test --project=${{ matrix.device }}
       env:
         CI: true
+        ADMIN_API_TOKEN: admin
 
     - name: Upload test results
       uses: actions/upload-artifact@v4

@@ -139,12 +139,23 @@ test.describe('Core Game Loop E2E', () => {
       return saved ? JSON.parse(saved) : null
     })
 
-    // Reload page
-    await page.reload()
-    await page.waitForLoadState('networkidle')
+    // Use a new page to simulate reload. Our fixture uses init scripts for seeding, which would
+    // otherwise re-run on `page.reload()` and overwrite the saved state.
+    const nextPage = await page.context().newPage()
+    await nextPage.goto('/', { waitUntil: 'domcontentloaded' })
+
+    // After navigation, the app may show the "Welcome back" screen; re-enter the game loop.
+    const continueBtn = nextPage.getByRole('button', { name: /continue journey|continue your journey/i })
+    if (await continueBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
+      await continueBtn.click()
+    }
+
+    // The persisted-state invariant we care about is the save itself, not UI mount timing.
+    // The app may show a "Welcome back" screen before the game interface mounts.
+    await nextPage.waitForTimeout(500)
 
     // Get state after reload
-    const stateAfterReload = await page.evaluate(() => {
+    const stateAfterReload = await nextPage.evaluate(() => {
       const saved = localStorage.getItem('grand-central-terminus-save')
       return saved ? JSON.parse(saved) : null
     })
@@ -152,6 +163,8 @@ test.describe('Core Game Loop E2E', () => {
     // States should match
     expect(stateAfterReload.currentNodeId).toBe(stateBeforeReload.currentNodeId)
     expect(stateAfterReload.patterns).toEqual(stateBeforeReload.patterns)
+
+    await nextPage.close()
   })
 
   test('Dialogue content updates after choice selection', async ({ page, freshGame }) => {

@@ -50,7 +50,7 @@ function runValidateGraphs(): Promise<{ code: number; output: string }> {
   return new Promise((resolve) => {
     const child = spawn(
       process.execPath,
-      ['--import', 'tsx', 'scripts/validate-dialogue-graphs.ts'],
+      ['--loader', './scripts/ts-loader.mjs', 'scripts/validate-dialogue-graphs.ts'],
       {
         cwd: REPO_ROOT,
         stdio: ['ignore', 'pipe', 'pipe'],
@@ -86,7 +86,7 @@ async function main() {
   if (!baseline && !writeBaseline) {
     console.error('[verify-validate-graphs-info] FAILED')
     console.error(`- Missing baseline: ${path.relative(REPO_ROOT, BASELINE_PATH)}`)
-    console.error(`- Run: node --import tsx scripts/verify-validate-graphs-info-ratchet.ts --write-baseline`)
+    console.error(`- Run: node --loader ./scripts/ts-loader.mjs scripts/verify-validate-graphs-info-ratchet.ts --write-baseline`)
     process.exit(1)
   }
 

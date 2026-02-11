@@ -63,7 +63,7 @@ test.describe('Journey Summary', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to app
     await page.goto('http://localhost:3005')
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
   })
 
   test.skip('Journey Summary button appears when journey is complete', async ({ page }) => {
@@ -71,7 +71,7 @@ test.describe('Journey Summary', () => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
     // Wait for game interface
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
@@ -85,13 +85,13 @@ test.describe('Journey Summary', () => {
     // Clear any existing state
     await page.evaluate(() => localStorage.removeItem('grand-central-terminus-save'))
     await page.reload()
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
     // Enter the station
     const enterButton = page.locator('button:has-text("Enter the Station")')
     if (await enterButton.isVisible({ timeout: 3000 }).catch(() => false)) {
       await enterButton.click()
-      await page.waitForLoadState('networkidle')
+      await page.waitForLoadState('domcontentloaded')
     }
 
     // Wait for game interface to load (indicates initialization complete)
@@ -109,7 +109,7 @@ test.describe('Journey Summary', () => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
     // Wait for game interface
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
@@ -137,7 +137,7 @@ test.describe('Journey Summary', () => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
     // Wait for game interface
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
@@ -171,7 +171,7 @@ test.describe('Journey Summary', () => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
     // Wait for game interface
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
@@ -212,7 +212,7 @@ test.describe('Journey Summary', () => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
     // Wait for game interface
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
@@ -232,7 +232,7 @@ test.describe('Journey Summary', () => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
     // Wait for game interface
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
@@ -263,7 +263,7 @@ test.describe('Journey Summary', () => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
     // Wait for game interface
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
@@ -285,7 +285,7 @@ test.describe('Journey Summary', () => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
     // Wait for game interface
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
@@ -327,7 +327,7 @@ test.describe('Journey Summary', () => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
     // Wait for game interface
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
@@ -352,7 +352,7 @@ test.describe('Journey Summary', () => {
     // Seed completed journey state
     await seedCompletedJourneyState(page)
     await page.reload()
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
     // Wait for game interface
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })

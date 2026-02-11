@@ -209,7 +209,7 @@ export function UnifiedMenu({
                 <div className="p-3 border-b border-white/5">
                   <div className="flex items-center gap-2 mb-3">
                     <Volume2 className="w-4 h-4 text-amber-400" />
-                    <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">Audio</span>
+                    <h3 className="text-xs font-medium text-slate-400 uppercase tracking-wider">Audio</h3>
                   </div>
 
                   {/* Volume Slider */}

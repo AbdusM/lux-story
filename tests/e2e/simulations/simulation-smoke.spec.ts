@@ -12,10 +12,8 @@ test.describe('Simulation Smoke', () => {
 
     for (const sim of SIMULATION_REGISTRY) {
       await seedState({
-        currentSceneId: 'samuel_introduction',
-        hasStarted: true,
-        showIntro: false,
-        visitedScenes: ['samuel_introduction']
+        currentCharacterId: 'samuel',
+        currentNodeId: 'samuel_introduction'
       })
 
       await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
