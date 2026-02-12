@@ -20,7 +20,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     content: [
       {
         // Stage 1: Show corporate frustration first (matches Samuel's "burning the rulebook" setup)
-        text: "Wait. Stay back. That railing.\n\nBolt is loose. 2mm variance.\n\nTechnically it holds 80kg. But if you slip... static load becomes dynamic load.\n\nSafety isn't a checkbox. It's gravity waiting to catch you.",
+        text: "Wait. Stay back.",
         emotion: 'frustrated',
         variation_id: 'kai_intro_v3_minimal',
         patternReflection: [
@@ -56,7 +56,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
           patience: "Take your time. Why does this matter to you personally?"
         },
         nextNodeId: 'kai_accident_hint',
-        pattern: 'helping',
+        pattern: 'patience',
         skills: ['emotionalIntelligence'],
         consequence: {
           characterId: 'kai',
@@ -111,7 +111,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "You get it. Most people see a checkbox and think 'safety.' You see the gap between the policy and the practice.\n\nThat's rare. Usually I have to explain why 'completing training' and 'being trained' aren't the same thing.",
+        text: "You get it.",
         emotion: 'surprised_respect',
         variation_id: 'systemic_response_v1',
         patternReflection: [
@@ -148,7 +148,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "Redesign it. Yeah. I have a master's degree in exactly that. Instructional design. UAB, 2022.\n\nYou want to know what my capstone was? A VR safety simulation for manufacturing floors. Haptic feedback, real scenarios, actual muscle memory.\n\nIt's sitting on a hard drive. Never deployed. Too expensive.",
+        text: "Redesign it.",
         emotion: 'bitter_amusement',
         variation_id: 'practical_response_v1',
         patternReflection: [
@@ -173,7 +173,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "Between us... you're the first person who hasn't tried to fix it with advice. Everyone else wants to solve me like I'm a problem to debug.\n\nSometimes you just need someone to sit in the frustration with you.",
+        text: "Between us.",
         emotion: 'grateful',
         variation_id: 'patience_response_v1',
         voiceVariations: {
@@ -196,7 +196,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "Between us... that's exactly it. I know how people actually learn. I have a master's in instructional design. I could build simulations, scenarios, real practice.\n\nBut that costs money. 'Click Next' costs nothing.\n\nSo I build green checkmarks. Legal shields. And last week...",
+        text: "Between us.",
         emotion: 'bitter',
         variation_id: 'system_frustration_v1'
       }
@@ -250,7 +250,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "Because three days ago, someone got hurt. Someone who clicked every button. Watched every video. Passed every quiz.\n\nAnd none of it mattered when he was standing twenty feet up without checking his harness.",
+        text: "Because three days ago, someone got hurt.",
         emotion: 'pained',
         variation_id: 'accident_hint_v1',
         voiceVariations: {
@@ -310,7 +310,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "Warehouse accident. Broken pelvis.\n\nHe's 22. Same age as my little brother.\n\nThe investigation cleared us. 'Employee completed mandatory safety training on Oct 4th.' The certificate is in the system. Green checkmark.\n\nWe designed a green checkmark. We didn't design safety.",
+        text: "Warehouse accident.",
         emotion: 'guilty',
         variation_id: 'accident_v1',
         // E2-031: Interrupt opportunity when Kai reveals their guilt
@@ -350,7 +350,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'kai_marcus_connection',
-        text: "I met a nurse, Marcus. He talks about the difference between the machine and the patient too.",
+        text: "I met Marcus, a nurse who says the same: machine versus patient.",
         nextNodeId: 'kai_marcus_reference',
         pattern: 'building',
         skills: ['collaboration'],
@@ -376,7 +376,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     nodeId: 'kai_interrupt_acknowledged',
     speaker: 'Kai',
     content: [{
-      text: "You didn't try to fix it. Didn't offer solutions. Just... stayed.\n\nMost people hear 'someone got hurt' and immediately pivot to problem-solving mode. You let me feel it first.\n\nThat's what actual safety looks like. Presence before protocol.",
+      text: "You didn't try to fix it.",
       emotion: 'moved',
       microAction: 'Their shoulders drop slightly.',
       variation_id: 'interrupt_v1'
@@ -400,7 +400,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "Marcus. The ECMO specialist? I read about his case in a medical ethics journal.\n\nHe has to decide, in seconds, who lives. I have months to design these courses, and I still failed.\n\nIf he makes a mistake, a patient dies. If I make a mistake... 50,000 employees learn the wrong thing. And then what happens?\n\nThe scale is different. The guilt is the same.",
+        text: "Marcus. The ECMO specialist?",
         emotion: 'reflective_guilt',
         variation_id: 'marcus_ref_v1'
       }
@@ -449,7 +449,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "You want to know why I do this?\n\nMy dad worked at Sloss Furnaces. Well, what became of it. Thirty years making pipe fittings. He came home smelling like iron and machine oil.\n\nWhen I was twelve, he almost lost his hand. The guard was broken. Everyone knew it was broken. But production quotas don't wait for safety repairs.",
+        text: "You want to know why I do this? My dad worked at Sloss Furnaces.",
         emotion: 'reflective',
         variation_id: 'origin_v1'
       }
@@ -484,7 +484,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "He kept the hand. Lost two fingers. The company paid for surgery and called it 'workplace wellness.'\n\nHe never complained. Said it was part of the job. But every time I saw him struggle to hold a coffee cup, I thought: someone designed that training. Someone signed off on it.\n\nThat someone is now me.",
+        text: "He kept the hand. Lost two fingers.",
         emotion: 'determined',
         variation_id: 'father_v1'
       }
@@ -511,7 +511,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "I thought I could change things from the inside. Get a degree in instructional design. Join a big company with resources. Build something better.\n\nBut you know what they taught me in school? 'Engaging content.' 'Gamification.' 'Learner analytics.'\n\nNot a single class on how to keep someone alive.",
+        text: "I thought I could change things from the inside.",
         emotion: 'frustrated',
         variation_id: 'training_v1'
       }
@@ -541,7 +541,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "I did. Two summers during high school. Nucor Steel Birmingham. Rebar production.\n\n110 degrees on the factory floor. Safety goggles fogging up. Molten steel running through channels.\n\nLearned more about systems in two months than four years of college.\n\nBut my mom... she didn't want me to end up like my dad. Missing fingers. Bad back. Retiring at 60 with nothing.\n\n'You're smart, Kai. Get the degree. Get the office job.'",
+        text: "I came from floors where mistakes injure people, not just metrics. That made me care about systems that train judgment, not just compliance. If we teach only checklists, we fail workers.",
         emotion: 'conflicted',
         variation_id: 'extended_v1'
       }
@@ -574,7 +574,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "Before the degree, I went to Lawson State Community College. Welding program.\n\nMy dad was proud. Thought I'd follow his path. Make things with my hands.\n\nBut every time I picked up the torch, I kept thinking: who designed this safety protocol? Who wrote the training manual that nobody reads?\n\nI didn't want to just be good at the work. I wanted to fix why the work was dangerous.",
+        text: "Your path looks vocational in the best sense: skill tied to service, not status. That usually lasts.",
         emotion: 'reflective',
         variation_id: 'vocational_v1'
       }
@@ -603,7 +603,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "Yeah. TIG welding. Aluminum, stainless, mild steel.\n\nThere's something about it. Watching the puddle form. Controlling the heat. Building something that holds.\n\nMy instructor used to say: 'A good weld is stronger than the metal itself.'\n\nThat's when I understood. The connection matters more than the parts.\n\nSame with teaching. The learning matters more than the certificate.",
+        text: "Yeah. TIG welding.",
         emotion: 'warm',
         interaction: 'small',
         variation_id: 'weld_v1'
@@ -621,7 +621,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
         choiceId: 'kai_weld_miss_it',
         text: "Do you miss working with your hands?",
         nextNodeId: 'kai_hands_on_wisdom',
-        pattern: 'helping',
+        pattern: 'patience',
         skills: ['emotionalIntelligence'],
         consequence: {
           characterId: 'kai',
@@ -637,7 +637,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "The factory floor is all systems. Input, process, output.\n\nSteel comes in as scrap. Gets melted in the arc furnace. Poured into molds. Cooled. Cut. Shipped.\n\nBut the real system? The people.\n\nThe crane operator who signals the pour. The quality inspector who checks the specs. The maintenance crew who fixes the torch before it breaks.\n\nIf anyone fails, the whole line stops. Or worse, someone gets hurt.\n\nThat's what I learned: safety isn't a checklist. It's how the system works together.",
+        text: "The line looks mechanical, but the real system is people: crane.",
         emotion: 'illuminated',
         interaction: 'bloom',
         variation_id: 'systems_v1'
@@ -667,7 +667,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "My mom didn't give me a choice. 'You're going to UAB. You're getting the degree. No son of mine is losing fingers.'\n\nMy dad didn't say anything. Just looked at his hand.\n\nSo I went. Instructional design. Educational technology. Learning sciences.\n\nEveryone in my cohort wanted to design corporate onboarding. Build apps for schools.\n\nI wanted to keep my dad's coworkers alive.\n\nThey thought I was weird.",
+        text: "My mom didn't give me a choice. 'You're going to UAB.",
         emotion: 'isolated',
         variation_id: 'college_v1'
       }
@@ -702,7 +702,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "You know what's funny? Birmingham's still got manufacturing.\n\nNucor Steel. Mercedes-Benz U.S. International in Tuscaloosa. Lots of small fabrication shops.\n\nThey're hiring. Good pay. Union benefits. Real skills.\n\nBut nobody talks about it. Everyone pushes college. 'Get out of Birmingham. Get a tech job.'\n\nMeanwhile, the factory jobs pay better than half the office jobs I've seen.\n\nAnd they're building things that matter. Cars. Steel beams. Infrastructure.\n\nNot... slideshows.",
+        text: "Birmingham steel taught me this: process discipline keeps lines moving, but human attention keeps people alive. Machines increase throughput; teams still carry responsibility when conditions go sideways.",
         emotion: 'frustrated',
         variation_id: 'birmingham_v1'
       }
@@ -732,7 +732,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "Last year. Nucor asked me to redesign their safety onboarding.\n\nI spent a week on the factory floor. Shadowing Tommy, a 30-year veteran machinist.\n\nHe showed me how to read a blueprint. How to set up a CNC mill. How to spot when a tool's about to fail.\n\nThen he showed me their training manual. 'This is garbage,' he said. 'Nobody reads it. We just show the new guys what to do.'\n\nThat's when I knew. The manual wasn't the training. Tommy was.\n\nI designed a mentorship program instead of a PDF. Paired every new hire with a veteran.\n\nInjury rate dropped 40% in six months.",
+        text: "Last year Nucor asked me to redesign safety onboarding. I shadowed Tommy, a 30-year machinist.",
         emotion: 'proud',
         interaction: 'bloom',
         variation_id: 'mentorship_v1'
@@ -762,7 +762,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "Tommy retired last month. Sixty-two. Bad knees. Good pension.\n\nThe CNC machines can do most of what he did. Faster. More precise. No sick days.\n\nBut they can't teach. Can't spot when something's wrong by the sound. Can't mentor the kid who's scared of the mill.\n\nNucor replaced Tommy with a robotic arm. Kept the safety program I built... for now.\n\nThat's the future. Machines making things. Humans making sure the machines don't kill anyone.",
+        text: "Tommy retired, and a robotic arm now does most of his tasks faster and.",
         emotion: 'uncertain',
         variation_id: 'automation_v1'
       }
@@ -786,7 +786,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
         choiceId: 'kai_automation_workers',
         text: "What happens to the workers? The ones who can't retire yet?",
         nextNodeId: 'kai_retraining_reality',
-        pattern: 'helping',
+        pattern: 'patience',
         skills: ['empathy', 'criticalThinking'],
         consequence: {
           characterId: 'kai',
@@ -803,7 +803,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "Half the people I trained over the past year are looking for new work now. Not because they failed. Because their jobs got automated.\n\nDeShawn. Forty-three. Twenty years running the arc furnace. Company offered him 'retraining.' Eight weeks of computer classes. Then nothing.\n\nMaria. Shift supervisor. They told her to 'reskill into tech.' She's got three kids and no time to go back to school for two years.\n\nThat's what no one talks about. The retraining sounds good in a press release. But who's paying the mortgage while you learn to code?",
+        text: "Half the people I trained are job hunting because automation moved faster than support.",
         emotion: 'frustrated',
         interaction: 'small',
         variation_id: 'retraining_v1',
@@ -837,7 +837,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "Building on what they already know. Not starting over.\n\nDeShawn doesn't need to become a software engineer. He needs to learn how to work WITH the robotic arm. His twenty years of metallurgy? That's still valuable. The machine can't tell good steel from bad by the color of the pour.\n\nThat's what I'm building. Training that bridges. Not replaces. Show a machinist how to program the CNC. Show a welder how to operate the automated torch. Meet people where they are.\n\nThe companies that figure this out? They'll have workers who actually know what they're doing. The ones that don't? They'll have expensive robots and nobody who knows how to fix them when they break.",
+        text: "What works is bridging, not replacement. DeShawn doesn't need to become a software engineer; he needs to pair his metallurgy expertise with robotic controls.",
         emotion: 'determined',
         interaction: 'bloom',
         variation_id: 'what_works_v1'
@@ -859,7 +859,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "Not hopeless. Just... honest.\n\nThe jobs aren't all disappearing. They're changing. Healthcare needs people. Can't automate wiping someone's tears. Construction needs people. Can't robot your way through a renovation in a 100-year-old building. Education needs people. Kids don't learn from screens.\n\nThe question isn't whether there's work. It's whether people can get to it. And right now? The bridge is broken.\n\nThat's why I'm here. Building better bridges. One simulation at a time.",
+        text: "Not hopeless, honest.",
         emotion: 'resolved',
         variation_id: 'not_hopeless_v1',
         patternReflection: [
@@ -887,7 +887,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "That's what I'm building toward. Hybrid path.\n\nTrade skills + systems thinking. Hands-on work + digital literacy.\n\nThe welder who understands robotics. The machinist who can program the CNC. The safety officer who builds VR simulations.\n\nBirmingham needs that. The manufacturing jobs aren't going away. They're just changing.\n\nAnd someone needs to teach people how to navigate that change.\n\nMaybe that someone is me.",
+        text: "That's what I'm building toward. Hybrid path.",
         emotion: 'determined',
         interaction: 'nod',
         variation_id: 'hybrid_v1'
@@ -924,7 +924,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "You know what I miss most about factory work?\n\nThe feedback loop. You weld a joint, you test it, you see if it holds. Immediate. Real.\n\nIn corporate training? I build a module. Someone clicks through it. I get a completion metric. Did they learn? Who knows.\n\nBut when I'm teaching someone to weld, I watch their hands. I see the bead form. I know if they got it.\n\nThat's the kind of learning I want to design. Where you can see the result. Where failure teaches you before it kills you.",
+        text: "Hands-on work taught me what dashboards miss: sound, heat, hesitation, and risk cues you only catch in person.",
         emotion: 'passionate',
         interaction: 'bloom',
         variation_id: 'wisdom_v1'
@@ -954,7 +954,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "Manufacturing + instructional design. That's my path.\n\nNot compliance training. Not corporate checkboxes.\n\nSafety simulations for industrial workers. Built by someone who understands both the factory floor and the learning science.\n\nBirmingham-based. Serving the companies that kept this city alive. Nucor. Mercedes. The fabrication shops in Bessemer.\n\nTraining that actually protects people.\n\nThat's what I'm building.",
+        text: "Manufacturing + instructional design. That's my path.",
         emotion: 'resolved',
         interaction: 'bloom',
         variation_id: 'synthesis_v1'
@@ -1005,7 +1005,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     speaker: 'Kai',
     content: [
       {
-        text: "You want the real work? Okay.\n\nStation Life Support. Sector 4. The hydroponics failure wasn't just a glitch. It was a design flaw in the safety interlocks.\n\nThey optimized for yield, not resilience. I've been sketching a redesign that prioritizes worker safety over efficiency.\n\nHelp me balance the system. We can't let it fail again.",
+        text: "You want the real work? Okay.",
         emotion: 'intense_focused',
         variation_id: 'deep_dive_v1'
       }
@@ -1057,7 +1057,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "Look at that. 92% yield. 18% safety margin.\n\nThe VP said it was impossible. Said we couldn't prioritize safety without crashing production.\n\nWe just proved them wrong.\n\nThis... this is what I need to build. Not slides. Systems that save lives.",
+        text: "Look at that.",
         emotion: 'inspired_determined',
         variation_id: 'deep_dive_success_v1',
         interaction: 'bloom'
@@ -1085,7 +1085,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "The VP pulled me aside on my first week. You know what she said?\n\n'Kai, your job is to make the lawyers happy. The slides are legal documentation. If someone gets hurt, we show the completion certificate. That's the training.'\n\nI thought she was exaggerating. She wasn't.",
+        text: "The VP pulled me aside on my first week.",
         emotion: 'disillusioned',
         variation_id: 'corporate_v1'
       }
@@ -1117,7 +1117,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "Once. I proposed a simulation-based module for hazmat handling. Real scenarios, real consequences, no 'Click Next.'\n\nThe VP ran the numbers. 'This costs 40 hours per employee. The current module is 45 minutes.'\n\nShe didn't even look at the injury data. Just the time-to-completion metrics.",
+        text: "Once.",
         emotion: 'bitter',
         variation_id: 'pushback_v1'
       }
@@ -1138,7 +1138,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "Exactly. The metrics are designed to measure the wrong thing.\n\nCompletion rate: 98%. Average quiz score: 92%. Injury rate: 'Not our department.'\n\nWe're optimizing for numbers that don't matter while people get hurt.",
+        text: "Exactly.",
         emotion: 'analytical_anger',
         variation_id: 'compliance_rev_v1'
       }
@@ -1160,7 +1160,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "I visited him. Marcus. Not the nurse, the worker. Same name, different person.\n\nHe's 22. Two kids. The doctors say he'll walk again, but warehouse work? Probably not.\n\nHis wife looked at me and asked: 'Did you design the training he took?'",
+        text: "I visited him.",
         emotion: 'guilt_shame',
         variation_id: 'hospital_v1'
       }
@@ -1189,7 +1189,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "I said yes. And I apologized. Not the corporate apology. The real one.\n\nShe didn't yell. She didn't threaten to sue. She just said: 'Fix it. So this doesn't happen to someone else's husband.'\n\nThat's when I started building. Secretly. After hours.",
+        text: "I said yes.",
         emotion: 'determined_quiet',
         variation_id: 'confession_v1'
       }
@@ -1213,7 +1213,7 @@ Available Components:
     content: [
       {
         // NOTE: Removed "Kai turns" and "Kai taps" - showing screen result, not process
-        text: "I deleted the module. The new one... I'm building it now. Secretly.\n\nRough, grainy video feed simulation. Forklift Operator scenario. No text. No 'Click Next.'\n\nThe view shakes.\n\nYou're in the cab. The load is unstable. The foreman is screaming at you to hurry up because the truck is waiting.\n\nWhat do you do?",
+        text: "I deleted the module. The new one.",
         emotion: 'intense',
         variation_id: 'sim_setup_v2',
         richEffectContext: 'thinking',
@@ -1291,7 +1291,7 @@ Available Components:
     content: [
       {
         // NOTE: Removed "Kai shakes their head" - frustration conveyed through teaching moment
-        text: "A 40-page document opens.\n\nWhile you're reading, the load shifts. The crate falls.\n\nThe screen flashes red. 'INJURY REPORTED.'\n\nNobody reads the PDF in a crisis. You hesitated. Real life doesn't pause for documentation.",
+        text: "A 40-page document opens. While you're reading, the load shifts.",
         emotion: 'frustrated',
         variation_id: 'sim_fail_pdf_v1',
         richEffectContext: 'warning'
@@ -1315,7 +1315,7 @@ Available Components:
     content: [
       {
         // NOTE: Removed "Kai exhales, shoulders dropping" - relief conveyed through dialogue revelation
-        text: "The foreman screams in your face. The AI voice is deafening.\n\nBut you stopped. The load wobbles, then settles. Safe.\n\nYou stopped. You ignored the authority figure to save the human.\n\nThat's it. That's the skill. Not 'harness safety.' Courage.",
+        text: "The foreman screams in your face.",
         emotion: 'relieved',
         variation_id: 'sim_success_v2',
         richEffectContext: 'success'
@@ -1353,7 +1353,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "I ran the simulation with three warehouse workers last night. Off the clock. Confidential.\n\nThe first one. DeShawn, 15 years on the floor. He failed the forklift scenario three times. On the fourth try, he stopped the load.\n\nYou know what he said? 'I've never done that. Never stopped. I always just finished the job.'",
+        text: "I ran the simulation with three warehouse workers last night. Off the clock.",
         emotion: 'hopeful',
         variation_id: 'real_test_v1'
       }
@@ -1363,7 +1363,7 @@ Available Components:
         choiceId: 'kai_test_impact',
         text: "That's real learning. Not a checkbox.",
         nextNodeId: 'kai_worker_feedback',
-        pattern: 'helping',
+        pattern: 'patience',
         skills: ['instructionalDesign', 'emotionalIntelligence']
       },
       {
@@ -1382,7 +1382,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "Maria, she's a shift supervisor, she said something that broke me.\n\n'Twenty years I've been doing this job. Not once has anyone asked me what I need to know. They send the slides and wait for the green check.'\n\nThese are the people I'm supposed to protect. And I've been hiding behind PDFs.",
+        text: "Maria, she's a shift supervisor, she said something that broke me. 'Twenty years I've been doing this job.",
         emotion: 'revelation',
         variation_id: 'feedback_v1'
       }
@@ -1410,7 +1410,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "No. Not in the corporate structure. The VP would never approve the time investment.\n\nBut here's what I realized: I don't need to train 50,000 people. I need to train the right 50 people first.\n\nSupervisors. Safety leads. The ones who can actually stop a dangerous situation before it starts.",
+        text: "No.",
         emotion: 'strategic',
         variation_id: 'scale_v1'
       }
@@ -1431,7 +1431,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "Exactly. Forklifts. Heights. Chemical handling. The jobs where a mistake means someone doesn't go home.\n\nIf I can prove the simulation reduces real injuries. Not compliance metrics. Maybe someone will listen.\n\nOr maybe I do it anyway. Without permission.",
+        text: "Exactly.",
         emotion: 'determined',
         variation_id: 'impact_v1'
       }
@@ -1453,7 +1453,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "I have to show this. Not to the VP. To the workers.\n\nThe training is broken. I'm building checkmarks that hide the danger.\n\nIf I stay, I'm complicit. If I leave, I can build something that actually protects them.",
+        text: "I have to show this.",
         emotion: 'determined',
         variation_id: 'studio_v2'
       }
@@ -1481,7 +1481,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "I thought about that. Change from within. But you know how long it takes to change a corporate culture?\n\nMarcus. The worker in the hospital. He can't wait five years for me to get promoted to the right level. His kids need their dad healthy now.\n\nSometimes the system is too slow. Sometimes you have to step outside it.",
+        text: "I thought about that. Change from within.",
         emotion: 'resolved',
         variation_id: 'insider_v1'
       }
@@ -1503,7 +1503,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "Before I go, I want to ask you something.\n\nI've been building training for years. Thousands of slides. Millions of checkmarks.\n\nWhat do you think matters more. Reaching more people, or reaching people more deeply?",
+        text: "Before I go, I want to ask you something.",
         emotion: 'reflective',
         variation_id: 'final_choice_v1'
       }
@@ -1525,7 +1525,7 @@ Available Components:
       },
       {
         choiceId: 'kai_choose_reach',
-        text: "Reach. You can't save everyone, but you can give everyone a chance. Sometimes access matters more than perfection.",
+        text: "Reach matters: you can't save everyone, but you can widen access.",
         nextNodeId: 'kai_climax_decision',
         pattern: 'building',
         skills: ['pragmatism', 'strategicThinking'],
@@ -1535,7 +1535,7 @@ Available Components:
       },
       {
         choiceId: 'kai_choose_both',
-        text: "Both. Start deep, then find ways to scale what works. But honestly? I struggle with that balance. I want to do both and end up doing neither well.",
+        text: "Both: go deep first, then scale what works without losing quality.",
         nextNodeId: 'kai_climax_decision',
         pattern: 'analytical',
         skills: ['systemsThinking', 'leadership', 'emotionalIntelligence'],
@@ -1545,7 +1545,7 @@ Available Components:
       },
       {
         choiceId: 'kai_choose_uncertain',
-        text: "I don't know. That's the question I'm wrestling with too. How do you measure impact? How do you know you're making a difference?",
+        text: "I don't know yet. I'm still wrestling with how to measure real impact.",
         nextNodeId: 'kai_climax_decision',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'criticalThinking'],
@@ -1638,7 +1638,7 @@ Available Components:
     choices: [
       {
         choiceId: 'kai_leave_bad',
-        text: "...",
+        text: "Step back for now.",
         nextNodeId: samuelEntryPoints.KAI_REFLECTION_GATEWAY,
         pattern: 'patience',
         visibleCondition: {
@@ -1766,7 +1766,7 @@ Available Components:
     choices: [
       {
         choiceId: 'vuln_continue',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'kai_farewell',
         pattern: 'patience'
       }
@@ -1778,7 +1778,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "You helped me stop lying to myself.\n\nBefore I go. I've laid all my cards out. What about you? What are you building? What connection matters most?",
+        text: "You helped me stop lying to myself.",
         emotion: 'curious_engaged',
         variation_id: 'farewell_v2'
       }
@@ -1818,7 +1818,7 @@ Available Components:
       // Loyalty Experience trigger - only visible at high trust + building pattern
       {
         choiceId: 'offer_inspection_help',
-        text: "[Builder's Eye] Kai, you mentioned the studio has a safety audit coming up. High stakes inspection. Need a second set of eyes?",
+        text: "[Builder's Eye] You mentioned a high-stakes safety audit. Want a second set of eyes?",
         nextNodeId: 'kai_loyalty_trigger',
         pattern: 'building',
         skills: ['problemSolving', 'attentionToDetail'],
@@ -1837,7 +1837,7 @@ Available Components:
     nodeId: 'kai_loyalty_trigger',
     speaker: 'Kai',
     content: [{
-      text: "You heard about that.\n\nThe regional safety inspector. Three-day audit. If we fail, the studio shuts down. Twenty years of training lives, gone.\n\nThe problem is... I know we're not ready. Emergency exits partially blocked by equipment. Fire suppression system three months overdue for service. Training records scattered across two systems.\n\nI can fix most of it. But not everything. Not in time. Some things require budget I don't have, or vendor schedules I can't control.\n\nSo I need to decide what to fix, what to hide, and what to pray they don't notice. And live with whatever happens.\n\nYou build things. You understand systems and trade-offs. Will you... help me triage this before the inspector arrives?",
+      text: "Safety audit in three days.",
       emotion: 'anxious_determined',
       variation_id: 'loyalty_trigger_v1',
       richEffectContext: 'warning'
@@ -1883,7 +1883,7 @@ Available Components:
     nodeId: 'kai_loyalty_declined',
     speaker: 'Kai',
     content: [{
-      text: "You're right. I've been running this studio for twenty years. I know every wire, every exit, every risk.\n\nI don't need someone else to tell me what matters. I need to trust my own judgment about acceptable risk.\n\nThank you for the vote of confidence. Sometimes I forget I know what I'm doing.\n\nThe inspection will go however it goes. But at least I'll make the decisions myself.",
+      text: "I respect that call. I will handle the audit triage and own the outcome, but I appreciate you hearing me out.",
       emotion: 'resolved',
       variation_id: 'loyalty_declined_v1'
     }],
@@ -1911,7 +1911,7 @@ Available Components:
     nodeId: 'kai_loyalty_start',
     speaker: 'Kai',
     content: [{
-      text: "Thank you. I've been dreading this alone.\n\nAlright. Let's start at the north entrance and work systematically. You spot risks, I'll assess what we can fix versus what we have to manage.\n\nTwo builders. One inspection. Let's make sure those twenty years of training lives don't end because I missed something.",
+      text: "Thank you.",
       emotion: 'focused_grateful',
       variation_id: 'loyalty_start_v1'
     }],
@@ -1927,7 +1927,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "I've been building training for years. Thousands of slides. Millions of checkmarks.\n\nBetween us. I've shared my whole journey. Now I want to hear yours. What are you building? What connection are you trying to create?",
+        text: "I've been building training for years.",
         emotion: 'curious_engaged',
         variation_id: 'kai_reciprocity_v1'
       }
@@ -1946,7 +1946,7 @@ Available Components:
       },
       {
         choiceId: 'player_building_systems',
-        text: "Reach. Finding ways to help more people. Still figuring out how to scale without losing the soul.",
+        text: "Reach: help more people while scaling without losing the soul.",
         nextNodeId: 'kai_reciprocity_response',
         pattern: 'building',
         skills: ['emotionalIntelligence', 'systemsThinking'],
@@ -1964,7 +1964,7 @@ Available Components:
       },
       {
         choiceId: 'player_still_figuring',
-        text: "Figuring that out. That's why I'm here. To stop lying to myself about what I'm actually doing.",
+        text: "Still figuring that out. I'm here to stop pretending otherwise.",
         nextNodeId: 'kai_reciprocity_response',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'adaptability'],
@@ -1993,7 +1993,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "That's it. That's the question.\n\nKeep asking it. Keep building. Even if you don't know what it is yet.\n\nIf you see Samuel... tell him I'm done with compliance. I'm in the business of reality now.",
+        text: "That's it.",
         emotion: 'affirming',
         variation_id: 'kai_response_v1',
         voiceVariations: {
@@ -2026,7 +2026,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "The way you think... analytical, caring, patient. All three at once.\n\nSafety engineers need exactly that combination. They design systems that protect people before danger arrives. Thinking ahead so others don't have to.\n\nIt's not about compliance. It's about prevention. You get that.",
+        text: "The way you think.",
         emotion: 'serious',
         variation_id: 'career_safety_v1'
       }
@@ -2116,7 +2116,7 @@ Available Components:
     nodeId: 'kai_sim3_training_intro',
     speaker: 'Kai',
     content: [{
-      text: "Final scenario. The one that haunts me.\n\nWarehouse safety training. Current version: 47-slide PowerPoint. 'Click Next' every 8 seconds. Quiz at the end. 80% pass rate.\n\nCompliant? Yes. Effective? No.\n\nLast month: Forklift incident. Worker crushed. She'd taken the training. Passed the quiz. Wore the vest. Followed every rule.\n\nBut the training never taught her to FEEL the danger. It taught her to pass a test.\n\nNow you're redesigning it. The company wants another PowerPoint. I want something that actually changes behavior.\n\nHow do you design training that saves lives, not just checks compliance boxes?",
+        text: "Final training scenario: pressure, fatigue, and time limits. Your job is to keep safety real when the room wants shortcuts.",
       emotion: 'haunted_determined',
       variation_id: 'sim3_intro_v1'
     }],
@@ -2195,7 +2195,7 @@ Which approach actually reduces injuries?`,
     nodeId: 'kai_sim3_success',
     speaker: 'Kai',
     content: [{
-      text: "Peer training. Yes.\n\nHere's why it works:\n\n**Month 1**: Senior worker pairs with new hire. They walk the floor together.\n\n\"See that? When the forklift turns here, there's a blind spot. Stand there—\" points to the red zone \"—and you're invisible to the driver. You'll get hit.\"\n\nThe new hire FEELS the danger. Not from a slide. From context. From someone who's been there.\n\n**Month 6**: Incident rate drops from 12/year to 4/year.\n\nWhy? Because the learning happened:\n1. In context (real warehouse, real equipment)\n2. From trusted peers (not corporate training)\n3. With emotional weight (\"I saw someone get hurt here\")\n4. Continuously (not just once annually)\n\nCompliance training teaches facts. Peer training teaches survival instincts.\n\nThe PowerPoint version cost less. This version saves lives.\n\nThat's the difference between training that checks boxes and training that matters.\n\nYou just designed something that actually works.",
+      text: "Peer training. Exactly.",
       emotion: 'triumphant_relieved_wise',
       interaction: 'bloom',
       variation_id: 'sim3_success_v1',
@@ -2220,7 +2220,7 @@ Which approach actually reduces injuries?`,
     nodeId: 'kai_sim3_partial',
     speaker: 'Kai',
     content: [{
-      text: "VR simulation. I love the instinct. Immersion matters.\n\nBut here's the problem: it's still a simulation. It's still removed from real context.\n\nWorkers complete the VR module. They identify hazards in the virtual warehouse. They pass. They feel prepared.\n\nThen they step onto the REAL floor. The forklift sounds different. The blind spots are in different places. The muscle memory doesn't transfer.\n\nMonth 6: Incident rate drops from 12/year to 8/year. Better. Not great.\n\nWhat if instead you did peer training? Senior workers pair with new hires. Walk the actual floor. Point to the actual blind spots.\n\n\"See that? When the forklift turns here, YOU get hit.\"\n\nSame budget as VR ($15K in labor hours vs $45K in software). But the learning happens in real context, from trusted peers, with emotional weight.\n\nIncident rate would drop to 4/year.\n\nSimulation helps. Real-world mentorship saves lives.",
+      text: "Partial success. You reduced immediate risk, but left a fragile dependency. Good move now, needs a stronger follow-through plan.",
       emotion: 'patient_teaching',
       variation_id: 'sim3_partial_v1'
     }],
@@ -2242,7 +2242,7 @@ Which approach actually reduces injuries?`,
     nodeId: 'kai_sim3_fail',
     speaker: 'Kai',
     content: [{
-      text: "Harder tests. More compliance.\n\nMonth 1: Quiz difficulty increases. Pass rate drops to 65%. Managers require retakes.\n\nMonth 3: Everyone passes eventually. Compliance rate: 100%.\n\nMonth 6: Incident rate: Still 12/year. Unchanged.\n\nHere's why:\n\nHarder tests don't change behavior. They change test-taking skills.\n\nWorkers memorize answers. \"Which direction should you face when operating a forklift?\" Answer: B. They know the answer. They don't know WHY.\n\nBecause the training never put them IN the situation. It never made them FEEL the danger.\n\nCompliance training protects the company from lawsuits. It doesn't protect workers from injury.\n\nWhat you needed was peer training. Senior workers teaching new hires on the actual floor. Pointing to actual blind spots. Sharing actual near-misses.\n\nThat's training that changes behavior. Because the learning happens in context, with emotional weight, from trusted peers.\n\nCompliance is theater. Context is survival.",
+      text: "Harder quizzes raised compliance, not safety. Pass rates recovered to 100%, yet incidents stayed at 12 a year.",
       emotion: 'firm_disappointed',
       variation_id: 'sim3_fail_v1',
       richEffectContext: 'error'
@@ -2348,7 +2348,7 @@ Which approach actually reduces injuries?`,
     }],
     choices: [{
       choiceId: 'kai_recovery_complete',
-      text: "(Continue)",
+      text: "Proceed.",
       nextNodeId: 'kai_hub_return',
       pattern: 'patience'
     }],

@@ -96,7 +96,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
         speaker: 'Samuel Washington',
         content: [
             {
-                text: "Yeah. I know the sound. Like a high-tension wire in a storm.\n\nGood on you for admittin' it. Most folks try to shout over it.",
+                text: "Yeah.",
                 emotion: 'warm',
                 variation_id: 'acceptance_v1'
             }
@@ -117,7 +117,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
         speaker: 'Samuel Washington',
         content: [
             {
-                text: "Let's calibrate. Just for a second. Plant your feet.\n\nClose your eyes. Don't think about the platforms. Don't think about me.\n\nWhat is the heavy thing? The thing that won't let go?",
+                text: "Let's calibrate. Just for a second.",
                 emotion: 'hypnotic',
                 variation_id: 'test_v1'
             }
@@ -173,7 +173,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
         speaker: 'Samuel Washington',
         content: [
             {
-                text: "The Station is a mirror, kid. You frown at it, it frowns back.\n\nGo on then. Look at the map. But don't be surprised if it don't show you what you want.",
+                text: "The Station is a mirror, kid.",
                 emotion: 'dismissive',
                 variation_id: 'fail_v1'
             }

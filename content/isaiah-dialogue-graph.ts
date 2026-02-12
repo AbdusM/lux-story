@@ -22,7 +22,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_intro_v1',
-        text: "You know what nobody tells you about saving the world? It doesn't stay saved.\n\nI've been doing this work for twelve years. Youth programs. Community development. Donor cultivation. And every year, the problems are bigger than the year before.\n\nI'm not trying to be cynical. I'm trying to be honest. Because if you're here to make a difference... you deserve to know what that actually costs.",
+        text: "what nobody tells you about saving the world? It doesn't stay saved.",
         emotion: 'weary_honest',
         patternReflection: [
           { pattern: 'helping', minLevel: 5, altText: "You know what nobody tells you about saving the world? It doesn't stay saved.\n\nYou've got that look. The one that says you actually care about other people. Don't lose that. But also... protect it. Because this work will try to burn it out of you.", altEmotion: 'protective' },
@@ -122,7 +122,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_cost_v1',
-        text: "Sleep. Relationships. The ability to enjoy things without guilt.\n\nWhen you do this work, you become a container for other people's trauma. Kids tell you things they've never told anyone. Donors tell you what they want to believe about themselves. Your job is to hold it all without cracking.\n\nAnd some days... you crack anyway. And nobody's there to hold you.\n\nThe salary doesn't compensate. The mission statements don't cover it. You do this because you have to. Because walking away feels like betrayal.",
+      text: "Cost?",
         emotion: 'raw',
         voiceVariations: {
           analytical: "Sleep. Relationships. Cognitive capacity for non-mission activities.\n\nWhen you do this work, you become a data repository for other people's trauma. Kids provide information they've never disclosed. Donors project their ideal selves. Your function is to process it all without system failure.\n\nAnd some days... the system fails anyway. And there's no backup.\n\nThe compensation doesn't offset cost. The value propositions don't account for it. You do this because the exit cost—abandoning commitments—exceeds the continuation cost.",
@@ -171,7 +171,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_holds_v1',
-        text: "[Long silence. Isaiah's eyes get bright.]\n\nNobody, for a long time. I thought needing support was weakness. Ministry training, you know? You're supposed to be the strong one.\n\nNow I have a therapist. Took me until last year to finally go. Best decision I've made in a decade.\n\nBut a lot of people in this work don't get there. They just... burn out. Leave. Or worse, stay but stop caring.",
+        text: "Who holds me? A few peers, sometimes therapy, sometimes prayer. Usually I hold others first and remember myself late.",
         emotion: 'vulnerable',
         voiceVariations: {
           analytical: "[Long silence. Isaiah processes.]\n\nNobody, for a long time. I thought requiring external support indicated system failure. Ministry training, you know? You're designed to be the support structure.\n\nNow I have a therapist. Took me until last year to implement that solution. Optimal decision in the past decade.\n\nBut a lot of people in this work don't reach that data point. They just... reach critical failure. Exit. Or worse, continue operating at zero effectiveness.",
@@ -244,7 +244,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_burnout_v1',
-        text: "[Isaiah's facade cracks, just slightly.]\n\nYeah. You're right.\n\nI've been running on fumes for... I don't know how long. Months? Years? At some point the exhaustion became normal. I forgot what rested felt like.\n\nThe thing is—burnout in this field is almost a badge of honor. 'Look how much I sacrificed.' But it's not sacrifice if you destroy yourself. Then you're just... destroyed.",
+        text: "[Isaiah's facade cracks, just slightly. ] Yeah.",
         emotion: 'tired_honest',
         voiceVariations: {
           analytical: "[Isaiah's data model reveals its flaws.]\n\nYeah. Accurate diagnosis.\n\nI've been operating below baseline capacity for... I don't know the duration. Months? Years? At some point low performance became the new normal. I lost my reference point for optimal function.\n\nThe thing is—burnout in this field is almost a performance metric. 'Look at my utilization rate.' But it's not efficiency if you degrade the system. Then you're just... degraded.",
@@ -292,7 +292,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_believe_v1',
-        text: "Believe? That's complicated.\n\nI believe in the kids. Every single one of them. I believe they deserve better than what the world has given them.\n\nBut the systems? The funding structures? The way we measure impact? Those I'm less sure about.\n\nSometimes I think we've built a nonprofit industrial complex that exists to make donors feel good more than to actually solve problems.\n\nBut what's the alternative? Not trying?",
+        text: "I still believe because I have seen one trusted adult change a whole trajectory. That is enough reason to keep showing up.",
         emotion: 'conflicted'
       }
     ],
@@ -329,7 +329,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_kids_v1',
-        text: "Started in youth ministry. Fourteen years old, running a Sunday school class because nobody else would.\n\nNow I'm Chief Development Officer for a youth services nonprofit. Fancy title. It means I spend most of my time asking rich people for money so we can keep the lights on for kids who have nowhere else to go.\n\nThe fundraising... it's necessary. But I miss being in the room with the kids. That's where the real work happens.",
+        text: "I started at fourteen running Sunday school because nobody else would.",
         emotion: 'nostalgic',
         patternReflection: [
           { pattern: 'helping', minLevel: 4, altText: "You help people. I see that in you immediately.\n\nStarted in youth ministry at fourteen. Sunday school because nobody else would step up. Now I'm CDO—fancy title for asking rich people for money so kids have somewhere to go.\n\nThe fundraising? Necessary. But I miss the room with the kids. That's where you actually help.", altEmotion: 'warm_nostalgic' },
@@ -420,7 +420,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_fund_v1',
-        text: "Alright. Fundraising 101.\n\nSmall donations keep the lights on. $25, $50—they add up. But they're not enough to grow programs.\n\nMajor gifts move the needle. $10,000 and up. That's where I spend most of my time. Cultivation, solicitation, stewardship. Fancy words for: build relationship, make ask, maintain relationship after they give.\n\nThe trick? Donors give when they feel connected to the mission. Your job is to be the bridge between their values and your work.\n\nSome people find that manipulative. I find it honest. I'm not making them care about something new—I'm helping them act on what they already care about.",
+        text: "Fundraising 101. Small gifts keep lights on.",
         emotion: 'teaching',
         skillReflection: [
           { skill: 'leadership', minLevel: 5, altText: "Alright. Fundraising 101. You've got leadership instincts—I can tell by how you engage.\n\nSmall donations build foundation. Major gifts ($10k+) enable growth. But the real skill? Being the bridge between donor values and organizational mission.\n\nLeaders understand that. You're connecting people to purpose. That's leadership applied to fundraising.", altEmotion: 'knowing' },
@@ -466,7 +466,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_vuln_v1',
-        text: "[Isaiah's voice drops. He's looking at his hands.]\n\nThere was a kid. Marcus. Not his real name, but I call him that in my head.\n\nFourteen when he came to us. Brilliant. Angry. All the things that make you both worry and hope.\n\nI invested everything in that kid. Extra tutoring. My personal cell number. Drove him to college visits.\n\nHe died three days before his eighteenth birthday. Drug deal gone wrong.\n\nI was supposed to be his bridge to something better. And I couldn't... I couldn't...\n\n[Isaiah stops. Collects himself.]\n\nI haven't told anyone the whole story in years.",
+        text: "I saw the warning, flagged it, and policy delayed action. People paid for that delay. I still carry it.",
         emotion: 'grief',
         patternReflection: [
           { pattern: 'helping', minLevel: 5, altText: "[Isaiah's voice drops. He's looking at his hands.]\n\nYou help people. I see that in you. So maybe you'll understand this.\n\nThere was a kid. Marcus. Fourteen. Brilliant, angry. I invested everything—tutoring, my cell number, college visits.\n\nHe died three days before his eighteenth birthday. Drug deal gone wrong.\n\nI was supposed to save him. And I... I couldn't.\n\nHow do you keep helping when you couldn't help the one who mattered most?", altEmotion: 'vulnerable_grief' },
@@ -522,7 +522,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_silence_v1',
-        text: "[The station hums around you both. Isaiah breathes. You wait.]\n\n...\n\nThank you. For not trying to fix it.\n\nMost people hear that story and immediately want to make me feel better. Tell me it wasn't my fault. Tell me I made a difference to other kids.\n\nBut sometimes you just need to sit in the grief. Let it be real.\n\nYou understand that.",
+        text: "[The station hums around you both. Isaiah breathes.",
         emotion: 'grateful_heavy'
       }
     ],
@@ -556,7 +556,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_kept_v1',
-        text: "Almost didn't.\n\nI went dark for three months after the funeral. Quit my job. Stopped returning calls. Thought about leaving the field entirely.\n\nBut then I thought about all the other kids who were still here. Still showing up. Still needing someone to believe in them.\n\nIf I left, Marcus's story would just be tragedy. If I stayed, maybe... maybe I could make it mean something.\n\nI'm still figuring out what that meaning is.",
+        text: "I almost left after the funeral and disappeared for months. I stayed because other kids still needed someone to believe in them. I'm still figuring out what staying is supposed to mean.",
         emotion: 'searching'
       }
     ],
@@ -595,7 +595,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_sim_v1',
-        text: "Alright, let me give you a scenario.\n\nYou're meeting with a potential major donor. She's wealthy—inherited money, runs a family foundation. She's interested in youth programs.\n\nBut here's the catch: she wants to fund a music program. Your organization doesn't have a music program. You have mentorship, job training, college prep.\n\nThe donation would be $100,000. You need the money desperately.\n\nWhat do you do?",
+        text: "Alright, let me give you a scenario. You're meeting with a potential major donor.",
         emotion: 'testing'
       }
     ],
@@ -643,7 +643,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_connect_v1',
-        text: "[Isaiah actually smiles—a real one.]\n\nThat's exactly right. That's what I would do.\n\nMaybe music was important to her son. Maybe she played piano as a kid and it saved her. The 'what' matters less than the 'why.'\n\nOnce you understand why music matters to her, you can often find a connection to your actual work. 'We don't have a formal music program, but we partner with the community center next door. And our mentors use creative expression in their sessions.'\n\nYou're not lying. You're finding genuine alignment.\n\nThe best fundraisers are translators, not salespeople.",
+        text: "[Isaiah smiles, real this time.",
         emotion: 'approving'
       }
     ],
@@ -679,7 +679,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_sim_burn_v1',
-        text: "Harder one.\n\nYou've been at your nonprofit for five years. You've raised millions. But you're exhausted. Your relationships are suffering. You fantasize about quitting every morning.\n\nYour executive director calls you in. 'We just lost our biggest donor. I need you to cultivate three new major gifts by end of quarter, or we're laying off program staff.'\n\nWhat do you do?",
+        text: "Harder one. You've been at your nonprofit for five years.",
         emotion: 'serious'
       }
     ],
@@ -716,7 +716,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_donor_v1',
-        text: "Here's the uncomfortable truth.\n\nMost major donors don't give because they've analyzed the evidence and concluded your nonprofit is the most effective use of their money. They give because it makes them feel good. Connected. Meaningful.\n\nSome of them genuinely want to help. Some want tax breaks. Some want their name on a building. Some want to assuage guilt about how they made their money.\n\nYour job is to find alignment between their motivations—whatever they are—and your mission.\n\nIs that manipulation? Or is it just... understanding human nature?",
+      text: "Here's the uncomfortable truth.",
         emotion: 'realistic'
       }
     ],
@@ -753,7 +753,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_impact_v1',
-        text: "Impact measurement is the holy grail everyone pretends they've found.\n\nWe track outputs: how many kids served, sessions held, hours of programming. Those are easy to count but don't tell you much.\n\nOutcomes are harder: graduation rates, college enrollment, employment. Better, but you can't prove causation.\n\nReal impact? Whether we actually changed the trajectory of a life? That takes decades to measure. Most funders won't wait.\n\nSo we measure what we can, tell stories that resonate, and hope we're making a difference we can't fully prove.",
+      text: "Impact measurement is the holy grail everyone claims to have. Outputs are easy to count: kids served, sessions run, hours delivered.",
         emotion: 'honest'
       }
     ],
@@ -769,7 +769,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
         choiceId: 'isaiah_hope_enough',
         text: "Is hope enough to build a career on?",
         nextNodeId: 'isaiah_hope_career',
-        pattern: 'patience',
+        pattern: 'building',
         skills: ['emotionalIntelligence']
       },
       {
@@ -790,7 +790,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_outcomes_v1',
-        text: "[Isaiah's voice shifts—softer, more careful.]\n\nThe ones who made it... there's Jasmine. First in her family to graduate college. Now she's a social worker. Came back to work at the same organization that helped her.\n\nTyler. Got into trouble early—thought he was going to be another statistic. Now he runs a barbershop that quietly employs formerly incarcerated men.\n\nAnd then... there are the ones who didn't.\n\n[Pause.]\n\nI can tell you about Marcus. If you want to hear.",
+        text: "[Isaiah's voice softens.",
         emotion: 'tender'
       }
     ],
@@ -816,7 +816,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_patterns',
-        text: "What patterns do you see between the ones who made it and the ones who didn't?",
+        text: "What pattern separates the kids who made it from those who didn't?",
         nextNodeId: 'isaiah_patterns_seen',
         pattern: 'analytical',
         skills: ['criticalThinking', 'observation']
@@ -832,7 +832,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_return_v1',
-        text: "This work isn't for everyone. It's demanding, underpaid, and emotionally exhausting.\n\nBut if you're called to it... there's nothing else like it.\n\nYou know where to find me.",
+        text: "This work isn't for everyone.",
         emotion: 'warm_tired'
       }
     ],
@@ -876,7 +876,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     nodeId: 'isaiah_loyalty_trigger',
     speaker: 'Isaiah Greene',
     content: [{
-      text: "Major donor site visit. Today. Two hours from now.\n\nDr. Patricia Chen. Runs a foundation that could fund our entire youth program for three years. She wants to see the work. Meet the kids. Understand the impact.\n\nNormally I'd be excited. Prepared. This is what I do.\n\nBut one of our kids—Jamal—just found out his mom's back in rehab. He's fourteen. He's barely holding it together. He asked if he could sit in my office during the visit.\n\nI could tell him no. Explain that this is important. That we need to look professional. That sometimes you have to put the mission ahead of the individual.\n\nBut that would make me a liar. Because the mission IS the individual. It's Jamal. And all the kids like him.\n\nYou understand presence. Would you... come with me? Help me figure out how to honor both? How to show Dr. Chen what matters without making Jamal invisible?",
+      text: "Major donor visit in two hours, but Jamal learned his mom relapsed and asked.",
       emotion: 'conflicted_determined',
       variation_id: 'loyalty_trigger_v1',
       richEffectContext: 'warning'
@@ -908,7 +908,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     nodeId: 'isaiah_loyalty_declined',
     speaker: 'Isaiah Greene',
     content: [{
-      text: "I get it. Not everyone wants to be in the middle of that kind of tension.\n\nI'll figure it out. Always do.",
+      text: "I get it.",
       emotion: 'understanding',
       variation_id: 'loyalty_declined_v1'
     }],
@@ -925,7 +925,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     nodeId: 'isaiah_loyalty_start',
     speaker: 'Isaiah Greene',
     content: [{
-      text: "Youth center. Third floor. Conference room overlooks the gym.\n\nJamal will probably be in the corner with his headphones. Dr. Chen arrives at 2pm.\n\nThank you. For understanding that sometimes the work is holding space for two truths at once.",
+      text: "Youth center.",
       emotion: 'warm_grateful',
       variation_id: 'loyalty_start_v1'
     }],
@@ -943,7 +943,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_betray_v1',
-        text: "The kids who are still here. The ones I've promised to help.\n\nEvery time I think about leaving, I see their faces. The ones who already trusted adults who left. The ones who built walls because everyone lets them down eventually.\n\nHow do I become another person who walked away?",
+        text: "The kids who are still here.",
         emotion: 'conflicted'
       }
     ],
@@ -972,7 +972,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_worth_v1',
-        text: "[Long pause. Isaiah seems to really consider the question.]\n\nFor me? Yes. Even on the worst days.\n\nBecause I've seen what happens when someone believes in a kid nobody else believed in. That spark of recognition. That moment when they realize they matter.\n\nYou can't put a price on that. And you can't measure it in outcomes.\n\nBut... I wouldn't tell everyone to do this. The cost is real. You have to know what you're sacrificing and choose it anyway.",
+        text: "[Long pause.",
         emotion: 'honest_tired'
       }
     ],
@@ -1001,7 +1001,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_fault_v1',
-        text: "I know that. Intellectually, I know that.\n\nBut there's this part of me that keeps asking: what if I'd done more? What if I'd driven him home that night? What if I'd pushed harder for him to stay at the program center instead of going back to his neighborhood?\n\nThe 'what ifs' don't stop, even when you know they're not fair.\n\nTherapy helped me stop blaming myself. But I still... I still feel responsible. Like I should have seen it coming.",
+        text: "I know the logic, but the what-ifs still hit: what if I'd pushed harder.",
         emotion: 'anguished'
       }
     ],
@@ -1034,7 +1034,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_loved_v1',
-        text: "[Isaiah's eyes shine. He blinks rapidly.]\n\nYeah. I did.\n\nYou're not supposed to say that in professional settings. Boundaries. Appropriate distance. But the truth is, you can't do this work without loving the kids.\n\nAnd when you love someone, losing them... it breaks something.\n\nI don't want that something to heal completely. Because if it healed, I might forget why I do this.",
+        text: "[Isaiah's eyes shine. He blinks rapidly.",
         emotion: 'grief_tender'
       }
     ],
@@ -1056,7 +1056,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'isaiah_broken_v1',
-        text: "It does. In a strange way, Marcus is with me every time I meet a new kid.\n\nI think: This one. This one I won't lose.\n\nI know I can't save everyone. But I can try harder. Be more present. Catch the warning signs earlier.\n\nMarcus taught me that. In the worst way possible.\n\n[Quiet moment.]\n\nThank you. For letting me talk about him like he was a person, not a lesson.",
+        text: "Pain can fuel service for a while, but it burns dirty. The goal is not to erase grief, it is to convert it into sustainable care.",
         emotion: 'grateful'
       }
     ],
@@ -1120,7 +1120,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     speaker: 'isaiah',
     content: [
       {
-        text: "That's beautiful. And I think you're right.\\n\\nThe station isn't creating community. It's revealing it. Showing us we were connected all along.\\n\\nThat's the real miracle.",
+        text: "That's beautiful.",
         emotion: 'moved',
         variation_id: 'mystery_response_v1'
       }
@@ -1230,7 +1230,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     }],
     choices: [{
       choiceId: 'isaiah_recovery_complete',
-      text: "(Continue)",
+      text: "Proceed.",
       nextNodeId: 'isaiah_hub_return',
       pattern: 'patience'
     }],
@@ -1255,23 +1255,23 @@ export const isaiahDialogueNodes: DialogueNode[] = [
   { nodeId: 'isaiah_early_calling', speaker: 'Isaiah Thompson', content: [{ text: "I knew early that I wanted to help. Not in an abstract way—I wanted to see the faces, hear the stories, be part of the change.", emotion: 'passionate', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "That's a clear calling.", nextNodeId: 'isaiah_hub_return', pattern: 'exploring' }], tags: ['stub'] },
   { nodeId: 'isaiah_favorite_donors', speaker: 'Isaiah Thompson', content: [{ text: "My favorite donors aren't the biggest givers. They're the ones who ask 'How are YOU doing?' before asking about the numbers.", emotion: 'warm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "They care about you.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
   { nodeId: 'isaiah_fundraising_reality', speaker: 'Isaiah Thompson', content: [{ text: "Fundraising isn't about convincing people to give. It's about connecting them to something they already want to be part of.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Connection over persuasion.", nextNodeId: 'isaiah_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'isaiah_hope_career', speaker: 'Isaiah Thompson', content: [{ text: "Hope is the job. On good days and bad days. When funders say yes and when they say no. Hope is what I offer.", emotion: 'determined', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "That's meaningful work.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
+  { nodeId: 'isaiah_hope_career', speaker: 'Isaiah Thompson', content: [{ text: "Hope is the job.", emotion: 'determined', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "That's meaningful work.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
   { nodeId: 'isaiah_kids_stories', speaker: 'Isaiah Thompson', content: [{ text: "The kids... their stories keep me going. Every success, every graduation, every 'thank you'—it adds up to something bigger than any of us.", emotion: 'tender', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "They're why you do this.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
-  { nodeId: 'isaiah_major_gift_sim', speaker: 'Isaiah Thompson', content: [{ text: "Major gifts aren't about the money. They're about shared vision. When someone gives big, they're saying 'I believe what you believe.'", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Shared vision.", nextNodeId: 'isaiah_hub_return', pattern: 'analytical' }], tags: ['stub'] },
+  { nodeId: 'isaiah_major_gift_sim', speaker: 'Isaiah Thompson', content: [{ text: "Major gifts aren't about the money.", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Shared vision.", nextNodeId: 'isaiah_hub_return', pattern: 'analytical' }], tags: ['stub'] },
   { nodeId: 'isaiah_manipulation_line', speaker: 'Isaiah Thompson', content: [{ text: "There's a line between inspiration and manipulation. I've seen fundraisers cross it. I work hard to stay on the right side.", emotion: 'serious', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Integrity matters.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'isaiah_meaning_progress', speaker: 'Isaiah Thompson', content: [{ text: "Progress in nonprofit work isn't always visible. Sometimes it's a kid who doesn't drop out. A family that stays together. Quiet victories.", emotion: 'reflective', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "The invisible wins.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
+  { nodeId: 'isaiah_meaning_progress', speaker: 'Isaiah Thompson', content: [{ text: "Progress in nonprofit work isn't always visible.", emotion: 'reflective', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "The invisible wins.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
   { nodeId: 'isaiah_measurement_innovation', speaker: 'Isaiah Thompson', content: [{ text: "We're always being asked to measure impact. But how do you measure hope? How do you quantify a kid believing in themselves?", emotion: 'frustrated', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Some things can't be measured.", nextNodeId: 'isaiah_hub_return', pattern: 'analytical' }], tags: ['stub'] },
   { nodeId: 'isaiah_ministry_past', speaker: 'Isaiah Thompson', content: [{ text: "I almost went into ministry. Different path, same call. Serving people, building community, holding space for hope.", emotion: 'reflective', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "The call found its way.", nextNodeId: 'isaiah_hub_return', pattern: 'exploring' }], tags: ['stub'] },
   { nodeId: 'isaiah_motivations', speaker: 'Isaiah Thompson', content: [{ text: "Why do I do this? Because someone did it for me. Someone believed in a kid from the neighborhood when nobody else did.", emotion: 'vulnerable', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Paying it forward.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
   { nodeId: 'isaiah_patterns_seen', speaker: 'Isaiah Thompson', content: [{ text: "After years in this work, you start seeing patterns. Who succeeds, who struggles, what makes the difference. It's rarely what you'd expect.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "What do you see?", nextNodeId: 'isaiah_hub_return', pattern: 'exploring' }], tags: ['stub'] },
   { nodeId: 'isaiah_real_solutions', speaker: 'Isaiah Thompson', content: [{ text: "Real solutions are messy. They don't fit in grant reports. They involve failure and pivoting and trying again.", emotion: 'serious', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Messy but real.", nextNodeId: 'isaiah_hub_return', pattern: 'building' }], tags: ['stub'] },
   { nodeId: 'isaiah_recovery', speaker: 'Isaiah Thompson', content: [{ text: "Recovery—from burnout, from setbacks, from the weight of this work—it's a practice. Not a destination.", emotion: 'peaceful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "A practice, not a destination.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'isaiah_resonant_stories', speaker: 'Isaiah Thompson', content: [{ text: "The stories that resonate aren't about numbers. They're about moments. A breakthrough. A connection. A door opening.", emotion: 'warm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Moments matter.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
+  { nodeId: 'isaiah_resonant_stories', speaker: 'Isaiah Thompson', content: [{ text: "The stories that resonate aren't about numbers.", emotion: 'warm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Moments matter.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
   { nodeId: 'isaiah_room_kids', speaker: 'Isaiah Thompson', content: [{ text: "When I'm in a room with kids, everything else falls away. The funding stress, the politics—none of it matters. Just them.", emotion: 'peaceful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "They're what matters.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
   { nodeId: 'isaiah_sim_adapt_response', speaker: 'Isaiah Thompson', content: [{ text: "Adapting to the donor's needs while staying true to mission—that's the art. You saw that in action.", emotion: 'appreciative', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "It's a delicate balance.", nextNodeId: 'isaiah_hub_return', pattern: 'analytical' }], tags: ['stub'] },
   { nodeId: 'isaiah_sim_decline_response', speaker: 'Isaiah Thompson', content: [{ text: "Sometimes saying no is the right answer. Protecting the mission matters more than any single gift.", emotion: 'firm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Mission first.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
   { nodeId: 'isaiah_sim_redirect_response', speaker: 'Isaiah Thompson', content: [{ text: "Redirecting energy into better channels—that's leadership. Not every opportunity is the right opportunity.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Discernment matters.", nextNodeId: 'isaiah_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'isaiah_staying_pain', speaker: 'Isaiah Thompson', content: [{ text: "Staying present with pain is part of the work. Not fixing it, not rushing past it. Just... being there.", emotion: 'tender', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Presence as service.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
+  { nodeId: 'isaiah_staying_pain', speaker: 'Isaiah Thompson', content: [{ text: "Staying present with pain is part of the work.", emotion: 'tender', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Presence as service.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
   { nodeId: 'isaiah_success_detail', speaker: 'Isaiah Thompson', content: [{ text: "Success in this work is rarely clean. It's one step forward, two steps back, then three forward. Progress is jagged.", emotion: 'honest', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Jagged but forward.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
   { nodeId: 'isaiah_success_stories', speaker: 'Isaiah Thompson', content: [{ text: "The success stories keep us going. Not as marketing—as reminders. Reminders that this work matters.", emotion: 'warm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Reminders of why.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
   { nodeId: 'isaiah_suffering_culture', speaker: 'Isaiah Thompson', content: [{ text: "Nonprofit culture sometimes glorifies suffering. Working late, sacrificing everything. I'm trying to change that.", emotion: 'determined', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Sustainability matters.", nextNodeId: 'isaiah_hub_return', pattern: 'building' }], tags: ['stub'] },
@@ -1279,7 +1279,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
   { nodeId: 'isaiah_therapy_insight', speaker: 'Isaiah Thompson', content: [{ text: "Therapy helped me see that I was trying to save everyone because I couldn't save everyone from my past. Heavy stuff.", emotion: 'vulnerable', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Thank you for sharing that.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
   { nodeId: 'isaiah_translation_work', speaker: 'Isaiah Thompson', content: [{ text: "Translation is a big part of the job. Translating community needs for funders. Translating funder expectations for staff.", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Bridging worlds.", nextNodeId: 'isaiah_hub_return', pattern: 'analytical' }], tags: ['stub'] },
   { nodeId: 'isaiah_uncomfortable_money', speaker: 'Isaiah Thompson', content: [{ text: "Money conversations are uncomfortable. But discomfort is where growth happens—for me and for donors.", emotion: 'honest', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Leaning into discomfort.", nextNodeId: 'isaiah_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'isaiah_witnesses', speaker: 'Isaiah Thompson', content: [{ text: "Sometimes the most important thing isn't solving problems. It's witnessing them. Saying 'I see you. This matters.'", emotion: 'tender', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Being seen is powerful.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
+  { nodeId: 'isaiah_witnesses', speaker: 'Isaiah Thompson', content: [{ text: "Sometimes the most important thing isn't solving problems.", emotion: 'tender', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Being seen is powerful.", nextNodeId: 'isaiah_hub_return', pattern: 'helping' }], tags: ['stub'] },
 
   // ═══════════════════════════════════════════════════════════════
   // SIMULATION PHASE 1: Authentic Donor Cultivation (trust ≥ 2)
@@ -1375,7 +1375,7 @@ What builds authentic connection instead of transactional fundraising?`,
     nodeId: 'isaiah_simulation_phase1_success',
     speaker: 'Isaiah Greene',
     content: [{
-      text: "Exactly. THAT\'S the difference.\n\nTransactional fundraisers see donors as ATMs. Authentic fundraisers see them as people with stories, wounds, hopes.\n\nWhen you start with curiosity instead of strategy, people feel it. They relax. They share.\n\nAnd when they share their \'why,\' the giving becomes inevitable. Not because you manipulated it. Because you helped them see how their values can take action.\n\nThat\'s the work at its best.",
+      text: "Exactly. THAT\\'S the difference.",
       emotion: 'warm',
       variation_id: 'phase1_success_v1',
       richEffectContext: 'success'
@@ -1514,7 +1514,7 @@ What honors both the urgency and the relationship?`,
     nodeId: 'isaiah_simulation_phase2_success',
     speaker: 'Isaiah Greene',
     content: [{
-      text: "That\'s it. That\'s the skill most fundraisers never learn.\n\nEmergency fundraising doesn\'t mean panic fundraising. Urgency is real. Manipulation is when you exaggerate urgency to force a decision.\n\nWhen you invite donors in as PARTNERS in solving the problem—not ATMs to extract from—they feel respected. They want to help. They think creatively. They often give MORE than you asked for.\n\nSarah didn\'t just write a check. She called three other donors and organized a matching campaign. Raised $40k in two weeks.\n\nBecause you treated her like a partner, not a target.",
+      text: "Yes. That response protects dignity and still moves the room. You held boundaries without humiliating anyone, which is leadership in youth work.",
       emotion: 'relieved_grateful',
       variation_id: 'phase2_success_v1',
       richEffectContext: 'success'
@@ -1595,7 +1595,7 @@ What honors both the urgency and the relationship?`,
     nodeId: 'isaiah_simulation_phase3',
     speaker: 'Isaiah Greene',
     content: [{
-      text: "[Conference room. Elizabeth Morrison sits across from you both. She\'s composed. Too composed.]\n\nHere we are.",
+      text: "[Conference room.",
       emotion: 'tense',
       variation_id: 'simulation_phase3_v1'
     }],
@@ -1662,7 +1662,7 @@ What honors both Elizabeth\'s grief and Isaiah\'s without breaking either?`,
     nodeId: 'isaiah_simulation_phase3_success',
     speaker: 'Isaiah Greene',
     content: [{
-      text: "[Isaiah is crying. Not hiding it.]\n\nI\'ve been doing this work for twelve years. Raised millions of dollars. Sat with hundreds of donors.\n\nThat was the first time I brought Marcus into the room.\n\nNot as a story to illustrate impact. As a wound that\'s still bleeding. As proof that I\'m not separate from the grief I\'m asking donors to care about.\n\nElizabeth didn\'t want a fundraiser. She wanted a witness. Someone who understood that money can\'t fix death, but love can outlast it.\n\nMarcus\'s name will be on that scholarship too. Next to David\'s. Two boys who deserved more time.\n\nThank you. For being here when I couldn\'t do it alone.",
+      text: "[Isaiah cries openly. ] \"I've fundraised for years, but this was the first time I brought Marcus into the room as grief, not a talking point.",
       emotion: 'grief_gratitude_peace',
       variation_id: 'phase3_success_v1',
       richEffectContext: 'success'

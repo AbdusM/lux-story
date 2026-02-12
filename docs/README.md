@@ -28,6 +28,10 @@ Do not relocate these paths without updating all script references.
 2. Test strategy and gates: `docs/03_PROCESS/01-testing.md`
 3. Delivery methodology (AAA): `docs/03_PROCESS/02-methodology.md`
 4. Document governance and superseding rules: `docs/03_PROCESS/03-document-control.md`
+5. Character deep coverage audit: `docs/03_PROCESS/21-character-deep-coverage-audit.md`
+6. Dialogue style guardrails: `docs/03_PROCESS/22-dialogue-guidelines.md`
+7. Dialogue external review analysis: `docs/03_PROCESS/23-dialogue-external-review-analysis.md`
+8. Dialogue topology migration protocol: `docs/03_PROCESS/24-dialogue-topology-migration-protocol.md`
 
 Primary product directives:
 - `docs/00_PRD.01 - AAA.md`

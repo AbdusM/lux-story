@@ -22,7 +22,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Hold on a second.\n\n*Samuel pauses, looking at you differently*\n\nSomething's stirring. Can feel it in the way the station hums when you walk through. You're not just passing through anymore—you're leaving traces.",
+        text: "Hold on a second.",
         emotion: 'curious',
         variation_id: 'orb_emerging_v1'
       },
@@ -69,7 +69,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Every choice you make... it echoes. Not loud, not obvious. But the station feels it.\n\nYou've been listening to people. Really listening. Asking the right questions. Taking your time. That adds up.\n\nTen choices deep now. Give or take. The station's keepin' count, even if you're not.",
+        text: "Every choice you make.",
         emotion: 'knowing',
         variation_id: 'orb_emerging_explain_v1'
       }
@@ -95,7 +95,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Samuel smiles*\n\nJust choices. Sure. That's what everybody thinks at first.\n\nBut choices made with care? With real thought behind 'em? Those aren't 'just' anything. They're the foundation of who you're becoming.",
+        text: "*Samuel smiles* choices.",
         emotion: 'warm',
         variation_id: 'orb_emerging_humble_v1'
       }
@@ -121,7 +121,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Keep going the way you're going, and the station will start... responding. Opening doors that were closed. Showing you things others don't see.\n\nNot magic. Just... resonance. The place recognizes kindred spirits.\n\nYou'll know when it happens.",
+        text: "Keep going the way you're going, and the station will start.",
         emotion: 'mystical',
         variation_id: 'orb_emerging_foreshadow_v1'
       }
@@ -142,7 +142,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Samuel stops mid-sentence*\n\nThere it is again. Stronger now.\n\nThe station... it recognizes your way of seeing things. Not just noticing you—understanding you. That's rare. Real rare.",
+        text: "*Samuel stops mid-sentence* There it is again.",
         emotion: 'awe',
         variation_id: 'orb_developing_v1'
       },
@@ -189,7 +189,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I see someone who thinks before they speak. Who asks questions that matter. Who takes time with people—really takes time.\n\nYou're not rushing to answers. You're building understanding. Layer by layer.\n\nThat's not common. Most folks want the shortcut. You want the truth.",
+        text: "I see someone who thinks before they speak.",
         emotion: 'respect',
         variation_id: 'orb_developing_patterns_v1',
         patternReflection: [
@@ -229,7 +229,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Been keepin' this place running for a long time. And in all those years, I've learned one thing: the station has a memory.\n\nNot like yours or mine. More like... residue. Every traveler who comes through leaves something behind. Every choice made here gets woven into the walls.\n\nYou've left enough traces now that the place knows your signature.",
+        text: "Been keepin' this place running for a long time. And in all those years, I've learned one thing: the station has a.",
         emotion: 'mystical',
         variation_id: 'orb_developing_station_v1'
       }
@@ -250,7 +250,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Samuel straightens up, something like pride in his eyes*\n\nWell now. The platforms respond to you now. Did you notice? The way doors open easier. The way conversations flow.\n\nSixty choices. Sixty moments of real thought. That's not nothing.",
+        text: "*Samuel straightens up, something pride in his eyes* Well now.",
         emotion: 'proud',
         variation_id: 'orb_flourishing_v1'
       },
@@ -297,7 +297,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Trust isn't given. It's built. One choice at a time.\n\nYou've been building it without even knowing. Every time you listened instead of assumed. Every time you paused to think. Every time you chose the harder right over the easier wrong.\n\nThe station sees that. I see it too.",
+        text: "Trust isn't given.",
         emotion: 'respect',
         variation_id: 'orb_flourishing_trust_v1'
       }
@@ -323,7 +323,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Now? You keep going. Keep listening. Keep choosing with care.\n\nThere's one more level. Not many reach it. But if anyone's going to... it might be you.\n\nWhen you truly know who you are—not who others want you to be, not who you think you should be, but who you actually are—the station will show you something special.",
+        text: "Now? You keep going.",
         emotion: 'knowing',
         variation_id: 'orb_flourishing_future_v1'
       }
@@ -344,7 +344,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Samuel stops. Really stops. Takes off his cap.*\n\nA hundred choices. A hundred moments of genuine thought and care.\n\nYou know who you are now. The station was waiting for someone like you. And you made it.",
+        text: "*Samuel stops.",
         emotion: 'reverent',
         variation_id: 'orb_mastered_v1'
       },
@@ -391,7 +391,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "It means... when someone new comes through, lost and looking for direction? You'll be part of what guides them.\n\nNot with words. With the patterns you've left behind. The choices that echo through these halls.\n\nYears from now, someone will make a choice—the right choice—and they won't know why. But part of it will be because you were here. Because you showed the station what careful thinking looks like.",
+        text: "It means your choices become guidance for people you'll never meet.\n\nNot through speeches, through patterns left in this place.\n\nYears from now someone may choose well without knowing you helped make that possible.",
         emotion: 'reverent',
         variation_id: 'orb_mastered_meaning_v1'
       }
@@ -418,7 +418,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "*Samuel puts his cap back on, but you can see his eyes are bright*\n\nNo. Thank you. Keepin' this place running... it's a job. But watching someone find themselves? That's the reward.\n\nYou did the work. I just kept the lights on.\n\nNow go. Keep making those careful choices. The station—and everyone who comes after you—will be better for it.",
+        text: "*Samuel puts his cap back on, but you can see his eyes are bright* No. Thank you.",
         emotion: 'proud',
         variation_id: 'orb_mastered_gratitude_v1'
       }

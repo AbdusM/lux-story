@@ -19,7 +19,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_intro',
     speaker: 'Elena',
     content: [{
-      text: "Can you hear the hum? Not the station... the data. It's screaming.",
+      text: "Can you hear the hum?",
       emotion: 'anxious',
       variation_id: 'default'
     }],
@@ -54,7 +54,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'elena_intro_pattern_unlock',
-        text: "[Pattern Recognition] The hum isn't random. You've already found the pattern... you just haven't admitted it yet.",
+        text: "[Pattern Recognition] The hum isn't random. You've seen the pattern already.",
         nextNodeId: 'elena_pattern_insight',
         pattern: 'analytical',
         skills: ['criticalThinking', 'observation'],
@@ -94,7 +94,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_pattern_insight',
     speaker: 'Elena',
     content: [{
-      text: "How did you...\n\nThree weeks. I've been chasing fragments for three weeks. And you just... saw it.\n\nThe contradiction is here. Someone was in two places at once. Officially impossible. And I've been too scared to follow the thread because...\n\nBecause I think I know where it leads.",
+      text: "How did you.",
       emotion: 'vulnerable',
       variation_id: 'elena_pattern_insight_v1'
     }],
@@ -119,7 +119,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_fear_reveal',
     speaker: 'Elena',
     content: [{
-      text: "...\n\nI'm afraid of being right.\n\nIf the contradiction is real... if someone manipulated the archives... then everything I've trusted about this station's history is compromised. Including my own appointment here.\n\nHow did you know to ask that?",
+      text: "I'm afraid of being right.",
       emotion: 'raw',
       variation_id: 'elena_fear_reveal_v1'
     }],
@@ -177,7 +177,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_overload',
     speaker: 'Elena',
     content: [{
-      text: "Everything. Supply chains, crew manifestos, external comms. There's a contradiction in the archives. A lie buried under three petabytes of noise.",
+      text: "Everything.",
       emotion: 'paranoid',
       variation_id: 'default',
       interrupt: {
@@ -201,7 +201,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'ai_research',
-        text: 'We don\'t read it. We query it. Let me show you how to filter the noise.',
+        text: "We don't read line by line. We query and filter noise.",
         nextNodeId: 'elena_handshake_ticker', // CHANGED: Points to handshake node
         pattern: 'analytical',
         skills: ['digitalLiteracy'],
@@ -254,7 +254,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_synthesis_lesson',
     speaker: 'Elena',
     content: [{
-      text: "You're right. I get lost sometimes. The patterns pull me in and I forget to surface.\n\nOne stream at a time. Let me show you what I found.",
+      text: "You're right.",
       emotion: 'calmer',
       variation_id: 'default',
       skillReflection: [
@@ -306,7 +306,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_fail_manual',
     speaker: 'Elena',
     content: [{
-      text: "Split the workload? There are 3.2 million documents. At one per minute, that's six years of reading. Non-stop.\n\nI tried that. For the first month. I read until my eyes bled. Literally.\n\nThere has to be a smarter way.",
+      text: "Split the workload?",
       emotion: 'exhausted',
       variation_id: 'default',
       richEffectContext: 'warning'
@@ -338,7 +338,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_methodology_intro',
     speaker: 'Elena',
     content: [{
-      text: "Most people ask what I found. You asked how I see.\n\nPatterns aren't in the data. They're in the spaces between. The things that should connect but don't. The correlations that are too perfect.\n\nI learned to trust absence as much as presence.",
+      text: "Most people ask what I found.",
       emotion: 'intrigued',
       variation_id: 'default',
       patternReflection: [
@@ -381,7 +381,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_methodology_absence',
     speaker: 'Elena',
     content: [{
-      text: "When you expect a connection and it's not there, that's data.\n\nThis maintenance log references a parts shipment. But the parts shipment doesn't reference this maintenance log. Someone edited one but not the other.\n\nMost analysts look for what's there. I look for what should be there but isn't. The dog that didn't bark.",
+      text: "When you expect a connection and it's not there, that's data. This maintenance log references a parts shipment.",
       emotion: 'teaching',
       variation_id: 'default',
       voiceVariations: {
@@ -418,7 +418,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_methodology_fabrication',
     speaker: 'Elena',
     content: [{
-      text: "Exactly. Real data is messy. It has outliers, errors, human inconsistencies. When data is too clean, too consistent...\n\nThese timestamps are all exactly five minutes apart. No human works that precisely. But a script copying data would.\n\nSomeone manufactured this. The question is why.",
+      text: "Exactly.",
       emotion: 'impressed',
       variation_id: 'default',
       patternReflection: [
@@ -451,7 +451,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_methodology_deeper',
     speaker: 'Elena',
     content: [{
-      text: "You read. Actually read. Not just scan for keywords.\n\nYes. The dog that didn't bark. That story changed how I see everything. Holmes noticed what everyone else ignored... the absence of evidence is itself evidence.\n\nData science isn't about finding needles in haystacks. It's about noticing when there should be a needle and there isn't.",
+      text: "You read. read.",
       emotion: 'warm',
       variation_id: 'default',
       voiceVariations: {
@@ -491,7 +491,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_origin_story',
     speaker: 'Elena',
     content: [{
-      text: "I was fifteen. My older sister was dating someone our parents loved. Charming, successful, said all the right things.\n\nBut I noticed patterns. How he'd isolate her from friends. How his compliments were always slightly off. The micro-expressions when he thought no one was watching.\n\nNo one believed me. Not even my sister. Until it was too late.",
+      text: "I was fifteen. My older sister was dating someone our parents loved.",
       emotion: 'haunted',
       variation_id: 'default',
       interrupt: {
@@ -546,7 +546,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_origin_interrupted',
     speaker: 'Elena',
     content: [{
-      text: "You didn't ask what happened. You didn't try to fix it.\n\nMost people immediately want the ending. The resolution. You just... stayed with it.\n\nThat's rare. That's pattern recognition of a different kind.",
+      text: "You didn't ask what happened. You didn't try to fix it.",
       emotion: 'grateful_surprised',
       variation_id: 'default'
     }],
@@ -566,7 +566,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_origin_deeper',
     speaker: 'Elena',
     content: [{
-      text: "She got out. Eventually. But not before...\n\nThe point is, I spent years afterward asking myself: what if I'd had proof? What if I could have shown them the patterns I saw?\n\nThat's when I discovered data science. A way to make invisible patterns visible. To show people what they're refusing to see.",
+      text: "She got out. Eventually.",
       emotion: 'resolved',
       variation_id: 'default'
     }],
@@ -596,7 +596,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_origin_acknowledged',
     speaker: 'Elena',
     content: [{
-      text: "Yes. That's exactly it.\n\nEveryone else sees events. I see the trajectory that led to them. The pattern that was always there, invisible until it exploded.\n\nThis work... it's not about data. It's about refusing to be gaslit by reality. About proving that what you saw was real, even when everyone says it wasn't.",
+      text: "Yes. That's exactly it.",
       emotion: 'understood',
       variation_id: 'default'
     }],
@@ -621,7 +621,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_not_listening',
     speaker: 'Elena',
     content: [{
-      text: "No. They don't.\n\nI've found three major discrepancies in the past year. Each one dismissed. 'Coincidence.' 'Data artifact.' 'You're seeing things that aren't there.'\n\nBut this one. This one I can prove. If I can just find the right angle...",
+      text: "No.",
       emotion: 'frustrated_determined',
       variation_id: 'default'
     }],
@@ -641,7 +641,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_why_it_matters',
     speaker: 'Elena',
     content: [{
-      text: "Because the last time I dismissed a pattern as noise... people died.\n\nStation Seven. Three years ago. I was the data analyst on duty. There was an anomaly in the life support logs. Three data points. I flagged it as 'sensor drift.' Standard procedure.\n\nIt wasn't drift.",
+      text: "Because the last time I dismissed a pattern as noise.",
       emotion: 'haunted',
       variation_id: 'default',
       richEffectContext: 'warning'
@@ -675,7 +675,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_station_seven_detail',
     speaker: 'Elena',
     content: [{
-      text: "It was a slow leak. Carbon monoxide. The sensors picked up elevated levels three times over twelve hours. Each time, I logged it as drift because the pattern was inconsistent.\n\nBy the time someone physically noticed... the headaches, the confusion... it was too late for four of them.\n\nFour people. Four people who trusted that someone was watching the data.",
+      text: "It was a slow leak. Carbon monoxide.",
       emotion: 'grief',
       variation_id: 'default'
     }],
@@ -705,7 +705,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_fault_response',
     speaker: 'Elena',
     content: [{
-      text: "That's what everyone says. 'You followed procedure.' 'The system failed, not you.' But I saw the anomaly. I made the judgment call.\n\nThe truth is, if I'd trusted my instinct instead of the protocol... if I'd looked closer instead of categorizing and moving on...\n\nSo now I look closer. At everything. Even when it makes people uncomfortable. Even when they call me paranoid.",
+      text: "That's what everyone says. 'You followed procedure.",
       emotion: 'bitter_resolved',
       variation_id: 'default'
     }],
@@ -735,7 +735,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_station_seven_resolution',
     speaker: 'Elena',
     content: [{
-      text: "I've never told anyone the full story. Most people only know I worked at Station Seven. They don't know I was the one who missed it.\n\nSo when I see patterns now, I don't dismiss them. Even if it makes me look obsessed. Even if no one believes me.\n\nSomewhere in three petabytes of data, there might be another three data points. And this time I won't dismiss them.",
+      text: "I cannot rewrite Station Seven, but I can build systems that fail safer and surface risk sooner. That is my way forward.",
       emotion: 'vulnerable_determined',
       variation_id: 'default'
     }],
@@ -767,7 +767,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_first_pattern',
     speaker: 'Elena',
     content: [{
-      text: "Look. This is a year of maintenance logs. Normal operations, right? But watch what happens when I overlay the parts shipment data.\n\nThese components are being replaced 40% faster than their rated lifespan. Either the manufacturer's specs are wrong... or something's wearing them out that isn't being logged.",
+      text: "Look.",
       emotion: 'focused',
       variation_id: 'default'
     }],
@@ -797,7 +797,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_environmental_theory',
     speaker: 'Elena',
     content: [{
-      text: "That's what I thought first. But the environmental sensors show nothing unusual. Temperature, humidity, vibration... all within spec.\n\nExcept... there are three hours every week where the sensor data is identical. Exactly identical. Copy-paste identical.\n\nSomeone's masking something that happens during those three hours.",
+      text: "That's what I thought first.",
       emotion: 'vindicated',
       variation_id: 'default'
     }],
@@ -816,7 +816,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_fraud_theory',
     speaker: 'Elena',
     content: [{
-      text: "Insurance fraud. That's... that's actually a possibility I hadn't fully explored.\n\nBut look at the claims. They're not inflated. If anything, they're under-reporting the component failures.\n\nWhy hide damage and not claim for it? Unless... the damage is evidence of something they need to keep hidden.",
+      text: "Insurance fraud.",
       emotion: 'intrigued',
       variation_id: 'default'
     }],
@@ -895,7 +895,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_truth_found',
     speaker: 'Elena',
     content: [{
-      text: "It worked... The noise is gone. The anomaly wasn't in the data... it was in the timestamp. Someone paused the logs for three seconds.",
+      text: "It worked.",
       emotion: 'amazed',
       variation_id: 'default'
     }],
@@ -1053,7 +1053,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'sim_mj_pro',
-        text: 'PROMPT: "/imagine engine room, volumetric lighting, blinding white silhouette, ionized air, cinematic, 8k --v 6.0"',
+        text: 'PROMPT: "/imagine engine room, white silhouette, ionized air, cinematic --v 6.0"',
         nextNodeId: 'elena_mj_success',
         pattern: 'exploring',
         skills: ['creativity', 'promptEngineering'],
@@ -1088,7 +1088,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_mj_success',
     speaker: 'Elena',
     content: [{
-      text: "That silhouette... it matches the heat signature perfectly. It wasn't a malfunction. Someone was IN the core.",
+      text: "That silhouette.",
       emotion: 'horrified',
       variation_id: 'default'
     }],
@@ -1117,7 +1117,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_decision_point',
     speaker: 'Elena',
     content: [{
-      text: "I have proof now. Proof that someone was there. Proof that the logs were altered.\n\nBut proof of what, exactly? I still don't know what they were doing. I don't know who. And if I go public with this...\n\nLast time I raised concerns about data anomalies, I was 'reassigned' to a less sensitive position. They called it paranoia.",
+      text: "I have proof now. Proof that someone was there.",
       emotion: 'conflicted',
       variation_id: 'default'
     }],
@@ -1151,7 +1151,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_caution_path',
     speaker: 'Elena',
     content: [{
-      text: "You're right. I have a tendency to... act on patterns before I've fully traced them. That's how I got burned before.\n\nI'll keep digging. Quietly. Document everything. Build a case they can't dismiss.\n\nBut I'm going to need someone to check my work. Someone who can see when I'm spiraling versus when I'm onto something real.",
+      text: "You're right. I have a tendency to.",
       emotion: 'measured',
       variation_id: 'default'
     }],
@@ -1174,7 +1174,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_allies_path',
     speaker: 'Elena',
     content: [{
-      text: "Allies. Yes. I've been so focused on the data I forgot about the people.\n\nRohan in the server room - he's noticed timestamp irregularities too. He mentioned it once, then went quiet. And there's a maintenance tech, Kai, who's been asking questions about the component failures.\n\nMaybe I'm not the only one who's seen the pattern.",
+      text: "Allies. Yes.",
       emotion: 'hopeful',
       variation_id: 'default'
     }],
@@ -1198,7 +1198,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_action_path',
     speaker: 'Elena',
     content: [{
-      text: "You're right. I've been cautious before. It cost four lives.\n\nI'm sending this to the oversight committee. Tonight. With everything we found. They might ignore it. They might fire me. But at least this time...\n\nThis time I won't be wondering if I should have done something.",
+      text: "You're right.",
       emotion: 'determined',
       variation_id: 'default'
     }],
@@ -1222,7 +1222,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_partnership_formed',
     speaker: 'Elena',
     content: [{
-      text: "You know, when I started today, I thought I was alone in this. Another pattern-seer in a world of people who don't want to look.\n\nBut you didn't look away. You didn't dismiss what I was seeing. You helped me refine it.\n\nThat's worth more than all the data in this station.",
+      text: ", when I started today, I thought I was alone in this. Another pattern-seer in a world of people who don't want.",
       emotion: 'warm',
       variation_id: 'default',
       interaction: 'nod'
@@ -1265,7 +1265,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_station_observations',
     speaker: 'Elena',
     content: [{
-      text: "You know what's fascinating about Grand Central Terminus? The patterns here are different from anywhere else I've worked.\n\nMost places, people's movements are predictable. Commute patterns, lunch rushes, exit flows. Here? The travelers move like... like they're responding to something I can't see.",
+      text: "what's fascinating about Grand Central Terminus?",
       emotion: 'curious',
       variation_id: 'default'
     }],
@@ -1295,7 +1295,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_station_deeper',
     speaker: 'Elena',
     content: [{
-      text: "Watch the platforms. Someone arrives, looks confused. Then, without anyone visibly directing them, they drift toward a specific platform. Every time.\n\nIt's not random. There's a pattern in the wandering. As if the station itself is... sorting people.\n\nOr I'm seeing patterns that aren't there. Occupational hazard.",
+      text: "Watch the platforms.",
       emotion: 'uncertain',
       variation_id: 'default'
     }],
@@ -1325,7 +1325,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_samuel_observation',
     speaker: 'Elena',
     content: [{
-      text: "Samuel. Yes. I've been watching him.\n\nHe knows things he shouldn't know. When I first arrived, he mentioned my sister. Offhand, casual. But I never told anyone here about her.\n\nEither he has access to personnel files I can't find... or there's something else going on.",
+      text: "Samuel.",
       emotion: 'suspicious_intrigued',
       variation_id: 'default'
     }],
@@ -1355,7 +1355,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_station_theory',
     speaker: 'Elena',
     content: [{
-      text: "A week ago, I would have said that's magical thinking. But the data doesn't lie, and the data says people find where they need to be here. Consistently.\n\nYou know what else the data says? That you were going to come talk to me. Your trajectory from the moment you entered... it was heading here.\n\nMakes you wonder who's really making the choices.",
+      text: "A week ago, I would have said that's magical thinking. But the data doesn't lie, and the data says people find where they need to be here.",
       emotion: 'philosophical',
       variation_id: 'default'
     }],
@@ -1384,7 +1384,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_signals_theory',
     speaker: 'Elena',
     content: [{
-      text: "Unconscious signals. Possible. There's literature on collective navigation behaviors. Swarm intelligence, emergence.\n\nBut that doesn't explain how accurate it is. In a swarm, individuals make mistakes, but the collective finds the path. Here? Every individual finds their path. The error rate is... impossible.\n\nUnless someone designed it that way.",
+      text: "Unconscious signals.",
       emotion: 'analytical',
       variation_id: 'default'
     }],
@@ -1403,7 +1403,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_samuel_confrontation',
     speaker: 'Elena',
     content: [{
-      text: "I tried. Once. He just smiled and said, 'The station shares what needs to be shared.'\n\nWhich is either profound wisdom or the most evasive non-answer I've ever encountered. I still can't tell which.\n\nBut there's no hostility in him. Whatever he knows, he's not using it against anyone. At least... not that I've detected.",
+      text: "I tried. Once.",
       emotion: 'frustrated_thoughtful',
       variation_id: 'default'
     }],
@@ -1429,14 +1429,14 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_patience_acknowledged',
     speaker: 'Elena',
     content: [{
-      text: "Patience. That's what I usually lack. I see a pattern and I want to chase it immediately.\n\nYou're reminding me that watching is also a form of action. That sometimes the pattern reveals itself if you give it time.\n\nThank you. I needed that reminder.",
+      text: "Patience.",
       emotion: 'grateful',
       variation_id: 'default'
     }],
     choices: [
       {
         choiceId: 'continue_observation',
-        text: "(Continue)",
+        text: "Hear Elena's reflection.",
         nextNodeId: 'elena_meta_reflection',
         pattern: 'patience',
         visibleCondition: {
@@ -1450,7 +1450,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_choice_debate',
     speaker: 'Elena',
     content: [{
-      text: "I'm not trying to take away your agency. But think about it. Every choice you make is based on information. Where did that information come from? What shaped your preferences?\n\nI chose to become a pattern researcher because of my sister. That choice was 'mine,' but it was also the inevitable result of experiences I didn't choose.\n\nFree will and determinism aren't opposites. They're... nested.",
+      text: "I'm not trying to take away your agency. But think about it.",
       emotion: 'philosophical',
       variation_id: 'default'
     }],
@@ -1472,7 +1472,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_design_question',
     speaker: 'Elena',
     content: [{
-      text: "That's the question, isn't it?\n\nSomeone, or something, built this place to guide people to exactly where they need to be. That's either the most benevolent system ever created... or the most sophisticated manipulation.\n\nI haven't figured out which. Yet.",
+      text: "That's the question, isn't it?",
       emotion: 'intense',
       variation_id: 'default'
     }],
@@ -1494,7 +1494,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_trust_discussion',
     speaker: 'Elena',
     content: [{
-      text: "Trust without understanding. That's... hard for me. My whole life has been about seeing through things. Understanding the mechanism behind the magic.\n\nBut maybe some systems are designed to be trusted rather than understood. Like... like a relationship, I suppose. You don't analyze love into atoms.",
+      text: "Trust without understanding.",
       emotion: 'contemplative',
       variation_id: 'default'
     }],
@@ -1516,7 +1516,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_data_limits',
     speaker: 'Elena',
     content: [{
-      text: "Every pattern can be understood. That's what I've always believed.\n\nBut what if some patterns are... recursive? What if understanding the pattern changes the pattern? What if the observer is part of the data?\n\nI'm getting into philosophy. That usually means I've hit a wall in the analysis.",
+      text: "Every pattern can be understood.",
       emotion: 'uncertain',
       variation_id: 'default'
     }],
@@ -1539,7 +1539,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_meta_reflection',
     speaker: 'Elena',
     content: [{
-      text: "You know, I've been analyzing data about the station this whole time. But I've also been analyzing you.\n\nEvery choice you've made. Every question you've asked. They form a pattern too.",
+      text: ", I've been analyzing data about the station this whole time.",
       emotion: 'knowing',
       variation_id: 'default',
       patternReflection: [
@@ -1579,7 +1579,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_player_analysis',
     speaker: 'Elena',
     content: [{
-      text: "You're consistent. That's the first thing. Your choices aren't random - they follow a logic, even when you might not be aware of it.\n\nYou lean toward [pattern]. Not exclusively, but there's a center of gravity. When you're uncertain, that's where you default.\n\nIt's... actually reassuring. In a world of noise, you're signal.",
+      text: "You're consistent. That's the first thing.",
       emotion: 'appreciative',
       variation_id: 'default'
     }],
@@ -1607,7 +1607,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_self_analysis',
     speaker: 'Elena',
     content: [{
-      text: "Me? I'm easy. Analytical to a fault. I see patterns in everything, even when they're not there.\n\nIt's a gift and a curse. I can spot a lie in a dataset from across the room. But I also struggle to trust anything that isn't proven.\n\nPeople. Relationships. Intuition. All noise until I can quantify them. It makes me... difficult to be close to.",
+      text: "Me? I'm easy.",
       emotion: 'vulnerable',
       variation_id: 'default'
     }],
@@ -1637,7 +1637,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_pattern_meaning',
     speaker: 'Elena',
     content: [{
-      text: "Good or bad aren't pattern categories. Patterns just... are.\n\nBut if it helps - the pattern I see in you is the pattern of someone who cares about truth. Who wants to understand before they judge. Who's willing to sit with complexity.\n\nThose are rare qualities. In my experience, people who have them tend to matter.",
+      text: "Good or bad aren't pattern categories. Patterns .",
       emotion: 'sincere',
       variation_id: 'default'
     }],
@@ -1659,7 +1659,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_pattern_limits',
     speaker: 'Elena',
     content: [{
-      text: "I know. Rationally, I know that. But knowing and feeling are different patterns.\n\nMy therapist says I use analysis as a defense mechanism. If I can understand something, I can control it. If I can predict behavior, I can't be surprised. If I can see the pattern, I can't be hurt.\n\nIt's a cage made of clarity.",
+      text: "I know. Rationally, I know that.",
       emotion: 'honest',
       variation_id: 'default'
     }],
@@ -1682,7 +1682,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_worth_knowing',
     speaker: 'Elena',
     content: [{
-      text: "That's... not the response most people give. Usually it's 'you just need to open up more' or 'stop analyzing everything.'\n\nYou're not trying to change how I work. You're just... accepting it.\n\nI don't have a pattern for that.",
+      text: "That's.",
       emotion: 'touched',
       variation_id: 'default'
     }],
@@ -1711,7 +1711,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_reciprocity',
     speaker: 'Elena',
     content: [{
-      text: "I've been talking about my patterns, my history, my obsessions. But I'm curious about you now.\n\nWhen you came to this station... what pattern were you looking for? What anomaly in your own life brought you here?",
+      text: "I've been talking about my patterns, my history, my obsessions.",
       emotion: 'curious',
       variation_id: 'default'
     }],
@@ -1778,7 +1778,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_reciprocity_direction',
     speaker: 'Elena',
     content: [{
-      text: "Too many paths. I understand that. Data paralysis. When you have too much information, every option looks equally valid.\n\nBut here's what I've learned: direction isn't something you find. It's something you create by moving. The pattern reveals itself in the walking, not in the mapping.\n\nYou've been walking here. That's already direction.",
+      text: "Too many paths. I understand that.",
       emotion: 'understanding',
       variation_id: 'default'
     }],
@@ -1800,7 +1800,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_reciprocity_purpose',
     speaker: 'Elena',
     content: [{
-      text: "Purpose. That's the hardest pattern to find because it's not in the data. It's in how the data makes you feel.\n\nI thought my purpose was finding hidden truths. But really, it's about protecting people from what they can't see coming. The truth is just the tool.\n\nWhat do you want to protect?",
+      text: "Purpose. That's the hardest pattern to find because it's not in the data.",
       emotion: 'thoughtful',
       variation_id: 'default'
     }],
@@ -1829,7 +1829,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_reciprocity_change',
     speaker: 'Elena',
     content: [{
-      text: "Recognizing a broken pattern is the first step. Most people never get there. They just keep running the same loops, expecting different outputs.\n\nThe fact that you're here, actively seeking different input... that's already a new pattern. You're not stuck. You're debugging.",
+      text: "Recognizing a broken pattern is the first step.",
       emotion: 'encouraging',
       variation_id: 'default'
     }],
@@ -1851,7 +1851,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_reciprocity_uncertain',
     speaker: 'Elena',
     content: [{
-      text: "That's an honest answer. I respect that more than false certainty.\n\nYou know what? Most of the people I trust most are the ones who say 'I don't know' instead of pretending they do. It takes courage to hold uncertainty.\n\nThe pattern will emerge. You're gathering data right now, even if you don't realize it.",
+      text: "That's an honest answer. I respect that more than false certainty.",
       emotion: 'warm',
       variation_id: 'default'
     }],
@@ -1873,7 +1873,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_reciprocity_resonance',
     speaker: 'Elena',
     content: [{
-      text: "Protecting people from being unseen. That's... that's my pattern too. That's exactly it.\n\nMy sister was unseen. Those four people at Station Seven were unseen. Every lie in the data is someone trying to make something invisible.\n\nWe're the same kind of pattern-seer, aren't we? Just using different tools.",
+      text: "Protecting people from being unseen.",
       emotion: 'moved',
       variation_id: 'default'
     }],
@@ -1902,7 +1902,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_vulnerability_arc',
     speaker: 'Elena',
     content: [{
-      text: "Can I tell you why I do this? Why I can't stop looking?\n\nThree years ago. Station Seven. I was the data analyst on duty.\n\nThere was an anomaly in the life support logs. Three data points. I flagged it as \"sensor drift.\" Standard procedure.\n\nIt wasn't drift. It was a slow leak. By the time anyone noticed... four people. Four people who trusted that someone was watching the data.\n\nI was watching. And I dismissed it as noise.",
+      text: "Three years ago at Station Seven, I flagged a life-support anomaly as sensor drift.",
       emotion: 'haunted_guilty',
       variation_id: 'vulnerability_v1',
       richEffectContext: 'warning'
@@ -1958,7 +1958,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_vulnerability_response',
     speaker: 'Elena',
     content: [{
-      text: "I know I can't save them. But every lie I uncover... every contradiction I surface... it's for them.\n\nThe paranoia isn't paranoia when you know what you missed. When you know what \"noise\" can hide.\n\nSo I keep looking. Because somewhere in three petabytes of data, there might be another three data points. And this time... this time I won't dismiss them.\n\nThat's why I can't stop. That's why I need the tools. Not to replace my judgment, but to extend it. To see what I couldn't see before.",
+      text: "I know I can't bring them back. But every contradiction I uncover is for them.",
       emotion: 'resolved_determined',
       interaction: 'nod',
       variation_id: 'vulnerability_response_v1'
@@ -1984,7 +1984,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_deep_trust',
     speaker: 'Elena',
     content: [{
-      text: "There's something I haven't told anyone. About what I found. The real pattern.\n\nIt's not just this station. The anomalies I'm finding... they're everywhere. Every major system I've checked. Like someone is testing something. Probing for weaknesses.\n\nAnd they're getting faster.",
+      text: "There's something I haven't told anyone.",
       emotion: 'fearful_urgent',
       variation_id: 'default',
       richEffectContext: 'warning'
@@ -2022,7 +2022,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_larger_conspiracy',
     speaker: 'Elena',
     content: [{
-      text: "I don't know. That's what terrifies me. The pattern is clear - coordinated probes across multiple systems - but the source is invisible.\n\nEvery dot is an anomaly I've found. They're connected. The timing, the methodology, the data signatures. But who's behind them...\n\nSometimes I think I'm the only one who sees it. And that makes me question if it's even real.",
+      text: "I don't know. That's what terrifies me.",
       emotion: 'desperate',
       variation_id: 'default'
     }],
@@ -2045,7 +2045,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_action_plan',
     speaker: 'Elena',
     content: [{
-      text: "Do? First, we need to confirm I'm not imagining things. Second, we need to find others who've noticed. Third...\n\nThird, we need to get this to someone who can actually do something about it. But who do you trust with information this big?\n\nThat's why I'm telling you. Because in all my pattern analysis of people at this station, you're the one who keeps showing up as trustworthy.",
+      text: "Action plan: contain risk, document evidence, escalate with ownership, and set review checkpoints before rollout.",
       emotion: 'hopeful_cautious',
       variation_id: 'default'
     }],
@@ -2068,7 +2068,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_validation',
     speaker: 'Elena',
     content: [{
-      text: "You believe me. You're not dismissing it as paranoia. You're not telling me to 'take a break.'\n\nThis is what I needed. Not just someone to help with the analysis - someone who takes it seriously. Who treats the pattern as real until proven otherwise.\n\nWe're going to figure this out. Together.",
+      text: "You believe me.",
       emotion: 'relieved',
       variation_id: 'default'
     }],
@@ -2097,7 +2097,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_next_steps',
     speaker: 'Elena',
     content: [{
-      text: "I've been in this rabbit hole for too long. Thank you for... grounding me. For being a second pair of eyes.\n\nIf you want to come back, I'll be here. The patterns don't stop. Neither do I.\n\nAnd if you see anything strange out there in the station - any data that doesn't fit - you know where to find me.",
+      text: "I've been in this rabbit hole for too long. Thank you for.",
       emotion: 'warm',
       variation_id: 'default'
     }],
@@ -2120,7 +2120,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_interrupt_grounding',
     speaker: 'Elena',
     content: [{
-      text: "Sorry. I... I get lost in it. The patterns. The noise.\n\nYou're the first person who's tried to pull me out instead of pushing me deeper.\n\nMy therapist calls it \"data spiraling.\" I call it... not being able to look away from the fire.\n\nThank you. For closing the display. Most people want me to find things faster.",
+      text: "Sorry. I.",
       emotion: 'vulnerable_grateful',
       variation_id: 'interrupt_grounding_v1'
     }],
@@ -2145,7 +2145,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_revisit_initial',
     speaker: 'Elena',
     content: [{
-      text: "You came back. Good. I've found something new.\n\nThe pattern we identified before? It's spreading. But I've also found what might be a counter-pattern. Someone else is watching.",
+      text: "You came back.",
       emotion: 'eager',
       variation_id: 'default'
     }],
@@ -2179,7 +2179,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_revisit_wellbeing',
     speaker: 'Elena',
     content: [{
-      text: "How am I? People don't usually ask that. They want the data, not the analyst.\n\nBetter. Since we talked. Having someone who believes the pattern is real, who doesn't think I'm spiraling... it helps. I sleep now. Sometimes.\n\nThank you for asking. Really.",
+      text: "How am I?",
       emotion: 'touched',
       variation_id: 'default'
     }],
@@ -2197,7 +2197,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_counter_pattern',
     speaker: 'Elena',
     content: [{
-      text: "Look. Wherever there's a probe, there's a response. Not immediate, but consistent. Someone's tracking the same things we are.\n\nThe question is: are they the source, or another watcher? Ally or adversary?\n\nI could use your instincts here. The data alone isn't telling me.",
+      text: "Look.",
       emotion: 'analytical',
       variation_id: 'default'
     }],
@@ -2231,7 +2231,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_ally_path',
     speaker: 'Elena',
     content: [{
-      text: "Defensive, not opportunistic. I see it too. The timing suggests they're responding to the probes, not coordinating with them.\n\nIf there's another watcher... maybe I can find them. Leave a signal in the pattern. See if they respond.\n\nIt's a risk. But it might be worth it to not be alone in this.",
+      text: "Defensive, not opportunistic. I see it too.",
       emotion: 'hopeful',
       variation_id: 'default'
     }],
@@ -2250,7 +2250,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_caution_validated',
     speaker: 'Elena',
     content: [{
-      text: "A honeypot. I hadn't fully considered that. Someone specifically targeting pattern-seekers.\n\nIf that's true... they know we're watching. The probe anomalies might be bait. Which means we need to be very careful about how we respond.\n\nYou're good at this. Seeing angles I miss when I'm too deep in the data.",
+      text: "A honeypot. I hadn't fully considered that.",
       emotion: 'alert',
       variation_id: 'default'
     }],
@@ -2269,7 +2269,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_signal_sent',
     speaker: 'Elena',
     content: [{
-      text: "Done. It's subtle. A pattern that says 'I see you' to anyone looking for patterns. Invisible to anyone who isn't.\n\nNow we wait. If there's really another watcher out there... they'll respond. And if they don't...\n\nWe keep watching alone. But at least we tried.",
+      text: "Done.",
       emotion: 'resolved',
       variation_id: 'default'
     }],
@@ -2297,7 +2297,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_watching_continues',
     speaker: 'Elena',
     content: [{
-      text: "Patience. You're right. I have a tendency to act when I should observe.\n\nWe'll watch. Gather more data. Wait for the pattern to fully reveal itself.\n\nHaving you here helps. You're like... a balancing function. When I want to jump, you remind me to look first.",
+      text: "Patience.",
       emotion: 'appreciative',
       variation_id: 'default'
     }],
@@ -2319,7 +2319,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_partnership_deepened',
     speaker: 'Elena',
     content: [{
-      text: "Balance. I like that. I've been tilted for so long, trying to see everything alone.\n\nWhatever we find, whatever this all means... I'm glad I'm not chasing it solo anymore.\n\nPartners. In pattern-seeking and in whatever comes next.",
+      text: "Balance.",
       emotion: 'warm',
       variation_id: 'default'
     }],
@@ -2351,7 +2351,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_farewell',
     speaker: 'Elena',
     content: [{
-      text: "Go on. Explore the station. Talk to others. I'll be here, watching the patterns.\n\nAnd I'll be watching your pattern too. Not in a creepy way. Just... appreciating how you move through the world.\n\nYou make sense, you know? Your data is... coherent.",
+      text: "Go on.",
       emotion: 'fond',
       variation_id: 'default',
       patternReflection: [
@@ -2374,7 +2374,7 @@ const nodes: DialogueNode[] = [
       // Loyalty Experience trigger - only visible at high trust + analytical pattern
       {
         choiceId: 'offer_pattern_help',
-        text: "[Pattern Seeker] Elena, you mentioned data inconsistencies in the archives. Want another set of eyes on the anomaly?",
+        text: "[Pattern Seeker] You mentioned archive anomalies. Want another set of eyes?",
         nextNodeId: 'elena_loyalty_trigger',
         pattern: 'analytical',
         skills: ['dataAnalysis', 'criticalThinking'],
@@ -2398,7 +2398,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_loyalty_trigger',
     speaker: 'Elena',
     content: [{
-      text: "You noticed.\n\nThere's a pattern in the station records. Passenger manifests that don't align with arrival timestamps. Catalog entries that reference documents that don't exist.\n\nEveryone else says it's data corruption. Historical noise. But the pattern is too consistent. Too deliberate.\n\nSomething was removed from the archives. And someone went to great lengths to hide the gaps.\n\nI've been tracking it alone because... because suggesting institutional record manipulation makes you sound paranoid. Makes you the problem instead of the problem-finder.\n\nBut you see patterns like I do. Would you... help me trace this before I convince myself I'm imagining it?",
+      text: "I found a pattern that could expose another failure cascade. Reporting it cleanly may end my role; burying it risks lives. Help me choose the path that protects people first.",
       emotion: 'anxious_determined',
       variation_id: 'loyalty_trigger_v1',
       richEffectContext: 'warning'
@@ -2444,7 +2444,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_loyalty_declined',
     speaker: 'Elena',
     content: [{
-      text: "You're right. I've cross-referenced sixteen different data sources. Run statistical anomaly detection. The pattern is real.\n\nI don't need external validation. I need to trust my own analytical work.\n\nThank you for believing in the process. Sometimes I doubt myself when everyone else calls it noise.",
+      text: "You're right.",
       emotion: 'resolved',
       variation_id: 'loyalty_declined_v1'
     }],
@@ -2472,7 +2472,7 @@ const nodes: DialogueNode[] = [
     nodeId: 'elena_loyalty_start',
     speaker: 'Elena',
     content: [{
-      text: "Thank you. I've been afraid to pursue this alone.\n\nLet me pull up the full dataset. Two analysts. One pattern. Let's see what someone tried to erase from history.",
+      text: "Thank you.",
       emotion: 'focused_grateful',
       variation_id: 'loyalty_start_v1'
     }],
@@ -2512,7 +2512,7 @@ In a world drowning in data, that skill matters more than ever.`,
     choices: [
       {
         choiceId: 'elena_career_curator_continue',
-        text: "Making knowledge accessible. That resonates.",
+        text: "Making knowledge accessible.",
         nextNodeId: 'elena_intro',
         pattern: 'patience'
       }
@@ -2666,7 +2666,7 @@ Your curiosity combined with analysis... that's exactly what they need.`,
     speaker: 'elena',
     content: [
       {
-        text: "I tried. But every time I write about it, the words feel... incomplete. Like the station is bigger than language.\\n\\nMaybe it's meant to be experienced, not recorded. That's a new thought for an archivist.",
+        text: "I tried.",
         emotion: 'humbled',
         variation_id: 'mystery_response_v1'
       }
@@ -2776,7 +2776,7 @@ Your curiosity combined with analysis... that's exactly what they need.`,
     }],
     choices: [{
       choiceId: 'elena_recovery_complete',
-      text: "(Continue)",
+      text: "Proceed.",
       nextNodeId: 'elena_hub_return',
       pattern: 'patience'
     }],

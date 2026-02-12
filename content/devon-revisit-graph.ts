@@ -71,7 +71,7 @@ Hey. I was running a diagnostic and... well, you showed up in the logs. Metaphor
 
 Weirdest thing. I didn't use the script. I just... told him about the packet loss.
 
-I said, "Dad, I feel like we're dropping frames." And he laughed. Actually laughed.
+I said, "Dad, I feel we're dropping frames." And he laughed. Actually laughed.
 
 "Low bandwidth," he said. "Since your mom isn't here to boost the signal."
 
@@ -108,7 +108,7 @@ We talked about satellites for an hour. It wasn't about feelings, but... it was 
             {
                 text: `Efficiency is up 40%. I removed the emotional subroutines.
 
-If he says "I'm fine," I just accept the packet. No need to query for hidden data. It's much... quieter this way.
+If he says "I'm fine,." I just accept the packet. No need to query for hidden data. It's much... quieter this way.
 
 *He looks at his screen, not at you.*
 
@@ -143,7 +143,7 @@ But hey. Thanks for the code review. Sometimes you need a second pair of eyes to
         choices: [
             {
                 choiceId: 'return_to_samuel_after_devon',
-                text: "Return to Samuel",
+                text: "Return to Samuel.",
                 nextNodeId: SAMUEL_HUB_AFTER_DEVON,
                 pattern: 'exploring'
             },
@@ -168,13 +168,11 @@ But hey. Thanks for the code review. Sometimes you need a second pair of eyes to
         speaker: 'Devon Kumar',
         content: [
             {
-                text: `How did you— okay, yeah. The monitoring cluster. It's been throwing warnings all week but I've been... optimizing around them.
+                text: `Yeah, you caught it. The monitoring cluster has been unstable for days, and now the database is timing out under load.
 
-The main database is failing. Cascading timeouts. If this goes down during peak hours, we lose everything. User data. Transaction history. The whole system.
+I've patched around symptoms, but I need another systems mind to triage root cause before this becomes an outage.
 
-I've been running patches but I can't isolate the root cause alone. It's like trying to debug a race condition while the race is happening.
-
-You understand systems. Would you... help me triage this before it becomes an outage?`,
+Will you help me run this down before it tips over?`,
                 emotion: 'anxious_determined',
                 variation_id: 'loyalty_trigger_v1',
                 richEffectContext: 'warning'

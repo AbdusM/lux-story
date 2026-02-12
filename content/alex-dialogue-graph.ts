@@ -19,7 +19,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "D'you bring it? The shiny?\n\nI got maps. I got codes. I got a protein bar from 2024. What's your trade?",
+        text: "D'you bring it?",
         emotion: 'suspicious',
         interaction: 'shake',
         variation_id: 'alex_intro_rat_v1',
@@ -90,7 +90,7 @@ export const alexDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'alex_intro_system_unlock',
-        text: "[Pattern Recognition] The night vision. The jingling pockets. You've mapped more than air ducts. You've mapped information flow.",
+        text: "[Pattern Recognition] You mapped more than air ducts. You mapped how information moves.",
         archetype: 'MAKE_OBSERVATION',
         nextNodeId: 'alex_system_insight',
         pattern: 'analytical',
@@ -135,7 +135,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Yeah. Maybe.\n\n...Sorry. That was my old instructor voice. Muscle memory.\n\nI'm Alex. I used to teach bootcamps. Now I write documentation for tools I'm not sure anyone needs.\n\nYou're the first person to ask how I am instead of what I know.",
+        text: "Yeah.",
         emotion: 'surprised_vulnerable',
         interaction: 'nod',
         variation_id: 'response_helping_v1',
@@ -173,7 +173,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Worth it for who? The platform selling the course? The company looking for cheap keywords on resumes?\n\nI'm Alex. Former bootcamp instructor. Now documentation writer.\n\nYou want data? I watched three cohorts do everything \"right.\" Courses, projects, networking. Still struggle. The ones who succeeded? Weren't the best coders.",
+        text: "Worth it for who?",
         emotion: 'frustrated',
         interaction: 'shake',
         variation_id: 'response_analytical_v1',
@@ -204,7 +204,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "\"Ready.\" The trap word.\n\nOne more course. One more certificate. One more bootcamp. Then you'll be ready.\n\nExcept you never are. The finish line keeps moving.\n\nI'm Alex. I taught that lie for three years. Now I write docs for AI tools and wonder if any of it matters.",
+        text: "\"Ready.",
         emotion: 'reflective',
         interaction: 'nod',
         variation_id: 'response_exploring_v1',
@@ -235,7 +235,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Direction over credentials. That's... refreshing.\n\nMost people want the shortcut. The checklist. The guarantee.\n\nI'm Alex. Former bootcamp instructor. Current documentation hermit.\n\nYou might actually survive out there.",
+        text: "Direction over credentials. That's.",
         emotion: 'intrigued',
         interaction: 'nod',
         variation_id: 'response_building_v1',
@@ -260,7 +260,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "...You can see that?\n\nThree years mapping this station. The ventilation isn't just air. It's information. Who talks to who. Where the real decisions happen. Where the blockages form.\n\nMost people just see rats in walls. You see...\n\n...You see patterns.",
+        text: "You can see that?",
         emotion: 'impressed',
         interaction: 'nod',
         variation_id: 'alex_system_insight_v1',
@@ -289,7 +289,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Okay. Fine.\n\nBootcamp dropout tracker. Connects with 400+ former students across twelve cohorts. Not what they learned. What they did with it. Real outcomes, not LinkedIn theater.\n\nThe patterns are brutal. But honest.\n\nNo one asked me to build this. No one's paying for it. I just... needed to know.",
+        text: "Okay.",
         emotion: 'vulnerable',
         interaction: 'nod',
         variation_id: 'alex_builder_reveal_v1',
@@ -319,7 +319,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "You know what's wild?\n\nThe people who told my students \"just build projects\" were the same ones who got their jobs through connections.\n\nAnd the ones screaming \"prompt engineering is dead\" online? Half of them are selling prompt templates on the side.\n\nI watched three cohorts do everything right. Courses, projects, networking. Still struggle. Started wondering if I was selling snake oil with a curriculum.\n\nI'm not saying don't learn. I'm saying... be suspicious of anyone who makes it sound simple. Including me.",
+        text: "Here's the contradiction: people saying \" build projects\" often got hired through connections, and.",
         emotion: 'conflicted',
         interaction: 'shake',
         variation_id: 'contradiction_v1',
@@ -437,7 +437,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "...Maybe.\n\nIt's hard to watch people struggle when you know the game is rigged. When the advice is \"network more\" but nobody teaches networking. When \"soft skills\" get dismissed but they're what actually matter.\n\nI got tired of pretending I had answers I didn't have.",
+        text: "Maybe.",
         emotion: 'vulnerable',
         interaction: 'nod',
         variation_id: 'cares_v1',
@@ -501,7 +501,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "If no one was watching?\n\nI'd build a tool that helps people figure out what they actually want to learn. Not what LinkedIn says they should.\n\nSomething that asks questions instead of selling answers. Kind of the opposite of what I used to do.\n\nProbably wouldn't make any money.",
+        text: "If no one was watching?",
         emotion: 'dreaming',
         interaction: 'bloom',
         variation_id: 'no_watching_v1',
@@ -536,7 +536,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "You know how long it took me to admit the bootcamp thing wasn't working? Three years.\n\nThree years of telling myself \"next cohort will be different.\"\n\nSometimes the slow realization is the only honest one. The quick pivots, the \"fail fast\" mantras. Sometimes they're just avoiding the real question.",
+        text: "how long it took me to admit the bootcamp thing wasn't working?",
         emotion: 'reflective',
         interaction: 'nod',
         variation_id: 'takes_time_v1',
@@ -561,7 +561,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Cohort 3. Final presentations.\n\nOne student. Brilliant kid, genuinely talented. Built this beautiful accessibility tool for blind coders. Screen reader integration, custom keyboard shortcuts, the whole thing.\n\nThey couldn't get past the resume screen. No CS degree. \"Insufficient experience.\" Meanwhile, another student who copy-pasted tutorial projects got three offers because they had \"Full-Stack Developer\" in the right font on LinkedIn.\n\nI realized I was teaching people to play a game I didn't understand and couldn't win.",
+        text: "Final presentations broke me.\n\nA brilliant accessibility project got filtered out for lacking credentials, while tutorial clones got offers with better branding.\n\nI realized I was teaching people to play a game built against them.",
         emotion: 'haunted',
         interaction: 'shake',
         variation_id: 'breaking_v1',
@@ -610,7 +610,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Last I heard? Working retail. Still coding on weekends. Still applying.\n\nThey messaged me six months later. Should they do another bootcamp?\n\n\"Keep trying\" felt like a lie. \"Give up\" felt worse.\n\nSo I told them to take a break. Figure out what they actually wanted.",
+        text: "Last I heard?",
         emotion: 'regretful',
         interaction: 'nod',
         variation_id: 'failure_story_v1',
@@ -634,7 +634,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Maybe. But I was the one saying \"This will change your life.\"\n\nCharging them money. Promising outcomes I couldn't guarantee.\n\nYou ever hear \"moral injury\"? Complicit in something that violates your values.\n\nThat's what teaching bootcamps felt like.",
+        text: ".",
         emotion: 'vulnerable_angry',
         interaction: 'shake',
         variation_id: 'moral_v1',
@@ -663,7 +663,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Now I write documentation for AI tools and watch the exact same cycle.\n\n\"Learn prompt engineering!\" \"No wait, prompt engineering is dead!\" \"Actually, you need to understand transformers!\" \"Just use Claude/GPT/whatever's new this week!\"\n\nSame treadmill. New branding. Same people selling courses. Same people panicking they're falling behind.\n\nThe tools change every six months. The anxiety stays the same.",
+        text: "Now I write documentation for AI tools and watch the exact same cycle. \"Learn prompt engineering!",
         emotion: 'cynical_knowing',
         interaction: 'shake',
         variation_id: 'hype_v1',
@@ -699,7 +699,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "You're the first person to ask that. Everyone else just wants to know \"what should I learn next?\"\n\nYeah. It's exhausting. The constant feeling that whatever you know is about to be obsolete. That you're always one update behind.\n\nBut you asking that. Asking about the feeling, not the strategy. That's different.",
+        text: "You're the first person to ask that.",
         emotion: 'surprised_vulnerable',
         variation_id: 'exhaustion_response_v1',
         useChatPacing: true
@@ -708,7 +708,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'continue_to_treadmill_empathy',
-        text: "[Continue]",
+        text: "Ask what he learned.",
         nextNodeId: 'alex_learning_treadmill',
         pattern: 'patience'
       }
@@ -721,7 +721,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Logical. And you're not wrong.\n\nSomeone does need to understand the tools. The documentation I write? It matters. People rely on it.\n\nBut the question is whether \"someone\" has to be the same person forever. Or whether you can be the bridge without becoming the bridge's foundation.",
+        text: "Logical.",
         emotion: 'thoughtful',
         variation_id: 'leverage_response_v1',
         useChatPacing: true
@@ -730,7 +730,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'continue_to_treadmill_analytical',
-        text: "[Continue]",
+        text: "Press the deeper point.",
         nextNodeId: 'alex_learning_treadmill',
         pattern: 'patience'
       }
@@ -743,7 +743,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Here's the thing nobody says out loud:\n\nYou can't keep up. The treadmill is designed so you can't keep up.\n\nBecause if you ever felt \"done,\" you'd stop buying courses. Stop clicking ads. Stop refreshing LinkedIn wondering if you're obsolete.\n\nThe system needs you anxious. Anxious people are profitable.\n\nI was selling that anxiety for three years. Now I'm writing docs for tools that perpetuate it.\n\n<bloom>But</bloom>. Here's where it gets interesting. I'm also finally learning stuff I actually care about again.",
+        text: "The treadmill is designed to keep you anxious and buying. Break it by choosing a learning path you actually care about.",
         emotion: 'revealing',
         interaction: 'bloom',
         variation_id: 'treadmill_v1',
@@ -771,7 +771,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "I'm building a... I don't even know what to call it. A conversation tool? An anti-curriculum?\n\nIt asks you questions about what you're curious about. Not what job you want. Not what salary. Just. What makes you want to learn more?\n\nThen it helps you figure out <bloom>how you like to learn</bloom>. Not which course to buy. How your brain actually works.\n\nIt's messy. Unmonetizable. Probably nobody needs it. But it's the first thing I've built in years that feels honest.",
+        text: "I'm building an anti-curriculum.\n\nIt starts with real curiosity, not job titles, then maps <bloom>how you learn</bloom> instead of what course to buy.\n\nIt's messy and maybe unmonetizable, but it's the first thing I've built in years that feels honest.",
         emotion: 'vulnerable_proud',
         interaction: 'bloom',
         variation_id: 'project_v1',
@@ -821,7 +821,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Because I'm not selling an outcome.\n\nBootcamps sell the promise: \"Do this, get that.\" Linear. Guaranteed. Except it's not.\n\nThis? This is just... exploration. Following curiosity. Asking questions nobody asked me to answer.\n\nI've been up till 2am three nights this week. Not because of a deadline. Not because someone's paying me.\n\nBecause I forgot what happened next in my own code and had to find out.\n\nThat's the feeling. That's what we should be chasing. Not certificates. <ripple>That.</ripple>",
+        text: "Because I'm not selling an outcome anymore.\n\nBootcamps sold linear promises, but this is curiosity-driven exploration, and I've stayed up late chasing questions with no deadline or payout.\n\nThat's the feeling we should chase, not certificates. <ripple>That.</ripple>",
         emotion: 'illuminated',
         interaction: 'bloom',
         variation_id: 'curiosity_v1',
@@ -846,7 +846,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Okay. Real talk. Forget what I taught at bootcamps. Forget the curriculum. Here's what actually matters:\n\nNotice what you do when nobody's watching.\n\nWhat Wikipedia rabbit holes do you fall into? What YouTube videos do you watch at 1am? What do you explain to people even when they didn't ask?\n\nThat's your pattern. That's the shape of your curiosity.\n\nMost people try to force themselves into \"marketable skills.\" But the people who actually break through? They find the overlap between what fascinates them and what's useful.\n\nYou've been making choices this whole conversation. What patterns are you seeing in yourself?",
+        text: "Your pattern is already visible in your choices. Follow that signal instead of chasing generic advice.",
         emotion: 'teaching_honest',
         interaction: 'nod',
         variation_id: 'player_pattern_v1',
@@ -898,7 +898,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Yeah. I see it. The pattern is there.\n\nMost people never stop to notice it. They just keep chasing what they're \"supposed to\" learn.\n\nBut here's the crossroads:\n\nYou can use that pattern to chase credentials. Get really good at gaming the system, collecting the right keywords, playing the LinkedIn game.\n\nOr you can use it to chase genuine mastery. Following what actually fascinates you, even when it's not trending.\n\nBoth are valid. Both can work. But only one of them will still matter to you in five years.\n\nWhich one pulls you?",
+        text: "Crossroads: chase optics or chase mastery. Both can work short-term, only one compounds into a life you respect.",
         emotion: 'challenging',
         interaction: 'nod',
         variation_id: 'crossroads_v1',
@@ -978,7 +978,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Listen. The real answer is this:\n\nThe credentials will come if you get good at something that matters. But you only get good at things you can sustain caring about.\n\nI watched hundreds of students burn out chasing skills they didn't care about. The ones who made it? They found the thing they'd do for free and figured out how to get paid for it.\n\nThis whole station. It's not about finding the \"right path.\" It's about learning to recognize your own signal in all the noise.\n\nYou're doing that. Right now. Keep doing it.\n\nAnd be suspicious of anyone, <bloom>including me</bloom>, who makes it sound simple.",
+        text: "Real answer:\n\nCredentials follow once you get good at work you can keep caring about.\n\nI watched students burn out chasing marketable skills they hated. The ones who lasted followed curiosity and built proof.\n\nThis station isn't about perfect paths. It's about finding signal in noise.\n\nYou're doing that now.\n\nDistrust anyone, <bloom>including me</bloom>, who makes it sound easy.",
         emotion: 'knowing_warm',
         interaction: 'bloom',
         variation_id: 'synthesis_v1',
@@ -988,7 +988,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'alex_synthesis_to_turn',
-        text: "[Continue]",
+        text: "Hear his final turn.",
         nextNodeId: 'alex_turn',
         pattern: 'exploring'
       }
@@ -1005,7 +1005,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Here's what I wish someone told me earlier:\n\nThe people who succeed aren't the ones who found the perfect course.\n\nThey're the ones who <bloom>stayed curious longer than they stayed scared</bloom>.\n\nThat sounds like fortune cookie garbage, I know. But watch. In five years, the tools will be completely different. The courses will be obsolete.\n\nBut the people who learned <ripple>how to learn</ripple>? They'll adapt again.",
+        text: "Here's what I wish someone told me earlier:\n\nWinners aren't people who found the perfect course.\n\nThey're people who <bloom>stayed curious longer than they stayed scared</bloom>.\n\nIn five years, the tools will change and most courses will be obsolete.\n\nPeople who learned <ripple>how to learn</ripple> adapt again.",
         emotion: 'knowing',
         interaction: 'bloom',
         variation_id: 'turn_v1',
@@ -1076,7 +1076,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Tomorrow? Here's what I'd do if I were starting over:\n\n<bloom>One:</bloom> Pick something small you're actually curious about. Not \"marketable.\" Curious.\n\n<bloom>Two:</bloom> Build something with it. Doesn't matter if it's useful. Doesn't matter if it's been done. Build it anyway.\n\n<bloom>Three:</bloom> When you get stuck (and you will) resist the urge to buy a course. Struggle first. The struggle is where learning happens.\n\n<bloom>Four:</bloom> Share what you made. Not for likes. To practice explaining your thinking.\n\nThat's it. Repeat until you've built enough things you can see your own patterns. Then you'll know what to learn next.\n\nNo curriculum required.",
+        text: "If I were restarting tomorrow:\n\n<bloom>One:</bloom> pick a small problem you actually care about.\n\n<bloom>Two:</bloom> build something, even rough.\n\n<bloom>Three:</bloom> when stuck, struggle before buying another course.\n\n<bloom>Four:</bloom> share what you made and explain your choices.\n\nRepeat until your own learning pattern becomes obvious.\n\nThen choose the next skill with evidence, not panic.\n\nNo grand curriculum required.",
         emotion: 'direct_practical',
         interaction: 'nod',
         variation_id: 'practical_v1',
@@ -1100,7 +1100,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Both is the only honest answer.\n\nAnyone who says they're not scared is either lying or not paying attention.\n\nI'm scared right now. Scared this side project won't lead anywhere. Scared I wasted three years teaching bootcamps. Scared I'm wrong about all of this.\n\nBut here's the thing: the fear doesn't go away when you find the \"right path.\"\n\nThe fear goes away when you stop needing the path to be right and start being okay with figuring it out.\n\n<bloom>Curiosity is how you live with the fear.</bloom> Not how you eliminate it.",
+        text: "Both is the honest answer.\n\nAnyone claiming zero fear is lying or numb.\n\nI'm scared too: scared this pivot fails, scared I burned years teaching the wrong thing, scared I'm wrong again.\n\nFear doesn't vanish when you find a perfect path.\n\nIt shrinks when you stop demanding certainty and keep learning anyway.\n\n<bloom>Curiosity doesn't erase fear; it makes it livable.</bloom>",
         emotion: 'vulnerable_warm',
         interaction: 'bloom',
         variation_id: 'fear_v1',
@@ -1124,7 +1124,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "You don't have to choose between them. But know which one you're optimizing for at any moment.\n\nNeed a job next month? Get the credentials. Play the game. Do what you have to do.\n\nBut don't confuse survival strategy with actual learning.\n\nCredentials are signaling. Learning is substance.\n\nYou need both. Chase only signals, you end up hollow. Chase only substance, you might starve.\n\nThe wisdom is knowing when to do which.",
+        text: "Credentials can open doors, but they cannot replace judgment, story, and persistence. Use them as tools, not identity.",
         emotion: 'balanced_wise',
         interaction: 'nod',
         variation_id: 'wisdom_v1',
@@ -1157,7 +1157,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Platform 8. \"The Learning Loop.\"\n\nSamuel set it up as a mirror. See all the noise. The hype cycles. The anxiety. Decide whether you want to keep running.\n\nMost travelers panic and leave. They want me to tell them which course to take.\n\nBut you stayed. Asked different questions.\n\nThe loop is: Learn. Reflect. Choose. Repeat.\n\nYou're already doing it.",
+        text: "Platform 8. \"The Learning Loop.",
         emotion: 'affirming_profound',
         interaction: 'bloom',
         variation_id: 'platform_v1',
@@ -1193,7 +1193,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Both is the honest answer.\n\nAnyone who says they're not scared is lying or not paying attention.\n\nThe question isn't how to stop being scared. It's whether you let fear make the decisions.\n\nYou're asking good questions. That's the whole game.",
+        text: "Both is the honest answer.",
         emotion: 'warm',
         interaction: 'nod',
         variation_id: 'closing_both_v1',
@@ -1203,7 +1203,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'alex_to_summary_both',
-        text: "[Continue]",
+        text: "Summarize the pattern.",
         nextNodeId: 'alex_pattern_summary',
         pattern: 'patience'
       }
@@ -1226,7 +1226,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'alex_to_summary_enough',
-        text: "[Continue]",
+        text: "Close with the takeaway.",
         nextNodeId: 'alex_pattern_summary',
         pattern: 'analytical'
       }
@@ -1239,7 +1239,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Honestly? I don't know.\n\nMaybe that's okay. Maybe I'm finally comfortable not having the syllabus figured out.\n\nDocumentation job pays the bills. Late-night LLM experiments feed the soul. For now, enough.\n\nAsk me in a year. Answer will probably be different.",
+        text: "Honestly?",
         emotion: 'peaceful',
         interaction: 'nod',
         variation_id: 'closing_next_v1',
@@ -1249,7 +1249,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'alex_to_summary_next',
-        text: "[Continue]",
+        text: "Summarize the pattern.",
         nextNodeId: 'alex_pattern_summary',
         pattern: 'exploring'
       }
@@ -1263,7 +1263,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "I've been documenting this logistics platform. Nonprofit sourcing supplies for Birmingham schools. They hit a wall.\n\nUsual supplier ghosted. 2,000 kids waiting, donor deadline in 72 hours, three alternative suppliers.\n\nThe \"obvious\" choice isn't obvious. Speed, cost, ethics. All pulling different directions.\n\nWant to help me think through this?",
+        text: "I've been documenting this logistics platform.",
         emotion: 'engaged',
         interaction: 'nod',
         variation_id: 'sim_intro_v1',
@@ -1302,7 +1302,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Because I used to be one of those kids.\n\nFree lunch. Hand-me-down textbooks. The year supply shipment got \"delayed\" we spent September writing on napkins.\n\nI'm supposed to document the interface, not solve their problems.\n\nBut when you see the pattern. When you know what delay means for real kids. Hard to look away.",
+        text: "Because I used to be one of those kids. Free lunch.",
         emotion: 'vulnerable_determined',
         interaction: 'nod',
         variation_id: 'why_care_v1',
@@ -1390,7 +1390,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "FastShip. Okay. But here's the complication.\n\nThey got flagged six months ago for child labor in their overseas facilities. The nonprofit's donor (a local church group) specifically asked about ethical sourcing in their grant application.\n\nIf this gets traced back... the nonprofit could lose future funding.\n\nSpeed now, or sustainability later? That's the real question.",
+        text: "FastShip. Okay.",
         emotion: 'conflicted',
         variation_id: 'speed_v1',
         useChatPacing: true
@@ -1420,7 +1420,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Regional Supply. Middle path. But there's a catch.\n\n$44,000 is $1,000 under budget. But minimum order for 48-hour delivery is 2,500 kits. 500 extra.\n\nExtras could go to the overflow waitlist. Or negotiate smaller order, bumping delivery to 60 hours.\n\nMore kids, or guaranteed timeline?",
+        text: "Regional Supply.",
         emotion: 'thoughtful',
         variation_id: 'balance_v1',
         useChatPacing: true
@@ -1454,7 +1454,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Community-First. The \"right\" choice. 72 hours means zero margin.\n\nWarehouse in Bessemer. 20 minutes from schools. Volunteers for same-day distribution bypass the shipping delay.\n\nA gamble. But if it works: quality, ethics, AND local impact.\n\nDo you trust people to show up?",
+        text: "Community-First.",
         emotion: 'hopeful',
         variation_id: 'ethics_v1',
         useChatPacing: true
@@ -1492,7 +1492,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Hybrid. I didn't think of that.\n\nSplit it: 1,000 kits from Community-First for Bessemer schools, 1,000 from Regional for the rest.\n\n$46,500 total. $1,500 over. But church group could cover as \"local impact bonus.\"\n\nSpeed, ethics, two suppliers. Systems thinking.",
+        text: "Hybrid.",
         emotion: 'impressed',
         variation_id: 'hybrid_v1',
         useChatPacing: true
@@ -1534,7 +1534,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     ],
     content: [
       {
-        text: "We did it. Order's in. Volunteers mobilizing. Donor agreed.\n\nThis wasn't my job. I document software, not logistics.\n\nBut this is what learning looks like. Real problems, real stakes.\n\nCuriosity did what bootcamp never taught. Thanks for asking the right questions.",
+        text: "We did it.",
         emotion: 'grateful_illuminated',
         interaction: 'bloom',
         variation_id: 'success_v1',
@@ -1568,7 +1568,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     ],
     content: [
       {
-        text: "Done. Maybe not perfect, but working.\n\n2,000 kids get supplies. Deadline met. Sometimes \"good enough\" is actually good.\n\nI'll remember the hybrid idea. Creative solutions need runway.\n\nThanks for thinking through this.",
+        text: "Done. Maybe not perfect, but working.",
         emotion: 'peaceful',
         interaction: 'nod',
         variation_id: 'modest_v1',
@@ -1593,7 +1593,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Order placed. FastShip confirmed.\n\nThree weeks later, story broke. \"Nonprofit Linked to Labor Violation Supplier.\" Church group pulled funding.\n\nKids got supplies. Program might not survive.\n\n\"Ship fast, fix later.\" Except sometimes there is no later.",
+        text: "Order placed.",
         emotion: 'regretful',
         interaction: 'shake',
         variation_id: 'fail_v1',
@@ -1626,7 +1626,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Sorry. Nobody asks about them. The students. Everyone talks \"outcomes\" and \"placement rates.\"\n\nJamie messaged me last year. \"Still trying.\" Still applying. Still hoping.\n\nI couldn't respond. What do you say?\n\nThank you. For not trying to fix it.",
+        text: "Sorry.",
         emotion: 'vulnerable_grateful',
         interaction: 'bloom',
         variation_id: 'interrupt_comfort_v1',
@@ -1784,7 +1784,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     ],
     content: [
       {
-        text: "Thanks for listening. Most people just want the shortcut and leave.\n\nYou're different.\n\nGo on. Samuel's probably wondering where you wandered off to. Platform 8 says hi.\n\nThe people who figure it out aren't the ones with most certificates. They're the ones who kept showing up.",
+        text: "Thanks for listening.",
         emotion: 'affirming',
         interaction: 'bloom',
         variation_id: 'summary_v1',
@@ -1805,7 +1805,7 @@ export const alexDialogueNodes: DialogueNode[] = [
       // Loyalty Experience trigger - only visible at high trust + exploring pattern
       {
         choiceId: 'offer_honest_course_help',
-        text: "[Explorer's Curiosity] Alex, you mentioned wanting to teach what you've learned. What if we built that course together?",
+        text: "[Explorer's Curiosity] You want to teach this. Want to build the course together?",
         nextNodeId: 'alex_loyalty_trigger',
         pattern: 'exploring',
         skills: ['curiosity', 'collaboration'],
@@ -1824,7 +1824,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     nodeId: 'alex_loyalty_trigger',
     speaker: 'Alex',
     content: [{
-      text: "You want to build it together?\n\nI've been drafting the outline. \"The Honest Course: What They Don't Teach You About Supply Chains.\" No certificates. No shortcuts. Just real talk about what it takes to move things from Point A to Point B without lying to yourself.\n\nBut here's the problem. I know logistics. I don't know teaching. Don't know curriculum design. Don't know how to structure learning so people actually retain it.\n\nAnd if I launch something half-baked, I'm just another person selling shortcuts. Exactly what I'm trying to counter.\n\nYou understand exploring and discovering. You ask good questions. Would you... help me build this course the right way?",
+      text: "Build it together? Good.",
       emotion: 'anxious_hopeful',
       variation_id: 'loyalty_trigger_v1',
       richEffectContext: 'warning'
@@ -1870,7 +1870,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     nodeId: 'alex_loyalty_declined',
     speaker: 'Alex',
     content: [{
-      text: "Trust the process. Yeah.\n\nI've been overthinking it. Trying to make it perfect before I start. Classic mistake.\n\nI know how to learn by doing. I can teach by doing too. Iterate. Get feedback. Improve.\n\nThanks for the reminder. Sometimes you need someone to tell you to just start moving.",
+      text: "Trust the process.",
       emotion: 'resolved',
       variation_id: 'loyalty_declined_v1'
     }],
@@ -1898,7 +1898,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     nodeId: 'alex_loyalty_start',
     speaker: 'Alex',
     content: [{
-      text: "Real learning. No shortcuts. That's exactly it.\n\nOkay. Let's build this together. You bring the questions. I'll bring the supply chain war stories.\n\nThe Honest Course. Let's make it something worth showing up for.",
+      text: "Real learning. No shortcuts.",
       emotion: 'excited_determined',
       variation_id: 'loyalty_start_v1'
     }],
@@ -1926,7 +1926,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     ],
     content: [
       {
-        text: "You think in systems. Analytical and constructive.\n\nSupply chain managers work like that. Orchestrators of movement. Making sure everything arrives where it needs to be.\n\nIn a world where everything connects, that thinking is gold.",
+        text: "You think in systems.",
         emotion: 'appreciative',
         variation_id: 'career_logistics_v1'
       }
@@ -1959,7 +1959,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     ],
     content: [
       {
-        text: "You've got this way of analyzing things. Patient, thorough. Finding the patterns.\n\nOperations analysts do that. Efficiency experts who see what others miss. Finding the hidden improvements.\n\nThat combination of analysis and patience? Rare and valuable.",
+        text: "You've got this way of analyzing things.",
         emotion: 'impressed',
         variation_id: 'career_operations_v1'
       }
@@ -1987,7 +1987,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     },
     content: [
       {
-        text: "I optimize routes for a living. Getting things from A to B as efficiently as possible.\\n\\nBut this station doesn't have routes. Or if it does, they change based on who's walking them.",
+        text: "I optimize routes for a living.",
         emotion: 'puzzled',
         variation_id: 'mystery_hint_v1'
       },
@@ -2019,7 +2019,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'alex',
     content: [
       {
-        text: "Ha. Fair point. Maybe the metric here isn't time or distance. Maybe it's... meaning?\\n\\nGod, that sounds soft. But I'm starting to think it might be true.",
+        text: "Ha.",
         emotion: 'vulnerable',
         variation_id: 'mystery_response_v1'
       }
@@ -2043,7 +2043,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     nodeId: 'alex_sim3_curriculum_intro',
     speaker: 'Alex',
     content: [{
-      text: "Alright. Final scenario. This one's about design.\n\nYou're building a new learning program. Not a bootcamp. Not a certification factory. A real learning experience.\n\nYour target: Birmingham high school students exploring tech careers.\n\nYou have two temptations:\n\n1. **The Credential Path**: Structure it like existing bootcamps. Clear modules, tests, certificates. Looks good on LinkedIn. Gets hired. But kills curiosity.\n\n2. **The Exploration Path**: No tests, no certificates. Pure project-based learning. Students build whatever excites them. High engagement, but no 'proof' for employers.\n\nMost programs pick one. Bootcamps pick credentials. Progressive schools pick exploration.\n\nBut what if there's a third way? What if you could design for BOTH genuine learning AND employability?\n\nHow would you structure it?",
+      text: "Final scenario: design a 12-week tech program for Birmingham high school students. Trap one: credential-heavy track.",
       emotion: 'teaching_challenging',
       variation_id: 'sim3_intro_v1'
     }],
@@ -2116,7 +2116,7 @@ How do you design for genuine learning AND employability?`,
     nodeId: 'alex_sim3_success',
     speaker: 'Alex',
     content: [{
-      text: "Micro-credentials. Yes.\n\nHere's how it works:\n\n**Week 1-2**: Students explore freely. Build whatever interests them. No pressure.\n\n**Week 3**: They demonstrate ONE skill they actually used. Not from a test. From their project.\n\nExample: \"I used Git to collaborate with my teammate. Here's my commit history. Here's the merge conflict I resolved.\"\n\nBadge earned: 'Version Control - Demonstrated in Context'\n\n**The magic**: The badge isn't for completing a module. It's for USING the skill in a real project.\n\nEmployers see the badge. They also see the project. Both matter.\n\nStudents stay curious because they're building what they want. But they're also building a credential portfolio that proves real capability, not test scores.\n\nBest of both worlds. You design for learning THROUGH making. The credentials are evidence, not the goal.\n\nThat's it. That's the design pattern that escapes the bootcamp trap.\n\nMost people never figure this out. They think it's either/or.\n\nYou just proved it's AND.",
+      text: "Micro-credentials. Yes.",
       emotion: 'proud_inspired_breakthrough',
       interaction: 'bloom',
       variation_id: 'sim3_success_v1',
@@ -2141,7 +2141,7 @@ How do you design for genuine learning AND employability?`,
     nodeId: 'alex_sim3_partial',
     speaker: 'Alex',
     content: [{
-      text: "Portfolios. I love the instinct. Real work beats paper credentials.\n\nBut here's the problem: employers don't know how to evaluate portfolios. Especially for entry-level candidates.\n\nTwo students apply:\n1. Portfolio with 3 half-finished projects\n2. Certificate from a recognized bootcamp\n\nWhich one gets the interview? The certificate. Every time.\n\nNot because it's better. Because it's legible. HR departments have rubrics for certificates. They don't have rubrics for 'showed genuine curiosity.'\n\nSo portfolios alone won't solve this. You need BOTH the real work AND the legible proof.\n\nWhat if you did micro-credentials? Students build real projects (portfolio) and earn skill badges (credential) by demonstrating what they learned IN context?\n\nSee the difference? You're not choosing between learning and employability. You're designing for both.",
+      text: "Portfolios are real work, yes. But many employers cannot evaluate them for entry-level hiring, so certificates still win interviews because they are legible.",
       emotion: 'patient_teaching',
       variation_id: 'sim3_partial_v1'
     }],
@@ -2163,7 +2163,7 @@ How do you design for genuine learning AND employability?`,
     nodeId: 'alex_sim3_fail',
     speaker: 'Alex',
     content: [{
-      text: "Dual track. Exploration for the curious, certification for the practical.\n\nHere's what happens: Students self-select into tracks. The 'explorers' feel superior. The 'certifiers' feel behind.\n\nWorst of both worlds.\n\nThe explorers build cool projects but have no way to prove their skills to employers. The certifiers get jobs but lose their curiosity along the way.\n\nYou've recreated the problem you were trying to solve—just within one program instead of across the industry.\n\nThe goal isn't to offer both paths. It's to INTEGRATE them.\n\nWhat if credentials weren't separate from exploration? What if students earned badges by demonstrating skills WITHIN their self-directed projects?\n\nNo dual track. One path. Learning through making. Credentials as evidence, not as goal.\n\nSee how that's different?",
+      text: "Dual tracks split students into identities: 'explorers' and 'certifiers. ' Then both lose something.",
       emotion: 'firm_teaching',
       variation_id: 'sim3_fail_v1',
       richEffectContext: 'error'
@@ -2269,7 +2269,7 @@ How do you design for genuine learning AND employability?`,
     }],
     choices: [{
       choiceId: 'alex_recovery_complete',
-      text: "(Continue)",
+      text: "Proceed.",
       nextNodeId: 'alex_hub_return',
       pattern: 'patience'
     }],

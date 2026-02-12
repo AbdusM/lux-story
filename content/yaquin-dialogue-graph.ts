@@ -19,7 +19,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: "Shhh. The static... it's thinning.\n\nCan you hear it? The Star Song. It's in the key of G minor today.",
+        text: "Shhh.",
         emotion: 'mystical',
         variation_id: 'yaquin_intro_elder_v2_minimal',
         richEffectContext: 'warning',
@@ -99,7 +99,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: "Textbook says 'mix 45 seconds.' Do that? Sets in the bowl. Mold ruined.\n\n8 years experience. Know the paste feel. Know patient fear.\n\nBooks don't teach that.",
+        text: "Textbook says 'mix 45 seconds. ' Do that?",
         emotion: 'focused',
         interaction: 'nod',
         variation_id: 'textbook_v2_minimal',
@@ -159,7 +159,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: "'Just' an assistant. No dental school.\n\nBut dentists ask me about difficult patients. Ask me to train new hires.\n\nDoing the work. No paper.",
+        text: "'' an assistant.",
         emotion: 'vulnerable',
         interaction: 'small',
         variation_id: 'credential_v2_minimal',
@@ -290,7 +290,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: "87. Right.|Before the videos? Zero. Eight years doing the work. Nobody asking questions. Nobody learning from the mistakes I already made.|Now 87 people want to know what I know.",
+        text: "87. Right.",
         emotion: 'reflective',
         variation_id: 'encouraged_v1',
         useChatPacing: true,
@@ -311,7 +311,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'continue_encouraged',
-        text: "[Continue]",
+        text: "Encourage the vision.",
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'patience'
       }
@@ -323,7 +323,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: "The dentists? Good question.|They watch but don't comment. Think they're embarrassed? Like admitting they don't know something basic.",
+        text: "The dentists?",
         emotion: 'curious',
         variation_id: 'explored_v1',
         useChatPacing: true,
@@ -344,7 +344,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'continue_explored',
-        text: "[Continue]",
+        text: "Explore the next step.",
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'patience'
       }
@@ -356,7 +356,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     speaker: 'Yaquin',
     content: [
       {
-        text: "Build WITH them?|Never thought of it like that. Always felt like I teach, they learn. One direction.",
+        text: "Build WITH them?",
         emotion: 'surprised',
         variation_id: 'community_v1',
         useChatPacing: true,
@@ -377,7 +377,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'continue_community',
-        text: "[Continue]",
+        text: "Build it with community.",
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'patience'
       }
@@ -535,7 +535,7 @@ Which opening sells the VALUE of practical experience?`,
     content: [
       {
         // NOTE: Removed filming process and "head in hands" - dialogue carries the failure without choreography
-        text: "'Hello class. Today. 19th century forceps.'|'Bored watching myself. Nobody pays $50 for this. Sound like professors I hated.'",
+        text: "'Hello class.",
         emotion: 'heavy',
         interaction: 'small',
         variation_id: 'fail_boring_v1',
@@ -603,7 +603,7 @@ Which opening sells the VALUE of practical experience?`,
     speaker: 'Yaquin',
     content: [
       {
-        text: "You're nervous. Drill's loud. Watch my eyes. Breathe with me.\n\nAll day. Don't fix teeth. fix fear. That's what I'm selling.",
+        text: "You're nervous. Drill's loud.",
         emotion: 'inspired',
         interaction: 'bloom',
         variation_id: 'success_psych_v1',
@@ -709,7 +709,7 @@ Which opening sells the VALUE of practical experience?`,
         // TODO: [VFX] Screen flash, comment notification pop
         // TODO: [MUSIC] Triumphant swell, achievement fanfare
         // NOTE: Removed "hits button" - action implicit from "Live"
-        text: "Live.|First comment: 'Finally someone explains mixing ratio!'|Doing it. Actually doing it. Teacher.",
+        text: "Live.",
         emotion: 'excited',
         interaction: 'big',
         variation_id: 'launched_v1',
@@ -741,7 +741,7 @@ Which opening sells the VALUE of practical experience?`,
     speaker: 'Yaquin',
     content: [
       {
-        text: "Smart. Brand name. 'Dental Ninja.' Build trust, then sell.|Safer. Still forward.|Thank you. Kept me from reckless mistake.",
+        text: "Smart. Brand name.",
         emotion: 'relieved',
         interaction: 'nod',
         variation_id: 'audience_v1',
@@ -771,7 +771,7 @@ Which opening sells the VALUE of practical experience?`,
     speaker: 'Yaquin',
     content: [
       {
-        text: "Yeah. Back to school. Get degree. Maybe then people listen.|Nice fantasy. Just an assistant.|Thanks for listening.",
+        text: "Yeah.",
         emotion: 'heavy',
         interaction: 'small',
         variation_id: 'bad_ending_v1',
@@ -781,7 +781,7 @@ Which opening sells the VALUE of practical experience?`,
     choices: [
       {
         choiceId: 'yaquin_leave_bad',
-        text: "...",
+        text: "Pause and step back.",
         nextNodeId: samuelEntryPoints.YAQUIN_REFLECTION_GATEWAY,
         pattern: 'patience',
         visibleCondition: {
@@ -804,7 +804,7 @@ Which opening sells the VALUE of practical experience?`,
     speaker: 'Yaquin',
     content: [
       {
-        text: "Nobody ever sat with me like this. Through the fear.\n\nMy father wanted me to be a dentist. Real dentist. With degree. When I said I was 'just' assistant, he didn't talk to me for a month.\n\nPublishing this means telling the world I'm good enough. Without the paper. Without his approval.\n\nYou being here. It helps. Really helps.\n\nTogether?",
+        text: "Nobody ever sat with me like this. Through the fear.",
         emotion: 'vulnerable_hopeful',
         interaction: 'bloom',
         variation_id: 'interrupt_encouragement_v1',
@@ -928,7 +928,7 @@ Which opening sells the VALUE of practical experience?`,
     speaker: 'Yaquin',
     content: [
       {
-        text: "Lot of editing ahead.|See Samuel? Tell him. class is in session.",
+        text: "Lot of editing ahead.",
         emotion: 'proud',
         interaction: 'nod',
         variation_id: 'farewell_v1',
@@ -1138,7 +1138,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_p2_credibility_response',
     speaker: 'Yaquin',
     content: [{
-      text: "Ignore Dr. Chen. Or.\n\nInvite her to review? Add as credentialed advisor?\n\nOr respond publicly: 'Not a DDS. 40 hours/week doing actual work. Students need both perspectives.'\n\nDefend ground or acknowledge gap?",
+      text: "Ignore Dr. Chen.",
       emotion: 'analytical',
       interaction: 'nod',
       variation_id: 'credibility_v1',
@@ -1272,7 +1272,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_p2_scaling_choice',
     speaker: 'Yaquin',
     content: [{
-      text: "Keep self-paced for motivated learners. Add cohort 'Dental Mastery'. 8 weeks, live, small groups. Maybe reach out to Dr. Chen. Co-teach advanced modules.\n\nNot about perfect. Serving students where they are. Some need independence. Some need structure. Why not both?",
+      text: "Keep self-paced for motivated learners.",
       emotion: 'focused',
       interaction: 'nod',
       variation_id: 'scaling_choice_v1',
@@ -1296,7 +1296,7 @@ Which opening sells the VALUE of practical experience?`,
     content: [{
       // TODO: [SFX] Success notification chimes, positive metrics sounds
       // TODO: [VFX] Green upward arrows on metrics, growth visualization
-      text: "Two weeks later. Implemented changes:\n- Cohort program: 24 students @ $1,497\n- Self-paced: office hours, forum\n- Refunds: approved 8, denied 7\n- Dr. Chen: reviewing curriculum (for fee)\n\nRevenue up. Completion up. Refunds down.\n\nMore important? Learning business, not just teaching skill.",
+      text: "Two weeks later.",
       emotion: 'proud',
       interaction: 'bloom',
       variation_id: 'implementation_v1',
@@ -1340,7 +1340,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_p2_dds_outcome',
     speaker: 'Yaquin',
     content: [{
-      text: "Dr. Chen reviewed curriculum. Tore apart. 'Outdated. Wrong. Too simplified.' Brutal.\n\nShe was right. Updated everything.\n\nThen: 'Missing the why. Teach how, but students need why.'\n\nNow paid consultant. Reviews content. Cited as clinical advisor.\n\nCritics become collaborators if humble enough to listen.",
+      text: "Dr.",
       emotion: 'proud',
       interaction: 'bloom',
       variation_id: 'dds_outcome_v1',
@@ -1384,7 +1384,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_p2_reflection',
     speaker: 'Yaquin',
     content: [{
-      text: "Started. assistant who thought textbooks garbage.|Now. creator who knows content is 20%.|Other 80%? Operations. Strategy. Communication. Resilience.|200+ students. Some finish. Some quit. Bad reviews.|Okay with that.|Because who succeed? Know things textbooks never taught.|Just like I did.",
+      text: "Started.",
       emotion: 'proud',
       interaction: 'bloom',
       variation_id: 'reflection_v1',
@@ -1406,7 +1406,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_p2_complete',
     speaker: 'Yaquin',
     content: [{
-      text: "For being here when messy.|Cohort Monday. Twenty students. Live sessions. Real teaching.|See Samuel? Tell him. building business that teaches.",
+      text: "For being here when messy. |Cohort Monday.",
       emotion: 'grateful',
       interaction: 'nod',
       variation_id: 'complete_v1',
@@ -1438,7 +1438,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_asks_player',
     speaker: 'Yaquin',
     content: [{
-      text: "Biggest challenge?|Scaling. How teach 200 students same quality as 20?|But you. what's your challenge?|You help people. But who helps you figure out your path?",
+      text: "Biggest challenge?",
       emotion: 'curious_engaged',
       interaction: 'nod',
       variation_id: 'yaquin_reciprocity_v1',
@@ -1447,7 +1447,7 @@ Which opening sells the VALUE of practical experience?`,
     choices: [
       {
         choiceId: 'player_challenge_uncertainty',
-        text: "My challenge is uncertainty. I help others find their path, but I'm still searching for mine. It's hard to guide when you're lost yourself. sometimes I feel like a fraud, pointing directions I haven't walked.",
+        text: "My challenge is uncertainty. I guide others, but I'm still searching for my own path.",
         nextNodeId: 'yaquin_reciprocity_response',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'communication']
@@ -1461,14 +1461,14 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'player_challenge_impostor',
-        text: "Standing in front of people who've been here longer. Who know more. Wondering why they listen to me.",
+        text: "Standing before experts, wondering why they should trust me.",
         nextNodeId: 'yaquin_reciprocity_response',
         pattern: 'analytical',
         skills: ['emotionalIntelligence', 'criticalThinking']
       },
       {
         choiceId: 'player_challenge_patience',
-        text: "Planting seeds I won't see grow. Community takes generations. I want to see it bloom now.",
+        text: "Planting seeds I'll never see bloom. Community change moves slowly.",
         nextNodeId: 'yaquin_reciprocity_response',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'emotionalIntelligence']
@@ -1480,7 +1480,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_reciprocity_response',
     speaker: 'Yaquin',
     content: [{
-      text: "Know that feeling.|But you here. Helping. That's path.|Not about having all answers.|About showing up when messy.|You doing that.|See Samuel. Tell him Yaquin says you ready.",
+      text: "Know that feeling. |But you here.",
       emotion: 'affirming',
       interaction: 'nod',
       variation_id: 'yaquin_response_v1',
@@ -1561,7 +1561,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_simulation_phase_1',
     speaker: 'Yaquin',
     content: [{
-      text: "**Review from Dr. Patricia Lam, DDS:**\n'This course teaches outdated impression techniques. The 45-second mixing time is WRONG for modern alginate formulations. Students following this could compromise patient safety. 1 star.'\n\n**Review from DentalTech_Mike:**\n'Great practical tips but the anatomy section has errors. Tooth numbering inconsistent between modules. Fix this.'\n\n**Review from Anonymous:**\n'Yaquin isn't a real dentist. Why am I taking advice from an assistant? Refund requested.'\n\nThree different problems. One is technical accuracy. One is production quality. One is about me. Who I am.\n\nWhich one do I address first?",
+      text: "**Review from Dr. Patricia Lam, DDS:**\n\"Outdated impression guidance. The 45-second alginate mix time is wrong for modern formulations. This can risk patient safety.\"\n\n**Review from DentalTech_Mike:**\n\"Practical tips, but anatomy labels conflict between modules.\"\n\n**Review from Anonymous:**\n\"Why trust advice from an assistant, not a dentist? Refund requested.\"\n\nThree problems: technical accuracy, production quality, and credibility.\n\nWhich do I fix first?",
       emotion: 'conflicted',
       variation_id: 'phase1_v1',
       useChatPacing: true
@@ -1592,7 +1592,7 @@ Which opening sells the VALUE of practical experience?`,
     choices: [
       {
         choiceId: 'phase1_technical_first',
-        text: "Address Dr. Lam's technical concern first. If she's right, fix it. If she's wrong, defend with evidence.",
+        text: "Address Dr. Lam's technical critique first: verify, fix, or defend with evidence.",
         nextNodeId: 'yaquin_simulation_phase_2',
         pattern: 'analytical',
         skills: ['criticalThinking', 'integrity'],
@@ -1604,7 +1604,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'phase1_credential_first',
-        text: "Address the credential attack first. If you don't own your expertise, the other criticisms hit harder.",
+        text: "Address credentials first. If you own your expertise, other critiques weaken.",
         nextNodeId: 'yaquin_simulation_phase_2',
         pattern: 'building',
         skills: ['courage', 'communication'],
@@ -1644,7 +1644,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_simulation_phase_2',
     speaker: 'Yaquin',
     content: [{
-      text: "Okay. The technical one. Dr. Lam.\n\nI looked up her claim. She's right about one thing. Modern alginate brands vary. Some set in 30 seconds. Some in 60. My '45 seconds' was based on the brand I used for eight years.\n\nBut here's the thing. I also taught texture cues. 'When it stops being shiny, it's ready.' That works for ANY brand.\n\nHow do I respond? Admit I was wrong? Defend my approach? Both?",
+      text: "Phase two is harder: positioning. You are not selling information; you are offering transformation. Pick the message that speaks to pain, trust, and practical next steps.",
       emotion: 'analytical',
       variation_id: 'phase2_v1',
       useChatPacing: true
@@ -1721,7 +1721,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_simulation_success',
     speaker: 'Yaquin',
     content: [{
-      text: "<bloom>That's it.</bloom>\n\nAcknowledge what's true. Stand by what's still valid. Improve based on feedback.\n\n'Dr. Lam, thank you for this feedback. You're absolutely right. Timing varies by brand, and I should have included a comparison chart. I'll update Module 1 this week. However, the texture-based method remains the core skill because it's brand-agnostic. I learned this from 8 years of chair-side work. Perhaps we could collaborate on a more comprehensive timing guide? Your clinical expertise would strengthen the course.'\n\nNot defensive. Not doormat. Professional.\n\nThe anonymous attacker? I'm not responding. Can't win that fight. But the students watching? They'll see how I handle legitimate criticism.\n\nThat's the real review. How I respond when challenged.",
+      text: "<bloom>That's it.</bloom>\n\nAcknowledge what is true, stand by what still works, then improve.\n\nI can thank Dr. Lam, add the missing comparison chart this week, keep the texture method as core, and invite collaboration.\n\nThat's professional, not defensive.\n\nI won't engage anonymous attacks; I will model how to respond to legitimate critique.\n\nStudents are watching that behavior more than the argument.",
       emotion: 'confident',
       interaction: 'bloom',
       variation_id: 'success_v1',
@@ -1762,7 +1762,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_simulation_fail',
     speaker: 'Yaquin',
     content: [{
-      text: "Posted the response. Waited.\n\nMinutes pass. Then more reviews flood in.\n\n'Can't even take feedback.'\n'This is why I don't trust non-credentialed instructors.'\n'Dr. Lam is right. Unsubscribed.'\n\nMade it worse. Way worse.\n\nI reacted instead of responded. Let the fear drive. Now I've given them ammunition.\n\nCan we try again? Different approach?",
+      text: "Posted the response. Waited.",
       emotion: 'devastated',
       interaction: 'small',
       variation_id: 'fail_v1',
@@ -1796,7 +1796,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_simulation_aftermath',
     speaker: 'Yaquin',
     content: [{
-      text: "A week later. Dr. Lam responded. Publicly.\n\n'Impressed by how Yaquin handled this feedback. Rare to see an educator acknowledge gaps AND stand by their methodology. I'd be happy to review the timing chart. This is how professional development should work.'\n\nFive new five-star reviews. All mentioning the exchange.\n\n'This is how a teacher should respond to criticism.'\n'Bought the course BECAUSE of how he handled Dr. Lam.'\n'Integrity matters more than perfection.'\n\nThe worst review became the best marketing.\n\nNot because I won the argument. Because I didn't make it a fight.\n\nThat's what eight years of patient care taught me. Not how to be right. How to listen. How to grow. How to stay open when it hurts.\n\nThat's the real curriculum. The one textbooks can't teach.",
+      text: "A week later Dr. Lam replied publicly: impressed by the response and open to collaborate.",
       emotion: 'proud_reflective',
       interaction: 'nod',
       variation_id: 'aftermath_v1',
@@ -1832,7 +1832,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_simulation_insight',
     speaker: 'Yaquin',
     content: [{
-      text: "The real curriculum.\n\nAll this time, I thought I was teaching dental skills. Mixing paste. Calming patients. Reading cues.\n\nBut the students who stay? The ones who thrive? They're not just learning technique.\n\nThey're learning how to learn. How to take criticism. How to grow without breaking.\n\nDr. Lam taught me that. In public. Painfully. And now 200 students got to watch me learn it.\n\nMaybe that's worth more than perfect content. A teacher who models growth.\n\nThank you. For helping me see it.\n\nSee Samuel. Tell him the curriculum expanded today.",
+      text: "The real curriculum isn't just dental technique. Students who stay are learning how to learn, take criticism, and grow without breaking.",
       emotion: 'grateful_enlightened',
       interaction: 'bloom',
       variation_id: 'insight_v1',
@@ -1872,7 +1872,7 @@ Which opening sells the VALUE of practical experience?`,
     },
     content: [
       {
-        text: "I build learning platforms. Adaptive ones that respond to how users interact.\\n\\nThis station reminds me of my best work. Except I didn't build this, and it's way more sophisticated.",
+        text: "I build learning platforms.",
         emotion: 'amazed',
         variation_id: 'mystery_hint_v1'
       },
@@ -1904,7 +1904,7 @@ Which opening sells the VALUE of practical experience?`,
     speaker: 'yaquin',
     content: [
       {
-        text: "That's exactly it. The curriculum is us. Our choices, our conversations, our growth.\\n\\nWhoever designed this place... they understood something profound about how people change.",
+        text: "That's exactly it.",
         emotion: 'respectful',
         variation_id: 'mystery_response_v1'
       }
@@ -2031,7 +2031,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_loyalty_trigger',
     speaker: 'Yaquin',
     content: [{
-      text: "Need to ask you something.\n\nThe course is ready. Everything. Videos edited. Platform tested. Payment system working.\n\nBut it's sitting there. Unpublished. Private.\n\nEvery time I move the cursor to 'Publish,' I freeze.\n\nWhat if nobody enrolls? What if they do enroll and it's not good enough? What if I'm not good enough?\n\nMy father's voice: 'Just an assistant.' Dr. Chen's review: 'Amateur hour.'\n\nBut you've been here through all of this. Through the doubt, the revision, the fear.\n\nWill you be there when I hit publish? Like... moral support? I think I need someone in the room when it goes live.",
+      text: "Launch week is here, and I am split between shipping fast.",
       emotion: 'vulnerable_anxious',
       variation_id: 'loyalty_trigger_v1',
       useChatPacing: true
@@ -2062,7 +2062,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_loyalty_declined',
     speaker: 'Yaquin',
     content: [{
-      text: "You're right. This is my step.\n\nThank you. For everything up to here. I'll let you know when it's live.",
+      text: "You're right.",
       emotion: 'resolved',
       variation_id: 'declined_v1',
       useChatPacing: true
@@ -2084,7 +2084,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_loyalty_start',
     speaker: 'Yaquin',
     content: [{
-      text: "[He opens his laptop. The dashboard is loaded. Everything is ready.]\n\n\"Price: $497. 40 hours of content. 8 weeks of support.\"\n\n[His cursor hovers over the 'Make Course Public' button.]\n\n\"Wait. Should I review the intro video one more time? Maybe the lighting's off. Or the audio levels. Or—\"",
+      text: "[He opens his laptop.",
       emotion: 'anxious',
       variation_id: 'start_v1',
       useChatPacing: true
@@ -2127,7 +2127,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_loyalty_choice',
     speaker: 'Yaquin',
     content: [{
-      text: "[He closes his eyes. Takes a breath.]\n\n\"You're right. This isn't about the video.\n\nIt's about what happens after. Once it's public, I can't take it back. I'm claiming something. 'I am a teacher. I have something worth $497.'\n\nEight years I've been 'just an assistant.' Publishing this means I'm not 'just' anything anymore.\n\nThat's terrifying.\"",
+      text: "[He closes his eyes. Takes a breath.",
       emotion: 'vulnerable',
       variation_id: 'choice_v1',
       useChatPacing: true
@@ -2162,7 +2162,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_loyalty_perfectionist',
     speaker: 'Yaquin',
     content: [{
-      text: "[He clicks back into the intro video. Watches it. Pauses. Rewinds. Watches again.]\n\n\"The lighting IS a bit yellow. And I stumble over the word 'alginate' at 2:14.\"\n\n[He opens the editing software.]\n\n\"Just... just let me fix this one thing. Then I'll publish. Promise.\"\n\n[Hours pass. The sun sets. The laptop screen glows in the dark.]\n\n\"Maybe tomorrow. When I'm fresh. When it's perfect.\"",
+      text: "[He clicks back into the intro video. Watches it.",
       emotion: 'defeated',
       variation_id: 'perfectionist_v1',
       richEffectContext: 'error',
@@ -2185,7 +2185,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_loyalty_partial',
     speaker: 'Yaquin',
     content: [{
-      text: "[One week later. You get a text.]\n\n\"Published it today. Took the week to fix a few things. Added a welcome email sequence. Recorded a bonus module.\n\nThree enrollments in the first hour. Real people. Paying $497. For my teaching.\n\nOne of them left a comment: 'Finally, someone who gets it.'\n\nStill scared. But it's out there. It's real.\n\nThank you for giving me permission to wait. To make it right before putting it in the world.\"",
+      text: "[A week later, you get a text.",
       emotion: 'grateful_relieved',
       variation_id: 'partial_v1',
       richEffectContext: 'success',
@@ -2210,7 +2210,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_loyalty_success',
     speaker: 'Yaquin',
     content: [{
-      text: "[His hand moves to the mouse. Hovers over the button.]\n\n\"Together?\"\n\n[You nod.]\n\n[Click.]\n\n[The page refreshes. 'Course Status: LIVE' appears in green.]\n\n[He stares at it. Silent. Then—]\n\n\"I did it. It's live. The Real Dental Assistant. By Yaquin.\"\n\n[A notification pops up: 'New Enrollment: Sarah M.']\n\n[Another: 'New Enrollment: James K.']\n\n[Another: 'New Enrollment: Patricia L.']\n\n\"Three people. In two minutes. Three people who think what I know is worth learning.\"\n\n[He looks at you. Eyes wet.]\n\n\"Not 'just an assistant.' Not anymore. Teacher. Creator. Educator.\n\nI'm claiming it. Right now. With you as witness.\n\nThis is what I am. What I've been. What I'll keep being.\n\nThank you. For being here when it mattered most.\"",
+      text: "[His hand hovers over Publish. ] \"Together?",
       emotion: 'triumphant_grateful',
       variation_id: 'success_v1',
       richEffectContext: 'success',

@@ -22,7 +22,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     speaker: 'Jordan Packard',
     content: [
       {
-        text: "Stand up. Look around you. See that? Not a crowd.\n\nThat is potential energy waiting for a spark.\n\nWe don't need permission to fix the vents. Just need enough hands.\n\nYou. You've got hands. In or out?",
+        text: "Stand up.",
         emotion: 'friendly_but_anxious',
         variation_id: 'jordan_intro_v3_minimal',
         patternReflection: [
@@ -149,7 +149,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_handshake_layout',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Actually, forget the speech. Look at this floor plan. They put the high-voltage demo next to the hydration station. Classic disaster.",
+      text: ", forget the speech.",
       emotion: 'focused',
       variation_id: 'jordan_handshake_intro',
       interaction: 'ripple'
@@ -195,7 +195,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     speaker: 'Jordan Packard',
     content: [
       {
-        text: "Mentorship panel. Thirty students trying to break into tech.\n\nShare my 'journey' and advice.\n\nRewrote this six times. What do you tell people when your path looks like mine?",
+        text: "Mentorship panel.",
         emotion: 'uncertain',
         variation_id: 'jordan_career_v2',
         patternReflection: [
@@ -308,7 +308,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_1',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Alabama A&M. Computer science major. One semester.\n\nRecruited by a startup. 'The next big thing.'\n\nFolded in eight months. No degree. No job. No plan.\n\nTwenty years old. Back with my mom. She kept asking when I'd go back to school.",
+      text: "Alabama A&M.",
       emotion: 'rueful',
       variation_id: 'jordan_job1_v2',
       patternReflection: [
@@ -419,7 +419,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_2',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Selling phones at the Galleria. Those kiosks where you chase people speed-walking past.\n\nHumbling.\n\nBut I learned to read people in three seconds. Ask questions that made them feel heard.\n\nCustomer service is applied empathy.",
+      text: "Selling phones at the Galleria.",
       emotion: 'reflective',
       variation_id: 'jordan_job2_v2',
       voiceVariations: {
@@ -533,7 +533,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_3',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Got restless. Taught myself graphic design. YouTube. Library books. Freelance work.\n\nWasn't great at first.\n\nBut I learned visual hierarchy. How eyes move. How color creates emotion.",
+      text: "Got restless. Taught myself graphic design.",
       emotion: 'nostalgic',
       variation_id: 'jordan_job3_v2'
     }],
@@ -609,7 +609,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_pattern_acknowledgment',
     speaker: 'Jordan Packard',
     content: [{
-      text: "You're really following along. Most people zone out by job three.\n\nEyes glaze over. Polite nods.\n\nBut you're actually listening. Means a lot.",
+      text: "You're following along.",
       emotion: 'appreciative',
       variation_id: 'jordan_acknowledgment_v2',
       voiceVariations: {
@@ -623,7 +623,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'jordan_continue_jobs',
-        text: "(Continue)",
+        text: "Let Jordan continue.",
         nextNodeId: 'jordan_job_reveal_4',
         pattern: 'patience',
         visibleCondition: {
@@ -640,7 +640,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_4',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Small marketing firm downtown. Finally a 'real' job. Benefits and everything.\n\nSocial media management, campaign planning.\n\nIt was fine. But I liked making things more than talking about other people's things.",
+      text: "Small marketing firm downtown.",
       emotion: 'contemplative',
       variation_id: 'jordan_job4_1'
     }],
@@ -701,7 +701,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'jordan_continue_after_pause',
-        text: "(Continue)",
+        text: "Stay with the memory.",
         nextNodeId: 'jordan_job_reveal_5',
         pattern: 'patience',
         visibleCondition: {
@@ -718,7 +718,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_5',
     speaker: 'Jordan Packard',
     content: [{
-      text: "This is where it gets weird. Quit to become a personal trainer.\n\nTrainers are motivation psychologists. Designing experiences that make people believe they can do hard things.\n\nExperience design. User motivation. Didn't have the language yet.",
+      text: "This is where it gets weird.",
       emotion: 'animated',
       variation_id: 'jordan_job5_v2'
     }],
@@ -796,7 +796,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     nodeId: 'jordan_job_reveal_6',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Started driving for Uber on the side.\n\nBest education in Birmingham I ever got. Every neighborhood, every traffic pattern. Logistics. Route optimization.\n\nAnd hundreds of conversations. Everyone's going somewhere.",
+      text: "Started driving for Uber on the side.",
       emotion: 'thoughtful',
       variation_id: 'jordan_job6_1'
     }],
@@ -918,7 +918,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     speaker: 'Jordan Packard',
     content: [{
       // NOTE: Removed "Jordan sighs, deleting..." - frustration conveyed through dialogue
-      text: "We tried that. A/B tested ten different button styles. It didn't move the needle a single percent.\n\nIt's not about the pixels. It's deeper than that. If I can't figure this out, maybe I'm a graphic designer pretending to be UX.",
+      text: "We tried that.",
       emotion: 'frustrated',
       variation_id: 'ux_fail_visuals_v1',
       richEffectContext: 'error'
@@ -955,7 +955,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     speaker: 'Jordan Packard',
     content: [{
       // NOTE: Removed "She taps the screen" - insight emphasized through dialogue structure
-      text: "Exactly. It wasn't a software bug. It was a human bug.\n\nThey needed encouragement, not data entry.\n\nThat's when I realized:\nUser research? That's customer service listening.\nWireframing? That's graphic design.\nMotivation loops? That's personal training.\n\nI've been training for this job my whole life.",
+      text: "Exactly.",
       emotion: 'triumphant',
       variation_id: 'job7_insight_v1',
       richEffectContext: 'success',
@@ -1035,7 +1035,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_mentor_context',
     speaker: 'Jordan Packard',
     content: [{
-      text: "You see the pattern. I can see it too. Intellectually.\n\nBut when I'm alone? Seven jobs. Twelve years. Someone who couldn't stick.\n\nThe story makes sense. The feeling doesn't match.",
+      text: "You see the pattern. I can see it too.",
       emotion: 'vulnerable',
       variation_id: 'jordan_mentor_1_pt1',
       richEffectContext: 'thinking'
@@ -1043,7 +1043,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     choices: [
       {
         choiceId: 'continue_jordan_mentor',
-        text: "(Continue)",
+        text: "Hear the second half.",
         nextNodeId: 'jordan_mentor_context_pt2',
         pattern: 'patience'
       }
@@ -1055,7 +1055,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_mentor_context_pt2',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Thirty people at Career Day. Making huge bets on themselves. Time. Money. Hope.\n\nWhat do I tell them? That it's okay to fail six times first?",
+      text: "Thirty people at Career Day.",
       emotion: 'vulnerable',
       variation_id: 'jordan_mentor_1_pt2'
     }],
@@ -1076,7 +1076,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_student_question',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Last year. Different bootcamp. Student raised her hand.\n\n\"How do you know when to quit versus when to push through?\"\n\nI froze. Because I still don't know.",
+      text: "Last year.",
       emotion: 'haunted',
       variation_id: 'student_v1'
     }],
@@ -1097,7 +1097,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_impostor_voice',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Said something about trusting your gut. Sounded wise.\n\nFelt like a fraud.\n\nVoice in my head: \"Who are you to teach? You couldn't even keep one job.\"",
+      text: "Said something about trusting your gut.",
       emotion: 'raw',
       variation_id: 'impostor_v1',
       // E2-031: Interrupt opportunity when Jordan reveals impostor syndrome
@@ -1131,7 +1131,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_interrupt_acknowledged',
     speaker: 'Jordan Packard',
     content: [{
-      text: "You didn't argue with it. Didn't say \"you're not a fraud\" like everyone does.\n\nYou just... heard it. The voice. Without flinching.\n\nThat's different. Most people rush to fix impostor syndrome. You let it exist first.",
+      text: "You didn't argue with it.",
       emotion: 'seen',
       microAction: 'Their shoulders relax slightly.',
       variation_id: 'interrupt_v1'
@@ -1156,7 +1156,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_what_jobs_taught',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Yeah. I did.\n\nUX taught me people lie about what they want. Watch what they do.\n\nGym taught me motivation beats talent.\n\nMarketing taught me stories matter more than features.\n\nSeven jobs. Same lesson different ways: Pay attention. Adapt. Keep going.",
+      text: "Yeah.",
       emotion: 'realizing',
       variation_id: 'taught_v1'
     }],
@@ -1177,7 +1177,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_moment_clarity',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Wait.\n\nThose students. They're not betting on one path.\n\nThey're betting on themselves. To figure it out. To adapt when it doesn't work.\n\nMaybe that's what I tell them.",
+      text: "Wait.",
       emotion: 'energized',
       variation_id: 'clarity_v1'
     }],
@@ -1201,14 +1201,14 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_final_doubt',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Still scared though.\n\nThirty faces. Hoping I have answers.\n\nSpeech in twenty minutes.\n\nWhich version of this story do I tell?",
+      text: "Still scared though.",
       emotion: 'determined_anxious',
       variation_id: 'doubt_v1'
     }],
     choices: [
       {
         choiceId: 'jordan_doubt_to_ask',
-        text: "(Continue)",
+        text: "Let Jordan ask.",
         nextNodeId: 'jordan_asks_player',
         pattern: 'patience'
       }
@@ -1221,7 +1221,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_asks_player',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Can I ask you something? I've been talking about my path.\n\nHow do YOU deal with uncertainty? When you don't know if you're making the right choice?\n\nWhat do you do with that feeling?",
+      text: "Can I ask you something?",
       emotion: 'curious',
       variation_id: 'jordan_reciprocity_v1'
     }],
@@ -1239,7 +1239,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       },
       {
         choiceId: 'player_analyze_options',
-        text: "I break it down. Research every option, weigh pros and cons. Sometimes I get paralyzed by too much information.",
+        text: "I research every option and weigh tradeoffs, but I can get analysis-paralyzed.",
         nextNodeId: 'jordan_crossroads',
         pattern: 'analytical',
         skills: ['criticalThinking', 'problemSolving'],
@@ -1250,7 +1250,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       },
       {
         choiceId: 'player_ask_others',
-        text: "I talk to people. See how they handled similar situations. Their stories help me see possibilities I couldn't see alone.",
+        text: "I ask people who've faced this. Their stories show options I miss.",
         nextNodeId: 'jordan_crossroads',
         pattern: 'helping',
         skills: ['collaboration', 'communication'],
@@ -1261,7 +1261,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       },
       {
         choiceId: 'player_feel_stuck',
-        text: "Honestly? I freeze. The uncertainty feels heavy, and I end up not choosing anything. That's probably worse than choosing wrong.",
+        text: "Honestly, I freeze and choose nothing. That's usually worse than choosing wrong.",
         nextNodeId: 'jordan_crossroads',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
@@ -1279,7 +1279,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     learningObjectives: ['jordan_leadership_potential'],
     speaker: 'Jordan Packard',
     content: [{
-      text: "Twenty minutes before that room fills up.\n\nI keep rewriting this speech. Which version is true?\n\nPast as liability? Past as asset? Or I define what it means?\n\nWhich story should I tell them?",
+      text: "Twenty minutes before that room fills up.",
       emotion: 'desperate_clarity',
       variation_id: 'jordan_crossroads_1',
       useChatPacing: true,
@@ -1501,7 +1501,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     choices: [
       {
         choiceId: 'vuln_continue',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'jordan_farewell_accumulation',
         pattern: 'patience'
       }
@@ -1512,7 +1512,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_farewell_accumulation',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Accumulation. Experience building on experience.\n\nBut what if they see through it? What if they know I'm a fraud?\n\nThe voice will be there when I walk through that door. Probably for years.\n\nBut at least now I can name it.\n\nThank you. Good luck with your journey.",
+      text: "Accumulation.",
       emotion: 'grateful_but_shaken',
       variation_id: 'jordan_farewell_accumulation_v2_complex'
     }],
@@ -1559,7 +1559,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     speaker: 'Jordan Packard',
     content: [
       {
-        text: "Exactly. Birmingham changed. Iron, then medical, now tech.|This city reinvents itself every twenty years. Why can't I?|Maybe my 'instability' is actually... adaptation.",
+        text: "Exactly.",
         emotion: 'thoughtful',
         variation_id: 'birmingham_v1',
         richEffectContext: 'thinking'
@@ -1718,7 +1718,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_chooses_internal',
     speaker: 'Jordan Packard',
     content: [{
-      text: "The story I tell myself is the only one that matters.\n\nI'm going to walk in there and say: 'I spent twelve years thinking I was lost. But I wasn't. I was building.'\n\nThat's the speech. Raw. Honest. Just the truth.",
+      text: "The story I tell myself is the only one that matters.",
       emotion: 'serene',
       variation_id: 'jordan_internal_1'
     }],
@@ -1744,7 +1744,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_farewell_internal',
     speaker: 'Jordan Packard',
     content: [{
-      text: "I feel lighter.\n\nThank you for not trying to fix me. For letting doubt and confidence exist together.\n\nGood luck with your journey.",
+      text: "I feel lighter.",
       emotion: 'peaceful_but_realistic',
       variation_id: 'jordan_farewell_internal_v2_complex',
       useChatPacing: true
@@ -1769,14 +1769,14 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_bad_ending',
     speaker: 'Jordan Packard',
     content: [{
-      text: "You're right. It's safer to stick to the script.\n\nI'll talk about 'agile methodology' and 'design systems.' The stuff they want to hear.\n\nMy story is too messy. Better to hide it.",
+      text: "You're right.",
       emotion: 'resigned_mask',
       variation_id: 'jordan_bad_ending_v1'
     }],
     choices: [
       {
         choiceId: 'jordan_bad_ending_leave',
-        text: "...",
+        text: "Leave it here for now.",
         nextNodeId: samuelEntryPoints.JORDAN_REFLECTION_GATEWAY,
         visibleCondition: {
           hasGlobalFlags: ['jordan_arc_complete'],
@@ -1798,7 +1798,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_seven_jobs_story',
     speaker: 'Jordan Packard',
     content: [{
-      text: "You ask a lot of questions. Good ones. The kind that don't have easy answers.\n\nSeven jobs. Four years. That's my track record. Barista. Data entry. Non-profit coordinator. Social media manager. Tutoring. Freelance writing. And now... this.\n\nMy parents call it 'unfocused.' LinkedIn would call it 'a red flag.'\n\nBut you know what? Every single one of those jobs taught me something. How to read people. How to translate between different worlds. How to find patterns in chaos.\n\nI'm not unfocused. I'm synthesizing.",
+      text: "You ask hard questions, so here's the real answer.",
       emotion: 'vulnerable_defiant',
       variation_id: 'seven_jobs_v1'
     }],
@@ -1819,7 +1819,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         pattern: 'exploring',
         skills: ['communication'],
         visibleCondition: {
-          trust: { min: 3 },
+          trust: { min: 4 },
           lacksGlobalFlags: ['jordan_chose_shallow']
         },
         consequence: {
@@ -1850,7 +1850,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_impostor_reveal',
     speaker: 'Jordan Packard',
     content: [{
-      text: "You really care, don't you? About people. Not just the answers.\n\nCan I tell you something I don't tell... anyone?\n\nEvery day, I help people find their paths. I see their patterns. I match them with possibilities. And every single day, a voice in my head says: 'Who are you to guide anyone? You don't even know where YOU'RE going.'\n\nImpostor syndrome. The career navigator who can't navigate their own career.\n\nBut maybe that's why I'm good at this. Because I know what it's like to be lost. To feel like everyone else has a map except you.\n\nI don't guide people despite being lost. I guide them BECAUSE I understand lost.",
+      text: "Can I admit something? I guide people for a living, yet I still hear: \"Who are you to guide anyone when your own path is messy?",
       emotion: 'vulnerable_honest',
       variation_id: 'impostor_v1'
     }],
@@ -1897,7 +1897,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
         visibleCondition: {
-          trust: { min: 2 },
+          trust: { min: 4 },
           lacksGlobalFlags: ['jordan_chose_shallow']
         },
         consequence: {
@@ -1912,7 +1912,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
         visibleCondition: {
-          trust: { min: 3 },
+          trust: { min: 4 },
           lacksGlobalFlags: ['jordan_chose_shallow']
         },
         consequence: {
@@ -1928,7 +1928,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_unexpected_paths',
     speaker: 'Jordan Packard',
     content: [{
-      text: "You've asked a lot of questions today. More than most. And you've actually listened to the answers.\n\nI keep a collection. Stories of people who found their path in unexpected ways. The accountant who became a chocolatier. The lawyer who became a forest ranger.\n\nBut this one... this is my favorite. My grandmother.\n\nShe was going to be a teacher. Had the degree. Had the job offer. Then she met a woman on a bus who was starting a community center in a neighborhood everyone had given up on.\n\nGrandma spent forty years in that community center. Changed thousands of lives. Never taught in a classroom.\n\nThat's what I'm trying to do here. Help people find their bus moment. The unexpected conversation that changes everything.\n\nMaybe this is yours.",
+      text: "You've asked better questions than most, so here's one story I protect. My grandmother trained as a teacher, then met someone on.",
       emotion: 'profound_hopeful',
       variation_id: 'unexpected_v1'
     }],
@@ -1984,7 +1984,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     speaker: 'Jordan Packard',
     content: [
       {
-        text: "You explore while helping. That's rare. Most people pick one or the other.\n\nCareer counselors have that combination. They're guides who help others find their way. Seeing potential before it blooms.\n\nSeven jobs taught me something: the best navigators are the ones who genuinely want to help people explore.",
+        text: "You explore while helping.",
         emotion: 'reflective',
         variation_id: 'career_counselor_v1',
         skillReflection: [
@@ -2102,7 +2102,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     },
     content: [
       {
-        text: "I've helped hundreds of people find their career paths. Asked all the standard questions.\\n\\nBut here? The questions ask themselves. People discover things about themselves just by being here.",
+        text: "I've helped hundreds of people find their career paths.",
         emotion: 'amazed',
         variation_id: 'mystery_hint_v1'
       },
@@ -2134,7 +2134,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     speaker: 'jordan',
     content: [
       {
-        text: "You know what? I think you're right. The station isn't the teacher. We are. It just... brings us together.\\n\\nEvery conversation here is a kind of guidance session. Including this one.",
+        text: "You know what? I think you're right.",
         emotion: 'realizing',
         variation_id: 'mystery_response_v1'
       }
@@ -2244,7 +2244,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     }],
     choices: [{
       choiceId: 'jordan_recovery_complete',
-      text: "(Continue)",
+      text: "Proceed.",
       nextNodeId: 'jordan_hub_return',
       pattern: 'patience'
     }],
@@ -2261,7 +2261,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     speaker: 'Jordan Packard',
     content: [
       {
-        text: "The speech... the speech is just words.\n\n(A low rumble shakes the floor nearby.)\n\nYou feel that? The service corridor behind the stage. The support struts are vibrating. They're going to buckle under the weight of the crowd.\n\nI used to frame houses one summer. I know that sound.\n\nForget the PowerPoint. Grab that toolkit. We have ten minutes before the doors open.",
+        text: "The speech. the speech is just words.",
         emotion: 'commanding',
         variation_id: 'deep_dive_v1'
       }
@@ -2310,7 +2310,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     speaker: 'Jordan Packard',
     content: [
       {
-        text: "Dust on my blazer. Grease on my hands.\n\nI feel... calm.\n\nI was so worried about explaining my value that I forgot I actually HAVE value. Real, tangible capability.\n\nI'm going to go out there like this. Dirty hands and all. Let them see the work.",
+        text: "Dust on my blazer.",
         emotion: 'empowered_calm',
         variation_id: 'deep_dive_success_v1',
         interaction: 'bloom'
@@ -2433,7 +2433,7 @@ What's the most empowering guidance?`,
     nodeId: 'jordan_simulation_phase1_success',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Exactly. That shift. From \"right\" to \"true.\"\n\nThat\'s the work. Not giving answers. Helping people find the question underneath the question.\n\nYou get it. Most people want to be the expert. You want to be the guide.",
+      text: "Exactly.",
       emotion: 'impressed',
       variation_id: 'phase1_success_v1',
       richEffectContext: 'success'
@@ -2579,7 +2579,7 @@ What helps her see what she\'s actually built?`,
     nodeId: 'jordan_simulation_phase2_success',
     speaker: 'Jordan Packard',
     content: [{
-      text: "That\'s it. THAT\'S the work.\n\nHelping people see the through-line. The pattern connecting their past to their future.\n\nShe thought she was starting over. But she\'s not. She\'s just... redirecting.\n\nLike I did. Seven times.\n\nMaybe that\'s why I can see it in others. Because I had to learn to see it in myself.",
+      text: "That\\'s it. THAT\\'S the work.",
       emotion: 'profound',
       variation_id: 'phase2_success_v1',
       richEffectContext: 'success'
@@ -2727,7 +2727,7 @@ What does Jordan say this time?`,
     nodeId: 'jordan_simulation_phase3_success',
     speaker: 'Jordan Packard',
     content: [{
-      text: "I\'ve been a career counselor for twelve years.\n\nToday was the first time I counseled from my scars instead of my credentials.\n\nThe impostor voice is still there. Probably always will be.\n\nBut now I know: that voice doesn\'t disqualify me. It makes me human. And humans can guide other humans.\n\nExperts can\'t.\n\nThank you for being here when I faced it.",
+      text: "I\\'ve been a career counselor for twelve years. Today was the first time I counseled from my scars instead of my credentials.",
       emotion: 'transformed',
       variation_id: 'phase3_success_v1',
       richEffectContext: 'success'

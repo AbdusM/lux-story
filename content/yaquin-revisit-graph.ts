@@ -43,7 +43,7 @@ I... I don't know what to do.`,
     choices: [
       {
         choiceId: 'yaquin_celebrate',
-        text: "That's incredible! You built an audience.",
+        text: "That's incredible!",
         nextNodeId: 'yaquin_the_problem',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
@@ -52,7 +52,7 @@ I... I don't know what to do.`,
         choiceId: 'yaquin_analyze_traffic',
         text: "That's a lot of traffic. What's the conversion rate?",
         nextNodeId: 'yaquin_the_problem',
-        pattern: 'analytical',
+        pattern: 'exploring',
         skills: ['digitalLiteracy', 'financialLiteracy']
       },
       {
@@ -83,7 +83,7 @@ Do I sell out? Do I launch the paid course now? Do I quit my job? I feel like I'
     choices: [
       {
         choiceId: 'yaquin_monetization_strategy',
-        text: "You need a monetization strategy, not just a reaction.",
+        text: "You need a monetization strategy, not a reaction.",
         nextNodeId: 'yaquin_strategy_session',
         pattern: 'building',
         skills: ['criticalThinking', 'financialLiteracy']
@@ -115,7 +115,7 @@ Which one builds a real school?`,
     choices: [
       {
         choiceId: 'strat_course',
-        text: "Launch the Course. Own your product. Don't rent your audience to sponsors.",
+        text: "Launch the Course.",
         nextNodeId: 'yaquin_course_path',
         pattern: 'building',
         skills: ['leadership', 'creativity'],
@@ -165,7 +165,7 @@ I'm going to do it. 'The Chairside Masterclass.' Launching next week.`,
     choices: [
       {
         choiceId: 'course_support',
-        text: "Your audience is ready. They trust you.",
+        text: "Your audience is ready.",
         nextNodeId: 'yaquin_revisit_farewell',
         pattern: 'helping',
         skills: ['leadership']
@@ -219,7 +219,7 @@ It feels like selling out a little, but it's actually buying my freedom.`,
     choices: [
       {
         choiceId: 'sponsorship_support',
-        text: "Capital is a tool. Use it to build the school.",
+        text: "Capital is a tool.",
         nextNodeId: 'yaquin_revisit_farewell',
         pattern: 'analytical',
         skills: ['financialLiteracy']
@@ -266,7 +266,7 @@ The sponsorship money is buying me freedom to build something real.|}}\n\nI gues
       // Loyalty Experience trigger - only visible at high trust + building pattern
       {
         choiceId: 'offer_launch_help',
-        text: "[Builder's Drive] You've built it. Now it's time to launch it. Need a hand hitting publish?",
+        text: "[Builder's Drive] You built it. Ready to hit publish together?",
         nextNodeId: 'yaquin_loyalty_trigger',
         pattern: 'building',
         skills: ['selfMarketing', 'contentCreation'],
@@ -292,15 +292,11 @@ The sponsorship money is buying me freedom to build something real.|}}\n\nI gues
       {
         text: `You know about the course.
 
-Eight months. Forty-seven lessons. Every technique I've mastered over ten years, distilled into video.
+Eight months of work, forty-seven lessons, still in draft because I cannot press Publish.
 
-But now it's sitting in draft mode. The "Publish" button is right there, and I... I can't click it.
+If I launch, I get judged on content and on me.
 
-What if nobody enrolls? What if the one student who does says I'm a fraud? That I should have gone to college like everyone else?
-
-I know this is good. I know people need this. But launching means the world gets to judge it. Gets to judge me.
-
-You understand building. Would you... be there when I hit publish? Just so I'm not alone when I find out if this was all worth it?`,
+Will you stay with me when I press the button so I do not face that first moment alone?`,
         emotion: 'anxious_vulnerable',
         variation_id: 'loyalty_trigger_v1',
         richEffectContext: 'warning'

@@ -51,7 +51,7 @@ I've been thinking about our conversation a lot.{{noticed_contradiction: You saw
         choiceId: 'ask_about_decision_robotics',
         text: "How's your path going?",
         nextNodeId: 'maya_revisit_update_robotics',
-        pattern: 'exploring',
+        pattern: 'analytical',
         visibleCondition: { hasKnowledgeFlags: ['chose_robotics'] }
       },
       // Hybrid path choices
@@ -108,7 +108,7 @@ Remember when I said I'd try talking to them? That conversation you encouraged m
     choices: [
       {
         choiceId: 'encourage_robotics',
-        text: "They'll see it eventually.",
+        text: "Quick update: robotics track is moving, stakes are rising, and I.",
         nextNodeId: 'maya_revisit_closing',
         pattern: 'helping'
       },
@@ -116,7 +116,7 @@ Remember when I said I'd try talking to them? That conversation you encouraged m
         choiceId: 'ask_next_steps_robotics',
         text: "What's your next step?",
         nextNodeId: 'maya_revisit_next_steps_robotics',
-        pattern: 'analytical'
+        pattern: 'building'
       }
     ]
   },
@@ -193,7 +193,7 @@ You asked me what I wanted, and I didn't have an answer then. Now I'm actually l
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I'm meeting with the robotics engineering advisor next week. Going to map out the transfer process, look at which of my credits apply.\n\nIt's scary, but it's the good kind of scary. The kind that means you're moving toward something you actually want.",
+        text: "I'm meeting with the robotics engineering advisor next week.",
         emotion: 'nervous_excited',
         variation_id: 'next_steps_robotics_v1'
       }
@@ -213,7 +213,7 @@ You asked me what I wanted, and I didn't have an answer then. Now I'm actually l
     speaker: 'Maya Chen',
     content: [
       {
-        text: "If I get accepted, I start in the fall semester. The program director actually reached out after seeing my MCAT scores and robotics projects.\n\nTurns out having 'too many interests' isn't a weakness - it's exactly what interdisciplinary programs look for.",
+        text: "If I get accepted, I start in the fall semester.",
         emotion: 'confident',
         variation_id: 'next_steps_hybrid_v1'
       }
@@ -233,7 +233,7 @@ You asked me what I wanted, and I didn't have an answer then. Now I'm actually l
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I learned that my parents' dreams for me came from love, not control. They wanted security and respect for their daughter.\n\nBut I also learned that honoring their love doesn't mean abandoning myself. I can find a path that respects their sacrifice AND feels like mine. That's what I'm searching for now.",
+        text: "I learned that my parents' dreams for me came from love, not control. They wanted security and respect for their daughter.",
         emotion: 'mature',
         variation_id: 'insights_self_v1'
       }
@@ -254,7 +254,7 @@ You asked me what I wanted, and I didn't have an answer then. Now I'm actually l
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Thank you for coming back to check on me. It means a lot.\n\nSamuel's probably at the main platform if you want to see what other travelers need guidance tonight. Good luck with your own journey.",
+        text: "Thank you for coming back to check on me.",
         emotion: 'grateful',
         variation_id: 'revisit_closing_v1'
       }
@@ -293,7 +293,7 @@ You asked me what I wanted, and I didn't have an answer then. Now I'm actually l
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Wait... how did you know?\n\nOkay, yes. The Innovation Showcase is next week. Real investors. Real stakes. I've been working on this presentation for months, but...\n\nMy hands still shake when I practice. My parents are coming. They think it's a 'science fair update' but when they see me pitching robotics to investors...\n\nEverything I've been building toward. Everything we talked about. It all comes down to this one demo.\n\nWill you... will you help me through it?",
+        text: "Yeah, you caught it.\n\nThe Innovation Showcase is next week with real investors, my hands still shake in rehearsal, and my parents are finally seeing this as more than a school project.\n\nEverything points to this demo, and I need your help getting through it.",
         emotion: 'vulnerable_determined',
         variation_id: 'loyalty_trigger_v1',
         richEffectContext: 'warning'
@@ -383,7 +383,7 @@ You asked me what I wanted, and I didn't have an answer then. Now I'm actually l
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Of course! I'm here as long as you need.\n\nActually, I wanted to ask you something. You helped me with my crossroads - but how is YOUR journey going? Have you found your path yet?",
+        text: "Of course!",
         emotion: 'curious',
         variation_id: 'extended_v1'
       }
@@ -391,28 +391,28 @@ You asked me what I wanted, and I didn't have an answer then. Now I'm actually l
     choices: [
       {
         choiceId: 'reflect_still_searching',
-        text: "I'm still searching. Talking to people like you helps me see possibilities, but I haven't found my answer yet.",
+        text: "I'm still searching. Conversations like this show options, not final answers.",
         nextNodeId: 'maya_revisit_reflection_searching',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'adaptability']
       },
       {
         choiceId: 'reflect_helping_others',
-        text: "I'm helping others find their path. Maybe that IS my path. being the person who asks the right questions, who creates space for people to figure things out.",
+        text: "Helping others find their path might be mine too: ask good questions and create space.",
         nextNodeId: 'maya_revisit_reflection_helping',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
       },
       {
         choiceId: 'deflect',
-        text: "I'd rather not talk about it. My own uncertainty feels too raw to put into words right now.",
+        text: "I'd rather not talk yet. My uncertainty feels too raw today.",
         nextNodeId: 'maya_revisit_deflection',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'emotionalIntelligence']
       },
       {
         choiceId: 'reflect_seeing_patterns',
-        text: "I'm starting to see patterns in how I show up for people. Maybe my path isn't about finding one thing. it's about how I approach everything.",
+        text: "I'm seeing patterns in how I show up. Maybe that's the path.",
         nextNodeId: 'maya_revisit_reflection_helping',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence']
@@ -425,7 +425,7 @@ You asked me what I wanted, and I didn't have an answer then. Now I'm actually l
     speaker: 'Maya Chen',
     content: [
       {
-        text: "That's okay. The station keeper told me that sometimes the answer finds you by helping others find theirs.\n\nMaybe your path is revealing itself through these conversations, even if you can't see the shape of it yet.",
+        text: "That's okay.",
         emotion: 'understanding',
         variation_id: 'reflection_searching_v1'
       }
@@ -445,7 +445,7 @@ You asked me what I wanted, and I didn't have an answer then. Now I'm actually l
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I can see that. You have a gift for it - meeting people where they are, asking the right questions instead of giving answers.\n\nThat's rare. That's valuable. Maybe your path is guiding others through their crossroads.",
+        text: "I can see that.",
         emotion: 'appreciative',
         variation_id: 'reflection_helping_v1'
       }
@@ -465,7 +465,7 @@ You asked me what I wanted, and I didn't have an answer then. Now I'm actually l
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Okay, I won't push. Just know that you've already made a difference in at least one person's life. That counts for something.\n\nWhenever you're ready to talk about your journey, I'll listen the way you listened to me.",
+        text: "Okay, I won't push.",
         emotion: 'warm',
         variation_id: 'deflection_v1'
       }

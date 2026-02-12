@@ -177,7 +177,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Narrator',
     content: [
       {
-        text: "The train slows down. Through fogged windows, you catch your first glimpse of the station. High ceilings, warm light spillin' through old glass, sounds of folks talkin' somewhere up ahead.\n\nA figure's waitin' on the platform. Older man, patient stance. Like he's been expectin' you.",
+        text: "The train slows down.",
         emotion: 'atmospheric',
         variation_id: 'arrival_v1'
       }
@@ -235,7 +235,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Narrator',
     content: [
       {
-        text: "You pause at the train door, taking it in.\n\nThe station's bigger than it looked from outside. Vaulted ceilings stretch up into shadow, old ironwork catching the light. Platform signs point to places you half-recognize—some you don't. The air smells like old wood and something faintly electric, like possibility.\n\nA few travelers drift past, each heading somewhere with quiet purpose.\n\nThe older man on the platform notices you looking. He smiles, patient. No rush.",
+        text: "You pause at the train door.",
         emotion: 'atmospheric',
         variation_id: 'observation_v1'
       }
@@ -278,7 +278,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Narrator',
     content: [
       {
-        text: "You glance down the train car. A few other passengers are gathering their things.a young woman with paint-stained fingers, a guy in scrubs looking exhausted but focused, someone your age staring out the window like they're working up courage.\n\nEach of them alone. Each of them here for something.\n\nOn the platform, the older man waits. His eyes move across all of you, but when they land on you, something shifts. Recognition, maybe. Or just welcome.",
+        text: "You scan the train: paint-stained fingers, a tired person in scrubs, someone your age rehearsing courage.",
         emotion: 'atmospheric',
         variation_id: 'passengers_v1'
       }
@@ -321,7 +321,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You took your time. Good.\n\nMost folks rush off the train like they're late for somethin'. But you... you looked first. That's smart.\n\nI'm Samuel. Been helpin' folks find their way around here for longer than I expected. You look like you got questions.and that's exactly what this place is for.",
+        text: "You took your time. Good.",
         emotion: 'warm',
         variation_id: 'intro_patient_v1',
         patternReflection: [
@@ -381,7 +381,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Ha! Straight to the big questions. I like that.\n\nI'm Samuel. And those platforms? They go to different... let's call 'em possibilities. Each one's got folks who've walked paths you might want to walk. Or might not. That's the thing about this place.it don't tell you what to choose. Just helps you see clearer.\n\nBut we can get to all that. First.welcome to Grand Central.",
+        text: "Ha! Straight to the big questions.",
         emotion: 'warm',
         variation_id: 'intro_curious_v1'
       }
@@ -437,7 +437,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You noticed the others. That's good. Means you're payin' attention.\n\nEvery person on that train's got their own story, their own reason for being here. Some know it. Some don't yet. That's what this place helps with.\n\nI'm Samuel. Been here a while. And you... you look like you see more than most. That's gonna serve you well.",
+        text: "You noticed the others. That's good.",
         emotion: 'warm',
         variation_id: 'intro_noticed_v1'
       }
@@ -493,7 +493,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You let them go first. Watched 'em find their footing.\n\nThat's a rare thing, you know? Most folks are so caught up in their own journey, they forget everyone else is on one too. But you... you see people.\n\nI'm Samuel. And I think you and I are gonna get along just fine. Welcome to Grand Central.",
+        text: "You let them go first. Watched 'em find their footing.",
         emotion: 'warm',
         variation_id: 'intro_humble_v1',
         patternReflection: [
@@ -553,7 +553,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     nodeId: 'samuel_simulation_crm',
     speaker: 'Samuel Washington',
     content: [{
-      text: "Sometimes, helping folks ain't about speeches. It's about remembering.\n\nI keep a log. Every traveler, every question. Patterns emerge if you write 'em down.\n\nHere's a traveler struggling with the schedule. They think they're lost. They ain't lost.they just don't know the destination changed.",
+      text: "Sometimes, helping folks ain't about speeches.",
       emotion: 'thoughtful',
       variation_id: 'sim_intro_v1'
     }],
@@ -573,7 +573,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'sim_reassure_data',
-        text: "Check logs. 'Train 415 merged with 530 due to track maintenance.' Tell them they have time for coffee.",
+        text: "Check logs: 'Train 415 merged with 530 for maintenance. You have coffee time.'",
         nextNodeId: 'samuel_orb_introduction', // Proceed to main flow
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'digitalLiteracy'],
@@ -634,7 +634,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for... well, longer than I expected, honestly. Lot more travelers lately too. World's movin' fast out there.\n\nYou look like you got questions. Most people do when they first show up. Every choice you make here... the station pays attention. But we can get to that.",
+        text: "Hey there. Welcome to Grand Central.",
         emotion: 'warm',
         variation_id: 'intro_v1_part1',
         patternReflection: [
@@ -740,7 +740,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "World's changin'. Always has been, but feels faster now. Machines doin' what people used to do. Jobs that were steady for generations, gone in a decade.\n\nBut here's what I've learned: the work might change, but what people need don't. Someone to fix things when they break. Someone to care for folks when they're vulnerable. Someone to teach the young ones.\n\nThat's why patterns matter more than job titles. You figure out how you're built to contribute, you'll find your place. Even when everything else is shiftin'.",
+        text: "World's changing faster now. Machines do work people once did, and stable jobs vanish quickly.",
         emotion: 'wise',
         variation_id: 'changing_world_v1',
         patternReflection: [
@@ -805,7 +805,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Those folks? They're gonna be alright. Not because nothin's changin' for them. It is. But because they know how to do things that matter.\n\nMy daddy was a welder at Sloss Furnaces. Sixty years ago, folks said that work was dyin'. Still needs welders today. Different machines, same hands.\n\nKai on Platform 6, they came from factory work. Nucor Steel. Knows what it means to build something that holds. Talk to 'em if you want to understand how the old ways and new ways can fit together.",
+        text: "Those folks will be alright, not because change stops, but because they know how to do work that matters. My daddy welded at Sloss.",
         emotion: 'warm',
         variation_id: 'trades_v1'
       }
@@ -846,7 +846,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Patterns ain't about what job you have. Jobs change. Always have.\n\nIt's about how you move through the world when things get hard. Some folks think their way through. Some folks build their way through. Some folks help others find the way.\n\nMachines can follow instructions. But they can't adapt when the instructions don't fit anymore. You can.\n\nThat's not somethin' you learn from a slide deck.",
+        text: "Patterns ain't about what job you have. Jobs change.",
         emotion: 'wise',
         variation_id: 'pattern_survival_v1',
         interaction: 'nod'
@@ -946,7 +946,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Fox Theatre Station. Been here since 1929, y'know, same as the theatre upstairs. Beautiful old building.\n\nEach platform connects you to different folks around the city. People figuring out their own stuff, just like you. Lot of 'em came here because things changed faster than they expected.\n\nYou talk to 'em, see what clicks. That's how you find solid ground when everything's shifting.",
+        text: "Fox Theatre Station. Been here since 1929, y'know, same as the theatre upstairs.",
         emotion: 'warm',
         variation_id: 'explains_v1',
         patternReflection: [
@@ -979,7 +979,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "There's Platform 3, heading towards the medical centers. Platform 9 for the tech districts. But there's also the rare lines... \n\nI've seen a coder from Atlanta, a deep-sea welder off the Scottish coast. And just yesterday, a young brother torn between his own startup and helping HBCUs get their fair share of federal funding. \n\nThe question ain't where they're going. It's which song you're trying to hear.",
+        text: "There's Platform 3, heading towards the medical centers. Platform 9 for the tech districts.",
         emotion: 'thoughtful',
         variation_id: 'platforms_explained_v3'
       }
@@ -1017,7 +1017,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "My story? Yeah, alright.\n\nWorked at Southern Company for twenty-three years. Power plants, electrical grids - the stuff that keeps the lights on in Birmingham. Good job. Stable. My daddy was real proud. First in our family to work in an office instead of out at Sloss Furnaces.",
+        text: "My story?",
         emotion: 'reflective',
         variation_id: 'backstory_v1',
         patternReflection: [
@@ -1120,7 +1120,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You didn't try to fill the silence. That's rare.\n\nMost folks can't sit with someone else's weight. They rush to fix it, change the subject. You just stayed.\n\nThat means somethin'.",
+        text: "You didn't try to fill the silence.",
         emotion: 'moved',
         variation_id: 'interrupt_acknowledged_v1',
         interaction: 'nod'
@@ -1134,7 +1134,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'samuel_after_interrupt',
-        text: "(Continue)",
+        text: "I'm still here. Tell me more.",
         nextNodeId: 'samuel_pause_after_backstory',
         pattern: 'patience'
       }
@@ -1230,7 +1230,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'vuln_continue',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_pause_after_backstory',
         pattern: 'patience'
       }
@@ -1299,7 +1299,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You've been patient with me. More patient than most folks ever been. I reckon it's time I told you something.\n\nThat letter you got. The one that brought you here. The handwriting you couldn't quite place.",
+        text: "You've been patient with me.",
         emotion: 'confessional',
         variation_id: 'letter_reveal_v1',
         microAction: 'He pulls a worn envelope from his vest pocket.',
@@ -1356,7 +1356,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The station... it knows things. Knows when someone's ready. Knows when someone needs to be here.\n\nI don't write the letters. But I know who does. And it ain't any person you'd recognize.\n\nThis place called you here. Same way it called me, all those years ago. Some journeys choose their travelers.",
+        text: "The station. it knows things.",
         emotion: 'mysterious_reverent',
         variation_id: 'letter_confession_v1',
         richEffectContext: 'thinking'
@@ -1400,7 +1400,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Some truths are bigger than words, aren't they? The station chose you. And you chose to answer.\n\n[He looks toward the platforms]\n\nThere are others here tonight who were also called.",
+        text: "Some truths are bigger than words, aren't they?",
         emotion: 'knowing',
         variation_id: 'beat_after_station_called_v1'
       }
@@ -1408,7 +1408,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -1429,7 +1429,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'samuel_continue_after_backstory',
-        text: "(Continue)",
+        text: "What keeps you here now?",
         nextNodeId: 'samuel_purpose_found',
         pattern: 'patience'
       }
@@ -1442,7 +1442,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I wanted to help folks figure out their own path, y'know? Not hand 'em answers - that never works. But help 'em find the right questions? That I can do.\n\nThat's why I'm here. This station sits right between what Birmingham was and what it's still becomin'.",
+        text: "I wanted to help folks figure out their own path, y'know?",
         emotion: 'warm',
         variation_id: 'purpose_v1_combined',
         patternReflection: [
@@ -1547,7 +1547,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Huh. Most folks just wanna know about the platforms. You asked about me.\n\nAlright. Since you took the time... I'll tell you somethin' I don't share much.\n\nI was standin' where you are. Thirty-five years ago. Got the same letter. Had to make the same choice.",
+        text: "Huh.",
         emotion: 'vulnerable_opening',
         variation_id: 'traveler_origin_v1',
         patternReflection: [
@@ -1594,7 +1594,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "VP of Engineering at Southern Company. Corner office downtown, nice view of the Regions Tower. Or stay technical - keep my hands in the work, keep buildin' the grid that powers every light from Irondale to Hoover.\n\nBig money and a fancy title. Or doin' what I actually loved.",
+        text: "VP of Engineering at Southern Company.",
         emotion: 'reflective',
         variation_id: 'origin_choice_v1',
         patternReflection: [
@@ -1643,7 +1643,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "My daughter. Nineteen, goin' through the same thing I went through.\n\nBrought her here. Watched her face when she figured out her path. The relief in her eyes...",
+        text: "My daughter.",
         emotion: 'bittersweet',
         variation_id: 'daughter_moment_v1'
       }
@@ -1676,7 +1676,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Hit me like a ton of bricks. I'd been on the wrong path for twenty years.\n\nCame back through here. Made a different choice this time.\n\nDecided to stay. Help folks avoid makin' the same mistakes I did.",
+        text: "Hit me like a ton of bricks.",
         emotion: 'purposeful',
         variation_id: 'keeper_choice_v1'
       }
@@ -1729,7 +1729,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Biomedical engineer at the CDC now. Designs diagnostic systems - saves lives, really.\n\nCalls me every Sunday. Still thanks me for bringin' her here.\n\nI wanted her to be a lawyer, honestly. Good money, stable. But she found her own way.\n\nWatchin' her figure that out... that's when I knew what I was supposed to do.",
+        text: "Biomedical engineer at the CDC now. Designs diagnostic systems - saves lives, .",
         emotion: 'paternal_pride',
         variation_id: 'daughter_v1'
       }
@@ -1772,7 +1772,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I write one every night. Name just... comes to me, y'know? Can't really explain it.\n\nLike how you knew somebody here needed to hear what you had to say. Station has a way of connectin' people.\n\nAfter thirty-five years, you stop questionin' it and just go with it.",
+        text: "I write one every night.",
         emotion: 'mystical_acceptance',
         variation_id: 'letter_system_v1'
       }
@@ -1888,7 +1888,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Good deal. Your journal'll show you what the station remembers. Check it whenever you want.\n\nAlright. Let's find you somebody to talk to.",
+        text: "Good deal.",
         emotion: 'warm',
         variation_id: 'orb_gift_complete_v1'
       }
@@ -1896,7 +1896,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'orb_to_hub',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -1917,7 +1917,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
 	    speaker: 'Samuel Washington',
 	    content: [
       {
-        text: '...',
+        text: 'Step back for now.',
         emotion: 'neutral',
         variation_id: 'hub_router_v1'
       }
@@ -1929,7 +1929,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       // If Maya is complete but Devon isn't, route to the Maya hub variant.
       {
         choiceId: 'route_to_hub_after_maya',
-        text: '[Continue]',
+        text: 'Proceed.',
         nextNodeId: 'samuel_hub_after_maya',
         visibleCondition: {
           hasGlobalFlags: ['maya_arc_complete'],
@@ -1940,7 +1940,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       // Brand-new player: before meeting Maya/Devon/Jordan, use the initial hub.
       {
         choiceId: 'route_to_hub_initial',
-        text: '[Continue]',
+        text: 'Proceed.',
         nextNodeId: 'samuel_hub_initial',
         visibleCondition: {
           lacksGlobalFlags: ['met_maya', 'met_devon', 'met_jordan']
@@ -1950,7 +1950,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       // Once Devon is complete, the Devon hub is the universal return point.
       {
         choiceId: 'route_to_hub_after_devon_complete',
-        text: '[Continue]',
+        text: 'Proceed.',
         nextNodeId: 'samuel_hub_after_devon',
         visibleCondition: {
           hasGlobalFlags: ['devon_arc_complete']
@@ -1961,7 +1961,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       // We implement priority without OR by making these mutually exclusive.
       {
         choiceId: 'route_to_hub_after_devon_maya',
-        text: '[Continue]',
+        text: 'Proceed.',
         nextNodeId: 'samuel_hub_after_devon',
         visibleCondition: {
           hasGlobalFlags: ['met_maya'],
@@ -1970,7 +1970,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_hub_after_devon_devon',
-        text: '[Continue]',
+        text: 'Proceed.',
         nextNodeId: 'samuel_hub_after_devon',
         visibleCondition: {
           hasGlobalFlags: ['met_devon'],
@@ -1979,7 +1979,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_hub_after_devon_jordan',
-        text: '[Continue]',
+        text: 'Proceed.',
         nextNodeId: 'samuel_hub_after_devon',
         visibleCondition: {
           hasGlobalFlags: ['met_jordan'],
@@ -2072,7 +2072,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Folks who lead with care... that's rarer than you'd think. Got two travelers here who might get where you're comin' from.\n\nMaya Chen's over on Platform 1. Pre-med at UAB. Her parents gave up everything for her education, but she's been buildin' robots on the side. Secret project.\n\nOr Marcus, down by Platform 2. Works the ICU - runs all the machines keepin' people alive. But he's wonderin' if bein' good at somethin' means it's really his thing.",
+        text: "People who lead with care are rare.",
         emotion: 'knowing',
         variation_id: 'hub_heart_v1'
       }
@@ -2110,7 +2110,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Folks who see patterns others miss... got a few of those here tonight.\n\nDevon Kumar's in the coffee shop. Systems engineer - actually built a decision tree to figure out how to talk to his grieving dad.\n\nKai's over in the training office. Instructional designer, fightin' corporate safety theater after somebody got hurt on the job.\n\nAlex runs workshops on Platform 8. Used to teach bootcamp - 'six weeks to six figures' kinda stuff. Now they're questionin' everything they taught.\n\nAnd Rohan... he's down in the basement. Questionin' the foundations. Wonderin' if understandin' how things break teaches you how they should work.",
+        text: "Folks who see patterns others miss? We have a few tonight.",
         emotion: 'knowing',
         variation_id: 'hub_mind_v1'
       }
@@ -2153,7 +2153,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Builders carry a different kind of weight. They see what could be.\n\nJordan's been through seven careers, still figurin' it out. Wonders if maybe the winding path IS the path.\n\nTess is a school counselor with this wild idea - wants to prove that hikin' the Appalachian Trail teaches more than AP Calculus.\n\nSilas farms hydroponic basil out past Trussville. His sensors say everything's fine. His plants say otherwise.\n\nAnd Yaquin - dental assistant turned online educator. Knows stuff the textbooks get wrong.",
+        text: "Builders carry a different weight: they see what could be.",
         emotion: 'knowing',
         variation_id: 'hub_hands_v1'
       }
@@ -2218,7 +2218,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_helping_discover',
-        text: "[Continue]",
+        text: "Who is she?",
         nextNodeId: 'samuel_discovers_helping_2',
         pattern: 'patience',
         skills: ['communication']
@@ -2230,7 +2230,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "There's somebody on Platform 1 who gets that. Maya Chen - super smart pre-med student at UAB. Her parents run a Vietnamese place over on 3rd Avenue. Saved every penny they had to get their daughter into medical school.",
+        text: "There's somebody on Platform 1 who gets that.",
         emotion: 'knowing',
         variation_id: 'discovers_helping_v1_part2'
       }
@@ -2238,7 +2238,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_helping_discover_2',
-        text: "[Continue]",
+        text: "And what's tearing her up?",
         nextNodeId: 'samuel_discovers_helping_3',
         pattern: 'patience',
         skills: ['communication']
@@ -2282,7 +2282,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The engineer's problem, y'know? You can map out every system, but then life throws somethin' at you that doesn't fit the flowchart.\n\nDevon Kumar's on Platform 3. UAB engineering student, got recruited from the robotics lab in the old Oxmoor Center. His mom's been gone two years now. He actually built a decision tree to try and help his grievin' dad. Didn't work out.\n\nNow he's tryin' to debug human connection.",
+        text: "If you build, meet the ones shaping this place by hand. They will show you where ambition survives contact with reality.",
         emotion: 'understanding',
         variation_id: 'discovers_building_v1'
       }
@@ -2326,7 +2326,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Got somebody you should meet.\n\nSeven jobs in twelve years - Jordan Packard. She's down at Railroad Park, preppin' for a mentorship panel at Innovation Depot.\n\nThirty students from Birmingham-Southern gonna hear her story tomorrow. She's scared they'll see chaos instead of evolution. Got impostor syndrome while she's literally the expert.\n\nHer question ain't 'what should I become?' It's 'how do I own what I've been?'",
+        text: "Got somebody you should meet. Seven jobs in twelve years - Jordan Packard.",
         emotion: 'amused_empathetic',
         variation_id: 'discovers_exploring_v1'
       }
@@ -2358,7 +2358,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The system works for some folks, but it fails a lot of 'em. Tess is over at the Pizitz Food Hall, sketchbook out, coffee gone cold.\n\nShe's a career counselor at Hoover High who's realizin' she can't counsel students into a broken world. Gotta build a new one.\n\nShe's tryin' to start a school in the old Woodlawn building - one where hikin' Oak Mountain counts as senior year physics.",
+        text: "Tess sees people clearly when rooms get tense. If you want to learn care under pressure, start there.",
         emotion: 'intrigued',
         variation_id: 'discovers_tess_v1'
       }
@@ -2390,7 +2390,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 5's a bit louder. Yaquin's over there - dental assistant at Aspen Dental on Highway 280, frustrated with the outdated textbooks.\n\nHe's figured out he knows more than some professors at UAB's dental school, but he doesn't know how to build a school. He's right on the edge of inventin' a whole new way to teach.",
+        text: "Platform 5's a bit louder. Yaquin's over there - dental assistant at Aspen Dental on Highway 280, frustrated with the outdated textbooks.",
         emotion: 'amused_respect',
         variation_id: 'discovers_yaquin_v1'
       }
@@ -2422,7 +2422,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 6. Glass walls, cold lightin'. That's where Kai is.\n\nInstructional Architect at Protective Life downtown - you know, the big tower on Richard Arrington. They know exactly how people learn, but they're gettin' paid to build compliance checklists.\n\nThey're holdin' a match, tryin' to decide whether to burn the whole rulebook.",
+        text: "Platform 6.",
         emotion: 'intrigued_respect',
         variation_id: 'discovers_kai_v1'
       }
@@ -2454,7 +2454,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The Learning Loop - Platform 8, west wing. That's where Alex is.\n\nUsed to run the bootcamp circuit. Taught thousands how to code. 'Six weeks to a six-figure salary' - they believed it too, once upon a time.\n\nNow they run free workshops for folks who already tried everything else. Askin' hard questions about what credentials actually mean.",
+        text: "The Learning Loop - Platform 8, west wing. That's where Alex is.",
         emotion: 'knowing',
         variation_id: 'discovers_alex_v1'
       }
@@ -2486,7 +2486,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 7. The sub-basement. Rohan's down there.\n\nSite Reliability Engineer at Regions Bank - main operations center out in Riverchase. Hasn't slept in 30 hours. He's the only one who actually knows how money moves through Alabama.\n\nEverybody else is usin' AI to write code they don't understand. He's cleanin' up the mess.",
+        text: "Platform 7. The sub-basement.",
         emotion: 'grim_respect',
         variation_id: 'discovers_rohan_v1'
       }
@@ -2518,7 +2518,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 8. The Greenhouse. Silas is over there.\n\nUsed to be a Cloud Architect at Amazon - worked remote from his place in Avondale. Now he uses drones to monitor soil microbiomes on a farm out past Trussville.\n\nFigured out a farm is basically a server cluster that breathes. He's debuggin' nature now.",
+        text: "Platform 8. The Greenhouse.",
         emotion: 'warm_respect',
         variation_id: 'discovers_silas_v1'
       }
@@ -2550,7 +2550,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 4, near the Medical Bay. That's Marcus.\n\nCVICU Nurse at UAB Hospital - the kind who keeps people alive through those long night shifts. But he's realizin' the machines he uses are just as important as the medicine.\n\nStandin' there like he's still on duty. Carries the weight of every patient with him. Go easy.",
+        text: "Platform 4, near the Medical Bay. That's Marcus.",
         emotion: 'respectful',
         variation_id: 'discovers_marcus_v1'
       }
@@ -2669,7 +2669,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Alright, here's everybody:\n\n**Maya Chen** - Platform 1. Pre-med brilliance, secret robotics dreams.\n\n**Devon Kumar** - Platform 3. Engineer tryin' to debug grief.\n\n**Jordan Packard** - Railroad Park. Seven careers. Still askin' the same question.\n\n**Marcus** - Platform 4. CVICU nurse. Where machines meet medicine.\n\n**Tess** - Pizitz Food Hall. Buildin' a whole new kind of school.\n\n**Yaquin** - Platform 5. Teachin' outside the system.\n\n**Kai** - Platform 6. Innovation within constraints.\n\n**Rohan** - Platform 7. Infrastructure guardian.\n\n**Silas** - Platform 8. Debuggin' nature.\n\n**Alex** - Platform 9. Supply chain. Keepin' things movin'.\n\n**Asha** - Platform 10. Mediator. Turns conflict into understanding.\n\n**Elena** - Platform 11. Archivist. What patterns hide in the data.\n\n**Grace** - Platform 12. Healthcare aide. Care that can't be automated.\n\n**Lira** - Platform 13. Sound designer. Where tech meets art.\n\n**Zara** - Platform 14. Data ethics. The questions no one's askin'.\n\nWho you wanna meet?",
+        text: "Quick map: Maya (Platform 1), Devon (Platform 3), Jordan (Railroad Park), Marcus (Platform 4), Tess (Pizitz), Yaquin (Platform 5), Kai (Platform 6),.",
         emotion: 'patient_informative',
         variation_id: 'other_travelers_v2'
       }
@@ -2898,7 +2898,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You did. But not the way most people think 'helpin'' works.\n\nYou didn't fix her problem. You made space for her to see options she couldn't see before.\n\nThat helper instinct? Same thing that drives UAB resident advisors and guidance counselors all over Birmingham. Real valuable.",
+        text: "You did.",
         emotion: 'affirming',
         variation_id: 'helped_response_v1'
       }
@@ -2906,7 +2906,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_helped',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_reflect_on_influence_pt2',
         pattern: 'patience'
       }
@@ -2918,7 +2918,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That uncertainty? That's actually wisdom.\n\nMost people walk away from conversations thinkin' they gave great advice. You're askin' what really happened. That's the difference between talkin' at someone and actually connectin'.\n\nYou explored her world instead of mappin' your own onto it.",
+        text: "That uncertainty?",
         emotion: 'appreciative',
         variation_id: 'unsure_response_v1'
       }
@@ -2926,7 +2926,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_unsure',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_reflect_on_influence_pt2',
         pattern: 'patience'
       }
@@ -2948,7 +2948,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_samuel_influence',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_reflect_on_influence_pt2',
         pattern: 'patience'
       }
@@ -2966,7 +2966,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Learned somethin' at Southern Company though - best mentors help people find their own answers, not just feel supported.\n\nThese reflection skills you're usin' right now? That's the foundation of counselin', coachin', teachin'. Real careers here in Birmingham that value exactly what you're doin'.",
+        text: "Learned somethin' at Southern Company though - best mentors help people find their own.",
         emotion: 'teaching',
         variation_id: 'influence_v1_pt2'
       }
@@ -3013,7 +3013,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -3026,7 +3026,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Exactly. She made her own choice. That's the most important thing.\n\nYou understand agency. That's... honestly, that's advanced.\n\nTook me fifteen years to learn I can't engineer people's decisions. We light up the paths. Travelers choose.",
+        text: "Exactly.",
         emotion: 'proud',
         variation_id: 'agency_v1_pt1'
       }
@@ -3034,7 +3034,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_agency_reflection',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_reflect_on_agency_pt2',
         pattern: 'patience',
         skills: ['communication']
@@ -3053,7 +3053,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Mentors over at Innovation Depot do exactly what you just did - ask questions, hold space, let people discover their own path. That's facilitator instinct. Real professional skill that drives leadership development, organizational psychology, HR careers all across Birmingham.",
+        text: "Mentors over at Innovation Depot do exactly what you did - ask questions, hold.",
         emotion: 'proud',
         variation_id: 'agency_v1_pt2'
       }
@@ -3089,7 +3089,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -3130,7 +3130,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_patience_wisdom',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_patience_wisdom_pt2',
         pattern: 'patience'
       }
@@ -3176,7 +3176,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Because the station remembers. If you'd tried to force an answer, her trust wouldn't have grown. But it did.\n\nTrust is the only map that works here. You didn't find the path by analyzing her file. You found it by building a connection. That's how real exploration happens. Person to person.",
+        text: "Because the station remembers.",
         emotion: 'knowing',
         variation_id: 'systemic_proof_v1'
       }
@@ -3202,7 +3202,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Exactly. Person to person. That's the only navigation that matters.\n\n[He nods toward the platforms]\n\nMore connections waiting to be made.",
+        text: "Exactly.",
         emotion: 'warm',
         variation_id: 'beat_after_connection_map_v1'
       }
@@ -3210,7 +3210,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -3222,7 +3222,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I don't give directions. I help 'em see what they already know.\n\nSpent twenty-three years followin' other people's blueprints. Now I help people draw their own.\n\nBest guides don't lead. They witness.",
+        text: "I don't give directions.",
         emotion: 'vulnerable_wisdom',
         variation_id: 'keeper_truth_v1',
         useChatPacing: true,
@@ -3251,7 +3251,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's right. We witness people becoming who they're meant to be. That's the work.\n\n[He looks toward the platforms]\n\nThere are others who need a witness tonight.",
+        text: "That's right.",
         emotion: 'satisfied',
         variation_id: 'beat_after_witness_v1'
       }
@@ -3259,7 +3259,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -3384,7 +3384,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_deep_reflection',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_deep_reflection_pt2',
         pattern: 'patience',
         skills: ['communication']
@@ -3475,7 +3475,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -3518,7 +3518,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -3531,7 +3531,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Yaquin just sprinted past with a notebook full of diagrams. He said he's launching a 'beta cohort.'\n\nYou helped him realize he doesn't need permission to teach. That's a powerful shift.",
+        text: "Yaquin sprinted past with a notebook full of diagrams.",
         emotion: 'proud',
         variation_id: 'yaquin_gateway_v1'
       }
@@ -3589,7 +3589,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Exactly. Imperfect action beats perfect inaction.\n\nHe was waiting for a credential. You showed him the market only cares about competence.\n\nThat's the new economy. Skill speaks louder than paper.",
+        text: "Exactly.",
         emotion: 'affirming',
         variation_id: 'yaquin_launch_v1'
       }
@@ -3609,7 +3609,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "He did. And now he's moving. The new economy rewards action over credentials.\n\n[He looks toward the platforms]\n\nOthers here are learning to move too.",
+        text: "He did.",
         emotion: 'affirming',
         variation_id: 'beat_after_yaquin_launch_v1'
       }
@@ -3617,7 +3617,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -3629,7 +3629,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Smart. A teacher without students is just a voice in an empty room.\n\nYou helped him think like a strategist. Build the community, then offer the value.\n\nThat's business wisdom applied to education.",
+        text: "Smart.",
         emotion: 'wise',
         variation_id: 'yaquin_audience_v1'
       }
@@ -3649,7 +3649,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "It is. Community first, then content. That's how you build something that lasts.\n\n[He gestures toward the platforms]\n\nReady to meet another strategist?",
+        text: "It is.",
         emotion: 'wise',
         variation_id: 'beat_after_yaquin_audience_v1'
       }
@@ -3657,7 +3657,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -3670,7 +3670,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Kai just walked past. They weren't looking at their tablet. They looked like someone who just quit their job.\n\nLeaving the golden handcuffs is terrifying. You helped them see that safety was actually a trap.",
+        text: "Kai walked past.",
         emotion: 'proud',
         variation_id: 'kai_gateway_v1'
       }
@@ -3718,7 +3718,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "A studio. That's the right vessel for their vision.\n\nYou helped them realize they couldn't change the system from the inside if the system was designed to reject change.\n\nSometimes you have to build the new model to make the old one obsolete.",
+        text: "A studio.",
         emotion: 'wise',
         variation_id: 'kai_studio_v1'
       }
@@ -3738,7 +3738,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "They are. And they learned the most important lesson: You can't reform what's designed to resist reform. Sometimes revolution is the only evolution.\n\n[He gestures to the platforms]\n\nOthers here tonight are learning similar lessons.",
+        text: "They are.",
         emotion: 'wise',
         variation_id: 'beat_after_kai_studio_v1'
       }
@@ -3746,7 +3746,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -3759,7 +3759,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Rohan just left. He looked tired, but different. Not exhausted. Determined.\n\nHe said he's done fixing bugs. He's going to fix the engineers.\n\nYou helped him see that his value isn't in his speed. It's in his understanding.",
+        text: "Rohan left.",
         emotion: 'deep_respect',
         variation_id: 'rohan_gateway_v1'
       }
@@ -3793,7 +3793,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "In a world of generated noise, the person who verifies the truth is the most important person in the room.\n\nYou helped him claim that title. Guardian.\n\nThat's a heavy mantle. But he can carry it.",
+        text: "In a world of generated noise, the person who verifies the.",
         emotion: 'solemn',
         variation_id: 'rohan_truth_v1'
       }
@@ -3821,7 +3821,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -3834,7 +3834,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Silas just headed back to the greenhouse. He had dirt on his hands and a smile I haven't seen on an engineer in years.\n\nHe's done optimizing imaginary numbers. He's optimizing life.\n\nYou helped him see that leaving 'Big Tech' wasn't a retreat. It was an evolution.",
+        text: "Silas headed back to the greenhouse.",
         emotion: 'grounded',
         variation_id: 'silas_gateway_v1'
       }
@@ -3868,7 +3868,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Systems Gardener. I like that.\n\nHe needed someone to validate that his new path was just as complex, just as worthy, as the one he left.\n\nYou gave him permission to touch the soil without losing his mind.",
+        text: "Systems Gardener.",
         emotion: 'warm',
         variation_id: 'silas_soil_v1'
       }
@@ -3888,7 +3888,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "He is. The soil doesn't care about your credentials. Just your attention, your patience, your care.\n\n[He smiles]\n\nThere are others here tonight learning what really matters.",
+        text: "He is.",
         emotion: 'warm',
         variation_id: 'beat_after_silas_soil_v1'
       }
@@ -3896,7 +3896,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -3909,7 +3909,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Alex just headed back to their workshop. Less tired than when they arrived.\n\nYou know, they used to sell certainty for a living. Now they're teaching people to sit with doubt.\n\nYou helped them see that the best teachers aren't the ones with all the answers. They're the ones who ask better questions.",
+        text: "Alex headed back to their workshop. Less tired than when they arrived.",
         emotion: 'knowing',
         variation_id: 'alex_gateway_v1'
       }
@@ -3943,7 +3943,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Curiosity over fear. That's the whole game, isn't it?\n\nAlex spent years selling shortcuts. Now they understand.there are no shortcuts to becoming yourself.\n\nYou reminded them why they started teaching in the first place.",
+        text: "Curiosity over fear.",
         emotion: 'warm',
         variation_id: 'alex_learning_v1'
       }
@@ -3963,7 +3963,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "They will. Because you reminded them: there are no shortcuts to becoming yourself. Just the daily practice of curiosity.\n\n[He looks around the station]\n\nReady to meet another traveler on that same journey?",
+        text: "They will.",
         emotion: 'warm',
         variation_id: 'beat_after_alex_learning_v1'
       }
@@ -3971,7 +3971,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_comprehensive_hub',
         pattern: 'patience'
       }
@@ -3984,7 +3984,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Elena just finished her shift. Third one this week she's trained someone new.\n\nYou know what she said? 'This one asks questions before touching anything.' High praise from her.\n\nYou helped her see that teaching isn't separate from the work. It IS the work.",
+        text: "Elena finished her shift.",
         emotion: 'knowing',
         variation_id: 'elena_gateway_v1'
       }
@@ -4018,7 +4018,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Pride in the work. That's what the trades have that people forget.\n\nElena can look at a building and say 'I made that safe.' Not 'my company' or 'my software.' Her hands. Her knowledge.\n\nYou reminded her that matters. That it's not just a job.it's a craft.",
+        text: "Pride in the work.",
         emotion: 'warm',
         variation_id: 'elena_building_v1'
       }
@@ -4038,7 +4038,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "They do. Her hands. Her knowledge. That's craft, not just competence.\n\n[He nods toward the platforms]\n\nThere are others here learning what real work means.",
+        text: "They do.",
         emotion: 'warm',
         variation_id: 'beat_after_elena_building_v1'
       }
@@ -4046,7 +4046,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_comprehensive_hub',
         pattern: 'patience'
       }
@@ -4059,7 +4059,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Grace just left for her next client. She looked... lighter.\n\nShe told me about your conversation. Said you didn't try to fix anything. You just stayed.\n\nIn a world that moves too fast, you reminded her that presence is the rarest gift.",
+        text: "Grace left for her next client.",
         emotion: 'gentle',
         variation_id: 'grace_gateway_v1'
       }
@@ -4093,7 +4093,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Impossible and invisible. That's the heart of care work.\n\nGrace holds space for people at their most vulnerable. She's present when no one else can be. And the world barely notices.\n\nYou noticed. That's what she needed.to be seen seeing.",
+        text: "Impossible and invisible.",
         emotion: 'warm',
         variation_id: 'grace_care_v1'
       }
@@ -4113,7 +4113,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "She is. And Grace is lucky to have been seen. Care work is impossible and invisible until someone notices.\n\n[He looks toward the platforms]\n\nThere are others here doing work the world doesn't always see.",
+        text: "She is.",
         emotion: 'warm',
         variation_id: 'beat_after_grace_care_v1'
       }
@@ -4121,7 +4121,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_comprehensive_hub',
         pattern: 'patience'
       }
@@ -4198,7 +4198,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -4242,7 +4242,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -4283,7 +4283,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
@@ -4328,7 +4328,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -4373,7 +4373,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -4439,7 +4439,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -4480,7 +4480,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -4500,7 +4500,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -4541,7 +4541,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -4586,7 +4586,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -4599,7 +4599,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "I saw Devon leaving Platform 3. He wasn't looking at his phone or checking schematics. He was just... walking. Present.\n\nThat's a significant shift for a young man who tries to optimize every second. How did you navigate that conversation?",
+        text: "I saw Devon leaving Platform 3.",
         emotion: 'observant',
         variation_id: 'devon_gateway_v1',
         patternReflection: [
@@ -4680,7 +4680,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Integration. That's the engineering word for it, ain't it? Making separate systems work as one.\n\nDevon's been runnin' emotion and logic on separate tracks his whole life. You showed him they can share the same rail.\n\nThat's systems thinking at its best. Applied to the self.",
+        text: "Integration.",
         emotion: 'impressed',
         variation_id: 'devon_integrate_v1'
       }
@@ -4688,7 +4688,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_devon_integrate',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_reflects_devon_systems',
         pattern: 'patience'
       }
@@ -4700,7 +4700,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Connection instead of fixin'. That's somethin' most folks never learn.\n\nEverybody wants to solve everybody else's problems. You gave Devon somethin' rarer. Presence. Attention without agenda.\n\nThat's what his dad needs too. Not solutions. Company.",
+        text: "Connection instead of fixin'. That's somethin' most folks never learn.",
         emotion: 'warm',
         variation_id: 'devon_connection_v1'
       }
@@ -4708,7 +4708,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_devon_connection',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_reflects_devon_systems',
         pattern: 'patience'
       }
@@ -4720,7 +4720,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Just listened. Three simple words that most people never learn to do.\n\nDevon's spent his life solvin' problems. Racing to the answer. You gave him permission to not know. To sit in the question.\n\nSometimes the best thing we can do is hold space while someone finds their own way.",
+        text: "listened.",
         emotion: 'approving',
         variation_id: 'devon_listened_v1'
       }
@@ -4728,7 +4728,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_devon_listened',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_reflects_devon_systems',
         pattern: 'patience'
       }
@@ -4740,7 +4740,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Devon's trap is common in this city. Engineers, researchers, data scientists - we think if we can just measure the problem accurately enough, the solution will appear.\n\nBut grief isn't a problem to be solved. It's a landscape to be traversed. You helped him put down the map and look at the terrain.",
+        text: "Devon's trap is common in this city. Engineers, researchers, data scientists - we think if we can measure the problem accurately enough,.",
         emotion: 'teaching',
         variation_id: 'devon_systems_v1'
       }
@@ -4773,7 +4773,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "A choice. After months of avoidance and algorithms. That's what matters.\n\nDoesn't matter if the conversation goes perfectly. What matters is he's showin' up. Present. Ready to be human instead of efficient.",
+        text: "A choice.",
         emotion: 'hopeful',
         variation_id: 'devon_choice_v1'
       }
@@ -4781,7 +4781,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub_choice',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -4793,7 +4793,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Now that's insight. Systems can hold grief. Structure can create space for feeling.\n\nMost people think you gotta abandon logic to feel. Devon's learnin' you can build a framework FOR emotion. A container for the chaos.\n\nThat's engineer wisdom applied to the heart.",
+        text: "Now that's insight.",
         emotion: 'delighted',
         variation_id: 'devon_systems_r_v1'
       }
@@ -4801,7 +4801,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub_systems',
-        text: "[Continue]",
+        text: "That lands. Who needs us next?",
         nextNodeId: 'samuel_beat_after_devon_systems',
         pattern: 'patience'
       }
@@ -4821,7 +4821,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Let's check on another traveler.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -4863,7 +4863,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -4904,7 +4904,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -4917,7 +4917,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Marcus just walked past. He looked... lighter. He said the patient made it.\n\nBut more than that, he said you saw the engineering in his work. That you understood the weight of the machine.\n\nHow was it, stepping into that kind of pressure?",
+        text: "Marcus walked past.",
         emotion: 'respectful',
         variation_id: 'marcus_gateway_v1',
         patternReflection: [
@@ -4990,7 +4990,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "High stakes clarify things. In that simulation, there was no room for doubt. You had to act.\n\nThat decisiveness you showed? That's a skill. Not everyone can move when the alarm screams.\n\nYou helped Marcus see that his work isn't just care. it's precision engineering. You built a bridge between his identity as a nurse and his potential as an innovator.",
+        text: "High stakes clarify things. In that simulation, there was no room for doubt.",
         emotion: 'proud',
         variation_id: 'marcus_stakes_v1'
       }
@@ -5019,7 +5019,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -5032,7 +5032,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Tess just left. She wasn't pacing anymore. She looked... focused. Like she finally had a map.\n\nStarting something new is terrifying. Most people wait for permission. It seems she decided not to wait.",
+        text: "Tess just left. She wasn't pacing anymore.",
         emotion: 'proud',
         variation_id: 'tess_gateway_v1',
         patternReflection: [
@@ -5111,7 +5111,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You helped her jump. That's a heavy thing to do.\n\nBut you saw that her safety was actually a cage. Sometimes the most dangerous thing you can do is stay safe.\n\nYou have the eye of a founder - seeing what could be, not just what is.",
+        text: "You helped her jump.",
         emotion: 'respectful',
         variation_id: 'tess_risk_v1'
       }
@@ -5139,7 +5139,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -5151,7 +5151,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You helped her build a bridge instead of a cliff.\n\nVisionaries often burn out because they try to do everything at once. You taught her that sustainability is part of the mission.\n\nThat's the wisdom of a strategist.",
+        text: "You helped her build a bridge instead of a cliff.",
         emotion: 'wise',
         variation_id: 'tess_caution_v1'
       }
@@ -5171,7 +5171,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "She will. One deliberate step at a time. Sustainability isn't slow - it's strategic.\n\n[He looks toward the platforms]\n\nOthers here are learning about their own pace too.",
+        text: "She will.",
         emotion: 'wise',
         variation_id: 'beat_after_tess_caution_v1'
       }
@@ -5179,7 +5179,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -5192,7 +5192,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You're back. I saw Jordan heading into that classroom earlier - she looked different than when she arrived. Less frantic. More grounded.\n\nSeven jobs in seven years. Most people would call that instability. But I've learned the station measures something deeper than résumés. How did her journey look to you?",
+        text: "You're back.",
         emotion: 'observant',
         variation_id: 'jordan_gateway_v1',
         patternReflection: [
@@ -5271,13 +5271,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Most people are. The difference is whether they admit it.\n\nJordan wore her searching openly. That takes courage. The ones who pretend they have it figured out? They're the truly lost ones. Can't find something you won't acknowledge you're looking for.",
+        text: "Most people are.",
         emotion: 'thoughtful',
         variation_id: 'jordan_lost_v1'
       }
     ],
     choices: [
-      { choiceId: 'continue_lost', text: "[Continue]", nextNodeId: 'samuel_jordan_mentorship_reflection' }
+      { choiceId: 'continue_lost', text: "Proceed.", nextNodeId: 'samuel_jordan_mentorship_reflection' }
     ]
   },
   {
@@ -5285,13 +5285,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Now that's a systems thinker's observation. You saw accumulation where others saw chaos.\n\nSeven jobs isn't instability when each one adds a new tool to the kit. Jordan was building a Swiss Army knife while everyone else thought she was just collecting broken pieces.",
+        text: "Now that's a systems thinker's observation.",
         emotion: 'impressed',
         variation_id: 'jordan_building_v1'
       }
     ],
     choices: [
-      { choiceId: 'continue_building', text: "[Continue]", nextNodeId: 'samuel_jordan_mentorship_reflection' }
+      { choiceId: 'continue_building', text: "Proceed.", nextNodeId: 'samuel_jordan_mentorship_reflection' }
     ]
   },
   {
@@ -5299,13 +5299,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That recognition. It matters. When we see ourselves in someone's struggle, we can offer understanding no manual provides.\n\nThe station brought you here for a reason. Perhaps it knew you'd understand journeys that don't follow straight lines.",
+        text: "That recognition.",
         emotion: 'knowing',
         variation_id: 'jordan_resonance_v1'
       }
     ],
     choices: [
-      { choiceId: 'continue_resonance', text: "[Continue]", nextNodeId: 'samuel_jordan_mentorship_reflection' }
+      { choiceId: 'continue_resonance', text: "Proceed.", nextNodeId: 'samuel_jordan_mentorship_reflection' }
     ]
   },
 
@@ -5314,7 +5314,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The students in that classroom needed Jordan more than they knew. Not because she has all the answers - but because she's lived the questions they're afraid to ask.\n\nThere's a difference between helping someone see their path and convincing them to walk yours. What did you offer her in those moments before her speech?",
+        text: "The students in that classroom needed Jordan more than they knew. Not because she has all the answers - but because she's.",
         emotion: 'teaching',
         variation_id: 'mentorship_question_v1'
       }
@@ -5354,13 +5354,47 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Mirrors are tricky tools. Hold one up and people might see their flaws first.\n\nBut you didn't show her what was wrong. You showed her what was hidden. The experience she'd been discounting. The skills she'd been calling 'just survival.'\n\nThat kind of reflecting? It's an act of faith.",
+        text: "Mirrors are tricky tools.",
         emotion: 'affirming',
         variation_id: 'jordan_mirror_v1'
       }
     ],
     choices: [
-      { choiceId: 'continue_mirror', text: "[Continue]", nextNodeId: 'samuel_beat_after_jordan_mirror' }
+      {
+        choiceId: 'mirror_boundary_question',
+        text: "How do I reflect without pushing too hard?",
+        nextNodeId: 'samuel_jordan_mirror_boundary',
+        pattern: 'analytical',
+        skills: ['communication', 'emotionalIntelligence']
+      },
+      {
+        choiceId: 'mirror_continue',
+        text: "Keep going. What kind of faith?",
+        nextNodeId: 'samuel_beat_after_jordan_mirror',
+        pattern: 'patience',
+        skills: ['communication']
+      }
+    ]
+  },
+
+  {
+    nodeId: 'samuel_jordan_mirror_boundary',
+    speaker: 'Samuel Washington',
+    content: [
+      {
+        text: "Name what you see, then step back.",
+        emotion: 'wise',
+        variation_id: 'jordan_mirror_boundary_v1'
+      }
+    ],
+    choices: [
+      {
+        choiceId: 'boundary_to_hub',
+        text: "Seen, not managed. I'll carry that forward.",
+        nextNodeId: 'samuel_hub_after_devon',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'communication']
+      }
     ]
   },
 
@@ -5377,7 +5411,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -5388,13 +5422,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The Socratic approach. Oldest teaching method there is. And the hardest.\n\nAnyone can give answers. But questions? Questions let people own their discoveries. Jordan didn't walk out of there with your wisdom. She walked out with her own.\n\nThat's the difference between a lecture and a conversation.",
+        text: "The Socratic approach.",
         emotion: 'wise',
         variation_id: 'jordan_questions_v1'
       }
     ],
     choices: [
-      { choiceId: 'continue_questions', text: "[Continue]", nextNodeId: 'samuel_beat_after_jordan_questions' }
+      { choiceId: 'continue_questions', text: "Questions changed her.", nextNodeId: 'samuel_beat_after_jordan_questions' }
     ]
   },
 
@@ -5411,7 +5445,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Let's keep that moving.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -5422,13 +5456,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Mmm. The rarest gift.\n\nMost people listen just long enough to plan their response. But true listening, the kind that holds space without filling it, that's where people find their own answers.\n\nJordan probably talked herself into courage. You just gave her the room.",
+        text: "Mmm.",
         emotion: 'reverent',
         variation_id: 'jordan_listened_v1'
       }
     ],
     choices: [
-      { choiceId: 'continue_listened', text: "[Continue]", nextNodeId: 'samuel_beat_after_jordan_listened' }
+      { choiceId: 'continue_listened', text: "Listening gave her room.", nextNodeId: 'samuel_beat_after_jordan_listened' }
     ]
   },
 
@@ -5437,7 +5471,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You gave her the room. That's what this station does too - makes space.\n\n[A quiet moment, then he looks up]\n\nSpeaking of which. There are others waiting.",
+        text: "You gave her the room.",
         emotion: 'warm',
         variation_id: 'beat_after_jordan_listened_v1'
       }
@@ -5445,7 +5479,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Let's see who is waiting.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -5648,7 +5682,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'patience'
       }
@@ -5700,7 +5734,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Platform 3 has another traveler tonight. Devon Kumar - engineering student. Builds systems to avoid dealing with emotions. Reminds me of myself at that age, if I'm honest.\n\nOr you can return to Maya if you'd like. The choice is yours.",
+        text: "Platform 3 has another traveler tonight.",
         emotion: 'reflective',
         variation_id: 'hub_after_maya_v3_clean',
         patternReflection: [
@@ -5869,7 +5903,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -5916,7 +5950,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'exploring'
       }
@@ -5936,7 +5970,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_witnessing_teaching',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_teaching_witnessing_pt2',
         pattern: 'patience'
       }
@@ -5987,7 +6021,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -6007,7 +6041,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_empathy_recognition',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_empathy_recognition_pt2',
         pattern: 'patience'
       }
@@ -6040,7 +6074,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Devon's on Platform 3. Engineering student, probably hunched over a blueprint.\n\nHe organizes everything into systems. Systems are predictable. People aren't.\n\nBrilliant at solving problems. Struggles when they involve hearts.",
+        text: "Devon's on Platform 3.",
         emotion: 'understanding',
         variation_id: 'devon_intro_v1'
       }
@@ -6084,7 +6118,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Direct. I appreciate that.\n\nSome people need to overthink every connection before they make one. But sometimes the best way to understand someone is to just show up.\n\nHe's probably deep in some schematic. Don't let that fool you. There's a lot going on under the surface.",
+        text: "Direct.",
         emotion: 'encouraging',
         variation_id: 'devon_eager_v1'
       }
@@ -6103,7 +6137,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Then you might be exactly who he needs to meet.\n\nDevon's built walls out of logic. It's safer to think than to feel. But you just showed you know what it costs to let those walls down.\n\nGo easy with him. But don't let him hide behind his blueprints.",
+        text: "Then you might be exactly who he needs to meet.",
         emotion: 'meaningful',
         variation_id: 'devon_empathy_v1'
       }
@@ -6123,7 +6157,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Because you've shown you can meet people where they are. Maya needed someone to validate her hidden dream. Devon needs something different - someone to show him that vulnerability isn't weakness, it's data he's been ignoring.\n\nYou're building a particular kind of skill here. The station is showing you.",
+        text: "Because you've shown you can meet people where they are.",
         emotion: 'wise',
         variation_id: 'why_devon_v1'
       }
@@ -6148,7 +6182,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "There's someone else here tonight - Jordan Packard. Conference rooms, guest instructor for Career Day.\n\nSeven jobs in seven years. Most people see 'instability.' But I see someone learning this city's ecosystem.\n\nShe's about to give a speech, but carrying doubt about whether she belongs in front of that room.",
+        text: "There's someone else here tonight - Jordan Packard.",
         emotion: 'observant',
         variation_id: 'jordan_intro_v1'
       }
@@ -6191,7 +6225,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Impostor syndrome doesn't care about résumés.\n\nJordan's built real skills but feels like a fraud.\n\nYou help people see frames they can't see. Jordan needs to see her winding path isn't a liability. it's what makes her valuable.\n\nThose students need someone who's lived it.",
+        text: "Impostor syndrome doesn't care about résumés.",
         emotion: 'teaching',
         variation_id: 'why_jordan_v1'
       }
@@ -6316,7 +6350,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's Marcus. CVICU Nurse. He's standing by Platform 4, looking like he's still on shift.\n\nHe deals with life and death every night. But he's realizing the machines he uses are just as important as the medicine.\n\nGo gently. He's still carrying the weight of his last shift.",
+        text: "That's Marcus.",
         emotion: 'respectful',
         variation_id: 'marcus_intro_v1'
       }
@@ -6342,7 +6376,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Tonight's travelers:\n\n**Maya Chen** - Platform 1. Pre-med student choosing between family expectations and robotics dreams.\n\n**Devon Kumar** - Platform 3. Engineering student learning that logic isn't enough.\n\n**Jordan Packard** - Conference Room B. Seven jobs, one question: qualified or fraudulent?\n\n**Marcus** - Platform 4. CVICU nurse realizing machines matter as much as medicine.\n\n**Tess** - Pizitz Food Hall. Career counselor building a new kind of school.\n\n**Yaquin** - Platform 5. Dental assistant teaching what universities won't.\n\n**Kai** - Platform 6. Instructional architect choosing depth over compliance.\n\n**Rohan** - Platform 7. Site reliability engineer guarding the systems that matter.\n\n**Silas** - Platform 8 (Greenhouse). Former cloud architect now debugging nature.\n\n**Alex** - Platform 8 (Learning Loop). Former bootcamp instructor questioning everything they taught.\n\nWho would you like to meet?",
+        text: "Tonight's roster: Maya (Platform 1), Devon (Platform 3), Jordan (Conference Room B), Marcus (Platform.",
         emotion: 'comprehensive_guide',
         variation_id: 'comprehensive_hub_v1',
         voiceVariations: {
@@ -6683,7 +6717,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "What do I see in you? Someone who listens more than they speak. Who asks questions that make people think.\n\nYou're not here by accident. The station called you because you can hold space for others' becoming.\n\nThat's a rare gift, and a difficult one. You'll often help others find clarity before you find your own.",
+        text: "What do I see in you? Someone who listens more than they speak.",
         emotion: 'knowing',
         variation_id: 'pattern_v1'
       }
@@ -6723,7 +6757,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Your path is being revealed now. Every traveler you help is a mirror.\n\nThe station provides encounters. The meaning emerges from what you do with them.\n\nKeep walking. Your blueprint is taking shape.",
+        text: "Your path is being revealed now.",
         emotion: 'patient',
         variation_id: 'your_path_v1'
       }
@@ -6763,7 +6797,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -6775,7 +6809,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Smart. Insight fades if you don't anchor it.\n\nTake everything we've uncovered tonight. The patterns, the instincts, the choices. Don't let them fade.\n\nMap them out. Make them real. That's how you bring the station home with you.",
+        text: "Smart.",
         emotion: 'teaching',
         variation_id: 'action_plan_intro_v1'
       }
@@ -6797,7 +6831,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Good. Map it out. Anchor it. That's how insight becomes wisdom.\n\n[He gestures toward the platforms]\n\nReady to discover what else is waiting for you here?",
+        text: "Good.",
         emotion: 'teaching',
         variation_id: 'beat_after_action_plan_intro_v1'
       }
@@ -6805,7 +6839,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -6829,7 +6863,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_analytical',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_analytical_bonus_2',
         pattern: 'patience',
         skills: ['communication']
@@ -6855,7 +6889,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_analytical_2',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_analytical_bonus_3',
         pattern: 'patience',
         skills: ['communication']
@@ -6916,7 +6950,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_patience',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_patience_bonus_2',
         pattern: 'patience',
         skills: ['communication']
@@ -6942,7 +6976,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_patience_2',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_patience_bonus_3',
         pattern: 'patience',
         skills: ['communication']
@@ -7010,7 +7044,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -7030,7 +7064,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_exploring',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_exploring_bonus_2',
         pattern: 'patience',
         skills: ['communication']
@@ -7056,7 +7090,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_exploring_2',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_exploring_bonus_3',
         pattern: 'patience',
         skills: ['communication']
@@ -7124,7 +7158,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -7144,7 +7178,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_helping',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_helping_bonus_2',
         pattern: 'patience',
         skills: ['communication']
@@ -7170,7 +7204,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_helping_2',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_helping_bonus_3',
         pattern: 'patience',
         skills: ['communication']
@@ -7238,7 +7272,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -7258,7 +7292,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_building',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_building_bonus_2',
         pattern: 'patience',
         skills: ['communication']
@@ -7284,7 +7318,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_building_2',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_building_bonus_3',
         pattern: 'patience',
         skills: ['communication']
@@ -7352,7 +7386,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -7369,7 +7403,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You think things through. I've watched you. the way you break problems apart, find the pieces that don't fit.\n\nI used to be like that. Spent years at Southern Company running numbers, optimizing systems. Good at it, too.",
+        text: "You think things through.",
         emotion: 'reflective',
         variation_id: 'analytical_mastery_v1'
       }
@@ -7402,7 +7436,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "What changed? I realized systems are just tools. The real work is knowing what you're building them for.\n\nYou've got the analysis down. The question now is: what will you use it for?",
+        text: "What changed?",
         emotion: 'knowing',
         variation_id: 'analytical_reveal_v1'
       }
@@ -7423,7 +7457,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Logic is a good foundation. But some things only make sense after you've built on it for a while.\n\nKeep thinking. Keep questioning. That's how you find what's worth building.",
+        text: "Logic is a good foundation.",
         emotion: 'warm',
         variation_id: 'analytical_affirm_v1'
       }
@@ -7453,7 +7487,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -7466,7 +7500,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You lead with care. Not everyone does. Most people... they're so busy with their own path, they forget to look around.\n\nBut you see people. Really see them.",
+        text: "You lead with care.",
         emotion: 'warm',
         variation_id: 'helping_mastery_v1'
       }
@@ -7499,7 +7533,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's part of it. But truth is. I stay because watching people find their way... it reminds me why any of this matters.\n\nEvery person you help, you're building something. Not systems. Something bigger.",
+        text: "That's part of it.",
         emotion: 'vulnerable',
         variation_id: 'helping_reveal_v1'
       }
@@ -7521,7 +7555,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You do. Every person you help builds something bigger than systems. That's what this place is really about.\n\n[He looks toward the platforms]\n\nReady to meet more people finding their way?",
+        text: "You do.",
         emotion: 'vulnerable',
         variation_id: 'beat_after_helping_reveal_v1'
       }
@@ -7529,7 +7563,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -7540,7 +7574,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's the work. Most people think helping means having answers. But the real help? It's just being there. Listening.\n\nYou already know that.",
+        text: "That's the work.",
         emotion: 'warm',
         variation_id: 'helping_affirm_v1'
       }
@@ -7570,7 +7604,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -7583,7 +7617,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You're a maker. I can tell. You look at things differently. like everything's a problem waiting to be solved.\n\nI built things my whole life. Power systems, infrastructure. Things that kept cities running.",
+        text: "You're a maker.",
         emotion: 'knowing',
         variation_id: 'building_mastery_v1'
       }
@@ -7616,7 +7650,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Miss it? Every day. But I'm still building. Just... different things now.\n\nThe best builders? They know when to shift what they're making. You'll figure that out too.",
+        text: "Miss it? Every day.",
         emotion: 'reflective',
         variation_id: 'building_reveal_v1'
       }
@@ -7638,7 +7672,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You will. The best builders know when to shift what they're making. From systems to people. From structures to stories.\n\n[He gestures to the station around you]\n\nReady to meet more builders?",
+        text: "You will.",
         emotion: 'reflective',
         variation_id: 'beat_after_building_reveal_v1'
       }
@@ -7646,7 +7680,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -7657,7 +7691,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Nothing like it. That feeling when pieces click together... when something you made actually does what it's supposed to.\n\nHold onto that. It'll carry you further than you know.",
+        text: "Nothing it.",
         emotion: 'warm',
         variation_id: 'building_affirm_v1'
       }
@@ -7687,7 +7721,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -7700,7 +7734,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Curiosity. That's what I see in you. You want to understand everything. not just the answers, but the questions.\n\nThis station? It was built for people like you.",
+        text: "Curiosity.",
         emotion: 'knowing',
         variation_id: 'exploring_mastery_v1'
       }
@@ -7733,7 +7767,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Who built it? That's the question, isn't it.\n\nBest I can tell. it builds itself. From the questions people bring. Each traveler adds something.\n\nIncluding you.",
+        text: "Who built it?",
         emotion: 'mysterious',
         variation_id: 'exploring_reveal_v1'
       }
@@ -7770,7 +7804,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Good. Keep that. The world's too full of people who stopped wondering.\n\nYou'll find things others miss. That's not a skill. that's who you are.",
+        text: "Good.",
         emotion: 'warm',
         variation_id: 'exploring_affirm_v1'
       }
@@ -7792,7 +7826,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Keep wondering. Keep looking. That's how you find what others miss.\n\n[He smiles slightly]\n\nReady to meet more travelers who never stopped asking 'why'?",
+        text: "Keep wondering.",
         emotion: 'warm',
         variation_id: 'beat_after_orb_exploring_v1'
       }
@@ -7800,7 +7834,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -7813,7 +7847,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You don't rush. I've noticed. While others push forward, you wait. Listen. Think.\n\nThat's rare. Especially these days.",
+        text: "You don't rush.",
         emotion: 'knowing',
         variation_id: 'patience_mastery_v1'
       }
@@ -7846,7 +7880,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Learned it. The hard way.\n\nSpent years trying to force things. Plans, timelines, deadlines. Took a long time to realize. some things unfold when they're ready. Not before.\n\nYou already understand that.",
+        text: "Learned it. The hard way.",
         emotion: 'reflective',
         variation_id: 'patience_reveal_v1'
       }
@@ -7868,7 +7902,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "They can't. Some things unfold when they're ready, not before. That lesson took me years to learn the hard way.\n\n[He looks around the station]\n\nReady to meet more travelers learning their own timing?",
+        text: "They can't.",
         emotion: 'reflective',
         variation_id: 'beat_after_patience_reveal_v1'
       }
@@ -7876,7 +7910,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -7887,7 +7921,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "True. But knowing when to wait and when to act. that's the real skill.\n\nYou've got good instincts. Trust them.",
+        text: "True.",
         emotion: 'warm',
         variation_id: 'patience_affirm_v1'
       }
@@ -7917,7 +7951,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -7985,7 +8019,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'route_to_mastery',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_mastery',
         visibleCondition: {
           patterns: {
@@ -7995,7 +8029,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_mastery_helping',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_mastery',
         visibleCondition: {
           patterns: {
@@ -8005,7 +8039,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_mastery_building',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_mastery',
         visibleCondition: {
           patterns: {
@@ -8015,7 +8049,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_mastery_patience',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_mastery',
         visibleCondition: {
           patterns: {
@@ -8025,7 +8059,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_mastery_exploring',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_mastery',
         visibleCondition: {
           patterns: {
@@ -8035,7 +8069,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_recognition',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_recognition',
         visibleCondition: {
           patterns: {
@@ -8045,7 +8079,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_recognition_helping',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_recognition',
         visibleCondition: {
           patterns: {
@@ -8055,7 +8089,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_recognition_building',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_recognition',
         visibleCondition: {
           patterns: {
@@ -8065,7 +8099,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_recognition_patience',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_recognition',
         visibleCondition: {
           patterns: {
@@ -8075,7 +8109,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_recognition_exploring',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_recognition',
         visibleCondition: {
           patterns: {
@@ -8085,7 +8119,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_noticing',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_noticing',
         visibleCondition: {
           patterns: {
@@ -8095,7 +8129,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_noticing_helping',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_noticing',
         visibleCondition: {
           patterns: {
@@ -8105,7 +8139,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_noticing_building',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_noticing',
         visibleCondition: {
           patterns: {
@@ -8115,7 +8149,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_noticing_patience',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_noticing',
         visibleCondition: {
           patterns: {
@@ -8125,7 +8159,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_noticing_exploring',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_noticing',
         visibleCondition: {
           patterns: {
@@ -8135,7 +8169,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_default',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'samuel_greeting_return'
       }
     ],
@@ -8148,7 +8182,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The station stirs when you enter. Somethin' in your walk has changed since you first stepped off that train.\n\nI've seen it before.folks start movin' through here with more purpose. Like they're rememberin' who they are instead of searchin' for it.",
+        text: "The station stirs when you enter.",
         emotion: 'observant',
         variation_id: 'greeting_noticing_v1'
       }
@@ -8176,7 +8210,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The Weaver takes note of you now. I see the threads formin' around your choices.patterns that weren't there when you arrived.\n\nYou're not just passin' through anymore. This place is becomin' part of you, and you're becomin' part of it.",
+        text: "The Weaver takes note of you now.",
         emotion: 'impressed',
         variation_id: 'greeting_recognition_v1'
       }
@@ -8204,7 +8238,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You've become part of the station's pattern now, not just a visitor passin' through.\n\nI've watched a lot of travelers come through here. Most of 'em find one thread and follow it. You? You're weavin' somethin' new. The station remembers people like you.",
+        text: "You've become part of the station's pattern now, not a visitor passin' through.",
         emotion: 'reverent',
         variation_id: 'greeting_mastery_v1'
       }
@@ -8233,7 +8267,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     content: [
       // HARMONIOUS (5+ arcs) - Station is alive and thriving
       {
-        text: "Listen to her sing.\n\nFive lives touched. Five threads woven. The station hasn't felt like this in a long time.\n\nYou're not just visitin' anymore. You're part of the pattern.",
+        text: "Listen to her sing.",
         emotion: 'reverent',
         variation_id: 'greeting_return_harmonious',
         condition: {
@@ -8395,7 +8429,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "This place... it exists between where you've been and where you're goin'. Call it a crossroads, a waystation, a moment of clarity before the next choice.\n\nEvery platform here represents a different path.not destinations, but ways of movin' through the world. The station doesn't tell you where to go. It shows you who you already are, and lets you decide what to do with that knowledge.",
+        text: "This place. it exists between where you've been and where you're goin'.",
         emotion: 'philosophical',
         variation_id: 'station_deep_v1'
       }
@@ -8505,7 +8539,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Every choice you make here leaves a trace. Not good or bad.just... true. The station watches how you move through problems, how you connect with people, what questions you ask.\n\nThose patterns? They're not somethin' we give you. They're somethin' you already had. We just help you see 'em clearer.",
+        text: "Every choice you make here leaves a trace.",
         emotion: 'knowing',
         variation_id: 'pattern_insight_v1',
         patternReflection: [
@@ -8565,7 +8599,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Careers? The station doesn't think in job titles. It thinks in... resonance. What makes your heart beat faster, what problems you can't look away from, what you'd do even if nobody paid you.\n\nTalk to the travelers here. Each one's found their own answer to that question. In their stories, you might hear echoes of your own.",
+        text: "Careers? The station doesn't think in job titles.",
         emotion: 'warm',
         variation_id: 'career_preview_v1',
         patternReflection: [
@@ -8676,7 +8710,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -8707,7 +8741,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -8765,7 +8799,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -8798,7 +8832,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -8830,7 +8864,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -8862,7 +8896,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -8883,7 +8917,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -8904,7 +8938,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -8925,7 +8959,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -8946,7 +8980,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_return',
         pattern: 'patience'
       }
@@ -8967,7 +9001,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_return',
         pattern: 'patience'
       }
@@ -9038,7 +9072,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     },
     content: [
       {
-        text: "You ever wonder why folks end up here? At this particular station?\\n\\nAin't random. Never is.",
+        text: "You ever wonder why folks end up here?",
         emotion: 'mysterious',
         variation_id: 'mystery_hint_1_v1'
       }
@@ -9065,7 +9099,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'samuel',
     content: [
       {
-        text: "Ha. You'll figure it out. Everyone does, eventually.\\n\\nRight now, focus on the folks here. Their stories... they're connected to yours more than you know.",
+        text: "Ha.",
         emotion: 'knowing',
         variation_id: 'mystery_deflect_1_v1'
       }
@@ -9116,7 +9150,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'samuel',
     content: [
       {
-        text: "Yourself. Who you really are. Who you could become.\\n\\nEvery conversation here, every choice... it's all showing you something. Pay attention.",
+        text: "Yourself.",
         emotion: 'knowing',
         variation_id: 'mystery_mirror_response_v1'
       }
@@ -9297,7 +9331,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     nodeId: 'samuel_loyalty_trigger',
     speaker: 'Samuel Washington',
     content: [{
-      text: "It's platform seven.\n\nThere's a young man there. Twenty-two. Engineering degree, three job offers, can't decide between any of them. Paralyzed by the weight of choosing wrong.\n\nHe's been sitting on that bench for six hours. Not reading. Not scrolling. Just staring at the tracks.\n\nI've watched a thousand passengers wrestle with choice. But this one... something about him reminds me of myself at that age. The fear that one wrong turn ruins everything.\n\nHe doesn't need advice. He needs someone to sit with him. To make the silence less heavy.\n\nYou understand patience. Would you... sit with him? Just for an hour. Let him know he's not alone in the uncertainty?",
+      text: "It's platform seven. A twenty-two-year-old with three job offers has been frozen on a bench for six hours, terrified of choosing wrong.",
       emotion: 'vulnerable_warm',
       variation_id: 'loyalty_trigger_v1',
       richEffectContext: 'warning'
@@ -9346,7 +9380,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     nodeId: 'samuel_loyalty_start',
     speaker: 'Samuel Washington',
     content: [{
-      text: "Platform seven. The bench by the schedule board.\n\nDon't try to fix him. Don't rush him. Just... be there.\n\nSometimes that's all someone needs.",
+      text: "Platform seven.",
       emotion: 'warm_grateful',
       variation_id: 'loyalty_start_v1'
     }],
@@ -9471,7 +9505,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'continue_to_hub',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }

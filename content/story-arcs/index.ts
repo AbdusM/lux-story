@@ -193,6 +193,114 @@ const THE_SHADOW_WAR: StoryArc = {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// ARC 6: CARE AND CONVICTION
+// ═══════════════════════════════════════════════════════════════════════════
+const CARE_AND_CONVICTION: StoryArc = {
+    id: 'care_and_conviction',
+    title: 'Care and Conviction',
+    description: 'Three caretakers confront the cost of helping without losing themselves.',
+    requiredCharacters: ['dante', 'grace', 'isaiah'],
+    chapters: [
+        {
+            id: 'ccv_ch1_cracks',
+            title: 'Cracks In The Armor',
+            description: 'Dante and Grace both name the hidden cost of constant performance.',
+            nodeIds: ['dante_vulnerability_arc', 'grace_vulnerability_arc'],
+            completionFlag: 'care_conviction_started'
+        },
+        {
+            id: 'ccv_ch2_weight',
+            title: 'The Weight They Carry',
+            description: 'Isaiah and Grace reveal what care has asked them to endure.',
+            nodeIds: ['isaiah_vulnerability_arc', 'grace_vulnerability_daughter'],
+            completionFlag: 'care_conviction_deepened'
+        },
+        {
+            id: 'ccv_ch3_sustainable',
+            title: 'Sustainable Service',
+            description: 'Isaiah and Dante choose practices that preserve care over time.',
+            nodeIds: ['isaiah_kept_going', 'dante_habit_insight'],
+            completionFlag: 'care_conviction_integrated'
+        }
+    ],
+    unlockCondition: {
+        requiredFlags: ['dante_arc_complete', 'grace_arc_complete', 'isaiah_arc_complete']
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ARC 7: REPAIR PROTOCOL
+// ═══════════════════════════════════════════════════════════════════════════
+const REPAIR_PROTOCOL: StoryArc = {
+    id: 'repair_protocol',
+    title: 'Repair Protocol',
+    description: 'Four realists learn how accountability, care, and systems repair can coexist.',
+    requiredCharacters: ['alex', 'nadia', 'quinn', 'silas'],
+    chapters: [
+        {
+            id: 'rp_ch1_fracture',
+            title: 'Where It Broke',
+            description: 'Alex and Silas name the pressure points where performance became survival.',
+            nodeIds: ['alex_moral_injury', 'silas_burnout_story'],
+            completionFlag: 'repair_protocol_started'
+        },
+        {
+            id: 'rp_ch2_reckoning',
+            title: 'Cost Accounting',
+            description: 'Nadia and Quinn confront the human cost behind professional success metrics.',
+            nodeIds: ['nadia_vulnerability_arc', 'quinn_vulnerability_arc'],
+            completionFlag: 'repair_protocol_reckoning'
+        },
+        {
+            id: 'rp_ch3_rebuild',
+            title: 'Build What Lasts',
+            description: 'Each of them chooses sustainable practices over performative perfection.',
+            nodeIds: ['alex_learning_now', 'silas_learning_soil', 'nadia_haunted_change', 'quinn_self_forgiveness'],
+            completionFlag: 'repair_protocol_integrated'
+        }
+    ],
+    unlockCondition: {
+        requiredFlags: ['alex_arc_complete', 'nadia_arc_complete', 'quinn_arc_complete', 'silas_arc_complete']
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ARC 8: BUILDERS COMMON
+// ═══════════════════════════════════════════════════════════════════════════
+const BUILDERS_COMMON: StoryArc = {
+    id: 'builders_common',
+    title: 'Builders Common',
+    description: 'Four builders align craft, ethics, and community impact into a shared practice.',
+    requiredCharacters: ['marcus', 'tess', 'yaquin', 'kai'],
+    chapters: [
+        {
+            id: 'bc_ch1_frictions',
+            title: 'Productive Friction',
+            description: 'Marcus and Tess frame the tension between mission and market realities.',
+            nodeIds: ['marcus_ethics_scale', 'tess_the_numbers'],
+            completionFlag: 'builders_common_started'
+        },
+        {
+            id: 'bc_ch2_voices',
+            title: 'Voices In Public',
+            description: 'Yaquin and Kai move from private skill to public contribution.',
+            nodeIds: ['yaquin_launched', 'kai_deep_dive_success'],
+            completionFlag: 'builders_common_public'
+        },
+        {
+            id: 'bc_ch3_alignment',
+            title: 'Aligned Craft',
+            description: 'The group commits to building systems that are useful, teachable, and humane.',
+            nodeIds: ['marcus_layer_four_personal', 'tess_p2_complete', 'yaquin_vulnerability_arc', 'kai_career_synthesis'],
+            completionFlag: 'builders_common_integrated'
+        }
+    ],
+    unlockCondition: {
+        requiredFlags: ['marcus_arc_complete', 'tess_arc_complete', 'yaquin_arc_complete', 'kai_arc_complete']
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // EXPORT REGISTRY
 // ═══════════════════════════════════════════════════════════════════════════
 export const ALL_STORY_ARCS: StoryArc[] = [
@@ -200,7 +308,10 @@ export const ALL_STORY_ARCS: StoryArc[] = [
     PLATFORM_SEVEN,
     THE_QUIET_HOUR,
     CAREER_CROSSROADS,
-    THE_SHADOW_WAR
+    THE_SHADOW_WAR,
+    CARE_AND_CONVICTION,
+    REPAIR_PROTOCOL,
+    BUILDERS_COMMON
 ]
 
 export function getArcById(id: string): StoryArc | undefined {

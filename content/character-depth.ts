@@ -424,7 +424,26 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
       }
     ],
 
-    growthArcs: []
+    growthArcs: [
+      {
+        vulnerabilityId: 'samuel_loneliness',
+        strengthId: 'samuel_pattern_sight',
+        transformationDialogue: [
+          'I thought my role was to witness everyone else moving.',
+          'No arrivals. No departures. Just tending the station.',
+          'But guidance is not passive observation; it is a relationship.',
+          'I can remain a keeper and still belong to the story I am helping hold.',
+          'For the first time in years, I do not feel outside the platform lights.'
+        ],
+        conditions: {
+          trustMin: 8,
+          requiredFlags: ['knows_samuel_regret', 'knows_samuel_lonely']
+        },
+        result: {
+          globalFlagsSet: ['samuel_growth_integrated', 'samuel_belonging_restored']
+        }
+      }
+    ]
   },
 
   // ============================================
@@ -1188,7 +1207,26 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ],
-    growthArcs: []
+    growthArcs: [
+      {
+        vulnerabilityId: 'elena_imperfect_creation',
+        strengthId: 'elena_structure',
+        transformationDialogue: [
+          'I thought every flaw proved I had lost my edge.',
+          'But structure is not the absence of cracks; it is how the whole system carries them.',
+          'I am designing again from first principles, not nostalgia.',
+          'The fear is still there, but it no longer runs the blueprint.',
+          'This time I am building for resilience, not perfection.'
+        ],
+        conditions: {
+          trustMin: 7,
+          requiredFlags: ['knows_elena_fear', 'elena_arc_complete']
+        },
+        result: {
+          globalFlagsSet: ['elena_growth_integrated', 'elena_resilient_design']
+        }
+      }
+    ]
   },
 
   // ============================================
@@ -1229,7 +1267,26 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ],
-    growthArcs: []
+    growthArcs: [
+      {
+        vulnerabilityId: 'grace_compassion_fatigue',
+        strengthId: 'grace_empathy',
+        transformationDialogue: [
+          'I kept thinking care meant giving until I disappeared.',
+          'But you were right: emptiness is not a virtue.',
+          'I started treating recovery like part of the work, not a detour from it.',
+          'Now when I sit with someone, I can actually stay present.',
+          'Not because I am endless, but because I learned how to refill.'
+        ],
+        conditions: {
+          trustMin: 7,
+          requiredFlags: ['knows_grace_exhaustion', 'grace_arc_complete']
+        },
+        result: {
+          globalFlagsSet: ['grace_growth_integrated', 'grace_refill_practice']
+        }
+      }
+    ]
   },
 
   // ============================================
@@ -1270,7 +1327,26 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ],
-    growthArcs: []
+    growthArcs: [
+      {
+        vulnerabilityId: 'alex_blind_loyalty',
+        strengthId: 'alex_tactics',
+        transformationDialogue: [
+          'I used to hide behind orders.',
+          'Now I still plan for impact, but I own the decision.',
+          'Discipline without agency is just fear in uniform.',
+          'I can be precise and accountable at the same time.',
+          'That is the version of me I can respect.'
+        ],
+        conditions: {
+          trustMin: 7,
+          requiredFlags: ['knows_alex_doubt', 'alex_arc_complete']
+        },
+        result: {
+          globalFlagsSet: ['alex_growth_integrated', 'alex_accountable_command']
+        }
+      }
+    ]
   },
 
   // ============================================
@@ -1311,7 +1387,26 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ],
-    growthArcs: []
+    growthArcs: [
+      {
+        vulnerabilityId: 'asha_reality_disconnect',
+        strengthId: 'asha_inspiration',
+        transformationDialogue: [
+          'I kept treating uncertainty like proof I was broken.',
+          'But every vision starts as something no one else can verify yet.',
+          'I do not need certainty to move with integrity.',
+          'I can test what I see and still protect wonder.',
+          'That balance feels like sanity, not compromise.'
+        ],
+        conditions: {
+          trustMin: 7,
+          requiredFlags: ['knows_asha_fear', 'asha_arc_complete']
+        },
+        result: {
+          globalFlagsSet: ['asha_growth_integrated', 'asha_grounded_vision']
+        }
+      }
+    ]
   },
 
   // ============================================
@@ -1352,7 +1447,26 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ],
-    growthArcs: []
+    growthArcs: [
+      {
+        vulnerabilityId: 'silas_obsolescence',
+        strengthId: 'silas_maintenance',
+        transformationDialogue: [
+          'I thought being old meant being done.',
+          'But maintenance is not backup work. It is how systems survive.',
+          'New tools do not erase what steady hands can teach.',
+          'I can mentor and still keep learning.',
+          'Turns out relevance is a practice, not a timestamp.'
+        ],
+        conditions: {
+          trustMin: 7,
+          requiredFlags: ['knows_silas_fear', 'silas_arc_complete']
+        },
+        result: {
+          globalFlagsSet: ['silas_growth_integrated', 'silas_mentor_mechanic']
+        }
+      }
+    ]
   },
 
   // ============================================
@@ -1393,7 +1507,26 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ],
-    growthArcs: []
+    growthArcs: [
+      {
+        vulnerabilityId: 'lira_lost_voice',
+        strengthId: 'lira_harmony',
+        transformationDialogue: [
+          'I thought being quiet meant disappearing.',
+          'Now I know listening can be active, and voice can be deliberate.',
+          'I do not need volume to shape the room.',
+          'When I sing now, it is not for approval; it is for alignment.',
+          'Silence and sound finally feel like allies.'
+        ],
+        conditions: {
+          trustMin: 7,
+          requiredFlags: ['knows_lira_silence', 'lira_arc_complete']
+        },
+        result: {
+          globalFlagsSet: ['lira_growth_integrated', 'lira_confident_voice']
+        }
+      }
+    ]
   },
 
   // ============================================
@@ -1434,7 +1567,26 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ],
-    growthArcs: []
+    growthArcs: [
+      {
+        vulnerabilityId: 'zara_uncertainty',
+        strengthId: 'zara_prediction',
+        transformationDialogue: [
+          'I wanted certainty to guarantee safety.',
+          'But the station keeps proving that uncertainty is not failure. it is context.',
+          'Now I model ranges, not fantasies of perfect control.',
+          'Logic still guides me, but it no longer imprisons me.',
+          'I can be rigorous without pretending to be omniscient.'
+        ],
+        conditions: {
+          trustMin: 7,
+          requiredFlags: ['knows_zara_fear', 'zara_arc_complete']
+        },
+        result: {
+          globalFlagsSet: ['zara_growth_integrated', 'zara_uncertainty_tolerance']
+        }
+      }
+    ]
   },
 
   // ============================================
@@ -1478,7 +1630,26 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ],
-    growthArcs: []
+    growthArcs: [
+      {
+        vulnerabilityId: 'quinn_isolation',
+        strengthId: 'quinn_strategic_finance',
+        transformationDialogue: [
+          'I treated relationships like portfolios: diversify, hedge, optimize.',
+          'Useful for risk. terrible for closeness.',
+          'Now I apply the long view to people too: consistency over performance.',
+          'It is slower than acquisition, but finally durable.',
+          'For the first time, success feels inhabited.'
+        ],
+        conditions: {
+          trustMin: 7,
+          requiredFlags: ['knows_quinn_isolation', 'quinn_arc_complete']
+        },
+        result: {
+          globalFlagsSet: ['quinn_growth_integrated', 'quinn_relational_capital']
+        }
+      }
+    ]
   },
 
   // ============================================
@@ -1522,7 +1693,26 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ],
-    growthArcs: []
+    growthArcs: [
+      {
+        vulnerabilityId: 'dante_performance_fear',
+        strengthId: 'dante_mirroring',
+        transformationDialogue: [
+          'I used to mirror people so they would trust me.',
+          'Now I mirror them so they can hear themselves.',
+          'That shift changed everything.',
+          'The charm is still there, but it is no longer the whole structure.',
+          'I finally feel like the person and the skill are on the same side.'
+        ],
+        conditions: {
+          trustMin: 7,
+          requiredFlags: ['knows_dante_performance', 'dante_arc_complete']
+        },
+        result: {
+          globalFlagsSet: ['dante_growth_integrated', 'dante_mask_softened']
+        }
+      }
+    ]
   },
 
   // ============================================
@@ -1566,7 +1756,26 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ],
-    growthArcs: []
+    growthArcs: [
+      {
+        vulnerabilityId: 'nadia_haunted',
+        strengthId: 'nadia_audit',
+        transformationDialogue: [
+          'I kept replaying harm as punishment, not instruction.',
+          'Accountability matters, but fixation is not repair.',
+          'Now I turn regret into protocol: audit early, document tradeoffs, stop bad launches.',
+          'The past still informs me, but it no longer freezes me.',
+          'This is what responsible progress feels like.'
+        ],
+        conditions: {
+          trustMin: 7,
+          requiredFlags: ['knows_nadia_haunted', 'nadia_arc_complete']
+        },
+        result: {
+          globalFlagsSet: ['nadia_growth_integrated', 'nadia_prevention_protocol']
+        }
+      }
+    ]
   },
 
   // ============================================
@@ -1610,7 +1819,26 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ],
-    growthArcs: []
+    growthArcs: [
+      {
+        vulnerabilityId: 'isaiah_burnout',
+        strengthId: 'isaiah_bridge',
+        transformationDialogue: [
+          'I thought boundaries meant abandoning people.',
+          'But burnout was making me unreliable for the people I care about most.',
+          'Now I build bridges I can actually maintain.',
+          'Not every crisis is mine to carry alone.',
+          'Sustainable care is still care.'
+        ],
+        conditions: {
+          trustMin: 7,
+          requiredFlags: ['knows_isaiah_burnout', 'isaiah_arc_complete']
+        },
+        result: {
+          globalFlagsSet: ['isaiah_growth_integrated', 'isaiah_sustainable_care']
+        }
+      }
+    ]
   },
 
   jordan: {
@@ -1660,7 +1888,26 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ],
-    growthArcs: []
+    growthArcs: [
+      {
+        vulnerabilityId: 'jordan_imposter_syndrome',
+        strengthId: 'jordan_connector',
+        transformationDialogue: [
+          'I kept calling it luck so I would not have to own the responsibility.',
+          'But connection is not accidental. I built this network choice by choice.',
+          'Now when doubt spikes, I check evidence instead of spiraling.',
+          'I can still be humble without erasing myself.',
+          'Turns out confidence is just honesty with receipts.'
+        ],
+        conditions: {
+          trustMin: 7,
+          requiredFlags: ['jordan_self_doubt', 'jordan_arc_complete']
+        },
+        result: {
+          globalFlagsSet: ['jordan_growth_integrated', 'jordan_confidence_grounded']
+        }
+      }
+    ]
   },
 
   kai: {
@@ -1710,7 +1957,26 @@ export const CHARACTER_DEPTH: Record<string, CharacterDepthProfile> = {
         }
       }
     ],
-    growthArcs: []
+    growthArcs: [
+      {
+        vulnerabilityId: 'kai_burnout',
+        strengthId: 'kai_innovation',
+        transformationDialogue: [
+          'I confused output with identity.',
+          'No wonder rest felt like erasure.',
+          'Now I protect unstructured time the way I protect deadlines.',
+          'The ideas are better when I can actually hear myself think.',
+          'Innovation survived the pause. it deepened.'
+        ],
+        conditions: {
+          trustMin: 7,
+          requiredFlags: ['kai_creative_fear', 'kai_arc_complete']
+        },
+        result: {
+          globalFlagsSet: ['kai_growth_integrated', 'kai_sustainable_creativity']
+        }
+      }
+    ]
   }
 }
 
