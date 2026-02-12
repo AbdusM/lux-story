@@ -1330,7 +1330,7 @@ WARNING: Response time > 48h`,
     nodeId: 'marcus_vulnerability_arc',
     speaker: 'Marcus',
     content: [{
-      text: "I rarely say this out loud.",
+      text: "I rarely say this out loud. The breach still feels like a failure I carry every day.",
       emotion: 'haunted',
       microAction: 'His hands clench, then slowly release.',
       variation_id: 'vulnerability_v1',

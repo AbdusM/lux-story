@@ -1370,7 +1370,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-        text: "I am not chasing perfection anymore. I am trying to tell the truth of memory before it disappears.",
+        text: "I am not chasing perfection anymore. I am trying to tell the truth of my grandmother's forgetting before it disappears.",
                 emotion: 'grieving_vulnerable',
                 variation_id: 'vulnerability_v1',
                 richEffectContext: 'warning',
