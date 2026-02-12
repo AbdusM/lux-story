@@ -112,6 +112,10 @@ export class GameStateManager {
       // Convert to GameState
       const gameState = GameStateUtils.deserialize(migrated)
 
+      // Session determinism: each load starts a fresh session window.
+      // Without this, returning-player detection can remain "stuck" to an old session.
+      gameState.sessionStartTime = Date.now()
+
       // Final validation
       if (!StateValidation.isValidGameState(gameState)) {
         console.error('Deserialized state is invalid')
@@ -214,7 +218,9 @@ export class GameStateManager {
       }
 
       const migrated = this.migrateIfNeeded(parsed)
-      return GameStateUtils.deserialize(migrated)
+      const restored = GameStateUtils.deserialize(migrated)
+      restored.sessionStartTime = Date.now()
+      return restored
 
     } catch {
       return null

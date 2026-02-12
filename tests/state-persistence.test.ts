@@ -142,6 +142,17 @@ describe('State Persistence', () => {
         expect(loadedChar.trust).toBe(char.trust)
       }
     })
+
+    test('starts a fresh session window when loading from storage', () => {
+      const state = GameStateUtils.createNewGameState('player123')
+      state.sessionStartTime = 123
+
+      GameStateManager.saveGameState(state)
+      const loaded = GameStateManager.loadGameState()!
+
+      expect(loaded.sessionStartTime).not.toBe(123)
+      expect(loaded.sessionStartTime).toBeGreaterThanOrEqual(loaded.lastSaved)
+    })
   })
 
   describe('State Changes', () => {
