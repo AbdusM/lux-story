@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-02-12T22:59:38.728Z",
+  "baseline_path": "docs/qa/dialogue-soft-ratchet-baseline.json",
+  "report_path": "docs/qa/dialogue-guidelines-report.json",
+  "target_graphs": [
+    "maya_revisit",
+    "quinn",
+    "alex",
+    "rohan",
+    "devon_revisit",
+    "yaquin"
+  ],
+  "regressions": [],
+  "current": {
+    "maya_revisit": {
+      "softContentIssues": 7,
+      "softMonologueChains": 0
+    },
+    "quinn": {
+      "softContentIssues": 6,
+      "softMonologueChains": 0
+    },
+    "alex": {
+      "softContentIssues": 8,
+      "softMonologueChains": 0
+    },
+    "rohan": {
+      "softContentIssues": 2,
+      "softMonologueChains": 0
+    },
+    "devon_revisit": {
+      "softContentIssues": 7,
+      "softMonologueChains": 0
+    },
+    "yaquin": {
+      "softContentIssues": 18,
+      "softMonologueChains": 0
+    }
+  }
+}

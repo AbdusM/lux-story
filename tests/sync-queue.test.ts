@@ -66,6 +66,9 @@ describe('SyncQueue', () => {
       mockStorage.clear()
       return true
     })
+
+    // Ensure module-level volatile fallback queue does not leak between tests.
+    SyncQueue.clearQueue()
   })
 
   describe('Queue Management', () => {
@@ -113,6 +116,44 @@ describe('SyncQueue', () => {
       expect(queue).toHaveLength(2)
       expect(queue[0].id).toBe('test-1')
       expect(queue[1].id).toBe('test-2')
+    })
+
+    test('falls back to volatile queue when persistent storage write fails', () => {
+      vi.mocked(safeStorage.setItem).mockReturnValueOnce(false)
+
+      SyncQueue.addToQueue({
+        id: 'volatile-1',
+        type: 'career_analytics',
+        data: { user_id: 'user1' },
+        timestamp: Date.now()
+      })
+
+      const queue = SyncQueue.getQueue()
+      expect(queue).toHaveLength(1)
+      expect(queue[0].id).toBe('volatile-1')
+    })
+
+    test('recovers from volatile queue once persistent storage is available again', () => {
+      vi.mocked(safeStorage.setItem).mockReturnValueOnce(false)
+
+      SyncQueue.addToQueue({
+        id: 'volatile-1',
+        type: 'career_analytics',
+        data: { user_id: 'user1' },
+        timestamp: Date.now()
+      })
+
+      SyncQueue.addToQueue({
+        id: 'persisted-2',
+        type: 'career_analytics',
+        data: { user_id: 'user2' },
+        timestamp: Date.now()
+      })
+
+      const queue = SyncQueue.getQueue()
+      expect(queue).toHaveLength(2)
+      expect(queue.map((q) => q.id)).toContain('volatile-1')
+      expect(queue.map((q) => q.id)).toContain('persisted-2')
     })
 
     test('clearQueue removes all actions', () => {
@@ -292,6 +333,26 @@ describe('SyncQueue', () => {
       expect(result.success).toBe(true)
       expect(result.processed).toBe(1)
       expect(result.failed).toBe(0)
+      expect(SyncQueue.getQueue()).toHaveLength(0)
+    })
+
+    test('processes volatile queued actions successfully after transient storage failure', async () => {
+      vi.mocked(safeStorage.setItem).mockReturnValueOnce(false)
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ success: true })
+      })
+
+      SyncQueue.addToQueue({
+        id: 'volatile-process-1',
+        type: 'career_analytics',
+        data: { user_id: 'user123' },
+        timestamp: Date.now()
+      })
+
+      const result = await SyncQueue.processQueue()
+      expect(result.success).toBe(true)
+      expect(result.processed).toBe(1)
       expect(SyncQueue.getQueue()).toHaveLength(0)
     })
 

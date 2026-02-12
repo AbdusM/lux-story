@@ -70,7 +70,9 @@ function isExplicitContinueChoice(text: string): boolean {
   const t = normalizeChoiceText(text)
   if (t === '...') return true
   if (t === 'continue') return true
+  if (t === '(continue)') return true
   if (t === '[continue]') return true
+  if (t.startsWith('(continue)')) return true
   if (t.startsWith('[continue]')) return true
   return false
 }

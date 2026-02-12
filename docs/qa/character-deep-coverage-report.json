@@ -1,0 +1,1149 @@
+{
+  "summary": {
+    "generatedAt": "2026-02-12T19:47:18.545Z",
+    "characters": 20,
+    "rows": 20,
+    "totals": {
+      "nodes": 1390,
+      "choices": 2452,
+      "interruptNodes": 30,
+      "simulationNodes": 66,
+      "requiredStateNodes": 150,
+      "unguardedRequiredStateNodes": 0,
+      "narrativeSimExpansions": 17270,
+      "vulnerabilities": 28,
+      "strengths": 29,
+      "growthArcs": 21
+    },
+    "riskDistribution": {
+      "high": 0,
+      "medium": 0,
+      "low": 20
+    },
+    "topRisks": [
+      {
+        "characterId": "alex",
+        "riskScore": 2,
+        "riskTier": "low",
+        "riskReasons": [
+          "low_vulnerability_depth",
+          "low_strength_depth"
+        ]
+      },
+      {
+        "characterId": "asha",
+        "riskScore": 2,
+        "riskTier": "low",
+        "riskReasons": [
+          "low_vulnerability_depth",
+          "low_strength_depth"
+        ]
+      },
+      {
+        "characterId": "dante",
+        "riskScore": 2,
+        "riskTier": "low",
+        "riskReasons": [
+          "low_vulnerability_depth",
+          "low_strength_depth"
+        ]
+      },
+      {
+        "characterId": "elena",
+        "riskScore": 2,
+        "riskTier": "low",
+        "riskReasons": [
+          "low_vulnerability_depth",
+          "low_strength_depth"
+        ]
+      },
+      {
+        "characterId": "grace",
+        "riskScore": 2,
+        "riskTier": "low",
+        "riskReasons": [
+          "low_vulnerability_depth",
+          "low_strength_depth"
+        ]
+      },
+      {
+        "characterId": "isaiah",
+        "riskScore": 2,
+        "riskTier": "low",
+        "riskReasons": [
+          "low_vulnerability_depth",
+          "low_strength_depth"
+        ]
+      },
+      {
+        "characterId": "lira",
+        "riskScore": 2,
+        "riskTier": "low",
+        "riskReasons": [
+          "low_vulnerability_depth",
+          "low_strength_depth"
+        ]
+      },
+      {
+        "characterId": "nadia",
+        "riskScore": 2,
+        "riskTier": "low",
+        "riskReasons": [
+          "low_vulnerability_depth",
+          "low_strength_depth"
+        ]
+      }
+    ]
+  },
+  "rows": [
+    {
+      "characterId": "samuel",
+      "graphKeys": [
+        "samuel"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 218,
+        "choices": 402,
+        "interruptNodes": 1,
+        "simulationNodes": 1,
+        "requiredStateNodes": 31,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 1117
+      },
+      "patternCounts": {
+        "analytical": 58,
+        "helping": 58,
+        "building": 40,
+        "patience": 126,
+        "exploring": 86
+      },
+      "patternBalanceWarnings": [
+        "building:10.0%"
+      ],
+      "choiceConditionBuckets": {
+        "trust": 7,
+        "flags": 27,
+        "patterns": 22,
+        "knowledge": 0,
+        "mystery": 1,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 2,
+        "strengths": 2,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 9,
+        "trustDown": 8
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "the_letter_mystery",
+        "platform_seven",
+        "quiet_hour"
+      ],
+      "riskScore": 2,
+      "riskTier": "low",
+      "riskReasons": [
+        "pattern_imbalance"
+      ]
+    },
+    {
+      "characterId": "maya",
+      "graphKeys": [
+        "maya",
+        "maya_revisit"
+      ],
+      "hasRevisitGraph": true,
+      "graph": {
+        "nodes": 71,
+        "choices": 165,
+        "interruptNodes": 3,
+        "simulationNodes": 4,
+        "requiredStateNodes": 14,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 1310
+      },
+      "patternCounts": {
+        "analytical": 30,
+        "helping": 52,
+        "building": 24,
+        "patience": 34,
+        "exploring": 25
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 16,
+        "flags": 5,
+        "patterns": 16,
+        "knowledge": 23,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 3,
+        "strengths": 2,
+        "growthArcs": 2
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 9,
+        "trustDown": 8
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "career_crossroads"
+      ],
+      "riskScore": 0,
+      "riskTier": "low",
+      "riskReasons": []
+    },
+    {
+      "characterId": "devon",
+      "graphKeys": [
+        "devon",
+        "devon_revisit"
+      ],
+      "hasRevisitGraph": true,
+      "graph": {
+        "nodes": 66,
+        "choices": 121,
+        "interruptNodes": 2,
+        "simulationNodes": 4,
+        "requiredStateNodes": 4,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 1205
+      },
+      "patternCounts": {
+        "analytical": 26,
+        "helping": 31,
+        "building": 13,
+        "patience": 30,
+        "exploring": 19
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 1,
+        "flags": 8,
+        "patterns": 14,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 2,
+        "strengths": 2,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 9,
+        "trustDown": 7
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "career_crossroads"
+      ],
+      "riskScore": 0,
+      "riskTier": "low",
+      "riskReasons": []
+    },
+    {
+      "characterId": "jordan",
+      "graphKeys": [
+        "jordan"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 46,
+        "choices": 90,
+        "interruptNodes": 1,
+        "simulationNodes": 6,
+        "requiredStateNodes": 14,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 1053
+      },
+      "patternCounts": {
+        "analytical": 16,
+        "helping": 26,
+        "building": 13,
+        "patience": 15,
+        "exploring": 20
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 19,
+        "flags": 16,
+        "patterns": 12,
+        "knowledge": 22,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 1,
+        "strengths": 2,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 8,
+        "trustDown": 5
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "career_crossroads"
+      ],
+      "riskScore": 1,
+      "riskTier": "low",
+      "riskReasons": [
+        "low_vulnerability_depth"
+      ]
+    },
+    {
+      "characterId": "marcus",
+      "graphKeys": [
+        "marcus"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 83,
+        "choices": 149,
+        "interruptNodes": 2,
+        "simulationNodes": 4,
+        "requiredStateNodes": 15,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 1519
+      },
+      "patternCounts": {
+        "analytical": 29,
+        "helping": 36,
+        "building": 23,
+        "patience": 39,
+        "exploring": 15
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 6,
+        "flags": 4,
+        "patterns": 8,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 2,
+        "strengths": 2,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 8,
+        "trustDown": 5
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "builders_common"
+      ],
+      "riskScore": 0,
+      "riskTier": "low",
+      "riskReasons": []
+    },
+    {
+      "characterId": "tess",
+      "graphKeys": [
+        "tess"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 55,
+        "choices": 101,
+        "interruptNodes": 1,
+        "simulationNodes": 3,
+        "requiredStateNodes": 4,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 515
+      },
+      "patternCounts": {
+        "analytical": 12,
+        "helping": 21,
+        "building": 21,
+        "patience": 26,
+        "exploring": 21
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 1,
+        "flags": 6,
+        "patterns": 7,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 2,
+        "strengths": 2,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 8,
+        "trustDown": 5
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "builders_common"
+      ],
+      "riskScore": 0,
+      "riskTier": "low",
+      "riskReasons": []
+    },
+    {
+      "characterId": "yaquin",
+      "graphKeys": [
+        "yaquin",
+        "yaquin_revisit"
+      ],
+      "hasRevisitGraph": true,
+      "graph": {
+        "nodes": 61,
+        "choices": 115,
+        "interruptNodes": 1,
+        "simulationNodes": 3,
+        "requiredStateNodes": 5,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 1310
+      },
+      "patternCounts": {
+        "analytical": 19,
+        "helping": 34,
+        "building": 26,
+        "patience": 20,
+        "exploring": 16
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 2,
+        "flags": 10,
+        "patterns": 4,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 2,
+        "strengths": 2,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 8,
+        "trustDown": 5
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "builders_common"
+      ],
+      "riskScore": 0,
+      "riskTier": "low",
+      "riskReasons": []
+    },
+    {
+      "characterId": "kai",
+      "graphKeys": [
+        "kai"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 56,
+        "choices": 100,
+        "interruptNodes": 1,
+        "simulationNodes": 3,
+        "requiredStateNodes": 4,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 1403
+      },
+      "patternCounts": {
+        "analytical": 24,
+        "helping": 28,
+        "building": 23,
+        "patience": 10,
+        "exploring": 12
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 2,
+        "flags": 10,
+        "patterns": 6,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 1,
+        "strengths": 2,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 9,
+        "trustDown": 6
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "builders_common"
+      ],
+      "riskScore": 1,
+      "riskTier": "low",
+      "riskReasons": [
+        "low_vulnerability_depth"
+      ]
+    },
+    {
+      "characterId": "alex",
+      "graphKeys": [
+        "alex"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 56,
+        "choices": 91,
+        "interruptNodes": 1,
+        "simulationNodes": 3,
+        "requiredStateNodes": 5,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 696
+      },
+      "patternCounts": {
+        "analytical": 20,
+        "helping": 15,
+        "building": 18,
+        "patience": 18,
+        "exploring": 20
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 1,
+        "flags": 5,
+        "patterns": 5,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 1,
+        "strengths": 1,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 8,
+        "trustDown": 5
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "repair_protocol"
+      ],
+      "riskScore": 2,
+      "riskTier": "low",
+      "riskReasons": [
+        "low_vulnerability_depth",
+        "low_strength_depth"
+      ]
+    },
+    {
+      "characterId": "rohan",
+      "graphKeys": [
+        "rohan"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 49,
+        "choices": 82,
+        "interruptNodes": 1,
+        "simulationNodes": 3,
+        "requiredStateNodes": 5,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 820
+      },
+      "patternCounts": {
+        "analytical": 23,
+        "helping": 16,
+        "building": 15,
+        "patience": 13,
+        "exploring": 10
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 1,
+        "flags": 7,
+        "patterns": 5,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 2,
+        "strengths": 2,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 9,
+        "trustDown": 6
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "platform_seven",
+        "shadow_war"
+      ],
+      "riskScore": 0,
+      "riskTier": "low",
+      "riskReasons": []
+    },
+    {
+      "characterId": "silas",
+      "graphKeys": [
+        "silas"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 38,
+        "choices": 53,
+        "interruptNodes": 1,
+        "simulationNodes": 3,
+        "requiredStateNodes": 3,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 928
+      },
+      "patternCounts": {
+        "analytical": 13,
+        "helping": 10,
+        "building": 7,
+        "patience": 10,
+        "exploring": 9
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 2,
+        "flags": 6,
+        "patterns": 4,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 1,
+        "strengths": 1,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 8,
+        "trustDown": 5
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "repair_protocol"
+      ],
+      "riskScore": 2,
+      "riskTier": "low",
+      "riskReasons": [
+        "low_vulnerability_depth",
+        "low_strength_depth"
+      ]
+    },
+    {
+      "characterId": "elena",
+      "graphKeys": [
+        "elena"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 87,
+        "choices": 130,
+        "interruptNodes": 2,
+        "simulationNodes": 4,
+        "requiredStateNodes": 10,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 952
+      },
+      "patternCounts": {
+        "analytical": 33,
+        "helping": 26,
+        "building": 13,
+        "patience": 31,
+        "exploring": 23
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 8,
+        "flags": 5,
+        "patterns": 6,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 1,
+        "strengths": 1,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 8,
+        "trustDown": 5
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "the_letter_mystery",
+        "platform_seven"
+      ],
+      "riskScore": 2,
+      "riskTier": "low",
+      "riskReasons": [
+        "low_vulnerability_depth",
+        "low_strength_depth"
+      ]
+    },
+    {
+      "characterId": "grace",
+      "graphKeys": [
+        "grace",
+        "grace_revisit"
+      ],
+      "hasRevisitGraph": true,
+      "graph": {
+        "nodes": 56,
+        "choices": 98,
+        "interruptNodes": 4,
+        "simulationNodes": 3,
+        "requiredStateNodes": 5,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 345
+      },
+      "patternCounts": {
+        "analytical": 10,
+        "helping": 41,
+        "building": 11,
+        "patience": 25,
+        "exploring": 11
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 2,
+        "flags": 3,
+        "patterns": 5,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 1,
+        "strengths": 1,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 8,
+        "trustDown": 5
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "care_and_conviction"
+      ],
+      "riskScore": 2,
+      "riskTier": "low",
+      "riskReasons": [
+        "low_vulnerability_depth",
+        "low_strength_depth"
+      ]
+    },
+    {
+      "characterId": "asha",
+      "graphKeys": [
+        "asha"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 49,
+        "choices": 89,
+        "interruptNodes": 1,
+        "simulationNodes": 3,
+        "requiredStateNodes": 9,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 629
+      },
+      "patternCounts": {
+        "analytical": 9,
+        "helping": 30,
+        "building": 20,
+        "patience": 16,
+        "exploring": 14
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 8,
+        "flags": 1,
+        "patterns": 3,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 1,
+        "strengths": 1,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 8,
+        "trustDown": 5
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "quiet_hour"
+      ],
+      "riskScore": 2,
+      "riskTier": "low",
+      "riskReasons": [
+        "low_vulnerability_depth",
+        "low_strength_depth"
+      ]
+    },
+    {
+      "characterId": "lira",
+      "graphKeys": [
+        "lira"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 43,
+        "choices": 76,
+        "interruptNodes": 1,
+        "simulationNodes": 3,
+        "requiredStateNodes": 5,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 711
+      },
+      "patternCounts": {
+        "analytical": 9,
+        "helping": 20,
+        "building": 20,
+        "patience": 14,
+        "exploring": 13
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 3,
+        "flags": 1,
+        "patterns": 4,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 1,
+        "strengths": 1,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 8,
+        "trustDown": 5
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "quiet_hour"
+      ],
+      "riskScore": 2,
+      "riskTier": "low",
+      "riskReasons": [
+        "low_vulnerability_depth",
+        "low_strength_depth"
+      ]
+    },
+    {
+      "characterId": "zara",
+      "graphKeys": [
+        "zara"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 57,
+        "choices": 97,
+        "interruptNodes": 3,
+        "simulationNodes": 3,
+        "requiredStateNodes": 4,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 380
+      },
+      "patternCounts": {
+        "analytical": 26,
+        "helping": 26,
+        "building": 20,
+        "patience": 14,
+        "exploring": 11
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 3,
+        "flags": 1,
+        "patterns": 4,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 1,
+        "strengths": 1,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 8,
+        "trustDown": 5
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "shadow_war"
+      ],
+      "riskScore": 2,
+      "riskTier": "low",
+      "riskReasons": [
+        "low_vulnerability_depth",
+        "low_strength_depth"
+      ]
+    },
+    {
+      "characterId": "quinn",
+      "graphKeys": [
+        "quinn"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 100,
+        "choices": 163,
+        "interruptNodes": 1,
+        "simulationNodes": 3,
+        "requiredStateNodes": 5,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 1065
+      },
+      "patternCounts": {
+        "analytical": 39,
+        "helping": 38,
+        "building": 28,
+        "patience": 31,
+        "exploring": 27
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 1,
+        "flags": 1,
+        "patterns": 2,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 1,
+        "strengths": 1,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 9,
+        "trustDown": 7
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "repair_protocol"
+      ],
+      "riskScore": 2,
+      "riskTier": "low",
+      "riskReasons": [
+        "low_vulnerability_depth",
+        "low_strength_depth"
+      ]
+    },
+    {
+      "characterId": "dante",
+      "graphKeys": [
+        "dante"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 60,
+        "choices": 114,
+        "interruptNodes": 1,
+        "simulationNodes": 3,
+        "requiredStateNodes": 3,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 1095
+      },
+      "patternCounts": {
+        "analytical": 22,
+        "helping": 38,
+        "building": 12,
+        "patience": 22,
+        "exploring": 18
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 1,
+        "flags": 1,
+        "patterns": 1,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 1,
+        "strengths": 1,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 9,
+        "trustDown": 6
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "care_and_conviction"
+      ],
+      "riskScore": 2,
+      "riskTier": "low",
+      "riskReasons": [
+        "low_vulnerability_depth",
+        "low_strength_depth"
+      ]
+    },
+    {
+      "characterId": "nadia",
+      "graphKeys": [
+        "nadia"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 68,
+        "choices": 106,
+        "interruptNodes": 1,
+        "simulationNodes": 4,
+        "requiredStateNodes": 2,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 124
+      },
+      "patternCounts": {
+        "analytical": 28,
+        "helping": 24,
+        "building": 20,
+        "patience": 18,
+        "exploring": 16
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 0,
+        "flags": 0,
+        "patterns": 0,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 1,
+        "strengths": 1,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 9,
+        "trustDown": 6
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "repair_protocol"
+      ],
+      "riskScore": 2,
+      "riskTier": "low",
+      "riskReasons": [
+        "low_vulnerability_depth",
+        "low_strength_depth"
+      ]
+    },
+    {
+      "characterId": "isaiah",
+      "graphKeys": [
+        "isaiah"
+      ],
+      "hasRevisitGraph": false,
+      "graph": {
+        "nodes": 71,
+        "choices": 110,
+        "interruptNodes": 1,
+        "simulationNodes": 3,
+        "requiredStateNodes": 3,
+        "unguardedRequiredStateNodes": 0,
+        "narrativeSimExpansions": 93
+      },
+      "patternCounts": {
+        "analytical": 16,
+        "helping": 43,
+        "building": 11,
+        "patience": 21,
+        "exploring": 17
+      },
+      "patternBalanceWarnings": [],
+      "choiceConditionBuckets": {
+        "trust": 2,
+        "flags": 1,
+        "patterns": 1,
+        "knowledge": 0,
+        "mystery": 0,
+        "combos": 0
+      },
+      "depth": {
+        "profile": true,
+        "vulnerabilities": 1,
+        "strengths": 1,
+        "growthArcs": 1
+      },
+      "echoes": {
+        "profile": true,
+        "trustUp": 9,
+        "trustDown": 6
+      },
+      "voiceTriggers": 5,
+      "storyArcIds": [
+        "care_and_conviction"
+      ],
+      "riskScore": 2,
+      "riskTier": "low",
+      "riskReasons": [
+        "low_vulnerability_depth",
+        "low_strength_depth"
+      ]
+    }
+  ]
+}

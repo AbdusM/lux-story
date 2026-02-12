@@ -23,6 +23,10 @@ const STATIC_EXPORT_DETECTED_KEY = 'lux-static-export-detected'
 const MAX_QUEUE_SIZE = 500 // Prevent unbounded growth
 const MAX_RETRY_AGE_MS = 7 * 24 * 60 * 60 * 1000 // 7 days
 
+// In-memory fallback when localStorage writes fail (e.g., quota exceeded, privacy mode).
+let volatileQueue: QueuedAction[] = []
+let warnedVolatileQueueMode = false
+
 /**
  * Detect if we're running in static export mode
  * Static export doesn't support API routes - they return 405
@@ -92,17 +96,49 @@ export function queueInteractionEventSync(event: InteractionEventInsert): void {
 }
 
 export class SyncQueue {
+  private static persistQueue(queue: QueuedAction[]): void {
+    const ok = safeStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue))
+    if (ok) {
+      if (warnedVolatileQueueMode) {
+        logger.info('Sync queue persistence recovered', {
+          operation: 'sync-queue.persistence-recovered',
+          queuedActions: queue.length,
+        })
+      }
+      volatileQueue = []
+      warnedVolatileQueueMode = false
+      return
+    }
+
+    volatileQueue = [...queue]
+    if (!warnedVolatileQueueMode) {
+      warnedVolatileQueueMode = true
+      logger.warn('Sync queue persistence degraded; using volatile in-memory queue', {
+        operation: 'sync-queue.persistence-degraded',
+        queuedActions: queue.length,
+      })
+    }
+  }
+
   /**
    * Get all queued actions from localStorage
    * Uses Zod validation to ensure data integrity
    */
   static getQueue(): QueuedAction[] {
     const stored = safeStorage.getItem(SYNC_QUEUE_KEY)
-    if (!stored) return []
+    const persistedQueue = stored ? (parseSyncQueue(stored) as QueuedAction[]) : []
+    if (volatileQueue.length === 0) return persistedQueue
+    if (persistedQueue.length === 0) return [...volatileQueue]
 
-    // Use validated parsing which filters out invalid actions
-    const validatedQueue = parseSyncQueue(stored)
-    return validatedQueue as QueuedAction[]
+    // Merge persisted + volatile queues by ID to avoid duplicate actions.
+    const merged: QueuedAction[] = []
+    const seen = new Set<string>()
+    for (const action of [...persistedQueue, ...volatileQueue]) {
+      if (!action?.id || seen.has(action.id)) continue
+      seen.add(action.id)
+      merged.push(action)
+    }
+    return merged
   }
 
   /**
@@ -129,15 +165,15 @@ export class SyncQueue {
       retries: 0
     })
 
-    // Save back to localStorage
-    safeStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue))
+    // Save queue; fall back to in-memory queue if persistent storage fails.
+    this.persistQueue(queue)
   }
 
   /**
    * Clear the entire queue (called after successful sync)
    */
   static clearQueue(): void {
-    safeStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify([]))
+    this.persistQueue([])
   }
 
   /**
@@ -147,7 +183,7 @@ export class SyncQueue {
     const queue = this.getQueue()
     const idsToRemove = new Set(actionIds)
     const filteredQueue = queue.filter(action => !idsToRemove.has(action.id))
-    safeStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(filteredQueue))
+    this.persistQueue(filteredQueue)
   }
 
   /**
@@ -163,7 +199,7 @@ export class SyncQueue {
 
     if (cleanedQueue.length < queue.length) {
       console.warn(`[SyncQueue] Cleaned ${queue.length - cleanedQueue.length} stale actions`)
-      safeStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(cleanedQueue))
+      this.persistQueue(cleanedQueue)
     }
   }
 
@@ -709,7 +745,7 @@ export class SyncQueue {
     // Update retry counts for failed actions
     if (failedActions.length > 0) {
       const remainingQueue = this.getQueue()
-      safeStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(remainingQueue))
+      this.persistQueue(remainingQueue)
       console.warn(`⚠️ [SyncQueue] ${failedActions.length} actions failed, will retry later`)
     }
 

@@ -1,0 +1,18 @@
+{
+  "generated_at": "2026-02-12T22:59:37.299Z",
+  "duration_ms": 1073,
+  "baseline": {
+    "generated_at": "2026-02-11T16:32:34.168Z",
+    "hard_content_issues": 123,
+    "hard_monologue_chains": 7,
+    "notes": "Dialogue guideline ratchet baseline (fail only on hard metric regressions)."
+  },
+  "current": {
+    "hard_content_issues": 0,
+    "hard_monologue_chains": 0
+  },
+  "delta": {
+    "hard_content_issues": -123,
+    "hard_monologue_chains": -7
+  }
+}

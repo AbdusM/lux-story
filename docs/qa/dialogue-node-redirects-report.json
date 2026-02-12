@@ -1,0 +1,11 @@
+{
+  "generated_at": "2026-02-11T16:31:52.733Z",
+  "totals": {
+    "redirects": 0,
+    "invalidTargets": 0,
+    "selfRedirects": 0,
+    "cycles": 0,
+    "truncated": 0
+  },
+  "statuses": []
+}
