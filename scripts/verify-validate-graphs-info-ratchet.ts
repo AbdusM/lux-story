@@ -69,13 +69,30 @@ function runValidateGraphs(): Promise<{ code: number; output: string }> {
 }
 
 function parseInfoItems(output: string): number | null {
-  // Example: "ℹ️  50 info item(s)"
-  // Don't key off the emoji; different terminals can render it differently.
-  const matches = [...output.matchAll(/(\d+)\s+info item\(s\)/g)]
-  const last = matches.at(-1)
-  if (!last?.[1]) return null
-  const n = Number(last[1])
-  return Number.isFinite(n) ? n : null
+  // Preferred summary line: "ℹ️  50 info item(s)"
+  // Don't key off emojis; terminal rendering can vary.
+  const summaryMatches = [...output.matchAll(/(\d+)\s+info item\(s\)/g)]
+  const summaryLast = summaryMatches.at(-1)
+  if (summaryLast?.[1]) {
+    const n = Number(summaryLast[1])
+    if (Number.isFinite(n)) return n
+  }
+
+  // Fallback section header: "INFO (50):"
+  const sectionMatches = [...output.matchAll(/INFO\s+\((\d+)\):/g)]
+  const sectionLast = sectionMatches.at(-1)
+  if (sectionLast?.[1]) {
+    const n = Number(sectionLast[1])
+    if (Number.isFinite(n)) return n
+  }
+
+  // `validate-dialogue-graphs` currently emits no info count line when there are
+  // zero infos. If validation completed, treat missing count as zero.
+  if (/VALIDATION PASSED/.test(output) || /VALIDATION FAILED/.test(output)) {
+    return 0
+  }
+
+  return null
 }
 
 async function main() {

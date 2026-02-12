@@ -1,0 +1,1408 @@
+{
+  "generatedAt": "2026-02-12T23:08:52.038Z",
+  "limits": {
+    "nodeWordsSoftMax": 35,
+    "nodeWordsHardMax": 90,
+    "nodeSentencesSoftMax": 3,
+    "monologueChainNodesSoftMax": 2,
+    "monologueChainNodesHardMax": 2,
+    "monologueChainWordsSoftMax": 120,
+    "monologueChainWordsHardMax": 180,
+    "wordsPerSecondEstimate": 2.8
+  },
+  "scope": {
+    "included": {
+      "graphsFromRegistry": 28
+    },
+    "graphOverrides": {
+      "samuel": {
+        "nodeWordsHardMax": 110
+      }
+    },
+    "caveats": [
+      "This report scores only graph-registry-routable dialogue graphs (DIALOGUE_GRAPHS).",
+      "Detached/non-graph/dormant dialogue sources are tracked separately in dialogue-external-review-report.json.",
+      "Monologue chain gating is deterministic and word-based; estimated seconds are informational only."
+    ]
+  },
+  "summary": {
+    "graphs": 28,
+    "nodes": 1431,
+    "contentBlocks": 1467,
+    "hardContentIssues": 0,
+    "softContentIssues": 114,
+    "hardMonologueChains": 0,
+    "softMonologueChains": 0
+  },
+  "byGraph": {
+    "alex": {
+      "nodes": 56,
+      "contentBlocks": 57,
+      "hardContentIssues": 0,
+      "softContentIssues": 8,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "asha": {
+      "nodes": 49,
+      "contentBlocks": 50,
+      "hardContentIssues": 0,
+      "softContentIssues": 0,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "dante": {
+      "nodes": 60,
+      "contentBlocks": 61,
+      "hardContentIssues": 0,
+      "softContentIssues": 0,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "deep_station": {
+      "nodes": 13,
+      "contentBlocks": 15,
+      "hardContentIssues": 0,
+      "softContentIssues": 2,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "devon": {
+      "nodes": 59,
+      "contentBlocks": 59,
+      "hardContentIssues": 0,
+      "softContentIssues": 2,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "devon_revisit": {
+      "nodes": 7,
+      "contentBlocks": 7,
+      "hardContentIssues": 0,
+      "softContentIssues": 7,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "elena": {
+      "nodes": 87,
+      "contentBlocks": 88,
+      "hardContentIssues": 0,
+      "softContentIssues": 3,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "grace": {
+      "nodes": 49,
+      "contentBlocks": 50,
+      "hardContentIssues": 0,
+      "softContentIssues": 1,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "grace_revisit": {
+      "nodes": 7,
+      "contentBlocks": 7,
+      "hardContentIssues": 0,
+      "softContentIssues": 7,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "grand_hall": {
+      "nodes": 7,
+      "contentBlocks": 7,
+      "hardContentIssues": 0,
+      "softContentIssues": 5,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "isaiah": {
+      "nodes": 71,
+      "contentBlocks": 72,
+      "hardContentIssues": 0,
+      "softContentIssues": 2,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "jordan": {
+      "nodes": 46,
+      "contentBlocks": 47,
+      "hardContentIssues": 0,
+      "softContentIssues": 1,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "kai": {
+      "nodes": 56,
+      "contentBlocks": 56,
+      "hardContentIssues": 0,
+      "softContentIssues": 1,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "lira": {
+      "nodes": 43,
+      "contentBlocks": 44,
+      "hardContentIssues": 0,
+      "softContentIssues": 1,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "marcus": {
+      "nodes": 83,
+      "contentBlocks": 83,
+      "hardContentIssues": 0,
+      "softContentIssues": 2,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "market": {
+      "nodes": 11,
+      "contentBlocks": 11,
+      "hardContentIssues": 0,
+      "softContentIssues": 6,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "maya": {
+      "nodes": 56,
+      "contentBlocks": 56,
+      "hardContentIssues": 0,
+      "softContentIssues": 0,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "maya_revisit": {
+      "nodes": 15,
+      "contentBlocks": 15,
+      "hardContentIssues": 0,
+      "softContentIssues": 7,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "nadia": {
+      "nodes": 68,
+      "contentBlocks": 69,
+      "hardContentIssues": 0,
+      "softContentIssues": 0,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "quinn": {
+      "nodes": 100,
+      "contentBlocks": 101,
+      "hardContentIssues": 0,
+      "softContentIssues": 6,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "rohan": {
+      "nodes": 49,
+      "contentBlocks": 49,
+      "hardContentIssues": 0,
+      "softContentIssues": 2,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "samuel": {
+      "nodes": 218,
+      "contentBlocks": 234,
+      "hardContentIssues": 0,
+      "softContentIssues": 21,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "silas": {
+      "nodes": 38,
+      "contentBlocks": 39,
+      "hardContentIssues": 0,
+      "softContentIssues": 0,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "station_entry": {
+      "nodes": 10,
+      "contentBlocks": 11,
+      "hardContentIssues": 0,
+      "softContentIssues": 1,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "tess": {
+      "nodes": 55,
+      "contentBlocks": 56,
+      "hardContentIssues": 0,
+      "softContentIssues": 0,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "yaquin": {
+      "nodes": 51,
+      "contentBlocks": 55,
+      "hardContentIssues": 0,
+      "softContentIssues": 18,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "yaquin_revisit": {
+      "nodes": 10,
+      "contentBlocks": 10,
+      "hardContentIssues": 0,
+      "softContentIssues": 10,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    },
+    "zara": {
+      "nodes": 57,
+      "contentBlocks": 58,
+      "hardContentIssues": 0,
+      "softContentIssues": 1,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0
+    }
+  },
+  "topOffenders": {
+    "longContent": [
+      {
+        "severity": "soft",
+        "graph": "maya_revisit",
+        "nodeId": "maya_revisit_update_robotics",
+        "variationId": "update_robotics_v2_callbacks",
+        "words": 69,
+        "sentences": 8,
+        "message": "Node text uses too many sentences (8 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "quinn",
+        "nodeId": "quinn_pitch_setup",
+        "variationId": "quinn_v5",
+        "words": 67,
+        "sentences": 11,
+        "message": "Node text uses too many sentences (11 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "quinn",
+        "nodeId": "quinn_revenue_projections",
+        "variationId": "quinn_v47",
+        "words": 66,
+        "sentences": 10,
+        "message": "Node text uses too many sentences (10 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "alex",
+        "nodeId": "alex_practical_advice",
+        "variationId": "practical_v1",
+        "words": 65,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "rohan",
+        "nodeId": "rohan_sim_step_2",
+        "variationId": "sim_step_2_v1",
+        "words": 65,
+        "sentences": 11,
+        "message": "Node text uses too many sentences (11 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "devon_revisit",
+        "nodeId": "devon_revisit_update",
+        "variationId": "devon_revisit_update_v1",
+        "words": 64,
+        "sentences": 14,
+        "message": "Node text uses too many sentences (14 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_simulation_phase_1",
+        "variationId": "phase1_v1",
+        "words": 64,
+        "sentences": 9,
+        "message": "Node text uses too many sentences (9 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_simulation_success",
+        "variationId": "success_v1",
+        "words": 63,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "alex",
+        "nodeId": "alex_learning_now",
+        "variationId": "learning_v1",
+        "words": 62,
+        "sentences": 9,
+        "message": "Node text uses too many sentences (9 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "alex",
+        "nodeId": "alex_fear_acknowledgment",
+        "variationId": "fear_v1",
+        "words": 62,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "alex",
+        "nodeId": "alex_final_synthesis",
+        "variationId": "synthesis_v1",
+        "words": 61,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_orb_mechanics",
+        "variationId": "orb_mechanics_v1",
+        "words": 59,
+        "sentences": 8,
+        "message": "Node text uses too many sentences (8 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "grace_revisit",
+        "nodeId": "grace_revisit_update",
+        "variationId": "grace_revisit_update_v1",
+        "words": 58,
+        "sentences": 12,
+        "message": "Node text uses too many sentences (12 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin_revisit",
+        "nodeId": "yaquin_the_problem",
+        "variationId": "the_problem_v1",
+        "words": 58,
+        "sentences": 10,
+        "message": "Node text uses too many sentences (10 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "quinn",
+        "nodeId": "quinn_founder_details",
+        "variationId": "quinn_v56",
+        "words": 57,
+        "sentences": 11,
+        "message": "Node text uses too many sentences (11 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "alex",
+        "nodeId": "alex_students_success",
+        "variationId": "success_v1",
+        "words": 54,
+        "sentences": 8,
+        "message": "Node text uses too many sentences (8 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "maya_revisit",
+        "nodeId": "maya_revisit_update_self",
+        "variationId": "update_self_v2_callbacks",
+        "words": 54,
+        "sentences": 4,
+        "message": "Node text uses too many sentences (4 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "rohan",
+        "nodeId": "rohan_sim_success",
+        "variationId": "sim_success_v2",
+        "words": 53,
+        "sentences": 12,
+        "message": "Node text uses too many sentences (12 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "maya_revisit",
+        "nodeId": "maya_revisit_update_hybrid",
+        "variationId": "update_hybrid_v2_callbacks",
+        "words": 52,
+        "sentences": 8,
+        "message": "Node text uses too many sentences (8 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "alex",
+        "nodeId": "alex_turn",
+        "variationId": "turn_v1",
+        "words": 51,
+        "sentences": 4,
+        "message": "Node text uses too many sentences (4 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "devon",
+        "nodeId": "devon_debug_result_fail_script",
+        "variationId": "debug_fail_script_v1",
+        "words": 51,
+        "sentences": 11,
+        "message": "Node text uses too many sentences (11 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "devon_revisit",
+        "nodeId": "devon_loyalty_trigger",
+        "variationId": "loyalty_trigger_v1",
+        "words": 51,
+        "sentences": 4,
+        "message": "Node text uses too many sentences (4 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "grace_revisit",
+        "nodeId": "grace_revisit_welcome",
+        "variationId": "grace_revisit_welcome_v1",
+        "words": 51,
+        "sentences": 9,
+        "message": "Node text uses too many sentences (9 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "jordan",
+        "nodeId": "jordan_chooses_accumulation",
+        "variationId": "jordan_accumulation_1",
+        "words": 51,
+        "sentences": 10,
+        "message": "Node text uses too many sentences (10 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "market",
+        "nodeId": "broker_intro",
+        "variationId": "broker_intro_v3",
+        "words": 51,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_backstory_revelation",
+        "variationId": "revelation_v1",
+        "words": 50,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin_revisit",
+        "nodeId": "yaquin_loyalty_trigger",
+        "variationId": "loyalty_trigger_v1",
+        "words": 50,
+        "sentences": 4,
+        "message": "Node text uses too many sentences (4 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin_revisit",
+        "nodeId": "yaquin_revisit_welcome",
+        "variationId": "revisit_intro_v2_callbacks",
+        "words": 49,
+        "sentences": 10,
+        "message": "Node text uses too many sentences (10 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin_revisit",
+        "nodeId": "yaquin_course_path",
+        "variationId": "course_path_v1",
+        "words": 48,
+        "sentences": 10,
+        "message": "Node text uses too many sentences (10 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_simulation_intro",
+        "variationId": "sim_intro_v1",
+        "words": 47,
+        "sentences": 14,
+        "message": "Node text uses too many sentences (14 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "devon_revisit",
+        "nodeId": "devon_loyalty_declined",
+        "variationId": "loyalty_declined_v1",
+        "words": 46,
+        "sentences": 8,
+        "message": "Node text uses too many sentences (8 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "quinn",
+        "nodeId": "quinn_person_criteria",
+        "variationId": "quinn_v25",
+        "words": 46,
+        "sentences": 8,
+        "message": "Node text uses too many sentences (8 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin_revisit",
+        "nodeId": "yaquin_sponsorship_path",
+        "variationId": "sponsorship_path_v1",
+        "words": 46,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "grace",
+        "nodeId": "grace_handshake_vitals",
+        "variationId": "handshake_vitals_v1",
+        "words": 45,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "grace_revisit",
+        "nodeId": "grace_revisit_list",
+        "variationId": "grace_revisit_list_v1",
+        "words": 45,
+        "sentences": 8,
+        "message": "Node text uses too many sentences (8 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "maya_revisit",
+        "nodeId": "maya_loyalty_trigger",
+        "variationId": "loyalty_trigger_v1",
+        "words": 45,
+        "sentences": 3,
+        "message": "Node text exceeds soft cap (45 words > 35)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "quinn",
+        "nodeId": "quinn_evaluation_method",
+        "variationId": "quinn_v22",
+        "words": 44,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_p2_refund_pressure",
+        "variationId": "refund_v1",
+        "words": 44,
+        "sentences": 15,
+        "message": "Node text uses too many sentences (15 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_p2_format_decision",
+        "variationId": "format_v1",
+        "words": 44,
+        "sentences": 11,
+        "message": "Node text uses too many sentences (11 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "alex",
+        "nodeId": "alex_llm_project_reveal",
+        "variationId": "project_v1",
+        "words": 43,
+        "sentences": 3,
+        "message": "Node text exceeds soft cap (43 words > 35)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "devon_revisit",
+        "nodeId": "devon_revisit_update_logic",
+        "variationId": "devon_revisit_logic_v1",
+        "words": 43,
+        "sentences": 9,
+        "message": "Node text uses too many sentences (9 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "grace_revisit",
+        "nodeId": "grace_revisit_closing",
+        "variationId": "grace_revisit_closing_v1",
+        "words": 43,
+        "sentences": 9,
+        "message": "Node text uses too many sentences (9 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "grace_revisit",
+        "nodeId": "grace_loyalty_trigger",
+        "variationId": "loyalty_trigger_v1",
+        "words": 43,
+        "sentences": 4,
+        "message": "Node text uses too many sentences (4 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "grace_revisit",
+        "nodeId": "grace_loyalty_declined",
+        "variationId": "loyalty_declined_v1",
+        "words": 43,
+        "sentences": 8,
+        "message": "Node text uses too many sentences (8 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "elena",
+        "nodeId": "elena_career_reflection_curator",
+        "variationId": "career_curator_v1",
+        "words": 42,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "maya_revisit",
+        "nodeId": "maya_loyalty_declined",
+        "variationId": "loyalty_declined_v1",
+        "words": 41,
+        "sentences": 8,
+        "message": "Node text uses too many sentences (8 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_orb_explanation",
+        "variationId": "orb_explanation_v1",
+        "words": 41,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_p2_dds_comment",
+        "variationId": "dds_comment_v1",
+        "words": 41,
+        "sentences": 12,
+        "message": "Node text uses too many sentences (12 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "alex",
+        "nodeId": "alex_curiosity_rekindled",
+        "variationId": "curiosity_v1",
+        "words": 40,
+        "sentences": 5,
+        "message": "Node text uses too many sentences (5 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "elena",
+        "nodeId": "elena_career_reflection_navigator",
+        "variationId": "career_navigator_v1",
+        "words": 40,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_orb_mastered",
+        "variationId": "orb_mastered_v2",
+        "words": 40,
+        "sentences": 9,
+        "message": "Node text uses too many sentences (9 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_p2_student_reactions",
+        "variationId": "reactions_v1",
+        "words": 39,
+        "sentences": 11,
+        "message": "Node text uses too many sentences (11 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin_revisit",
+        "nodeId": "yaquin_strategy_session",
+        "variationId": "strategy_session_v1",
+        "words": 39,
+        "sentences": 10,
+        "message": "Node text uses too many sentences (10 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin_revisit",
+        "nodeId": "yaquin_membership_path",
+        "variationId": "membership_path_v1",
+        "words": 39,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_phase2_entry",
+        "variationId": "p2_entry_v1",
+        "words": 38,
+        "sentences": 14,
+        "message": "Node text uses too many sentences (14 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_orb_flourishing",
+        "variationId": "orb_flourishing_v2",
+        "words": 37,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_p2_scaling_offer",
+        "variationId": "scaling_v1",
+        "words": 37,
+        "sentences": 11,
+        "message": "Node text uses too many sentences (11 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin_revisit",
+        "nodeId": "yaquin_loyalty_declined",
+        "variationId": "loyalty_declined_v1",
+        "words": 37,
+        "sentences": 10,
+        "message": "Node text uses too many sentences (10 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "grand_hall",
+        "nodeId": "wall_real",
+        "variationId": "wall_real_desc_v2",
+        "words": 36,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_orb_emerging",
+        "variationId": "orb_emerging_v2",
+        "words": 36,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_orb_developing",
+        "variationId": "orb_developing_v2",
+        "words": 36,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "grand_hall",
+        "nodeId": "found_secret_passage",
+        "variationId": "secret_reveal_v2",
+        "words": 35,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "market",
+        "nodeId": "trade_success_samuel",
+        "variationId": "trade_samuel_success",
+        "words": 35,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "devon_revisit",
+        "nodeId": "devon_revisit_welcome",
+        "variationId": "devon_revisit_welcome_v1",
+        "words": 34,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "market",
+        "nodeId": "trade_success_blueprint",
+        "variationId": "trade_blueprint_success",
+        "words": 34,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "market",
+        "nodeId": "trade_success_naturalist",
+        "variationId": "trade_naturalist_success",
+        "words": 34,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_creator_explored",
+        "variationId": "explored_v2",
+        "words": 34,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_p2_quality_crisis",
+        "variationId": "quality_crisis_v1",
+        "words": 34,
+        "sentences": 13,
+        "message": "Node text uses too many sentences (13 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "devon",
+        "nodeId": "devon_father_aerospace",
+        "variationId": "father_aerospace_v1",
+        "words": 33,
+        "sentences": 4,
+        "message": "Node text uses too many sentences (4 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_creator_path",
+        "variationId": "creator_v1",
+        "words": 33,
+        "sentences": 11,
+        "message": "Node text uses too many sentences (11 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_creator_community",
+        "variationId": "community_v2",
+        "words": 33,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "isaiah",
+        "nodeId": "isaiah_mystery_hint",
+        "variationId": "mystery_hint_v1",
+        "words": 32,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "station_entry",
+        "nodeId": "sector_0_hub",
+        "variationId": "hub_reentry_v1",
+        "words": 32,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "elena",
+        "nodeId": "elena_mystery_hint",
+        "variationId": "mystery_hint_v1",
+        "words": 31,
+        "sentences": 5,
+        "message": "Node text uses too many sentences (5 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_truth_farewell",
+        "variationId": "truth_farewell_v1",
+        "words": 31,
+        "sentences": 5,
+        "message": "Node text uses too many sentences (5 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "grand_hall",
+        "nodeId": "found_naturalist_clue",
+        "variationId": "naturalist_clue_v1",
+        "words": 30,
+        "sentences": 5,
+        "message": "Node text uses too many sentences (5 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "marcus",
+        "nodeId": "marcus_burnout",
+        "variationId": "burnout_v1",
+        "words": 30,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "marcus",
+        "nodeId": "hub_return",
+        "variationId": "hub_return_v1",
+        "words": 30,
+        "sentences": 4,
+        "message": "Node text uses too many sentences (4 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "systemic_calibration_friction",
+        "variationId": "friction_v1",
+        "words": 30,
+        "sentences": 8,
+        "message": "Node text uses too many sentences (8 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_curriculum_dream",
+        "variationId": "dream_v1",
+        "words": 30,
+        "sentences": 11,
+        "message": "Node text uses too many sentences (11 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "deep_station",
+        "nodeId": "samuel_truth",
+        "variationId": "samuel_truth_v3",
+        "words": 29,
+        "sentences": 4,
+        "message": "Node text uses too many sentences (4 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "kai",
+        "nodeId": "kai_climax_decision",
+        "variationId": "climax_v2",
+        "words": 29,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "quinn",
+        "nodeId": "quinn_mystery_hint",
+        "variationId": "mystery_hint_v1",
+        "words": 29,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "systemic_calibration_start",
+        "variationId": "calibration_v1",
+        "words": 29,
+        "sentences": 5,
+        "message": "Node text uses too many sentences (5 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_greeting_return",
+        "variationId": "greeting_return_awakening_maya",
+        "words": 29,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_station_truth",
+        "variationId": "station_truth_v2",
+        "words": 29,
+        "sentences": 5,
+        "message": "Node text uses too many sentences (5 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin_revisit",
+        "nodeId": "yaquin_revisit_farewell",
+        "variationId": "revisit_farewell_v2_callbacks",
+        "words": 29,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "deep_station",
+        "nodeId": "samuel_truth",
+        "variationId": "samuel_truth_silence",
+        "words": 28,
+        "sentences": 8,
+        "message": "Node text uses too many sentences (8 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_hub_after_devon",
+        "variationId": "hub_after_devon_v3_clean",
+        "words": 28,
+        "sentences": 5,
+        "message": "Node text uses too many sentences (5 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_mystery_hint_2",
+        "variationId": "mystery_hint_2_v1",
+        "words": 28,
+        "sentences": 5,
+        "message": "Node text uses too many sentences (5 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_mystery_revelation",
+        "variationId": "mystery_revelation_v1",
+        "words": 28,
+        "sentences": 5,
+        "message": "Node text uses too many sentences (5 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "devon_revisit",
+        "nodeId": "devon_revisit_closing",
+        "variationId": "devon_revisit_closing_v1",
+        "words": 26,
+        "sentences": 5,
+        "message": "Node text uses too many sentences (5 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "market",
+        "nodeId": "trade_success_vent",
+        "variationId": "trade_vent_success",
+        "words": 26,
+        "sentences": 5,
+        "message": "Node text uses too many sentences (5 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_identity_patience",
+        "variationId": "patience_question_v1",
+        "words": 26,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_station_truth",
+        "variationId": "station_truth_v3",
+        "words": 26,
+        "sentences": 5,
+        "message": "Node text uses too many sentences (5 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_p2_operational_wisdom",
+        "variationId": "operational_wisdom_v1",
+        "words": 26,
+        "sentences": 4,
+        "message": "Node text uses too many sentences (4 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "grand_hall",
+        "nodeId": "found_blueprint",
+        "variationId": "blueprint_found_v1",
+        "words": 25,
+        "sentences": 4,
+        "message": "Node text uses too many sentences (4 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "market",
+        "nodeId": "trade_success_maya",
+        "variationId": "trade_maya_success",
+        "words": 25,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_greeting_return",
+        "variationId": "greeting_return_awakening_devon",
+        "words": 25,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_station_truth",
+        "variationId": "station_truth_v1",
+        "words": 25,
+        "sentences": 4,
+        "message": "Node text uses too many sentences (4 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "zara",
+        "nodeId": "zara_mystery_hint",
+        "variationId": "mystery_hint_v1",
+        "words": 25,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "grace_revisit",
+        "nodeId": "grace_loyalty_start",
+        "variationId": "loyalty_start_v1",
+        "words": 24,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_launch_decision",
+        "variationId": "launch_v1",
+        "words": 24,
+        "sentences": 8,
+        "message": "Node text uses too many sentences (8 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "devon_revisit",
+        "nodeId": "devon_loyalty_start",
+        "variationId": "loyalty_start_v1",
+        "words": 23,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_greeting_return",
+        "variationId": "greeting_return_alive",
+        "words": 23,
+        "sentences": 5,
+        "message": "Node text uses too many sentences (5 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_curriculum_setup",
+        "variationId": "curriculum_setup_v2",
+        "words": 23,
+        "sentences": 8,
+        "message": "Node text uses too many sentences (8 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "grand_hall",
+        "nodeId": "wall_tech",
+        "variationId": "wall_tech_desc_v2",
+        "words": 22,
+        "sentences": 4,
+        "message": "Node text uses too many sentences (4 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "lira",
+        "nodeId": "lira_mystery_hint",
+        "variationId": "mystery_hint_v1",
+        "words": 22,
+        "sentences": 6,
+        "message": "Node text uses too many sentences (6 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "maya_revisit",
+        "nodeId": "maya_revisit_welcome",
+        "variationId": "revisit_welcome_v2_callbacks",
+        "words": 22,
+        "sentences": 4,
+        "message": "Node text uses too many sentences (4 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin_revisit",
+        "nodeId": "yaquin_loyalty_start",
+        "variationId": "loyalty_start_v1",
+        "words": 21,
+        "sentences": 8,
+        "message": "Node text uses too many sentences (8 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "yaquin",
+        "nodeId": "yaquin_success_practical",
+        "variationId": "success_practical_v1",
+        "words": 17,
+        "sentences": 7,
+        "message": "Node text uses too many sentences (7 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "maya_revisit",
+        "nodeId": "maya_loyalty_start",
+        "variationId": "loyalty_start_v1",
+        "words": 16,
+        "sentences": 5,
+        "message": "Node text uses too many sentences (5 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "isaiah",
+        "nodeId": "isaiah_mystery_hint",
+        "variationId": "mystery_hint_v2",
+        "words": 14,
+        "sentences": 4,
+        "message": "Node text uses too many sentences (4 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      },
+      {
+        "severity": "soft",
+        "graph": "samuel",
+        "nodeId": "samuel_truth_farewell",
+        "variationId": "truth_farewell_v2",
+        "words": 14,
+        "sentences": 4,
+        "message": "Node text uses too many sentences (4 > 3)",
+        "suggestion": "Cut 30%, convert explanation into conflict, and force an interaction turn sooner."
+      }
+    ],
+    "monologueChains": []
+  }
+}

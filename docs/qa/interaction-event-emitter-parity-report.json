@@ -1,0 +1,64 @@
+{
+  "generated_at": "2026-02-12T23:03:17.272Z",
+  "declared_types": [
+    "choice_presented",
+    "choice_selected_ui",
+    "choice_selected_result",
+    "node_entered",
+    "experiment_assigned",
+    "deadlock_recovery_injected"
+  ],
+  "emitted_types": [
+    "choice_presented",
+    "choice_selected_result",
+    "choice_selected_ui",
+    "deadlock_recovery_injected",
+    "experiment_assigned",
+    "node_entered"
+  ],
+  "planned_types": [],
+  "missing_types": [],
+  "unknown_emitted_types": [],
+  "emitters": {
+    "choice_presented": [
+      {
+        "file": "components/GameChoices.tsx",
+        "line": 826
+      }
+    ],
+    "deadlock_recovery_injected": [
+      {
+        "file": "components/GameChoices.tsx",
+        "line": 865
+      }
+    ],
+    "choice_selected_ui": [
+      {
+        "file": "components/GameChoices.tsx",
+        "line": 900
+      }
+    ],
+    "node_entered": [
+      {
+        "file": "components/StatefulGameInterface.tsx",
+        "line": 1181
+      },
+      {
+        "file": "components/StatefulGameInterface.tsx",
+        "line": 2018
+      }
+    ],
+    "choice_selected_result": [
+      {
+        "file": "components/StatefulGameInterface.tsx",
+        "line": 1477
+      }
+    ],
+    "experiment_assigned": [
+      {
+        "file": "lib/experiments.ts",
+        "line": 104
+      }
+    ]
+  }
+}

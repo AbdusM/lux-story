@@ -96,7 +96,7 @@ You're basically doing what I'm doing. Just inside the body instead of outside i
     choices: [
       {
         choiceId: 'realization_to_exchange',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'maya_devon_exchange',
         pattern: 'exploring'
       }

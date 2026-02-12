@@ -11,7 +11,7 @@ export const deepStationDialogueNodes: DialogueNode[] = [
         nodeId: 'deep_station_glitch_entry',
         speaker: 'Narrator',
         content: [{
-            text: "[TRANSIT ERROR. STOP OVERSHOT.]\n\nThe Mag-Lev screams as it bypasses the Residential Sector. The lights die. When the doors hiss open, there is no station platform.\n\nOnly a service catwalk suspended over an infinite black shaft. You are somewhere you shouldn't be.",
+            text: "[TRANSIT ERROR.",
             variation_id: 'deep_glitch_v1',
             emotion: 'fear_awe',
             interaction: 'jitter',
@@ -30,7 +30,7 @@ export const deepStationDialogueNodes: DialogueNode[] = [
         nodeId: 'sector_3_office',
         speaker: 'Narrator',
         content: [{
-            text: "[The elevator doors open onto a glass walkway suspended over an infinite drop. The air is sterile, freezing.]\n\nWelcome to Sector 3. The noise of the station—the markets, the ads, the crowds—is gone. Here, there is only the hum of the servers and a rising Shepard Tone that never resolves.",
+            text: "[The elevator doors open onto a glass walkway suspended over an infinite drop. The air is sterile, freezing.",
             variation_id: 'deep_intro_v3',
             emotion: 'fear_awe',
             richEffectContext: 'warning',
@@ -64,7 +64,7 @@ export const deepStationDialogueNodes: DialogueNode[] = [
         nodeId: 'deep_server_logs',
         speaker: 'Narrator',
         content: [{
-            text: "[ACCESS GRANTED]\n\nLOG 99402: Cycle #482 unstable. Memory leaks in Sector 2 (The Market) causing phantom geometry.\nLOG 99403: User 'Samuel' attempted unauthorized garbage collection. Denied.\n\nThe entire station isn't just old. It's senile.",
+            text: "[ACCESS GRANTED] LOG 99402: Cycle #482 unstable.",
             variation_id: 'deep_logs_v1',
             richEffectContext: 'data_stream'
         }],
@@ -77,7 +77,7 @@ export const deepStationDialogueNodes: DialogueNode[] = [
         nodeId: 'sector_3_office_ng',
         speaker: 'Narrator',
         content: [{
-            text: "[NG+] The elevator doors open. The cold hits you like a memory. You have stood on this walkway before. You have fallen from it before.\n\nThe Shepard Tone isn't rising this time. It's screaming.",
+            text: "[NG+] The elevator doors open.",
             variation_id: 'deep_intro_ng_plus',
             emotion: 'fear_awe',
             interaction: 'jitter',
@@ -104,7 +104,7 @@ export const deepStationDialogueNodes: DialogueNode[] = [
         nodeId: 'void_gaze',
         speaker: 'Narrator',
         content: [{
-            text: "You look down. You see... yourself. Looking up at yourself. An infinite chain of yous, falling into the dark.\n\nRecursion Error. The loop is visible here.",
+            text: "You look down.",
             variation_id: 'void_gaze_v3',
             emotion: 'surprised',
             interaction: 'ripple'
@@ -125,7 +125,7 @@ export const deepStationDialogueNodes: DialogueNode[] = [
         nodeId: 'core_terminal',
         speaker: 'Samuel',
         content: [{
-            text: "[A figure stands at the terminal. It's Samuel. He isn't wearing his janitor jumpsuit. He wears a white coat that is perfectly clean.]\n\nYou made it. Most people stop at the Market. They get comfortable trading secrets.",
+            text: "[A figure stands at the terminal.",
             variation_id: 'samuel_reveal_v3',
             emotion: 'serious'
         }],
@@ -149,7 +149,7 @@ export const deepStationDialogueNodes: DialogueNode[] = [
         speaker: 'Samuel',
         content: [
             {
-                text: "Samuel waits. The hum of the station fills the silence. He doesn't press you, but his eyes drift to the cursor—hesitant, hovering.\n\n\"It's heavy, isn't it?\" he asks softly.",
+                text: "Samuel waits.",
                 variation_id: 'samuel_truth_hesitation',
                 condition: { hasGlobalFlags: ['temporary_hesitation'] },
                 emotion: 'patient'
@@ -187,27 +187,27 @@ export const deepStationDialogueNodes: DialogueNode[] = [
         nodeId: 'samuel_architects',
         speaker: 'Samuel',
         content: [{
-            text: "They left a long time ago. Or maybe they're still watching. I just know they stopped sending updates. We are abandonware, kid.",
+            text: "They left a long time ago.",
             variation_id: 'samuel_architects_v1'
         }],
-        choices: [{ choiceId: 'back_truth', text: '...', nextNodeId: 'samuel_truth' }]
+        choices: [{ choiceId: 'back_truth', text: 'Step back for now.', nextNodeId: 'samuel_truth' }]
     },
 
     {
         nodeId: 'samuel_glitch_reason',
         speaker: 'Samuel',
         content: [{
-            text: "Entropy. You can't run a simulation forever without errors piling up. That 'Crowd Surge' you saw? That was just a buffer overflow.",
+            text: "Entropy.",
             variation_id: 'samuel_glitch_v1'
         }],
-        choices: [{ choiceId: 'back_truth', text: '...', nextNodeId: 'samuel_truth' }]
+        choices: [{ choiceId: 'back_truth', text: 'Step back for now.', nextNodeId: 'samuel_truth' }]
     },
 
     {
         nodeId: 'samuel_loop_confirm',
         speaker: 'Samuel',
         content: [{
-            text: "The Recursion. Yes. We call it the 'Logic Cascade'. The station builds on top of itself until it collapses.\n\nUnless we reset it.",
+            text: "The Recursion.",
             variation_id: 'samuel_loop_v3'
         }],
         choices: [
@@ -226,7 +226,7 @@ export const deepStationDialogueNodes: DialogueNode[] = [
         nodeId: 'logic_cascade_failure',
         speaker: 'Samuel',
         content: [{
-            text: "[Samuel's face hardens. The screen behind him turns red.]\n\nThen you leave me no choice. I cannot let the error propagate.\n\nFORCED SHUTDOWN INITIATED.",
+            text: "[Samuel's face hardens.",
             variation_id: 'failure_cascade_v1',
             richEffectContext: 'error',
             interaction: 'jitter'
@@ -248,7 +248,7 @@ export const deepStationDialogueNodes: DialogueNode[] = [
         nodeId: 'endgame_choice',
         speaker: 'System',
         content: [{
-            text: "CRITICAL ALERT: MEMORY BUFFER FULL.\n\nINITIATING PURGE PROTOCOL.\n\n[Samuel holds out a hand.]\n\n'Go back to the start. Try again. Maybe next time, you'll save everyone.'",
+            text: "CRITICAL ALERT: MEMORY BUFFER FULL.",
             variation_id: 'endgame_system_v3',
             richEffectContext: 'error',
             interaction: 'shake'
@@ -281,7 +281,7 @@ export const deepStationDialogueNodes: DialogueNode[] = [
         nodeId: 'break_the_cycle',
         speaker: 'Narrator',
         content: [{
-            text: "[You refuse. You step past Samuel and smash the terminal.]\n\nThe white light fracture. The Shepard Tone stops.\n\nSilence.\n\nTrue Silence.\n\n[TO BE CONTINUED IN ACT 2]",
+            text: "[You refuse.",
             variation_id: 'ending_break_v3',
             richEffectContext: 'success',
             interaction: 'bloom'

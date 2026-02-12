@@ -1469,6 +1469,24 @@ export default function StatefulGameInterface() {
       let newGameState = result.newState
       const trustDelta = result.trustDelta
 
+      // Canonical telemetry: authoritative game-logic result for selected choice.
+      // This complements `choice_selected_ui` from GameChoices with post-resolution truth.
+      queueInteractionEventSync({
+        user_id: newGameState.playerId,
+        session_id: String(newGameState.sessionStartTime || Date.now()),
+        event_type: 'choice_selected_result',
+        node_id: state.currentNode?.nodeId || null,
+        character_id: state.currentCharacterId || null,
+        payload: {
+          event_id: generateActionId(),
+          selected_choice_id: choice.choice.choiceId || null,
+          selected_choice_text: choice.choice.text || null,
+          reaction_time_ms: reactionTime,
+          earned_pattern: result.events.earnOrb || null,
+          trust_delta: trustDelta ?? null,
+        },
+      })
+
       // ═══════════════════════════════════════════════════════════════════════════
       // STATE DEFINITIONS
       // ═══════════════════════════════════════════════════════════════════════════

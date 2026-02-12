@@ -18,7 +18,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Pass me the... no, the other wrench. The one that's actually regulation.\n\nShift change isn't for ten minutes. If you're here to complain about the heat, join the queue. If you're here to help, grab the duct tape.",
+        text: "Pass me the.",
         emotion: 'guarded',
         variation_id: 'intro_v2_minimal',
         patternReflection: [
@@ -101,7 +101,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Technically speaking... don't just look at it. Run it.\n\nI visualized the logic flow. It's cleaner this way.",
+        text: "Technically speaking.",
         emotion: 'focused',
         variation_id: 'explains_scenario_v2_minimal',
         richEffectContext: 'warning',
@@ -211,7 +211,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     content: [
       {
         // NOTE: Removed "Devon taps" - environmental result only, not choreography
-        text: "Look at that. 140Hz tremor. Pitch is flat. Volume's low.\n\nProbability of Deception: 88%.\n\nSystem says he's lying. He's not fine.\n\nBut like... this is my dad. I can't just debug him.\n\nSuggested Output: Conversational Subroutine 4B: Gentle Probe.",
+        text: "Look at that.",
         emotion: 'focused',
         variation_id: 'debug_step_2_v1',
         richEffectContext: 'warning'
@@ -256,7 +256,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     content: [
       {
         // NOTE: Removed "Devon swipes" and "looks at phone, pained" - dialogue carries the regret
-        text: "The tree goes dark.\n\nRobotic voice: \"Conversation Ended.\"\n\nI took the input at face value. Just hung up.\n\nHe was waiting for me to push back.\n\nGod. I failed the actual test because I passed the logic check.",
+        text: "The tree goes dark.",
         emotion: 'regretful',
         variation_id: 'debug_fail_literal_v1',
         richEffectContext: 'error',
@@ -382,7 +382,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     content: [
       {
         // NOTE: Removed "Devon looks at you, intrigued" - emotion conveyed through dialogue
-        text: "System flashes. \"Unknown Variable.\"\n\nYou went off script.\n\nMy whole system creates a loop. You just... broke it. You ignored the data to find the feeling.\n\nI can't code that. How do you code that?",
+        text: "System flashes. \"Unknown Variable.",
         emotion: 'intrigued',
         variation_id: 'debug_override_v1',
         richEffectContext: 'thinking',
@@ -431,7 +431,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You recognize it. Most people just see scribbles.\n\nIt's a decision tree. Conversational routing.\n\nIf input A, response B. If emotional_state equals defensive, run de-escalate.\n\nPretty standard stuff.",
+        text: "You recognize it.",
         emotion: 'relieved',
         variation_id: 'technical_v1'
       }
@@ -491,7 +491,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Focus is necessary. Systems don't build themselves.\n\nAnd unlike people, systems are predictable. They do what you design them to do. Every time.",
+        text: "Focus is necessary.",
         emotion: 'defensive',
         variation_id: 'defends_v1'
       }
@@ -528,7 +528,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Yeah. I guess it is. 'Flowchart for Feelings.' Sounds like a bad self-help book.\n\nBut that's the problem. Charts are binary. Feelings are... analog. Messy.",
+        text: "Yeah. I guess it is.",
         emotion: 'amused',
         variation_id: 'simple_analogy_v1'
       }
@@ -550,7 +550,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You waited. Most people fill silences. They're uncomfortable with latency.\n\nBut you just... let the system complete its processing.\n\nThis flowchart. It's not for an engineering class. It's for someone important to me.",
+        text: "You waited. Most people fill silences.",
         emotion: 'grateful',
         variation_id: 'opens_up_v1'
       }
@@ -593,7 +593,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Exactly. People are non-deterministic.\n\nSame input, totally different outputs depending on state variables I can't even observe. Emotional cache. Historical context. Unspoken expectations.\n\nSystems have specifications. People have feelings.\n\nAnd I'm not good at debugging feelings.",
+        text: "Exactly.",
         emotion: 'frustrated',
         variation_id: 'people_problem_v1'
       }
@@ -675,7 +675,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "It's for... someone who's going through a rough time.\n\nSomeone I care about but can't seem to help. Every conversation is a failure cascade.\n\nI thought if I could map the optimal response paths, I could fix it. Debug the relationship, you know?",
+        text: "It's for.",
         emotion: 'frustrated',
         variation_id: 'father_hint_v1',
         voiceVariations: {
@@ -737,7 +737,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "My dad. He lives up in Huntsville. Since mom died six months ago, every phone call is... an exception error.\n\nHe says he's fine. But his voice has this... lag. Like packet loss. Information that isn't being transmitted. And I don't know how to debug grief.",
+        text: "My dad.",
         emotion: 'vulnerable',
         variation_id: 'father_reveal_v1',
         richEffectContext: 'thinking',
@@ -807,7 +807,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     nodeId: 'devon_interrupt_acknowledged',
     speaker: 'Devon Kumar',
     content: [{
-      text: "You didn't try to fix it. You just... waited. Let the error state exist without rushing to clear it.\n\nThat's not how I process. But maybe that's what he needs.",
+      text: "You didn't try to fix it.",
       emotion: 'surprised_grateful',
       microAction: 'He pauses, the constant tapping of his fingers finally still.',
       variation_id: 'default'
@@ -849,7 +849,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'devon_continue_after_pause',
-        text: "(Continue)",
+        text: "Give him a moment.",
         nextNodeId: 'devon_accepts_sympathy',
         pattern: 'patience'
       }
@@ -865,7 +865,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Thank you. She was... she was the interpreter. Between me and dad. She translated my logic into warmth.\n\nAnd now that translation layer is gone.\n\nSo I built a system. To optimize our conversations. To help him.",
+        text: "Thank you.",
         emotion: 'raw',
         variation_id: 'accepts_sympathy_v1',
         voiceVariations: {
@@ -981,7 +981,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Nobody's ever said that to me before.\n\nEveryone says 'time heals' or 'stay busy' or 'process it logically.' Nobody's ever said... just feel it.",
+        text: "Nobody's ever said that to me before.",
         emotion: 'vulnerable',
         variation_id: 'grief_felt_v1'
       }
@@ -1001,7 +1001,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Oh god. You're right. I'm running the same subroutine he does.\n\nProblem detected. Isolate variables. Test solutions. Repeat until fixed.\n\nExcept feelings aren't... they don't have error codes. There's no stack trace for sadness.",
+        text: "Oh god. You're right.",
         emotion: 'self_aware',
         variation_id: 'debug_parallel_v1'
       }
@@ -1022,7 +1022,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "UAB Systems Engineering. Senior capstone on error detection in distributed systems.\n\nSouthern Company's DevOps team is coming to our showcase. Looking for system resilience grads.\n\nIronic. I can debug code but not emotions.",
+        text: "UAB Systems Engineering.",
         emotion: 'self_aware',
         variation_id: 'uab_systems_v1',
         // E2-CHALLENGE: Opportunity to challenge the false dichotomy
@@ -1079,7 +1079,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Wait. You're calling that out?\n\n\"Can't debug emotions.\" I just said that like it's a fact. But that's not true, is it?\n\nI debug code by understanding how it works. By being patient with failures. By tracing problems to their root.\n\nMaybe... maybe that IS what emotions need. Not fixing. Understanding.",
+        text: "Wait.",
         emotion: 'breakthrough',
         variation_id: 'challenge_accepted_v1',
         voiceVariations: {
@@ -1134,7 +1134,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Systems that work even when things go wrong. Redundancy, error handling.\n\nI thought I could apply that to people.\n\nBut people aren't systems. Grief isn't a bug.",
+        text: "Systems that work even when things go wrong.",
         emotion: 'dawning_understanding',
         variation_id: 'career_context_v1'
       }
@@ -1170,7 +1170,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "No. I followed it perfectly. Every decision node, every optimal path.\n\nMade everything worse.\n\nHe said I sounded like a script. Treating him like a problem, not a person.\n\nThe system was perfect. Completely wrong.",
+        text: "No. I followed it perfectly.",
         emotion: 'devastated',
         variation_id: 'system_failure_v1'
       }
@@ -1214,7 +1214,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "It did. Because he was right. I was treating him like a system failure. Like debugging code. But you can't debug a memory. You can't optimize grief.\n\nAnd I don't know any other way to help.",
+        text: "It did.",
         emotion: 'broken',
         variation_id: 'admits_hurt_v1'
       }
@@ -1261,7 +1261,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "The system assumed emotional states could be optimized.\n\nBut grief isn't a bug. Not something to route around.\n\nI was treating symptoms. Not the underlying condition.\n\nSolving the wrong problem.",
+        text: "The system assumed emotional states could be optimized.",
         emotion: 'analytical',
         variation_id: 'analyzes_failure_v1'
       }
@@ -1286,7 +1286,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Empathy as data collection. Presence as bandwidth. You're saying... I don't have to abandon systems thinking. I have to expand what counts as data.\n\nEmotions aren't noise interfering with the signal. They ARE the signal.",
+        text: "Empathy as data collection.",
         emotion: 'dawning_realization',
         variation_id: 'reframe_v1'
       }
@@ -1321,7 +1321,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "The right problem isn't 'How do I fix my dad.'\n\nIt's 'How do I be present with my dad.'\n\nYou can't optimize connection. You show up. Be in the system instead of designing it.",
+        text: "The right problem isn't 'How do I fix my dad.",
         emotion: 'understanding',
         variation_id: 'realizes_v1',
         voiceVariations: {
@@ -1358,7 +1358,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'devon_continue_to_crossroads',
-        text: "(Continue)",
+        text: "Hear his decision.",
         nextNodeId: 'devon_crossroads',
         pattern: 'patience'
       }
@@ -1373,7 +1373,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You helped me see emotions as data. Now I can work with them.\n\nI need to call him. Differently. No flowchart. Me, talking to my dad. Listening for what I've been filtering out. The pauses. The pain. The love underneath the 'I'm fine.'\n\nWhat if I let the conversation be what it needs to be?",
+        text: "You helped me see emotions as data. Now I can work with them.",
         emotion: 'ready',
         variation_id: 'crossroads_reframe',
         useChatPacing: true,
@@ -1503,7 +1503,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Engineer and son. Logic and love. Both are valid data sources. Both matter.\n\nI'll call him tonight. No script. But I won't abandon systems thinking either. I'll just... let the system be human. Complex. Unpredictable. Real.\n\nThank you for helping me see that systems can hold grief too.",
+        text: "Engineer and son.",
         emotion: 'integrated',
         variation_id: 'ending_integration_v1'
       }
@@ -1533,7 +1533,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You're right. Sometimes you have to put down the blueprint and just... feel.\n\nI'll call him. I'll tell him I miss mom too. I'll cry if I need to. No optimization. Just truth.\n\nThe flowchart can wait. My dad can't.",
+        text: "You're right.",
         emotion: 'emotional',
         variation_id: 'ending_heart_v1'
       }
@@ -1563,7 +1563,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Just be there. That's the whole system, isn't it? Show up. Listen. Be present in his grief instead of trying to fix it.\n\nI think that's what mom did for both of us. She was just... there. And I can do that too.\n\nThank you for helping me see what matters.",
+        text: "be there.",
         emotion: 'peaceful',
         variation_id: 'ending_presence_v1'
       }
@@ -1594,7 +1594,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You're right. Emotions are noise. I was foolish to think I could integrate them.\n\nI'm going back to the flowchart. I need to refine the error handling. If he hangs up, I'll call back with a different script.\n\nPeople are systems. I haven't cracked the code yet.",
+        text: "You're right.",
         emotion: 'cold_robotic',
         variation_id: 'bad_ending_v1'
       }
@@ -1602,7 +1602,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'devon_leave_bad',
-        text: "...",
+        text: "Step back for now.",
         nextNodeId: samuelEntryPoints.DEVON_REFLECTION_GATEWAY,
         visibleCondition: {
           hasGlobalFlags: ['devon_arc_complete'],
@@ -1626,7 +1626,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I'm going to call him. Engineer and son. Both.\n\nBut I'm terrified I'll optimize again. Fall back into solution mode.\n\nThis will be work. Every conversation. Catching myself.\n\nThank you. Samuel's waiting.",
+        text: "I'm going to call him. Engineer and son.",
         emotion: 'determined_but_fragile',
         variation_id: 'farewell_integration_v2_complex'
       }
@@ -1665,7 +1665,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I'm going to call him. Let my heart do the talking.\n\nI don't know how. Twenty-two years of thinking first.\n\nBut that's what trying looks like. Doing it even when you don't know how.\n\nThank you. Tell Samuel Devon finally understood.",
+        text: "I'm going to call him.",
         emotion: 'vulnerable_determination',
         variation_id: 'farewell_heart_v2_complex',
         useChatPacing: true
@@ -1694,7 +1694,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I'm going to call him. Be present. No agenda.\n\nMom knew how to be both. Present and helpful. I only knew helpful.\n\nLearning to exist with someone's pain. Everything in me screams to act.\n\nBut maybe that's growth.\n\nSamuel's waiting.",
+        text: "I'm going to call him.",
         emotion: 'raw_courage',
         variation_id: 'farewell_presence_v2_complex'
       }
@@ -1762,7 +1762,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'devon_continue_to_reciprocity',
-        text: "(Continue)",
+        text: "Answer his question.",
         nextNodeId: 'devon_asks_player',
         pattern: 'patience'
       }
@@ -1774,7 +1774,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "I've been trying to debug my relationship with my dad. But... I realize I've been asking you questions this whole time.\n\nTechnically speaking, that's asymmetric. So: how do you handle relationships when logic doesn't work? When someone you care about is hurting and you can't fix it?",
+        text: "I've been trying to debug my relationship with my dad.",
         emotion: 'curious_vulnerable',
         variation_id: 'devon_reciprocity_v1'
       }
@@ -1782,28 +1782,28 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'player_try_to_fix',
-        text: "I try to fix it anyway. Offer solutions, try to make it better. Sometimes I make it worse because I can't just... be there.",
+        text: "I try to fix it fast, and sometimes I make it worse.",
         nextNodeId: 'devon_crossroads',
         pattern: 'building',
         skills: ['emotionalIntelligence', 'communication']
       },
       {
         choiceId: 'player_listen_first',
-        text: "I try to listen first. Understand, not solve. But I want to help, so I jump to solutions.",
+        text: "I try to listen first, but I still jump into fixing.",
         nextNodeId: 'devon_crossroads',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
       },
       {
         choiceId: 'player_analyze_patterns',
-        text: "I look for patterns. What's worked before? What hasn't? I treat it like a problem to solve, even though I know emotions don't work that way.",
+        text: "I look for patterns: what worked, what failed, and where emotion breaks the model.",
         nextNodeId: 'devon_crossroads',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication']
       },
       {
         choiceId: 'player_feel_helpless',
-        text: "Honestly? I feel helpless. I want to do something, anything, but sometimes there's nothing to do except be present. That feels like not enough.",
+        text: "I feel helpless. Being present might be enough, but it feels small.",
         nextNodeId: 'devon_crossroads',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication']
@@ -1934,7 +1934,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'vuln_continue',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'devon_farewell',
         pattern: 'patience'
       }
@@ -1972,7 +1972,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You're back. I was just optimizing my schedule for next semester.\n\nDid you need something, or just checking if my logic processor is still overheating?",
+        text: "You're back.",
         emotion: 'amused',
         variation_id: 'revisit_v1'
       }
@@ -2001,7 +2001,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You think like a process engineer. Not just fixing problems. Understanding why systems break in the first place.\n\nI used to think engineering was about building things. But the best engineers I've met? They're optimizers. They see the whole picture and find the leverage points.\n\nThat patience you have. Waiting for the right answer instead of the fast one. That's what separates good engineers from great ones.",
+        text: "You think like a process engineer. Not just fixing problems.",
         emotion: 'impressed',
         variation_id: 'career_systems_v1'
       }
@@ -2038,7 +2038,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "You build things that last. I can tell by how you approach problems. Not just solving for now, but thinking about what comes after.\n\nSustainability engineering is exactly that. Designing systems that don't just work today, but heal instead of harm over time.\n\nAlabama Power, Southern Company. They're investing heavily in sustainable infrastructure. People who can build AND think long-term? They're in demand.\n\nYou've got that combination.",
+        text: "Sustainable careers are built on rhythm, not heroics. Systems fail when people are treated as infinite resources.",
         emotion: 'thoughtful',
         variation_id: 'career_sustainability_v1'
       }
@@ -2323,7 +2323,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "Want to hear about my worst habit?\n\nI optimize everything. Shower routine: 7 minutes. Morning coffee: while code compiles. Conversations: mapped for maximum information transfer.\n\nEfficient. Also exhausting. Also lonely.\n\nSome of the best moments with Mom were completely unoptimized. Sitting on the porch. Not talking. Just... being.\n\nI'm trying to remember how to waste time with people I love. It's harder than it should be.",
+        text: "Want to hear about my worst habit? I optimize everything.",
         emotion: 'self_aware',
         variation_id: 'optimization_trap_v1'
       }
@@ -3308,7 +3308,7 @@ Hint: Check the hysteresis logic`,
     nodeId: 'devon_simulation_phase1_success',
     speaker: 'Devon Kumar',
     content: [{
-      text: "You see it too. The system was fighting itself because the tolerances were too wide.\n\nMost people would've just replaced the whole controller. But you debugged it. Found the root cause.\n\nThat's... that's how I think. Everything's a system. Everything has logic.",
+      text: "You see it too.",
       emotion: 'seen_warm',
       variation_id: 'phase1_success_v1'
     }],
@@ -3448,7 +3448,7 @@ Which architecture balances the constraints?`,
     nodeId: 'devon_simulation_phase2_success',
     speaker: 'Devon Kumar',
     content: [{
-      text: "You balanced it. Power, space, cost, reliability.\n\nMost engineers optimize for one thing and ignore the rest. But you saw the whole system. The constraints aren't enemies - they're design parameters.\n\nThat's... that's how you build things that last.\n\nMaybe that applies to more than just engineering.",
+      text: "You balanced it.",
       emotion: 'awed_thoughtful',
       variation_id: 'phase2_success_v1',
       richEffectContext: 'warning'
@@ -3595,7 +3595,7 @@ What communication approach balances these?`,
     nodeId: 'devon_simulation_phase3_success',
     speaker: 'Devon Kumar',
     content: [{
-      text: "You're right.\n\nI've been trying to debug grief like it's a system error. But it's not broken. It's... human.\n\nShared work. Silence as data. Emotional connection as the output, not the input.\n\nThat's not a fix. It's a framework for being present.\n\nI think... I think I can do that.\n\nThank you. For seeing the system I couldn't see. The one that includes hearts, not just logic.",
+      text: "You're right. I've been trying to debug grief like it's a system error.",
       emotion: 'grateful_transformed',
       variation_id: 'phase3_success_v1',
       richEffectContext: 'success',
@@ -3680,7 +3680,7 @@ What communication approach balances these?`,
     nodeId: 'devon_loyalty_trigger',
     speaker: 'Devon Kumar',
     content: [{
-      text: "I need your help. Right now.\n\n[His phone is buzzing nonstop. He looks exhausted.]\n\nStation's HVAC system just failed. Main controller's down. Backup didn't kick in. Temperature's rising in the server room—if it hits 85°F, we lose data infrastructure for the entire building.\n\nI've got 30 minutes before critical failure. Maybe less.\n\nI can fix this, but I need someone to help me triage. Make the calls I can't make while I'm elbow-deep in the control panel.\n\nCan you do that?",
+      text: "I need your help right now.",
       emotion: 'urgent_focused',
       variation_id: 'loyalty_trigger_v1'
     }],
@@ -3710,7 +3710,7 @@ What communication approach balances these?`,
     nodeId: 'devon_loyalty_declined',
     speaker: 'Devon Kumar',
     content: [{
-      text: "[He nods, already moving.]\n\nYeah. You're right. I'll handle it.\n\n[He disappears into the mechanical room. You hear metal clanging, muttered calculations.]",
+      text: "[He nods, already moving.",
       emotion: 'focused',
       variation_id: 'loyalty_declined_v1'
     }],
@@ -3727,7 +3727,7 @@ What communication approach balances these?`,
     nodeId: 'devon_loyalty_start',
     speaker: 'Devon Kumar',
     content: [{
-      text: "[He hands you his tablet. A system diagram glows—red zones spreading.]\n\n\"Main controller's fried. Lightning strike hit the transformer last night. Surge protection failed.\n\nI can reroute through the backup, but it'll take 20 minutes of manual rewiring. During that time, systems will be unstable.\n\nHere's what I need: Monitor these three subsystems. If any of them hit critical, you tell me IMMEDIATELY. I'll have to choose which one to prioritize.\n\nReady?\"",
+      text: "He hands you a tablet showing red zones spreading.",
       emotion: 'intense_focused',
       variation_id: 'loyalty_start_v1'
     }],
@@ -3748,7 +3748,7 @@ What communication approach balances these?`,
     nodeId: 'devon_loyalty_crisis_1',
     speaker: 'Devon Kumar',
     content: [{
-      text: "[He's inside the panel now. Sparks fly. His hands move fast—disconnecting, reconnecting, testing voltage.]\n\n[Your tablet beeps. WARNING: Server Room Temp 78°F. Rising 2° per minute.]\n\n[Another beep. WARNING: Emergency Lighting Circuit Unstable.]\n\n[A third beep. WARNING: Fire Suppression System Offline.]\n\n[Devon calls out, not looking up.]\n\n\"Which one first? I can only stabilize one at a time. What's the priority?\"",
+      text: "[He's inside the panel now. Sparks fly.",
       emotion: 'tense',
       variation_id: 'crisis_1_v1'
     }],
@@ -3781,7 +3781,7 @@ What communication approach balances these?`,
     nodeId: 'devon_loyalty_servers_first',
     speaker: 'Devon Kumar',
     content: [{
-      text: "[He nods sharply.]\n\n\"Servers. Got it.\"\n\n[Pulls a jumper cable, reroutes power. The server room temp stabilizes at 79°F.]\n\n\"Holding. Fire suppression still offline. Emergency lights flickering.\"\n\n[Ten minutes pass. He's soaked in sweat.]\n\n\"Backup controller's online. Routing primary systems now. We're... we're stable.\"\n\n[He emerges from the panel. Sits on the floor.]\n\n\"You made the right call. Servers first. Data is irreplaceable. Everything else we can fix later.\n\nYou didn't freeze. That's... that's the hardest part of crisis management. Making a choice when any choice could be wrong.\"",
+      text: "[He nods sharply. ] \"Servers.",
       emotion: 'exhausted_grateful',
       variation_id: 'servers_first_v1',
       richEffectContext: 'success'
@@ -3800,7 +3800,7 @@ What communication approach balances these?`,
     nodeId: 'devon_loyalty_fire_first',
     speaker: 'Devon Kumar',
     content: [{
-      text: "[He hesitates for half a second.]\n\n\"Fire suppression. Okay.\"\n\n[Switches the priority. Fire suppression comes online. But the server room alarm screams—82°F.]\n\n\"Servers are critical. I have to switch now.\"\n\n[He works frantically. Gets the servers under control at 83°F—just before failure threshold.]\n\n[Fifteen minutes later, backup's online. He stumbles out, pale.]\n\n\"We made it. Barely. Fire suppression was the safer choice, but... servers were the critical path.\n\nI should have overruled you. But I didn't trust my own judgment in the moment.\n\nWe got lucky. Next time, we might not.\"",
+      text: "[He hesitates. ] \"Fire suppression.",
       emotion: 'conflicted_exhausted',
       variation_id: 'fire_first_v1'
     }],
@@ -3818,7 +3818,7 @@ What communication approach balances these?`,
     nodeId: 'devon_loyalty_freeze',
     speaker: 'Devon Kumar',
     content: [{
-      text: "[He looks up, frustrated.]\n\n\"I need you to DECIDE. I can't—\"\n\n[The tablet screams. Server room hits 81°F.]\n\n\"Damn it. Servers. Has to be servers.\"\n\n[He makes the call himself. Fixes it. But it's close—84°F before he stabilizes it.]\n\n[Later, he sits outside, not looking at you.]\n\n\"I asked you because I needed someone to make the hard calls while I was physically unable to. When you froze, I had to do both.\n\nIt worked out. This time.\n\nBut in crisis management, hesitation kills.\"",
+      text: "[He looks up, frustrated. ] \"I need you to decide.",
       emotion: 'disappointed_tired',
       variation_id: 'freeze_v1'
     }],
@@ -3839,7 +3839,7 @@ What communication approach balances these?`,
     nodeId: 'devon_loyalty_success',
     speaker: 'Devon Kumar',
     content: [{
-      text: "[He looks at you seriously.]\n\n\"No. You don't understand.\n\nI've been managing systems for eight years. I've handled outages, failures, critical incidents. I'm good at this.\n\nBut I'm terrible at asking for help. At trusting someone else to make the call when I can't.\n\nToday, you proved I can. That I don't have to carry every system, every decision, alone.\n\nThat's worth more than fixing an HVAC controller.\n\nThank you. For not freezing. For making the hard choice. For being someone I can trust when systems fail.\"",
+      text: "[He looks at you seriously. ] \"I've managed incidents for eight years.",
       emotion: 'vulnerable_grateful',
       variation_id: 'success_v1',
       richEffectContext: 'success'
@@ -3866,7 +3866,7 @@ What communication approach balances these?`,
     nodeId: 'devon_loyalty_partial',
     speaker: 'Devon Kumar',
     content: [{
-      text: "[He nods slowly.]\n\n\"Yeah. We learned.\n\nYou learned that crisis decisions have stakes. I learned that I need to trust my own judgment even when someone else is helping.\n\nWe didn't fail. But we didn't excel either.\n\nNext crisis, we'll both be better.\"",
+      text: "[He nods slowly.",
       emotion: 'reflective_tired',
       variation_id: 'partial_v1'
     }],

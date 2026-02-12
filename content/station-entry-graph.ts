@@ -20,7 +20,7 @@ export const stationEntryGraph: DialogueGraph = {
             speaker: 'Narrator',
             content: [
                 {
-                    text: "[A slow, deep cello note hums. The sound of distant trains that never arrive.]\n\nYou are standing in the Station Entry. The air smells of ozone and stale coffee.\n\nAbove you, high clerestory windows let in the 'Eternal Twilight'—a grey, dust-mote filled light that hasn't changed in two hundred years.",
+                    text: "[A slow, deep cello note hums. The sound of distant trains that never arrive.",
                     variation_id: 'entry_arrival_v1',
                     interaction: 'ripple',
                     patternReflection: [
@@ -58,7 +58,7 @@ export const stationEntryGraph: DialogueGraph = {
             nodeId: 'entry_look_up',
             speaker: 'Narrator',
             content: [{
-                text: "The arches soar upward, layer upon layer of concrete ribs. They vanish into a thick industrial smog that hangs near the ceiling.\n\nYou can't see the top. Maybe there is no top anymore.",
+                text: "The arches soar upward, layer upon layer of concrete ribs.",
                 variation_id: 'look_up_v1',
                 emotion: 'mystical'
             }],
@@ -75,7 +75,7 @@ export const stationEntryGraph: DialogueGraph = {
             nodeId: 'entry_look_down',
             speaker: 'Narrator',
             content: [{
-                text: "The marble is concave from millions of feet. You see scratches in the stone—frantic, chaotic marks.\n\nHistory says the 'Great Crowd' panicked here in Era 2. The floor remembers.",
+                text: "The marble is concave from millions of feet.",
                 variation_id: 'look_down_v1',
                 emotion: 'somber'
             }],
@@ -92,7 +92,7 @@ export const stationEntryGraph: DialogueGraph = {
             nodeId: 'entry_ticket_booth',
             speaker: 'Narrator',
             content: [{
-                text: "The brass grilles are dull. The windows are painted black from the inside.\n\nA heavy iron weld seals the door. It hasn't been opened since the trains stopped running on time.",
+                text: "The brass grilles are dull.",
                 variation_id: 'booth_v1',
                 emotion: 'cold'
             }],
@@ -150,7 +150,7 @@ export const stationEntryGraph: DialogueGraph = {
             nodeId: 'entry_samuel_intro',
             speaker: 'Samuel',
             content: [{
-                text: "[A janitor in a grey jumpsuit pushes a broom into view. He stops. He smiles—a slow, warm expression that feels out of place.]\n\nTrain's late. Been late for about... forty years. You waiting for the 9:15 to Sector 4?",
+                text: "[A janitor in a grey jumpsuit pushes a broom into view.",
                 variation_id: 'samuel_meet_v1',
                 emotion: 'warm'
             }],
@@ -174,7 +174,7 @@ export const stationEntryGraph: DialogueGraph = {
             nodeId: 'samuel_schedule_joke',
             speaker: 'Samuel',
             content: [{
-                text: "[He chuckles. The sound of dry leaves.]\n\nOn the board there is. Right next to the 8:30 from Era 1.\n\nRelax, friend. Nothing moves fast here except the rumors.",
+                text: "[He chuckles.",
                 variation_id: 'samuel_joke_v1',
                 emotion: 'amused'
             }],
@@ -191,7 +191,7 @@ export const stationEntryGraph: DialogueGraph = {
             nodeId: 'samuel_welcome',
             speaker: 'Samuel',
             content: [{
-                text: "Name's Samuel. I keep the dust moving.\n\nWelcome to the Station Entry. It's not much, but it's the only place where the floor doesn't shake.",
+                text: "Name's Samuel.",
                 variation_id: 'samuel_intro_complete',
                 emotion: 'warm'
             }],
@@ -210,7 +210,7 @@ export const stationEntryGraph: DialogueGraph = {
             nodeId: 'entry_hub_exit',
             speaker: 'Narrator',
             content: [{
-                text: "Samuel points with his broom toward the massive archway leading deeper into the station.\n\n'Sector 1. The Grand Hall. Watch your step, the reality filters are a bit... thin in there.'",
+                text: "Samuel points with his broom toward the massive archway leading deeper into.",
                 variation_id: 'hub_exit_v1' // End of module
             }],
             choices: [
@@ -230,7 +230,7 @@ export const stationEntryGraph: DialogueGraph = {
             speaker: 'Narrator',
             content: [
                 {
-                    text: "[NEW GAME+ DETECTED. MEMORY RESETTING...]\n\nYou wake up on the cold floor of the Entry Hall. It feels... familiar. You have done this before.\n\n(Key Items Lost. Knowledge Retained.)",
+                    text: "[NEW GAME+ DETECTED.",
                     variation_id: 'hub_ng_plus_entry',
                     visibleCondition: { hasGlobalFlags: ['ng_plus_1'] },
                     richEffectContext: 'glitch'

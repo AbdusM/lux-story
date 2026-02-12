@@ -9,7 +9,7 @@ export const grandHallDialogueNodes: DialogueNode[] = [
         nodeId: 'sector_1_hall',
         speaker: 'Narrator',
         content: [{
-            text: "[The air hums with static. Cyan and Magenta holograms float everywhere—'Ghost Ads' for products that stopped existing fifty years ago.]\n\nWelcome to the Grand Atrium. The 'Founders Wall' dominates the room, a shimmering projection of smiling faces and the slogan: UNITY THROUGH PURPOSE.",
+            text: "[The air hums with static.",
             variation_id: 'hall_tech_v2',
             interaction: 'bloom',
             richEffectContext: 'success',
@@ -82,7 +82,7 @@ export const grandHallDialogueNodes: DialogueNode[] = [
         nodeId: 'sector_1_hall_real',
         speaker: 'Narrator',
         content: [{
-            text: "[The holograms flicker and die. The room plunges into shadow.]\n\nUsing the Lens reveals the truth. The 'sunlight' is a buzzing halogen strip. The marble floor is cracked concrete. The 'Founders Wall' is a peeling poster covering a rusted hole in the hull.",
+            text: "[The holograms flicker and die.",
             variation_id: 'hall_real_v2',
             interaction: 'shake',
             richEffectContext: 'warning',
@@ -159,7 +159,7 @@ export const grandHallDialogueNodes: DialogueNode[] = [
         nodeId: 'wall_real',
         speaker: 'Narrator',
         content: [{
-            text: 'You peel back the edge of the poster. Behind it is a manual airlock handle modeled in heavy iron. It is labeled "EMERGENCY VENT - SECTOR 0".\n\nSomeone tried to scratch a message here: "THEY LEFT US."',
+            text: 'You peel back the edge of the poster. Behind it is a manual airlock handle modeled in heavy iron. It is labeled "EMERGENCY VENT - SECTOR 0.".\n\nSomeone tried to scratch a message here: "THEY LEFT US."',
             variation_id: 'wall_real_desc_v2'
         }],
         choices: [
@@ -191,7 +191,7 @@ export const grandHallDialogueNodes: DialogueNode[] = [
         nodeId: 'found_naturalist_clue',
         speaker: 'Narrator',
         content: [{
-            text: 'You trace the scratches. It\'s not just words—it\'s a map of the hydroponic supply lines. It points to a "Hidden Garden" in Sector 4.\n\nNaturalist Secret Obtained: [Garden Location]',
+            text: 'You trace the scratches. It\'s not just words—it\'s a map of the hydroponic supply lines. It points to a "Hidden Garden." in Sector 4.\n\nNaturalist Secret Obtained: [Garden Location]',
             variation_id: 'naturalist_clue_v1',
             richEffectContext: 'success'
         }],
@@ -202,7 +202,7 @@ export const grandHallDialogueNodes: DialogueNode[] = [
         nodeId: 'found_secret_passage',
         speaker: 'Narrator',
         content: [{
-            text: 'The wall groans. Not a door, but a panel in the hull itself slides back. A dark ventilation shaft leads back to the Station Entry.\n\nIt works both ways. The "Rat" (Alex) probably uses this.',
+            text: 'The wall groans. Not a door, but a panel in the hull itself slides back. A dark ventilation shaft leads back to the Station Entry.\n\nIt works both ways. The "Rat." (Alex) probably uses this.',
             variation_id: 'secret_reveal_v2'
         }],
         choices: [

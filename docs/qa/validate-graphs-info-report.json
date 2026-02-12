@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-02-09T21:13:17.300Z",
-  "duration_ms": 217,
+  "generated_at": "2026-02-12T23:08:50.831Z",
+  "duration_ms": 1027,
   "baseline": {
     "generated_at": "2026-02-09T20:52:30.000Z",
     "info_items": 68,
     "notes": "Baseline for validate-graphs info item ratchet (fail only on regressions). Updated after fixing broken refs by unquarantining now-referenced nodes."
   },
   "current": {
-    "info_items": 53
+    "info_items": 0
   },
   "delta": {
-    "info_items": -15
+    "info_items": -68
   }
 }

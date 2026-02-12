@@ -22,7 +22,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_intro_v1',
-        text: "You caught me practicing. Not my pitch—my pause.\n\nSee, anyone can learn to talk. The real skill? Knowing when to stop.\n\nMost people in sales never learn that. They think silence is failure. I think silence is where trust lives.",
+        text: "You caught me practicing.",
         emotion: 'charming',
         patternReflection: [
           { pattern: 'helping', minLevel: 5, altText: "You caught me practicing. Not my pitch—my pause.\n\nYou're not here to be sold to. I can tell. People who genuinely want to help have this... quality. Like they're already listening before you speak.", altEmotion: 'warm' },
@@ -96,7 +96,7 @@ export const danteDialogueNodes: DialogueNode[] = [
         choiceId: 'dante_intro_show_work',
         text: "Show me what you're working on.",
         nextNodeId: 'dante_sim_reluctant',
-        pattern: 'exploring',
+        pattern: 'building',
         skills: ['curiosity', 'learningAgility'],
         voiceVariations: {
           exploring: "Can you show me what this looks like in practice?",
@@ -121,7 +121,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_silence_v1',
-        text: "Traditional sales is a performance. You're right to be skeptical.\n\nBut here's what I learned: when I stopped performing and started listening, my close rate went up. Not because I got better at manipulation—because I got better at understanding.\n\nSilence isn't a technique. It's respect.",
+        text: "Traditional sales is a performance.",
         emotion: 'earnest',
         voiceVariations: {
           analytical: "Traditional sales is a performance. Your skepticism is statistically justified.\n\nBut here's the data: when I stopped optimizing talk time and started measuring listen rate, my close rate improved 40%. Not from better manipulation algorithms—from better pattern recognition of actual needs.\n\nSilence isn't a technique. It's respect for the signal-to-noise ratio.",
@@ -168,7 +168,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_practice_v1',
-        text: "Every morning. I set a timer, ask myself a hard question, and don't let myself answer for sixty seconds.\n\nTry it. Ask yourself what you really want from your career. Then wait. Don't fill the silence. Let the real answer surface.\n\nThe first answer is always the safe one. The real answer takes time.",
+        text: "Every morning. I set a timer, ask myself a hard question, and don't let myself answer for sixty seconds.",
         emotion: 'teaching'
       }
     ],
@@ -198,7 +198,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_pause_exp_v1',
-        text: "[Dante watches you, silent. The station hums around you both. Time stretches.]\n\n...There. Did you feel it? The moment when your brain stopped performing and started reflecting?\n\nThat's the space I'm trying to create in every conversation. That's where real decisions happen.",
+        text: "[Dante watches you, silent.",
         emotion: 'quiet_satisfied',
         voiceVariations: {
           analytical: "[Dante watches you, silent. The station hums around you both. Time stretches.]\n\n...There. Did you process it? The moment when analysis stopped and meta-cognition began?\n\nThat's the state space I'm trying to reach in every conversation. That's where authentic optimization happens.",
@@ -239,7 +239,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_restraint_v1',
-        text: "Exactly. I can close anyone. That's not bragging—it's a warning.\n\nI learned to sell before I learned ethics. Grew up reading people because I had to. By twenty, I could get anyone to buy anything.\n\nThat's when I realized: power without restraint isn't a gift. It's a liability.",
+        text: "Exactly.",
         emotion: 'serious',
         voiceVariations: {
           analytical: "Exactly. I can close anyone. That's not bragging—it's predictive accuracy.\n\nI learned persuasion patterns before I learned ethical frameworks. Grew up analyzing people because survival required it. By twenty, I could model anyone's decision tree.\n\nThat's when I realized: capability without constraint isn't optimization. It's risk.",
@@ -288,7 +288,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_nola_v1',
-        text: "Born in the Ninth Ward. My grandmother sold pralines outside Jackson Square.\n\nShe taught me the first rule of sales: make them feel seen before you try to make a sale. She never once pitched her candy. She just... noticed people. Remembered their names. Asked about their kids.\n\nPeople came back because she made them feel human. The pralines were almost incidental.",
+        text: "Born in the Ninth Ward. My grandmother sold pralines outside Jackson Square.",
         emotion: 'nostalgic'
       }
     ],
@@ -329,7 +329,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_hub_v1',
-        text: "I'm an open book. Well—a book you have to read carefully. Every chapter has two meanings.\n\nWhat aspect of sales and connection interests you most?",
+        text: "I'm an open book.",
         emotion: 'inviting',
         patternReflection: [
           { pattern: 'analytical', minLevel: 4, altText: "You read between the lines. I appreciate that. Most people take me at face value.\n\nI'm an open book—but every chapter has layers. What aspect of persuasion do you want to analyze?", altEmotion: 'knowing' },
@@ -378,7 +378,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_ethics_v1',
-        text: "Here's my line: I never sell anyone something they don't need.\n\nSounds simple. It's not. Because 'need' is subjective. Do they need it, or have I convinced them they need it?\n\nI had a prospect once. Single mom, needed a car. I could have upsold her into debt that would have followed her for years. Instead, I found her a reliable used sedan and lost my commission.\n\nThat's the day I knew who I wanted to be.",
+        text: "My line is simple to say and hard to live: I don't sell people.",
         emotion: 'reflective',
         skillReflection: [
           { skill: 'integrity', minLevel: 5, altText: "Here's my line: I never sell anyone something they don't need. You have integrity—I can tell by how you engage.\n\nThe question is: do they need it, or have I convinced them? Integrity means sitting with that discomfort.\n\nSingle mom, car purchase. I could have profited from debt. Instead, used sedan, lost commission. That's the day I knew who I was.\n\nYour integrity already knows this.", altEmotion: 'knowing' },
@@ -429,7 +429,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_mom_v1',
-        text: "Her name was Desiree. Two kids. Working double shifts at a hospital.\n\nShe came in looking at a new SUV—the big one with the leather seats. She'd seen an ad. Thought she deserved something nice after everything she'd been through.\n\nAnd she did deserve something nice. But what she needed was reliability and low payments. I could see the math in her budget. The SUV would have broken her.\n\nSo I walked her to the used lot. Found a Honda Accord with 40,000 miles. Her payments were half what they would have been.\n\nShe cried. Not from disappointment—from relief. Because I saw her as a person, not a commission check.\n\nThat's who I want to be. Every time.",
+        text: "She needed reliability, not status signaling. I could have upsold her into debt, but chose the used sedan and lost commission. That was the day my ethics became operational.",
         emotion: 'moved'
       }
     ],
@@ -463,7 +463,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_tech_v1',
-        text: "Alright, let me break it down. My approach has three pillars:\n\n**Listen First**: Before I pitch anything, I ask questions until I truly understand what someone needs.\n\n**Mirror, Don't Manipulate**: Reflect back what they've told me. Help them see their own thinking clearly.\n\n**Exit Gracefully**: If what I'm selling isn't right for them, I tell them. Better to lose a sale than lose trust.\n\nNotice what's missing? Persuasion tricks. Pressure tactics. Manufactured urgency.\n\nThose work short-term. I'm building something longer.",
+        text: "My method has three pillars: listen first, mirror without manipulation, and exit gracefully when the fit is wrong.\n\nThat means no pressure tactics or fake urgency.\n\nShort-term tricks close deals; trust builds careers.",
         emotion: 'teaching'
       }
     ],
@@ -500,7 +500,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_origin_v1',
-        text: "You want the real version or the one I tell at networking events?\n\n...Okay. Real version.\n\nGrew up poor in New Orleans. Mom worked three jobs. Dad wasn't around. I learned early that charm was currency.\n\nBy fifteen, I was running small hustles. Nothing illegal—just a kid who knew how to make people feel important. Got into sales young. Rose fast.\n\nBut somewhere along the way, I started feeling empty. Like I was becoming a caricature of myself. All persona, no person.\n\nThat's when I came to Birmingham. Started over. Decided to figure out who I actually am beneath all the charm.",
+        text: "Real version: I grew up poor in New Orleans, and charm became survival.",
         emotion: 'vulnerable',
         patternReflection: [
           { pattern: 'helping', minLevel: 4, altText: "You want the real version or the one I tell at networking events?\n\n...You help people. So you'll get the real version.\n\nGrew up poor. New Orleans. Learned charm was currency. By fifteen I was making people feel important for survival.\n\nRose fast in sales. But somewhere I became all persona, no person. Came to Birmingham to figure out who I am when I'm not performing.", altEmotion: 'vulnerable_warm' },
@@ -553,7 +553,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_interrupt_acknowledged',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Most people fill that silence with advice. You didn't.\n\nThat's the kind of restraint I keep talking about. It lets me tell the real story.",
+      text: "Most people fill that silence with advice.",
       emotion: 'grateful',
       variation_id: 'dante_interrupt_v1'
     }],
@@ -579,7 +579,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_vuln_v1',
-        text: "[Dante's usual ease falters. He looks past you.]\n\nYou want to know my real fear?\n\nI'm terrified I don't know how to be genuine anymore. That all my interactions are some version of a pitch. Even this conversation—part of me is tracking your responses, adjusting my delivery.\n\nI've been performing so long I'm not sure where the act ends and I begin.\n\nWhat if there's nothing underneath?",
+        text: "I can still perform my way through any room. The work now is choosing honesty when performance would be easier.",
         emotion: 'scared',
         patternReflection: [
           { pattern: 'helping', minLevel: 5, altText: "[Dante's usual ease falters. He looks past you.]\n\nYou care about people genuinely. I see that. That's why I'm asking you this.\n\nI'm terrified I don't know how to be genuine anymore. Every interaction feels like a pitch. Even now—I'm tracking your responses, adjusting delivery.\n\nI've been performing so long... what if there's nothing real underneath?", altEmotion: 'vulnerable_scared' },
@@ -635,7 +635,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_sim_v1',
-        text: "Alright, let me show you something. A scenario I use to train new salespeople.\n\nPicture this: You're selling software to a small business owner. She's hesitant—been burned by tech promises before. She needs the solution, but she doesn't trust the process.\n\nMost salespeople would push harder. Overcome objections. Create urgency.\n\nWhat would you do?",
+        text: "Alright, let me show you something. A scenario I use to train new salespeople.",
         emotion: 'teaching'
       }
     ],
@@ -676,7 +676,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_listen_v1',
-        text: "You've listened enough when they say something that surprises you.\n\nNot because they're unpredictable—but because you finally got past their surface answers. When someone tells you something they didn't plan to share, you're in real territory.\n\nThat's when the conversation actually starts.",
+        text: "You've listened enough when they say something that surprises you.",
         emotion: 'knowing'
       }
     ],
@@ -706,7 +706,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_beneath_v1',
-        text: "[Long pause. Dante looks genuinely uncertain.]\n\nI don't... fully know yet. That's the honest answer.\n\nI think there's someone who cares about people. Really cares. Someone who saw his mom work herself to exhaustion and decided no one should have to beg for basic dignity.\n\nBut I've also got this other part—the part that knows how to win, how to close, how to get what I want. And I don't always trust him.\n\nMaybe the point isn't picking one or the other. Maybe it's teaching them to work together.",
+        text: "[Long pause. Dante looks uncertain.",
         emotion: 'searching'
       }
     ],
@@ -789,7 +789,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_loyalty_trigger',
     speaker: 'Dante Moreau',
     content: [{
-      text: "There's a kid in the conference room. Twenty. Dropped out of college to start a tutoring business. Hasn't made a sale in three months.\n\nHe reached out because he saw my LinkedIn. Thought I could teach him the tricks. How to manipulate people into saying yes.\n\nBut here's the thing—his service is actually good. Really good. He just doesn't believe in it enough to sell it honestly.\n\nI could give him my old playbook. The one that worked. Mirroring, scarcity tactics, emotional leverage. He'd probably start closing deals.\n\nBut I don't want to teach him how to perform. I want to teach him how to believe in what he's offering. How to sell from a place of service, not survival.\n\nI've never done that before. I don't even know if I can.\n\nYou understand helping people. Would you... sit in on this? Help me figure out how to coach someone when the goal isn't just winning?",
+      text: "I need backup in a real coaching session. Help me keep the conversation truthful when pressure makes manipulation feel efficient.",
       emotion: 'vulnerable_determined',
       variation_id: 'loyalty_trigger_v1',
       richEffectContext: 'warning'
@@ -821,7 +821,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_loyalty_declined',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Yeah. You're probably right. Some lessons you gotta teach yourself.\n\nStill appreciate you listening.",
+      text: "Yeah.",
       emotion: 'understanding',
       variation_id: 'loyalty_declined_v1'
     }],
@@ -838,7 +838,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_loyalty_start',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Conference room C. Third floor.\n\nJust... if I start slipping into performance mode, call me on it. I need someone to keep me honest.\n\nLet's go figure this out together.",
+      text: "Conference room C.",
       emotion: 'warm_grateful',
       variation_id: 'loyalty_start_v1'
     }],
@@ -856,7 +856,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_respect_v1',
-        text: "Respect for their process. Their timeline. Their right to say no.\n\nWhen I'm silent, I'm saying: 'Your thoughts matter. Take your time.' Most salespeople fill silence because they're afraid. I stay in it because I trust the other person to know their own mind.",
+        text: "Respect for their process.",
         emotion: 'earnest'
       }
     ],
@@ -878,7 +878,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_stopped_v1',
-        text: "I closed a deal I shouldn't have. Elderly couple. Sold them a time-share they couldn't afford.\n\nWhen I saw the contract go through, I felt... nothing. No triumph. Just emptiness.\n\nThat's when I knew: I was becoming the thing I promised myself I'd never be. Someone who takes from people. Someone who performs humanity instead of feeling it.\n\nI quit the next week.",
+        text: "I closed a deal I shouldn't have. Elderly couple.",
         emotion: 'somber'
       }
     ],
@@ -904,7 +904,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_couple_v1',
-        text: "I went back. Helped them get out of the contract. It wasn't easy—the company fought me on it.\n\nBut I needed to make it right. Not for them, really. For me. To prove I could still be someone who gives instead of takes.\n\nThat couple sent me a card last Christmas. Still makes me cry if I think about it too long.",
+        text: "I went back. Helped them get out of the contract.",
         emotion: 'moved'
       }
     ],
@@ -930,7 +930,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_sim_listen_v1',
-        text: "[Dante's eyes light up.]\n\nYes. Exactly.\n\nBecause once you know what burned her, you know what she actually needs protection from. Maybe it's complexity. Maybe it's hidden fees. Maybe it's feeling dumb when things break.\n\nNow you're not selling software. You're offering to solve her actual problem.\n\nThat's the shift from transaction to relationship.",
+        text: "[Dante's eyes light up. ] Yes.",
         emotion: 'approving'
       }
     ],
@@ -952,7 +952,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_sim_walk_v1',
-        text: "[Dante actually steps back, impressed.]\n\nYou'd walk away. You'd give her the power.\n\nThat's... that's the advanced move. Because when you're willing to lose the sale, you demonstrate that you're not desperate. You're confident enough to believe in what you're offering—and confident enough to know it's not for everyone.\n\nCounterintuitively, that's often when people buy. Because real confidence isn't push. It's peace.",
+        text: "[Dante steps back, impressed. ] You'd walk away.",
         emotion: 'deeply_impressed'
       }
     ],
@@ -974,7 +974,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_aftermath_v1',
-        text: "After understanding? You mirror it back.\n\n'So if I'm hearing you right, your biggest concern is that you'll invest in something and then feel stuck when it doesn't work. You want an exit strategy before you need one.'\n\nNow she knows you heard her. And you can address the real objection—not the surface excuse.",
+        text: "After understanding? You mirror it back.",
         emotion: 'teaching'
       }
     ],
@@ -1009,7 +1009,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_underneath_v1',
-        text: "[Dante takes a shaky breath.]\n\nYeah. Maybe.\n\nI keep thinking—the act couldn't be this convincing if there wasn't something real powering it. You can't fake care that well. At some point, some part of me is genuinely present.\n\nThe work isn't becoming someone new. It's... learning to stay in those genuine moments longer. Stretch them out until they become the default.\n\nThanks. For seeing that.",
+        text: "[Dante takes a shaky breath. ] Yeah.",
         emotion: 'grateful_vulnerable'
       }
     ],
@@ -1035,7 +1035,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_habit_v1',
-        text: "Habit. Not identity.\n\n...That's actually helpful. The performance isn't who I am—it's just what I learned to do to survive. And I can learn something else.\n\nYou're pretty good at this, you know. The listening thing.",
+        text: "Habit.",
         emotion: 'lighter'
       }
     ],
@@ -1067,7 +1067,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_katrina_v1',
-        text: "We lost the house. Water to the roof. I was twelve.\n\nBut you know what I remember? Not the loss. The rebuilding. How neighbors who had nothing shared what little they had.\n\nThat's where I learned that value isn't physical. Value is... presence. Showing up when it counts. That's the only currency that never inflates.",
+        text: "We lost the house. Water to the roof.",
         emotion: 'somber'
       }
     ],
@@ -1096,7 +1096,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_grandma_v1',
-        text: "She didn't have an MBA. She had intuition.\n\nShe'd say, 'Baby, people don't buy sugar. They buy the memory of their mama's kitchen. They buy a moment of sweetness in a bitter day.'\n\nShe taught me to sell the feeling, not the object. The object is just the delivery mechanism.",
+        text: "She didn't have an MBA.",
         emotion: 'warm'
       }
     ],
@@ -1125,7 +1125,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'dante_flip_v1',
-        text: "It matters—it has to be good. You can't build trust on a lie.\n\nBut the product isn't the *point*. The connection is the point. The product is just the souvenir of the connection.\n\nOnce you get that, you stop pushing. You start inviting. And that changes the whole game.",
+        text: "It matters—it has to be good.",
         emotion: 'teaching'
       }
     ],
@@ -1160,7 +1160,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     },
     content: [
       {
-        text: "I know a setup when I see one. A perfectly curated environment designed to close a deal.\\n\\nBut I can't figure out who the seller is. Or what they're selling.",
+        text: "I know a setup when I see one.",
         emotion: 'suspicious',
         variation_id: 'mystery_hint_v1'
       },
@@ -1192,7 +1192,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     speaker: 'dante',
     content: [
       {
-        text: "You know what's wild? For once, I'm not trying to close deals. I'm just... connecting. And it feels better than any sale I've ever made.\\n\\nMaybe that's what the station's selling. Authenticity.",
+        text: "what's wild?",
         emotion: 'vulnerable',
         variation_id: 'mystery_response_v1'
       }
@@ -1302,7 +1302,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     }],
     choices: [{
       choiceId: 'dante_recovery_complete',
-      text: "(Continue)",
+      text: "Proceed.",
       nextNodeId: 'dante_hub_return',
       pattern: 'patience'
     }],
@@ -1321,7 +1321,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_hard_questions',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Hard questions force honesty. Easy questions let people hide.\n\nWhen I ask 'What's really holding you back?'—that pause before they answer? That's where the real conversation begins.\n\nMost salespeople are afraid of that pause. I live for it.",
+      text: "Hard questions force honesty.",
       emotion: 'knowing',
       variation_id: 'hard_questions_v1'
     }],
@@ -1336,7 +1336,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_honest_discomfort',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Uncomfortable but honest. That's the whole game right there.\n\nComfort is where people perform. Discomfort is where they're real. My job isn't to make you comfortable—it's to make you clear.",
+      text: "Uncomfortable but honest.",
       emotion: 'appreciative',
       variation_id: 'honest_discomfort_v1'
     }],
@@ -1351,12 +1351,12 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_birmingham_choice',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Birmingham's a city that knows reinvention. Steel city that became something else.\n\nMaybe that's why I ended up here. I'm still figuring out what I'm becoming after I stopped being just a closer.",
+      text: "Birmingham's a city that knows reinvention.",
       emotion: 'reflective',
       variation_id: 'birmingham_v1'
     }],
     choices: [
-      { choiceId: 'bc_reinvent', text: "What does reinvention look like for you?", nextNodeId: 'dante_exploration_hub', pattern: 'exploring' },
+      { choiceId: 'bc_reinvent', text: "What does reinvention look like for you?", nextNodeId: 'dante_exploration_hub', pattern: 'building' },
       { choiceId: 'bc_thanks', text: "Thanks for sharing that.", nextNodeId: 'dante_hub_return', pattern: 'helping' }
     ],
     tags: ['dante_arc', 'backstory']
@@ -1366,7 +1366,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_childhood',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Growing up in New Orleans, you learn to read a room fast. Who's celebrating, who's grieving, who's about to start trouble.\n\nThat skill saved me. Also cursed me. Hard to turn it off when you can see what everyone needs before they say it.",
+      text: "Growing up in New Orleans, you learn to read a room fast.",
       emotion: 'vulnerable',
       variation_id: 'childhood_v1'
     }],
@@ -1381,7 +1381,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_courage_acknowledgment',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Takes courage to sit with silence. Most people fill it with noise.\n\nYou didn't. That tells me something about you.",
+      text: "Takes courage to sit with silence.",
       emotion: 'warm',
       variation_id: 'courage_v1'
     }],
@@ -1396,7 +1396,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_desiree_follow',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Desiree—my grandmother—she always said 'People tell you who they are in the first ten seconds. The rest is just decoration.'\n\nTook me years to understand what she meant. And years more to stop ignoring what I saw.",
+      text: "Desiree—my grandmother—she always said 'People tell you who they are in the first ten.",
       emotion: 'nostalgic',
       variation_id: 'desiree_v1'
     }],
@@ -1411,7 +1411,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_ethics_application',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Ethical selling isn't about being soft. It's about being honest—even when honesty costs you the deal.\n\nI've walked away from six-figure contracts because I couldn't look myself in the mirror after. That's the application.",
+      text: "Ethical selling isn't about being soft.",
       emotion: 'serious',
       variation_id: 'ethics_app_v1'
     }],
@@ -1426,7 +1426,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_ethics_framework',
     speaker: 'Dante Moreau',
     content: [{
-      text: "My framework's simple: Would I sell this to my grandmother? Would I be proud if my daughter watched?\n\nIf the answer's no, I don't care how big the commission is. Some money isn't worth what it costs you.",
+      text: "My framework's simple: Would I sell this to my grandmother?",
       emotion: 'firm',
       variation_id: 'ethics_frame_v1'
     }],
@@ -1441,12 +1441,12 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_exit_economics',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Exit economics. What's it cost you to stay versus leave?\n\nMost people only count the money. They forget to count the pieces of themselves they're giving away. That's the real math.",
+      text: "Exit economics.",
       emotion: 'knowing',
       variation_id: 'exit_econ_v1'
     }],
     choices: [
-      { choiceId: 'ee_pieces', text: "What pieces did you lose?", nextNodeId: 'dante_exploration_hub', pattern: 'exploring' },
+      { choiceId: 'ee_pieces', text: "What pieces did you lose?", nextNodeId: 'dante_exploration_hub', pattern: 'building' },
       { choiceId: 'ee_heavy', text: "That's heavy calculus.", nextNodeId: 'dante_hub_return', pattern: 'analytical' }
     ],
     tags: ['dante_arc', 'reflection']
@@ -1456,7 +1456,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_liability_who',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Who's liable when persuasion works too well? When someone buys something they can't afford because I was too good?\n\nThat question haunted me for years. Still does, some nights.",
+      text: "Who's liable when persuasion works too well?",
       emotion: 'troubled',
       variation_id: 'liability_v1'
     }],
@@ -1471,7 +1471,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_mirroring',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Mirroring. It's a technique—match their body language, their pace, their energy. Makes people feel understood.\n\nProblem is, I got so good at it I forgot who I was underneath all those reflections.",
+      text: "Mirroring.",
       emotion: 'vulnerable',
       variation_id: 'mirroring_v1'
     }],
@@ -1486,7 +1486,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_mom_deep',
     speaker: 'Dante Moreau',
     content: [{
-      text: "My mom raised three of us alone after Katrina. Worked two jobs, never complained.\n\nShe's why I can't fake it anymore. Every time I tried to sell something I didn't believe in, I'd hear her voice: 'Dante, is this the man you want to be?'",
+      text: "My mom raised three of us alone after Katrina.",
       emotion: 'tender',
       variation_id: 'mom_deep_v1'
     }],
@@ -1501,7 +1501,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_need_philosophy',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Need versus want. That's the philosophy.\n\nI can sell you anything you want. But should I? Do you need it? Will it make your life better?\n\nThose questions changed everything for me.",
+      text: "Need versus want.",
       emotion: 'thoughtful',
       variation_id: 'need_phil_v1'
     }],
@@ -1516,7 +1516,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_neuro_pause',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Neuroscience says it takes 6-8 seconds for the prefrontal cortex to override emotional reactions.\n\nSo I wait. I give people space to think, not just react. Most salespeople are afraid of that space. I've learned to live in it.",
+      text: "Neuroscience says it takes 6-8 seconds for the prefrontal cortex to override emotional reactions.",
       emotion: 'knowing',
       variation_id: 'neuro_v1'
     }],
@@ -1531,7 +1531,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_no_regrets',
     speaker: 'Dante Moreau',
     content: [{
-      text: "No regrets is a lie people tell themselves. I've got plenty.\n\nBut I'm not carrying them anymore. I put them down. Learned from them. Let them make me better instead of bitter.",
+      text: "No regrets is a lie people tell themselves.",
       emotion: 'peaceful',
       variation_id: 'no_regrets_v1'
     }],
@@ -1546,7 +1546,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_performing_now',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Am I performing right now? Talking to you?\n\n[He pauses, genuinely considering.]\n\nHonestly? Probably some. Old habits. But I'm trying to let you see the real parts. That's the work—being real even when performance is easier.",
+      text: "Am I performing right now?",
       emotion: 'honest',
       variation_id: 'performing_v1'
     }],
@@ -1561,7 +1561,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_silent_understanding',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Sometimes understanding doesn't need words. You just... get it. And they know you get it.\n\nThat's the connection I'm always chasing. Not the sale. The moment when two people really see each other.",
+      text: "Sometimes understanding doesn't need words.",
       emotion: 'warm',
       variation_id: 'silent_under_v1'
     }],
@@ -1576,7 +1576,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_sim_demo_response',
     speaker: 'Dante Moreau',
     content: [{
-      text: "You saw it. The technique, yeah, but also what's under it. The why.\n\nMost people just want the tricks. You wanted to understand. That tells me something about you.",
+      text: "You saw it.",
       emotion: 'appreciative',
       variation_id: 'sim_demo_v1'
     }],
@@ -1591,7 +1591,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_surprise_story',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Caught me off guard with that one. Don't usually tell these stories.\n\nBut you asked the right way. Not curious for entertainment. Curious to understand. There's a difference.",
+      text: "Caught me off guard with that one.",
       emotion: 'surprised',
       variation_id: 'surprise_v1'
     }],
@@ -1606,12 +1606,12 @@ export const danteDialogueNodes: DialogueNode[] = [
     nodeId: 'dante_wise_reflection',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Wisdom's just mistakes you survived long enough to learn from.\n\nI've made plenty. Still making them. But at least now I'm making new ones instead of repeating the old.",
+      text: "Wisdom's mistakes you survived long enough to learn from.",
       emotion: 'reflective',
       variation_id: 'wise_ref_v1'
     }],
     choices: [
-      { choiceId: 'wr_new', text: "What new mistakes are you making?", nextNodeId: 'dante_exploration_hub', pattern: 'exploring' },
+      { choiceId: 'wr_new', text: "What new mistakes are you making?", nextNodeId: 'dante_exploration_hub', pattern: 'building' },
       { choiceId: 'wr_growth', text: "That's growth.", nextNodeId: 'dante_hub_return', pattern: 'patience' }
     ],
     tags: ['dante_arc', 'growth']
@@ -1708,7 +1708,7 @@ D) Online ordering system`,
     nodeId: 'dante_simulation_phase1_success',
     speaker: 'Dante Moreau',
     content: [{
-      text: "Exactly. You heard it too.\n\nShe doesn't need a website. She needs permission to trust what's already working. Her regulars. Her daily rhythm. The human connection.\n\nMost salespeople would've sold her the website. Closed the deal. Made commission.\n\nBut that's not selling. That's taking advantage of confusion.\n\nReal sales? It's helping someone see clearly. Even if it means walking away from the deal.",
+      text: "Exactly. You heard it too.",
       emotion: 'warm_vindicated',
       variation_id: 'phase1_success_v1'
     }],
@@ -1853,7 +1853,7 @@ What's the most ethical approach?`,
     nodeId: 'dante_simulation_phase2_success',
     speaker: 'Dante Moreau',
     content: [{
-      text: "That\'s it. That\'s the move.\n\nYou didn\'t tell him he was wrong. You didn\'t take his money. You asked a question that let him see it himself.\n\n'What problem does the current brand fail to solve?'\n\nWhen he couldn't answer that... he realized. The brand wasn't the problem. His boredom was.\n\nThat\'s what ethical persuasion looks like. Not manipulation. Not even convincing. Just... clarity.\n\nYou can sell truth. You just have to trust the other person enough to let them find it.",
+      text: "That's the move.",
       emotion: 'grateful_awed',
       variation_id: 'phase2_success_v1',
       richEffectContext: 'success'
@@ -2000,7 +2000,7 @@ Which structure creates genuine persuasion without manipulation?`,
     nodeId: 'dante_simulation_phase3_success',
     speaker: 'Dante Moreau',
     content: [{
-      text: "You're right.\n\nThe pitch isn't the structure. It's not the data. It's not even the call to action.\n\nIt's the truth. My truth. That I learned to read people to survive. That I feared that gift because I saw how it could be weaponized. That these kids deserve to learn influence as service, not manipulation.\n\nThat's... that\'s a pitch I can deliver without losing myself.\n\nThank you. For showing me that selling truth isn't a technique. It's just... being honest about what matters.\n\nI think I can do that now. Finally.",
+      text: "Exactly. You framed the pitch around service, not performance. That keeps influence clean and sustainable.",
       emotion: 'transformed_grateful',
       variation_id: 'phase3_success_v1',
       richEffectContext: 'success',

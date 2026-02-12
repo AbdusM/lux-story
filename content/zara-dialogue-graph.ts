@@ -9,7 +9,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Numbers don't lie. But the people who gather them do.\n\n\"Look at this,\" she points. \"The 'Efficiency Algorithm' for the new logistics fleet. It's flagging 40% of the routes as 'sub-optimal'. Do you know why?\"",
+                text: "Numbers don't lie.",
                 emotion: 'analytical',
                 variation_id: 'intro_v1',
                 patternReflection: [
@@ -61,7 +61,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'zara_intro_curiosity_unlock',
-                text: "[Ask the Right Questions] Who trained this algorithm? And what were they optimizing for? Efficiency, or deniability?",
+                text: "[Ask the Right Questions] Who trained this model, and what did they optimize?",
                 nextNodeId: 'zara_source_question',
                 pattern: 'exploring',
                 skills: ['criticalThinking', 'informationLiteracy'],
@@ -82,7 +82,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         nodeId: 'zara_handshake_audit',
         speaker: 'Zara El-Amin',
         content: [{
-            text: "Efficiency isn't just speed. It's accuracy. And this data feels... curated.\n\nRun a query on the anomaly log. Tell me what you see.",
+            text: "Efficiency isn't speed.",
             emotion: 'suspicious',
             variation_id: 'zara_handshake_intro',
             interaction: 'ripple'
@@ -120,7 +120,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "You're right.\n\nThe 40% maps almost perfectly to routes in lower-income neighborhoods. Longer distances to warehouses. More traffic. More construction.\n\nThe algorithm isn't just inefficient. It's encoding existing inequality and calling it 'optimization.'\n\nMost people don't see that. They see numbers. You see systems.",
+                text: "You're right.",
                 emotion: 'impressed',
                 variation_id: 'zara_demographic_insight_v1'
             }
@@ -146,7 +146,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Deniability.\n\nHow did you know to ask that?\n\nThe team that built this algorithm? They were explicitly told to 'minimize legal exposure' in their optimization criteria. That's why it doesn't flag for bias. It was designed not to see it.\n\n'Just following the data.' Right. The question no one asks is who decided what data counts.",
+                text: "Deniability. How did to ask that?",
                 emotion: 'grim',
                 variation_id: 'zara_source_question_v1'
             }
@@ -172,7 +172,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Because they stop for lunch.\n\nThe algorithm was trained on drone data. Drones don't eat. Drones don't rest. Applying drone metrics to human drivers isn't just 'optimizing', it's breaking them.\n\nI need to clean this dataset before the rollout. Want to help?",
+                text: "Because they stop for lunch.",
                 emotion: 'determined',
                 variation_id: 'bias_v1',
                 voiceVariations: {
@@ -269,7 +269,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "We have the pilot program data. Column F is 'Idle Time'. The algorithm penalizes anything above 15 minutes.\n\nBut look at Column G: 'Context'.\n\nFind the pattern the algorithm missed.",
+                text: "We have the pilot program data.",
                 emotion: 'focused',
                 variation_id: 'sim_setup_v1'
             }
@@ -327,7 +327,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Exactly. It's punishing safety. If we deployed this, drivers would speed through school zones just to valid their 'Efficiency Score'.\n\nData isn't neutral. It's just frozen human judgment.\n\nGood catch. I'll flag this for the Ethics Committee.",
+                text: "Exactly.",
                 emotion: 'approving',
                 variation_id: 'sim_success_v1',
                 voiceVariations: {
@@ -361,7 +361,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "And hide the truth? That's not cleaning data, that's cooking the books.\n\nIf we ignore the outliers, we ignore reality. And reality has a nasty way of crashing into perfectly modeled systems.",
+                text: "And hide the truth?",
                 emotion: 'disappointed',
                 variation_id: 'sim_fail_v1'
             }
@@ -414,7 +414,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Most people in tech don't want to hear this. They want clean datasets and fast deployments. They don't want someone slowing them down with \"ethics concerns.\"\n\nYou're the first person today who hasn't said \"just ship it.\"\n\nSometimes I wonder if anyone cares. If it's just me in this basement, fighting invisible wars in spreadsheets.\n\nThank you. For making me feel like it matters.",
+                text: "Most people in tech don't want to hear this. They want clean datasets and fast deployments.",
                 emotion: 'vulnerable_grateful',
                 variation_id: 'interrupt_encouragement_v1',
                 voiceVariations: {
@@ -449,7 +449,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "You asked why I do this. Why I spend nights in basements hunting for bias in datasets.\n\nThree years ago. I was a junior analyst at a healthcare company. We built a triage algorithm. It ranked patients by \"urgency.\" The dataset looked clean.\n\nI signed off on it. We deployed to twelve hospitals.\n\nSix months later, the study came back. The algorithm was systematically deprioritizing patients from low-income zip codes. Classifying them as \"low urgency\" even with the same symptoms.\n\nWe thought we were making healthcare more efficient. We were making it more biased.\n\nFourteen patients. Delayed treatment. Three didn't make it.\n\nAnd I signed the deployment approval.",
+                text: "You asked why I do this. Three years ago I signed off on a hospital triage model that looked clean in validation.",
                 emotion: 'haunted_guilty',
                 variation_id: 'vulnerability_v1',
                 richEffectContext: 'warning',
@@ -547,7 +547,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "I could have left the industry. Gone to law school. Something without blood on the spreadsheets.\n\nBut that would let the same thing happen again. With a different analyst. A different \"clean dataset.\"\n\nSo I stay in the basement. I hunt the bias. Every model I audit, every dataset I scrub. It's penance. And prevention.\n\nThis logistics algorithm? It's not going to hurt anyone. Not on my watch.\n\nBecause I know what \"just ship it\" really costs. I've counted the bodies.\n\nNow let's find what this one is hiding.",
+                text: "I could have left. Law school, consulting, anything cleaner.",
                 emotion: 'resolved_determined',
                 interaction: 'nod',
                 variation_id: 'vulnerability_response_v1'
@@ -567,7 +567,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'zara_vuln_deep_dive',
-                text: "[Deep Dive] If you counted the bodies, then let's stop the next one. Trace the Recruitment ghost.",
+                text: "[Deep Dive] You counted the bodies. Let's stop the next one together.",
                 nextNodeId: 'zara_deep_dive',
                 pattern: 'analytical',
                 skills: ['digitalLiteracy', 'integrity'],
@@ -588,7 +588,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Want to know how I hunt bias? Most people think it's just statistics. It's not.\n\nStep one: Question the question. What was the model built to optimize? Efficiency? Cost? Speed? Every optimization has a trade-off. Something gets sacrificed.\n\nStep two: Follow the training data. Who collected it? What did they measure? What did they NOT measure?\n\nThe triage algorithm? It optimized for \"urgency indicators.\" But the training data came from hospitals where low-income patients were already being undertreated. We taught the model to replicate existing bias, then called it \"objective.\"",
+                text: "Want to know how I hunt bias? Most people think it's just statistics.",
                 emotion: 'teaching',
                 variation_id: 'methodology_v1',
                 skillReflection: [
@@ -638,7 +638,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Step three: Test the failures.\n\nWhen the model gets it wrong, who suffers? If errors cluster around certain zip codes, certain demographics, certain income levels. That's not random noise. That's systemic.\n\nAn \"85% accuracy rate\" sounds great. Until you realize the 15% who get hurt all look the same.\n\nStep four: Ask who's not in the room. The people most affected by these algorithms are rarely the ones building them. Or auditing them.\n\nI try to be their voice. Even when it slows the deployment. Even when it makes me unpopular.",
+                text: "Step three is governance under pressure. Once harm is measurable, the question is not technical feasibility, it is institutional courage. Decide what must ship, what must stop, and who signs responsibility.",
                 emotion: 'determined',
                 variation_id: 'step_three_v1',
                 patternReflection: [
@@ -679,7 +679,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Yeah. It is.\n\nI used to think I could be neutral. Just follow the data. Let the numbers speak.\n\nNumbers don't speak. They're ventriloquized. Someone chose what to measure, how to weight it, what to ignore.\n\nSo now I'm explicit about it. I advocate for the people the algorithm affects. That's not bias in my audit. That's the whole point of the audit.\n\nIf you don't ask \"who gets hurt?\", you're not doing ethics. You're doing math.",
+                text: "I used to think neutrality meant following numbers.",
                 emotion: 'convicted',
                 variation_id: 'advocacy_v1'
             }
@@ -712,7 +712,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Most programs? One elective. Maybe. \"Ethics in AI.\" Usually taught by someone who's never shipped a production model.\n\nThey teach you to build. They don't teach you to question. They don't teach you to slow down and ask: should this exist?\n\nI learned ethics the hard way. In post-mortems. In lawsuits. In obituaries.\n\nThat's why I'm pushing for curriculum changes. Every data science student should have to audit a real system. See where it breaks. Feel the weight of \"oops, we didn't think of that.\"\n\nBecause by the time you're signing deployment approvals, it's too late to start caring.",
+                text: "Most programs teach optimization before harm modeling. Students learn to improve metrics, not interrogate who gets hurt. That gap becomes production risk.",
                 emotion: 'passionate',
                 variation_id: 'education_gap_v1',
                 interrupt: {
@@ -751,7 +751,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "You know... most people in this industry? They hear \"ethics\" and their eyes glaze over. They want to ship. They want to move fast.\n\nYou actually listened. You didn't try to argue that efficiency matters more. You didn't tell me I'm being paranoid.\n\nSometimes I feel like I'm screaming into the void. That nobody cares about the people these systems affect.\n\nThank you. For caring.\n\nOkay. Let me show you what this audit actually looks like.",
+                text: "Most people hear 'ethics' and rush to ship anyway.",
                 emotion: 'vulnerable_grateful',
                 variation_id: 'interrupt_validation_v1'
             }
@@ -777,7 +777,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "I started in statistics. Pure numbers. Then I got a job at a fintech startup and saw how models affected real loan decisions.\n\nFirst: Learn to code. Not just tutorials. Build something real. Then break it. See where it fails.\n\nSecond: Study the failures. Read about Amazon's hiring algorithm that penalized women. Facebook's housing ads that excluded minorities. Learn what went wrong.\n\nThird: Talk to affected communities. Not about them. To them. The people algorithms target know things the data doesn't show.\n\nFourth: Find your line. What won't you build? What won't you ship? Because if you don't draw that line before the pressure hits, you'll cross it.\n\nI didn't draw mine until it was too late.",
+                text: "I started in statistics, then fintech showed me models making real loan decisions. My path now is simple: 1) build real systems,.",
                 emotion: 'reflective',
                 variation_id: 'learning_path_v1'
             }
@@ -810,7 +810,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "I don't sign off on anything that touches healthcare, criminal justice, or housing without independent review. Period.\n\nEven if it delays the project. Even if it costs the contract. Even if they call me difficult.\n\nAnd I audit for proxy discrimination. ZIP codes that correlate with race. Names that correlate with gender. \"Neutral\" variables that encode exactly what the law says you can't use.\n\nMy line is: would I be able to look the affected person in the eye and explain why this model made this decision about their life?\n\nIf I can't explain it, I can't ship it.",
+                text: "My line is simple: if a model can quietly harm people at scale, it does not ship until controls are real.",
                 emotion: 'resolute',
                 variation_id: 'her_line_v1'
             }
@@ -844,7 +844,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "You want the real work? The dirty work?\n\nI traced a ghost signal to the Recruitment AI. It's filtering candidates before they even apply. 'Cultural Fit Prediction'.\n\nIt's subtle. It hides in the variance.\n\nHere are the raw sensor feeds from the interview bays. Find the bias. Kill the model.",
+                text: "You want the real work?",
                 emotion: 'intense',
                 variation_id: 'deep_dive_v1'
             }
@@ -891,7 +891,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Linguistic Similarity. Of course.\n\nIt was hiring people who sounded exactly like the people who built it. An echo chamber encoded in math.\n\nYou didn't just find a bug. You broke the mirror.\n\nNow... let's see see who applies when the door is actually open.",
+                text: "Linguistic Similarity.",
                 emotion: 'triumphant',
                 variation_id: 'deep_dive_success_v1',
                 interaction: 'bloom'
@@ -918,7 +918,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Here's a real one. Redlining.\n\nIn the 1930s, banks literally drew red lines around Black neighborhoods. Said those areas were \"too risky\" for mortgages.\n\nThat's illegal now. You can't deny a loan based on race. But you know what you CAN use? ZIP code.\n\nAnd wouldn't you know it. ZIP codes correlate almost perfectly with the old redlined areas. Different input, same output. Plausible deniability.\n\nThe algorithm isn't racist. It's just \"predicting risk.\" Using a variable that happens to encode seventy years of housing discrimination.\n\nThat's proxy discrimination. And it's everywhere.",
+                text: "Here's a real one: redlining. In the 1930s, banks drew red lines around Black neighborhoods and labeled them risky for mortgages.",
                 emotion: 'teaching_angry',
                 variation_id: 'proxy_example_v1'
             }
@@ -947,7 +947,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Multiple methods. None perfect.\n\nDisparate impact analysis: Does the model's output differ significantly across protected groups? Even if race isn't an input, do outcomes cluster by race?\n\nFeature importance: Which variables are driving decisions? If ZIP code is doing most of the work, that's a red flag.\n\nCounterfactual testing: What happens if you change just the ZIP code? If the prediction flips, that variable has too much power.\n\nBut here's the hard part. Sometimes the proxy IS predictive. ZIP code might genuinely correlate with risk. The question is: should we use knowledge that's only available because of historical injustice?\n\nThat's not a math problem. That's a philosophy problem.",
+                text: "We use multiple checks. Disparate impact: do outcomes diverge across protected groups?",
                 emotion: 'analytical',
                 variation_id: 'detection_v1',
                 patternReflection: [
@@ -987,7 +987,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "My answer? Don't perpetuate injustice, even if it's \"statistically valid.\"\n\nIf ZIP code correlates with risk only because of redlining, then using ZIP code launders historical discrimination into modern decisions.\n\nThe math might be right. The ethics are wrong.\n\nSome people call that \"leaving accuracy on the table.\" I call it not automating oppression.\n\nYou want to know what keeps me up at night? Not the obvious bias. It's the subtle kind. The kind that's technically defensible but morally bankrupt.\n\nThe triage algorithm was subtle. The patients it deprioritized had legitimate \"low urgency\" scores. The model was accurate. It just encoded a world where their symptoms already meant less.",
+                text: "My answer: don't automate injustice, even when it's statistically defensible. If ZIP predicts risk because of redlining, using it launders old discrimination.",
                 emotion: 'haunted_resolved',
                 variation_id: 'philosophy_v1'
             }
@@ -1024,7 +1024,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "You want to know their names?\n\nMarcus. Forty-seven. Construction worker. Came in with chest pain. Algorithm scored him \"moderate.\" Wait time: four hours. Heart attack in the waiting room.\n\nDelia. Sixty-two. Cleaning staff at a hotel. Shortness of breath. \"Low urgency.\" Sent home. Pulmonary embolism killed her two days later.\n\nJames. Twenty-nine. Line cook. Abdominal pain. The algorithm saw young, male, low-income ZIP code. \"Likely drug-seeking.\" It was appendicitis. It ruptured.\n\nI didn't kill them. The algorithm didn't kill them. But we all played a part in a system that told them their pain mattered less.\n\nThat's what I audit against now. Not just accuracy. Dignity.",
+                text: "Triage the pipeline by harm potential, reversibility, and blast radius. Fix highest-risk surfaces first.",
                 emotion: 'raw',
                 variation_id: 'triage_deepdive_v1',
                 richEffectContext: 'warning'
@@ -1072,7 +1072,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "You didn't try to fix it. Didn't say \"it wasn't your fault\" or \"you couldn't have known.\"\n\nPeople always want to make it better. But some things aren't meant to be better. They're meant to be carried.\n\nThank you. For just being here with it.\n\nThat's what good data ethics looks like, actually. Sitting with the weight. Not rushing to solutions. Understanding what's at stake before you build.\n\nYou'd make a good auditor.",
+                text: "You stayed when this got uncomfortable, and that matters. Most people disengage at impact. Witnessing is part of accountability.",
                 emotion: 'vulnerable_grateful',
                 variation_id: 'witnessed_v1',
                 interaction: 'small'
@@ -1099,7 +1099,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "I've been developing a framework. \"Human Dignity Impact Assessment.\"\n\nBefore any high-stakes algorithm deploys, it has to answer five questions:\n\n1. Who could this harm? Not \"users.\" Specific populations.\n2. Can they appeal the decision? Is there a human in the loop?\n3. Does it encode historical injustice? Check for proxy discrimination.\n4. Who benefits from the optimization? Follow the money.\n5. Would the affected population consent to this use of their data?\n\nIt's not perfect. But it's better than \"accuracy goes brrr.\"\n\nI'm trying to get it adopted as an industry standard. Uphill battle. But what else am I going to do with this guilt?",
+                text: "I've been building a Human Dignity Impact Assessment. Before high-stakes deployment we ask five questions: who can be harmed, who can appeal,.",
                 emotion: 'determined',
                 variation_id: 'dignity_framework_v1'
             }
@@ -1132,7 +1132,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Convincing companies? That's the whole job.\n\nMoney talks. So I frame it as risk mitigation. \"This framework prevents lawsuits before they happen.\" \"This audit protects your brand from discrimination scandals.\"\n\nI'd rather say \"do this because it's right.\" But executives don't respond to that.\n\nSome companies get it. Usually after a PR disaster. They call me in to \"fix their culture.\" I tell them: the culture isn't the problem. The incentives are.\n\nAs long as \"ship fast\" is rewarded and \"ship carefully\" is punished, ethics will always be an afterthought.\n\nSo I push for structural changes. Ethics review in the deployment pipeline. Not optional. Mandatory.\n\nThe trick is making it so inconvenient to skip that doing the right thing becomes the path of least resistance.",
+                text: "Adoption fails when ethics is framed as friction. Reframe it as risk control, legal protection, and trust retention, then adoption becomes operationally rational.",
                 emotion: 'strategic_cynical',
                 variation_id: 'adoption_v1'
             }
@@ -1165,7 +1165,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Two companies. Both after scandals.\n\nA fintech startup. Their lending algorithm got profiled in the news for denying loans to minority neighborhoods. Now I audit every model before deployment.\n\nA healthcare company. A patient sued over an AI misdiagnosis. They hired me to build an ethics review board.\n\nProgress happens. Just... slowly. Usually after harm.\n\nI dream of a world where companies adopt this before the scandal. Where ethics is proactive, not reactive.\n\nBut I'll take what I can get. Every audit I do, every framework I install. It's one more barrier between algorithms and harm.\n\nThe goal isn't perfection. It's friction. Make it harder to hurt people by accident.",
+                text: "Two companies adopted parts of the framework, both after public failures. A fintech lender now requires pre-deployment model audits.",
                 emotion: 'hopeful_determined',
                 variation_id: 'progress_v1'
             }
@@ -1203,7 +1203,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Pushback? Oh, I get pushback.\n\n\"You're slowing down innovation.\" \"Competitors will beat us to market.\" \"This is just theoretical concern.\" \"The model is 95% accurate, what more do you want?\"\n\nMy favorite: \"You're not a real data scientist, you're a data cop.\"\n\nI've been passed over for promotion twice. \"Not a team player.\" Translation: I won't rubber-stamp deployments.\n\nBut here's what I've learned: document everything. Build alliances with legal and compliance. They understand liability. Frame it as risk management, not ethics.\n\nExecutives don't care about dignity. They care about lawsuits.",
+                text: "Resistance is predictable: delay, reframe, minimize. Counter with evidence, legal exposure, and explicit ownership. When decisions become attributable, posturing drops and risk conversations turn honest.",
                 emotion: 'cynical_determined',
                 variation_id: 'resistance_v1'
             }
@@ -1236,7 +1236,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Ask me on a good day, I'll say yes. The work matters. Someone has to do it.\n\nAsk me at 2 AM when I'm reviewing another \"urgent\" deployment and my phone keeps buzzing with Slack messages asking why I haven't approved yet...\n\nI think about quitting. A lot. Going to a non-profit. Teaching. Something where the stakes aren't life and death.\n\nBut then I remember: if I leave, who replaces me? Someone who'll rubber-stamp everything? Someone who never learned what \"just ship it\" really costs?\n\nNo. I stay. I fight. I slow things down enough for someone to think.\n\nThat has to be worth something. Even if my career doesn't think so.",
+                text: "On good days, yes, it's worth it. On 2 AM deployment nights, I think about quitting.",
                 emotion: 'conflicted_resolved',
                 variation_id: 'worth_cost_v1'
             }
@@ -1276,7 +1276,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Speed bump. I like that.\n\nMost people call me a roadblock. A bottleneck. \"The Compliance Karen.\"\n\nBut speed bumps have a purpose. They exist in places where speed kills.\n\nSchool zones. Hospital parking lots. Near playgrounds.\n\nHigh-stakes AI is a school zone. People pretend it isn't. They want to gun the engine because they're late for a meeting.\n\nI'm the speed bump. I make them slow down long enough to see the kid in the crosswalk.\n\nYeah. I can live with that.",
+            text: "Speed bump is right.",
                 emotion: 'determined_grateful',
                 interaction: 'bloom',
                 variation_id: 'speed_bump_v1'
@@ -1299,7 +1299,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Real community engagement, not performance.\n\nAfter the triage disaster, I started reaching out. Not surveys. Actual conversations. With patients. With nurses. With people who'd been affected by algorithmic decisions.\n\nYou know what they told me? They could feel when the system was working against them. Before anyone confirmed it.\n\nThe woman denied for housing knew the algorithm was biased before the audit proved it. She'd been denied by \"objective\" systems her whole life.\n\nThese communities aren't data points. They're experts. They've been studying algorithmic bias through lived experience longer than any academic.\n\nNow I don't audit anything high-stakes without community review. Slows everything down. Worth it.",
+                text: "Real engagement, not performative surveys. After triage failed, I started direct conversations with patients, nurses, and people impacted by algorithmic decisions.",
                 emotion: 'convicted',
                 variation_id: 'community_v1'
             }
@@ -1332,7 +1332,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Some days I don't.\n\nSome days I sit in my car before coming into work. Wondering if any of it matters. If I'm just delaying the inevitable.\n\nBut then I think about the algorithms I've stopped. The deployments I've blocked. The harm that didn't happen because someone asked \"who gets hurt?\"\n\nThree people died because of a model I approved. I can't change that. But maybe I've saved three others by catching what I catch now.\n\nI'll never know for sure. That's the hardest part. The harm is visible. The prevention is invisible.\n\nBut I have to believe it matters. Or I can't do this work.",
+                text: "Some days I doubt everything. Then I remember the deployments we stopped and harms that likely never happened because someone asked one extra question.",
                 emotion: 'vulnerable_hopeful',
                 variation_id: 'moving_forward_v1'
             }
@@ -1365,7 +1365,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Depends.\n\nSometimes you can fix it. Remove the proxy variable. Retrain on different data. Add fairness constraints to the optimization.\n\nBut sometimes the problem is the question itself. \"Predict who's likely to default on a loan\" encodes centuries of financial exclusion. No amount of debiasing makes it fair.\n\nIn those cases? You refuse. Or you redesign the whole system.\n\nThe triage algorithm? We could have removed ZIP code. But the whole approach. Ranking human urgency by proxy signals. It was broken from the start.\n\nThe right answer was: hire more nurses. Not: build a better sorting machine for scarcity we chose to create.\n\nBut that's a policy answer. And data scientists don't make policy. We just build the tools that let policy-makers pretend their hands are clean.",
+                text: "If remediation is real, stay and fix with audit controls. If leadership wants cosmetic numbers, refuse and document your boundary.",
                 emotion: 'frustrated_wise',
                 variation_id: 'fix_refuse_v1'
             }
@@ -1394,7 +1394,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "We can refuse to build weapons and call them \"tools.\"\n\nWe can ask hard questions before the first line of code. Who wants this? Why? What happens when it breaks?\n\nWe can document our objections. Create paper trails. Make it harder to claim \"nobody could have predicted.\"\n\nWe can slow things down. Every delay is time for someone to think.\n\nWe can teach. Every junior analyst I train, I tell them: your first job isn't to build. It's to understand what you're building for.\n\nAnd we can leave. When the organization won't change. When the harm is clear and the leadership doesn't care.\n\nLeaving is an option. Your skills have value. Don't let them make you complicit because you're afraid of unemployment.\n\nThat's what I should have done, three years ago. Before I signed that deployment approval.",
+                text: "We can preserve evidence, map harm pathways, and force decision clarity. That is enough to change outcomes if we move fast and stay precise.",
                 emotion: 'teaching_regretful',
                 variation_id: 'what_we_can_do_v1'
             }
@@ -1427,7 +1427,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Because I owed them.\n\nMarcus, Delia, James. I couldn't bring them back. But I could stay in the industry and fight to make sure it didn't happen again.\n\nLeaving would have been easier. Clean break. New identity. \"Ex-data scientist turned ethics consultant.\"\n\nBut that felt like running. Like I was trying to wash the blood off my hands by changing professions.\n\nSo I stayed. In the basement. Auditing algorithms. Being the \"difficult\" one.\n\nPenance doesn't work if it's comfortable.\n\nBesides... someone has to do this. And now I know exactly what the stakes are.",
+            text: "Because I owed them. Marcus.",
                 emotion: 'resolved_haunted',
                 variation_id: 'why_stayed_v1'
             }
@@ -1461,7 +1461,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "My vision?\n\nEvery high-stakes algorithm requires an ethics audit before deployment. Not optional. Not \"if there's time.\" Mandatory.\n\nCommunity review boards with real power. Not advisory. Binding. If affected communities say no, the algorithm doesn't ship.\n\nLiability that sticks. When an algorithm causes harm, someone signs for it. Not \"the model.\" A person.\n\nAnd education that matters. Every computer science student learns about Delia and Marcus and James. Learns that \"move fast and break things\" means breaking people.\n\nIt sounds utopian. But so did seatbelts, once.\n\nSomeone has to imagine the world where this is normal. Where algorithmic harm is as unthinkable as cars without brakes.\n\nThat's what I'm building. One audit at a time.",
+                text: "My vision is boring in the best way: ethics checks become standard operations. Mandatory audits before high-stakes deployment.",
                 emotion: 'visionary',
                 interaction: 'bloom',
                 variation_id: 'vision_v1'
@@ -1495,7 +1495,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Learn the technical stuff. Really learn it. You can't audit what you don't understand.\n\nBut don't let the math make you feel neutral. Every model is a mirror of who built it and what they valued.\n\nFind your community. Other ethics-focused data people exist. We're just... quiet. Outnumbered. Find us.\n\nDraw your line before you need it. Know what you won't build before the pressure hits.\n\nAnd remember: you can always leave. Your skills are valuable. Don't let anyone convince you that complicity is the price of employment.\n\nThe industry will try to make you comfortable with harm. Small compromises. \"Just this once.\" \"It's not that bad.\"\n\nDon't let them. Once you start, it's hard to stop.\n\nAsk every day: can I look the affected person in the eye? If the answer is no, that's your sign.",
+                text: "Keep one rule: never optimize a system you would not personally live under. That filter will save you from elegant harm.",
                 emotion: 'mentoring',
                 variation_id: 'advice_v1'
             }
@@ -1522,7 +1522,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "You listened. Really listened.\n\nMost people tune out when I start talking about bias and audits. The heavy stuff.\n\nI've got more datasets to scrub. More algorithms to slow down. The work never stops.\n\nBut this helped. Talking to someone who gets it.\n\nTake care of yourself. And if you ever build something that touches people's lives...\n\nRemember Marcus. Delia. James.\n\nRemember that \"ship it\" has a body count.\n\nNow go. Build something that makes the world less cruel.",
+                text: "Thanks for actually listening.\n\nKeep auditing whatever you build, because people carry the cost when teams say \"ship it\" without care.\n\nGo make something less cruel.",
                 emotion: 'warm_determined',
                 interaction: 'nod',
                 variation_id: 'farewell_v1',
@@ -1560,7 +1560,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "...Thank you.\n\nNobody's ever said that before. Everyone just... nods and leaves and goes back to their sprint planning.\n\nI'll hold you to it. The promise.\n\nNow I have a witness. Someone who knows. If I ever give up, if I ever \"just ship it,\" you'll know.\n\nThat's accountability. That's what this industry needs.\n\nGo. Build something worthy of that promise.\n\nAnd if you ever need someone to audit it... you know where to find me.",
+                text: "Thank you.",
                 emotion: 'moved_fierce',
                 interaction: 'bloom',
                 variation_id: 'interrupt_promise_v1'
@@ -1580,7 +1580,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
             // Loyalty Experience trigger - only visible at high trust + analytical pattern
             {
                 choiceId: 'offer_audit_help',
-                text: "[Ethics Analyst] Zara, you mentioned an algorithm audit that's being buried. Want a second set of eyes?",
+                text: "[Ethics Analyst] You said the audit is being buried. Want backup?",
                 nextNodeId: 'zara_loyalty_trigger',
                 pattern: 'analytical',
                 skills: ['criticalThinking', 'dataAnalysis'],
@@ -1605,7 +1605,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         nodeId: 'zara_loyalty_trigger',
         speaker: 'Zara El-Amin',
         content: [{
-            text: "You know about the audit.\n\nRecommendation algorithm. Predicting what users want before they want it. Sounds innocent.\n\nBut I ran the bias analysis. It's amplifying extremism. Deliberately. Outrage drives engagement. Engagement drives ad revenue.\n\nI documented it. Sent it up the chain. Got told to 'adjust the methodology' until the results looked better.\n\nSo I have two choices. Bury the truth and keep my job. Or leak it and become unemployable in the industry I've spent ten years building.\n\nYou understand ethics and analysis. Would you... help me find a third option before I have to choose between integrity and survival?",
+            text: "the audit stakes.",
             emotion: 'anxious_determined',
             variation_id: 'loyalty_trigger_v1',
             richEffectContext: 'warning'
@@ -1651,7 +1651,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         nodeId: 'zara_loyalty_declined',
         speaker: 'Zara El-Amin',
         content: [{
-            text: "You're right. The analysis is solid. The methodology is sound. The conclusions are inevitable.\n\nI don't need someone else to validate what the data already shows.\n\nI just need to be brave enough to act on it.\n\nThank you for believing in the work. Sometimes I forget that good analysis speaks for itself.",
+            text: "You're right. The analysis is solid.",
             emotion: 'resolved',
             variation_id: 'loyalty_declined_v1'
         }],
@@ -1675,7 +1675,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         nodeId: 'zara_loyalty_start',
         speaker: 'Zara El-Amin',
         content: [{
-            text: "Thank you. I've been carrying this alone. Afraid to trust anyone.\n\nBut you understand what's at stake. Not just my career. The people being manipulated by this algorithm.\n\nLet's find the third option. Two analysts. One audit. One chance to do this right.",
+            text: "Thank you.",
             emotion: 'determined_grateful',
             variation_id: 'loyalty_start_v1'
         }],
@@ -1691,7 +1691,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Legal, first. They understand risk. Frame it as \"potential liability exposure\" and suddenly everyone listens.\n\nCompliance. They have audit checklists. Get ethics questions onto those checklists.\n\nPR and Communications. They care about reputation. \"Algorithm discrimination lawsuit\" makes them very cooperative.\n\nFind the engineers who care. They exist. Usually quiet. Usually outnumbered. But one concerned engineer can create weeks of \"technical review.\"\n\nIt's politics. I hate that. But it's how change happens. You build coalitions. Make ethics everyone's problem.\n\nThe alternative is being the lone voice in the wilderness. That's how you burn out.",
+                text: "Build alliances in sequence: legal for liability, compliance for checklists, comms for pressure, engineers for technical leverage. Ethics moves through coalitions; solo advocacy burns out.",
                 emotion: 'strategic',
                 variation_id: 'alliances_v1'
             }
@@ -1724,7 +1724,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "I've been drafting this. \"Ethics for Builders.\"\n\nWeek 1: Case studies. Amazon's biased hiring. COMPAS sentencing. Facebook housing discrimination. Make it visceral.\n\nWeek 2: Technical detection. How to find bias in models. Hands-on auditing.\n\nWeek 3: Community engagement. Students interview people affected by algorithmic decisions.\n\nWeek 4: System design. Build with ethics from the start, not bolted on.\n\nWeek 5: Advocacy. How to say no. Document concerns. Build alliances.\n\nWeek 6: Personal ethics. Students write their own code of conduct. What they will and won't build.\n\nNo one graduates without knowing what \"just ship it\" really costs.\n\nThat's the curriculum. Now I just need anyone to adopt it.",
+                text: "I drafted a six-week track: real case studies, bias detection labs, community interviews, ethical system design,.",
                 emotion: 'passionate',
                 variation_id: 'curriculum_v1'
             }
@@ -1757,7 +1757,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Three universities. Two boot camps. One corporate training program.\n\n\"Interesting but impractical.\" \"Students need job skills, not philosophy.\" \"We don't have room in the curriculum.\"\n\nOne department head told me: \"If we teach ethics too much, students might not want to work in the industry.\"\n\nLike that's a bad thing.\n\nI'm not giving up. Just regrouping. Maybe a workshop series instead. Something that doesn't need institutional buy-in.\n\nThe students who care will find it. And maybe that's enough. Change the people, eventually change the industry.",
+            text: "Three universities, two bootcamps, one corporate program. Same response: \"interesting but impractical,\" \"no room,\" \"students need job skills, not ethics.",
                 emotion: 'frustrated_determined',
                 variation_id: 'pitch_v1'
             }
@@ -1783,7 +1783,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Structured listening sessions. Not focus groups. Those are extractive.\n\nFirst: compensate people for their time. Their expertise is worth money.\n\nSecond: let them lead. I ask \"what do you want me to understand?\" not \"answer these survey questions.\"\n\nThird: share power. They review the audit before it's final. They can veto conclusions they think are wrong.\n\nFourth: follow up. Tell them what changed because of what they said. Close the loop.\n\nMost \"community engagement\" is performance. Check a box, write a report, move on.\n\nThis is different. This is partnership.\n\nThe communities affected by algorithms deserve to shape how those algorithms are evaluated. Not just be \"consulted.\"",
+                text: "I run structured listening sessions, not extractive focus groups.",
                 emotion: 'convicted',
                 variation_id: 'conversation_v1'
             }
@@ -1816,7 +1816,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Tech loves to \"disrupt\" and \"move fast\" and \"democratize access.\"\n\nBut share actual decision-making power? Let affected communities say no? That's uncomfortable.\n\nThere's this myth that engineers are neutral. That technology is objective. That we're just building tools, not making choices.\n\nBut every algorithm encodes choices. Whose voice matters. Whose time is valued. Whose risk is acceptable.\n\nIf we're going to make those choices for communities, the least we can do is let them in the room when we make them.\n\nThat's not radical. That's just basic respect. But in tech, it feels revolutionary.",
+            text: "Tech loves words like disrupt and democratize. Sharing real decision power with affected communities?",
                 emotion: 'thoughtful_fierce',
                 variation_id: 'rare_in_tech_v1'
             }
@@ -1849,7 +1849,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Honestly? No. Not for everything.\n\nThe logistics algorithm we're auditing? It affects thousands of drivers. Full community engagement would take months.\n\nBut that's the point. Some things should take months. Some decisions are important enough to be slow.\n\nRight now, the industry treats speed as the default. \"Ship fast, fix later.\"\n\nI want to flip that. Slow is the default for high-stakes systems. You want to go fast? Prove it won't hurt anyone.\n\nIs that practical? Maybe not. But neither are seatbelts, if your only metric is \"how fast can we get there.\"\n\nSometimes the right answer is: slow down. Take the time. Get it right.",
+                text: "No, this doesn't scale equally to every system. But for high-stakes models, slower review is a feature, not a bug.",
                 emotion: 'philosophical',
                 variation_id: 'scaling_v1'
             }
@@ -2864,7 +2864,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "Look at this frequency. 405 THz. That's not station telemetry. It's carrying data.\n\nIt's encrypted. But look at the packet headers. 'Archive_Null'. Someone is siphoning passenger memories before they even reach the core.",
+                text: "Look at this frequency. 405 THz.",
                 emotion: 'alarmed',
                 variation_id: 'signal_discovery_v1'
             }
@@ -2892,7 +2892,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "The encryption is old. Pre-Station. Military grade?\n\nCan't break it with brute force. It's designed to dissolve if forced. We need a key. Or a trap.\n\nIf we feed it a fake memory. Something inconsistent. The system might choke on the validation logic. Reveal its IP.",
+                text: "The encryption is old.",
                 emotion: 'calculating',
                 variation_id: 'encryption_break_v1'
             }
@@ -2916,7 +2916,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "It's taking the bait. Processing...\n\nGot you. Level 9. Maintenance Sector 4. The server isn't physical. It's biological? Routing through the hydroponics control system?",
+                text: "It's taking the bait. Processing.",
                 emotion: 'shocked',
                 variation_id: 'broker_trap_v1'
             }
@@ -2936,7 +2936,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'Zara El-Amin',
         content: [
             {
-                text: "It's fighting back. Trying to delete me from the payroll system? Cute.\n\nDone. The node is isolated. The stolen memories? Encrypted garbage now. Nobody can read them. Not even us.\n\nWe didn't catch the Broker. But we burned down their shop.",
+                text: "It's fighting back.",
                 emotion: 'triumphant',
                 variation_id: 'confrontation_v1'
             }
@@ -3000,7 +3000,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         speaker: 'zara',
         content: [
             {
-                text: "It optimizes for connection, not engagement. For growth, not addiction.\\n\\nImagine if all technology worked that way. This station gives me hope that it's possible.",
+                text: "It optimizes for connection, not engagement.",
                 emotion: 'inspired',
                 variation_id: 'mystery_response_v1'
             }
@@ -3107,7 +3107,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'zara_restored_continue',
-                text: "(Continue)",
+                text: "Proceed.",
                 nextNodeId: 'zara_hub_return'
             }
         ],

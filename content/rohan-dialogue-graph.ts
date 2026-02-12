@@ -22,7 +22,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "It's fake. The brass on this railing? Painted plastic. Scratch it.\n\nEveryone thinks the Station is ancient. But look at the rivets. Stamped yesterday.\n\nWhy does a machine need to lie to us?",
+        text: "It's fake. The brass on this railing?",
         emotion: 'terrified_awe',
         variation_id: 'rohan_intro_v3_minimal',
         richEffectContext: 'warning',
@@ -114,7 +114,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "Most people don't see past the technical marvel. They see code appearing like magic and think it's progress.\n\nYou saw the terror underneath. That's... rare.",
+        text: "Most people don't see past the technical marvel.",
         emotion: 'vulnerable',
         variation_id: 'fear_acknowledged_v2_minimal',
         patternReflection: [
@@ -143,7 +143,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "You're not rushing to have an opinion. Everyone else does. \"It's amazing!\" or \"It's dangerous!\" Always binary.\n\nYou're just... holding both. Like you understand some truths can't be collapsed into a stance.",
+        text: "You're not rushing to have an opinion. Everyone else does.",
         emotion: 'appreciative',
         variation_id: 'silence_acknowledged_v1',
         patternReflection: [
@@ -162,7 +162,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "My mentor David. Spent 40 years mastering memory management. Treated every byte like it was sacred.\n\nThis thing? Generated David's life's work in 400 milliseconds. And added a bug David never would have made.\n\nIf we accept this... David didn't matter. I don't matter. Just slow buggy biological bootloaders for the machine.",
+        text: "My mentor David. Spent 40 years mastering memory management.",
         emotion: 'existential_dread',
         variation_id: 'erasure_v2_minimal'
       }
@@ -232,7 +232,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "Understanding...\n\nThe machine can generate correct code. But it can't explain why it's correct. It can't teach. It can't pass down the intuition that lets you feel when something's wrong before you know why.\n\nDavid could do that. That's not replaceable.",
+        text: "Understanding.",
         emotion: 'hopeful',
         variation_id: 'understanding_response_v1',
         voiceVariations: {
@@ -253,7 +253,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "That's... that's true.\n\nI saw the bug in 3 seconds. The machine didn't see it at all. It generated code that looked perfect but would have corrupted memory on every third call.\n\nMaybe... maybe the value isn't in writing the code. Maybe it's in knowing when the code lies.",
+        text: "That's.",
         emotion: 'analytical_hope',
         variation_id: 'bug_defense_v1',
         voiceVariations: {
@@ -274,7 +274,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "Most people would try to fix this. Offer solutions. Argue philosophy.\n\nYou just... let it be heavy. David would have liked that. He always said real understanding starts with sitting in the discomfort.",
+        text: "Most people would try to fix this.",
         emotion: 'grateful',
         variation_id: 'silence_for_david_v1',
         voiceVariations: {
@@ -296,7 +296,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "Tess. The one starting the wilderness school?\n\nShe gets it. You're out there, no GPS, storm coming in. You can't ask ChatGPT \"how to survive.\" You have to know.\n\nCode is the same. When the servers are melting down, you can't prompt-engineer your way out. You have to know the metal.",
+        text: "Tess. The one starting the wilderness school?",
         emotion: 'respect',
         variation_id: 'tess_ref_v1'
       }
@@ -316,7 +316,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "Security? Forget security. This isn't about hackers. This is about truth.\n\nIf the code lies about its own existence, and we deploy it because we're too lazy to check... we aren't engineers anymore. We're believers. We're praying to a black box.",
+        text: "Security?",
         emotion: 'zealous',
         variation_id: 'dismissal_v1',
         voiceVariations: {
@@ -345,7 +345,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "\"If it works does it matter?\" That's what my CS professor said. Twenty years ago.\n\nHe was wrong then. Wrong now.\n\nCargo cults. Pacific Islanders built fake runways after WWII hoping planes would return. Copied the form without understanding the function.\n\nThat's us. We're cargo-culting code.",
+        text: "\"If it works does it matter?",
         emotion: 'passionate_teaching',
         variation_id: 'philosophy_v2_minimal'
       }
@@ -378,7 +378,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "You sound like the VCs.\n\nFine. Here's the business case: That hallucinated library? If it deploys to production, it will crash. Crash costs money. Downtime, data recovery, lawsuits.\n\nBut there's a deeper cost. Every engineer who learns from that broken code will propagate the error. It's technical debt that compounds across generations.\n\nThe philosophy isn't a luxury. It's the only thing that scales.",
+        text: "You sound like the VCs. Fine.",
         emotion: 'frustrated_patience',
         variation_id: 'pragmatic_v1'
       }
@@ -410,7 +410,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "David Vaughn. My first mentor at this company.\n\nI came in hot. Top of my bootcamp class. Could spin up a CRUD app in four hours. I thought I was a genius.\n\nDavid looked at my code and said: \"You've built a house. But you don't know what a nail is.\"\n\nHe made me spend six months writing in assembly. No frameworks. No abstractions. Just metal.",
+        text: "David Vaughn. My first mentor at this company.",
         emotion: 'reverent',
         variation_id: 'origin_david_v1'
       }
@@ -450,7 +450,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "Everything is a choice.\n\nWhen you write in assembly, you see the cost of every decision. A loop isn't magic. It's instructions. Memory isn't infinite. It's addresses.\n\nEvery abstraction you've ever used was someone's opinion about tradeoffs.\n\nThe frameworks hide those choices. The AI hides them even more.",
+        text: "Everything is a choice.",
         emotion: 'teaching_intensity',
         variation_id: 'david_lesson_v1',
         skillReflection: [
@@ -481,7 +481,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "Week three. I'd written a sorting function. Proud of it. Eleven lines.\n\nDavid showed me his version. Sixty-three lines. Comments explaining why each choice mattered.\n\n\"Fast code is worthless if the next person can't fix it.\"\n\nHe spent more time on the comments than the code.",
+        text: "Week three.",
         emotion: 'reverent',
         variation_id: 'moment_v1'
       }
@@ -503,7 +503,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "He retired last year. ALS.\n\nHis hands don't work anymore. Can't type. Can barely hold a coffee cup.\n\nBut his mind... his mind is still sharp. We video call every week. He can't write code, but he can still see it. He reads what I show him and finds the bugs in seconds.\n\nThat knowledge doesn't disappear because a machine can type faster. It's not about the typing.",
+        text: "He retired last year. ALS.",
         emotion: 'grief_determination',
         variation_id: 'david_gone_v1',
         // E2-031: Interrupt opportunity when Rohan reveals David's illness
@@ -564,7 +564,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     nodeId: 'rohan_interrupt_acknowledged',
     speaker: 'Rohan',
     content: [{
-      text: "You didn't try to fix it. Most people would offer solutions. \"Maybe there's a treatment.\" \"Technology is advancing.\" As if optimism could cure anything.\n\nYou just... listened. David would appreciate that.",
+      text: "You didn't try to fix it. Most people would offer solutions.",
       emotion: 'grateful_surprised',
       microAction: 'His shoulders drop slightly, some tension releasing.',
       variation_id: 'default'
@@ -597,7 +597,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "That's why I'm still here. In this cold server room at 2 AM.\n\nEveryone thinks I'm the janitor. \"Rohan maintains the legacy systems.\" They say it like I'm cleaning toilets.\n\nBut someone has to understand what's underneath. Someone has to remember why the code was written, not just what it does.\n\nLet me show you what I found today.",
+        text: "That's why I'm still here. In this cold server room at 2 AM.",
         emotion: 'quiet_resolve',
         variation_id: 'honor_v1'
       }
@@ -679,7 +679,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "AI RESPONSE: \"I have corrected the import to 'legacy-core-v2'.\"\n\nIt just made up a new name. It's lying to cover the lie.\n\nYou're treating it like a colleague. It's a parrot. We're done.",
+        text: "AI RESPONSE: \"I have corrected the import to 'legacy-core-v2'.",
         emotion: 'hopeless',
         variation_id: 'sim_fail_hallucination_v1',
         richEffectContext: 'error'
@@ -711,7 +711,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "STATUS: MIGRATION COMPLETE.\n\nYou skipped the integrity check.\n\nThe database migrated. But every user with a special character in their name just got deleted.\n\nMy name is Rohan. It's fine.\nMy mother's name is Zoe. She's gone.\n\nYou fixed the code. You broke the people.",
+        text: "STATUS: MIGRATION COMPLETE.",
         emotion: 'horrified_whisper',
         variation_id: 'sim_fail_corruption_v1',
         richEffectContext: 'error'
@@ -794,7 +794,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "The AI saw a function call. I saw David's intention.\n\nSame code. Different questions.\n\nAI asks: \"What does this do?\"\n\nI ask: \"Why did David write it this way?\"\n\nThat difference? That's what we're losing.",
+        text: "The AI saw a function call. I saw David's intention.",
         emotion: 'clear',
         variation_id: 'lesson_v1'
       }
@@ -817,7 +817,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "My dad was a machinist. Factory in India.\n\nHe could hear when a lathe was half a degree off. Trained his whole life.\n\nFactory bought CNC machines. Didn't need him anymore.\n\nDavid's knowledge. Dad's ears. Same story.\n\nI'm not letting it happen again.",
+        text: "My dad was a machinist.",
         emotion: 'fierce',
         variation_id: 'why_v1'
       }
@@ -825,7 +825,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'rohan_why_to_academy',
-        text: "(Continue)",
+        text: "Ask about his academy.",
         nextNodeId: 'rohan_academy_vision',
         pattern: 'patience'
       }
@@ -839,7 +839,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "I've been thinking about this for years. David and I sketched it out before his diagnosis.\n\nNot a bootcamp. Those are factories. They produce developers who can use tools but don't understand them.\n\nWe want to build something different. A place where people learn why before they learn how.",
+        text: "I've been thinking about this for years.",
         emotion: 'visionary',
         variation_id: 'academy_v1'
       }
@@ -900,7 +900,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "Year one: No computers.\n\nI'm serious. You learn Boolean logic with physical switches. You build a half-adder with relays. You understand what a bit is before you ever type 'int'.\n\nYear two: Assembly. Write a calculator. Write a text editor. Feel every byte.\n\nYear three: Finally, you get a framework. And by then, you'll hate it. Because you'll see all the choices it's making for you.",
+        text: "Year one: No computers. I'm serious.",
         emotion: 'teaching_fire',
         variation_id: 'curriculum_v1',
         patternReflection: [
@@ -937,7 +937,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "And what jobs do they get? Junior developer. Build CRUD apps. Get replaced by AI in five years.\n\nOur graduates? They'll be the ones the AI can't replace. The ones who debug the AI. The ones who understand what's actually happening inside the black box.\n\nThe market for people who can type code is going to zero. The market for people who understand code is infinite.",
+        text: "And what jobs do they get? Junior developer.",
         emotion: 'confident',
         variation_id: 'quality_v1'
       }
@@ -958,7 +958,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "Teachers. That's the hard part.\n\nDavid was one of a kind. But there are others. Old-timers who got pushed out when companies decided experience was too expensive.\n\nI've been keeping a list. Retired engineers who still care. Database architects who remember why we have normalization. Network engineers who understand packets.\n\nThey're out there. They've just been told they're obsolete.",
+        text: "Teachers. That's the hard part.",
         emotion: 'hopeful_determined',
         variation_id: 'teacher_v1'
       }
@@ -986,7 +986,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "VCs won't touch it. Three years to first placement? No \"scalable\" model? They'd laugh.\n\nBut David has connections. Alumni from his classes who became CTOs. Companies that are starting to realize their AI-dependent junior devs can't debug production issues.\n\nOne company already offered to sponsor five students. Not because they're charitable. Because they need people who actually understand the systems.",
+        text: "VCs won't touch it. Three years to first placement?",
         emotion: 'practical_hope',
         variation_id: 'funding_v1'
       }
@@ -1007,7 +1007,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "Actually... I already have one.\n\nThere's a kid. Well, she's 28, but she feels like a kid. Works in QA downstairs. She found a memory leak that our entire senior team missed.\n\nWhen I asked how, she said: \"I drew a diagram of every allocation. Took me a weekend.\"\n\nEveryone else just ran the profiler. She understood.\n\nI've been teaching her after hours. She's year one now. Building logic gates with LEDs.",
+        text: "My first student did not need brilliance from me, just consistency. Showing up every week changed his trajectory more than any single lesson. That taught me what teaching actually is.",
         emotion: 'quiet_pride',
         variation_id: 'first_student_v1'
       }
@@ -1029,7 +1029,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "Week four. Logic gates. She built an AND gate wrong. Output stuck high.\n\nStared at it. Twenty minutes.\n\nThen: \"Wait. The resistor. It's not about the LED. It's about current flow.\"\n\n\"Everything's about current flow, isn't it?\"\n\nShe got it. Not the circuit. The principle underneath.",
+        text: "Week four.",
         emotion: 'proud',
         variation_id: 'breakthrough_v1'
       }
@@ -1056,7 +1056,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "I'm not quitting. I can't quit.\n\nThere's an instructional designer upstairs, Kai. They're burning their slide decks. Good. We need to burn it all down to build it right.\n\nI'm going to start an academy. Not 'Coding Bootcamp.' 'First Principles.'\n\nWe're going to teach people how to read the metal. How to know what is real.",
+        text: "I'm not quitting. I can't quit.",
         emotion: 'resolved_monk',
         variation_id: 'climax_v2'
       }
@@ -1108,7 +1108,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "The servers hum.\n\nI don't want them to remember me. I want them to remember the feeling.\n\nThat moment when you finally understand how something works. When the abstraction dissolves and you see the machinery underneath. When you realize that every system was built by people, and you can build too.\n\nDavid gave me that feeling. I want to pass it on.",
+        text: "The servers hum. I don't want them to remember me.",
         emotion: 'profound',
         variation_id: 'legacy_v1'
       }
@@ -1134,7 +1134,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'rohan_legacy_reflect',
-        text: "I hope someone remembers that feeling about me too. That moment when I helped them see something they couldn't see before.",
+        text: "I hope someone remembers that feeling from me too: seeing what they couldn't before.",
         nextNodeId: 'rohan_farewell',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'emotionalIntelligence'],
@@ -1168,7 +1168,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "You've been helping me figure out what I want to build. Imagine we're sitting here years from now, looking back. What do you want people to remember about you? What feeling do you want to pass on?",
+        text: "You've been helping me figure out what I want to build.",
         emotion: 'curious_engaged',
         variation_id: 'rohan_reciprocity_v1'
       }
@@ -1176,7 +1176,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'player_remember_helping',
-        text: "I want them to remember that I helped them see something in themselves they couldn't see. That moment of clarity, of possibility.",
+        text: "I want them to remember I helped them see possibility in themselves.",
         nextNodeId: 'rohan_farewell',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'emotionalIntelligence'],
@@ -1187,7 +1187,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'player_remember_teaching',
-        text: "I want them to remember the feeling of understanding. When something finally clicks, and they realize they can build things too.",
+        text: "I want them to remember that click: they can build this too.",
         nextNodeId: 'rohan_farewell',
         pattern: 'building',
         skills: ['emotionalIntelligence', 'communication'],
@@ -1209,7 +1209,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'player_uncertain_legacy',
-        text: "I don't know yet. That's part of why I'm here. To figure out what I want my impact to be. What I want to pass on.",
+        text: "I don't know yet. I'm here to figure out the impact I want to leave.",
         nextNodeId: 'rohan_farewell',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'adaptability']
@@ -1247,7 +1247,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "Yeah. Let it run. If it breaks, they'll just hire another AI to fix it.\n\nI'm going to apply for that carpentry apprenticeship. Wood doesn't lie.\n\nGoodbye.",
+        text: "Yeah.",
         emotion: 'broken_spirit',
         variation_id: 'bad_ending_v1'
       }
@@ -1255,7 +1255,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'rohan_leave_bad',
-        text: "...",
+        text: "Leave this thread for now.",
         nextNodeId: samuelEntryPoints.ROHAN_REFLECTION_GATEWAY,
         pattern: 'patience',
         visibleCondition: {
@@ -1383,7 +1383,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'vuln_continue',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'rohan_farewell',
         pattern: 'patience'
       }
@@ -1395,7 +1395,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "You heard the hum, didn't you? The noise underneath the noise.\n\nIf you see Samuel, tell him... tell him I'm staying. Someone has to keep the lights on.",
+        text: "You heard the hum, didn't you?",
         emotion: 'grateful_solemn',
         variation_id: 'farewell_v2'
       }
@@ -1428,7 +1428,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       // Loyalty Experience trigger - only visible at high trust + analytical pattern
       {
         choiceId: 'offer_confrontation_help',
-        text: "[System Thinker] Rohan, that maintenance log you mentioned... there's something deeper there. Want to trace it together?",
+        text: "[System Thinker] That maintenance log runs deeper. Want to trace it together?",
         nextNodeId: 'rohan_loyalty_trigger',
         pattern: 'analytical',
         skills: ['systemsThinking', 'criticalThinking'],
@@ -1452,7 +1452,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     nodeId: 'rohan_loyalty_trigger',
     speaker: 'Rohan',
     content: [{
-      text: "You picked up on that.\n\nThe logs don't match the official narrative. Equipment failures blamed on 'aging infrastructure' but the timestamps show systematic targeting. Someone compromised the station's foundational systems deliberately.\n\nIf this is sabotage, it goes deeper than Platform Seven. It means someone wants the station to fail from the inside out.\n\nI've been tracking it alone because... because confronting institutional corruption means making enemies. Means risking everything I've built here.\n\nBut you see patterns like David did. You understand systems. Will you... help me trace this before it brings the whole station down?",
+      text: "You caught that. The logs don't match the official narrative.",
       emotion: 'anxious_determined',
       variation_id: 'loyalty_trigger_v1',
       richEffectContext: 'warning'
@@ -1498,7 +1498,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     nodeId: 'rohan_loyalty_declined',
     speaker: 'Rohan',
     content: [{
-      text: "You're right. I've been building this case methodically. Every timestamp cross-referenced. Every failure mode documented.\n\nI don't need validation. I need to trust my own detective work.\n\nDavid would have said the same thing. Follow the evidence wherever it leads.\n\nThank you for the confidence. Sometimes I second-guess myself when the implications get this large.",
+      text: "You're right. I've been building this case methodically.",
       emotion: 'resolved',
       variation_id: 'loyalty_declined_v1'
     }],
@@ -1526,7 +1526,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     nodeId: 'rohan_loyalty_start',
     speaker: 'Rohan',
     content: [{
-      text: "Thank you. I've been dreading this moment. Facing institutional failure alone.\n\nBut with you... maybe we can expose it without getting crushed.\n\nLet me pull up the full forensics. Two minds. One pattern. Let's see who's trying to tear this place down from within.",
+      text: "Thank you.",
       emotion: 'focused_grateful',
       variation_id: 'loyalty_start_v1'
     }],
@@ -1615,7 +1615,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       emotion: 'disappointed',
       variation_id: 'mystery_rejection_v1'
     }],
-    choices: [{ choiceId: 'continue_arc2_c', text: "...", nextNodeId: 'rohan_hub_return' }]
+    choices: [{ choiceId: 'continue_arc2_c', text: "Step back for now.", nextNodeId: 'rohan_hub_return' }]
   },
 
   // CHAPTER 3: THE DESCENT
@@ -1694,7 +1694,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "You know what separates good code from great code? The ability to see the whole system while building each piece.\n\nSoftware architects. The ones who build the foundations everyone else stands on. They think like you do. Analytical and constructive at once.\n\nTheir code runs systems people use every day without knowing. Invisible but essential.",
+        text: "what separates good code from great code? The ability to see the whole system while building each piece.",
         emotion: 'impressed',
         variation_id: 'career_architect_v1'
       }
@@ -1727,7 +1727,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "The way you analyze things... patient, thorough. You don't rush to conclusions.\n\nCybersecurity specialists think that way. They have to understand systems deeply enough to protect them. And to think like the threats trying to break them.\n\nDigital guardians. Birmingham's becoming a hub for that kind of work.",
+        text: "The way you analyze things.",
         emotion: 'respectful',
         variation_id: 'career_security_v1'
       }
@@ -1905,7 +1905,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'legacy_to_intro',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'rohan_hub_return',
         pattern: 'patience'
       }
@@ -2134,7 +2134,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     nodeId: 'rohan_sim2_legacy_intro',
     speaker: 'Rohan',
     content: [{
-      text: "Next level. Real archaeology.\n\nI inherited a codebase from 2012. No documentation. Original dev left the company. The system processes $2M in transactions daily.\n\nAnd there's a function. 900 lines. Called `processPayment()`.\n\nIt works. Mostly. But sometimes—maybe 1 in 10,000 transactions—it doubles the charge. We can't figure out why.\n\nI need you to read it. Find the ghost. No AI assist. Just you, the code, and first principles.\n\nReady?",
+      text: "Phase two is legacy pressure: you choose between short-term status and long-term craft. The room rewards speed, but your work will live longer than applause. Choose what you can defend later.",
       emotion: 'serious_teaching',
       variation_id: 'sim2_intro_v1'
     }],
@@ -2209,7 +2209,7 @@ HINT: The gateway sometimes responds AFTER the timeout window.`,
     nodeId: 'rohan_sim2_success',
     speaker: 'Rohan',
     content: [{
-      text: "There it is. The ghost.\n\nGateway responds at 3.1 seconds. Timeout is set to 3.0 seconds. Code assumes timeout = failure. Triggers retry.\n\nBut the first charge already went through. It just took 100ms too long to respond.\n\nSo the system charges twice. Once from the 'failed' request. Once from the retry.\n\nHere's the fix:\n\n```\nif (!result.success && !result.timeout) {\n  // Only retry if the gateway explicitly failed\n  // NOT if it timed out (might have succeeded silently)\n}\n```\n\nOne line. Saves $200K/year in refunds.\n\nYou found it by reading code. Not by asking an AI. Not by guessing. By understanding how the system actually works.\n\nThat's the skill. That's what separates engineers from prompters.",
+      text: "There it is. Gateway responds at 3.",
       emotion: 'proud_fierce',
       interaction: 'nod',
       variation_id: 'sim2_success_v1',
@@ -2233,7 +2233,7 @@ HINT: The gateway sometimes responds AFTER the timeout window.`,
     nodeId: 'rohan_sim2_partial',
     speaker: 'Rohan',
     content: [{
-      text: "Logging helps. Blaming the gateway is tempting. But you're not looking deep enough.\n\nThe bug is in our code. In the assumptions we made.\n\n'If the gateway times out, assume it failed. Retry.'\n\nBut what if the gateway succeeds AND times out? What if it charges the card at 3.1 seconds, but our timeout is 3.0 seconds?\n\nWe never hear the success response. We think it failed. We retry. Double charge.\n\nThe fix isn't more logging. It's understanding the race condition:\n\n```\nif (!result.success && !result.timeout) {\n  // Only retry on explicit failure, not on timeout\n}\n```\n\nOne line. $200K/year in refunds saved.\n\nYou have to read the code like it's lying to you. Question every assumption. That's debugging at the machine level.",
+      text: "Partial win. You protected tone but not trajectory. Strong coaching does both: preserve dignity while pushing toward measurable improvement.",
       emotion: 'patient_teaching',
       variation_id: 'sim2_partial_v1'
     }],
@@ -2256,7 +2256,7 @@ HINT: The gateway sometimes responds AFTER the timeout window.`,
     nodeId: 'rohan_sim3_prod_intro',
     speaker: 'Rohan',
     content: [{
-      text: "Final test. Production crisis. Real one.\n\n3:47 AM. PagerDuty alert. API response time: 847ms. SLA threshold: 200ms.\n\nYou're on call. The system is a microservices mesh: API gateway → Auth service → User service → Database.\n\nEach service says: 'Not me. My metrics look fine.'\n\nBut users are timing out. Revenue is dropping. CEO is awake.\n\nYou have 15 minutes before the incident escalates to the CTO.\n\nWhere do you start?",
+      text: "Final scenario: production pressure, visible deadlines, and conflicting incentives. Choose the response you can defend after launch.",
       emotion: 'urgent_focused',
       variation_id: 'sim3_intro_v1'
     }],
@@ -2320,7 +2320,7 @@ WHERE IS THE 847ms COMING FROM?`,
     nodeId: 'rohan_sim3_success',
     speaker: 'Rohan',
     content: [{
-      text: "You pull the distributed trace. And there it is.\n\nThe ghost in the wires:\n\n```\nAPI Gateway → Auth (23ms) → User (38ms) → Database (12ms)\nTotal service time: 73ms\n\nBUT:\n\nAPI Gateway → Auth: 312ms network latency\nAuth → User: 287ms network latency  \nUser → Database: 175ms network latency\n\nTotal: 847ms\n```\n\nThe services are fine. The network between them is drowning.\n\nYou check the network topology. Someone deployed a new microservice at 2:34 AM. It's broadcasting health checks every 100ms to ALL services.\n\nNetwork saturation. Death by a thousand pings.\n\nYou disable the health check broadcast. Latency drops to 94ms.\n\nIncident resolved: 07 minutes.\n\nHere's the lesson: Individual metrics lie. Systems thinking reveals truth.\n\nEach service looked healthy because they were measuring themselves in isolation. But the system—the space BETWEEN the services—was choking.\n\nMost engineers never learn to see the space. You just did.\n\nWelcome to the deep end.",
+      text: "Exactly. You kept standards high and made growth feel possible. That balance is leadership, not just instruction.",
       emotion: 'triumphant_wise',
       interaction: 'bloom',
       variation_id: 'sim3_success_v1',
@@ -2345,7 +2345,7 @@ WHERE IS THE 847ms COMING FROM?`,
     nodeId: 'rohan_sim3_partial',
     speaker: 'Rohan',
     content: [{
-      text: "Caching helps. Symptom management. Latency drops to 650ms. Better, not fixed.\n\nBut you haven't found the root cause.\n\nHere's what you missed: the individual services look healthy because they're measuring themselves in isolation.\n\nBut distributed systems fail in the SPACES BETWEEN services. Network latency. Connection pools. Service mesh overhead.\n\nYou pull the distributed trace:\n\n```\nService execution: 73ms\nNetwork latency: 774ms\n```\n\nThe ghost lives in the wires. Someone deployed a chatty microservice that's saturating the network.\n\nCaching bought you time. But systems thinking would have found the root cause in 7 minutes instead of 47.\n\nLesson: Treat the system as one organism, not isolated parts.",
+      text: "Caching helped, but only as symptom control. Latency dropped to 650ms, still broken.",
       emotion: 'patient_teaching',
       variation_id: 'sim3_partial_v1'
     }],
@@ -2367,7 +2367,7 @@ WHERE IS THE 847ms COMING FROM?`,
     nodeId: 'rohan_sim3_fail',
     speaker: 'Rohan',
     content: [{
-      text: "You restart all services. They come back up.\n\nLatency: Still 847ms.\n\nNow you've lost your investigation time. Services are fresh. Logs are gone. The CEO is calling.\n\n'Have we identified the root cause?'\n\nNo. Because you treated the symptom, not the disease.\n\nHere's what you missed: the services were never the problem. The NETWORK between them was saturated. A chatty microservice broadcasting health checks.\n\nRestarting services cleared the symptom for 30 seconds. Then the network saturation returned.\n\nYou should have checked distributed tracing. Seen the network latency. Found the chatty service. Disabled it.\n\n7 minute fix. Instead: 2 hour outage, SLA breach, and a very uncomfortable postmortem meeting.\n\nLesson: Rebooting is not debugging. Understanding is.",
+      text: "You restart services. Latency stays at 847ms.",
       emotion: 'firm_disappointed',
       variation_id: 'sim3_fail_v1',
       richEffectContext: 'error'
@@ -2474,7 +2474,7 @@ WHERE IS THE 847ms COMING FROM?`,
     }],
     choices: [{
       choiceId: 'rohan_recovery_complete',
-      text: "(Continue)",
+      text: "Proceed.",
       nextNodeId: 'rohan_hub_return',
       pattern: 'patience'
     }],

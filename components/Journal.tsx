@@ -30,13 +30,29 @@ import { ORB_TIERS } from "@/lib/orbs"
 import { useSimulations } from "@/hooks/useSimulations"
 import { useUserRole } from "@/hooks/useUserRole"
 import { PrismTabs } from "./journal/PrismTabs"
+import { PrismTabId, getPrismRuntimeTabs } from "@/lib/prism-tabs-config"
 
 interface JournalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-type TabId = 'harmonics' | 'essence' | 'mastery' | 'mind' | 'toolkit' | 'simulations' | 'cognition' | 'analysis' | 'god_mode' | 'opportunities' | 'careers' | 'combos'
+type TabId = PrismTabId
+
+const TAB_ICONS: Record<TabId, typeof Users> = {
+  harmonics: Zap,
+  essence: Compass,
+  mastery: Crown,
+  careers: TrendingUp,
+  combos: Zap,
+  opportunities: Building2,
+  mind: TrendingUp,
+  toolkit: Cpu,
+  simulations: Play,
+  cognition: Brain,
+  analysis: TrendingUp,
+  god_mode: AlertTriangle,
+}
 
 // Tab content variants - respects prefers-reduced-motion via Framer Motion's global setting
 // but we also pass explicit reduced variants for clarity
@@ -135,22 +151,6 @@ export function Journal({ isOpen, onClose }: JournalProps) {
 
   // ... (variants)
 
-  // New Prism Tabs
-  // Base tabs available to all users
-  const baseTabs: { id: TabId; label: string; icon: typeof Users }[] = [
-    { id: 'harmonics', label: 'Harmonics', icon: Zap },
-    { id: 'essence', label: 'Essence', icon: Compass },
-    { id: 'mastery', label: 'Mastery', icon: Crown },
-    { id: 'careers', label: 'Careers', icon: TrendingUp },
-    { id: 'combos', label: 'Combos', icon: Zap },
-    { id: 'opportunities', label: 'Opportunities', icon: Building2 },
-    { id: 'mind', label: 'Mind', icon: TrendingUp },
-    { id: 'toolkit', label: 'Toolkit', icon: Cpu },
-    { id: 'simulations', label: 'Sims', icon: Play },
-    { id: 'cognition', label: 'Cognition', icon: Brain },
-    { id: 'analysis', label: 'Analysis', icon: TrendingUp },
-  ]
-
   // Show God Mode tab if:
   // 1. Development mode (always)
   // 2. Production with educator/admin role (authenticated)
@@ -161,9 +161,10 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     (!roleLoading && isEducator) ||
     hasGodModeParam
 
-  const tabs = showGodMode
-    ? [...baseTabs, { id: 'god_mode' as TabId, label: 'GOD MODE', icon: AlertTriangle }]
-    : baseTabs
+  const tabs = getPrismRuntimeTabs(showGodMode).map((tab) => ({
+    ...tab,
+    icon: TAB_ICONS[tab.id],
+  }))
 
 
   return (

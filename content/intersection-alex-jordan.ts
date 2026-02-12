@@ -81,7 +81,7 @@ ALEX: "I realized I was selling a lie. 'Do this, get that.' Linear path. Except 
     choices: [
       {
         choiceId: 'fear_to_difference',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'alex_jordan_difference',
         pattern: 'patience'
       }
@@ -213,7 +213,7 @@ ALEX: "Yeah. That's the lesson."`,
     choices: [
       {
         choiceId: 'pattern_to_farewell',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'alex_jordan_farewell',
         pattern: 'patience'
       }
@@ -253,7 +253,7 @@ JORDAN: *Laughs.* "Shit. I do."`,
     choices: [
       {
         choiceId: 'words_to_farewell',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'alex_jordan_farewell',
         pattern: 'helping'
       }

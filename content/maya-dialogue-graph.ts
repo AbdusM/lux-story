@@ -17,7 +17,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Wait. Don't touch that.\n\nOh. Hi.\n\nYou aren't one of the librarians. Usually the only people up here are chasing me out.",
+        text: "Wait.",
         emotion: 'anxious_scattered',
         variation_id: 'intro_v3_minimal',
         richEffectContext: 'warning',
@@ -169,7 +169,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Yeah, pre-med at UAB. Second year. Organic chem is... it's fine. Actually no, it's killing me.\n\nBut my parents are so proud, so.",
+        text: "Yeah, pre-med at UAB.",
         emotion: 'deflecting',
         variation_id: 'studies_v2_clean',
         voiceVariations: {
@@ -228,7 +228,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I don't know? I was walking back from Sterne - freaking out about tomorrow's exam - and then I'm just... here. Like the station pulled me in or something.\n\nMaybe 'cause I'm at a crossroads. Or maybe I'm just losing it.",
+        text: "I don't know?",
         emotion: 'contemplative',
         variation_id: 'why_here_v1',
         patternReflection: [
@@ -297,7 +297,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "My parents came here with nothing. And I mean *nothing*.\n\nNow? Now they have a house in Hoover. A restaurant that wins awards. And a daughter who's supposed to be the crown jewel.",
+        text: "My parents came here with nothing.",
         emotion: 'conflicted',
         variation_id: 'family_intro_v2_interactive',
         patternReflection: [
@@ -372,7 +372,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "'Our daughter, the doctor.'\n\nThey say it to everyone. At church. To random customers at the restaurant. It's not just a career, it's... it's the finish line to their marathon.\n\nIf I trip, I don't just hurt myself. I waste forty years of their sweat.",
+        text: "'Our daughter, the doctor.",
         emotion: 'anxious',
         variation_id: 'expectations_v1'
       }
@@ -421,7 +421,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "My dreams? Honestly I try not to think about them. It's easier to just... follow the path, you know?\n\nDreams are stupid when they don't match what everyone expects from you.",
+        text: "My dreams?",
         emotion: 'guarded',
         variation_id: 'deflect_v1',
         patternReflection: [
@@ -525,7 +525,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Wait... you're right to call that out.\n\nI just said dreams are stupid. But that's not what I really believe. That's what I tell myself so it hurts less.\n\nThe truth? My dreams aren't stupid. They're just... scary. Because if I actually tried and failed...",
+        text: "Wait.",
         emotion: 'vulnerable',
         variation_id: 'challenge_accepted_v1',
         voiceVariations: {
@@ -670,7 +670,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Everyone sees this perfect pre-med student, right? Good grades. Clear path. Got it all figured out.\n\nBut late at night when I should be memorizing anatomy? I'm doing something completely different.",
+        text: "Everyone sees this perfect pre-med student, right?",
         emotion: 'anxious_deflecting',
         variation_id: 'anxiety_reveal_v2_clean',
         useChatPacing: true,
@@ -739,7 +739,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "...\n\nRobotics. I build robots when I should be studying.\n\nYou didn't push. Most people would've pushed. Thanks for that.",
+        text: "Robotics.",
         emotion: 'grateful_vulnerable',
         variation_id: 'fills_silence_v1_clean'
       }
@@ -781,7 +781,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Pediatric grip assist. Prototype 4.\n\nCode is clean. Power is stable.\n\nBut every time I initialize the grip... it fights itself. Knows what it needs to do, but just locks up.",
+        text: "Pediatric grip assist.",
         emotion: 'vulnerable_focused',
         variation_id: 'robotics_scenario_v2_minimal',
         richEffectContext: 'warning', // Immersive "System Alert" feel
@@ -917,7 +917,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "...\n\nI didn't expect that. Most people just... they look at the robot. At the problem. You looked at me.\n\nThank you. I needed that more than I knew.",
+        text: "I didn't expect that.",
         emotion: 'touched',
         variation_id: 'interrupt_supported_v1',
         interaction: 'bloom'
@@ -950,7 +950,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Oh god. No no no.\n\nThe servo just popped. Smoke. The circuit's blackened.\n\nI fried it. Three months of work. Gone.\n\nMaybe this is a sign, you know? I'm not an engineer. Should just stick to biology.",
+        text: "Oh god.",
         emotion: 'devastated',
         variation_id: 'robotics_fail_v1',
         richEffectContext: 'error'
@@ -978,7 +978,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'fail_rebuild_learning',
-        text: "Three months isn't lost. it's learning. You know what NOT to do now. That's how builders improve.",
+        text: "Three months weren't lost. You learned what fails. That's how builders improve.",
         nextNodeId: 'maya_retreat_to_safety',
         pattern: 'building',
         skills: ['creativity', 'adaptability'],
@@ -999,7 +999,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "It's fine. It was a hobby anyway.\n\nLet's talk about school. Or something normal.",
+        text: "It's fine.",
         emotion: 'closed_off',
         variation_id: 'retreat_v1'
       }
@@ -1046,7 +1046,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "You hold the chassis. My hands stop shaking because I can brace against yours.\n\nThere. Stabilized.\n\nYou didn't try to take over. You just... became the foundation I needed. That's actually exactly what a good engineer does.",
+        text: "You hold the chassis.",
         emotion: 'grateful_vulnerable',
         variation_id: 'robotics_assist_v1',
         richEffectContext: 'success'
@@ -1077,7 +1077,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "The whining stopped. The fingers relaxed. Curled gently. Perfectly smooth.\n\nYou fixed it.\n\nMy parents see a doctor when they look at me. You saw... an engineer.\n\nThat's the first time anyone has helped me with the machine instead of telling me to put it away.",
+        text: "The whining stopped.",
         emotion: 'awed_grateful',
         variation_id: 'robotics_debug_success_v1',
         richEffectContext: 'success'
@@ -1108,7 +1108,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "You really think so? Sometimes I feel like I'm living a double life. Pre-med student by day, robot builder by night.\n\nBut hearing you say it's beautiful... maybe it doesn't have to be a secret anymore.",
+        text: "You really think so?",
         emotion: 'encouraged',
         variation_id: 'encouraged_v1'
       }
@@ -1194,7 +1194,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "My parents came here with literally nothing.\n\nThree jobs each just to get me through school.\n\nAnd now their whole dream is 'our daughter, the doctor.'\n\nHow do I tell them I'd rather build robots than memorize anatomy? Like... I can't. I just can't do that to them.",
+        text: "My parents came here with literally nothing.",
         emotion: 'sad',
         variation_id: 'family_v1',
         useChatPacing: true,
@@ -1243,7 +1243,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Wait. I never thought about it like that.\n\nThey sacrificed for my happiness, not for a title.\n\nMaybe... telling them about the robotics stuff would actually honor what they did? Instead of, like, betraying it?\n\nGod, why does that sound so obvious now?",
+        text: "Wait.",
         emotion: 'revelatory',
         variation_id: 'reframes_v1'
       }
@@ -1278,7 +1278,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I've been so scared of letting them down that I was gonna let myself down forever.\n\nThat's not living. That's just... existing. Going through the motions.\n\nBut how do I actually find the guts to choose my own thing? Like where does that even come from?",
+        text: "I've been so scared of letting them down that I was gonna let myself down forever.",
         emotion: 'determined',
         variation_id: 'rebellion_v1'
       }
@@ -1314,7 +1314,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Okay so.\n\nI got accepted to UAB's biomedical engineering program. I could transfer.\n\nBut I also got into the pre-med track. The one my parents have been dreaming about since like... forever.\n\nThe train's coming soon. I have to choose a platform.\n\nAnd I'm freaking out.",
+        text: "Okay so.",
         emotion: 'anxious',
         variation_id: 'crossroads_v1',
         useChatPacing: true,
@@ -1428,7 +1428,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Robotics engineering.\n\nI'm gonna transfer. And I'll help my parents understand that healing comes in different forms, you know?\n\nMaybe my robots will save lives too. Just... differently than they pictured.",
+        text: "Robotics engineering.",
         emotion: 'confident',
         variation_id: 'ending_robotics_v1'
       }
@@ -1458,7 +1458,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Biomedical engineering. At UAB.\n\nSurgical robots. Prosthetics. Devices that actually heal people.\n\nMy parents get their doctor. Kind of. I get my circuits.\n\nYou helped me see I don't have to choose between them. I can do both.",
+        text: "Biomedical engineering.",
         emotion: 'happy',
         variation_id: 'ending_hybrid_v1'
       }
@@ -1488,7 +1488,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I know what I need to do now.\n\nNot what they want. Not what's expected. What feels right to me.\n\nYour faith in me - without pushing me either way - that's what I needed. Just... someone who believes I can make my own choice.\n\nThank you.",
+        text: "I know what I need to do now.",
         emotion: 'confident',
         variation_id: 'ending_self_v1'
       }
@@ -1523,7 +1523,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I've been carrying this by myself for so long.\n\nI don't know what I'm gonna do yet. But talking to you... it helped me see things differently.\n\nI should get back to studying. Maybe we'll talk again sometime?",
+        text: "I've been carrying this by myself for so long.",
         emotion: 'grateful',
         variation_id: 'early_gratitude_v1'
       }
@@ -1562,7 +1562,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "It's weird. I've been terrified to say any of this out loud.\n\nBut telling you... seeing it through your eyes... suddenly the decision seems obvious.\n\nBefore I go - can I ask you something?\n\nYou've been helping me figure out my story this whole time. But what about yours? How do you know when you're making the right choice for yourself?",
+        text: "It's weird. I've been terrified to say any of this out loud.",
         emotion: 'curious_engaged',
         variation_id: 'reciprocity_transition_v1'
       }
@@ -1570,28 +1570,28 @@ STATUS: Signal fighting itself`,
     choices: [
       {
         choiceId: 'player_trust_instinct',
-        text: "I try to trust my gut. When something feels right, even if it's scary, I know it's probably the path I need to take.",
+        text: "I trust my gut. If a path feels right, even when scary, I follow it.",
         nextNodeId: 'maya_farewell_robotics',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'adaptability']
       },
       {
         choiceId: 'player_weigh_options',
-        text: "I think through all the options. Make lists, consider consequences. But sometimes I get stuck in analysis and never actually choose.",
+        text: "I list options and consequences, but I can stall in analysis.",
         nextNodeId: 'maya_farewell_robotics',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence']
       },
       {
         choiceId: 'player_ask_others',
-        text: "I talk to people I trust. See what they think. But I'm learning that ultimately, I have to choose for myself, not for them.",
+        text: "I ask people I trust, then make the final call for myself.",
         nextNodeId: 'maya_farewell_robotics',
         pattern: 'helping',
         skills: ['collaboration', 'emotionalIntelligence']
       },
       {
         choiceId: 'player_still_figuring',
-        text: "Honestly? I'm still figuring that out. That's part of why I'm here. to learn how to trust myself enough to make those choices.",
+        text: "Honestly, I'm still figuring that out. I'm here to learn how to trust my choices.",
         nextNodeId: 'maya_farewell_robotics',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability']
@@ -1675,7 +1675,7 @@ STATUS: Signal fighting itself`,
     choices: [
       {
         choiceId: 'vuln_continue',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'maya_farewell_robotics',
         pattern: 'patience'
       }
@@ -1689,7 +1689,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I'm gonna apply to the robotics program. Call my parents tonight.\n\nThey're gonna be heartbroken. But I can't live their dream forever.\n\nThank you for helping me choose myself.\n\nSamuel's waiting for you. Good luck out there.",
+        text: "I'm gonna apply to the robotics program.",
         emotion: 'bittersweet_resolve',
         variation_id: 'farewell_robotics_v2_complex',
         useChatPacing: true // Emotional farewell moment
@@ -1729,7 +1729,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Wait. I never thought about it like that.\n\nMaybe there's room for both? Maybe I don't have to choose between healing and building.",
+        text: "Wait.",
         emotion: 'hopeful',
         variation_id: 'grateful_v1',
         voiceVariations: {
@@ -1782,7 +1782,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Wait. UAB has a biomedical engineering program.\n\nI could design surgical robots. Create prosthetics. Build devices that actually heal people.\n\nIt's like... having my cake and eating it too. Medicine AND robotics.\n\nOh my god why didn't I see this before?",
+        text: "Wait.",
         emotion: 'excited',
         variation_id: 'hybrid_v1',
         voiceVariations: {
@@ -1921,7 +1921,7 @@ STATUS: Signal fighting itself`,
     choices: [
       {
         choiceId: 'maya_continue_after_uab',
-        text: "(Continue)",
+        text: "Proceed.",
         nextNodeId: 'maya_actionable_path',
         pattern: 'patience'
       }
@@ -2012,7 +2012,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Okay so... there's this thing. UAB's Innovation Showcase. They invited student projects to pitch to real investors.\n\nI submitted my prosthetic hand prototype. Secretly. My parents don't know.\n\nHere, look.\n\nBut now it's happening. Tomorrow. And my mom just texted saying they're coming to 'support me at your little science fair.'\n\nThey think it's a biochem poster. When they see me presenting robots to investors... everything falls apart.",
+        text: "Okay so. there's this thing.",
         emotion: 'terrified_excited',
         variation_id: 'sim_intro_v1',
         useChatPacing: true,
@@ -2033,7 +2033,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'sim_emotional_support',
-        text: "You've been hiding this part of yourself for years. Maybe it's time they finally meet the real Maya.",
+        text: "You've hidden this for years. Maybe let them meet the real Maya.",
         nextNodeId: 'maya_simulation_phase_1',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -2075,7 +2075,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Okay. First challenge. The lead investor just asked: 'Why should we fund a pre-med student's side project?'\n\nWhat's my angle here?",
+        text: "Okay.",
         emotion: 'nervous_focused',
         variation_id: 'phase_1_v1',
         richEffectContext: 'thinking'
@@ -2102,7 +2102,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'phase1_data_driven',
-        text: "Lead with data. The prosthetics market is $8 billion. Your prototype costs 40% less than competitors.",
+        text: "Lead with data: $8B market, 40% lower cost than competitors.",
         nextNodeId: 'maya_simulation_phase_2',
         pattern: 'analytical',
         skills: ['criticalThinking', 'problemSolving'],
@@ -2126,7 +2126,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'phase1_take_time',
-        text: "Pause. Let the silence work. Then: 'Because I've spent 18 months in children's hospitals. I've seen what these kids need.'",
+        text: "Pause, then: 'I spent 18 months in children's hospitals. I know this need.'",
         nextNodeId: 'maya_simulation_phase_2',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
@@ -2145,7 +2145,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "The lead investor interrupts: 'Passion is great. But passion doesn't scale. What's your market strategy?'\n\nThey want numbers. But I don't want to lose the human element...",
+        text: "The lead investor interrupts: 'Passion is great.",
         emotion: 'deflated',
         variation_id: 'passion_result_v1'
       }
@@ -2153,7 +2153,7 @@ STATUS: Signal fighting itself`,
     choices: [
       {
         choiceId: 'phase1_recover_with_data',
-        text: "Recover with specifics. 'The human element is the market. 15,000 children in Alabama alone need grip assistance.'",
+        text: "Recover with specifics: '15,000 Alabama kids need grip support. My design cuts costs 40%.'",
         nextNodeId: 'maya_simulation_phase_2',
         pattern: 'analytical',
         skills: ['adaptability', 'problemSolving'],
@@ -2164,7 +2164,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'phase1_double_down_story',
-        text: "Double down on story. 'Let me show you one of those children.' Pull up a video testimonial.",
+        text: "Double down with story: 'Let me show one child this helps.'",
         nextNodeId: 'maya_simulation_phase_2',
         pattern: 'helping',
         skills: ['communication', 'emotionalIntelligence'],
@@ -2182,7 +2182,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "'Your prototype is impressive. But manufacturing at scale requires partnerships. What's stopping a bigger company from copying this and crushing you?'\n\nThis is the make-or-break question...",
+        text: "'Your prototype is impressive.",
         emotion: 'high_stakes',
         variation_id: 'phase_2_v1',
         useChatPacing: true,
@@ -2224,7 +2224,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'phase2_speed_advantage',
-        text: "Speed and mission. 'Big companies move slow. I move fast because every month matters to a kid waiting for a working hand.'",
+        text: "Speed plus mission: big companies move slow, and every month matters to a kid waiting.",
         nextNodeId: 'maya_simulation_success',
         pattern: 'building',
         skills: ['leadership', 'communication'],
@@ -2235,7 +2235,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'phase2_honest_vulnerability',
-        text: "Honest vulnerability. 'They could. But they won't. Because to them, this is a market segment. To me, it's my life's work.'",
+        text: "Honest vulnerability: 'They could copy features. They can't copy why this matters to me.'",
         nextNodeId: 'maya_simulation_success',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -2260,7 +2260,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "'You're asking about moats. But here's what you're really asking: do I have the grit to fight for this when it gets hard?'\n\n'I've been fighting for this in secret for three years. Against every expectation. Every doubt. Every voice telling me to stay safe.'\n\n'That's my moat. I'm not doing this for market share. I'm doing it because I believe these kids deserve hands that work as well as yours.'",
+        text: "When you stepped in, I stopped spiraling and started thinking again. Support did not remove pressure, but it made pressure workable.",
         emotion: 'empowered',
         variation_id: 'interrupt_result_v1',
         interaction: 'bloom'
@@ -2287,7 +2287,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "'We'd like to schedule a follow-up. This has real potential.'\n\nMom: 'Why didn't you tell us?'\n\nDad: '...Because we never asked. We told. We never asked.'\n\n'This. This is what you've been doing? All those late nights?'\n\n'It's beautiful, Maya. It's... it's yours.'",
+        text: "'We'd like to schedule a follow-up.",
         emotion: 'emotional_breakthrough',
         variation_id: 'success_v1',
         useChatPacing: true,
@@ -2337,7 +2337,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "'If you're not worried about competition, you haven't done your homework. We're done here.'\n\nThat... that's exactly what I was afraid of. They saw me try. And fail. At the thing I actually love.\n\nMaybe they were right. Maybe I should just... stick to the path.",
+        text: "'If you're not worried about competition, you haven't done your homework.",
         emotion: 'devastated',
         variation_id: 'fail_v1',
         richEffectContext: 'error'
@@ -2363,7 +2363,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'fail_analyze',
-        text: "Let's break down what went wrong. Every failed pitch teaches you something for the next one.",
+        text: "Let's break it down. Each failed pitch teaches the next one.",
         nextNodeId: 'maya_simulation_aftermath_fail',
         pattern: 'analytical',
         skills: ['criticalThinking', 'problemSolving']
@@ -2399,7 +2399,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "That wasn't real. But... it could be. I can see it now. A version of the future where I don't have to hide.\n\nThe pitch won't go perfectly. My parents might still struggle. But I know now that I can do this.\n\nYou helped me see it. Not just the robotics. But the whole picture. Who I could become if I stop being afraid.\n\nThank you. For believing in me before I believed in myself.",
+        text: "That simulation wasn't real, but the future could be. The pitch may still be messy, yet I can do this now. You helped me see who I can become if I stop hiding.",
         emotion: 'grateful_transformed',
         variation_id: 'aftermath_v1',
         interaction: 'nod'
@@ -2437,7 +2437,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "...\n\nOkay. That hurt. A lot.\n\nBut you know what? I've never actually pitched before. Of course I bombed. That's... that's the point of practice.\n\nThe hand still works. The code still runs. The children who need this... they're still waiting.\n\nOne simulation doesn't define me. Neither does one bad pitch. Neither does my parents' disappointment.\n\nI'll practice until I get it right. And then I'll practice some more.",
+        text: "Okay. That hurt.",
         emotion: 'recovering_determined',
         variation_id: 'aftermath_fail_v1'
       }
@@ -2477,7 +2477,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Okay. I don't show this to people. Ever. But you... you build things. You understand.\n\nMy apartment has a... situation. The closet isn't a closet anymore. It's a workshop. Soldering station, 3D printer, component bins. My roommate thinks I'm hoarding electronics.\n\nI'm working on something. Not for class. Not for my parents. Just... because I have to know if it can work.\n\nDo you want to see it? The real project?",
+        text: "I am running a small workshop on human-centered robotics next week. Come if you can. I think your way of thinking would sharpen the room.",
         emotion: 'excited_vulnerable',
         variation_id: 'workshop_v1'
       }
@@ -2529,7 +2529,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "You think analytically. Good. Because I need to talk through something and everyone else just... glazes over.\n\nThe prosthetic hand. The servo response time is 47ms. Industry standard is 60ms. I'm faster. But the haptic feedback loop is creating a 12ms delay that compounds under load.\n\nI've tried three different approaches. Parallel processing, predictive algorithms, mechanical damping. Nothing's working.\n\nYou see patterns. What am I missing?",
+        text: "You think analytically. Good.",
         emotion: 'focused_analytical',
         variation_id: 'technical_v1'
       }
@@ -2546,7 +2546,7 @@ STATUS: Signal fighting itself`,
     choices: [
       {
         choiceId: 'technical_systems',
-        text: "The delay compounds. That's a cascading failure pattern. What if you addressed the root, not the symptom?",
+        text: "That's cascading failure. Fix the root cause, not the symptom.",
         nextNodeId: 'maya_robotics_passion',
         pattern: 'analytical',
         skills: ['systemsThinking', 'criticalThinking'],
@@ -2581,7 +2581,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "I've been thinking. About what you said. About building things together.\n\nI've never had a collaborator. Everything I make, I make alone. At 2am. In secret. Because if I share it and someone says it's not good enough...\n\nBut you build things. You understand that making something real is terrifying and exhilarating and you do it anyway.\n\nI have an idea. A bigger version of this. Affordable pediatric prosthetics. Open-source designs so any hospital can print them.\n\nI can't do it alone. Would you... would you build it with me?",
+      text: "I've been thinking about building together.",
         emotion: 'vulnerable_hopeful',
         variation_id: 'collaboration_v1'
       }
@@ -2633,7 +2633,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "You know what? You remind me of the systems architects I worked with at UAB's Innovation Lab. The way you think. Breaking things down, seeing how the pieces connect, then building something new from that understanding.\n\nThat's not common. Most people are either good at analysis OR good at making things. You're both.\n\nHave you ever thought about that? Systems architecture? It's like... being the translator between what people need and what technology can do.",
+        text: "You think like a systems architect: breaking complexity into connected parts and building from that map. That's rare. You're translating between human need and technical possibility.",
         emotion: 'impressed',
         variation_id: 'career_architect_v1'
       }
@@ -2691,7 +2691,7 @@ STATUS: Signal fighting itself`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "You want to see the real thing?\n\nOkay. I found a terminal in the maintenance sub-level. It's connected to the station's attitude stabilizers.\n\nThe servos are drifting. Just like my prosthetic hand was, but on a massive scale. If they drift too far... well, let's just say gravity gets weird.\n\nI've been afraid to touch it. But with you watching my back? Maybe we can fix it.",
+        text: "You want to see the real thing? Okay.",
         emotion: 'focused_intense',
         variation_id: 'deep_dive_v1',
         richEffectContext: 'warning'
@@ -2741,7 +2741,7 @@ MISSION: Stabilize the wave form within safety limits.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "Did you feel that? The hum changed. It's smooth now.\n\nI've spent so long fixing small things. Toys. Models. I never thought I could fix something... this big.\n\nMaybe I am an architect.",
+        text: "Did you feel that? The hum changed.",
         emotion: 'awed_empowered',
         variation_id: 'deep_dive_success_v1',
         interaction: 'bloom'
@@ -2768,7 +2768,7 @@ MISSION: Stabilize the wave form within safety limits.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "You're like the data scientists I've met. The good ones, not the ones who just run algorithms. You ask questions, dig into things, and you actually find the stories hiding in the information.\n\nBirmingham's healthcare sector is desperate for people like that. UAB alone processes millions of patient records. But raw data is just noise without someone who can find the signal.\n\nYou'd be good at that. Finding the signal.",
+        text: "You think with evidence and empathy. That mix fits data work that serves people, not just metrics.",
         emotion: 'thoughtful',
         variation_id: 'career_data_v1'
       }
@@ -2806,7 +2806,7 @@ MISSION: Stabilize the wave form within safety limits.`,
     speaker: 'Maya Chen',
     content: [
       {
-        text: "You know what you remind me of? Creative technologists. The people who live at the intersection of art and engineering. Making technology that feels human instead of cold.\n\nPepper started as an art project, really. A way to make physical therapy feel less like torture for kids. The tech part came later.\n\nThis whole field is opening up. VR experiences for therapy. Interactive installations for museums. Robots that don't just function. They connect.\n\nYou've got that same instinct. Building things that make people feel something.",
+        text: "You read like a creative technologist, someone who blends art and engineering so tools feel human. Pepper started as an art project.",
         emotion: 'excited',
         variation_id: 'career_creative_tech_v1'
       }
@@ -3828,7 +3828,7 @@ MISSION: Stabilize the wave form within safety limits.`,
     nodeId: 'maya_loyalty_trigger',
     speaker: 'Maya Chen',
     content: [{
-      text: "Hey. I need your help with something.\n\nThe senior design showcase is next week. Faculty, industry partners, parents—everyone will be there.\n\nI've been working on something. Not for class. For me. An adaptive learning interface for kids with ADHD. Uses motion tracking and gamification to keep attention without overstimulation.\n\nIt's... it's good. Really good. But if I present it, my parents will be there. They'll see that I've been 'wasting time' on this instead of focusing on pre-med coursework.\n\nBut I think this could actually help people. Real people. Kids who struggle like I did.\n\nWill you help me prepare? Be my practice audience?",
+      text: "I need your help.",
       emotion: 'vulnerable_determined',
       variation_id: 'loyalty_trigger_v1'
     }],
@@ -3858,7 +3858,7 @@ MISSION: Stabilize the wave form within safety limits.`,
     nodeId: 'maya_loyalty_declined',
     speaker: 'Maya Chen',
     content: [{
-      text: "Yeah. You're probably right. Devon's presented at conferences. He'd know the technical stuff better.\n\nThanks anyway.",
+      text: "Yeah.",
       emotion: 'disappointed',
       variation_id: 'loyalty_declined_v1'
     }],
@@ -3875,7 +3875,7 @@ MISSION: Stabilize the wave form within safety limits.`,
     nodeId: 'maya_loyalty_start',
     speaker: 'Maya Chen',
     content: [{
-      text: "Okay. Here's the prototype.\n\n[She pulls up a tablet showing a colorful, fluid interface. Shapes morph and dance in response to movement, but there's structure underneath—curriculum goals, progress tracking, adaptive difficulty.]\n\nThe pitch is 7 minutes. Faculty will ask technical questions. Industry partners will ask about market viability. And my parents...\n\nMy parents will ask why I'm not in med school.\n\nLet me run through it. Stop me when something doesn't land.",
+      text: "She opens the slide deck with shaking hands.",
       emotion: 'focused_anxious',
       variation_id: 'loyalty_start_v1'
     }],
@@ -3896,7 +3896,7 @@ MISSION: Stabilize the wave form within safety limits.`,
     nodeId: 'maya_loyalty_practice',
     speaker: 'Maya Chen',
     content: [{
-      text: "[Maya takes a breath. Begins.]\n\n\"Traditional educational software treats attention as a binary: focused or distracted. But ADHD brains don't work that way. Attention is kinetic. It flows.\n\nMy interface—MotionMind—tracks micro-movements. Fidgeting, head tilts, posture shifts. Instead of punishing distraction, it channels kinetic energy into curriculum engagement.\n\nA kid bounces their leg? The animation speed increases to match their rhythm. They look away? The interface pauses, waits, invites them back with motion cues.\n\nEarly testing with 12 students showed 340% increase in task completion and 89% reduction in frustration behaviors.\"\n\n[She stops. Looks at you.]\n\nToo technical? Not technical enough? Did I lose you at 'kinetic'?",
+      text: "Practice round. Keep it simple: problem, evidence, human impact, ask. We refine between reps.",
       emotion: 'anxious_hopeful',
       variation_id: 'practice_v1'
     }],
@@ -3929,7 +3929,7 @@ MISSION: Stabilize the wave form within safety limits.`,
     nodeId: 'maya_loyalty_iteration',
     speaker: 'Maya Chen',
     content: [{
-      text: "[She nods, thinking.]\n\n\"Right. Start human. Okay.\"\n\n[Takes another breath. Restarts.]\n\n\"I was diagnosed with ADHD at 8. School was torture. Sit still. Focus. Pay attention. But my brain doesn't sit still. It moves.\n\nSo I built something that moves with it.\"\n\n[She demonstrates. The interface responds to her hand waves, her shifting weight. It's mesmerizing.]\n\n\"This is MotionMind. For kids whose attention is kinetic, not broken.\"\n\n[Pause.]\n\nBetter?",
+      text: "Iteration matters more than perfection. Each pass clarifies message, lowers panic, and makes the final delivery real.",
       emotion: 'hopeful_vulnerable',
       variation_id: 'iteration_v1'
     }],
@@ -3947,7 +3947,7 @@ MISSION: Stabilize the wave form within safety limits.`,
     nodeId: 'maya_loyalty_shallow',
     speaker: 'Maya Chen',
     content: [{
-      text: "[She smiles, but it doesn't reach her eyes.]\n\n\"Yeah. Confidence. That's all I need.\"\n\n[She closes the laptop.]\n\nThanks for listening. I should... I should practice more on my own.",
+      text: "[She smiles, but it doesn't reach her eyes. ] \"Yeah.",
       emotion: 'disappointed_closed_off',
       variation_id: 'shallow_v1'
     }],
@@ -3968,14 +3968,14 @@ MISSION: Stabilize the wave form within safety limits.`,
     nodeId: 'maya_loyalty_parents_question',
     speaker: 'Maya Chen',
     content: [{
-      text: "Okay. Now the hard part.\n\n[She sits down. Vulnerability cracks through.]\n\nWhat if they ask why I'm doing this instead of preparing for the MCAT? What if Dad says, 'This is a nice hobby, but when are you going to focus on your future?'\n\nHow do I tell them... this IS my future? That I'm not failing. I'm just not following their plan.\n\nWhat do I say?",
+      text: "Okay. Now the hard part.",
       emotion: 'vulnerable_desperate',
       variation_id: 'parents_question_v1'
     }],
     choices: [
       {
         choiceId: 'truth_gentle',
-        text: "Tell them the truth gently: 'This is what I'm good at. This is where I belong.'",
+        text: "Tell them gently: 'This is my strength. This is where I belong.'",
         nextNodeId: 'maya_loyalty_success',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'courage']
@@ -3994,7 +3994,7 @@ MISSION: Stabilize the wave form within safety limits.`,
     nodeId: 'maya_loyalty_success',
     speaker: 'Maya Chen',
     content: [{
-      text: "[She closes her eyes. Nods.]\n\n\"This is what I'm good at. This is where I belong.\"\n\n[Opens them.]\n\n\"Simple. Direct. True.\"\n\n[A week later. You get a text.]\n\n\"Presented today. Faculty loved it. Industry partner wants a meeting. And my parents...\n\nMom cried. Said she didn't know I'd been struggling all those years. That she's sorry for not listening.\n\nDad still wants me to 'keep options open.' But he said he's proud. That's... that's enough for now.\n\nThank you. For helping me find the words. For believing this mattered.\n\nIt did. It does.\"",
+      text: "[She closes her eyes, then nods.",
       emotion: 'grateful_transformed',
       variation_id: 'success_v1',
       richEffectContext: 'success'
@@ -4021,7 +4021,7 @@ MISSION: Stabilize the wave form within safety limits.`,
     nodeId: 'maya_loyalty_partial',
     speaker: 'Maya Chen',
     content: [{
-      text: "[She nods slowly.]\n\n\"Yeah. 'Exploring options.' Keep it vague. Safe.\"\n\n[Pause.]\n\n\"It's just... I'm tired of being safe. Of hedging.\"\n\n[A week later. You get a text.]\n\n\"Presented. It went okay. Parents seemed... confused but supportive? Hard to tell.\n\nIndustry partner said 'interesting concept, reach out if you pursue this seriously.'\n\nI don't know if I softened the truth too much or if I just wasn't ready.\n\nThanks for trying to help.\"",
+      text: "A week later she texts: the demo was imperfect but real,.",
       emotion: 'conflicted_uncertain',
       variation_id: 'partial_v1'
     }],

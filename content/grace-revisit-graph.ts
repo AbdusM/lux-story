@@ -85,7 +85,7 @@ What do you want to know?`,
                 choiceId: 'grace_revisit_list_sketchbook',
                 text: "Show me what you're writing.",
                 nextNodeId: 'grace_revisit_update',
-                pattern: 'exploring',
+                pattern: 'building',
                 skills: ['curiosity']
             },
             {
@@ -133,7 +133,7 @@ I realized... if I don't write it down, who remembers? I'm not just a caregiver 
         choices: [
             {
                 choiceId: 'grace_revisit_witness',
-                text: "Witness. That's a powerful role.",
+                text: "Witness.",
                 nextNodeId: 'grace_revisit_closing',
                 pattern: 'helping',
                 skills: ['emotionalIntelligence'],
@@ -172,7 +172,7 @@ Samuel's over by the boards if you need him. But... feel free to come sit quietl
         choices: [
             {
                 choiceId: 'return_to_samuel_after_grace',
-                text: "Return to Samuel",
+                text: "Return to Samuel.",
                 nextNodeId: SAMUEL_HUB_AFTER_GRACE,
                 pattern: 'exploring'
             },
@@ -197,15 +197,11 @@ Samuel's over by the boards if you need him. But... feel free to come sit quietl
         speaker: 'Grace',
         content: [
             {
-                text: `How did you—
+                text: `Mr. Davis may have hours left, and he's afraid of dying alone more than dying.
 
-Mr. Davis. End-stage. His daughter's flying in from Seattle, but the doctors say... maybe 48 hours. Maybe less.
+I'm exhausted, still on shift, and I can't hold this vigil by myself.
 
-He's scared. Not of dying—he's made peace with that. But of being alone when it happens. Of the silence.
-
-I'm on shift tonight. Third night in a row. I'm exhausted, but I can't leave him. Not like this.
-
-You understand presence. Would you... sit with us? Just for a few hours. Help me hold space for him?`,
+Will you sit with us for a few hours and help me hold the room?`,
                 emotion: 'vulnerable_determined',
                 variation_id: 'loyalty_trigger_v1',
                 richEffectContext: 'warning'

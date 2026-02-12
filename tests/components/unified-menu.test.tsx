@@ -1,6 +1,6 @@
 import React from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 // Keep animation semantics out of unit tests.
@@ -26,7 +26,9 @@ vi.mock('next/link', () => ({
 }))
 
 vi.mock('@/components/auth/LoginModal', () => ({
-  LoginModal: () => null,
+  LoginModal: ({ isOpen }: { isOpen: boolean }) => (
+    isOpen ? <div data-testid="login-modal">Login Modal</div> : null
+  ),
 }))
 
 const pushNow = vi.fn().mockResolvedValue(undefined)
@@ -44,8 +46,13 @@ vi.mock('@/hooks/useColorBlindMode', () => ({
   useColorBlindMode: () => (['default', setColorBlindMode] as const),
 }))
 
+const mockUserRole = {
+  user: null as { email?: string | null } | null,
+  role: 'anonymous',
+  loading: false,
+}
 vi.mock('@/hooks/useUserRole', () => ({
-  useUserRole: () => ({ user: null, role: 'anonymous', loading: false }),
+  useUserRole: () => mockUserRole,
 }))
 
 const signOut = vi.fn().mockResolvedValue(undefined)
@@ -61,8 +68,14 @@ describe('UnifiedMenu', () => {
     pushNow.mockClear()
     setTextSize.mockClear()
     setColorBlindMode.mockClear()
-    signOut.mockClear()
-    localStorage.clear()
+    signOut.mockReset()
+    signOut.mockResolvedValue(undefined)
+    mockUserRole.user = null
+    mockUserRole.role = 'anonymous'
+    mockUserRole.loading = false
+    if (typeof localStorage !== 'undefined' && typeof localStorage.clear === 'function') {
+      localStorage.clear()
+    }
     document.documentElement.className = ''
   })
 
@@ -117,5 +130,71 @@ describe('UnifiedMenu', () => {
 
     await user.click(screen.getByRole('button', { name: /all settings/i }))
     expect(routerPush).toHaveBeenCalledWith('/profile')
+  })
+
+  it('renders authenticated account state and signs out', async () => {
+    mockUserRole.user = { email: 'admin@example.com' }
+    mockUserRole.role = 'admin'
+
+    const user = userEvent.setup()
+    render(<UnifiedMenu />)
+    await user.click(screen.getByRole('button', { name: /settings menu/i }))
+
+    expect(screen.getByText('admin@example.com')).toBeInTheDocument()
+    expect(screen.getByText('admin')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: /sign out/i }))
+    await waitFor(() => expect(signOut).toHaveBeenCalledTimes(1))
+  })
+
+  it('opens login modal from guest account branch', async () => {
+    const user = userEvent.setup()
+    render(<UnifiedMenu />)
+
+    await user.click(screen.getByRole('button', { name: /settings menu/i }))
+    await user.click(screen.getByRole('button', { name: /sign in/i }))
+
+    expect(screen.getByTestId('login-modal')).toBeInTheDocument()
+  })
+
+  it('renders active profile/admin branches and applies text/color settings', async () => {
+    const user = userEvent.setup()
+    const onShowReport = vi.fn()
+
+    render(<UnifiedMenu onShowReport={onShowReport} playerId="player_123" />)
+    await user.click(screen.getByRole('button', { name: /settings menu/i }))
+
+    const clinicalAuditLink = screen.getByRole('link', { name: /clinical audit/i })
+    expect(clinicalAuditLink).toHaveAttribute('href', '/admin/player_123')
+
+    await user.click(screen.getByRole('button', { name: /accessibility/i }))
+    await user.click(screen.getByRole('button', { name: 'Large' }))
+    await user.click(screen.getByRole('button', { name: 'Protanopia' }))
+
+    await waitFor(() => {
+      expect(setTextSize).toHaveBeenCalledWith('large')
+      expect(setColorBlindMode).toHaveBeenCalledWith('protanopia')
+    })
+    expect(pushNow).toHaveBeenCalledTimes(2)
+
+    await user.click(screen.getByRole('button', { name: /career profile/i }))
+    expect(onShowReport).toHaveBeenCalledTimes(1)
+  })
+
+  it('keeps menu stable when sign out fails', async () => {
+    mockUserRole.user = { email: 'user@example.com' }
+    mockUserRole.role = 'user'
+    signOut.mockRejectedValueOnce(new Error('network'))
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+
+    const user = userEvent.setup()
+    render(<UnifiedMenu />)
+    await user.click(screen.getByRole('button', { name: /settings menu/i }))
+    await user.click(screen.getByRole('button', { name: /sign out/i }))
+
+    await waitFor(() => expect(errorSpy).toHaveBeenCalled())
+    expect(screen.getByRole('dialog', { name: /settings/i })).toBeInTheDocument()
+
+    errorSpy.mockRestore()
   })
 })

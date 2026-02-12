@@ -13,17 +13,17 @@ export const marketDialogueNodes: DialogueNode[] = [
     {
         nodeId: 'market_entry_logic',
         speaker: 'Narrator',
-        content: [{ text: "...", variation_id: 'market_logic_dummy' }], // Invisible node
+        content: [{ text: "Step back for now.", variation_id: 'market_logic_dummy' }], // Invisible node
         choices: [
             {
                 choiceId: 'route_to_crowd',
-                text: 'CONTINUE',
+                text: 'Proceed.',
                 nextNodeId: 'market_high_density_intro',
                 visibleCondition: { hasGlobalFlags: ['high_density'] }
             },
             {
                 choiceId: 'route_to_normal',
-                text: 'CONTINUE',
+                text: 'Proceed.',
                 nextNodeId: 'sector_2_market',
                 visibleCondition: { lacksGlobalFlags: ['high_density'] }
             }
@@ -34,17 +34,17 @@ export const marketDialogueNodes: DialogueNode[] = [
     {
         nodeId: 'market_transit_logic',
         speaker: 'Narrator',
-        content: [{ text: "...", variation_id: 'market_transit_dummy' }],
+        content: [{ text: "Step back for now.", variation_id: 'market_transit_dummy' }],
         choices: [
             {
                 choiceId: 'transit_glitch',
-                text: 'CONTINUE',
+                text: 'Proceed.',
                 nextNodeId: 'deep_station_glitch_entry',
                 visibleCondition: { hasGlobalFlags: ['high_density'] }
             },
             {
                 choiceId: 'transit_normal',
-                text: 'CONTINUE',
+                text: 'Proceed.',
                 nextNodeId: 'samuel_comprehensive_hub',
                 visibleCondition: { lacksGlobalFlags: ['high_density'] }
             }
@@ -56,7 +56,7 @@ export const marketDialogueNodes: DialogueNode[] = [
         nodeId: 'market_high_density_intro',
         speaker: 'Narrator',
         content: [{
-            text: "[CRITICAL ALERT: Population Density > 90%]\n\nThe Market is a crushing sea of bodies today. You have to shove your way through the sweaty, desperate crowd. \n\nBefore you even reach the stalls, a street urchin bumps into you hard.",
+            text: "[CRITICAL ALERT: Population Density > 90%] The Market is a crushing sea of bodies.",
             variation_id: 'market_dense_v1',
             emotion: 'anxiety',
             interaction: 'shake',
@@ -87,7 +87,7 @@ export const marketDialogueNodes: DialogueNode[] = [
         nodeId: 'sector_2_market',
         speaker: 'Narrator',
         content: [{
-            text: "[The air smells of burning spice and old paper. Deep shadows hide the faces of the merchants.]\n\nWelcome to The Market. Lanterns flicker in the alcoves of a ruined skyscraper, illuminating trays of circuit boards and jars of lab-grown jam.\n\nThe only rule here: Everything has a price.",
+            text: "[The air smells of burning spice and old paper.",
             variation_id: 'market_intro_v3',
             emotion: 'mystical',
             patternReflection: [
@@ -315,7 +315,7 @@ export const marketDialogueNodes: DialogueNode[] = [
         nodeId: 'market_browse_stalls',
         speaker: 'Narrator',
         content: [{
-            text: "You weave through the stalls. \n\n- To your left: A man selling jars of 'Real Cloud Water' (it's tap water).\n- To your right: A drone mechanic welding a prosthetic arm with a blowtorch.\n\nThe energy here is frantic. Alive.",
+            text: "You weave through the stalls.",
             variation_id: 'market_stalls_v1'
         }],
         choices: [

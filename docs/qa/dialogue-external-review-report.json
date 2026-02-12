@@ -1,0 +1,1749 @@
+{
+  "generatedAt": "2026-02-12T19:47:18.605Z",
+  "thresholds": {
+    "contentSoftWords": 35,
+    "contentHardWords": 90,
+    "choiceLongWords": 16,
+    "choiceVeryLongWords": 22,
+    "terseChoiceWordsMax": 2,
+    "highFanInMin": 3,
+    "highFanOutMinChoices": 5,
+    "monologueChain": {
+      "hardNodesMax": 2,
+      "hardWordsMax": 180,
+      "softNodesMax": 2,
+      "softWordsMax": 120
+    }
+  },
+  "summary": {
+    "characters": 20,
+    "totals": {
+      "nodes": 1390,
+      "contentBlocks": 1423,
+      "totalChoices": 2452,
+      "hardContentIssues": 0,
+      "softContentIssues": 59,
+      "hardMonologueChains": 0,
+      "softMonologueChains": 0,
+      "longChoices": 0,
+      "veryLongChoices": 0,
+      "terseChoices": 143,
+      "continueChoices": 0,
+      "questionChoices": 625
+    },
+    "reachabilityTotals": {
+      "structuralReachableNodes": 1390,
+      "hardContentIssuesReachable": 0,
+      "softContentIssuesReachable": 59,
+      "hardMonologueChainsReachable": 0,
+      "softMonologueChainsReachable": 0,
+      "narrativeVisitedStatePairs": 17270
+    },
+    "tierDistribution": {
+      "high": 0,
+      "medium": 0,
+      "low": 20
+    },
+    "tierDistributionReachabilityWeighted": {
+      "high": 0,
+      "medium": 0,
+      "low": 20
+    },
+    "topPriority": [
+      {
+        "characterId": "samuel",
+        "score": 1,
+        "tier": "low",
+        "reasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "hardContentIssues": 0,
+        "hardMonologueChains": 0,
+        "veryLongChoices": 0
+      },
+      {
+        "characterId": "maya",
+        "score": 1,
+        "tier": "low",
+        "reasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "hardContentIssues": 0,
+        "hardMonologueChains": 0,
+        "veryLongChoices": 0
+      },
+      {
+        "characterId": "devon",
+        "score": 1,
+        "tier": "low",
+        "reasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "hardContentIssues": 0,
+        "hardMonologueChains": 0,
+        "veryLongChoices": 0
+      },
+      {
+        "characterId": "jordan",
+        "score": 1,
+        "tier": "low",
+        "reasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "hardContentIssues": 0,
+        "hardMonologueChains": 0,
+        "veryLongChoices": 0
+      },
+      {
+        "characterId": "marcus",
+        "score": 1,
+        "tier": "low",
+        "reasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "hardContentIssues": 0,
+        "hardMonologueChains": 0,
+        "veryLongChoices": 0
+      },
+      {
+        "characterId": "tess",
+        "score": 1,
+        "tier": "low",
+        "reasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "hardContentIssues": 0,
+        "hardMonologueChains": 0,
+        "veryLongChoices": 0
+      },
+      {
+        "characterId": "yaquin",
+        "score": 1,
+        "tier": "low",
+        "reasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "hardContentIssues": 0,
+        "hardMonologueChains": 0,
+        "veryLongChoices": 0
+      },
+      {
+        "characterId": "kai",
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "hardContentIssues": 0,
+        "hardMonologueChains": 0,
+        "veryLongChoices": 0
+      },
+      {
+        "characterId": "alex",
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "hardContentIssues": 0,
+        "hardMonologueChains": 0,
+        "veryLongChoices": 0
+      },
+      {
+        "characterId": "rohan",
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "hardContentIssues": 0,
+        "hardMonologueChains": 0,
+        "veryLongChoices": 0
+      }
+    ],
+    "topPriorityReachabilityWeighted": [
+      {
+        "characterId": "samuel",
+        "reachabilityWeightedScore": 1,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "hardContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "structuralReachabilityRatio": 1
+      },
+      {
+        "characterId": "maya",
+        "reachabilityWeightedScore": 1,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "hardContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "structuralReachabilityRatio": 1
+      },
+      {
+        "characterId": "devon",
+        "reachabilityWeightedScore": 1,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "hardContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "structuralReachabilityRatio": 1
+      },
+      {
+        "characterId": "jordan",
+        "reachabilityWeightedScore": 1,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "hardContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "structuralReachabilityRatio": 1
+      },
+      {
+        "characterId": "marcus",
+        "reachabilityWeightedScore": 1,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "hardContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "structuralReachabilityRatio": 1
+      },
+      {
+        "characterId": "tess",
+        "reachabilityWeightedScore": 1,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "hardContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "structuralReachabilityRatio": 1
+      },
+      {
+        "characterId": "yaquin",
+        "reachabilityWeightedScore": 1,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "hardContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "structuralReachabilityRatio": 1
+      },
+      {
+        "characterId": "kai",
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [],
+        "hardContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "structuralReachabilityRatio": 1
+      },
+      {
+        "characterId": "alex",
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [],
+        "hardContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "structuralReachabilityRatio": 1
+      },
+      {
+        "characterId": "rohan",
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [],
+        "hardContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "structuralReachabilityRatio": 1
+      }
+    ]
+  },
+  "scope": {
+    "included": {
+      "characterGraphsFromRegistry": 20,
+      "revisitGraphsIncluded": 4,
+      "hasGuidelineReport": true,
+      "hasStructuralReachabilityReport": true,
+      "hasNarrativeSimReport": true
+    },
+    "excludedFromPrimaryScoring": {
+      "detachedDialogueSources": [
+        {
+          "sourceId": "intersection_alex_jordan",
+          "runtimeReachableNow": false,
+          "reachableByNavigation": false,
+          "devOnly": false,
+          "nodes": 7,
+          "contentBlocks": 7,
+          "choices": 9,
+          "hardContentIssues": 0,
+          "softContentIssues": 7,
+          "hardMonologueChains": 0
+        },
+        {
+          "sourceId": "intersection_maya_devon",
+          "runtimeReachableNow": false,
+          "reachableByNavigation": false,
+          "devOnly": false,
+          "nodes": 6,
+          "contentBlocks": 6,
+          "choices": 9,
+          "hardContentIssues": 0,
+          "softContentIssues": 6,
+          "hardMonologueChains": 0
+        },
+        {
+          "sourceId": "intersection_tess_rohan",
+          "runtimeReachableNow": false,
+          "reachableByNavigation": false,
+          "devOnly": false,
+          "nodes": 7,
+          "contentBlocks": 7,
+          "choices": 9,
+          "hardContentIssues": 0,
+          "softContentIssues": 7,
+          "hardMonologueChains": 0
+        },
+        {
+          "sourceId": "samuel_waiting_nodes",
+          "runtimeReachableNow": false,
+          "reachableByNavigation": false,
+          "devOnly": false,
+          "nodes": 6,
+          "contentBlocks": 6,
+          "choices": 12,
+          "hardContentIssues": 0,
+          "softContentIssues": 1,
+          "hardMonologueChains": 0
+        },
+        {
+          "sourceId": "reciprocity_graceful_decline",
+          "runtimeReachableNow": false,
+          "reachableByNavigation": false,
+          "devOnly": true,
+          "nodes": 2,
+          "contentBlocks": 2,
+          "choices": 2,
+          "hardContentIssues": 0,
+          "softContentIssues": 2,
+          "hardMonologueChains": 0
+        },
+        {
+          "sourceId": "reciprocity_enhanced_reactions",
+          "runtimeReachableNow": false,
+          "reachableByNavigation": false,
+          "devOnly": true,
+          "nodes": 4,
+          "contentBlocks": 4,
+          "choices": 7,
+          "hardContentIssues": 0,
+          "softContentIssues": 4,
+          "hardMonologueChains": 0
+        },
+        {
+          "sourceId": "reciprocity_samuel_reflections",
+          "runtimeReachableNow": false,
+          "reachableByNavigation": false,
+          "devOnly": true,
+          "nodes": 5,
+          "contentBlocks": 5,
+          "choices": 10,
+          "hardContentIssues": 0,
+          "softContentIssues": 5,
+          "hardMonologueChains": 0
+        },
+        {
+          "sourceId": "maya_reciprocity_example",
+          "runtimeReachableNow": false,
+          "reachableByNavigation": false,
+          "devOnly": true,
+          "nodes": 9,
+          "contentBlocks": 9,
+          "choices": 19,
+          "hardContentIssues": 0,
+          "softContentIssues": 0,
+          "hardMonologueChains": 0
+        }
+      ],
+      "detachedDialogueTotals": {
+        "nodes": 46,
+        "contentBlocks": 46,
+        "choices": 77,
+        "hardContentIssues": 0,
+        "softContentIssues": 32,
+        "hardMonologueChains": 0
+      },
+      "nonGraphAnswerSources": [
+        {
+          "sourceId": "player_questions_reciprocity",
+          "runtimeReachableNow": false,
+          "reachableByNavigation": false,
+          "devOnly": false,
+          "questions": 7,
+          "choices": 28,
+          "questionHardContent": 0,
+          "questionSoftContent": 1,
+          "longChoices": 0,
+          "veryLongChoices": 0,
+          "npcResponseHardContent": 0,
+          "npcResponseSoftContent": 0
+        }
+      ],
+      "nonGraphAnswerTotals": {
+        "questions": 7,
+        "choices": 28,
+        "questionHardContent": 0,
+        "questionSoftContent": 1,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "npcResponseHardContent": 0,
+        "npcResponseSoftContent": 0
+      },
+      "nonGraphExperienceSources": [
+        {
+          "sourceId": "loyalty_experience_system",
+          "runtimeReachableNow": true,
+          "reachableByNavigation": false,
+          "devOnly": false,
+          "experiences": 20,
+          "phases": 75,
+          "textBlocks": 309,
+          "choices": 152,
+          "hardContentIssues": 0,
+          "softContentIssues": 41,
+          "longChoices": 3,
+          "veryLongChoices": 0
+        }
+      ],
+      "nonGraphExperienceTotals": {
+        "experiences": 20,
+        "phases": 75,
+        "textBlocks": 309,
+        "choices": 152,
+        "hardContentIssues": 0,
+        "softContentIssues": 41,
+        "longChoices": 3,
+        "veryLongChoices": 0
+      },
+      "dormantDialogueSources": [
+        {
+          "sourceId": "maya_dialogue_enhanced_json",
+          "filePath": "content/maya-dialogue-enhanced.json",
+          "runtimeReachableNow": false,
+          "reachableByNavigation": false,
+          "devOnly": false,
+          "nodes": 10,
+          "contentBlocks": 42,
+          "choices": 17,
+          "hardContentIssues": 0,
+          "softContentIssues": 36,
+          "longChoices": 0,
+          "veryLongChoices": 0
+        }
+      ],
+      "dormantDialogueTotals": {
+        "nodes": 10,
+        "contentBlocks": 42,
+        "choices": 17,
+        "hardContentIssues": 0,
+        "softContentIssues": 36,
+        "longChoices": 0,
+        "veryLongChoices": 0
+      }
+    },
+    "caveats": [
+      "Primary character scoring uses graph-registry-routable character graphs only.",
+      "Reachability weighting uses structural reachability (unreachable-dialogue-nodes report) and narrative sim visit-state counts when available.",
+      "Detached dialogue sources may be in prototype/unwired state and are reported separately to prevent false \"full corpus\" assumptions.",
+      "Sentence-overflow style flags from dialogue-guidelines are not used in the character soft-content metric (word-based for comparability).",
+      "Continue-chain detection focuses on explicit continue-style links and may undercount non-standard deterministic chain wording."
+    ]
+  },
+  "rows": [
+    {
+      "characterId": "samuel",
+      "graphKeys": [
+        "samuel"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 218,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 7,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 1117
+      },
+      "dialogue": {
+        "nodes": 218,
+        "contentBlocks": 234,
+        "avgContentWords": 11.05,
+        "p90ContentWords": 28,
+        "hardContentIssues": 0,
+        "softContentIssues": 7,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 402,
+        "avgChoiceWords": 4.82,
+        "p90ChoiceWords": 8,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 89,
+        "continueChoices": 0,
+        "questionChoices": 80,
+        "missingPatternChoices": 34,
+        "gatedChoices": 53,
+        "uniqueChoiceTexts": 314,
+        "choiceReuseRatio": 0.22,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "proceed.",
+            "count": 64
+          },
+          {
+            "text": "who else is here?",
+            "count": 7
+          },
+          {
+            "text": "i think i understand.",
+            "count": 4
+          },
+          {
+            "text": "continue exploring",
+            "count": 4
+          },
+          {
+            "text": "step off the train",
+            "count": 2
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 31,
+        "highFanInNodes": 28,
+        "highFanOutNodes": 8,
+        "totalEdges": 402
+      },
+      "priority": {
+        "score": 1,
+        "tier": "low",
+        "reasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "reachabilityWeightedScore": 1,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [
+          "high_change_complexity_fan_in"
+        ]
+      }
+    },
+    {
+      "characterId": "maya",
+      "graphKeys": [
+        "maya",
+        "maya_revisit"
+      ],
+      "hasRevisitGraph": true,
+      "reachability": {
+        "structuralReachableNodes": 71,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 5,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 1310
+      },
+      "dialogue": {
+        "nodes": 71,
+        "contentBlocks": 71,
+        "avgContentWords": 11.13,
+        "p90ContentWords": 26,
+        "hardContentIssues": 0,
+        "softContentIssues": 5,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 165,
+        "avgChoiceWords": 8.3,
+        "p90ChoiceWords": 13,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 1,
+        "continueChoices": 0,
+        "questionChoices": 48,
+        "missingPatternChoices": 0,
+        "gatedChoices": 50,
+        "uniqueChoiceTexts": 156,
+        "choiceReuseRatio": 0.05,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "how have you been?",
+            "count": 3
+          },
+          {
+            "text": "how's your path going?",
+            "count": 3
+          },
+          {
+            "text": "what would it mean to choose robotics?",
+            "count": 2
+          },
+          {
+            "text": "could both paths honor what matters?",
+            "count": 2
+          },
+          {
+            "text": "whatever you choose, i believe in you.",
+            "count": 2
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 15,
+        "highFanInNodes": 19,
+        "highFanOutNodes": 6,
+        "totalEdges": 165
+      },
+      "priority": {
+        "score": 1,
+        "tier": "low",
+        "reasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "reachabilityWeightedScore": 1,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [
+          "high_change_complexity_fan_in"
+        ]
+      }
+    },
+    {
+      "characterId": "devon",
+      "graphKeys": [
+        "devon",
+        "devon_revisit"
+      ],
+      "hasRevisitGraph": true,
+      "reachability": {
+        "structuralReachableNodes": 66,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 5,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 1205
+      },
+      "dialogue": {
+        "nodes": 66,
+        "contentBlocks": 66,
+        "avgContentWords": 11.09,
+        "p90ContentWords": 33,
+        "hardContentIssues": 0,
+        "softContentIssues": 5,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 121,
+        "avgChoiceWords": 7,
+        "p90ChoiceWords": 11,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 2,
+        "continueChoices": 0,
+        "questionChoices": 37,
+        "missingPatternChoices": 2,
+        "gatedChoices": 20,
+        "uniqueChoiceTexts": 116,
+        "choiceReuseRatio": 0.04,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "return to samuel",
+            "count": 3
+          },
+          {
+            "text": "what if you don't have to pick?",
+            "count": 2
+          },
+          {
+            "text": "what does your gut say?",
+            "count": 2
+          },
+          {
+            "text": "whatever feels right. he needs you there.",
+            "count": 2
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 5,
+        "highFanInNodes": 14,
+        "highFanOutNodes": 2,
+        "totalEdges": 121
+      },
+      "priority": {
+        "score": 1,
+        "tier": "low",
+        "reasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "reachabilityWeightedScore": 1,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [
+          "high_change_complexity_fan_in"
+        ]
+      }
+    },
+    {
+      "characterId": "jordan",
+      "graphKeys": [
+        "jordan"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 46,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 1,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 1053
+      },
+      "dialogue": {
+        "nodes": 46,
+        "contentBlocks": 47,
+        "avgContentWords": 8,
+        "p90ContentWords": 22,
+        "hardContentIssues": 0,
+        "softContentIssues": 1,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 90,
+        "avgChoiceWords": 9.12,
+        "p90ChoiceWords": 13,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 0,
+        "continueChoices": 0,
+        "questionChoices": 22,
+        "missingPatternChoices": 0,
+        "gatedChoices": 46,
+        "uniqueChoiceTexts": 86,
+        "choiceReuseRatio": 0.04,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "what if your past is exactly why you're the perfect mentor?",
+            "count": 2
+          },
+          {
+            "text": "what if you're proof that birmingham rewards people who adapt?",
+            "count": 2
+          },
+          {
+            "text": "what if the story you tell yourself is the only one that matters?",
+            "count": 2
+          },
+          {
+            "text": "good luck with your speech.",
+            "count": 2
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 14,
+        "highFanInNodes": 12,
+        "highFanOutNodes": 2,
+        "totalEdges": 90
+      },
+      "priority": {
+        "score": 1,
+        "tier": "low",
+        "reasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "reachabilityWeightedScore": 1,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [
+          "high_change_complexity_fan_in"
+        ]
+      }
+    },
+    {
+      "characterId": "marcus",
+      "graphKeys": [
+        "marcus"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 83,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 1519
+      },
+      "dialogue": {
+        "nodes": 83,
+        "contentBlocks": 83,
+        "avgContentWords": 14.71,
+        "p90ContentWords": 31,
+        "hardContentIssues": 0,
+        "softContentIssues": 0,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 149,
+        "avgChoiceWords": 9.44,
+        "p90ChoiceWords": 13,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 3,
+        "continueChoices": 0,
+        "questionChoices": 29,
+        "missingPatternChoices": 7,
+        "gatedChoices": 12,
+        "uniqueChoiceTexts": 149,
+        "choiceReuseRatio": 0,
+        "topRepeatedChoiceTexts": []
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 15,
+        "highFanInNodes": 13,
+        "highFanOutNodes": 3,
+        "totalEdges": 149
+      },
+      "priority": {
+        "score": 1,
+        "tier": "low",
+        "reasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "reachabilityWeightedScore": 1,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [
+          "high_change_complexity_fan_in"
+        ]
+      }
+    },
+    {
+      "characterId": "tess",
+      "graphKeys": [
+        "tess"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 55,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 515
+      },
+      "dialogue": {
+        "nodes": 55,
+        "contentBlocks": 56,
+        "avgContentWords": 8.27,
+        "p90ContentWords": 19,
+        "hardContentIssues": 0,
+        "softContentIssues": 0,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 101,
+        "avgChoiceWords": 7.35,
+        "p90ChoiceWords": 12,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 3,
+        "continueChoices": 0,
+        "questionChoices": 26,
+        "missingPatternChoices": 0,
+        "gatedChoices": 10,
+        "uniqueChoiceTexts": 99,
+        "choiceReuseRatio": 0.02,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "return to samuel",
+            "count": 3
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 4,
+        "highFanInNodes": 15,
+        "highFanOutNodes": 2,
+        "totalEdges": 101
+      },
+      "priority": {
+        "score": 1,
+        "tier": "low",
+        "reasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "reachabilityWeightedScore": 1,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [
+          "high_change_complexity_fan_in"
+        ]
+      }
+    },
+    {
+      "characterId": "yaquin",
+      "graphKeys": [
+        "yaquin",
+        "yaquin_revisit"
+      ],
+      "hasRevisitGraph": true,
+      "reachability": {
+        "structuralReachableNodes": 61,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 17,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 1310
+      },
+      "dialogue": {
+        "nodes": 61,
+        "contentBlocks": 65,
+        "avgContentWords": 20.18,
+        "p90ContentWords": 47,
+        "hardContentIssues": 0,
+        "softContentIssues": 17,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 115,
+        "avgChoiceWords": 8.1,
+        "p90ChoiceWords": 13,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 2,
+        "continueChoices": 0,
+        "questionChoices": 21,
+        "missingPatternChoices": 0,
+        "gatedChoices": 15,
+        "uniqueChoiceTexts": 111,
+        "choiceReuseRatio": 0.03,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "return to samuel",
+            "count": 5
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 6,
+        "highFanInNodes": 13,
+        "highFanOutNodes": 0,
+        "totalEdges": 115
+      },
+      "priority": {
+        "score": 1,
+        "tier": "low",
+        "reasons": [
+          "high_change_complexity_fan_in"
+        ],
+        "reachabilityWeightedScore": 1,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": [
+          "high_change_complexity_fan_in"
+        ]
+      }
+    },
+    {
+      "characterId": "kai",
+      "graphKeys": [
+        "kai"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 56,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 1403
+      },
+      "dialogue": {
+        "nodes": 56,
+        "contentBlocks": 56,
+        "avgContentWords": 9.25,
+        "p90ContentWords": 20,
+        "hardContentIssues": 0,
+        "softContentIssues": 0,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 100,
+        "avgChoiceWords": 7.91,
+        "p90ChoiceWords": 12,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 0,
+        "continueChoices": 0,
+        "questionChoices": 23,
+        "missingPatternChoices": 3,
+        "gatedChoices": 14,
+        "uniqueChoiceTexts": 98,
+        "choiceReuseRatio": 0.02,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "go build it.",
+            "count": 2
+          },
+          {
+            "text": "return to samuel",
+            "count": 2
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 4,
+        "highFanInNodes": 11,
+        "highFanOutNodes": 1,
+        "totalEdges": 100
+      },
+      "priority": {
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": []
+      }
+    },
+    {
+      "characterId": "alex",
+      "graphKeys": [
+        "alex"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 56,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 8,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 696
+      },
+      "dialogue": {
+        "nodes": 56,
+        "contentBlocks": 57,
+        "avgContentWords": 13.95,
+        "p90ContentWords": 51,
+        "hardContentIssues": 0,
+        "softContentIssues": 8,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 91,
+        "avgChoiceWords": 7.75,
+        "p90ChoiceWords": 11,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 0,
+        "continueChoices": 0,
+        "questionChoices": 35,
+        "missingPatternChoices": 0,
+        "gatedChoices": 7,
+        "uniqueChoiceTexts": 90,
+        "choiceReuseRatio": 0.01,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "summarize the pattern.",
+            "count": 2
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 5,
+        "highFanInNodes": 11,
+        "highFanOutNodes": 4,
+        "totalEdges": 91
+      },
+      "priority": {
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": []
+      }
+    },
+    {
+      "characterId": "rohan",
+      "graphKeys": [
+        "rohan"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 49,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 2,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 820
+      },
+      "dialogue": {
+        "nodes": 49,
+        "contentBlocks": 49,
+        "avgContentWords": 11.02,
+        "p90ContentWords": 19,
+        "hardContentIssues": 0,
+        "softContentIssues": 2,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 82,
+        "avgChoiceWords": 8.04,
+        "p90ChoiceWords": 12,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 2,
+        "continueChoices": 0,
+        "questionChoices": 17,
+        "missingPatternChoices": 5,
+        "gatedChoices": 9,
+        "uniqueChoiceTexts": 81,
+        "choiceReuseRatio": 0.01,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "what do you want people to remember about you?",
+            "count": 2
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 5,
+        "highFanInNodes": 7,
+        "highFanOutNodes": 1,
+        "totalEdges": 82
+      },
+      "priority": {
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": []
+      }
+    },
+    {
+      "characterId": "silas",
+      "graphKeys": [
+        "silas"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 38,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 928
+      },
+      "dialogue": {
+        "nodes": 38,
+        "contentBlocks": 39,
+        "avgContentWords": 9.38,
+        "p90ContentWords": 22,
+        "hardContentIssues": 0,
+        "softContentIssues": 0,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 53,
+        "avgChoiceWords": 6.74,
+        "p90ChoiceWords": 10,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 1,
+        "continueChoices": 0,
+        "questionChoices": 18,
+        "missingPatternChoices": 4,
+        "gatedChoices": 8,
+        "uniqueChoiceTexts": 52,
+        "choiceReuseRatio": 0.02,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "return to samuel",
+            "count": 2
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 3,
+        "highFanInNodes": 3,
+        "highFanOutNodes": 0,
+        "totalEdges": 53
+      },
+      "priority": {
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": []
+      }
+    },
+    {
+      "characterId": "elena",
+      "graphKeys": [
+        "elena"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 87,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 2,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 952
+      },
+      "dialogue": {
+        "nodes": 87,
+        "contentBlocks": 88,
+        "avgContentWords": 8.3,
+        "p90ContentWords": 18,
+        "hardContentIssues": 0,
+        "softContentIssues": 2,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 130,
+        "avgChoiceWords": 7.98,
+        "p90ChoiceWords": 12,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 3,
+        "continueChoices": 0,
+        "questionChoices": 30,
+        "missingPatternChoices": 4,
+        "gatedChoices": 15,
+        "uniqueChoiceTexts": 130,
+        "choiceReuseRatio": 0,
+        "topRepeatedChoiceTexts": []
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 10,
+        "highFanInNodes": 9,
+        "highFanOutNodes": 1,
+        "totalEdges": 130
+      },
+      "priority": {
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": []
+      }
+    },
+    {
+      "characterId": "grace",
+      "graphKeys": [
+        "grace",
+        "grace_revisit"
+      ],
+      "hasRevisitGraph": true,
+      "reachability": {
+        "structuralReachableNodes": 56,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 7,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 345
+      },
+      "dialogue": {
+        "nodes": 56,
+        "contentBlocks": 57,
+        "avgContentWords": 13.98,
+        "p90ContentWords": 43,
+        "hardContentIssues": 0,
+        "softContentIssues": 7,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 98,
+        "avgChoiceWords": 7.95,
+        "p90ChoiceWords": 12,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 1,
+        "continueChoices": 0,
+        "questionChoices": 20,
+        "missingPatternChoices": 0,
+        "gatedChoices": 7,
+        "uniqueChoiceTexts": 97,
+        "choiceReuseRatio": 0.01,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "that's a skill. a real, valuable skill.",
+            "count": 2
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 6,
+        "highFanInNodes": 8,
+        "highFanOutNodes": 1,
+        "totalEdges": 98
+      },
+      "priority": {
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": []
+      }
+    },
+    {
+      "characterId": "asha",
+      "graphKeys": [
+        "asha"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 49,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 629
+      },
+      "dialogue": {
+        "nodes": 49,
+        "contentBlocks": 50,
+        "avgContentWords": 11.34,
+        "p90ContentWords": 23,
+        "hardContentIssues": 0,
+        "softContentIssues": 0,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 89,
+        "avgChoiceWords": 9.1,
+        "p90ChoiceWords": 13,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 1,
+        "continueChoices": 0,
+        "questionChoices": 17,
+        "missingPatternChoices": 0,
+        "gatedChoices": 9,
+        "uniqueChoiceTexts": 87,
+        "choiceReuseRatio": 0.02,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "i just described what i wanted to see.",
+            "count": 2
+          },
+          {
+            "text": "it's about knowing the story behind the image.",
+            "count": 2
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 9,
+        "highFanInNodes": 7,
+        "highFanOutNodes": 2,
+        "totalEdges": 89
+      },
+      "priority": {
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": []
+      }
+    },
+    {
+      "characterId": "lira",
+      "graphKeys": [
+        "lira"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 43,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 711
+      },
+      "dialogue": {
+        "nodes": 43,
+        "contentBlocks": 44,
+        "avgContentWords": 8.41,
+        "p90ContentWords": 18,
+        "hardContentIssues": 0,
+        "softContentIssues": 0,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 76,
+        "avgChoiceWords": 8.82,
+        "p90ChoiceWords": 14,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 1,
+        "continueChoices": 0,
+        "questionChoices": 16,
+        "missingPatternChoices": 0,
+        "gatedChoices": 4,
+        "uniqueChoiceTexts": 75,
+        "choiceReuseRatio": 0.01,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "you're not just scoring a film. you're preserving her.",
+            "count": 2
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 5,
+        "highFanInNodes": 6,
+        "highFanOutNodes": 1,
+        "totalEdges": 76
+      },
+      "priority": {
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": []
+      }
+    },
+    {
+      "characterId": "zara",
+      "graphKeys": [
+        "zara"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 57,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 380
+      },
+      "dialogue": {
+        "nodes": 57,
+        "contentBlocks": 58,
+        "avgContentWords": 13.57,
+        "p90ContentWords": 24,
+        "hardContentIssues": 0,
+        "softContentIssues": 0,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 97,
+        "avgChoiceWords": 7.91,
+        "p90ChoiceWords": 11,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 0,
+        "continueChoices": 0,
+        "questionChoices": 34,
+        "missingPatternChoices": 0,
+        "gatedChoices": 5,
+        "uniqueChoiceTexts": 97,
+        "choiceReuseRatio": 0,
+        "topRepeatedChoiceTexts": []
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 4,
+        "highFanInNodes": 7,
+        "highFanOutNodes": 0,
+        "totalEdges": 97
+      },
+      "priority": {
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": []
+      }
+    },
+    {
+      "characterId": "quinn",
+      "graphKeys": [
+        "quinn"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 100,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 5,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 1065
+      },
+      "dialogue": {
+        "nodes": 100,
+        "contentBlocks": 101,
+        "avgContentWords": 12.08,
+        "p90ContentWords": 28,
+        "hardContentIssues": 0,
+        "softContentIssues": 5,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 163,
+        "avgChoiceWords": 6.31,
+        "p90ChoiceWords": 10,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 10,
+        "continueChoices": 0,
+        "questionChoices": 46,
+        "missingPatternChoices": 0,
+        "gatedChoices": 2,
+        "uniqueChoiceTexts": 162,
+        "choiceReuseRatio": 0.01,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "you were lonely.",
+            "count": 2
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 5,
+        "highFanInNodes": 5,
+        "highFanOutNodes": 1,
+        "totalEdges": 163
+      },
+      "priority": {
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": []
+      }
+    },
+    {
+      "characterId": "dante",
+      "graphKeys": [
+        "dante"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 60,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 1095
+      },
+      "dialogue": {
+        "nodes": 60,
+        "contentBlocks": 61,
+        "avgContentWords": 8.98,
+        "p90ContentWords": 19,
+        "hardContentIssues": 0,
+        "softContentIssues": 0,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 114,
+        "avgChoiceWords": 6.05,
+        "p90ChoiceWords": 9,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 4,
+        "continueChoices": 0,
+        "questionChoices": 46,
+        "missingPatternChoices": 2,
+        "gatedChoices": 1,
+        "uniqueChoiceTexts": 113,
+        "choiceReuseRatio": 0.01,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "what does it tell you?",
+            "count": 2
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 3,
+        "highFanInNodes": 3,
+        "highFanOutNodes": 1,
+        "totalEdges": 114
+      },
+      "priority": {
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": []
+      }
+    },
+    {
+      "characterId": "nadia",
+      "graphKeys": [
+        "nadia"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 68,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 124
+      },
+      "dialogue": {
+        "nodes": 68,
+        "contentBlocks": 69,
+        "avgContentWords": 14.43,
+        "p90ContentWords": 23,
+        "hardContentIssues": 0,
+        "softContentIssues": 0,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 106,
+        "avgChoiceWords": 6.04,
+        "p90ChoiceWords": 10,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 10,
+        "continueChoices": 0,
+        "questionChoices": 33,
+        "missingPatternChoices": 0,
+        "gatedChoices": 0,
+        "uniqueChoiceTexts": 105,
+        "choiceReuseRatio": 0.01,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "how do you practice that vigilance?",
+            "count": 2
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 2,
+        "highFanInNodes": 2,
+        "highFanOutNodes": 1,
+        "totalEdges": 106
+      },
+      "priority": {
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": []
+      }
+    },
+    {
+      "characterId": "isaiah",
+      "graphKeys": [
+        "isaiah"
+      ],
+      "hasRevisitGraph": false,
+      "reachability": {
+        "structuralReachableNodes": 71,
+        "structuralReachabilityRatio": 1,
+        "hardContentIssuesReachable": 0,
+        "softContentIssuesReachable": 0,
+        "hardMonologueChainsReachable": 0,
+        "softMonologueChainsReachable": 0,
+        "narrativeVisitedStatePairs": 93
+      },
+      "dialogue": {
+        "nodes": 71,
+        "contentBlocks": 72,
+        "avgContentWords": 14.57,
+        "p90ContentWords": 23,
+        "hardContentIssues": 0,
+        "softContentIssues": 0,
+        "hardMonologueChains": 0,
+        "softMonologueChains": 0
+      },
+      "answers": {
+        "totalChoices": 110,
+        "avgChoiceWords": 6.1,
+        "p90ChoiceWords": 10,
+        "longChoices": 0,
+        "veryLongChoices": 0,
+        "terseChoices": 10,
+        "continueChoices": 0,
+        "questionChoices": 27,
+        "missingPatternChoices": 2,
+        "gatedChoices": 2,
+        "uniqueChoiceTexts": 109,
+        "choiceReuseRatio": 0.01,
+        "topRepeatedChoiceTexts": [
+          {
+            "text": "what did therapy help you understand?",
+            "count": 2
+          }
+        ]
+      },
+      "changeComplexity": {
+        "requiredStateNodes": 3,
+        "highFanInNodes": 2,
+        "highFanOutNodes": 1,
+        "totalEdges": 110
+      },
+      "priority": {
+        "score": 0,
+        "tier": "low",
+        "reasons": [],
+        "reachabilityWeightedScore": 0,
+        "reachabilityWeightedTier": "low",
+        "reachabilityWeightedReasons": []
+      }
+    }
+  ]
+}

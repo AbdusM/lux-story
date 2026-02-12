@@ -82,7 +82,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Good. Own it. That analytical mind—it's a tool, but it's also part of who you are. Long as you remember: sometimes the answer ain't in the data. Sometimes it's in the quiet between numbers.",
+        text: "Good.",
         emotion: 'affirming',
         variation_id: 'analytical_affirm_v1'
       }
@@ -112,7 +112,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "That's honest. And maybe that's the point. You don't have to claim every pattern you show. Station's got room for you to be lots of things.\n\nJust remember: whether you name it or not, people see it. Question is whether you're steerin' it.",
+        text: "That's honest.",
         emotion: 'understanding',
         variation_id: 'analytical_uncertain_v1'
       }
@@ -133,7 +133,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "See? Even now, you're askin' questions, lookin' for data. You count things. Measure. Compare. When Maya talks, you're trackinin' the logic. When Devon explains code, you're followin' the structure.\n\nThat mind of yours—it builds maps. Just make sure you don't mistake the map for the territory.",
+        text: "See?",
         emotion: 'reflective',
         variation_id: 'analytical_reflect_v1'
       }
@@ -155,7 +155,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Noticed somethin' about you. When everyone else is rushin', you ain't. You let the moment breathe. Let things unfold.",
+        text: "Noticed somethin' about you.",
         emotion: 'observant',
         variation_id: 'patience_observation_v1'
       },
@@ -207,7 +207,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Smart. Real smart. Patience ain't slowness—it's knowin' when to move and when to wait. That's wisdom, not hesitation.\n\nKeep that. World's gonna try to rush you. Don't let it.",
+        text: "Smart.",
         emotion: 'affirming',
         variation_id: 'patience_affirm_v1'
       }
@@ -237,7 +237,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Slow and patient ain't the same thing. Slow is fear. Patient is choice. You're choosin' to let things develop at their own pace. That's strength, not weakness.\n\nBut if you're wonderin'... maybe you need to trust yourself more.",
+        text: "Slow and patient ain't the same thing.",
         emotion: 'understanding',
         variation_id: 'patience_uncertain_v1'
       }
@@ -258,7 +258,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "When Marcus was talkin' about patient care, you didn't jump in. You listened. When Maya got overwhelmed, you didn't rush her—you gave her space.\n\nPatience is how you hold yourself in the world. Not passive. Active waitin'. There's power in that.",
+        text: "When Marcus was talkin' about patient care, you didn't jump in.",
         emotion: 'reflective',
         variation_id: 'patience_reflect_v1'
       }
@@ -280,7 +280,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You got that look. The one travelers get when they're mappin' new territory. Askin' questions nobody thought to ask. Checkin' corners most folks walk right past.",
+        text: "You got that look.",
         emotion: 'observant',
         variation_id: 'exploring_observation_v1'
       },
@@ -332,7 +332,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Good. That hunger to understand—that's what moves the world forward. Just remember: sometimes the question's more important than the answer.\n\nKeep explorin'. But know when you found somethin' worth stayin' for.",
+        text: "Good.",
         emotion: 'affirming',
         variation_id: 'exploring_affirm_v1'
       }
@@ -362,7 +362,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Maybe so. But you're lookin', and that counts. Some folks stop searchin' before they even start.\n\nYou'll know what you're lookin' for when you find it. Or maybe... you're lookin' for the lookin' itself.",
+        text: "so.",
         emotion: 'understanding',
         variation_id: 'exploring_uncertain_v1'
       }
@@ -383,7 +383,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You asked Jordan about the neighborhoods nobody visits. Asked Tess about the music nobody streams. Asked me about the platforms most travelers ignore.\n\nYou're not just curious—you're thorough. You explore edges. That's the mark of someone who sees the world different.",
+        text: "You asked Jordan about the neighborhoods nobody visits.",
         emotion: 'reflective',
         variation_id: 'exploring_reflect_v1'
       }
@@ -405,7 +405,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You lean in when people talk. Really listen. I see you offerin' support before folks even ask for it. That ain't common.",
+        text: "You lean in when people talk.",
         emotion: 'observant',
         variation_id: 'helping_observation_v1'
       },
@@ -457,7 +457,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Good answer. Honest. That compassion—it's a gift. Don't let nobody make you feel weak for havin' it.\n\nJust remember: you can't pour from an empty cup. Help others, but help yourself too.",
+        text: "Good answer.",
         emotion: 'affirming',
         variation_id: 'helping_affirm_v1'
       }
@@ -487,7 +487,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Maybe. Or maybe you're worried about bein' too much. Listen: there's a difference between helpin' and fixin'. You can hold space for someone without carryin' their whole load.\n\nYour instinct to help? That's beautiful. Just make sure it ain't costin' you.",
+        text: ".",
         emotion: 'understanding',
         variation_id: 'helping_uncertain_v1'
       }
@@ -508,7 +508,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "When Maya was overwhelmed, you didn't try to solve it. You just... listened. When Jordan talked about community work, your whole face lit up. When Marcus mentioned patient care, you asked how he handles the emotional weight.\n\nYou connect to people's struggles. That's empathy. Real empathy. Holds the world together.",
+        text: "When Maya was overwhelmed, you didn't try to solve it.",
         emotion: 'reflective',
         variation_id: 'helping_reflect_v1'
       }
@@ -582,7 +582,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Then claim it. World needs makers. People who don't just talk about change—they build it.\n\nJust remember: buildin' ain't always about addin'. Sometimes it's about knowin' what to take away. Keep that builder's eye sharp.",
+        text: "Then claim it.",
         emotion: 'affirming',
         variation_id: 'building_affirm_v1'
       }
@@ -612,7 +612,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Bein' good ain't the same as bein' a builder. Every master started not knowin' what they were doin'. The question ain't skill—it's commitment.\n\nYou got the instinct. You see somethin', you wanna improve it. That's the heart of it. Skill comes with time.",
+        text: "Bein' good ain't the same as bein' a builder.",
         emotion: 'understanding',
         variation_id: 'building_uncertain_v1'
       }
@@ -633,7 +633,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "When Maya showed you that robot, you didn't just look—you asked how it works, how it could be better. When Devon talked code, you were thinkin' about what you'd build with it. When Jordan mentioned community programs, you lit up talkin' about what could be created.\n\nYou're a builder. Not 'cause you've built everything. 'Cause you see the world as materials waitin' to become somethin' better.",
+        text: "When Maya showed you that robot, you didn't just look—you asked how it works, how it could be better. When Devon talked code, you were thinkin' about what.",
         emotion: 'reflective',
         variation_id: 'building_reflect_v1'
       }

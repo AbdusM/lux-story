@@ -13,6 +13,7 @@ import {
   StateValidation
 } from './character-state'
 import { getGraphForCharacter, findCharacterForNode, getSafeStart, type CharacterId } from './graph-registry'
+import { resolveDialogueNodeRedirect } from './dialogue-node-redirects'
 import { generateUserId } from './safe-storage'
 import { logger } from './logger'
 
@@ -111,10 +112,43 @@ export class GameStateManager {
       // Convert to GameState
       const gameState = GameStateUtils.deserialize(migrated)
 
+      // Session determinism: each load starts a fresh session window.
+      // Without this, returning-player detection can remain "stuck" to an old session.
+      gameState.sessionStartTime = Date.now()
+
       // Final validation
       if (!StateValidation.isValidGameState(gameState)) {
         console.error('Deserialized state is invalid')
         return null
+      }
+
+      // Topology compatibility: resolve migrated node IDs before graph lookup.
+      const redirect = resolveDialogueNodeRedirect(gameState.currentNodeId)
+      if (redirect.cycleDetected) {
+        logger.warn('Dialogue node redirect cycle detected; falling back to recovery', {
+          operation: 'game-state-manager.node-redirect-cycle',
+          nodeId: gameState.currentNodeId,
+          path: redirect.path,
+        })
+      } else if (redirect.truncated) {
+        logger.warn('Dialogue node redirect exceeded max hops; continuing with best-effort node', {
+          operation: 'game-state-manager.node-redirect-truncated',
+          nodeId: gameState.currentNodeId,
+          path: redirect.path,
+        })
+      } else if (redirect.resolvedNodeId !== gameState.currentNodeId) {
+        const oldNodeId = gameState.currentNodeId
+        gameState.currentNodeId = redirect.resolvedNodeId
+        const relocated = findCharacterForNode(redirect.resolvedNodeId, gameState)
+        if (relocated) {
+          gameState.currentCharacterId = relocated.characterId
+        }
+        logger.info('Migrated saved node via redirect map', {
+          operation: 'game-state-manager.node-redirect',
+          fromNodeId: oldNodeId,
+          toNodeId: redirect.resolvedNodeId,
+          hops: redirect.hops,
+        })
       }
 
       // Verify currentNodeId exists in the graph
@@ -184,7 +218,9 @@ export class GameStateManager {
       }
 
       const migrated = this.migrateIfNeeded(parsed)
-      return GameStateUtils.deserialize(migrated)
+      const restored = GameStateUtils.deserialize(migrated)
+      restored.sessionStartTime = Date.now()
+      return restored
 
     } catch {
       return null
@@ -251,6 +287,20 @@ export class GameStateManager {
   private static recoverMissingNode(gameState: GameState): GameState | null {
     const missingNodeId = gameState.currentNodeId
     const currentCharacterId = gameState.currentCharacterId
+
+    // Strategy 0: explicit redirect map (safe topology migrations).
+    const redirect = resolveDialogueNodeRedirect(missingNodeId)
+    if (!redirect.cycleDetected && redirect.resolvedNodeId !== missingNodeId) {
+      const redirectedSearch = findCharacterForNode(redirect.resolvedNodeId, gameState)
+      if (redirectedSearch && redirectedSearch.graph.nodes.has(redirect.resolvedNodeId)) {
+        return {
+          ...gameState,
+          currentCharacterId: redirectedSearch.characterId,
+          currentNodeId: redirect.resolvedNodeId,
+          lastSaved: Date.now(),
+        }
+      }
+    }
 
     // Strategy 1: Check if node moved to different character graph
     const searchResult = findCharacterForNode(missingNodeId, gameState)

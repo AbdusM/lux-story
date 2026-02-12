@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-02-09T21:13:19.502Z",
+  "generated_at": "2026-02-12T23:08:59.456Z",
   "options": {
     "max_steps_per_path": 120,
     "max_expansions": 6000,
@@ -7,8 +7,8 @@
   },
   "totals": {
     "graphs": 28,
-    "expansions": 17735,
-    "visited_state_pairs": 17735,
+    "expansions": 17746,
+    "visited_state_pairs": 17746,
     "failures": 0,
     "required_state_mismatches": 0
   },
@@ -42,8 +42,8 @@
       "truncated": false
     },
     "devon": {
-      "expansions": 1205,
-      "visited_state_pairs": 1205,
+      "expansions": 1201,
+      "visited_state_pairs": 1201,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
@@ -56,15 +56,15 @@
       "truncated": false
     },
     "elena": {
-      "expansions": 954,
-      "visited_state_pairs": 954,
+      "expansions": 952,
+      "visited_state_pairs": 952,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
     },
     "grace": {
-      "expansions": 320,
-      "visited_state_pairs": 320,
+      "expansions": 336,
+      "visited_state_pairs": 336,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
@@ -98,8 +98,8 @@
       "truncated": false
     },
     "kai": {
-      "expansions": 1393,
-      "visited_state_pairs": 1393,
+      "expansions": 1403,
+      "visited_state_pairs": 1403,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
@@ -112,8 +112,8 @@
       "truncated": false
     },
     "marcus": {
-      "expansions": 1520,
-      "visited_state_pairs": 1520,
+      "expansions": 1519,
+      "visited_state_pairs": 1519,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
@@ -196,8 +196,8 @@
       "truncated": false
     },
     "yaquin_revisit": {
-      "expansions": 24,
-      "visited_state_pairs": 24,
+      "expansions": 16,
+      "visited_state_pairs": 16,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false

@@ -19,7 +19,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "Sorry. Just got off shift. Twelve hours. My feet are having opinions.\n\nYou look a little lost yourself.",
+        text: "Sorry.",
         emotion: 'tired_warm',
         variation_id: 'grace_intro_v1',
         patternReflection: [
@@ -78,7 +78,7 @@ export const graceDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'grace_intro_empathy_unlock',
-        text: "[Empathy Sense] You're not just tired. You're carrying something. A patient, maybe. Someone who didn't make it.",
+        text: "[Empathy Sense] You're carrying more than fatigue. Was there a patient loss?",
         nextNodeId: 'grace_carrying_weight',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'observation'],
@@ -92,7 +92,7 @@ export const graceDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'grace_intro_patience_unlock',
-        text: "[Deep Listening] The way you're not looking at your phone. You're avoiding something on it. Bad news?",
+        text: "[Deep Listening] You're avoiding your phone. Is there bad news on it?",
         nextNodeId: 'grace_bad_news',
         pattern: 'patience',
         skills: ['observation', 'emotionalIntelligence'],
@@ -119,7 +119,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     nodeId: 'grace_handshake_vitals',
     speaker: 'Grace',
     content: [{
-      text: "Triage. It's not about who's loudest. It's about who's fading fastest.\n\nTake a look at the board. Five new admits. One bed. Who gets it?",
+      text: "Triage.",
       emotion: 'testing',
       variation_id: 'grace_triage_intro',
       interaction: 'ripple'
@@ -165,7 +165,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "...How did you know?\n\nMrs. Chen. Room 412. She was doing better. We thought. We really thought.\n\nI've been doing this fifteen years. You'd think it gets easier. It doesn't. It just gets different.\n\nNo one asks. They see the scrubs and assume I'm fine.",
+        text: "How did ?",
         emotion: 'raw',
         interaction: 'small',
         variation_id: 'grace_carrying_weight_v1'
@@ -193,7 +193,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "...Yeah.\n\nMy daughter. She got the job. Out of state. Starts next month.\n\nI should be happy. I am happy. She worked so hard for this.\n\nI just... wasn't ready for the house to be quiet so soon.",
+        text: "Yeah.",
         emotion: 'bittersweet',
         interaction: 'small',
         variation_id: 'grace_bad_news_v1'
@@ -221,7 +221,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "That's nice. Most people talk right away. Fill every silence.\n\nYou know how to just... be with someone. That's rare.",
+        text: "That's nice.",
         emotion: 'appreciative',
         interaction: 'small',
         variation_id: 'quiet_sit_v1',
@@ -273,7 +273,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "Lost is honest. Lost is where all the real figuring-out happens.\n\nI've been lost a few times. Figured I'd end up somewhere different than where I am now.\n\nTurns out \"different\" isn't always \"worse.\" Just... different.",
+        text: "Lost is honest.",
         emotion: 'reflective',
         variation_id: 'understands_v1'
       }
@@ -297,7 +297,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "Home health aide. Seven years now.\n\nI go to people's houses. Mostly elderly. Help them with everything. Getting dressed. Eating. Bathing. Medications.\n\nThe stuff nobody wants to think about. The stuff that happens when bodies get old and minds get foggy.\n\nIt's not glamorous. But somebody's gotta do it.",
+        text: "Home health aide.",
         emotion: 'matter_of_fact',
         variation_id: 'the_work_v1',
         patternReflection: [
@@ -321,7 +321,7 @@ export const graceDialogueNodes: DialogueNode[] = [
           patience: "That's a journey. How did you find your way here?"
         },
         nextNodeId: 'grace_origin',
-        pattern: 'helping',
+        pattern: 'exploring',
         skills: ['emotionalIntelligence', 'communication'],
         consequence: {
           characterId: 'grace',
@@ -369,7 +369,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "You caught that, huh.\n\nYeah. It's more than \"somebody's gotta.\"\n\nMy grandmother raised me. Strong woman. Worked thirty years at a laundry, retired, thought she'd have time to rest. Then the dementia started.\n\nAt the end... I was the only one who could calm her down. She didn't know my name anymore. But she knew my presence.\n\nThat's when I knew. This work isn't about tasks. It's about being the calm in someone's storm.",
+        text: "My grandmother raised me and, near the end, forgot my name but still recognized my presence. That's when I learned this work isn't tasks; it's being calm in someone else's storm.",
         emotion: 'vulnerable',
         interaction: 'small',
         variation_id: 'more_than_v1',
@@ -405,7 +405,7 @@ export const graceDialogueNodes: DialogueNode[] = [
         choiceId: 'grace_presence_skill',
         text: "Presence. That's a skill most people don't even know exists.",
         nextNodeId: 'grace_invisible_skill',
-        pattern: 'analytical',
+        pattern: 'building',
         skills: ['observation'],
         archetype: 'MAKE_OBSERVATION'
       }
@@ -418,7 +418,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "Every day.\n\nEvery time I sit with someone who's scared and confused, I think: what if this was her? What would I want someone to do?\n\nThat's the job. Not the tasks. The remembering that every person used to be someone's whole world.\n\nMrs. Patterson? She was a jazz singer. Mr. Chen? Built bridges. They're not just bodies that need help. They're people with stories.",
+        text: "Every day. Every time I sit with someone who's scared and confused, I think: what if this was her?",
         emotion: 'tender',
         interaction: 'nod',
         variation_id: 'grandmother_v1',
@@ -448,7 +448,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "Fell into it, honestly. I was going to be a nurse. Had the grades, started at Jeff State.\n\nThen my grandmother got sick. Someone had to take care of her.\n\nBy the time she passed, I'd been doing the work for two years. Figured I might as well get paid for it.\n\nStarted as a CNA. Did the training. Now I'm certified home health. Eight clients a week.",
+        text: "I started in care because one steady person changed my life at the hardest time. I wanted to become that steadiness for others.",
         emotion: 'resigned_peaceful',
         variation_id: 'origin_v1'
       }
@@ -481,7 +481,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "Because I'm good at it.\n\nNot the lifting. Not the medications. Those you can train.\n\nThe being there. The stillness when someone's scared.\n\nMrs. Richardson. She's ninety-three, end-stage heart failure. She told her daughter: \"Grace is the only one who doesn't make me feel like a burden.\"\n\nThat's why I stayed.",
+        text: "Because I'm good at it. Not the lifting.",
         emotion: 'proud_quiet',
         interaction: 'small',
         variation_id: 'why_stayed_v1',
@@ -512,7 +512,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "The goodbyes.\n\nYou spend months with someone. Sometimes years. You know how they take their coffee. What songs make them smile. Which grandchild is their favorite.\n\nAnd then one day... they're gone.\n\nI've lost eleven clients in seven years. Eleven people I cared about.\n\nThe work doesn't stop. There's always someone else who needs help. So you grieve in the car, and then you walk into the next house with a smile.",
+        text: "The hard part is not skill, it is staying present when there is nothing left to fix. If you can stay, you can do this work.",
         emotion: 'heavy',
         interaction: 'small',
         variation_id: 'the_hard_v1'
@@ -550,7 +550,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "You didn't try to make it better. Most people do. \"They're in a better place.\" \"At least they're not suffering.\"\n\nSometimes grief just needs room to breathe.\n\nThank you for that.",
+        text: "You didn't try to make it better.",
         emotion: 'grateful',
         variation_id: 'appreciated_v1'
       }
@@ -572,7 +572,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "I remember what I gave them.\n\nMr. Jefferson. He was terrified of dying alone. I made sure I was there. Held his hand at the end.\n\nMrs. Park. She wanted to die at home, not in a hospital. I helped make that happen.\n\nI can't stop death. But I can make the journey less lonely.\n\nThat's enough. It has to be.",
+        text: "I remember what I gave them. Mr.",
         emotion: 'resolved',
         variation_id: 'coping_v1'
       }
@@ -599,7 +599,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "You know what nobody teaches you? The real skill.\n\nIt's not the medications or the transfers or the wound care. That's trainable.\n\nIt's reading a room. Knowing when someone needs to talk and when they need silence. Noticing when \"I'm fine\" means \"I'm not fine.\"\n\nThis work is emotional labor. Constant calibration. And nobody sees it.",
+        text: "what nobody teaches you? The real skill.",
         emotion: 'insistent',
         variation_id: 'invisible_v1',
         skillReflection: [
@@ -646,7 +646,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "Exactly.\n\nYou can build a robot to dispense pills. Maybe even one that can lift someone into a wheelchair.\n\nBut you can't build a robot that knows the difference between \"leave me alone\" meaning \"I need space\" versus \"I'm testing to see if you'll stay.\"\n\nPeople talk about AI taking jobs. But this job? It's about presence. Connection. Being human with someone who's scared.\n\nNo machine can do that.",
+        text: "Automation can support care, but it cannot replace presence. Patients feel whether someone is truly with them.",
         emotion: 'certain',
         interaction: 'nod',
         variation_id: 'automation_v1'
@@ -676,7 +676,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "Fifteen dollars an hour. No benefits until last year. Mileage? Sometimes. Paid time off? Ha.\n\nI work twelve-hour shifts, drive fifty miles a day, and make less than the person who serves coffee at the hospital lobby.\n\nWe're \"essential workers\" when there's a pandemic. We're \"unskilled labor\" when it's time to set wages.\n\nFunny how that works.",
+        text: "Fifteen dollars an hour. No benefits until last year.",
         emotion: 'frustrated',
         interaction: 'shake',
         variation_id: 'economics_v1'
@@ -694,7 +694,7 @@ export const graceDialogueNodes: DialogueNode[] = [
         choiceId: 'grace_what_changes',
         text: "What needs to change?",
         nextNodeId: 'grace_vision',
-        pattern: 'analytical',
+        pattern: 'building',
         skills: ['systemsThinking']
       }
     ],
@@ -706,7 +706,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "Because Mrs. Richardson called me her angel.\n\nBecause Mr. Chen's daughter hugged me at his funeral and said, \"You gave him three more years.\"\n\nBecause when I walk into a house and someone's eyes light up... that's not something you can put a price on.\n\nThe money's terrible. The hours are brutal. But the meaning? The meaning is real.\n\nI'd rather be underpaid and matter than overpaid and empty.",
+        text: "I stay because presence matters at the edge of life. Even when outcomes are fixed, dignity is still a choice.",
         emotion: 'fierce_tender',
         interaction: 'bloom',
         variation_id: 'why_stay_v1'
@@ -733,7 +733,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "Sometimes. But honestly? I'm not sure nursing is what I thought it was.\n\nNurses are amazing. But they're stretched thin. Fifteen patients. Charting. Paperwork. Running.\n\nI get to sit. I get to know people. I'm there for the slow moments, not just the emergencies.\n\nDifferent work. Not lesser. Just different.",
+        text: "Sometimes.",
         emotion: 'reflective',
         variation_id: 'nurse_v1'
       }
@@ -755,7 +755,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "Ten thousand people turn 65 every day in this country. Every. Day.\n\nThe boomers are aging. And there aren't enough of us. Not even close.\n\nBy 2030, we'll need a million more home health workers. A million. And right now, we can barely fill the jobs we have because the pay is garbage.\n\nIt's a crisis in slow motion. And nobody's watching.",
+        text: "Ten thousand people turn 65 every day in this country. Every.",
         emotion: 'worried',
         variation_id: 'demographics_v1',
         interrupt: {
@@ -788,7 +788,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     speaker: 'Grace',
     content: [
       {
-        text: "You want to know what this work really is?\n\nLet me tell you about yesterday.\n\nMrs. Williams. Eighty-seven. Alzheimer's. Most days she doesn't know where she is.\n\nI came in for my shift. She was sitting by the window, crying.\n\nWhat would you do?",
+        text: "You want to know what this work is?",
         emotion: 'testing',
         variation_id: 'moment_setup_v1'
       }
@@ -852,7 +852,7 @@ QUESTION: How do you approach her?
     speaker: 'Grace',
     content: [
       {
-        text: "Good instinct. Caring.\n\nBut with Alzheimer's... she might not be able to tell you. The words get tangled. And asking can make it worse. She'll feel frustrated that she can't explain.\n\nSometimes the question isn't \"what's wrong.\" Sometimes it's just \"I'm here.\"\n\nWhat else might you try?",
+        text: "Good instinct.",
         emotion: 'teaching',
         variation_id: 'moment_ask_v1'
       }
@@ -878,7 +878,7 @@ QUESTION: How do you approach her?
     speaker: 'Grace',
     content: [
       {
-        text: "That's what a lot of people try. And sometimes it works.\n\nBut yesterday? She wasn't confused. She was grieving.\n\nHer husband died forty years ago. But in her mind, it just happened. Every few months, she loses him again.\n\nDistraction would have dismissed that. Made her feel crazy.\n\nWhat do you think she needed?",
+        text: "That's what a lot of people try. And sometimes it works.",
         emotion: 'gentle',
         variation_id: 'moment_distract_v1'
       }
@@ -904,7 +904,7 @@ QUESTION: How do you approach her?
     speaker: 'Grace',
     content: [
       {
-        text: "That's it. That's exactly it.\n\nI sat down. Didn't say anything. After a few minutes, she took my hand.\n\nWe sat there for half an hour. She cried. I stayed.\n\nEventually she looked at me and said, \"Thank you for not trying to fix it.\"\n\nThat's the work. Not fixing. Accompanying. Being the steady presence when everything else is chaos.\n\nYou get it. Most people don't.",
+        text: "That's it. That's exactly it.",
         emotion: 'moved',
         interaction: 'bloom',
         variation_id: 'moment_correct_v1',
@@ -938,7 +938,7 @@ QUESTION: How do you approach her?
     speaker: 'Grace',
     content: [
       {
-        text: "What needs to change? Everything.\n\nPay. Benefits. Respect. Career paths.\n\nRight now, there's no ladder. I'm doing the same work I did seven years ago. No way to advance without leaving the bedside.\n\nI want to train people. Not just the tasks. The presence. The emotional intelligence.\n\nStart a program. \"Companion Care.\" Teach people that this work isn't unskilled. It's differently skilled.\n\nAnd then fight like hell for wages that match the value.",
+        text: "I can see it clearly: care that is both clinical and human. Not just treatment plans, but presence under pressure. That is the nurse I am trying to become.",
         emotion: 'determined',
         interaction: 'bloom',
         variation_id: 'vision_v1'
@@ -985,7 +985,7 @@ QUESTION: How do you approach her?
     speaker: 'Grace',
     content: [
       {
-        text: "Ask yourself: can you be with suffering without trying to fix it?\n\nThat's the real question. Not \"are you strong enough to lift someone.\" Not \"can you handle bodily fluids.\"\n\nCan you sit with someone who's dying and not run away? Can you be present without needing to solve?\n\nIf you can... this work will break your heart and fill it at the same time.\n\nIt's not for everyone. But for the right person? It's everything.",
+        text: "Ask yourself one thing: can you stay with suffering without trying to fix it.",
         emotion: 'wise',
         variation_id: 'advice_v1',
         patternReflection: [
@@ -1012,7 +1012,7 @@ QUESTION: How do you approach her?
         choiceId: 'career_coordinator',
         text: "The way you blend empathy with systems thinking... that's care coordination.",
         nextNodeId: 'grace_career_reflection_coordinator',
-        pattern: 'helping',
+        pattern: 'building',
         skills: ['emotionalIntelligence', 'systemsThinking'],
         visibleCondition: {
           patterns: { helping: { min: 5 }, analytical: { min: 4 } },
@@ -1031,7 +1031,7 @@ QUESTION: How do you approach her?
     speaker: 'Grace',
     content: [
       {
-        text: "Sorry. I don't usually tell that story.\n\nIt's just... you listened. Really listened. Not waiting to give advice. Not trying to fix me.\n\nThat's what I try to give my patients. And nobody ever...\n\nThank you. For being present. That's the whole thing, isn't it? Just being there.",
+        text: "Sorry.",
         emotion: 'vulnerable',
         interaction: 'bloom',
         variation_id: 'interrupt_comfort_v1'
@@ -1054,7 +1054,7 @@ QUESTION: How do you approach her?
     speaker: 'Grace',
     content: [
       {
-        text: "You're watching. Aren't you.\n\nI spend so much time feeling invisible. The work I do. People don't see it. They don't want to think about aging, about needing help.\n\nBut you... you stopped. You're here.\n\nThat matters more than you know.",
+        text: "You're watching.",
         emotion: 'seen',
         interaction: 'ripple',
         variation_id: 'interrupt_acknowledge_v1'
@@ -1081,7 +1081,7 @@ QUESTION: How do you approach her?
     speaker: 'Grace',
     content: [
       {
-        text: "You know what? I needed that.\n\nTwelve-hour shifts, you give and give and give. And sometimes you forget that you need to receive too.\n\nGo change the world, kid. Or at least be present in it. That's enough.",
+        text: "what?",
         emotion: 'grateful',
         interaction: 'bloom',
         variation_id: 'interrupt_hug_v1'
@@ -1116,7 +1116,7 @@ QUESTION: How do you approach her?
     speaker: 'Grace',
     content: [
       {
-        text: "You want to understand what this work really takes? Let me share something from last week.\n\nMrs. Rodriguez's daughter, Maria. Twenty-eight years old. Her mother had a stroke three days ago.\n\nMaria's been at the hospital every day. But her mother was just transferred to home care. My care.\n\nWhen I arrived for my first shift, Maria was pacing the living room. Red eyes. Shaking hands.\n\nWhat do you do with that? Someone who's terrified they're going to lose their mother, and you're the stranger walking into their home?",
+      text: "You want to know what this work takes? Here's last week.",
         emotion: 'teaching',
         variation_id: 'sim_intro_v1'
       }
@@ -1178,7 +1178,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     speaker: 'Grace',
     content: [
       {
-        text: "Okay. Let's say you chose to start there. Maria's still pacing, but she stops. Looks at you.\n\n\"The hospital said she might not recover fully. What does that mean? Will she walk again? Will she know who I am? The doctor talked so fast and I couldn't...\"\n\nShe's spiraling. Three questions at once. Each one bigger than the last.\n\nHow do you handle this?",
+        text: "Okay. Let's say you chose to start there.",
         emotion: 'testing',
         variation_id: 'phase1_v1'
       }
@@ -1193,7 +1193,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       },
       {
         choiceId: 'phase1_slow_down',
-        text: "Gently slow her down. 'Let's sit. I'm here. We'll take this one step at a time.'",
+        text: "Slow her down gently: 'Let's sit. I'm here. One step at a time.'",
         nextNodeId: 'grace_simulation_phase_2',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
@@ -1225,7 +1225,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     speaker: 'Grace',
     content: [
       {
-        text: "Better. You didn't give false hope. You didn't dodge. You met her where she was.\n\nMaria sits. Her hands are still shaking, but she's listening now.\n\n\"The doctors say there's a long road ahead. That recovery could take months or longer. I don't know how to do this. I work full time. I can't afford to quit. But I can't leave her alone.\"\n\nShe's not asking a medical question anymore. She's asking you to tell her it's possible to hold all of this together.\n\nWhat do you say?",
+      text: "Better. You didn't offer false hope or dodge the truth.",
         emotion: 'serious',
         variation_id: 'phase2_v1',
         interrupt: {
@@ -1254,7 +1254,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       },
       {
         choiceId: 'phase2_honest',
-        text: "'It's hard. I won't lie. But you're not alone. I'm here. And we'll figure this out together, day by day.'",
+        text: "'It's hard, and you're not alone. I'm here, day by day.'",
         nextNodeId: 'grace_simulation_success',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -1286,7 +1286,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     speaker: 'Grace',
     content: [
       {
-        text: "That's it. That's exactly it.\n\nYou didn't promise the impossible. You didn't dismiss her fears. You met her in the hard truth AND gave her something to hold onto.\n\nMaria cried after that. Not the panicked crying from before. Relief. Someone finally saw how heavy this was.\n\nHer mother's recovery took eight months. Maria took a leave of absence. We helped her apply for FMLA. Her mother walks with a cane now. Knows her daughter's name.\n\nBut here's the thing: that moment in the living room? That's when the real healing started. Not with the medicine. With being seen.\n\nThat's the invisible skill. Holding space for fear without drowning in it.",
+        text: "That's it.",
         emotion: 'proud',
         interaction: 'bloom',
         variation_id: 'success_v1'
@@ -1326,7 +1326,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     speaker: 'Grace',
     content: [
       {
-        text: "I understand the impulse. But...\n\nWhen you make promises you can't keep, trust breaks. When you deflect, people feel abandoned. When you set walls too high, you become just another stranger in their crisis.\n\nMaria? With the wrong approach, she would have called the agency the next day. Asked for a different aide. Or worse. Stopped asking for help at all.\n\nI've seen both. The families who feel supported enough to let you in. And the ones who build walls because someone before you made them feel like a burden.\n\nThis work is about more than tasks. It's about trust. And trust, once broken, is hard to rebuild.\n\nWant to try again?",
+        text: "I get the impulse, but this approach breaks trust. Promises you can't keep create betrayal.",
         emotion: 'disappointed_gentle',
         variation_id: 'fail_v1'
       }
@@ -1506,7 +1506,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     speaker: 'Grace',
     content: [
       {
-        text: "I should get home. Sleep before my next shift.\n\nWhatever you're figuring out... remember this:\n\nThe world needs people who can be present. Not just productive. Present.\n\nThat's rarer than you think. And it's worth something.\n\nTake care of yourself. And if you ever need someone to just sit with you? You know where to find me.",
+        text: "I should get home. Sleep before my next shift.",
         emotion: 'warm',
         interaction: 'nod',
         variation_id: 'farewell_v1',
@@ -1549,7 +1549,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     speaker: 'Grace',
     content: [
       {
-        text: "You know what I see in you? Someone who helps while thinking clearly.\n\nPatient care coordinators do that. They navigate complex systems while never losing sight of the person at the center. Blending empathy with analysis.\n\nEnsuring care flows smoothly. That's what you have the instincts for.",
+        text: "what I see in you?",
         emotion: 'warm',
         variation_id: 'career_coordinator_v1'
       }
@@ -1571,7 +1571,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
         choiceId: 'grace_career_coordinator_continue',
         text: "Keeping the person at the center. That matters.",
         nextNodeId: 'grace_hub_return',
-        pattern: 'helping'
+        pattern: 'analytical'
       }
     ],
     tags: ['career_mention', 'invisible_depth', 'healthcare']
@@ -1589,7 +1589,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     },
     content: [
       {
-        text: "In healthcare, we call it triage. Putting people where they need to be, when they need to be there.\\n\\nThis station does that automatically. Everyone ends up exactly where they should be.",
+        text: "In healthcare, we call it triage.",
         emotion: 'observant',
         variation_id: 'mystery_hint_v1'
       },
@@ -1621,7 +1621,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     speaker: 'grace',
     content: [
       {
-        text: "Intentional or not, it works. And in my field, that's what matters.\\n\\nSome systems don't need to be understood. They need to be appreciated.",
+        text: "Intentional or not, it works.",
         emotion: 'accepting',
         variation_id: 'mystery_response_v1'
       }
@@ -1731,7 +1731,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     }],
     choices: [{
       choiceId: 'grace_recovery_complete',
-      text: "(Continue)",
+      text: "Proceed.",
       nextNodeId: 'grace_hub_return',
       pattern: 'patience'
     }],
@@ -1748,7 +1748,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     speaker: 'Grace',
     content: [
       {
-        text: "You want to address the root cause?\n\nIt's the air filtration in Sector 7. It's causing 'Space Lung' in the elderly. I can soothe the cough, but I can't stop the fibrosis.\n\nBut Silas gave me access to the hydroponics lab. We found a spore that might scrub the lungs. But it needs to be synthesized perfectly.\n\nI have the hands for care. I need your eyes for the chemistry.",
+        text: "Under all the procedures, this work is simple: witness suffering without turning away, then respond with competence and care.",
         emotion: 'determined_focused',
         variation_id: 'deep_dive_v1'
       }
@@ -1785,7 +1785,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
         choiceId: 'dive_success_system',
         text: "We didn't just fix the patient. We fixed the air.",
         nextNodeId: 'grace_deep_dive_success',
-        pattern: 'analytical',
+        pattern: 'building',
         skills: ['systemsThinking', 'technicalLiteracy']
       }
     ],
@@ -1797,7 +1797,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     speaker: 'Grace',
     content: [
       {
-        text: "It's clear. Look at that clarity.\n\nI've spent seven years holding hands while people suffocated. Today, for the first time, I think I can tell Mrs. Kowalski she's going to breathe easier.\n\nCompanion Care isn't just about dying well anymore. It's about living.",
+        text: "It's clear.",
         emotion: 'hopeful_tears',
         variation_id: 'deep_dive_success_v1',
         interaction: 'bloom'
@@ -1855,7 +1855,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     nodeId: 'grace_loyalty_trigger',
     speaker: 'Grace',
     content: [{
-      text: "I need to ask you something.\n\nMr. Okonkwo. He's been my client for eighteen months. Prostate cancer, metastasized. We've known for a while that this was coming.\n\nHis family called this morning. Hospice said it's time. Days, maybe hours.\n\nHe asked for me. Specifically. Said he wants me there at the end.\n\nI've done this before. Eleven times. But this one... he reminds me of my grandfather. The way he laughs. The way he tells stories.\n\nI don't know if I can be present the way he needs me to be. Not this time.\n\nWould you... would you come with me? Just be there? I think I need someone to help me stay steady.",
+      text: "I need help tonight.",
       emotion: 'vulnerable_exhausted',
       variation_id: 'loyalty_trigger_v1',
       useChatPacing: true
@@ -1886,7 +1886,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     nodeId: 'grace_loyalty_declined',
     speaker: 'Grace',
     content: [{
-      text: "You're right. This is my work. My calling.\n\nThank you for believing I can do it.\n\nI'll let you know when... when it's over.",
+      text: "You're right.",
       emotion: 'resolved_tired',
       variation_id: 'declined_v1',
       useChatPacing: true
@@ -1908,7 +1908,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     nodeId: 'grace_loyalty_start',
     speaker: 'Grace',
     content: [{
-      text: "[Mr. Okonkwo's house. The living room has been converted to a hospice room. Soft music playing. His family gathered in the kitchen, giving him space.]\n\n[He's awake. Breathing shallow. His hand reaches out when Grace enters.]\n\n\"Grace. My angel. You came.\"\n\n[Grace takes his hand. Her own hand is shaking.]\n\n\"Of course I came, Mr. O. I told you I'd be here.\"\n\n[He looks at you.]\n\n\"You brought a friend. Good. Grace shouldn't be alone for this either.\"",
+      text: "[Mr.",
       emotion: 'tender_fragile',
       variation_id: 'start_v1',
       useChatPacing: true
@@ -1944,7 +1944,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     nodeId: 'grace_loyalty_vigil_begins',
     speaker: 'Grace',
     content: [{
-      text: "[Hours pass. The room grows quieter. Mr. Okonkwo drifts in and out of consciousness.]\n\n[Grace sits beside him, holding his hand. But you can see it in her eyes - she's somewhere else. Remembering her grandfather. Her eleven other clients. The weight of all those goodbyes.]\n\n[Her breathing becomes uneven. She stands abruptly.]\n\n\"I need... I need some air. Just for a minute.\"\n\n[She's heading for the door. Leaving. Running.]",
+      text: "The vigil starts quietly: family nearby, breath shallow, time uncertain. Your role is simple and hard - steady the room.",
       emotion: 'overwhelmed',
       variation_id: 'vigil_begins_v1',
       useChatPacing: true
@@ -1983,7 +1983,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     nodeId: 'grace_loyalty_choice',
     speaker: 'Grace',
     content: [{
-      text: "[She stops. Turns. Eyes wet.]\n\n\"I can't keep doing this. Watching people I care about disappear. Building these connections and then... and then losing them.\n\nEleven people. Eleven times I've sat in a room and watched someone take their last breath.\n\nHow many more times can I break?\"\n\n[Mr. Okonkwo's breathing changes. A rattle. Hospice calls it the 'death rattle.'\n\nHis daughter appears in the doorway. Sees Grace. Waits.]",
+      text: "Choose what to hold first: comfort, coordination, or boundary-setting. Each has a cost, and timing matters.",
       emotion: 'breaking',
       variation_id: 'choice_v1',
       useChatPacing: true
@@ -2022,7 +2022,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     nodeId: 'grace_loyalty_partial',
     speaker: 'Grace',
     content: [{
-      text: "[Grace steps outside. You stay with Mr. Okonkwo.]\n\n[His daughter enters. Sits on the other side of the bed. Takes his other hand.]\n\n[Ten minutes later, his breathing slows. Stops.]\n\n[You find Grace in the backyard. Tell her.]\n\n\"I missed it. I wasn't there.\"\n\n[She sits down heavily.]\n\n\"He needed me and I ran. That's the truth I have to live with.\"\n\n[Two days later, you get a text.]\n\n\"His daughter called. Said he wouldn't have wanted me to suffer. That he knew how much I cared.\n\nBut I know the truth. When it mattered most, I wasn't present. I teach presence and I couldn't hold it.\n\nI'm taking some time off. Need to figure out if I can keep doing this.\"",
+      text: "[Grace steps outside; Mr.",
       emotion: 'defeated_regretful',
       variation_id: 'partial_v1',
       richEffectContext: 'warning',
@@ -2047,7 +2047,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     nodeId: 'grace_loyalty_incomplete',
     speaker: 'Grace',
     content: [{
-      text: "[Grace nods slowly.]\n\n\"Maybe you're right. Maybe I've given enough.\"\n\n[She steps outside. You stay with Mr. Okonkwo. His daughter enters. They say their goodbyes. He passes peacefully an hour later.]\n\n[You find Grace later. Tell her.]\n\n\"I thought I'd feel relieved. That stepping away was the right choice.\n\nBut I just feel... hollow. Like I abandoned him. Like I abandoned all of them.\"\n\n[A week later, she texts.]\n\n\"Turned in my notice at the agency. Taking a desk job. Healthcare administration. No more bedside.\n\nI know it's the smart choice. The safe choice.\n\nSo why does it feel like I left a part of myself in that room?\"",
+      text: "[Grace nods slowly. ] \"Maybe I've given enough.",
       emotion: 'lost_hollow',
       variation_id: 'incomplete_v1',
       richEffectContext: 'error',
@@ -2070,7 +2070,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     nodeId: 'grace_loyalty_success',
     speaker: 'Grace',
     content: [{
-      text: "[Grace takes a shaking breath. Nods. Sits back down beside Mr. Okonkwo.]\n\n[His daughter enters. Sits on the other side. You stand at the foot of the bed.]\n\n[Grace begins to sing. Softly. A hymn. Mr. Okonkwo mentioned once that his mother used to sing it.]\n\n[His breathing slows. Steadies. His eyes open one last time.]\n\n\"Thank you, Grace. For being here. For seeing me.\"\n\n[He looks at his daughter.]\n\n\"I love you, baby girl.\"\n\n[And then... stillness.]\n\n[Grace keeps singing. Finishes the hymn. Gently closes his eyes.]\n\n\"Go well, Mr. O. You were seen. You were loved. You were not alone.\"\n\n[She stands. Turns to you. Tears streaming.]\n\n\"I stayed. I was present. Even when it hurt. Especially when it hurt.\n\nThat's the work. Not avoiding the pain. Walking through it. With someone. For someone.\n\nThank you. For being the 'someone' for me today.\n\nI couldn't have done this alone. And that's okay. Presence doesn't mean solitary. It means showing up. Even when it breaks you.\n\nEspecially then.\"",
+      text: "[Grace sings beside Mr.",
       emotion: 'grief_peace_gratitude',
       variation_id: 'success_v1',
       richEffectContext: 'success',

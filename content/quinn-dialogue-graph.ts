@@ -21,7 +21,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     speaker: 'Quinn Almeida',
     content: [
       {
-        text: "The numbers don't lie. But they don't tell the whole truth either.\n\nYou're not here for a loan, are you? Good. I stopped giving those out the day I realized I was better at building wealth than I was at being wealthy.",
+        text: "The numbers don't lie.",
         emotion: 'wry',
         variation_id: 'quinn_intro_v1',
         patternReflection: [
@@ -131,7 +131,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v1',
-        text: "What they miss?\n\nI once built an algorithm that predicted market movements with 73% accuracy. Made $14 million in eight months. The numbers were beautiful.\n\nThey didn't mention the 400 jobs my efficiency recommendations eliminated. The numbers called that 'optimization.'",
+        text: "What they miss?",
         emotion: 'bitter_reflective',
         voiceVariations: {
           analytical: "What they miss?\n\nI once built an algorithm—73% accuracy predicting market movements. $14 million in eight months. Statistically significant. Elegant logic.\n\n400 jobs eliminated by my efficiency model. The numbers classified that as 'optimization.' Cost-benefit analysis didn't include a variable for human cost.",
@@ -182,7 +182,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     speaker: 'Quinn Almeida',
     content: [
       {
-        text: "Heavy.\n\n*Quinn looks at his hands for a moment.*\n\nI had a penthouse overlooking Central Park. A car service. A tailor who knew my measurements by heart. I was building wealth.\n\nBut I was also drinking alone at 2 AM, wondering why I felt like I was missing something everyone else seemed to have.",
+        text: "Heavy. *Quinn looks at his hands for a moment.",
         variation_id: 'quinn_v2',
         emotion: 'vulnerable',
         voiceVariations: {
@@ -248,7 +248,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     nodeId: 'quinn_interrupt_acknowledged',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "You didn't try to reframe it. You just let the silence land.\n\nMost people rush to fix the feeling. You didn't. That meant more than you think.",
+      text: "You didn't try to reframe it.",
       emotion: 'grateful',
       variation_id: 'quinn_interrupt_v1'
     }],
@@ -274,7 +274,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v2',
-        text: "Birmingham.\n\n*Quinn's eyes drift to a faded photo on his desk.*\n\nMy grandmother never left. Born in Titusville, died in Titusville. Never made more than $40,000 a year. Happiest person I ever knew.\n\nI made more in a week than she made in a decade. But she had something I couldn't buy. I came back to figure out what that was.",
+        text: "Birmingham. *Quinn's eyes drift to a faded photo on his desk.",
         emotion: 'nostalgic_searching',
         voiceVariations: {
           analytical: "Birmingham.\n\n*Quinn's eyes drift to a faded photo.*\n\nMy grandmother never left. Born in Titusville, died in Titusville. Never exceeded $40,000 annual income. Statistically highest life satisfaction I've measured.\n\nI made more in a week than she made in a decade. But she optimized for a variable I couldn't quantify. I came back to analyze what that was.",
@@ -336,7 +336,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v3',
-        text: "*Quinn studies you for a long moment.*\n\nMost people rush to fill silence with advice. You didn't.\n\nThat's rare. Especially in finance, where everyone's got a hot take and no one listens.",
+        text: "*Quinn studies you for a long moment.",
         emotion: 'appreciative',
         patternReflection: [
           { pattern: 'patience', minLevel: 4, altText: "*Quinn's posture relaxes slightly.*\n\nYou know how to hold space. That's not a skill they teach in business school.\n\nWhen I was on Wall Street, every second of silence felt like lost opportunity. Now I know—some of the best decisions come from the spaces between words.", altEmotion: 'warm_reflective' },
@@ -384,7 +384,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v4',
-        text: "*Quinn's eyebrows rise.*\n\nYou've got an eye for it. Most people see screens and assume I'm day trading meme stocks.\n\nI track patterns across sectors. Energy, biotech, emerging markets. Not to trade—to understand where the economy is actually going, not where the talking heads say it's going.",
+        text: "*Quinn's eyebrows rise.",
         emotion: 'impressed_engaged'
       }
     ],
@@ -424,7 +424,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     speaker: 'Quinn Almeida',
     content: [
       {
-        text: "You want to understand venture capital? Let me show you something.\n\n*Quinn pulls up a folder.*\n\nThree founders came to me last week. Each wanted $500K. I can only fund one. Want to see how this works?",
+        text: "You want to understand venture capital?",
         variation_id: 'quinn_v6',
         emotion: 'teaching'
       }
@@ -529,7 +529,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v6',
-        text: "*Quinn nods slowly.*\n\nThat's what I would have said. Once.\n\nHere's what happened: I funded her. The tech worked. The impact was real. 50,000 students got better financial guidance in year one.\n\nAnd she burned out in 18 months because she couldn't find a sustainable revenue model. The company folded. Those 50,000 students went back to having no guidance.\n\nImpact without sustainability is just a beautiful flash.",
+        text: "Option A sells growth fast but increases integrity risk. If you choose it, you need guardrails on day one.",
         emotion: 'teaching_bittersweet'
       }
     ],
@@ -568,7 +568,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v7',
-        text: "*Quinn tilts his head.*\n\nSafe choice. Smart, even.\n\nHere's what happened: The platform worked. Made consistent returns. My investors were happy.\n\nAnd I lay awake at night knowing I'd just helped wealthy people get wealthier vacation homes while teachers in Birmingham couldn't afford their mortgages.\n\nThe numbers don't lie. But they don't tell you how you'll feel about yourself.",
+        text: "*Quinn tilts his head. * Safe choice.",
         emotion: 'honest_conflicted'
       }
     ],
@@ -607,7 +607,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v8',
-        text: "*Something shifts in Quinn's expression.*\n\nYou saw what I saw.\n\nThat founder was me. Ten years younger, before I burned out the first time. If someone had funded that app back then—if I'd had permission to build from my own pain instead of optimizing for someone else's metrics...\n\nI funded her. It's still running. She's still standing. Sometimes that's the real return.",
+        text: "*Something shifts in Quinn's expression. * You saw what I saw.",
         emotion: 'moved'
       }
     ],
@@ -647,7 +647,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     requiredState: { trust: { min: 6 } },
     content: [
       {
-        text: "*Quinn is quieter today. He's holding an old newspaper clipping.*\n\nCan I tell you something I don't tell people?\n\nThe algorithm I built—the one that 'optimized' 400 jobs away? One of those jobs was my cousin's. Marcus. He was a data entry clerk at the company I was consulting for.\n\nI didn't know until after. I did the math that ended his career. He's never forgiven me.",
+        text: "*Quinn is quieter today. He's holding an old newspaper clipping.",
         emotion: 'shame',
         richEffectContext: 'warning',
         variation_id: 'quinn_v11',
@@ -709,7 +709,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v9',
-        text: "*Quinn exhales slowly.*\n\nNo. I can't.\n\nBut I've stopped trying to. Forgiveness isn't the point anymore. What I do with the weight—that's the point.\n\nEvery kid I help understand compound interest, every first-generation student who learns to read a term sheet... that's not forgiveness. That's interest on a debt I can never pay off.",
+        text: "*Quinn exhales slowly. * No.",
         emotion: 'resolved_humble'
       }
     ],
@@ -743,7 +743,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v10',
-        text: "You should talk to Samuel again when you're ready. He has a way of knowing who you need to meet next.\n\nAnd... come back. Not for financial advice. Just... come back.",
+        text: "You should talk to Samuel again when you're ready.",
         emotion: 'warm'
       }
     ],
@@ -789,7 +789,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     nodeId: 'quinn_loyalty_trigger',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "You want to help rebuild it.\n\nI've been staring at this spreadsheet for weeks. Every investment I made. Every client I advised. Tracking where the money went. What it enabled.\n\nSome of it was fine. Index funds. Municipal bonds. Boring stuff.\n\nBut some of it... private equity that gutted companies. Real estate funds that displaced families. Returns built on exploitation I chose not to see.\n\nI can't just delete it and start over. I need to understand the full scope. Document it. Make it right where I can.\n\nBut doing that alone means facing every compromise I made. Every time I prioritized returns over impact.\n\nYou understand analysis and systems. Would you... help me audit my own complicity?",
+      text: "I need you for a high-stakes donor meeting. The numbers are defensible, the ethics are contested, and one bad frame could cost the program. Help me hold both truth and trust in the room.",
       emotion: 'anxious_determined',
       variation_id: 'loyalty_trigger_v1',
       richEffectContext: 'warning'
@@ -835,7 +835,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     nodeId: 'quinn_loyalty_declined',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "You're right. I've been avoiding this because I'm afraid of what I'll find.\n\nBut I know how to analyze financial systems. I can apply that same rigor to my own portfolio.\n\nThe numbers don't lie. They'll show me exactly where I compromised. And that's what I need to see.\n\nThank you for the confidence. Sometimes courage is just doing the analysis you're afraid of.",
+      text: "You're right. I've been avoiding this because I'm afraid of what I'll find.",
       emotion: 'resolved',
       variation_id: 'loyalty_declined_v1'
     }],
@@ -859,7 +859,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     nodeId: 'quinn_loyalty_start',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "No judgment. Just truth. That's exactly what I need.\n\nOkay. Let me pull up the full portfolio history. Two analysts. One reckoning. Let's see what I built and what I need to rebuild.",
+      text: "No judgment. Just truth.",
       emotion: 'determined_grateful',
       variation_id: 'loyalty_start_v1'
     }],
@@ -876,7 +876,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v11',
-        text: "*Quinn shakes his head.*\n\nThat's what I told myself for years. 'I just built the model. They made the decisions.'\n\nBut here's the thing: I was the one who chose what to optimize for. I defined 'efficiency.' I decided what counted as waste.\n\nThe algorithm did exactly what I told it to do. That's what scares me.",
+        text: "*Quinn shakes his head. * That's what I told myself for years.",
         emotion: 'honest_troubled'
       }
     ],
@@ -909,7 +909,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v12',
-        text: "A tool. Yeah.\n\n*Quinn's jaw tightens.*\n\nA hammer doesn't feel guilty when it drives a nail into the wrong place. But I'm not a hammer. I chose to be wielded.\n\nThe system is designed to optimize for profit. I was designed to have a conscience. One of those things was supposed to win.",
+        text: "A tool. Yeah.",
         emotion: 'bitter_honest'
       }
     ],
@@ -938,7 +938,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v13',
-        text: "Now?\n\nI ask different questions. Not 'how do we maximize returns?' but 'what happens to the people on the other side of this number?'\n\nEvery investment decision has a human on the other end. I make sure I can see them before I make the call.",
+        text: "Now?",
         emotion: 'thoughtful_resolved'
       }
     ],
@@ -971,7 +971,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v14',
-        text: "*Quinn smiles—the first real smile you've seen.*\n\nShe knew that wealth is relational, not numerical.\n\nShe had a savings account, never more than a few thousand dollars. But she knew everyone on her block. People brought her casseroles when she was sick. She never ate dinner alone unless she wanted to.\n\nI had millions and ordered takeout to an empty apartment.",
+        text: "*Quinn smiles—the first real smile you've seen. * She knew that wealth is relational, not numerical.",
         emotion: 'warm_wistful',
         skillReflection: [
           { skill: 'financialLiteracy', minLevel: 5, altText: "*Quinn smiles—the first real smile you've seen.*\n\nYou understand money. I can tell by your questions. But my grandmother taught me something your financial literacy probably hasn't covered.\n\nWealth is relational, not numerical. She had thousands in savings—and everyone on her block. I had millions and ordered takeout alone.\n\nReal financial wisdom includes relationships in the ledger.", altEmotion: 'teaching_warm' },
@@ -1008,7 +1008,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v15',
-        text: "*Quinn is quiet for a moment.*\n\nYeah. Lonely.\n\nIt's a specific kind of lonely—surrounded by people who want something from you, but no one who wants... you. Just you.\n\nWealth can be the loneliest fortress.",
+        text: "*Quinn is quiet for a moment.",
         emotion: 'vulnerable_honest'
       }
     ],
@@ -1042,7 +1042,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v16',
-        text: "I learned that optimization without ethics is just efficient destruction.\n\nAnd I learned that the smartest people in finance aren't the ones who make the most money—they're the ones who know when not to make money.",
+        text: "I learned that optimization without ethics is just efficient destruction.",
         emotion: 'teaching_serious'
       }
     ],
@@ -1071,7 +1071,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v17',
-        text: "I run a financial literacy nonprofit from this floor. Free workshops for Birmingham youth.\n\nI also do selective angel investing—but only in founders who can answer one question: 'What happens to the people your success displaces?'\n\nIf they haven't thought about it, I'm not the right investor for them.",
+        text: "I run a financial literacy nonprofit from this floor.",
         emotion: 'proud_humble'
       }
     ],
@@ -1100,7 +1100,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v18',
-        text: "Basic stuff that should be taught in schools but isn't. Compound interest. How credit scores actually work. What a term sheet says between the lines.\n\nLast week, a 16-year-old asked me how to start investing with $50. That kid reminded me why I came back.",
+        text: "Basic stuff that should be taught in schools but isn't.",
         emotion: 'warm_engaged'
       }
     ],
@@ -1133,7 +1133,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v19',
-        text: "More meaningful than anything I did on Wall Street.\n\nI made millions moving money around. Here, I help kids understand that money is a tool, not a goal. That's worth more than any trade I ever made.",
+        text: "More meaningful than anything I did on Wall Street.",
         emotion: 'content_resolved'
       }
     ],
@@ -1162,7 +1162,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     speaker: 'Quinn Almeida',
     content: [
       {
-        text: "Not more than. Alongside.\n\nImpact without sustainability is charity. Sustainability without impact is just... business. The hard part is building both into the same system.",
+        text: "Not more than.",
         variation_id: 'quinn_v23',
         emotion: 'teaching'
       }
@@ -1192,7 +1192,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v20',
-        text: "*Quinn leans forward.*\n\nThat's the right question. And yes—you can. But it requires building impact INTO the revenue model, not hoping it happens as a side effect.\n\nThe best social enterprises make money BECAUSE they solve real problems for real people. Not despite it.",
+        text: "*Quinn leans forward.",
         emotion: 'engaged_teaching'
       }
     ],
@@ -1225,7 +1225,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v21',
-        text: "Social enterprise. It's not charity with a business model—it's business with a conscience baked in.\n\nThink about it: If your company makes more money when it helps more people, you've aligned profit with purpose. That's sustainable impact.",
+        text: "Social enterprise.",
         emotion: 'passionate_teaching'
       }
     ],
@@ -1288,7 +1288,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v23',
-        text: "*Quinn pulls out a worn index card and writes on it.*\n\nHere. Three returns. Financial, human, systemic. Use it for any decision, not just investments.\n\nIt's served me better than any MBA framework ever did.",
+        text: "*Quinn pulls out a worn index card and writes on it.",
         emotion: 'warm_generous'
       }
     ],
@@ -1313,7 +1313,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     speaker: 'Quinn Almeida',
     content: [
       {
-        text: "It does. I used to close 20 deals a year. Now I do maybe 4.\n\nBut those 4 let me sleep at night. And they tend to last longer than the quick wins.",
+        text: "It does.",
         variation_id: 'quinn_v28',
         emotion: 'content_honest'
       }
@@ -1342,7 +1342,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     speaker: 'Quinn Almeida',
     content: [
       {
-        text: "Exactly. Took me too long to learn that. Wall Street rewards volume. Life rewards intention.",
+        text: "Exactly.",
         variation_id: 'quinn_v29',
         emotion: 'wise_humble'
       }
@@ -1370,7 +1370,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v24',
-        text: "*Quinn's expression softens.*\n\nIdeas are cheap. Execution is everything. And execution depends on the person.\n\nI've seen brilliant ideas fail because the founder couldn't handle pressure. I've seen mediocre ideas succeed because someone believed in them harder than anyone thought possible.\n\nPeople are the variable that matters most.",
+        text: "*Quinn's expression softens.",
         emotion: 'teaching_warm'
       }
     ],
@@ -1436,7 +1436,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v26',
-        text: "*Quinn laughs—a genuine laugh.*\n\nFair question. Resilience? High—I've failed spectacularly and I'm still here. Why? It took 15 years to find, but it's solid now. Awareness?\n\n*He pauses.*\n\nThat one still gets me. I spent years thinking I knew everything. Now I know I never will. That's progress, I think.",
+        text: "*Quinn laughs—a genuine laugh. * Fair question.",
         emotion: 'self_aware_humble'
       }
     ],
@@ -1469,7 +1469,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v27',
-        text: "Growth. Yeah.\n\nI used to think growth meant more—more money, more deals, more status. Now I think growth means deeper—deeper understanding, deeper relationships, deeper purpose.\n\nLess breadth, more depth. That's the trade I made.",
+        text: "Growth.",
         emotion: 'content_wise'
       }
     ],
@@ -1496,7 +1496,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v28',
-        text: "There's a company in Birmingham—started by two UAB grads—that trains formerly incarcerated people for tech jobs. They charge companies for the trained workers.\n\nThe social impact IS the business model. More people they help, more revenue they make. That's alignment.",
+        text: "There's a company in Birmingham—started by two UAB grads—that trains formerly incarcerated people for.",
         emotion: 'excited_teaching'
       }
     ],
@@ -1524,7 +1524,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     speaker: 'Quinn Almeida',
     content: [
       {
-        text: "Plenty. A credit union that only lends to small businesses in underserved neighborhoods—the more they lend, the more the neighborhood grows, the more deposits they get.\n\nA tutoring company that hires college students from low-income backgrounds—the tutors are the product AND the mission.\n\nWhen you look for it, you see it everywhere.",
+        text: "Plenty. A credit union that only lends to small businesses in underserved neighborhoods—the more they lend, the more the neighborhood grows, the.",
         variation_id: 'quinn_v35',
         emotion: 'passionate'
       }
@@ -1552,7 +1552,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v29',
-        text: "Time. That's the real currency, isn't it?\n\nMoney can buy time to think, time to explore, time to figure out what matters. But only if you use it for that. Most wealthy people I know use their time to make more money. Infinite loop, no exit.",
+        text: "Time.",
         emotion: 'thoughtful'
       }
     ],
@@ -1581,7 +1581,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v30',
-        text: "I didn't escape. I crashed out.\n\nBurnout isn't an escape—it's a forced exit. But once I was out, I had the clarity to see the loop from the outside.\n\nI don't recommend the crash. But I'm grateful for the clarity.",
+        text: "I didn't escape.",
         emotion: 'honest_wry'
       }
     ],
@@ -1607,7 +1607,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v31',
-        text: "Connection. Real connection.\n\nI had networking. I had strategic relationships. I had a contact list that could get me into any room.\n\nBut I didn't have anyone who would come to my apartment at 3 AM if I was falling apart. That's what was missing.",
+        text: "Connection.",
         emotion: 'vulnerable_honest'
       }
     ],
@@ -1640,7 +1640,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v32',
-        text: "Working on it. Birmingham helps. People here aren't impressed by where I used to work. They care about who I am now, what I'm doing for the community.\n\nIt's slower. Deeper. Less transactional. More real.",
+        text: "Working on it. Birmingham helps.",
         emotion: 'hopeful_honest'
       }
     ],
@@ -1696,7 +1696,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v34',
-        text: "Hesitation. Where do they pause? What questions make them uncomfortable?\n\nA founder who stumbles on 'why this matters to you' is a red flag. A founder who stumbles on 'how will you scale' just needs help.\n\nThe pauses tell you everything.",
+        text: "Hesitation.",
         emotion: 'teaching_engaged'
       }
     ],
@@ -1722,7 +1722,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v35',
-        text: "Wall Street? Patience?\n\n*Quinn laughs.*\n\nThe culture is speed. First to the trade, first to the deal, first to the exit. Patience is seen as weakness—like you're too slow to compete.\n\nTook me years to realize: the slow money usually wins. Just not fast enough to make headlines.",
+        text: "Wall Street?",
         emotion: 'wry_teaching'
       }
     ],
@@ -1751,7 +1751,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v36',
-        text: "Slow money. Patient capital. Investments made for the long term, not the next quarter.\n\nWarren Buffett's whole strategy is slow money. Buy good companies, hold forever. Boring as hell. Works better than almost everything else.",
+        text: "Slow money.",
         emotion: 'teaching'
       }
     ],
@@ -1777,7 +1777,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v37',
-        text: "The deeper story.\n\n*Quinn settles back in his chair.*\n\nI was 16 when I realized I was good at math. Not just good—I could see patterns other people couldn't. My teachers told me I could go anywhere.\n\nSo I went as far as I could. Turns out 'far' and 'somewhere worth being' aren't the same thing.",
+        text: "The deeper story. *Quinn settles back in his chair.",
         emotion: 'reflective'
       }
     ],
@@ -1809,7 +1809,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     speaker: 'Quinn Almeida',
     content: [
       {
-        text: "Here. Teaching. Building something that outlasts me.\n\nI used to measure success by what I could accumulate. Now I measure it by what I can leave behind.\n\nDifferent math. Same pattern-recognition skill. Better outcome.",
+        text: "Here. Teaching.",
         variation_id: 'quinn_v45',
         emotion: 'content_wise'
       }
@@ -1836,7 +1836,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v38',
-        text: "*Quinn pauses, slightly surprised.*\n\nMost people want the simulation. The teaching. They want what I can do for them.\n\nYou want to know who I am first. That's... that's the right instinct.",
+        text: "*Quinn pauses, slightly surprised.",
         emotion: 'touched',
         patternReflection: [
           { pattern: 'helping', minLevel: 4, altText: "*Quinn's expression softens.*\n\nYou care about people before their credentials. That's rare in any industry, but especially in finance.\n\nAsk me anything. I'm an open book today.", altEmotion: 'warm' },
@@ -1876,7 +1876,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v39',
-        text: "My story.\n\nBirmingham kid. Math prodigy. Got into MIT. Worked at Goldman. Made partner at 32. Burned out at 34.\n\nCame home. Started over. Now I'm here, trying to make sure the next generation of Birmingham kids don't make my mistakes.\n\nThat's the short version. The long version takes time.",
+        text: "My story.",
         emotion: 'open_honest'
       }
     ],
@@ -1909,7 +1909,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v40',
-        text: "*Quinn nods, a real warmth in his eyes.*\n\nThen let's take our time.\n\nI'll tell you about the kid who thought numbers were the answer to everything. And how he learned—slowly, painfully—that numbers are just one kind of truth.\n\nWhere do you want to start?",
+        text: "*Quinn nods, a real warmth in his eyes.",
         emotion: 'open_warm'
       }
     ],
@@ -1938,7 +1938,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v41',
-        text: "Prioritizing wealth over meaning. Measuring success by account balance instead of impact. Optimizing for efficiency without asking 'efficient at what?'\n\nThe usual brilliant-person mistakes. I just made them faster than most.",
+        text: "Prioritizing wealth over meaning.",
         emotion: 'wry_honest'
       }
     ],
@@ -1967,7 +1967,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v42',
-        text: "Ask 'why' before 'how much.' Regularly.\n\nEvery few months, stop and ask: 'If I succeed at this, what will I have built? Who will I have become? Is that who I want to be?'\n\nMost people don't ask until it's too late. Ask early. Ask often.",
+        text: "Ask 'why' before 'how much.",
         emotion: 'teaching_earnest'
       }
     ],
@@ -1994,7 +1994,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v43',
-        text: "The station.\n\n*Quinn looks around the Exchange Floor.*\n\nI found this place when I was at my lowest. Or it found me—I'm still not sure which.\n\nSamuel told me it appears to people at crossroads. I was definitely at one. Still am, in some ways. The crossroads keep coming. The station stays.",
+        text: "The station. *Quinn looks around the Exchange Floor.",
         emotion: 'reflective_grateful'
       }
     ],
@@ -2027,7 +2027,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v44',
-        text: "He said: 'The station doesn't offer answers. It offers mirrors. What you see depends on what you're ready to see.'\n\nTook me months to understand what he meant. I was looking for someone to tell me what to do next. The station showed me I already knew.",
+        text: "He said: 'The station doesn't offer answers.",
         emotion: 'reflective_grateful'
       }
     ],
@@ -2054,7 +2054,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v45',
-        text: "Criteria?\n\nOld me would have said: addressable market, competitive moat, path to profitability.\n\nNew me says: Who gets helped? Who might get hurt? Can the founder answer uncomfortable questions without flinching?\n\nThe second set is harder to measure. That's exactly why it matters more.",
+        text: "Criteria?",
         emotion: 'teaching_thoughtful'
       }
     ],
@@ -2083,7 +2083,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v46',
-        text: "*Quinn smiles.*\n\nCareful analysis. That's what separates good investors from lucky ones.\n\nWhat do you want to know?",
+        text: "*Quinn smiles.",
         emotion: 'approving'
       }
     ],
@@ -2157,7 +2157,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v48',
-        text: "That's what I used to think. Numbers are neutral. Data is objective.\n\nBut the choices about what to measure, what to optimize for—those are human choices. Full of values. Full of feelings, whether we admit it or not.\n\nI chose to measure profit. That choice had feelings behind it. I just pretended it didn't.",
+        text: "That's what I used to think. Numbers are neutral.",
         emotion: 'honest_reflective'
       }
     ],
@@ -2183,7 +2183,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v49',
-        text: "Values and returns. They're not opposites—they're both criteria for success.\n\nThe question is: which one do you let override the other when they conflict?\n\nI used to let returns win every time. Now I'm more... selective about when profit gets the final vote.",
+        text: "Values and returns.",
         emotion: 'teaching_honest'
       }
     ],
@@ -2209,7 +2209,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v50',
-        text: "Sustainable? Probably not at scale. I can do 4-5 investments like that a year.\n\nBut here's the thing: I'm not trying to run a fund anymore. I'm trying to run a life.\n\nScalability was a trap I fell into before. Not every good thing needs to scale.",
+        text: "Sustainable?",
         emotion: 'honest_content'
       }
     ],
@@ -2273,7 +2273,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     speaker: 'quinn',
     content: [
       {
-        text: "Clarity. Purpose. The feeling that you're exactly where you should be.\\n\\nMy whole career, I've been measuring the wrong things. This place is teaching me that.",
+        text: "Clarity.",
         emotion: 'vulnerable',
         variation_id: 'mystery_response_v1'
       }
@@ -2297,7 +2297,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     nodeId: 'quinn_sim1_budget_intro',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "Want to understand finance? Start simple. Real simple.\n\nMeet Jasmine. 23, first job out of college. $42K salary. Birmingham.\n\nShe asked me to look at her budget. I'm going to show you what I see—and what most people miss.\n\nReady?",
+      text: "Want to understand finance?",
       emotion: 'teaching',
       variation_id: 'sim1_intro_v1'
     }],
@@ -2340,7 +2340,7 @@ TARGET: 50% needs ($1,312) | 30% wants ($787) | 20% savings ($525)`,
     nodeId: 'quinn_sim1_diagnosis',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "Exactly. $2,345 spent. Zero saved. Most people would say 'she's doing fine—she's not in debt.'\n\nBut here's what I see: one car repair away from a credit card spiral. No emergency fund. No retirement. No financial breathing room.\n\nThe invisible crisis. What would you tell her to cut?",
+      text: "Exactly.",
       emotion: 'serious',
       variation_id: 'sim1_diagnosis_v1'
     }],
@@ -2374,7 +2374,7 @@ TARGET: 50% needs ($1,312) | 30% wants ($787) | 20% savings ($525)`,
     nodeId: 'quinn_sim1_success',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "Good call. The low-hanging fruit.\n\nStreaming: Keep one, cut three. Save $30.\nRestaurants: Half as often. Save $110.\nGym: Planet Fitness is $10. Save $25.\n\n$165/month saved. Not the full 20%, but it's a start. And here's the key—she still gets to live.\n\nFinancial advice that makes you miserable doesn't stick. You have to find the balance.\n\nThat's lesson one: small changes compound. $165/month is $2,000/year. In 5 years, with modest returns, that's $11,000. Her first emergency fund.\n\nNot bad for cutting two streaming services.",
+      text: "Strong call. You balanced debt pressure with behavioral reality and chose a plan the person can actually sustain. In finance, durable behavior beats perfect spreadsheets.",
       emotion: 'proud_teaching',
       interaction: 'nod',
       variation_id: 'sim1_success_v1',
@@ -2398,7 +2398,7 @@ TARGET: 50% needs ($1,312) | 30% wants ($787) | 20% savings ($525)`,
     nodeId: 'quinn_sim1_partial',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "Not wrong, but harder to execute.\n\nMoving costs money. New apartment, deposit, movers—$2,000 upfront she doesn't have. And income growth takes time.\n\nI teach people to start with what they can control today. Cut the streaming services. Skip restaurants twice a month. That's $165 saved immediately.\n\nSmall wins build momentum. Once she has $1,000 saved, then we talk about the bigger moves.\n\nFinance isn't just math. It's psychology. You have to meet people where they are.",
+      text: "Not wrong, just hard to execute now.\n\nBig moves need cash she doesn't have, so we start with controllable cuts and early wins.\n\nFinance is math plus behavior, and behavior comes first.",
       emotion: 'patient_teaching',
       variation_id: 'sim1_partial_v1'
     }],
@@ -2421,7 +2421,7 @@ TARGET: 50% needs ($1,312) | 30% wants ($787) | 20% savings ($525)`,
     nodeId: 'quinn_sim2_portfolio_intro',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "Alright. Next level. You've got $10,000 to invest. First time.\n\nMost people freeze here. Too many choices. Too much jargon. FOMO from crypto bros. Fear from the last crash.\n\nBut investing isn't gambling—it's calculated risk. Let me show you how I think about allocation.\n\nAge: 28. Time horizon: 30+ years to retirement. Risk tolerance: moderate.\n\nHow would you split it?",
+      text: "Alright. Next level.",
       emotion: 'teaching',
       variation_id: 'sim2_intro_v1'
     }],
@@ -2467,7 +2467,7 @@ CLASSIC ALLOCATION (Age 28):
     nodeId: 'quinn_sim2_analysis',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "Solid. Textbook, even. 70/20/10 is what most advisors would recommend at 28.\n\nBut here's what they don't tell you: that allocation assumes you can stomach a 40% drop and not panic-sell.\n\n2008: Down 37%. 2020: Down 34%. 2022: Down 18%.\n\nCan you watch $10K become $6K and not touch it? Most people can't. They sell at the bottom, lock in losses, miss the recovery.\n\nSo I ask differently: what allocation lets you sleep at night? Because the best portfolio is the one you don't abandon.\n\nWould you adjust knowing that?",
+      text: "70/20/10 is textbook until markets drop and fear takes over.\n\nCan you watch $10K become $6K and hold?\n\nBest portfolio is the one you won't panic-abandon, so optimize for sleep and consistency.",
       emotion: 'challenging',
       variation_id: 'sim2_analysis_v1'
     }],
@@ -2501,7 +2501,7 @@ CLASSIC ALLOCATION (Age 28):
     nodeId: 'quinn_sim2_success',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "That's the mindset. Volatility is the price you pay for growth.\n\n$10K at 8% average returns for 30 years? $100K. That's the power of compound interest and staying invested.\n\nMost people trade that away chasing hot stocks or panic-selling in crashes. You just committed to not being most people.\n\nLesson two: time in the market beats timing the market. Every. Single. Time.\n\nWelcome to the long game.",
+      text: "That's the mindset. Volatility is the price you pay for growth.",
       emotion: 'proud',
       interaction: 'nod',
       variation_id: 'sim2_success_v1',
@@ -2525,7 +2525,7 @@ CLASSIC ALLOCATION (Age 28):
     nodeId: 'quinn_sim2_partial',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "Honest answer. I respect that.\n\n50/40/10 still grows—just slower. $10K at 6% for 30 years? $57K instead of $100K.\n\nYou're trading $43K for peace of mind. Some people say that's a bad trade. I say it depends on whether that peace lets you stay invested.\n\nA conservative portfolio you stick with beats an aggressive portfolio you abandon.\n\nKnow yourself. That's half the battle.",
+      text: "Honest answer. I respect that.",
       emotion: 'understanding',
       variation_id: 'sim2_partial_v1'
     }],
@@ -2547,7 +2547,7 @@ CLASSIC ALLOCATION (Age 28):
     nodeId: 'quinn_sim2_fail',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "Market timing. The dream that kills portfolios.\n\nHere's the data: Missing the 10 best days in the market over 30 years cuts your returns in half. And those best days? Often happen right after the worst days.\n\nYou can't predict them. Nobody can. The people who try miss the recovery waiting for the perfect entry.\n\n'Time in beats timing.' That's not a slogan—it's math.\n\nWant to try that allocation again?",
+      text: "That move optimizes for confidence, not resilience. In volatile markets, fragile conviction leads to panic exits. Build a portfolio you can hold through drawdown.",
       emotion: 'firm_teaching',
       variation_id: 'sim2_fail_v1',
       richEffectContext: 'error'
@@ -2567,7 +2567,7 @@ CLASSIC ALLOCATION (Age 28):
     nodeId: 'quinn_sim3_ethics_intro',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "Final scenario. This one's harder. No right answer.\n\nYou're managing a $2M portfolio for a nonprofit focused on youth education in Birmingham.\n\nYou find an investment opportunity: defense contractor. 18% annual returns. Stable. Ethical concerns.\n\nThat $2M becomes $2.36M in year one. Extra $360K for scholarships. Real kids. Real futures.\n\nBut it's weapons manufacturing. Some of those weapons go to conflicts you don't support.\n\nDo you invest?",
+      text: "Final scenario. This one's harder.",
       emotion: 'serious',
       variation_id: 'sim3_intro_v1'
     }],
@@ -2628,7 +2628,7 @@ ALTERNATIVES:
     nodeId: 'quinn_sim3_pragmatic',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "The utilitarian play. Greatest good for the greatest number.\n\n36 kids who wouldn't have gone to college, now do. Some become teachers, nurses, engineers. Compound impact over generations.\n\nBut here's what happens: word gets out. Donors ask questions. 'We're funding scholarships with defense money?' Some pull support. Board members resign.\n\nYou gained $360K in returns. You lose $500K in donations.\n\nAnd the mission? Compromised. The kids you're helping now learn that ethics bend when the numbers are good enough.\n\nWhat did you really win?",
+      text: "Utilitarian math looks good at first: 36 more kids get funded.",
       emotion: 'challenging',
       variation_id: 'sim3_pragmatic_v1',
       richEffectContext: 'warning'
@@ -2647,7 +2647,7 @@ ALTERNATIVES:
     nodeId: 'quinn_sim3_principled',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "The values play. Clean hands matter more than full coffers.\n\nYou decline. Invest in ESG funds instead. 8% returns, not 18%. That's 16 scholarships, not 36.\n\n20 kids don't get funding this year. You have to call their families. Explain why they didn't make the cut.\n\nBut the nonprofit's integrity stays intact. Donors keep giving. The mission stays clear.\n\nHere's the hard part: those 20 kids? They're real. Their futures mattered too.\n\nValues aren't free. Someone always pays.",
+      text: "Values-first means cleaner capital and lower returns: 16 scholarships instead of 36.",
       emotion: 'somber',
       variation_id: 'sim3_principled_v1'
     }],
@@ -2665,7 +2665,7 @@ ALTERNATIVES:
     nodeId: 'quinn_sim3_balanced',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "The middle path. Harder to walk, but often the right one.\n\n8% ESG returns fund 16 scholarships. Not as many as 36. More than 0.\n\nYou call donors: 'We're prioritizing aligned investments.' They respect it. Some increase giving to close the gap.\n\nThe 20 kids who didn't get funding? You build a waitlist. Launch a separate campaign. Raise $200K in new donations from people who care about ethical investing.\n\nNet result: 26 scholarships funded. Not 36, but close. And you built something sustainable.\n\nLesson three: the best financial decisions serve both values AND value. When you can't have both, get creative.\n\nThat's what separates good investors from great ones.",
+      text: "The middle path is harder, but durable. ESG returns fund 16 scholarships, not 36.",
       emotion: 'proud_wise',
       interaction: 'bloom',
       variation_id: 'sim3_balanced_v1',
@@ -2690,7 +2690,7 @@ ALTERNATIVES:
     nodeId: 'quinn_sim3_lesson',
     speaker: 'Quinn Almeida',
     content: [{
-      text: "Finance isn't just math. It's philosophy. Every allocation is a statement about what you value.\n\nMost people don't realize they're making ethical choices when they invest. They think they're just 'maximizing returns.'\n\nBut you can't separate money from meaning. Every dollar you invest votes for the kind of world you want.\n\nThat's why I came back to Birmingham. Not to make more money. To make money mean something.\n\nYou get it now?",
+      text: "Lesson: money decisions also shape culture. Pure return can damage trust, pure principle can reduce reach. Durable leadership designs options that protect both mission and long-term outcomes.",
       emotion: 'earnest',
       variation_id: 'sim3_lesson_v1'
     }],
@@ -2712,7 +2712,7 @@ ALTERNATIVES:
     nodeId: 'quinn_hub_return',
     speaker: 'quinn',
     content: [{
-      text: "Thanks. I'm working on it.\\n\\nLet's keep looking at the numbers, but... differently.",
+      text: "Thanks.",
       emotion: 'determined',
       variation_id: 'hub_return_v1'
     }],
@@ -2799,7 +2799,7 @@ ALTERNATIVES:
     }],
     choices: [{
       choiceId: 'quinn_recovery_complete',
-      text: "(Continue)",
+      text: "Proceed.",
       nextNodeId: 'quinn_hub_return',
       pattern: 'patience'
     }],
@@ -2855,19 +2855,19 @@ ALTERNATIVES:
   { nodeId: 'quinn_back_birmingham', speaker: 'Quinn Rivera', content: [{ text: "Coming back to Birmingham wasn't retreat. It was strategy. This is where I can make real change.", emotion: 'determined', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Strategic return.", nextNodeId: 'quinn_hub_return', pattern: 'building' }], tags: ['stub'] },
   { nodeId: 'quinn_build_different', speaker: 'Quinn Rivera', content: [{ text: "Building something different in finance means questioning every assumption. Why does it have to work this way? Usually it doesn't.", emotion: 'passionate', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Question everything.", nextNodeId: 'quinn_hub_return', pattern: 'exploring' }], tags: ['stub'] },
   { nodeId: 'quinn_change_inside', speaker: 'Quinn Rivera', content: [{ text: "Change from inside is slower but deeper. You have to earn trust before you can challenge assumptions.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Trust before challenge.", nextNodeId: 'quinn_hub_return', pattern: 'patience' }], tags: ['stub'] },
-  { nodeId: 'quinn_conscience_answer', speaker: 'Quinn Rivera', content: [{ text: "My conscience? It's loud. Every deal, every recommendation—I hear it asking 'who does this really help?'", emotion: 'vulnerable', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "A loud conscience.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] },
+  { nodeId: 'quinn_conscience_answer', speaker: 'Quinn Rivera', content: [{ text: "My conscience?", emotion: 'vulnerable', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "A loud conscience.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] },
   { nodeId: 'quinn_economy_prediction', speaker: 'Quinn Rivera', content: [{ text: "Predicting the economy? Anyone who claims certainty is selling something. I deal in probabilities and humility.", emotion: 'honest', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Humble predictions.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] },
   { nodeId: 'quinn_founder_types', speaker: 'Quinn Rivera', content: [{ text: "Three types of founders: dreamers who can't execute, executors who can't dream, and the rare ones who do both. I fund the third.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Finding the rare ones.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] },
   { nodeId: 'quinn_happiness_research', speaker: 'Quinn Rivera', content: [{ text: "Happiness research says money matters until it doesn't. Past a point, it's relationships, purpose, growth. Finance mostly ignores this.", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "What really matters.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] },
   { nodeId: 'quinn_harder_investing', speaker: 'Quinn Rivera', content: [{ text: "Ethical investing is harder. More due diligence, more saying no, more complexity. But that's not an excuse to avoid it.", emotion: 'firm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Harder but necessary.", nextNodeId: 'quinn_hub_return', pattern: 'patience' }], tags: ['stub'] },
   { nodeId: 'quinn_heavy_living', speaker: 'Quinn Rivera', content: [{ text: "Living with financial knowledge is heavy. I see the systems most people don't. Can't unsee them now.", emotion: 'serious', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Can't unsee it.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] },
-  { nodeId: 'quinn_lonely_now_answer', speaker: 'Quinn Rivera', content: [{ text: "Lonely? Sometimes. This path isn't crowded. But I'd rather be lonely and right than popular and complicit.", emotion: 'honest', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Lonely but right.", nextNodeId: 'quinn_hub_return', pattern: 'patience' }], tags: ['stub'] },
+  { nodeId: 'quinn_lonely_now_answer', speaker: 'Quinn Rivera', content: [{ text: "Lonely?", emotion: 'honest', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Lonely but right.", nextNodeId: 'quinn_hub_return', pattern: 'patience' }], tags: ['stub'] },
   { nodeId: 'quinn_marcus_relationship', speaker: 'Quinn Rivera', content: [{ text: "Marcus and I see different angles of the same problem. He's healing people; I'm trying to heal systems. We need both.", emotion: 'warm', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Both are needed.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] },
   { nodeId: 'quinn_meaningful_weight', speaker: 'Quinn Rivera', content: [{ text: "Meaningful work has weight to it. Lightness is nice but it doesn't build anything that lasts.", emotion: 'reflective', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Weight that builds.", nextNodeId: 'quinn_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'quinn_system_excuse', speaker: 'Quinn Rivera', content: [{ text: "The system is an excuse. People built it. People can rebuild it. Saying 'that's how it works' is a choice.", emotion: 'passionate', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "We can rebuild.", nextNodeId: 'quinn_hub_return', pattern: 'building' }], tags: ['stub'] },
-  { nodeId: 'quinn_teach_approach', speaker: 'Quinn Rivera', content: [{ text: "My teaching approach? Show people the real numbers. Not the sanitized version. Real numbers change minds.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Real numbers.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] },
+  { nodeId: 'quinn_system_excuse', speaker: 'Quinn Rivera', content: [{ text: "The system is an excuse.", emotion: 'passionate', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "We can rebuild.", nextNodeId: 'quinn_hub_return', pattern: 'building' }], tags: ['stub'] },
+  { nodeId: 'quinn_teach_approach', speaker: 'Quinn Rivera', content: [{ text: "My teaching approach?", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Real numbers.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] },
   { nodeId: 'quinn_teaching_offer', speaker: 'Quinn Rivera', content: [{ text: "I could teach you more. Financial literacy isn't taught because it's dangerous—to the people who profit from confusion.", emotion: 'serious', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "I'd like to learn.", nextNodeId: 'quinn_hub_return', pattern: 'exploring' }], tags: ['stub'] },
-  { nodeId: 'quinn_titusville_history', speaker: 'Quinn Rivera', content: [{ text: "Titusville. Where I grew up. First Black neighborhood in Birmingham. History in every street. That's what I'm fighting for.", emotion: 'proud', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Fighting for history.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] },
+  { nodeId: 'quinn_titusville_history', speaker: 'Quinn Rivera', content: [{ text: "Titusville.", emotion: 'proud', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Fighting for history.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] },
   { nodeId: 'quinn_what_changed', speaker: 'Quinn Rivera', content: [{ text: "What changed me? Seeing the spreadsheets. The actual numbers showing how wealth flows away from people who need it most.", emotion: 'troubled', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "The numbers don't lie.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] },
   { nodeId: 'quinn_why_understand', speaker: 'Quinn Rivera', content: [{ text: "Understanding why matters more than knowing what. The what changes. The why reveals the system underneath.", emotion: 'knowing', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Seeing the system.", nextNodeId: 'quinn_hub_return', pattern: 'analytical' }], tags: ['stub'] },
   { nodeId: 'quinn_mentor_balance', speaker: 'Quinn Almeida', content: [{ text: "I listen more than I advise. Financial numbers are just one language. People speak in hopes and fears too. A good mentor translates between both.", emotion: 'thoughtful', variation_id: 'stub_v1' }], choices: [{ choiceId: 'stub_return', text: "Both languages matter.", nextNodeId: 'quinn_hub_return', pattern: 'helping' }], tags: ['stub'] },

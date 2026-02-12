@@ -79,7 +79,7 @@ TESS: "No. It's not."`,
     choices: [
       {
         choiceId: 'fight_to_why',
-        text: "(Continue)",
+        text: "Tell me what brought you in tonight.",
         nextNodeId: 'tess_rohan_why',
         pattern: 'patience'
       }
@@ -117,7 +117,7 @@ TESS: "That's why it's perfect."`,
     choices: [
       {
         choiceId: 'why_to_listening',
-        text: "(Continue)",
+        text: "Play the record.",
         nextNodeId: 'tess_rohan_listening',
         pattern: 'patience'
       }
@@ -181,21 +181,19 @@ ROHAN: "The AI can't do this. It can generate notes. But not... listening."`,
       {
         text: `TESS: "Listening. Yeah."
 
-ROHAN: "My mentor David. He taught me to listen to code. What it's trying to tell you."
+ROHAN: "David taught me to listen to code - what it's trying to tell you."
 
-TESS: "And mine taught me to listen to silence. What's not being played matters as much as what is."
+TESS: "Mine taught me to listen to silence. What's missing matters."
 
-*Rohan picks up the album cover.*
+*Rohan turns the album in his hands.*
 
-ROHAN: "David's retiring. His knowledge... I'm trying to preserve it. But I can't do it alone."
+ROHAN: "David's retiring. I'm trying to preserve what he knows, but I can't do it alone."
 
-TESS: "The record shop almost closed. I'm trying to keep the space alive. But I'm exhausted."
-
-*They look at each other.*
+TESS: "I almost lost this shop. I'm keeping it alive, but I'm running on fumes."
 
 ROHAN: "We're both fighting obsolescence."
 
-TESS: "By refusing to be optimized."`,
+TESS: "By refusing optimization as a religion."`,
         emotion: 'fierce_solidarity',
         variation_id: 'core_v1',
         useChatPacing: true
@@ -204,7 +202,7 @@ TESS: "By refusing to be optimized."`,
     choices: [
       {
         choiceId: 'core_to_farewell',
-        text: "(Continue)",
+        text: "How does that shared fight change what comes next?",
         nextNodeId: 'tess_rohan_farewell',
         pattern: 'patience'
       }

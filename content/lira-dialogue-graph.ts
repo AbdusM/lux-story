@@ -18,7 +18,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         nodeId: 'lira_handshake_audio',
         speaker: 'Lira Vance',
         content: [{
-            text: "It's not just about teaching. It's about feeling. Here, take the fader.\n\nDon't listen to the notes. Listen to the texture. Can you make it feel... lonely?",
+            text: "It's not about teaching.",
             emotion: 'pensive',
             variation_id: 'lira_handshake_intro',
             interaction: 'ripple'
@@ -66,7 +66,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "It's quiet here. Too quiet.\n\n\"The prompt was 'Silence before the storm.'\" But I keep getting rain.\n\nThe AI doesn't understand the *pressure* of silence.",
+                text: "It's quiet here.",
                 emotion: 'pensive',
                 variation_id: 'intro_v2_minimal',
                 patternReflection: [
@@ -160,7 +160,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "The space between notes. Where the emotion lives.\n\nScoring a film about memory loss. Director wants 'Sadness'. AI generates minor keys. Slow tempos. Cliché.\n\nTrue sadness isn't slow music. It's a melody trying to be happy but... forgetting how.",
+                text: "The space between notes.",
                 emotion: 'melancholic',
                 variation_id: 'silence_v2_minimal',
                 voiceVariations: {
@@ -215,7 +215,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "'The Last Recital.' About a pianist in her seventies. Early-stage dementia. She can still play but the pieces are... fragmenting.\n\nDirector found me specifically. Said my portfolio had 'something broken in the best way.'\n\nShe didn't know why. Never told her.",
+                text: "'The Last Recital.",
                 emotion: 'guarded_vulnerable',
                 variation_id: 'film_context_v2_minimal',
                 patternReflection: [
@@ -265,7 +265,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "Because I grew up listening to broken music.\n\nMy grandmother was a concert pianist. Chopin. Debussy. Perfect execution.\n\nUntil it wasn't.\n\nI'm not ready to talk about it. But thank you for asking like you meant it.",
+                text: "Because I grew up listening to broken music.",
                 emotion: 'grateful_guarded',
                 variation_id: 'grandmother_hint_v2_minimal'
             }
@@ -299,7 +299,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "Most people ask 'Can machines feel?' You ask how to teach them.\n\nThe answer is: you don't teach emotion. You teach texture. The difference between a single violin and a violin section. The micro-silences between notes. The way a voice cracks on a specific syllable.\n\nEmotion isn't in the notes. It's in the imperfections.",
+                text: "Most people ask 'Can machines feel? ' You ask how to teach them.",
                 emotion: 'engaged',
                 variation_id: 'teaching_machines_v1'
             }
@@ -333,7 +333,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "'Beautiful failure.' Yes. That's exactly it.\n\nA perfectly played note is forgettable. A note that almost breaks, that trembles at the edge of control... that's what makes you feel something.\n\nYou understand this. Most people want the AI to be perfect. You understand that perfect is dead.",
+                text: "'Beautiful failure.",
                 emotion: 'recognized',
                 variation_id: 'beautiful_failure_v1',
                 voiceVariations: {
@@ -368,7 +368,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "Noise gate. Compressor. Reverb. Tools to shape the wave.\n\nBut the AI generates the wave from scratch. Not recording. Dreaming sound.\n\nSometimes its dreams are shallow. I need depth.",
+                text: "Noise gate. Compressor.",
                 emotion: 'focused',
                 variation_id: 'tech_v2_minimal'
             }
@@ -397,7 +397,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "The AI trained on millions of songs. Pop. Film scores. Stock music. It learned patterns.\n\n'Sad' = minor key + slow tempo + piano.\n'Happy' = major key + faster + acoustic guitar.\n\nIt knows the shapes of emotion. But shapes aren't feelings. A teardrop shape isn't grief.\n\nGrief is what made the tear fall.",
+                text: "The AI trained on millions of songs.",
                 emotion: 'teaching',
                 variation_id: 'shallow_dreams_v1',
                 voiceVariations: {
@@ -431,7 +431,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "This is my process. Layers.\n\nFirst: the skeleton. Melody. Rhythm. The AI is good at this.\n\nSecond: the skin. Texture. Timbre.\n\nThird: the soul. The thing that makes you *feel*. This is where I fail. Every time.",
+                text: "This is my process.",
                 emotion: 'determined',
                 variation_id: 'process_intro_v2_minimal',
                 patternReflection: [
@@ -476,7 +476,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "[She types: 'Piano melody, C minor, 72 BPM, melancholic.']\n\n[A simple, competent piano line plays.]\n\nSee? It's... fine. It knows music theory. It can generate endless variations on 'sad piano.'\n\nBut this is like asking someone to describe sadness by listing symptoms. 'Tears. Slow movement. Low energy.' Accurate. Empty.\n\nNow watch what happens when I add context.",
+                text: "[She types: 'Piano melody, C minor, 72 BPM, melancholic. '] [A simple, competent piano line plays.",
                 emotion: 'teaching',
                 variation_id: 'skeleton_v1',
                 skillReflection: [
@@ -508,7 +508,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "[She types: 'Piano melody. The pianist is 75. Her hands remember more than her mind. The melody keeps trying to resolve but forgets where home is.']\n\n[A different melody plays. Same key. But the notes hesitate. Repeat. Search.]\n\nBetter. But still... it's performing sadness. It hasn't lived it.",
+                text: "[She types: 'Piano melody.",
                 emotion: 'frustrated_hopeful',
                 variation_id: 'context_v1'
             }
@@ -542,7 +542,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "Because the soul requires truth. And I've been dancing around mine.\n\nThis film... it's not just work. It's personal. The pianist losing her memory? That's not fiction.\n\nThat's my grandmother. Or it was.",
+                text: "Because the soul requires truth. And I've been dancing around mine.",
                 emotion: 'raw',
                 variation_id: 'why_fail_v1'
             }
@@ -587,7 +587,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "Grandma Rose. Rosa Maria Delgado-Vance. Concert pianist. She performed at Carnegie Hall when she was 22.\n\nShe taught me everything. Not just piano, everything about how sound carries meaning. 'Music isn't in the notes,' she'd say. 'It's in the breath between them.'\n\nShe started forgetting small things first. Keys. Appointments. Then the music started... fragmenting.",
+                text: "Grandma Rose. Rosa Maria Delgado-Vance.",
                 emotion: 'grieving',
                 variation_id: 'grandmother_story_v1'
             }
@@ -623,7 +623,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "She'd start Clair de Lune. Flawless. Then somewhere in the middle... she'd skip.\n\nJump to a different piece. Mozart bleeding into Chopin. Her hands still knew the shapes. But the map... it was dissolving.\n\nLast time she played she stopped mid-phrase. Looked at her hands like they'd betrayed her.\n\n'I can hear it in my head. But my fingers can't find it anymore.'\n\nThat sound. A song trying to remember itself. That's what I'm trying to capture.",
+                text: "She would start Clair de Lune flawlessly, then drift mid-phrase as Mozart bled into.",
                 emotion: 'grieving_determined',
                 variation_id: 'fragmenting_v2_minimal',
                 richEffectContext: 'warning'
@@ -686,7 +686,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "Preserving her. Yes. That's exactly what I'm doing. And failing at.\n\nBecause every prompt I write is an approximation. A description of the feeling, not the feeling itself.\n\nI can tell the AI 'a melody that hesitates.' But I can't give it the way her face looked when she lost the next note. The silence that lasted three seconds but felt like a lifetime.\n\nBut maybe... maybe that's the point. Maybe the imperfection is the message.",
+                text: "Yes, I'm trying to preserve her, and failing at it.",
                 emotion: 'resolved_vulnerable',
                 variation_id: 'preservation_v1'
             }
@@ -713,7 +713,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "Goal: 'The sound of forgetting.'\n\nCurrent Output: Generic ambient drone. Boring.\n\nWe need to prompt for the texture of the sound, not just the genre.",
+                text: "Goal: 'The sound of forgetting.",
                 emotion: 'challenging',
                 variation_id: 'sim_setup_v1'
             }
@@ -788,7 +788,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "The sound fills the room - a beautiful, broken piano melody that fades into static.\n\nThat's it. You hear the static? That's the memory fading.\n\nYou didn't just ask for 'sad.' You described the *mechanism* of sadness. That's how you talk to the machine.",
+                text: "The sound fills the room - a beautiful, broken piano melody that fades into.",
                 emotion: 'amazed',
                 variation_id: 'sim_success_v1'
             }
@@ -823,7 +823,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "[A piano melody begins confidently, then starts repeating phrases, searching, the harmony drifting slightly off before correcting itself.]\n\nOh.\n\nThat's... that's her. That hesitation. The way she used to pause, searching for the next note. You gave it her uncertainty.\n\nHow did you know to prompt it that way?",
+                text: "[A piano melody begins confidently, then starts repeating phrases, searching, the harmony drifting slightly off before.",
                 emotion: 'overwhelmed_grateful',
                 variation_id: 'sim_breakthrough_v1',
                 richEffectContext: 'success'
@@ -843,7 +843,7 @@ export const liraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'breakthrough_building',
-                text: "I thought about the gap between knowing and doing. The body remembering what the mind forgets.",
+        text: "I focused on the gap between knowing and doing: body memory after mind loss.",
                 nextNodeId: 'lira_breakthrough_reflection',
                 pattern: 'building',
                 skills: ['creativity'],
@@ -862,7 +862,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "I've been trying to capture her for months. Generic prompts. Technical specifications. All wrong.\n\nYou gave me one sentence and it worked because... because you weren't describing sound. You were describing experience.\n\nThat's the secret, isn't it? AI doesn't need technical instructions. It needs human truth.",
+                text: "I've been trying to capture her for months.",
                 emotion: 'illuminated',
                 variation_id: 'breakthrough_reflection_v1'
             }
@@ -888,7 +888,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "[Aggressive guitar riffs blast through the headphones, shattering the mood.]\n\nNo! That's anger, not loss. You're just throwing random inputs to see what sticks.\n\nSilence isn't random. It's deliberate.",
+                text: "[Aggressive guitar riffs blast through the headphones, shattering the mood.",
                 emotion: 'frustrated',
                 variation_id: 'sim_fail_v1'
             }
@@ -918,7 +918,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "Okay. Okay, that's fair. Most people don't apologize, they double down.\n\nLet's try again. Think about what we're actually trying to capture. Not 'sadness.' Not a genre. A specific moment of loss.\n\nWhat does forgetting sound like?",
+                text: "Okay.",
                 emotion: 'patient_teaching',
                 variation_id: 'retry_v1'
             }
@@ -945,7 +945,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "Huh. That's actually... interesting. Wrong, but interesting.\n\nWhen you prompt for the opposite of what you want, you see what the AI thinks the opposite is. Heavy metal for sad ambient? It reveals the AI's internal model of 'sadness' and 'anger.'\n\nOkay, you get partial credit for that. But next time, warn me before you blow out my speakers.",
+                text: "Huh. That's .",
                 emotion: 'grudgingly_impressed',
                 variation_id: 'contrast_v1'
             }
@@ -968,7 +968,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "Now we layer. The melody is the skeleton. But a body needs more.\n\nI'll add: vinyl crackle. Tape hiss. The sound of age. Of degradation.\n\nAnd then... the breath. The space between notes where the silence speaks.\n\n'Breathing between piano notes. An old woman pausing to remember. The silence is louder than the music.'",
+                text: "Now we layer. The melody is the skeleton.",
                 emotion: 'focused_creative',
                 variation_id: 'layering_v1'
             }
@@ -1007,7 +1007,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "The heartbeat. The body still fighting.\n\nGrandma's heart was the last thing to give up. Even when she couldn't speak, couldn't play, couldn't recognize us... you could hear it. Still beating. Still trying.\n\n[The track plays: piano, vinyl crackle, silence... and underneath, a slow, irregular heartbeat.]\n\nShe's there. In the sound. You helped put her there.",
+                text: "The heartbeat. The body still fighting.",
                 emotion: 'tearful_grateful',
                 variation_id: 'heartbeat_v1',
                 richEffectContext: 'success'
@@ -1041,7 +1041,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "You know what's strange? I've been afraid of this work. Not the technical part. The emotional part.\n\nEvery time I got close to capturing her, I'd sabotage it. Add more instruments. Change the tempo. Anything to avoid hearing her disappear again.\n\nYou helped me stop running.",
+                text: "what's strange?",
                 emotion: 'vulnerable_grateful',
                 variation_id: 'deeper_work_v1'
             }
@@ -1075,7 +1075,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "You know what I've learned? Memory isn't accurate. It's not a recording. It's a reconstruction.\n\nEvery time we remember, we change the memory a little. Add things. Lose things.\n\nThat's what the AI does too. It takes data and reconstructs it. Imperfectly. Like us.\n\nMaybe that's why it can capture her. Because it fails the way memory fails.",
+                text: "what I've learned? Memory isn't accurate.",
                 emotion: 'philosophical',
                 variation_id: 'memory_philosophy_v1'
             }
@@ -1109,7 +1109,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "The film score. Obviously. But... more than that.\n\nI want to teach other composers what I learned. Not just how to use AI tools, but how to prompt for truth. How to translate human experience into machine-readable language.\n\nGrandma Rose taught me to hear the breath between notes. I want to teach others to give that breath to machines.\n\nSo the machines can help us remember.",
+                text: "The film score. Obviously.",
                 emotion: 'hopeful_determined',
                 variation_id: 'future_vision_v1'
             }
@@ -1168,7 +1168,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "I came here thinking I needed better prompts. Better techniques. You know what I actually needed?\n\nSomeone to help me be honest. About why this matters. About who I'm doing it for.\n\nThe AI can generate sound. But it can't generate meaning. We do that. And now... now I know how to give it the meaning it needs.\n\nThank you. For helping me hear her again.",
+                text: "I came here thinking I needed better prompts. Better techniques.",
                 emotion: 'peaceful_grateful',
                 variation_id: 'conclusion_full_v1'
             }
@@ -1222,7 +1222,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "If you ever need to capture something you can't quite name... come find me. I'll teach you to hear it.\n\nGrandma Rose says hello. She's in the silence between the notes.",
+                text: "If you ever need to capture something you can't quite name.",
                 emotion: 'warm_peaceful',
                 variation_id: 'farewell_v1'
             }
@@ -1256,7 +1256,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         nodeId: 'lira_loyalty_trigger',
         speaker: 'Lira Vance',
         content: [{
-            text: "You remember.\n\nGrandma Rose's last song. She hummed it in her final weeks. Never wrote it down. Never recorded it.\n\nI've been trying to recreate it from memory. But memory fades. The melody shifts. I'm afraid I'm making it up instead of remembering it.\n\nI have maybe sixty percent of it. But the middle section... it's gone. Like trying to remember a dream after you wake up.\n\nIf I don't capture it soon, it'll be lost forever. Her last song. The one she never got to share.\n\nYou understand patience. Sitting with something until it reveals itself. Would you... sit with me while I try to remember?",
+            text: "You remember Grandma Rose's last song. She hummed it near the end, but never wrote or recorded it.",
             emotion: 'anxious_desperate',
             variation_id: 'loyalty_trigger_v1',
             richEffectContext: 'warning'
@@ -1302,7 +1302,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         nodeId: 'lira_loyalty_declined',
         speaker: 'Lira Vance',
         content: [{
-            text: "You're right. The music is in me. Not in perfect notation. In feeling.\n\nMaybe the point isn't to reproduce it exactly. Maybe the point is to honor what I remember. Let it evolve.\n\nGrandma Rose always said music changes every time you play it. Living thing, not fossil.\n\nThank you. Sometimes I forget that preservation isn't the same as perfection.",
+            text: "You're right. The music is in me.",
             emotion: 'resolved',
             variation_id: 'loyalty_declined_v1'
         }],
@@ -1326,7 +1326,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         nodeId: 'lira_loyalty_start',
         speaker: 'Lira Vance',
         content: [{
-            text: "Thank you. I've been afraid to sit with this alone. Afraid the silence will be empty.\n\nBut with you... maybe the silence will speak.\n\nLet's find Grandma Rose's song. Two listeners. One memory. One last melody.",
+            text: "Thank you.",
             emotion: 'hopeful_vulnerable',
             variation_id: 'loyalty_start_v1'
         }],
@@ -1342,7 +1342,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "You didn't say anything. Most people try to fill the quiet. Try to fix it with words.\n\nThat's what people don't understand about composing. It's not about adding sounds. It's about knowing when NOT to add them.\n\nThank you. For not filling the space.",
+                text: "You didn't say anything.",
                 emotion: 'vulnerable_grateful',
                 variation_id: 'interrupt_comfort_v1'
             }
@@ -1370,7 +1370,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "Can I tell you something? About why I chose this project?\n\nMy grandmother was a pianist. Concert level. She could play Chopin from memory at seventy.\n\nThen she started forgetting. Not the music at first. Just names, faces. But then... piece by piece...\n\nThe last time I visited, she sat at the piano. Her hands moved to a melody I'd never heard. She was trying to play something. Trying so hard. But the notes kept... scattering.\n\nThat's what forgetting sounds like. A song trying to remember itself.\n\nThat's what I'm trying to capture. Not sadness. Memory unraveling.",
+        text: "I am not chasing perfection anymore. I am trying to tell the truth of memory before it disappears.",
                 emotion: 'grieving_vulnerable',
                 variation_id: 'vulnerability_v1',
                 richEffectContext: 'warning',
@@ -1467,7 +1467,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "She doesn't remember me now. Most days she doesn't remember she was a pianist.\n\nBut sometimes... sometimes she hums. This broken little melody. And for a moment, I see her in there. Trying to find her way back.\n\nSo when I compose, I don't just use the AI to generate pretty sounds. I use it to find the fragments. The almost-melodies. The notes that want to connect but can't quite reach each other.\n\nThat's what loss sounds like. Not silence. Not sadness. Just... pieces trying to become whole again.\n\nThis soundtrack will have her in it. Somewhere in the static, in the gaps between notes. She'll be there.",
+                text: "Most days she doesn't remember me, or that she was a pianist. Then she hums one broken phrase and I can see.",
                 emotion: 'resolved_tender',
                 interaction: 'nod',
                 variation_id: 'vulnerability_response_v1'
@@ -2718,7 +2718,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "You ask questions others don't. You want to understand, not just consume.\n\nMost people hear the final track. The polished thing. They don't hear the hundred variations I discarded. The 3am experiments. The sounds that taught me what NOT to do.\n\nI have a collection. Field recordings from Birmingham. The steel mills at dawn. Church bells overlapping. A street musician who didn't know I was recording.\n\nWant to hear the city the way I hear it? The way most people never will?",
+                text: "You ask to understand, not consume.",
                 emotion: 'offering_rare',
                 variation_id: 'studio_v1'
             }
@@ -2764,7 +2764,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "You build things. I can tell. Not just listen to them. You understand the making.\n\nI've been stuck on this piece for three weeks. The film needs a score for a scene where the grandmother tries to play a song she's forgetting. The melody has to be familiar but... dissolving.\n\nI don't usually ask for help. I don't know how. But you understand structure. Maybe you can hear what I'm missing.\n\nWould you... collaborate with me? Just this once?",
+                text: "You build, not just consume.",
                 emotion: 'vulnerable_hopeful',
                 variation_id: 'collaboration_v1'
             }
@@ -2826,7 +2826,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         speaker: 'Lira Vance',
         content: [
             {
-                text: "The film score is just one layer. The real composition is the station itself.\n\nI want to weave it all together. The mechanical thrum of the core. The footsteps in the corridor. The silence of the void.\n\nBut the layers keep fighting each other. The machine noise drowns out the human voices.\n\nTake the mixer. Help me find the harmony.",
+                text: "The film score is just one layer. The real composition is the station itself.",
                 emotion: 'visionary',
                 variation_id: 'deep_dive_v1'
             }
@@ -2873,7 +2873,7 @@ Warning: Core Hum saturating mix.`,
         speaker: 'Lira Vance',
         content: [
             {
-                text: "[The sound fills the room. It sounds like a heart beating inside a cathedral.]\n\nThat's it. That's the ghost in the machine.\n\nYou didn't just mix audio. You reconciled the metal with the memory.\n\nThis... this is what I was trying to preserve. Not just her. But us. All of us.",
+                text: "[The sound fills the room.",
                 emotion: 'transcendent',
                 variation_id: 'deep_dive_success_v1',
                 interaction: 'bloom'
@@ -2990,7 +2990,7 @@ Warning: Core Hum saturating mix.`,
         speaker: 'lira',
         content: [
             {
-                text: "I think we're all instruments. And the station is the concert hall.\\n\\nEvery conversation, every connection—it's music. You just have to learn to hear it.",
+                text: "I think we're all instruments.",
                 emotion: 'transcendent',
                 variation_id: 'mystery_response_v1'
             }
@@ -3097,7 +3097,7 @@ Warning: Core Hum saturating mix.`,
         choices: [
             {
                 choiceId: 'lira_restored_continue',
-                text: "(Continue)",
+                text: "Proceed.",
                 nextNodeId: 'lira_hub_return'
             }
         ],

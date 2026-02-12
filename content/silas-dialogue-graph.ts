@@ -19,7 +19,7 @@ export const silasDialogueNodes: DialogueNode[] = [
     speaker: 'Silas',
     content: [
       {
-        text: "Checkpoint is closed.\n\nSector 7 restriction protocol is active.\n\nTurn around. Nothing back here but dust and bad memories.",
+        text: "Checkpoint is closed.",
         emotion: 'commanding',
         variation_id: 'silas_intro_wall_v2_minimal',
         richEffectContext: 'warning',
@@ -86,7 +86,7 @@ export const silasDialogueNodes: DialogueNode[] = [
     nodeId: 'silas_handshake_network',
     speaker: 'Silas',
     content: [{
-      text: "You think it's just drift? Look at the raw feed.\n\nNitrogen levels spiking where there's no soil. Moisture readings in a drought. The ground truth doesn't match the map.\n\nCan you zero it out?",
+      text: "You think it's drift?",
       emotion: 'frustrated',
       variation_id: 'silas_handshake_intro',
       interaction: 'ripple'
@@ -130,7 +130,7 @@ export const silasDialogueNodes: DialogueNode[] = [
     speaker: 'Silas',
     content: [
       {
-        text: "That's... yeah. That's exactly it.\n\nFifteen years building systems that abstract reality into data. Clean numbers. Dashboards. KPIs.\n\nAnd the abstraction has a gap wide enough to kill my basil.",
+        text: "That's. yeah.",
         emotion: 'stunned_recognition',
         variation_id: 'map_territory_v1',
         voiceVariations: {
@@ -162,7 +162,7 @@ export const silasDialogueNodes: DialogueNode[] = [
     speaker: 'Silas',
     content: [
       {
-        text: "...Yeah. I am.\n\nMost people look at this setup and see innovation. High-tech farming, the future of food security.\n\nThey don't see a terrified man holding dying plants while his tablet tells him everything is perfect.\n\nYou saw it immediately.",
+        text: "Yeah.",
         emotion: 'vulnerable',
         variation_id: 'fear_seen_v1',
         patternReflection: [
@@ -181,7 +181,7 @@ export const silasDialogueNodes: DialogueNode[] = [
     speaker: 'Silas',
     content: [
       {
-        text: "I should be.\n\nI cashed out my Amazon stock options. All of it. Bought this vertical farm. \"High-Efficiency Aeroponics.\"\n\nLast quarter, the sensors said the pH was perfect. I lost the entire strawberry crop. $40,000 gone in a weekend.\n\nIf this basil dies, I lose the farm. I lose my house.",
+        text: "I should be. I cashed out my Amazon stock options.",
         emotion: 'desperate',
         variation_id: 'bankruptcy_v1',
         interrupt: {
@@ -230,7 +230,7 @@ export const silasDialogueNodes: DialogueNode[] = [
     speaker: 'Silas',
     content: [
       {
-        text: "Because... because the tablet is supposed to know. That's why I bought it. That's why I built this whole system.\n\nBut the tablet doesn't know, does it? The basil knows. My hands know. The tablet just measures.",
+        text: "Because.",
         emotion: 'dawning_realization',
         variation_id: 'action_challenge_v1',
         patternReflection: [
@@ -248,7 +248,7 @@ export const silasDialogueNodes: DialogueNode[] = [
     speaker: 'Silas',
     content: [
       {
-        text: "God. That's it, isn't it?\n\nFifteen years at Amazon. Every decision backed by data. Every insight validated by metrics.\n\nI forgot how to trust anything that doesn't come with a confidence interval.\n\nThe soil is telling me something. And I keep looking for a JSON payload to confirm it.",
+        text: "God.",
         emotion: 'self_aware_pain',
         variation_id: 'api_trust_v1',
         voiceVariations: {
@@ -274,7 +274,7 @@ export const silasDialogueNodes: DialogueNode[] = [
     speaker: 'Silas',
     content: [
       {
-        text: "It's not drift! These are military-grade hygrometers. They cost more than my truck.\n\nThey CAN'T be wrong. Because if they're wrong, then I don't know anything. I'm just a guy playing in the dirt with expensive toys.",
+        text: "It's not drift!",
         emotion: 'defensive_panic',
         variation_id: 'tech_defense_v1'
       }
@@ -334,7 +334,7 @@ export const silasDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'continue_burnout',
-        text: "[Continue]",
+        text: "Proceed.",
         nextNodeId: 'silas_burnout_story_2',
         pattern: 'patience',
         skills: ['communication']
@@ -540,7 +540,7 @@ export const silasDialogueNodes: DialogueNode[] = [
     speaker: 'Silas',
     content: [
       {
-        text: "Look at this dashboard. Zone 4: 65% humidity. Optimal. Flow rate: 2.5 liters. Valve open.\n\nEverything is fine. According to this.\n\nBut look at them. They're gasping.\n\nI override and flood them? Rot the roots. Do nothing? Dried out by morning.",
+        text: "Look at this dashboard.",
         emotion: 'paralyzed',
         variation_id: 'sim_start_v2',
         richEffectContext: 'warning',
@@ -605,7 +605,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "You run the diagnostic. A loading bar spins.\n\nA green checkmark appears: \"NO ERRORS FOUND.\"\n\nA leaf falls off the basil plant. It crunches when it hits the floor.\n\nThe software says we're fine. The plant is dead.\n\nI can't do this. I'm going back to cloud computing. At least there, when it says 'Up', it means 'Up'.",
+        text: "You run the diagnostic. A loading bar spins.",
         emotion: 'defeated_hollow',
         variation_id: 'sim_fail_software_v1',
         richEffectContext: 'error'
@@ -637,7 +637,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "You yank the manual lever. Water roars into the bed.\n\nThe dry soil turns to mud instantly. But the water doesn't drain. It sits there, stagnating.\n\nThe tablet flashes: \"ALERT: ROOT ANOXIA DETECTED.\"\n\nWe drowned them. The soil was compacted. It couldn't drain. Now they'll rot before morning.\n\nI panicked. I broke the system because I was scared.",
+        text: "You yank the manual lever. Water roars into the bed.",
         emotion: 'guilt',
         variation_id: 'sim_fail_rot_v1',
         richEffectContext: 'error'
@@ -660,7 +660,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "You crawl under the rack. You trace the PVC pipe. It vibrates. There's water inside.\n\nBut right before the nozzle... a kink. A physical crimp in the line.\n\nThe sensor measures flow at the VALVE. The kink is AFTER the valve.\n\nThe sensor wasn't lying. It was measuring the wrong thing. It was measuring intent, not delivery.",
+        text: "You crawl under the rack. You trace the PVC pipe.",
         emotion: 'epiphany',
         variation_id: 'sim_step_2_v2',
         richEffectContext: 'thinking'
@@ -683,7 +683,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "A hiss of air, then a steady trickle of water. The soil darkens.\n\nSilas touches the wet dirt. He closes his eyes.\n\nGround truth.\n\nI spent all year coding dashboards to avoid crawling in the dirt. But the answer was in the dirt.",
+        text: "A hiss of air, then a steady trickle of water.",
         emotion: 'humbled',
         variation_id: 'sim_success_v2',
         richEffectContext: 'success'
@@ -721,7 +721,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "Systems are everywhere. I saw a kid, Devon, drawing flowcharts for his dad. He gets it. A family is just a network that needs maintenance.\n\nBut I'm done with 'Smart Farming.'\n\nI'm going to start a 'Feral Lab.' Low-tech. High-biology.\n\nWe teach engineers how to touch grass. Real grass. How to listen to a system that doesn't have an API.",
+        text: "Systems are everywhere. I saw a kid, Devon, drawing flowcharts for his dad.",
         emotion: 'resolved_grounded',
         variation_id: 'climax_v2'
       }
@@ -761,7 +761,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "I've been sketching this for months. The \"Feral Lab.\"\n\nNot a coding bootcamp. Not an accelerator. A deceleration program.\n\nWe take burnt-out engineers. People like I was. And we put them in a greenhouse. No WiFi. No Slack. Just seeds, soil, and time.",
+        text: "I've been sketching this for months.",
         emotion: 'excited',
         variation_id: 'feral_concept_v1'
       }
@@ -790,7 +790,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "Feral: wild, having escaped domestication.\n\nTech workers are domesticated. We've been trained to respond to notifications, to measure our worth in metrics, to fear uncertainty.\n\nFeral means rewilding. Teaching people to trust their senses again. To be comfortable not knowing.\n\nMr. Hawkins never googled anything. He just watched. For sixty years. And he knew more about soil than any PhD I've met.",
+        text: "Feral: wild, having escaped domestication. Tech workers are domesticated.",
         emotion: 'philosophical',
         variation_id: 'feral_name_v1'
       }
@@ -811,7 +811,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "Three months ago, I ran a pilot. Six engineers from the tech park downtown. One weekend.\n\nOne guy, Marcus. Not the paramedic, different Marcus. Came in with three phones. Product manager at a startup. Couldn't sit still for ten minutes.\n\nBy Sunday, he was talking to a tomato plant. Not ironically. He'd realized the plant's leaves were telling him it was thirsty before any sensor could.",
+        text: "Three months ago, I ran a pilot. Six engineers from the tech park downtown.",
         emotion: 'proud',
         variation_id: 'first_workshop_v1'
       }
@@ -843,7 +843,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "He quit his startup three weeks later. Started a consulting practice. Works half the hours.\n\nBut here's the thing. He's not less productive. He's more productive. He just stopped confusing activity with progress.\n\nLast week he sent me a photo. His company built a meditation garden at their office. He's teaching his team to debug their minds before they debug code.",
+        text: "He quit his startup three weeks later. Started a consulting practice.",
         emotion: 'satisfied',
         variation_id: 'workshop_result_v1'
       }
@@ -864,7 +864,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "Week One: Observation. No phones. You sit in the greenhouse and draw what you see. Every day, the same plant. You notice things change.\n\nWeek Two: Failure. You grow something that will definitely die. You watch it die. You learn that death isn't a bug. It's part of the system.\n\nWeek Three: Integration. You design a sensor. But the rule is: the sensor can only confirm what you already suspected from looking. It's a check, not a crutch.",
+        text: "Week one is observation: no phones, same plant daily until subtle change becomes obvious.",
         emotion: 'pedagogical',
         variation_id: 'curriculum_v1'
       }
@@ -886,7 +886,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "That technology should amplify human judgment, not replace it.\n\nBy week three, they've developed intuition. The sensor becomes a tool for calibrating that intuition. Not a substitute for it.\n\nOne woman, a data scientist, said something that stuck with me: \"I used to think dashboards showed me reality. Now I know they show me someone's decision about what to measure.\"\n\nThat's the shift. Sensors don't lie. They just answer the question you asked. The wisdom is in asking the right question.",
+        text: "Technology should amplify judgment, not replace it.\n\nSensors calibrate intuition and only answer the questions we choose.\n\nDashboards show measurement decisions, not reality.",
         emotion: 'teaching',
         variation_id: 'integration_v1',
         skillReflection: [
@@ -916,7 +916,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "Ground truth. It's a surveying term. The actual measurement from the field, not the model.\n\nMy hands are calloused now.\n\nBut I think it's bigger than that. Ground truth is what happens when you stop mediating reality through screens and actually touch it.\n\nMr. Hawkins had ground truth. He could feel a storm coming before the barometer dropped. Not magic. Just sixty years of paying attention to things that don't have notification sounds.",
+        text: "Ground truth is earned by observing reality before instrumenting it. Tools confirm judgment; they do not replace it. That order matters if you want decisions you can trust.",
         emotion: 'reverent',
         variation_id: 'philosophy_v1'
       }
@@ -958,7 +958,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "He passed last spring. In his garden. His daughter found him kneeling in the strawberry bed.\n\nAt his funeral, there were no PowerPoints. No eulogies. People just told stories about things he'd taught them. How to read clouds. When to plant by the moon. How to make compost that smelled like coffee instead of rot.\n\nHe left me his trowel. It's 50 years old. The handle is worn smooth from his hands.",
+        text: "Hawkins dying changed my framework. Yield and sensor precision mattered less than whether we had built a resilient system around one vulnerable life. Data stayed clean; we still failed the human test.",
         emotion: 'grief_gratitude',
         variation_id: 'hawkins_death_v1'
       }
@@ -980,15 +980,15 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "I want to scale Mr. Hawkins. But not through software.\n\nOne workshop at a time. One burnt-out engineer learning to feel the difference between wet soil and dry.\n\nOne product manager realizing that \"move fast and break things\" doesn't work when the thing you break is alive.",
+        text: "I want to scale Mr.",
         emotion: 'resolved_peaceful',
         variation_id: 'final_vision_v1_part1'
       }
     ],
     choices: [
       {
-        choiceId: 'continue_final_vision',
-        text: "[Continue]",
+        choiceId: 'final_vision_how',
+        text: "How do you teach that to people wired for speed?",
         nextNodeId: 'silas_final_vision_2',
         pattern: 'patience',
         skills: ['communication']
@@ -1000,15 +1000,15 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "The goal isn't to reject technology. It's to remember that we're the sensors. We're the real-time processing.\n\nThe dashboards should serve us, not the other way around.\n\nThe basil is already perking up. The water finally reached its roots.",
+        text: "The goal isn't to reject technology.",
         emotion: 'resolved_peaceful',
         variation_id: 'final_vision_v1_part2'
       }
     ],
     choices: [
       {
-        choiceId: 'continue_final_vision_2',
-        text: "[Continue]",
+        choiceId: 'final_vision_tools',
+        text: "So tools should support sensing, not replace it?",
         nextNodeId: 'silas_final_vision_3',
         pattern: 'patience',
         skills: ['communication']
@@ -1072,7 +1072,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "It's... it's dry. The middle is dry.\n\nMr. Hawkins used to do that. Just touch it. No sensors. No apps. Just his hands and sixty years of knowing.\n\nI forgot. I got so lost in the data, I forgot the most basic thing. The soil tells you what it needs. If you listen.\n\nThank you. For getting your hands dirty with me.",
+        text: "It's. it's dry.",
         emotion: 'grateful_grounded',
         interaction: 'bloom',
         variation_id: 'interrupt_grounding_v1'
@@ -1218,7 +1218,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "I will. And hey, if you ever burn out, come find me.\n\nI'll teach you how to grow something. Something that can't be debugged. Something that just grows.\n\nTell Samuel I said thanks. For building a station where people like me can find people like you.",
+        text: "I will.",
         emotion: 'warm',
         variation_id: 'farewell_good_v1'
       }
@@ -1253,7 +1253,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "I'm listing the equipment on eBay tomorrow.\n\nI'll take a contract job. Database admin. Something air-conditioned. Something where I can't kill anything.\n\nSafe travels.",
+        text: "I'm listing the equipment on eBay tomorrow.",
         emotion: 'resigned',
         variation_id: 'bad_ending_v1'
       }
@@ -1261,7 +1261,7 @@ HINT: Sensors measure WHERE they're placed...`,
     choices: [
       {
         choiceId: 'silas_leave_bad',
-        text: "...",
+        text: "Step away for now.",
         nextNodeId: samuelEntryPoints.SILAS_REFLECTION_GATEWAY,
         visibleCondition: {
           hasGlobalFlags: ['silas_arc_complete'],
@@ -1302,7 +1302,7 @@ HINT: Sensors measure WHERE they're placed...`,
       // Loyalty Experience trigger - only visible at high trust + patience pattern
       {
         choiceId: 'offer_feral_lab_help',
-        text: "[Patient Observer] Silas, that experimental lab you mentioned... the one people called 'feral.' Want to show me?",
+        text: "[Patient Observer] Want to show me the 'feral lab' data?",
         nextNodeId: 'silas_loyalty_trigger',
         pattern: 'patience',
         skills: ['patience', 'problemSolving'],
@@ -1326,7 +1326,7 @@ HINT: Sensors measure WHERE they're placed...`,
     nodeId: 'silas_loyalty_trigger',
     speaker: 'Silas',
     content: [{
-      text: "The Feral Lab.\n\nThat's what the investors called it when they pulled funding. Uncontrolled experiments. No reproducibility. A mess.\n\nBut it wasn't feral. It was emergent. I let the systems find their own equilibrium instead of forcing predetermined outcomes.\n\nI've got six months of sensor data. Patterns nobody else would have patience to see. Growth patterns that defy the textbooks.\n\nBut the funding's gone. Lab access expires next week. If I don't document what I learned, it's lost forever.\n\nYou understand patience. Watching systems unfold. Would you... help me make sense of it before it disappears?",
+      text: "I found a failure pattern in the greenhouse systems. Help me decide what to stabilize first before we lose the whole cycle.",
       emotion: 'anxious_determined',
       variation_id: 'loyalty_trigger_v1',
       richEffectContext: 'warning'
@@ -1372,7 +1372,7 @@ HINT: Sensors measure WHERE they're placed...`,
     nodeId: 'silas_loyalty_declined',
     speaker: 'Silas',
     content: [{
-      text: "You're right. Six months. Every day. I watched those systems.\n\nI know what I saw. The data is there. The patterns are real.\n\nI don't need external validation to trust six months of careful observation.\n\nThank you. Sometimes I forget that patience itself is a form of evidence.",
+      text: "You're right.",
       emotion: 'resolved',
       variation_id: 'loyalty_declined_v1'
     }],
@@ -1400,7 +1400,7 @@ HINT: Sensors measure WHERE they're placed...`,
     nodeId: 'silas_loyalty_start',
     speaker: 'Silas',
     content: [{
-      text: "Thank you. I've been afraid to face it alone. Afraid I'll look and see nothing but chaos.\n\nBut with you... maybe we'll see what I've been too close to notice.\n\nLet's go to the Feral Lab. Two patient observers. One emergent system. Let's see what it was trying to tell us.",
+      text: "Thank you.",
       emotion: 'hopeful_determined',
       variation_id: 'loyalty_start_v1'
     }],
@@ -1416,7 +1416,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "You build things with patience. Not rushing, not cutting corners.\n\nAdvanced manufacturing specialists work like that. Craftspeople of the future. Precision meets innovation.\n\nMercedes, Honda. They've got facilities near Birmingham. They need people who understand that quality takes time.",
+        text: "You build things with patience.",
         emotion: 'respectful',
         variation_id: 'career_precision_v1'
       }
@@ -1456,7 +1456,7 @@ HINT: Sensors measure WHERE they're placed...`,
     },
     content: [
       {
-        text: "I've worked with my hands my whole life. Metal, wood, machinery. I understand how things are made.\\n\\nBut this station... I can't figure out how it was built. Or who built it.",
+        text: "I've worked with my hands my whole life.",
         emotion: 'puzzled',
         variation_id: 'mystery_hint_v1'
       },
@@ -1488,7 +1488,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'silas',
     content: [
       {
-        text: "Heh. You sound like my old foreman. 'Don't ask how the sausage is made, just appreciate the sausage.'\\n\\nBut yeah. Some things work best when you don't overthink them.",
+        text: "Heh.",
         emotion: 'accepting',
         variation_id: 'mystery_response_v1'
       }
@@ -1598,7 +1598,7 @@ HINT: Sensors measure WHERE they're placed...`,
     }],
     choices: [{
       choiceId: 'silas_recovery_complete',
-      text: "(Continue)",
+      text: "Proceed.",
       nextNodeId: 'silas_hub_return',
       pattern: 'patience'
     }],
@@ -1615,7 +1615,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "You want to see the real noise? The stuff I filter out to keep the dashboards pretty?\n\nConnect to the raw sensor bus. Sector 4 is screaming. The temperature readings are oscillating in a pattern that matches the station's heartbeat.\n\nIt's not data drift. It's a memory.\n\nStabilize the feed. Don't smooth it out. Listen to it.",
+        text: "You want to see the real noise? The stuff I filter out to keep the dashboards pretty?",
         emotion: 'intense_focused',
         variation_id: 'deep_dive_v1'
       }
@@ -1663,7 +1663,7 @@ HINT: Sensors measure WHERE they're placed...`,
     speaker: 'Silas',
     content: [
       {
-        text: "You heard it too.\n\nI used to think it was interference. Bad wiring. But you stabilized it, and it didn't go away. It got clearer.\n\nMr. Hawkins said the soil talks. I think the station talks too. We just stopped listening because the signal didn't fit our JSON schema.\n\nGood work. You've got hands for this.",
+        text: "You heard it too. I used to think it was interference.",
         emotion: 'impressed_reverent',
         variation_id: 'deep_dive_success_v1',
         interaction: 'bloom'
