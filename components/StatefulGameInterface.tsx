@@ -3667,7 +3667,7 @@ export default function StatefulGameInterface() {
       {/* Environmental body class manager - applies pattern/character atmosphere to <body> */}
       <EnvironmentalEffects gameState={state.gameState} />
       <div
-        className="relative z-10 flex flex-col min-h-[100dvh] w-full max-w-xl mx-auto shadow-2xl border-x border-white/5 bg-black/10"
+        className="relative z-10 flex flex-col min-h-[100dvh] w-full max-w-xl mx-auto bg-black/10"
         style={{
           willChange: 'auto',
           contain: 'layout style paint',

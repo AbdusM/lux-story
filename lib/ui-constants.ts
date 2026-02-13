@@ -319,16 +319,16 @@ export const GLASS_BUTTON = `${GLASS_STYLES.base} ${GLASS_STYLES.text} ${GLASS_S
  * Container heights for choice buttons
  *
  * Updated Jan 16, 2026 - Mobile scroll fix:
- * - Removed min-h constraints to allow shrinking with fewer choices
- * - Dialed back max-h to preserve vertical room under mobile browser chrome
+ * - Reintroduced a modest min-h to reduce visible footer jumping between nodes
+ * - Keep max-h caps to preserve vertical room under mobile browser chrome
  * - 4 buttons ≈ 252px (60px each + 3px gaps) → leave headroom for padding/safe-area
  *
  * @see /Users/abdusmuwwakkil/.claude/plans/humble-shimmying-hellman.md
  */
 export const CHOICE_CONTAINER_HEIGHT = {
-  mobileSm: 'max-h-[240px]',          // ~4 buttons on small phones
-  mobile: 'xs:max-h-[280px]',         // ~4.5–5 buttons on larger phones (≥ 400px)
-  tablet: 'sm:max-h-[240px]',         // ~4 buttons on tablet (≥ 640px)
+  mobileSm: 'min-h-[200px] max-h-[240px]',     // small phones: stable baseline + scroll headroom
+  mobile: 'xs:min-h-[220px] xs:max-h-[280px]', // larger phones (≥ 400px)
+  tablet: 'sm:min-h-[220px] sm:max-h-[240px]', // tablet (≥ 640px)
 } as const;
 
 // =============================================================================

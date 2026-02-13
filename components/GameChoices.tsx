@@ -605,8 +605,9 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
               }
             })(),
 
-            // Marquee border for pivotal choices
-            (choice.pivotal || (choice.pattern && isValidPattern(choice.pattern))) && 'marquee-border',
+            // Reserve marquee border for high-salience moments only.
+            // Applying it to all patterned choices creates visual noise and nested-outline artifacts.
+            (choice.pivotal || choice.feedback === 'glow') && 'marquee-border',
 
             // Feedback states (borders only, no background overrides)
             choice.feedback === 'shake' && (glass ? 'border-red-400/40' : 'border-red-200'),
