@@ -3879,8 +3879,10 @@ export default function StatefulGameInterface() {
 
                   {/* Dialogue Card-Dynamic Marquee Effect */}
                   {/* STABILITY: Removed transition-all to prevent container jumping */}
-                  <Card className={cn(
+                  <Card
+                    className={cn(
                     "shadow-lg backdrop-blur-xl relative overflow-hidden rounded-xl",
+                    !state.activeExperience && !state.currentNode?.simulation ? "min-h-[280px] sm:min-h-[320px]" : "",
                     state.activeExperience || state.currentNode?.simulation
                       ? "bg-slate-950/80 border-amber-500/40 shadow-[0_0_30px_rgba(245,158,11,0.2)]"
                       : (state.currentDialogueContent?.emotion === 'analytical' || state.currentDialogueContent?.emotion === 'knowing')
@@ -3888,7 +3890,10 @@ export default function StatefulGameInterface() {
                         : (state.currentDialogueContent?.emotion === 'fear' || state.currentDialogueContent?.emotion === 'tension')
                           ? "bg-slate-950/80 border-red-500/40 shadow-[0_0_30px_rgba(239,68,68,0.2)]"
                           : "bg-black/40 border-white/5 hover:border-white/10"
-                  )}>
+                  )}
+                    data-dialogue-stage={(!state.activeExperience && !state.currentNode?.simulation) ? 'pinned' : 'dynamic'}
+                    data-testid="dialogue-stage"
+                  >
                     <CardContent className="p-0">
                       {/* Marquee Header Overlay */}
                       {(state.activeExperience || state.currentNode?.simulation) && (
@@ -4104,61 +4109,59 @@ export default function StatefulGameInterface() {
           PC: Closer to content (not stuck at very bottom)
           Mobile: Bottom with proper safe area padding
           ══════════════════════════════════════════════════════════════════ */}
-        < AnimatePresence mode="wait" >
-          {!isEnding && (
-            <footer
-              className={cn(
-                "flex-shrink-0 sticky bottom-0 glass-panel max-w-4xl mx-auto w-full px-3 sm:px-4 z-20",
-                useCappedChoiceSheet ? "rounded-t-2xl border-b-0 overflow-hidden" : ""
-              )}
-              data-choice-sheet-mode={useCappedChoiceSheet ? 'capped' : 'free'}
-              style={{
-                // SINGLE SCROLL REFACTOR: Sticky footer with safe area padding
-                // Chrome mobile has 48-56px bottom bar that's NOT in safe-area-inset
-                paddingBottom: 'max(64px, env(safe-area-inset-bottom, 64px))'
-              }}
-            >
-              {/* Response label - compact on mobile */}
-              <div className="px-4 sm:px-6 pt-2 pb-0.5 text-center">
-                <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 uppercase tracking-[0.1em]">
-                  Your Response
-                </span>
-              </div>
+        {!isEnding && (
+          <footer
+            className={cn(
+              "flex-shrink-0 sticky bottom-0 glass-panel max-w-4xl mx-auto w-full px-3 sm:px-4 z-20",
+              useCappedChoiceSheet ? "rounded-t-2xl border-b-0 overflow-hidden" : ""
+            )}
+            data-choice-sheet-mode={useCappedChoiceSheet ? 'capped' : 'free'}
+            style={{
+              // SINGLE SCROLL REFACTOR: Sticky footer with safe area padding
+              // Chrome mobile has 48-56px bottom bar that's NOT in safe-area-inset
+              paddingBottom: 'max(64px, env(safe-area-inset-bottom, 64px))'
+            }}
+          >
+            {/* Response label - compact on mobile */}
+            <div className="px-4 sm:px-6 pt-2 pb-0.5 text-center">
+              <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 uppercase tracking-[0.1em]">
+                Your Response
+              </span>
+            </div>
 
-              <div className="px-4 sm:px-6 pt-1 pb-2">
-                {/* Scrollable choices container with scroll indicator */}
-                <div className="relative w-full">
-                  {/* SINGLE SCROLL REFACTOR: Removed nested scroll - choices expand naturally */}
-                  {/* For >3 choices, TICKET-002 will add bottom sheet */}
-                  <div
-                    id="choices-container"
-                    className={cn(
-                      "w-full",
-                      useCappedChoiceSheet ? "h-[260px] xs:h-[300px] sm:h-[260px]" : ""
-                    )}
-                  >
-                    <GameChoices
-                      choices={preparedChoices}
-                      isProcessing={state.isProcessing}
-                      orbFillLevels={orbFillLevels}
-                      onChoice={(c) => {
-                        const index = parseInt(c.next || '0', 10)
-                        const original = state.availableChoices[index]
-                        if (original) handleChoice(original)
-                      }}
-                      // FIX: Always use glass mode for dark theme (prevents white background issue)
-                      glass={true}
-                      playerPatterns={state.gameState?.patterns}
-                      cognitiveLoad={cognitiveLoad}
-                    />
-                  </div>
-
-                  {/* Scroll indicator removed based on user feedback (often unnecessary) */}
+            <div className="px-4 sm:px-6 pt-1 pb-2">
+              {/* Scrollable choices container with scroll indicator */}
+              <div className="relative w-full">
+                {/* SINGLE SCROLL REFACTOR: Removed nested scroll - choices expand naturally */}
+                {/* For >3 choices, TICKET-002 will add bottom sheet */}
+                <div
+                  id="choices-container"
+                  className={cn(
+                    "w-full",
+                    useCappedChoiceSheet ? "h-[260px] xs:h-[300px] sm:h-[260px]" : ""
+                  )}
+                >
+                  <GameChoices
+                    choices={preparedChoices}
+                    isProcessing={state.isProcessing}
+                    orbFillLevels={orbFillLevels}
+                    onChoice={(c) => {
+                      const index = parseInt(c.next || '0', 10)
+                      const original = state.availableChoices[index]
+                      if (original) handleChoice(original)
+                    }}
+                    // FIX: Always use glass mode for dark theme (prevents white background issue)
+                    glass={true}
+                    playerPatterns={state.gameState?.patterns}
+                    cognitiveLoad={cognitiveLoad}
+                  />
                 </div>
+
+                {/* Scroll indicator removed based on user feedback (often unnecessary) */}
               </div>
-            </footer>
-          )}
-        </AnimatePresence>
+            </div>
+          </footer>
+        )}
 
         {/* Share prompts removed-too obtrusive */}
 

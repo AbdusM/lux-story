@@ -33,4 +33,13 @@ describe('UI layout stability contracts', () => {
     expect(content).toContain("data-choice-sheet-mode={useCappedChoiceSheet ? 'capped' : 'free'}")
     expect(content).toContain('useCappedChoiceSheet ? "h-[260px] xs:h-[300px] sm:h-[260px]" : ""')
   })
+
+  it('pins dialogue stage geometry and avoids wait-mode footer remounts', () => {
+    const filePath = path.join(process.cwd(), 'components/StatefulGameInterface.tsx')
+    const content = fs.readFileSync(filePath, 'utf-8')
+
+    expect(content).toContain('min-h-[280px] sm:min-h-[320px]')
+    expect(content).toContain("data-dialogue-stage={(!state.activeExperience && !state.currentNode?.simulation) ? 'pinned' : 'dynamic'}")
+    expect(content).not.toContain('AnimatePresence mode="wait"')
+  })
 })
