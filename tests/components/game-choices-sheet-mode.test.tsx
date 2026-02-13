@@ -91,4 +91,21 @@ describe('GameChoices (Sheet Mode)', () => {
     expect(listbox.className).not.toContain('min-h-')
     expect(listbox.className).toContain('overflow-visible')
   })
+
+  it('shows a transition status while processing', () => {
+    render(
+      <GameChoices
+        choices={[
+          { id: 'c1', text: 'A' },
+          { id: 'c2', text: 'B' },
+        ]}
+        isProcessing={true}
+        onChoice={() => undefined}
+      />
+    )
+
+    const status = screen.getByTestId('choice-transition-status')
+    expect(status).toBeInTheDocument()
+    expect(status).toHaveTextContent(/loading next response/i)
+  })
 })

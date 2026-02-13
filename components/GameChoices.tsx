@@ -746,6 +746,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   const useGrid = sortedChoices.length >= 4
   const useGrouping = sortedChoices.length > 6 // Group only if many choices (6+) to avoid clutter
   const useCappedSheetLayout = sortedChoices.length > 3
+  const isTransitioning = isProcessing || isCommitting
 
   const { nonEmptyGroups, presentedChoicesFlat } = useMemo(() => {
     if (!useGrouping) {
@@ -948,6 +949,32 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     </AnimatePresence>
   )
 
+  const TransitionStatus = () => (
+    <AnimatePresence>
+      {isTransitioning && (
+        <motion.div
+          key="choice-transition-status"
+          className="px-2 pb-1"
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -2 }}
+          transition={{ duration: 0.12 }}
+        >
+          <div
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            data-testid="choice-transition-status"
+            className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.08em] text-slate-400"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+            <span>{isCommitting ? 'Committing your response' : 'Loading next response'}</span>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+
   if (useGrouping) {
     // Track global index for keyboard navigation across groups
     let globalIndex = 0
@@ -955,6 +982,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     return (
       <>
         <ScreenDimOverlay />
+        <TransitionStatus />
         <motion.div
         className={cn(
           "space-y-8 max-w-full",
@@ -1032,6 +1060,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   return (
     <>
       <ScreenDimOverlay />
+      <TransitionStatus />
       <motion.div
         ref={containerRef}
         className={cn(

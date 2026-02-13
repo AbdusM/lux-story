@@ -11,5 +11,8 @@ describe('StatefulGameInterface async state preservation contract', () => {
     expect(content).toContain('showJournal: prev.showJournal')
     expect(content).toContain('showConstellation: prev.showConstellation')
     expect(content).toContain('showJourneySummary: prev.showJourneySummary')
+    expect(content).not.toContain('showJournal: state.showJournal')
+    expect(content).not.toContain('showConstellation: state.showConstellation')
+    expect(content).not.toContain('showJourneySummary: state.showJourneySummary')
   })
 })
