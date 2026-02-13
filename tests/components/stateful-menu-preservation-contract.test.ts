@@ -15,4 +15,16 @@ describe('StatefulGameInterface async state preservation contract', () => {
     expect(content).not.toContain('showConstellation: state.showConstellation')
     expect(content).not.toContain('showJourneySummary: state.showJourneySummary')
   })
+
+  it('locks background choice interactions while blocking overlays are open', () => {
+    const filePath = path.join(process.cwd(), 'components/StatefulGameInterface.tsx')
+    const content = fs.readFileSync(filePath, 'utf-8')
+
+    expect(content).toContain('const hasBlockingOverlay =')
+    expect(content).toContain('state.showJournal ||')
+    expect(content).toContain('state.showConstellation ||')
+    expect(content).toContain('state.showJourneySummary ||')
+    expect(content).toContain('state.showReport')
+    expect(content).toContain('isProcessing={state.isProcessing || hasBlockingOverlay}')
+  })
 })

@@ -3663,6 +3663,11 @@ export default function StatefulGameInterface() {
     }
   })
   const useCappedChoiceSheet = preparedChoices.length > 3
+  const hasBlockingOverlay =
+    state.showJournal ||
+    state.showConstellation ||
+    state.showJourneySummary ||
+    state.showReport
 
   // GOD MODE OVERRIDE-Render simulation if active (must be at end after all hooks)
   if (debugSimulation) {
@@ -4143,7 +4148,7 @@ export default function StatefulGameInterface() {
                 >
                   <GameChoices
                     choices={preparedChoices}
-                    isProcessing={state.isProcessing}
+                    isProcessing={state.isProcessing || hasBlockingOverlay}
                     orbFillLevels={orbFillLevels}
                     onChoice={(c) => {
                       const index = parseInt(c.next || '0', 10)
