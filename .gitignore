@@ -88,3 +88,6 @@ temp_*.json
 
 # Generated visual artifacts
 tests/visual/output/
+
+# Local doc staging (large/unstructured assets, not for repo)
+docs/toAllocate/
