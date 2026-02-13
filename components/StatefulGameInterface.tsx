@@ -2936,7 +2936,8 @@ export default function StatefulGameInterface() {
         if (!dominantPattern) dominantPattern = 'exploring'
       }
 
-      setState({
+      setState(prev => ({
+        ...prev,
         gameState: newGameState,
         currentNode: nextNode,
         currentGraph: targetGraph,
@@ -2952,16 +2953,17 @@ export default function StatefulGameInterface() {
         skillToast: null, // Disabled-skills tracked silently
         consequenceFeedback,
         error: null,
-        previousSpeaker: state.currentNode?.speaker || null,
+        previousSpeaker: prev.currentNode?.speaker || null,
         recentSkills: skillsToKeep,
-        activeExperience: state.activeExperience, // Added to fix build error
+        activeExperience: prev.activeExperience, // Added to fix build error
         ...experienceSummaryUpdate,
-        showJournal: state.showJournal,
-        showConstellation: state.showConstellation,
+        // Preserve live overlay toggles in case the user changes them while async choice work is running.
+        showJournal: prev.showJournal,
+        showConstellation: prev.showConstellation,
         pendingFloatingModule: null, // Floating modules disabled
-        showJourneySummary: state.showJourneySummary,
+        showJourneySummary: prev.showJourneySummary,
         activeInterrupt: shouldShowInterrupt(content.interrupt, newGameState.patterns), // D-009: Filter by pattern
-        journeyNarrative: state.journeyNarrative,
+        journeyNarrative: prev.journeyNarrative,
         achievementNotification,
         ambientEvent: null,  // Clear ambient event when player acts
         patternSensation: patternShiftMsg || patternSensation, // Prefer shift msg if shift happened
@@ -2972,20 +2974,20 @@ export default function StatefulGameInterface() {
         ceremonyPattern: identityCeremonyPattern,  // Pattern being internalized
         showPatternEnding: isJourneyCompleteNode,  // Pattern-based journey ending
         endingPattern: dominantPattern,  // Dominant pattern for ending
-        hasNewTrust: trustDelta !== 0 ? true : state.hasNewTrust,  // Track trust changes for Constellation attention
-        hasNewMeeting: isFirstMeeting ? true : state.hasNewMeeting,  // Track first meeting for Constellation nudge
-        isMuted: state.isMuted,
-        showReport: state.showReport,
+        hasNewTrust: trustDelta !== 0 ? true : prev.hasNewTrust,  // Track trust changes for Constellation attention
+        hasNewMeeting: isFirstMeeting ? true : prev.hasNewMeeting,  // Track first meeting for Constellation nudge
+        isMuted: prev.isMuted,
+        showReport: prev.showReport,
         isProcessing: false, // ISP FIX: Unlock UI
         patternVoice,  // Disco Elysium-style inner monologue
         voiceConflict,  // D-096: Voice conflict when patterns disagree
-        activeComboChain: state.activeComboChain,  // D-084: Preserve combo chain state
+        activeComboChain: prev.activeComboChain,  // D-084: Preserve combo chain state
         // Engagement Loop State (preserved across choice)
-        waitingCharacters: state.waitingCharacters,
+        waitingCharacters: prev.waitingCharacters,
         pendingGift,
-        isReturningPlayer: state.isReturningPlayer,
-        returnHookDismissed: state.returnHookDismissed,
-      })
+        isReturningPlayer: prev.isReturningPlayer,
+        returnHookDismissed: prev.returnHookDismissed,
+      }))
       GameStateManager.saveGameState(newGameState)
 
       // ═══════════════════════════════════════════════════════════════════════════
