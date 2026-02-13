@@ -18,6 +18,16 @@ This review covers the first-run opening flow from:
 
 The goal is **keep vs fix** guidance that is **decision-complete** for content owners and engine/UI owners.
 
+## Implementation Update (2026-02-13, Iteration B)
+
+Applied from this review:
+
+- `samuel_introduction` now presents **3 choices** (reduced from 5): place anchor, Samuel anchor, and explore.
+- `samuel_changing_world` opening line now starts with a **concrete station artifact** (departures board/routes) before the macro jobs theme.
+- `samuel_orb_introduction` now names the gift object directly as a **signal token**.
+- `samuel_orb_mechanics` copy is compressed to a shorter, less lecture-heavy pattern primer.
+- Reachability preserved by adding `ask_whats_happening_from_platforms` in `samuel_explains_platforms` to keep the economic-context branch live.
+
 ## Reality Map (What The Game Actually Does)
 
 ### Entry (good, low cognitive load)
