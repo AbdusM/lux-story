@@ -497,15 +497,18 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
   - `reaction_time_ms`: number
 
 **`choice_selected_result`** (authoritative result from game logic)
-- Emitted by: `hooks/game/useChoiceHandler.ts`
+- Emitted by: `components/StatefulGameInterface.tsx`
 - Payload keys (subset):
-  - `choice_id`: string|null
-  - `choice_text`: string|null
-  - `choice_pattern`: string|null
-  - `reaction_time_ms`: number
+  - `event_id`: string
+  - `selected_choice_id`: string|null
+  - `selected_choice_text`: string|null
+  - `reaction_time_ms`: number|null
+  - `processing_time_ms`: number
   - `earned_pattern`: string|null
   - `trust_delta`: number|null
-  - `nervous_system_state`: string|null
+  - `result_node_id`: string|null
+  - `outcome`: string (e.g. `resolved`, `travel_pending`, `navigation_error`, `handler_exception`)
+  - `error_code`: string|null
 
 **`node_entered`** (dialogue navigation truth; emitted once per node change)
 - Emitted by:

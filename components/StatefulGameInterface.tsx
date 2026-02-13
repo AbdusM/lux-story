@@ -1444,6 +1444,43 @@ export default function StatefulGameInterface() {
     if (isProcessingChoiceRef.current) return
     if (!state.gameState || !choice.enabled) return
 
+    const choiceResultEventId = generateActionId()
+    const choiceProcessingStartedAt = Date.now()
+    const selectedChoiceId = choice.choice.choiceId || null
+    const selectedChoiceText = choice.choice.text || null
+    let choiceReactionTimeMs: number | null = null
+    let choiceEarnedPattern: string | null = null
+    let choiceTrustDelta: number | null = null
+    let choiceResultEmitted = false
+
+    const emitChoiceSelectedResult = (outcome: string, overrides?: {
+      resultNodeId?: string | null
+      errorCode?: string | null
+    }) => {
+      if (choiceResultEmitted) return
+      choiceResultEmitted = true
+
+      queueInteractionEventSync({
+        user_id: state.gameState!.playerId,
+        session_id: String(state.gameState!.sessionStartTime || Date.now()),
+        event_type: 'choice_selected_result',
+        node_id: state.currentNode?.nodeId || null,
+        character_id: state.currentCharacterId || null,
+        payload: {
+          event_id: choiceResultEventId,
+          selected_choice_id: selectedChoiceId,
+          selected_choice_text: selectedChoiceText,
+          reaction_time_ms: choiceReactionTimeMs,
+          processing_time_ms: Date.now() - choiceProcessingStartedAt,
+          earned_pattern: choiceEarnedPattern,
+          trust_delta: choiceTrustDelta,
+          result_node_id: overrides?.resultNodeId ?? null,
+          outcome,
+          error_code: overrides?.errorCode ?? null,
+        },
+      })
+    }
+
     // LOCK: Immediate ref lock + UI state update
     isProcessingChoiceRef.current = true
     setState(prev => ({ ...prev, isProcessing: true }))
@@ -1464,28 +1501,13 @@ export default function StatefulGameInterface() {
       // ═══════════════════════════════════════════════════════════════════════════
 
       const reactionTime = Date.now() - contentLoadTimestampRef.current
+      choiceReactionTimeMs = reactionTime
       const result = GameLogic.processChoice(state.gameState, choice, reactionTime)
       const previousPatterns = { ...state.gameState.patterns } // Restored for echo check
       let newGameState = result.newState
       const trustDelta = result.trustDelta
-
-      // Canonical telemetry: authoritative game-logic result for selected choice.
-      // This complements `choice_selected_ui` from GameChoices with post-resolution truth.
-      queueInteractionEventSync({
-        user_id: newGameState.playerId,
-        session_id: String(newGameState.sessionStartTime || Date.now()),
-        event_type: 'choice_selected_result',
-        node_id: state.currentNode?.nodeId || null,
-        character_id: state.currentCharacterId || null,
-        payload: {
-          event_id: generateActionId(),
-          selected_choice_id: choice.choice.choiceId || null,
-          selected_choice_text: choice.choice.text || null,
-          reaction_time_ms: reactionTime,
-          earned_pattern: result.events.earnOrb || null,
-          trust_delta: trustDelta ?? null,
-        },
-      })
+      choiceTrustDelta = trustDelta ?? null
+      choiceEarnedPattern = result.events.earnOrb || null
 
       // ═══════════════════════════════════════════════════════════════════════════
       // STATE DEFINITIONS
@@ -1842,6 +1864,7 @@ export default function StatefulGameInterface() {
           isProcessingChoiceRef.current = false  // Release lock before travel
 
           // Trigger the jump via the standard navigation system
+          emitChoiceSelectedResult('travel_pending', { resultNodeId: pendingTarget })
           useGameStore.getState().setCurrentScene(pendingTarget)
           useGameStore.getState().setPendingTravelTarget(null)
           return
@@ -1850,6 +1873,7 @@ export default function StatefulGameInterface() {
           logger.warn('[Conductor Mode] Missing pending target, rerouting to Station Hub')
           isProcessingChoiceRef.current = false  // Release lock before travel
           setState(prev => ({ ...prev, isProcessing: false }))
+          emitChoiceSelectedResult('travel_pending_missing_target', { resultNodeId: 'samuel', errorCode: 'missing_pending_travel_target' })
           useGameStore.getState().setCurrentScene('samuel')
           return
         }
@@ -1866,6 +1890,7 @@ export default function StatefulGameInterface() {
           isProcessingChoiceRef.current = false
 
           // Execute the simulation
+          emitChoiceSelectedResult('simulation_pending', { resultNodeId: 'SIMULATION_PENDING' })
           useGameStore.getState().setDebugSimulation(pendingSimulation)
           useGameStore.getState().setPendingGodModeSimulation(null)
           return
@@ -1874,6 +1899,7 @@ export default function StatefulGameInterface() {
           logger.warn('[God Mode] Missing pending simulation, returning to Samuel')
           isProcessingChoiceRef.current = false
           setState(prev => ({ ...prev, isProcessing: false }))
+          emitChoiceSelectedResult('simulation_pending_missing_target', { resultNodeId: null, errorCode: 'missing_pending_simulation' })
           return
         }
       }
@@ -1892,6 +1918,7 @@ export default function StatefulGameInterface() {
           isLoading: false,
           isProcessing: false
         }))
+        emitChoiceSelectedResult('navigation_error', { resultNodeId: choice.choice.nextNodeId, errorCode: 'missing_character_for_node' })
         return
       }
 
@@ -1912,6 +1939,7 @@ export default function StatefulGameInterface() {
           },
           isProcessing: false
         }))
+        emitChoiceSelectedResult('navigation_error', { resultNodeId: choice.choice.nextNodeId, errorCode: 'missing_next_node' })
         return
       }
 
@@ -2936,6 +2964,8 @@ export default function StatefulGameInterface() {
         if (!dominantPattern) dominantPattern = 'exploring'
       }
 
+      emitChoiceSelectedResult('resolved', { resultNodeId: nextNode.nodeId })
+
       setState(prev => ({
         ...prev,
         gameState: newGameState,
@@ -3040,6 +3070,10 @@ export default function StatefulGameInterface() {
       }
     } catch (error) {
       console.error('Choice handling failed:', error)
+      emitChoiceSelectedResult('handler_exception', {
+        resultNodeId: null,
+        errorCode: error instanceof Error ? error.message.slice(0, 120) : 'unknown_error',
+      })
       isProcessingChoiceRef.current = false // Release lock if error
       setState(prev => ({ ...prev, isProcessing: false }))
     } finally {
