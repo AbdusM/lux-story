@@ -194,6 +194,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
             exit={{ opacity: 0 }}
             style={{ zIndex: Z_INDEX.modalBackdrop }}
             onClick={onClose}
+            data-testid="journal-backdrop"
+            aria-hidden="true"
           />
           {/* Panel - with pull-to-dismiss */}
           <motion.div
@@ -205,6 +207,10 @@ export function Journal({ isOpen, onClose }: JournalProps) {
             {...dragProps}
             onDragEnd={onDragEnd}
             style={{ zIndex: Z_INDEX.modal }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Prism"
+            data-testid="journal-panel"
           >
             {/* Drag handle indicator - hints swipe-to-dismiss */}
             <div className="flex justify-center py-2 sm:hidden" aria-hidden="true">

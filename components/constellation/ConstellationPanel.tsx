@@ -150,6 +150,8 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               className="fixed inset-0 bg-black/50 backdrop-blur-sm"
               style={{ zIndex: Z_INDEX.modalBackdrop }}
               onClick={onClose}
+              data-testid="journey-backdrop"
+              aria-hidden="true"
             />
 
             {/* Panel - swipe right to close */}
@@ -176,6 +178,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               role="dialog"
               aria-modal="true"
               aria-label="Your Journey - Character and Skill Progress"
+              data-testid="journey-panel"
             >
               {/* Header */}
               <div className="flex-shrink-0 p-4 border-b border-white/5 flex items-center justify-between bg-transparent">
