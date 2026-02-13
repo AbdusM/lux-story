@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-02-13T20:39:36.167Z",
+  "budget_ms": 400,
+  "min_samples": 20,
+  "samples_path": "docs/qa/choice-processing-latency-samples.json",
+  "baseline_path": "docs/qa/choice-processing-latency-baseline.json",
+  "report_path": "docs/qa/choice-processing-latency-report.json",
+  "current": {
+    "sample_count": 40,
+    "p50_ms": 224,
+    "p95_ms": 338,
+    "max_ms": 349
+  },
+  "baseline": {
+    "sample_count": 40,
+    "p50_ms": 224,
+    "p95_ms": 338,
+    "max_ms": 349
+  },
+  "regressions": []
+}
