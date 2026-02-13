@@ -39,6 +39,7 @@ import { createClient } from '@/lib/supabase/client'
 import { LoginModal } from '@/components/auth/LoginModal'
 import { cn } from '@/lib/utils'
 import { springs } from '@/lib/animations'
+import { Z_INDEX } from '@/lib/ui-constants'
 
 // Text size options
 const TEXT_SIZES = [
@@ -174,7 +175,8 @@ export function UnifiedMenu({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
-              className="fixed inset-0 z-[90] bg-black/20"
+              className="fixed inset-0 bg-black/20"
+              style={{ zIndex: Z_INDEX.modalBackdrop }}
               onClick={() => setIsOpen(false)}
               aria-hidden="true"
             />
@@ -185,7 +187,8 @@ export function UnifiedMenu({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={springs.snappy}
-              className="absolute right-0 top-full mt-2 w-72 glass-panel-solid !rounded-xl border border-white/10 shadow-2xl z-[91] overflow-hidden"
+              className="absolute right-0 top-full mt-2 w-72 glass-panel-solid !rounded-xl border border-white/10 shadow-2xl overflow-hidden"
+              style={{ zIndex: Z_INDEX.popover }}
               role="dialog"
               aria-label="Settings"
             >
