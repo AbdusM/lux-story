@@ -3,6 +3,12 @@
 Date: 2026-02-13  
 Repo state: `main` @ `ba46842`
 
+## Screenshots (UI Evidence)
+
+Captured 2026-02-12 and normalized for repo usage:
+
+- `/Users/abdusmuwwakkil/Development/30_lux-story/docs/qa/screenshots-2026-02-12/`
+
 ## Scope
 
 This review covers the first-run opening flow from:
@@ -186,4 +192,3 @@ Until that decision is locked, the intro will remain vulnerable to "choice meani
 ## Suggested Next Step (If Implementing)
 
 Implement Fix #1 + Fix #2 first (they are mostly routing + copy and are easy to validate via headless sims and JSDOM choice/menu tests).
-
