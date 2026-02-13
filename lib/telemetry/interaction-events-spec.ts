@@ -46,9 +46,18 @@ const ChoiceSelectedUiPayloadSchema = z.object({
 
 const ChoiceSelectedResultPayloadSchema = z.object({
   // Authoritative game-logic telemetry; keep permissive.
+  event_id: z.string().min(1).optional(),
+  selected_choice_id: z.string().nullable().optional(),
+  selected_choice_text: z.string().nullable().optional(),
+  selected_ui_event_id: z.string().nullable().optional(),
+  click_to_dispatch_ms: z.number().finite().nullable().optional(),
   reaction_time_ms: z.number().finite().nullable().optional(),
+  processing_time_ms: z.number().finite().nullable().optional(),
   earned_pattern: z.string().nullable().optional(),
   trust_delta: z.number().finite().nullable().optional(),
+  result_node_id: z.string().nullable().optional(),
+  outcome: z.string().min(1).optional(),
+  error_code: z.string().nullable().optional(),
 }).passthrough()
 
 const NodeEnteredPayloadSchema = z.object({

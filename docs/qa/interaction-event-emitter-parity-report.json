@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-02-12T23:09:57.383Z",
+  "generated_at": "2026-02-13T20:25:58.427Z",
   "declared_types": [
     "choice_presented",
     "choice_selected_ui",
@@ -23,19 +23,19 @@
     "choice_presented": [
       {
         "file": "components/GameChoices.tsx",
-        "line": 826
+        "line": 829
       }
     ],
     "deadlock_recovery_injected": [
       {
         "file": "components/GameChoices.tsx",
-        "line": 865
+        "line": 868
       }
     ],
     "choice_selected_ui": [
       {
         "file": "components/GameChoices.tsx",
-        "line": 900
+        "line": 903
       }
     ],
     "node_entered": [
@@ -45,13 +45,13 @@
       },
       {
         "file": "components/StatefulGameInterface.tsx",
-        "line": 2018
+        "line": 2046
       }
     ],
     "choice_selected_result": [
       {
         "file": "components/StatefulGameInterface.tsx",
-        "line": 1477
+        "line": 1466
       }
     ],
     "experiment_assigned": [

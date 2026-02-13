@@ -18,6 +18,7 @@ import { deriveChoiceGateReason, type ChoiceGateReason } from '@/lib/choice-gate
 import { useGameStore } from '@/lib/game-store'
 import { truncateTextForLoad, CognitiveLoadLevel } from '@/lib/cognitive-load'
 import { queueInteractionEventSync, generateActionId } from '@/lib/sync-queue'
+import { recordChoiceUiSelection } from '@/lib/choice-dispatch-telemetry'
 
 // ... (retain pattern styles constants: PATTERN_HOVER_STYLES, DEFAULT_HOVER_STYLE, PATTERN_GLASS_STYLES, DEFAULT_GLASS_STYLE, PATTERN_MARQUEE_COLORS, DEFAULT_MARQUEE_COLORS) ...
 
@@ -605,8 +606,9 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
               }
             })(),
 
-            // Marquee border for pivotal choices
-            (choice.pivotal || (choice.pattern && isValidPattern(choice.pattern))) && 'marquee-border',
+            // Reserve marquee border for high-salience moments only.
+            // Applying it to all patterned choices creates visual noise and nested-outline artifacts.
+            (choice.pivotal || choice.feedback === 'glow') && 'marquee-border',
 
             // Feedback states (borders only, no background overrides)
             choice.feedback === 'shake' && (glass ? 'border-red-400/40' : 'border-red-200'),
@@ -744,6 +746,9 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   // 1-3 choices: single column, 4+ choices: 2 columns (pairs work better)
   const useGrid = sortedChoices.length >= 4
   const useGrouping = sortedChoices.length > 6 // Group only if many choices (6+) to avoid clutter
+  // Engage capped mode at 3+ choices to reduce footer-height jumps between nodes.
+  const useCappedSheetLayout = sortedChoices.length > 2
+  const isTransitioning = isProcessing || isCommitting
 
   const { nonEmptyGroups, presentedChoicesFlat } = useMemo(() => {
     if (!useGrouping) {
@@ -910,6 +915,15 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
         reaction_time_ms: reactionTimeMs
       }
     })
+
+    // Bridge UI-click timing to runtime resolver telemetry (choice_selected_result).
+    recordChoiceUiSelection({
+      selected_choice_id: stableChoiceId,
+      node_id: nodeId,
+      session_id: String(coreState?.sessionStartTime || now),
+      ui_event_id: eventId,
+      selected_at_ms: now,
+    })
   }, [coreState?.playerId, coreState?.currentNodeId, coreState?.currentCharacterId, coreState?.sessionStartTime, orderingSeed, orderingVariant])
 
   const handleChoiceWithTelemetry = useCallback((choice: Choice) => {
@@ -946,6 +960,32 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     </AnimatePresence>
   )
 
+  const TransitionStatus = () => (
+    <AnimatePresence>
+      {isTransitioning && (
+        <motion.div
+          key="choice-transition-status"
+          className="px-2 pb-1"
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -2 }}
+          transition={{ duration: 0.12 }}
+        >
+          <div
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            data-testid="choice-transition-status"
+            className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.08em] text-slate-400"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+            <span>{isCommitting ? 'Committing your response' : 'Loading next response'}</span>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+
   if (useGrouping) {
     // Track global index for keyboard navigation across groups
     let globalIndex = 0
@@ -953,23 +993,23 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
     return (
       <>
         <ScreenDimOverlay />
+        <TransitionStatus />
         <motion.div
         className={cn(
           "space-y-8 max-w-full",
-          // Height caps: allow shrink with fewer choices, keep headroom for mobile chrome
-          CHOICE_CONTAINER_HEIGHT.mobileSm,  // ~4 buttons on small phones (< 400px)
-          CHOICE_CONTAINER_HEIGHT.mobile,    // ~4.5–5 buttons on larger phones (≥ 400px)
-          CHOICE_CONTAINER_HEIGHT.tablet,    // ~4 buttons on tablets+ (≥ 640px)
-          "overflow-y-auto overflow-x-hidden pb-6"
+          useCappedSheetLayout && CHOICE_CONTAINER_HEIGHT.mobileSm,
+          useCappedSheetLayout && CHOICE_CONTAINER_HEIGHT.mobile,
+          useCappedSheetLayout && CHOICE_CONTAINER_HEIGHT.tablet,
+          useCappedSheetLayout ? "overflow-y-auto overflow-x-hidden pb-6" : "overflow-visible pb-1"
         )}
-        style={{ scrollbarGutter: 'stable' }}  // Prevent layout shift when scrollbar appears
+        style={{ scrollbarGutter: useCappedSheetLayout ? 'stable' : 'auto' }}  // Prevent layout shift when scrollbar appears
         ref={containerRef}
         role="listbox"
         aria-label="Choose your response"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        key={`grouped-${choices.map(c => c.consequence || c.text).join(',')}`} // Unique prefix + stable IDs
+        key={`choices-${orderingSeed}`}
       >
         {(nonEmptyGroups || []).map(([title, groupChoices]) => (
           <div key={title} className="space-y-3" role="group" aria-label={title}>
@@ -1031,25 +1071,25 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   return (
     <>
       <ScreenDimOverlay />
+      <TransitionStatus />
       <motion.div
         ref={containerRef}
         className={cn(
           "grid gap-3 p-2 w-full max-w-full",
           useGrid ? "md:grid-cols-2" : "grid-cols-1",
-          // Height caps: allow shrink with fewer choices, keep headroom for mobile chrome
-          CHOICE_CONTAINER_HEIGHT.mobileSm,  // ~4 buttons on small phones (< 400px)
-          CHOICE_CONTAINER_HEIGHT.mobile,    // ~4.5–5 buttons on larger phones (≥ 400px)
-          CHOICE_CONTAINER_HEIGHT.tablet,    // ~4 buttons on tablets+ (≥ 640px)
-          "overflow-y-auto overflow-x-hidden pb-6"
+          useCappedSheetLayout && CHOICE_CONTAINER_HEIGHT.mobileSm,
+          useCappedSheetLayout && CHOICE_CONTAINER_HEIGHT.mobile,
+          useCappedSheetLayout && CHOICE_CONTAINER_HEIGHT.tablet,
+          useCappedSheetLayout ? "overflow-y-auto overflow-x-hidden pb-6" : "overflow-visible pb-1"
         )}
-        style={{ scrollbarGutter: 'stable' }}  // Prevent layout shift when scrollbar appears
+        style={{ scrollbarGutter: useCappedSheetLayout ? 'stable' : 'auto' }}  // Prevent layout shift when scrollbar appears
         data-testid="game-choices"
       role="listbox"
       aria-label="Choose your response"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      key={`ungrouped-${choices.map(c => c.consequence || c.text).join(',')}`} // Unique prefix + stable IDs
+      key={`choices-${orderingSeed}`}
     >
       {(() => {
         // Safety Net Calculation (Duplicated for non-grouped view)

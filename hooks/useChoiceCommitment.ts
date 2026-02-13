@@ -61,10 +61,17 @@ export function useChoiceCommitment(): UseChoiceCommitmentReturn {
   }, [])
 
   const commitChoice = useCallback(async (choiceId: string, onComplete: () => void) => {
+    let didComplete = false
+    const triggerComplete = () => {
+      if (didComplete) return
+      didComplete = true
+      onComplete()
+    }
+
     // If reduced motion, skip animation and call immediately
     if (prefersReducedMotion) {
       haptics.lightTap()
-      onComplete()
+      triggerComplete()
       return
     }
 
@@ -76,34 +83,34 @@ export function useChoiceCommitment(): UseChoiceCommitmentReturn {
     haptics.lightTap()
 
     // Step 2: Fade out other choices
-    await sleep(100)
+    await sleep(40)
     setAnimationState('fading-others')
 
+    // Trigger the actual choice handler early so the UI responds quickly.
+    await sleep(Math.min(timing.fadeOutDuration * 1000, 80))
+    triggerComplete()
+
     // Step 3: Anticipation pause
-    await sleep(timing.fadeOutDuration * 1000)
     setAnimationState('anticipation')
 
     // Step 4: Heavy haptic + committed
-    await sleep(timing.anticipationPause * 1000)
+    await sleep(Math.min(timing.anticipationPause * 1000, 80))
     haptics.heavyThud()
     setAnimationState('committed')
 
     // Step 5: Fly up to transcript
-    await sleep(200)
+    await sleep(80)
     setAnimationState('flying-up')
 
-    // Step 6: Complete - call the callback
-    await sleep(timing.flyUpDuration * 1000)
+    // Step 6: Complete
+    await sleep(Math.min(timing.flyUpDuration * 1000, 120))
     setAnimationState('complete')
 
-    // Step 7: Silence before NPC response
-    await sleep(timing.silenceBeats * 1000)
-
-    // Trigger the actual choice handler
-    onComplete()
+    // Step 7: Brief silence before reset
+    await sleep(Math.min(timing.silenceBeats * 1000, 80))
 
     // Reset after a brief moment
-    await sleep(100)
+    await sleep(40)
     reset()
   }, [prefersReducedMotion, reset])
 

@@ -114,6 +114,7 @@ import { StationState, useStationStore } from '@/lib/station-state'
 import { filterChoicesByLoad, CognitiveLoadLevel } from '@/lib/cognitive-load' // Fixed: Top-level import
 import { generateUserId } from '@/lib/safe-storage'
 import { queueInteractionEventSync, generateActionId } from '@/lib/sync-queue'
+import { consumeChoiceUiSelection } from '@/lib/choice-dispatch-telemetry'
 import {
   DialogueGraph,
   DialogueNode,
@@ -1444,6 +1445,62 @@ export default function StatefulGameInterface() {
     if (isProcessingChoiceRef.current) return
     if (!state.gameState || !choice.enabled) return
 
+    const choiceResultEventId = generateActionId()
+    const choiceProcessingStartedAt = Date.now()
+    const selectedChoiceId = choice.choice.choiceId || null
+    const selectedChoiceText = choice.choice.text || null
+    const nodeIdAtSelection = state.currentNode?.nodeId || ''
+    const sessionId = String(state.gameState?.sessionStartTime || choiceProcessingStartedAt)
+    const uiSelection = selectedChoiceId
+      ? consumeChoiceUiSelection({
+          selected_choice_id: selectedChoiceId,
+          node_id: nodeIdAtSelection,
+          session_id: sessionId,
+          now_ms: choiceProcessingStartedAt,
+        })
+      : null
+    let choiceReactionTimeMs: number | null = null
+    let clickToDispatchMs: number | null = null
+    let selectedUiEventId: string | null = null
+    let choiceEarnedPattern: string | null = null
+    let choiceTrustDelta: number | null = null
+    let choiceResultEmitted = false
+
+    if (uiSelection) {
+      selectedUiEventId = uiSelection.ui_event_id
+      clickToDispatchMs = Math.max(0, choiceProcessingStartedAt - uiSelection.selected_at_ms)
+    }
+
+    const emitChoiceSelectedResult = (outcome: string, overrides?: {
+      resultNodeId?: string | null
+      errorCode?: string | null
+    }) => {
+      if (choiceResultEmitted) return
+      choiceResultEmitted = true
+
+      queueInteractionEventSync({
+        user_id: state.gameState!.playerId,
+        session_id: String(state.gameState!.sessionStartTime || Date.now()),
+        event_type: 'choice_selected_result',
+        node_id: state.currentNode?.nodeId || null,
+        character_id: state.currentCharacterId || null,
+        payload: {
+          event_id: choiceResultEventId,
+          selected_choice_id: selectedChoiceId,
+          selected_choice_text: selectedChoiceText,
+          selected_ui_event_id: selectedUiEventId,
+          click_to_dispatch_ms: clickToDispatchMs,
+          reaction_time_ms: choiceReactionTimeMs,
+          processing_time_ms: Date.now() - choiceProcessingStartedAt,
+          earned_pattern: choiceEarnedPattern,
+          trust_delta: choiceTrustDelta,
+          result_node_id: overrides?.resultNodeId ?? null,
+          outcome,
+          error_code: overrides?.errorCode ?? null,
+        },
+      })
+    }
+
     // LOCK: Immediate ref lock + UI state update
     isProcessingChoiceRef.current = true
     setState(prev => ({ ...prev, isProcessing: true }))
@@ -1464,28 +1521,13 @@ export default function StatefulGameInterface() {
       // ═══════════════════════════════════════════════════════════════════════════
 
       const reactionTime = Date.now() - contentLoadTimestampRef.current
+      choiceReactionTimeMs = reactionTime
       const result = GameLogic.processChoice(state.gameState, choice, reactionTime)
       const previousPatterns = { ...state.gameState.patterns } // Restored for echo check
       let newGameState = result.newState
       const trustDelta = result.trustDelta
-
-      // Canonical telemetry: authoritative game-logic result for selected choice.
-      // This complements `choice_selected_ui` from GameChoices with post-resolution truth.
-      queueInteractionEventSync({
-        user_id: newGameState.playerId,
-        session_id: String(newGameState.sessionStartTime || Date.now()),
-        event_type: 'choice_selected_result',
-        node_id: state.currentNode?.nodeId || null,
-        character_id: state.currentCharacterId || null,
-        payload: {
-          event_id: generateActionId(),
-          selected_choice_id: choice.choice.choiceId || null,
-          selected_choice_text: choice.choice.text || null,
-          reaction_time_ms: reactionTime,
-          earned_pattern: result.events.earnOrb || null,
-          trust_delta: trustDelta ?? null,
-        },
-      })
+      choiceTrustDelta = trustDelta ?? null
+      choiceEarnedPattern = result.events.earnOrb || null
 
       // ═══════════════════════════════════════════════════════════════════════════
       // STATE DEFINITIONS
@@ -1842,6 +1884,7 @@ export default function StatefulGameInterface() {
           isProcessingChoiceRef.current = false  // Release lock before travel
 
           // Trigger the jump via the standard navigation system
+          emitChoiceSelectedResult('travel_pending', { resultNodeId: pendingTarget })
           useGameStore.getState().setCurrentScene(pendingTarget)
           useGameStore.getState().setPendingTravelTarget(null)
           return
@@ -1850,6 +1893,7 @@ export default function StatefulGameInterface() {
           logger.warn('[Conductor Mode] Missing pending target, rerouting to Station Hub')
           isProcessingChoiceRef.current = false  // Release lock before travel
           setState(prev => ({ ...prev, isProcessing: false }))
+          emitChoiceSelectedResult('travel_pending_missing_target', { resultNodeId: 'samuel', errorCode: 'missing_pending_travel_target' })
           useGameStore.getState().setCurrentScene('samuel')
           return
         }
@@ -1866,6 +1910,7 @@ export default function StatefulGameInterface() {
           isProcessingChoiceRef.current = false
 
           // Execute the simulation
+          emitChoiceSelectedResult('simulation_pending', { resultNodeId: 'SIMULATION_PENDING' })
           useGameStore.getState().setDebugSimulation(pendingSimulation)
           useGameStore.getState().setPendingGodModeSimulation(null)
           return
@@ -1874,6 +1919,7 @@ export default function StatefulGameInterface() {
           logger.warn('[God Mode] Missing pending simulation, returning to Samuel')
           isProcessingChoiceRef.current = false
           setState(prev => ({ ...prev, isProcessing: false }))
+          emitChoiceSelectedResult('simulation_pending_missing_target', { resultNodeId: null, errorCode: 'missing_pending_simulation' })
           return
         }
       }
@@ -1892,6 +1938,7 @@ export default function StatefulGameInterface() {
           isLoading: false,
           isProcessing: false
         }))
+        emitChoiceSelectedResult('navigation_error', { resultNodeId: choice.choice.nextNodeId, errorCode: 'missing_character_for_node' })
         return
       }
 
@@ -1912,6 +1959,7 @@ export default function StatefulGameInterface() {
           },
           isProcessing: false
         }))
+        emitChoiceSelectedResult('navigation_error', { resultNodeId: choice.choice.nextNodeId, errorCode: 'missing_next_node' })
         return
       }
 
@@ -2936,7 +2984,10 @@ export default function StatefulGameInterface() {
         if (!dominantPattern) dominantPattern = 'exploring'
       }
 
-      setState({
+      emitChoiceSelectedResult('resolved', { resultNodeId: nextNode.nodeId })
+
+      setState(prev => ({
+        ...prev,
         gameState: newGameState,
         currentNode: nextNode,
         currentGraph: targetGraph,
@@ -2952,16 +3003,17 @@ export default function StatefulGameInterface() {
         skillToast: null, // Disabled-skills tracked silently
         consequenceFeedback,
         error: null,
-        previousSpeaker: state.currentNode?.speaker || null,
+        previousSpeaker: prev.currentNode?.speaker || null,
         recentSkills: skillsToKeep,
-        activeExperience: state.activeExperience, // Added to fix build error
+        activeExperience: prev.activeExperience, // Added to fix build error
         ...experienceSummaryUpdate,
-        showJournal: state.showJournal,
-        showConstellation: state.showConstellation,
+        // Preserve live overlay toggles in case the user changes them while async choice work is running.
+        showJournal: prev.showJournal,
+        showConstellation: prev.showConstellation,
         pendingFloatingModule: null, // Floating modules disabled
-        showJourneySummary: state.showJourneySummary,
+        showJourneySummary: prev.showJourneySummary,
         activeInterrupt: shouldShowInterrupt(content.interrupt, newGameState.patterns), // D-009: Filter by pattern
-        journeyNarrative: state.journeyNarrative,
+        journeyNarrative: prev.journeyNarrative,
         achievementNotification,
         ambientEvent: null,  // Clear ambient event when player acts
         patternSensation: patternShiftMsg || patternSensation, // Prefer shift msg if shift happened
@@ -2972,20 +3024,20 @@ export default function StatefulGameInterface() {
         ceremonyPattern: identityCeremonyPattern,  // Pattern being internalized
         showPatternEnding: isJourneyCompleteNode,  // Pattern-based journey ending
         endingPattern: dominantPattern,  // Dominant pattern for ending
-        hasNewTrust: trustDelta !== 0 ? true : state.hasNewTrust,  // Track trust changes for Constellation attention
-        hasNewMeeting: isFirstMeeting ? true : state.hasNewMeeting,  // Track first meeting for Constellation nudge
-        isMuted: state.isMuted,
-        showReport: state.showReport,
+        hasNewTrust: trustDelta !== 0 ? true : prev.hasNewTrust,  // Track trust changes for Constellation attention
+        hasNewMeeting: isFirstMeeting ? true : prev.hasNewMeeting,  // Track first meeting for Constellation nudge
+        isMuted: prev.isMuted,
+        showReport: prev.showReport,
         isProcessing: false, // ISP FIX: Unlock UI
         patternVoice,  // Disco Elysium-style inner monologue
         voiceConflict,  // D-096: Voice conflict when patterns disagree
-        activeComboChain: state.activeComboChain,  // D-084: Preserve combo chain state
+        activeComboChain: prev.activeComboChain,  // D-084: Preserve combo chain state
         // Engagement Loop State (preserved across choice)
-        waitingCharacters: state.waitingCharacters,
+        waitingCharacters: prev.waitingCharacters,
         pendingGift,
-        isReturningPlayer: state.isReturningPlayer,
-        returnHookDismissed: state.returnHookDismissed,
-      })
+        isReturningPlayer: prev.isReturningPlayer,
+        returnHookDismissed: prev.returnHookDismissed,
+      }))
       GameStateManager.saveGameState(newGameState)
 
       // ═══════════════════════════════════════════════════════════════════════════
@@ -3038,6 +3090,10 @@ export default function StatefulGameInterface() {
       }
     } catch (error) {
       console.error('Choice handling failed:', error)
+      emitChoiceSelectedResult('handler_exception', {
+        resultNodeId: null,
+        errorCode: error instanceof Error ? error.message.slice(0, 120) : 'unknown_error',
+      })
       isProcessingChoiceRef.current = false // Release lock if error
       setState(prev => ({ ...prev, isProcessing: false }))
     } finally {
@@ -3635,6 +3691,37 @@ export default function StatefulGameInterface() {
 
   const currentCharacter = state.gameState?.characters.get(state.currentCharacterId)
   const isEnding = state.availableChoices.length === 0
+  const currentNodeTags = state.currentNode?.tags || []
+  const isNodePivotal = currentNodeTags.some(tag =>
+    ['pivotal', 'defining_moment', 'final_choice', 'climax', 'revelation', 'introduction'].includes(tag)
+  )
+  const preparedChoices = filterChoicesByLoad(
+    state.availableChoices,
+    cognitiveLoad,
+    undefined, // Todo: Pass dominant pattern
+    isNodePivotal // Bypass filtering for pivotal moments
+  ).map((c) => {
+    const originalIndex = state.availableChoices.indexOf(c)
+    const voicedText = state.gameState ? getVoicedChoiceText(
+      c.choice.text,
+      c.choice.voiceVariations,
+      state.gameState.patterns
+    ) : c.choice.text
+    return {
+      text: voicedText,
+      pattern: c.choice.pattern,
+      feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
+      pivotal: isNodePivotal,
+      requiredOrbFill: c.choice.requiredOrbFill,
+      next: String(originalIndex)
+    }
+  })
+  const useCappedChoiceSheet = preparedChoices.length > 2
+  const hasBlockingOverlay =
+    state.showJournal ||
+    state.showConstellation ||
+    state.showJourneySummary ||
+    state.showReport
 
   // GOD MODE OVERRIDE-Render simulation if active (must be at end after all hooks)
   if (debugSimulation) {
@@ -3665,7 +3752,7 @@ export default function StatefulGameInterface() {
       {/* Environmental body class manager - applies pattern/character atmosphere to <body> */}
       <EnvironmentalEffects gameState={state.gameState} />
       <div
-        className="relative z-10 flex flex-col min-h-[100dvh] w-full max-w-xl mx-auto shadow-2xl border-x border-white/5 bg-black/10"
+        className="relative z-10 flex flex-col min-h-[100dvh] w-full max-w-xl mx-auto bg-black/10"
         style={{
           willChange: 'auto',
           contain: 'layout style paint',
@@ -3851,8 +3938,10 @@ export default function StatefulGameInterface() {
 
                   {/* Dialogue Card-Dynamic Marquee Effect */}
                   {/* STABILITY: Removed transition-all to prevent container jumping */}
-                  <Card className={cn(
+                  <Card
+                    className={cn(
                     "shadow-lg backdrop-blur-xl relative overflow-hidden rounded-xl",
+                    !state.activeExperience && !state.currentNode?.simulation ? "min-h-[280px] sm:min-h-[320px]" : "",
                     state.activeExperience || state.currentNode?.simulation
                       ? "bg-slate-950/80 border-amber-500/40 shadow-[0_0_30px_rgba(245,158,11,0.2)]"
                       : (state.currentDialogueContent?.emotion === 'analytical' || state.currentDialogueContent?.emotion === 'knowing')
@@ -3860,7 +3949,10 @@ export default function StatefulGameInterface() {
                         : (state.currentDialogueContent?.emotion === 'fear' || state.currentDialogueContent?.emotion === 'tension')
                           ? "bg-slate-950/80 border-red-500/40 shadow-[0_0_30px_rgba(239,68,68,0.2)]"
                           : "bg-black/40 border-white/5 hover:border-white/10"
-                  )}>
+                  )}
+                    data-dialogue-stage={(!state.activeExperience && !state.currentNode?.simulation) ? 'pinned' : 'dynamic'}
+                    data-testid="dialogue-stage"
+                  >
                     <CardContent className="p-0">
                       {/* Marquee Header Overlay */}
                       {(state.activeExperience || state.currentNode?.simulation) && (
@@ -4076,87 +4168,59 @@ export default function StatefulGameInterface() {
           PC: Closer to content (not stuck at very bottom)
           Mobile: Bottom with proper safe area padding
           ══════════════════════════════════════════════════════════════════ */}
-        < AnimatePresence mode="wait" >
-          {!isEnding && (
-            <footer
-              className="flex-shrink-0 sticky bottom-0 glass-panel max-w-4xl mx-auto w-full px-3 sm:px-4 z-20"
-              style={{
-                // SINGLE SCROLL REFACTOR: Sticky footer with safe area padding
-                // Chrome mobile has 48-56px bottom bar that's NOT in safe-area-inset
-                paddingBottom: 'max(64px, env(safe-area-inset-bottom, 64px))'
-              }}
-            >
-              {/* Response label - compact on mobile */}
-              <div className="px-4 sm:px-6 pt-2 pb-0.5 text-center">
-                <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 uppercase tracking-[0.1em]">
-                  Your Response
-                </span>
-              </div>
+        {!isEnding && (
+          <footer
+            className={cn(
+              "flex-shrink-0 sticky bottom-0 glass-panel max-w-4xl mx-auto w-full px-3 sm:px-4 z-20",
+              useCappedChoiceSheet ? "rounded-t-2xl border-b-0 overflow-hidden" : ""
+            )}
+            data-choice-sheet-mode={useCappedChoiceSheet ? 'capped' : 'free'}
+            style={{
+              // SINGLE SCROLL REFACTOR: Sticky footer with safe area padding
+              // Chrome mobile has 48-56px bottom bar that's NOT in safe-area-inset
+              paddingBottom: 'max(64px, env(safe-area-inset-bottom, 64px))'
+            }}
+          >
+            {/* Response label - compact on mobile */}
+            <div className="px-4 sm:px-6 pt-2 pb-0.5 text-center">
+              <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 uppercase tracking-[0.1em]">
+                Your Response
+              </span>
+            </div>
 
-              <div className="px-4 sm:px-6 pt-1 pb-2">
-                {/* Scrollable choices container with scroll indicator */}
-                <div className="relative w-full">
-                  {/* SINGLE SCROLL REFACTOR: Removed nested scroll - choices expand naturally */}
-                  {/* For >3 choices, TICKET-002 will add bottom sheet */}
-                  <div
-                    id="choices-container"
-                    className="w-full"
-                  >
-                    <GameChoices
-                      choices={(() => {
-                        // Hoist pivotal check effectively
-                        const nodeTags = state.currentNode?.tags || []
-                        const isNodePivotal = nodeTags.some(tag =>
-                          ['pivotal', 'defining_moment', 'final_choice', 'climax', 'revelation', 'introduction'].includes(tag)
-                        )
-
-                        return filterChoicesByLoad(
-                          state.availableChoices,
-                          cognitiveLoad,
-                          undefined, // Todo: Pass dominant pattern
-                          isNodePivotal // Bypass filtering for pivotal moments
-                        ).map((c) => {
-                          // Find original index for the callback
-                          const originalIndex = state.availableChoices.indexOf(c)
-                          // Recalculate pivotal for UI styling (redundant but safe)
-                          // or just use isNodePivotal if appropriate, but UI expects per-choice styling
-                          // Actually GameChoices uses the 'pivotal' prop for specific styling
-
-                          const voicedText = state.gameState ? getVoicedChoiceText(
-                            c.choice.text,
-                            c.choice.voiceVariations,
-                            state.gameState.patterns
-                          ) : c.choice.text
-                          return {
-                            text: voicedText,
-                            pattern: c.choice.pattern,
-                            feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
-                            pivotal: isNodePivotal,
-                            requiredOrbFill: c.choice.requiredOrbFill,
-                            next: String(originalIndex)
-                          }
-                        })
-                      })()}
-                      isProcessing={state.isProcessing}
-                      orbFillLevels={orbFillLevels}
-                      onChoice={(c) => {
-                        const index = parseInt(c.next || '0', 10)
-                        const original = state.availableChoices[index]
-                        if (original) handleChoice(original)
-                      }}
-                      // FIX: Always use glass mode for dark theme (prevents white background issue)
-                      glass={true}
-                      playerPatterns={state.gameState?.patterns}
-                      cognitiveLoad={cognitiveLoad}
-                    />
-                  </div>
-
-                  {/* Scroll indicator removed based on user feedback (often unnecessary) */}
+            <div className="px-4 sm:px-6 pt-1 pb-2">
+              {/* Scrollable choices container with scroll indicator */}
+              <div className="relative w-full">
+                {/* SINGLE SCROLL REFACTOR: Removed nested scroll - choices expand naturally */}
+                {/* For >3 choices, TICKET-002 will add bottom sheet */}
+                <div
+                  id="choices-container"
+                  className={cn(
+                    "w-full",
+                    useCappedChoiceSheet ? "h-[260px] xs:h-[300px] sm:h-[260px]" : "min-h-[160px] xs:min-h-[180px] sm:min-h-[180px]"
+                  )}
+                >
+                  <GameChoices
+                    choices={preparedChoices}
+                    isProcessing={state.isProcessing || hasBlockingOverlay}
+                    orbFillLevels={orbFillLevels}
+                    onChoice={(c) => {
+                      const index = parseInt(c.next || '0', 10)
+                      const original = state.availableChoices[index]
+                      if (original) handleChoice(original)
+                    }}
+                    // FIX: Always use glass mode for dark theme (prevents white background issue)
+                    glass={true}
+                    playerPatterns={state.gameState?.patterns}
+                    cognitiveLoad={cognitiveLoad}
+                  />
                 </div>
+
+                {/* Scroll indicator removed based on user feedback (often unnecessary) */}
               </div>
-            </footer>
-          )}
-        </AnimatePresence>
+            </div>
+          </footer>
+        )}
 
         {/* Share prompts removed-too obtrusive */}
 
