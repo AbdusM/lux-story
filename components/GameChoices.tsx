@@ -745,6 +745,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   // 1-3 choices: single column, 4+ choices: 2 columns (pairs work better)
   const useGrid = sortedChoices.length >= 4
   const useGrouping = sortedChoices.length > 6 // Group only if many choices (6+) to avoid clutter
+  const useCappedSheetLayout = sortedChoices.length > 3
 
   const { nonEmptyGroups, presentedChoicesFlat } = useMemo(() => {
     if (!useGrouping) {
@@ -957,13 +958,12 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
         <motion.div
         className={cn(
           "space-y-8 max-w-full",
-          // Height caps: allow shrink with fewer choices, keep headroom for mobile chrome
-          CHOICE_CONTAINER_HEIGHT.mobileSm,  // ~4 buttons on small phones (< 400px)
-          CHOICE_CONTAINER_HEIGHT.mobile,    // ~4.5–5 buttons on larger phones (≥ 400px)
-          CHOICE_CONTAINER_HEIGHT.tablet,    // ~4 buttons on tablets+ (≥ 640px)
-          "overflow-y-auto overflow-x-hidden pb-6"
+          useCappedSheetLayout && CHOICE_CONTAINER_HEIGHT.mobileSm,
+          useCappedSheetLayout && CHOICE_CONTAINER_HEIGHT.mobile,
+          useCappedSheetLayout && CHOICE_CONTAINER_HEIGHT.tablet,
+          useCappedSheetLayout ? "overflow-y-auto overflow-x-hidden pb-6" : "overflow-visible pb-1"
         )}
-        style={{ scrollbarGutter: 'stable' }}  // Prevent layout shift when scrollbar appears
+        style={{ scrollbarGutter: useCappedSheetLayout ? 'stable' : 'auto' }}  // Prevent layout shift when scrollbar appears
         ref={containerRef}
         role="listbox"
         aria-label="Choose your response"
@@ -1037,13 +1037,12 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
         className={cn(
           "grid gap-3 p-2 w-full max-w-full",
           useGrid ? "md:grid-cols-2" : "grid-cols-1",
-          // Height caps: allow shrink with fewer choices, keep headroom for mobile chrome
-          CHOICE_CONTAINER_HEIGHT.mobileSm,  // ~4 buttons on small phones (< 400px)
-          CHOICE_CONTAINER_HEIGHT.mobile,    // ~4.5–5 buttons on larger phones (≥ 400px)
-          CHOICE_CONTAINER_HEIGHT.tablet,    // ~4 buttons on tablets+ (≥ 640px)
-          "overflow-y-auto overflow-x-hidden pb-6"
+          useCappedSheetLayout && CHOICE_CONTAINER_HEIGHT.mobileSm,
+          useCappedSheetLayout && CHOICE_CONTAINER_HEIGHT.mobile,
+          useCappedSheetLayout && CHOICE_CONTAINER_HEIGHT.tablet,
+          useCappedSheetLayout ? "overflow-y-auto overflow-x-hidden pb-6" : "overflow-visible pb-1"
         )}
-        style={{ scrollbarGutter: 'stable' }}  // Prevent layout shift when scrollbar appears
+        style={{ scrollbarGutter: useCappedSheetLayout ? 'stable' : 'auto' }}  // Prevent layout shift when scrollbar appears
         data-testid="game-choices"
       role="listbox"
       aria-label="Choose your response"

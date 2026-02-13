@@ -3637,6 +3637,32 @@ export default function StatefulGameInterface() {
 
   const currentCharacter = state.gameState?.characters.get(state.currentCharacterId)
   const isEnding = state.availableChoices.length === 0
+  const currentNodeTags = state.currentNode?.tags || []
+  const isNodePivotal = currentNodeTags.some(tag =>
+    ['pivotal', 'defining_moment', 'final_choice', 'climax', 'revelation', 'introduction'].includes(tag)
+  )
+  const preparedChoices = filterChoicesByLoad(
+    state.availableChoices,
+    cognitiveLoad,
+    undefined, // Todo: Pass dominant pattern
+    isNodePivotal // Bypass filtering for pivotal moments
+  ).map((c) => {
+    const originalIndex = state.availableChoices.indexOf(c)
+    const voicedText = state.gameState ? getVoicedChoiceText(
+      c.choice.text,
+      c.choice.voiceVariations,
+      state.gameState.patterns
+    ) : c.choice.text
+    return {
+      text: voicedText,
+      pattern: c.choice.pattern,
+      feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
+      pivotal: isNodePivotal,
+      requiredOrbFill: c.choice.requiredOrbFill,
+      next: String(originalIndex)
+    }
+  })
+  const useCappedChoiceSheet = preparedChoices.length > 3
 
   // GOD MODE OVERRIDE-Render simulation if active (must be at end after all hooks)
   if (debugSimulation) {
@@ -4081,7 +4107,11 @@ export default function StatefulGameInterface() {
         < AnimatePresence mode="wait" >
           {!isEnding && (
             <footer
-              className="flex-shrink-0 sticky bottom-0 glass-panel max-w-4xl mx-auto w-full px-3 sm:px-4 z-20"
+              className={cn(
+                "flex-shrink-0 sticky bottom-0 glass-panel max-w-4xl mx-auto w-full px-3 sm:px-4 z-20",
+                useCappedChoiceSheet ? "rounded-t-2xl border-b-0 overflow-hidden" : ""
+              )}
+              data-choice-sheet-mode={useCappedChoiceSheet ? 'capped' : 'free'}
               style={{
                 // SINGLE SCROLL REFACTOR: Sticky footer with safe area padding
                 // Chrome mobile has 48-56px bottom bar that's NOT in safe-area-inset
@@ -4102,43 +4132,13 @@ export default function StatefulGameInterface() {
                   {/* For >3 choices, TICKET-002 will add bottom sheet */}
                   <div
                     id="choices-container"
-                    className="w-full"
+                    className={cn(
+                      "w-full",
+                      useCappedChoiceSheet ? "h-[260px] xs:h-[300px] sm:h-[260px]" : ""
+                    )}
                   >
                     <GameChoices
-                      choices={(() => {
-                        // Hoist pivotal check effectively
-                        const nodeTags = state.currentNode?.tags || []
-                        const isNodePivotal = nodeTags.some(tag =>
-                          ['pivotal', 'defining_moment', 'final_choice', 'climax', 'revelation', 'introduction'].includes(tag)
-                        )
-
-                        return filterChoicesByLoad(
-                          state.availableChoices,
-                          cognitiveLoad,
-                          undefined, // Todo: Pass dominant pattern
-                          isNodePivotal // Bypass filtering for pivotal moments
-                        ).map((c) => {
-                          // Find original index for the callback
-                          const originalIndex = state.availableChoices.indexOf(c)
-                          // Recalculate pivotal for UI styling (redundant but safe)
-                          // or just use isNodePivotal if appropriate, but UI expects per-choice styling
-                          // Actually GameChoices uses the 'pivotal' prop for specific styling
-
-                          const voicedText = state.gameState ? getVoicedChoiceText(
-                            c.choice.text,
-                            c.choice.voiceVariations,
-                            state.gameState.patterns
-                          ) : c.choice.text
-                          return {
-                            text: voicedText,
-                            pattern: c.choice.pattern,
-                            feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
-                            pivotal: isNodePivotal,
-                            requiredOrbFill: c.choice.requiredOrbFill,
-                            next: String(originalIndex)
-                          }
-                        })
-                      })()}
+                      choices={preparedChoices}
                       isProcessing={state.isProcessing}
                       orbFillLevels={orbFillLevels}
                       onChoice={(c) => {
