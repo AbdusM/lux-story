@@ -745,7 +745,8 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   // 1-3 choices: single column, 4+ choices: 2 columns (pairs work better)
   const useGrid = sortedChoices.length >= 4
   const useGrouping = sortedChoices.length > 6 // Group only if many choices (6+) to avoid clutter
-  const useCappedSheetLayout = sortedChoices.length > 3
+  // Engage capped mode at 3+ choices to reduce footer-height jumps between nodes.
+  const useCappedSheetLayout = sortedChoices.length > 2
   const isTransitioning = isProcessing || isCommitting
 
   const { nonEmptyGroups, presentedChoicesFlat } = useMemo(() => {
@@ -998,7 +999,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        key={`grouped-${choices.map(c => c.consequence || c.text).join(',')}`} // Unique prefix + stable IDs
+        key={`choices-${orderingSeed}`}
       >
         {(nonEmptyGroups || []).map(([title, groupChoices]) => (
           <div key={title} className="space-y-3" role="group" aria-label={title}>
@@ -1078,7 +1079,7 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      key={`ungrouped-${choices.map(c => c.consequence || c.text).join(',')}`} // Unique prefix + stable IDs
+      key={`choices-${orderingSeed}`}
     >
       {(() => {
         // Safety Net Calculation (Duplicated for non-grouped view)

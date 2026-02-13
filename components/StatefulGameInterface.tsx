@@ -3696,7 +3696,7 @@ export default function StatefulGameInterface() {
       next: String(originalIndex)
     }
   })
-  const useCappedChoiceSheet = preparedChoices.length > 3
+  const useCappedChoiceSheet = preparedChoices.length > 2
   const hasBlockingOverlay =
     state.showJournal ||
     state.showConstellation ||
@@ -4177,7 +4177,7 @@ export default function StatefulGameInterface() {
                   id="choices-container"
                   className={cn(
                     "w-full",
-                    useCappedChoiceSheet ? "h-[260px] xs:h-[300px] sm:h-[260px]" : ""
+                    useCappedChoiceSheet ? "h-[260px] xs:h-[300px] sm:h-[260px]" : "min-h-[160px] xs:min-h-[180px] sm:min-h-[180px]"
                   )}
                 >
                   <GameChoices

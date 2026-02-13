@@ -54,7 +54,7 @@ describe('GameChoices (Sheet Mode)', () => {
     localStorage.clear()
   })
 
-  it('uses capped sheet sizing for four or more choices', () => {
+  it('uses capped sheet sizing for three or more choices', () => {
     render(
       <GameChoices
         choices={[
@@ -74,13 +74,12 @@ describe('GameChoices (Sheet Mode)', () => {
     expect(listbox.className).toContain('overflow-y-auto')
   })
 
-  it('keeps natural height when three or fewer choices are present', () => {
+  it('keeps natural height only for one-to-two choice follow-ups', () => {
     render(
       <GameChoices
         choices={[
           { id: 'c1', text: 'A' },
           { id: 'c2', text: 'B' },
-          { id: 'c3', text: 'C' },
         ]}
         isProcessing={false}
         onChoice={() => undefined}

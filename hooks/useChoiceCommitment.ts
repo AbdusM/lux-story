@@ -83,34 +83,34 @@ export function useChoiceCommitment(): UseChoiceCommitmentReturn {
     haptics.lightTap()
 
     // Step 2: Fade out other choices
-    await sleep(60)
+    await sleep(40)
     setAnimationState('fading-others')
 
     // Trigger the actual choice handler early so the UI responds quickly.
-    await sleep(Math.min(timing.fadeOutDuration * 1000, 120))
+    await sleep(Math.min(timing.fadeOutDuration * 1000, 80))
     triggerComplete()
 
     // Step 3: Anticipation pause
     setAnimationState('anticipation')
 
     // Step 4: Heavy haptic + committed
-    await sleep(Math.min(timing.anticipationPause * 1000, 120))
+    await sleep(Math.min(timing.anticipationPause * 1000, 80))
     haptics.heavyThud()
     setAnimationState('committed')
 
     // Step 5: Fly up to transcript
-    await sleep(120)
+    await sleep(80)
     setAnimationState('flying-up')
 
     // Step 6: Complete
-    await sleep(Math.min(timing.flyUpDuration * 1000, 180))
+    await sleep(Math.min(timing.flyUpDuration * 1000, 120))
     setAnimationState('complete')
 
     // Step 7: Brief silence before reset
-    await sleep(Math.min(timing.silenceBeats * 1000, 120))
+    await sleep(Math.min(timing.silenceBeats * 1000, 80))
 
     // Reset after a brief moment
-    await sleep(60)
+    await sleep(40)
     reset()
   }, [prefersReducedMotion, reset])
 

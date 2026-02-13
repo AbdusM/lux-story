@@ -243,3 +243,12 @@ This is fine on modern devices but can amplify any foreground work (choice handl
 - Dialogue card position changes are minimal between nodes (no “jumping” when choice count changes).
 - Choice buttons maintain AA contrast in dark theme (no bright washed-out cards).
 
+## 6) Applied Fixes (2026-02-13, Iteration B)
+
+- Reduced pre-dispatch delay in `hooks/useChoiceCommitment.ts` (dispatch now occurs earlier in the animation sequence, with shorter intermediate waits).
+- Stabilized choice-sheet behavior by enabling capped mode at **3+ choices** (previously 4+), reducing abrupt footer geometry changes between common node transitions.
+- Added baseline min-height for non-capped (`1-2 choice`) response states in `components/StatefulGameInterface.tsx` to reduce vertical “snap” when moving between nodes.
+- Stabilized `GameChoices` remount keying to `orderingSeed` rather than choice-text concatenation to avoid unnecessary remounts/jitter from cosmetic content changes.
+- Updated regression contracts/tests:
+  - `tests/components/game-choices-sheet-mode.test.tsx`
+  - `tests/components/ui-layout-stability-contract.test.ts`
