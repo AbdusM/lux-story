@@ -9,6 +9,8 @@ describe('choice_selected_result telemetry contract', () => {
 
     expect(content).toContain("event_type: 'choice_selected_result'")
     expect(content).toContain('processing_time_ms: Date.now() - choiceProcessingStartedAt')
+    expect(content).toContain('selected_ui_event_id:')
+    expect(content).toContain('click_to_dispatch_ms:')
     expect(content).toContain('outcome,')
     expect(content).toContain('result_node_id:')
     expect(content).toContain('error_code:')

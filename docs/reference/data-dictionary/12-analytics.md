@@ -502,6 +502,8 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
   - `event_id`: string
   - `selected_choice_id`: string|null
   - `selected_choice_text`: string|null
+  - `selected_ui_event_id`: string|null (links to `choice_selected_ui.payload.event_id` when available)
+  - `click_to_dispatch_ms`: number|null (UI click -> resolver dispatch latency; includes intentional commitment animation)
   - `reaction_time_ms`: number|null
   - `processing_time_ms`: number
   - `earned_pattern`: string|null

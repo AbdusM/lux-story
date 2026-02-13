@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-02-13T21:30:32.260Z",
+  "budget_ms": 260,
+  "min_samples": 20,
+  "samples_path": "docs/qa/choice-dispatch-latency-samples.json",
+  "baseline_path": "docs/qa/choice-dispatch-latency-baseline.json",
+  "report_path": "docs/qa/choice-dispatch-latency-report.json",
+  "current": {
+    "sample_count": 40,
+    "p50_ms": 168,
+    "p95_ms": 252,
+    "max_ms": 259
+  },
+  "baseline": {
+    "sample_count": 40,
+    "p50_ms": 168,
+    "p95_ms": 252,
+    "max_ms": 259
+  },
+  "regressions": []
+}

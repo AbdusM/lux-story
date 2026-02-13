@@ -114,6 +114,7 @@ import { StationState, useStationStore } from '@/lib/station-state'
 import { filterChoicesByLoad, CognitiveLoadLevel } from '@/lib/cognitive-load' // Fixed: Top-level import
 import { generateUserId } from '@/lib/safe-storage'
 import { queueInteractionEventSync, generateActionId } from '@/lib/sync-queue'
+import { consumeChoiceUiSelection } from '@/lib/choice-dispatch-telemetry'
 import {
   DialogueGraph,
   DialogueNode,
@@ -1448,10 +1449,27 @@ export default function StatefulGameInterface() {
     const choiceProcessingStartedAt = Date.now()
     const selectedChoiceId = choice.choice.choiceId || null
     const selectedChoiceText = choice.choice.text || null
+    const nodeIdAtSelection = state.currentNode?.nodeId || ''
+    const sessionId = String(state.gameState?.sessionStartTime || choiceProcessingStartedAt)
+    const uiSelection = selectedChoiceId
+      ? consumeChoiceUiSelection({
+          selected_choice_id: selectedChoiceId,
+          node_id: nodeIdAtSelection,
+          session_id: sessionId,
+          now_ms: choiceProcessingStartedAt,
+        })
+      : null
     let choiceReactionTimeMs: number | null = null
+    let clickToDispatchMs: number | null = null
+    let selectedUiEventId: string | null = null
     let choiceEarnedPattern: string | null = null
     let choiceTrustDelta: number | null = null
     let choiceResultEmitted = false
+
+    if (uiSelection) {
+      selectedUiEventId = uiSelection.ui_event_id
+      clickToDispatchMs = Math.max(0, choiceProcessingStartedAt - uiSelection.selected_at_ms)
+    }
 
     const emitChoiceSelectedResult = (outcome: string, overrides?: {
       resultNodeId?: string | null
@@ -1470,6 +1488,8 @@ export default function StatefulGameInterface() {
           event_id: choiceResultEventId,
           selected_choice_id: selectedChoiceId,
           selected_choice_text: selectedChoiceText,
+          selected_ui_event_id: selectedUiEventId,
+          click_to_dispatch_ms: clickToDispatchMs,
           reaction_time_ms: choiceReactionTimeMs,
           processing_time_ms: Date.now() - choiceProcessingStartedAt,
           earned_pattern: choiceEarnedPattern,

@@ -49,6 +49,8 @@ const ChoiceSelectedResultPayloadSchema = z.object({
   event_id: z.string().min(1).optional(),
   selected_choice_id: z.string().nullable().optional(),
   selected_choice_text: z.string().nullable().optional(),
+  selected_ui_event_id: z.string().nullable().optional(),
+  click_to_dispatch_ms: z.number().finite().nullable().optional(),
   reaction_time_ms: z.number().finite().nullable().optional(),
   processing_time_ms: z.number().finite().nullable().optional(),
   earned_pattern: z.string().nullable().optional(),

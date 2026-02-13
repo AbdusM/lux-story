@@ -18,6 +18,7 @@ import { deriveChoiceGateReason, type ChoiceGateReason } from '@/lib/choice-gate
 import { useGameStore } from '@/lib/game-store'
 import { truncateTextForLoad, CognitiveLoadLevel } from '@/lib/cognitive-load'
 import { queueInteractionEventSync, generateActionId } from '@/lib/sync-queue'
+import { recordChoiceUiSelection } from '@/lib/choice-dispatch-telemetry'
 
 // ... (retain pattern styles constants: PATTERN_HOVER_STYLES, DEFAULT_HOVER_STYLE, PATTERN_GLASS_STYLES, DEFAULT_GLASS_STYLE, PATTERN_MARQUEE_COLORS, DEFAULT_MARQUEE_COLORS) ...
 
@@ -913,6 +914,15 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
         selected_index: selectedIndex >= 0 ? selectedIndex : null,
         reaction_time_ms: reactionTimeMs
       }
+    })
+
+    // Bridge UI-click timing to runtime resolver telemetry (choice_selected_result).
+    recordChoiceUiSelection({
+      selected_choice_id: stableChoiceId,
+      node_id: nodeId,
+      session_id: String(coreState?.sessionStartTime || now),
+      ui_event_id: eventId,
+      selected_at_ms: now,
     })
   }, [coreState?.playerId, coreState?.currentNodeId, coreState?.currentCharacterId, coreState?.sessionStartTime, orderingSeed, orderingVariant])
 
