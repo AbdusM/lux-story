@@ -1,0 +1,20 @@
+name: Codex Adapter Validation
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate-codex-adapter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate adapter
+        run: node scripts/ci/verify-codex-adapter.mjs
