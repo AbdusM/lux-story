@@ -1038,9 +1038,10 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
 	                      ? { ...choice, gateReason }
 	                      : choice
 
-	                // Stable key priority: consequence > text-based hash
-	                const stableKey = choice.consequence
-	                  || `choice-${choice.text.slice(0, 30).replace(/\s+/g, '-')}`
+		                // Stable key priority: consequence > text-based hash
+		                const stableKey = choice.id
+		                  || choice.consequence
+		                  || `choice-${choice.text.slice(0, 30).replace(/\s+/g, '-')}`
 
                 return (
 	                  <ChoiceButton
@@ -1110,9 +1111,10 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
 	                ? { ...choice, gateReason }
 	                : choice
 
-	          // Stable key priority: consequence > text-based hash
-	          const stableKey = choice.consequence
-	            || `choice-${choice.text.slice(0, 30).replace(/\s+/g, '-')}`
+		          // Stable key priority: consequence > text-based hash
+		          const stableKey = choice.id
+		            || choice.consequence
+		            || `choice-${choice.text.slice(0, 30).replace(/\s+/g, '-')}`
 
           return (
 	            <ChoiceButton

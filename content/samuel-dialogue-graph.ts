@@ -334,7 +334,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_what_is_this_patient',
         text: "What is this place exactly?",
-        nextNodeId: 'systemic_calibration_start', // ISP: Reroute to Calibration
+        nextNodeId: 'samuel_explains_station',
         pattern: 'exploring',
         skills: ['communication', 'adaptability'],
         voiceVariations: {
@@ -348,7 +348,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_about_platforms_patient',
         text: "The platforms.where do they lead?",
-        nextNodeId: 'systemic_calibration_start', // ISP: Reroute to Calibration
+        nextNodeId: 'samuel_explains_platforms',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
         voiceVariations: {
@@ -648,7 +648,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ask_what_is_this',
         text: "What is this place exactly?",
-        nextNodeId: 'systemic_calibration_start', // ISP: Reroute to Calibration
+        nextNodeId: 'samuel_explains_station',
         pattern: 'exploring',
         skills: ['communication', 'adaptability'],
         consequence: {
@@ -927,6 +927,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'ask_about_static',
+        text: "Something feels... loud. In my head. Like static. What's happening to me?",
+        nextNodeId: 'systemic_calibration_start',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'communication']
       },
       {
         choiceId: 'ready_to_explore',

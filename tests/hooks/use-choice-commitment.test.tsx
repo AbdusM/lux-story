@@ -29,7 +29,7 @@ describe('useChoiceCommitment', () => {
     })
 
     await act(async () => {
-      await vi.advanceTimersByTimeAsync(170)
+      await vi.advanceTimersByTimeAsync(100)
     })
     expect(onComplete).not.toHaveBeenCalled()
 

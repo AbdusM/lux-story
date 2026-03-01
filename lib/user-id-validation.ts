@@ -53,6 +53,10 @@ export function validateUserId(userId: string | null | undefined): ValidationRes
   }
 }
 
+export function isUuidUserId(userId: string): boolean {
+  return UUID_REGEX.test(userId.trim())
+}
+
 /**
  * Sanitize user ID by trimming and validating
  * Returns null if invalid
@@ -64,4 +68,3 @@ export function sanitizeUserId(userId: string | null | undefined): string | null
   }
   return userId?.trim() || null
 }
-

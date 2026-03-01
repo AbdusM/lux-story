@@ -8,19 +8,7 @@ const mockToggleReaderMode = vi.fn()
 
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({
-      children,
-      layoutId: _layoutId,
-      drag: _drag,
-      dragConstraints: _dragConstraints,
-      dragElastic: _dragElastic,
-      variants: _variants,
-      initial: _initial,
-      animate: _animate,
-      exit: _exit,
-      transition: _transition,
-      ...props
-    }: { children?: React.ReactNode }) => <div {...props}>{children}</div>,
+    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   },
   AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   LazyMotion: ({ children }: { children: React.ReactNode }) => <>{children}</>,

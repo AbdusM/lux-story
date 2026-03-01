@@ -10,6 +10,7 @@
 import { queueCareerAnalyticsSync } from './sync-queue'
 import { safeStorage } from './safe-storage'
 import { logger } from './logger'
+import { ensureUserApiSession } from './user-api-session'
 import { z } from 'zod'
 
 // Diamond Safe Schema (exported for validation)
@@ -89,7 +90,8 @@ export class SimpleCareerAnalytics {
 
   private async _performHydration(userId: string): Promise<void> {
     try {
-      const response = await fetch(`/api/user/career-analytics?userId=${userId}`)
+      await ensureUserApiSession(userId)
+      const response = await fetch(`/api/user/career-analytics?userId=${userId}`, { credentials: 'include' })
 
       if (!response.ok) {
         console.warn('[SimpleCareerAnalytics] Failed to fetch from Supabase, falling back to localStorage')

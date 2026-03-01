@@ -14,8 +14,8 @@ describe('choice UI -> dispatch telemetry bridge contract', () => {
     expect(gameChoices).toContain('selected_choice_id: stableChoiceId')
 
     expect(stateful).toContain('consumeChoiceUiSelection({')
+    expect(stateful).toContain('id: c.choice.choiceId')
     expect(stateful).toContain('click_to_dispatch_ms:')
     expect(stateful).toContain('selected_ui_event_id:')
   })
 })
-

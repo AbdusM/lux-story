@@ -7,17 +7,23 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
+  const createResponse = () => {
+    try {
+      return NextResponse.next({ request: { headers: new Headers(request.headers) } })
+    } catch {
+      return NextResponse.next()
+    }
+  }
+
   // CI/local/dev can run without Supabase configured. Middleware must never hard-crash,
   // or Playwright/web server startup will fail.
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('placeholder') || supabaseAnonKey.includes('placeholder')) {
-    return NextResponse.next({ request })
+    return createResponse()
   }
 
-  let supabaseResponse = NextResponse.next({
-    request,
-  })
+  let supabaseResponse = createResponse()
 
   const supabase = createServerClient(
     supabaseUrl,
@@ -31,9 +37,7 @@ export async function updateSession(request: NextRequest) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           )
-          supabaseResponse = NextResponse.next({
-            request,
-          })
+          supabaseResponse = createResponse()
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
           )
@@ -48,15 +52,37 @@ export async function updateSession(request: NextRequest) {
 
   const {
     data: { user },
+    error: userError,
   } = await supabase.auth.getUser()
 
-  // Protection for admin routes (if needed)
-  if (request.nextUrl.pathname.startsWith('/admin') && !user) {
+  // Protection for admin routes
+  if (request.nextUrl.pathname.startsWith('/admin')) {
     // Redirect to login if accessing admin routes without auth
-    const url = request.nextUrl.clone()
-    url.pathname = '/'
-    url.searchParams.set('login', 'true')
-    return NextResponse.redirect(url)
+    if (userError || !user) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/'
+      url.searchParams.set('login', 'true')
+      return NextResponse.redirect(url)
+    }
+
+    // Role-gate admin pages (API routes also enforce this server-side).
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('user_id', user.id)
+      .single()
+
+    const role = typeof (profile as { role?: unknown } | null)?.role === 'string'
+      ? (profile as { role: string }).role
+      : null
+
+    if (!role || !['admin', 'educator'].includes(role)) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/'
+      url.searchParams.set('login', 'true')
+      url.searchParams.set('forbidden', 'admin')
+      return NextResponse.redirect(url)
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're

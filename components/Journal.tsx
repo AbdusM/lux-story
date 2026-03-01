@@ -29,6 +29,7 @@ import { PatternType } from "@/lib/patterns"
 import { ORB_TIERS } from "@/lib/orbs"
 import { useSimulations } from "@/hooks/useSimulations"
 import { useUserRole } from "@/hooks/useUserRole"
+import { hasGodModeUrlParam } from "@/lib/godmode-access"
 import { PrismTabs } from "./journal/PrismTabs"
 import { PrismTabId, getPrismRuntimeTabs } from "@/lib/prism-tabs-config"
 import { Z_INDEX } from "@/lib/ui-constants"
@@ -169,8 +170,11 @@ export function Journal({ isOpen, onClose }: JournalProps) {
   // Show God Mode tab if:
   // 1. Development mode (always)
   // 2. Production with educator/admin role (authenticated)
-  // 3. Production with ?godmode=true URL parameter (fallback for non-authenticated educators)
-  const hasGodModeParam = typeof window !== 'undefined' && window.location.search.includes('godmode=true')
+  // 3. Non-production with ?godmode=true URL parameter (local/test fallback only)
+  const hasGodModeParam = hasGodModeUrlParam({
+    nodeEnv: process.env.NODE_ENV,
+    search: typeof window !== 'undefined' ? window.location.search : undefined,
+  })
   const showGodMode =
     process.env.NODE_ENV === 'development' ||
     (!roleLoading && isEducator) ||

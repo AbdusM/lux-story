@@ -31,7 +31,9 @@ export function PatternSection({ userId, profile: _profile, adminViewMode }: Pat
         setLoading(true)
         setError(null)
 
-        const response = await fetch(`/api/user/pattern-profile?userId=${encodeURIComponent(userId)}&mode=full`)
+        const response = await fetch(`/api/admin/pattern-profile?userId=${encodeURIComponent(userId)}&mode=full`, {
+          credentials: 'include',
+        })
 
         if (!response.ok) {
           const errorData = await response.json()

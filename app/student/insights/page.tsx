@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft, Sparkles, TrendingUp, Target, Lightbulb } from 'lucide-react'
 import { loadSkillProfile } from '@/lib/skill-profile-adapter'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
+import { ensureUserApiSession } from '@/lib/user-api-session'
 import { YourJourneySection } from '@/components/student/sections/YourJourneySection'
 import { PatternInsightsSection } from '@/components/student/sections/PatternInsightsSection'
 import { SkillGrowthSection } from '@/components/student/sections/SkillGrowthSection'
@@ -47,6 +48,7 @@ export default function StudentInsightsPage() {
     const loadProfile = async () => {
       try {
         setLoading(true)
+        await ensureUserApiSession(userId)
         const loaded = await loadSkillProfile(userId)
         if (!loaded) {
           setError('Unable to load your journey data. Make some choices in the game first!')
@@ -231,4 +233,3 @@ export default function StudentInsightsPage() {
     </div>
   )
 }
-

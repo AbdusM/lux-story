@@ -9,13 +9,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { logger } from '@/lib/logger'
+import { readJsonBody } from '@/lib/api/request-body'
 import {
-  extractAndValidateUserIdFromQuery,
-  validateUserIdFromBody,
   supabaseErrorResponse,
   handleApiError,
   checkSupabaseConfigured
 } from '@/lib/api/api-utils'
+import { ensureProvidedUserIdMatchesSession, requireUserSession } from '@/lib/api/user-session'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -24,16 +24,23 @@ export const runtime = 'nodejs'
 const OPERATION_GET = 'relationship-progress.get'
 const OPERATION_POST = 'relationship-progress.post'
 
+const MAX_BODY_BYTES = 16_384
+
 /**
  * POST /api/user/relationship-progress
  * Upsert relationship progress record
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const session = requireUserSession(request)
+    if (!session.ok) return session.response
+
+    const parsed = await readJsonBody(request, { maxBytes: MAX_BODY_BYTES })
+    if (!parsed.ok) return parsed.response
+    const body = parsed.body as Record<string, unknown>
     const { user_id, character_name, trust_level, relationship_status, last_interaction, interaction_count } = body
 
-    logger.debug('Relationship progress POST request', { operation: OPERATION_POST, userId: user_id, character: character_name })
+    logger.debug('Relationship progress POST request', { operation: OPERATION_POST, userId: session.userId, character: character_name })
 
     // Validate required fields
     if (!character_name || trust_level === undefined) {
@@ -41,10 +48,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields: character_name, trust_level' }, { status: 400 })
     }
 
-    const validation = validateUserIdFromBody(user_id, OPERATION_POST)
-    if (!validation.valid) {
-      return validation.response
-    }
+    const mismatch = ensureProvidedUserIdMatchesSession({
+      provided: user_id,
+      sessionUserId: session.userId,
+      fieldName: 'user_id',
+    })
+    if (mismatch) return mismatch
 
     const skipResponse = checkSupabaseConfigured(OPERATION_POST)
     if (skipResponse) return skipResponse
@@ -54,7 +63,7 @@ export async function POST(request: NextRequest) {
     const { data, error } = await supabase
       .from('relationship_progress')
       .upsert({
-        user_id,
+        user_id: session.userId,
         character_name,
         trust_level,
         relationship_status: relationship_status || 'stranger',
@@ -68,10 +77,10 @@ export async function POST(request: NextRequest) {
 
     // PGRST204 = upsert succeeded but RLS prevents select
     if (error && error.code !== 'PGRST204') {
-      return supabaseErrorResponse(OPERATION_POST, error.code, 'Failed to upsert relationship progress', user_id)
+      return supabaseErrorResponse(OPERATION_POST, error.code, 'Failed to upsert relationship progress', session.userId)
     }
 
-    logger.debug('Relationship progress upserted', { operation: OPERATION_POST, userId: user_id, character: character_name })
+    logger.debug('Relationship progress upserted', { operation: OPERATION_POST, userId: session.userId, character: character_name })
 
     return NextResponse.json({ success: true, relationship: data })
   } catch (error) {
@@ -85,22 +94,28 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
-    const validation = extractAndValidateUserIdFromQuery(request, OPERATION_GET)
-    if (!validation.valid) {
-      return validation.response
-    }
-    const { userId } = validation
+    const session = requireUserSession(request)
+    if (!session.ok) return session.response
+
+    const { searchParams } = new URL(request.url)
+    const requestedUserId = searchParams.get('userId')
+    const mismatch = ensureProvidedUserIdMatchesSession({
+      provided: requestedUserId,
+      sessionUserId: session.userId,
+      fieldName: 'userId',
+    })
+    if (mismatch) return mismatch
 
     const supabase = getSupabaseServerClient()
 
     const { data, error } = await supabase
       .from('relationship_progress')
       .select('*')
-      .eq('user_id', userId)
+      .eq('user_id', session.userId)
       .order('trust_level', { ascending: false })
 
     if (error) {
-      return supabaseErrorResponse(OPERATION_GET, error.code, 'Failed to fetch relationship progress', userId)
+      return supabaseErrorResponse(OPERATION_GET, error.code, 'Failed to fetch relationship progress', session.userId)
     }
 
     return NextResponse.json({ success: true, relationships: data || [] })

@@ -5,6 +5,7 @@
 
 import { describe, test, expect, beforeEach, vi, afterEach } from 'vitest'
 import { NextRequest } from 'next/server'
+import { createUserSessionToken, USER_SESSION_COOKIE_NAME } from '@/lib/api/user-session'
 
 // Mock environment variables
 vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', 'https://test.supabase.co')
@@ -47,17 +48,32 @@ function createRequest(
   options: {
     method?: string
     body?: object
+    cookies?: Record<string, string>
   } = {}
 ): NextRequest {
-  const { method = 'GET', body } = options
+  const { method = 'GET', body, cookies = {} } = options
 
-  return new NextRequest(new URL(url, 'http://localhost:3000'), {
+  const request = new NextRequest(new URL(url, 'http://localhost:3000'), {
     method,
     body: body ? JSON.stringify(body) : undefined,
     headers: {
       'Content-Type': 'application/json'
     }
   })
+
+  Object.entries(cookies).forEach(([name, value]) => {
+    request.cookies.set(name, value)
+  })
+
+  return request
+}
+
+const TEST_USER_ID = 'player_123'
+
+function sessionCookieFor(userId: string = TEST_USER_ID): Record<string, string> {
+  return {
+    [USER_SESSION_COOKIE_NAME]: createUserSessionToken(userId),
+  }
 }
 
 describe('Platform State API (/api/user/platform-state)', () => {
@@ -73,7 +89,7 @@ describe('Platform State API (/api/user/platform-state)', () => {
   })
 
   describe('POST /api/user/platform-state', () => {
-    test('should reject request without user_id', async () => {
+    test('should reject unauthenticated requests', async () => {
       const { POST } = await import('@/app/api/user/platform-state/route')
 
       const request = createRequest('http://localhost:3000/api/user/platform-state', {
@@ -82,10 +98,7 @@ describe('Platform State API (/api/user/platform-state)', () => {
       })
 
       const response = await POST(request)
-      const data = await response.json()
-
-      expect(response.status).toBe(400)
-      expect(data.error).toContain('user_id')
+      expect(response.status).toBe(401)
     })
 
     test('should upsert platform state with valid data', async () => {
@@ -93,8 +106,9 @@ describe('Platform State API (/api/user/platform-state)', () => {
 
       const request = createRequest('http://localhost:3000/api/user/platform-state', {
         method: 'POST',
+        cookies: sessionCookieFor(),
         body: {
-          user_id: 'player_123',
+          user_id: TEST_USER_ID,
           current_scene: 'maya_introduction',
           global_flags: ['met_samuel', 'met_maya'],
           patterns: {
@@ -114,12 +128,26 @@ describe('Platform State API (/api/user/platform-state)', () => {
       expect(data.success).toBe(true)
     })
 
-    test('should handle minimal payload (user_id only)', async () => {
+    test('should reject user_id mismatch', async () => {
       const { POST } = await import('@/app/api/user/platform-state/route')
 
       const request = createRequest('http://localhost:3000/api/user/platform-state', {
         method: 'POST',
-        body: { user_id: 'player_123' }
+        cookies: sessionCookieFor(TEST_USER_ID),
+        body: { user_id: 'player_9999999999' }
+      })
+
+      const response = await POST(request)
+      expect(response.status).toBe(403)
+    })
+
+    test('should handle minimal payload (no user_id in body)', async () => {
+      const { POST } = await import('@/app/api/user/platform-state/route')
+
+      const request = createRequest('http://localhost:3000/api/user/platform-state', {
+        method: 'POST',
+        cookies: sessionCookieFor(),
+        body: {}
       })
 
       const response = await POST(request)
@@ -137,6 +165,7 @@ describe('Platform State API (/api/user/platform-state)', () => {
 
       const request = createRequest('http://localhost:3000/api/user/platform-state', {
         method: 'POST',
+        cookies: sessionCookieFor(),
         body: { user_id: 'player_123' }
       })
 
@@ -147,30 +176,38 @@ describe('Platform State API (/api/user/platform-state)', () => {
   })
 
   describe('GET /api/user/platform-state', () => {
-    test('should reject request without userId parameter', async () => {
+    test('should reject unauthenticated requests', async () => {
       const { GET } = await import('@/app/api/user/platform-state/route')
 
       const request = createRequest('http://localhost:3000/api/user/platform-state')
 
       const response = await GET(request)
-      const data = await response.json()
-
-      expect(response.status).toBe(400)
-      expect(data.error).toContain('userId')
+      expect(response.status).toBe(401)
     })
 
-    test('should return state for valid userId', async () => {
+    test('should return state for authenticated user', async () => {
       const { GET } = await import('@/app/api/user/platform-state/route')
 
       const url = new URL('http://localhost:3000/api/user/platform-state')
-      url.searchParams.set('userId', 'player_123')
-      const request = createRequest(url.toString())
+      url.searchParams.set('userId', TEST_USER_ID)
+      const request = createRequest(url.toString(), { cookies: sessionCookieFor() })
 
       const response = await GET(request)
       const data = await response.json()
 
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
+    })
+
+    test('should reject userId mismatch', async () => {
+      const { GET } = await import('@/app/api/user/platform-state/route')
+
+      const url = new URL('http://localhost:3000/api/user/platform-state')
+      url.searchParams.set('userId', 'player_9999999999')
+      const request = createRequest(url.toString(), { cookies: sessionCookieFor(TEST_USER_ID) })
+
+      const response = await GET(request)
+      expect(response.status).toBe(403)
     })
 
     test('should return null for non-existent user', async () => {
@@ -180,8 +217,8 @@ describe('Platform State API (/api/user/platform-state)', () => {
       const { GET } = await import('@/app/api/user/platform-state/route')
 
       const url = new URL('http://localhost:3000/api/user/platform-state')
-      url.searchParams.set('userId', 'player_9999999999')
-      const request = createRequest(url.toString())
+      url.searchParams.set('userId', TEST_USER_ID)
+      const request = createRequest(url.toString(), { cookies: sessionCookieFor() })
 
       const response = await GET(request)
       const data = await response.json()
@@ -206,12 +243,29 @@ describe('Relationship Progress API (/api/user/relationship-progress)', () => {
   })
 
   describe('POST /api/user/relationship-progress', () => {
+    test('should reject unauthenticated requests', async () => {
+      const { POST } = await import('@/app/api/user/relationship-progress/route')
+
+      const request = createRequest('http://localhost:3000/api/user/relationship-progress', {
+        method: 'POST',
+        body: {
+          user_id: TEST_USER_ID,
+          character_name: 'maya',
+          trust_level: 7,
+        }
+      })
+
+      const response = await POST(request)
+      expect(response.status).toBe(401)
+    })
+
     test('should reject request without required fields', async () => {
       const { POST } = await import('@/app/api/user/relationship-progress/route')
 
       const request = createRequest('http://localhost:3000/api/user/relationship-progress', {
         method: 'POST',
-        body: { user_id: 'player_123' } // missing character_name and trust_level
+        cookies: sessionCookieFor(),
+        body: { user_id: TEST_USER_ID } // missing character_name and trust_level
       })
 
       const response = await POST(request)
@@ -226,8 +280,9 @@ describe('Relationship Progress API (/api/user/relationship-progress)', () => {
 
       const request = createRequest('http://localhost:3000/api/user/relationship-progress', {
         method: 'POST',
+        cookies: sessionCookieFor(),
         body: {
-          user_id: 'player_123',
+          user_id: TEST_USER_ID,
           character_name: 'maya',
           trust_level: 7,
           relationship_status: 'friend'
@@ -240,22 +295,36 @@ describe('Relationship Progress API (/api/user/relationship-progress)', () => {
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
     })
+
+    test('should reject user_id mismatch', async () => {
+      const { POST } = await import('@/app/api/user/relationship-progress/route')
+
+      const request = createRequest('http://localhost:3000/api/user/relationship-progress', {
+        method: 'POST',
+        cookies: sessionCookieFor(TEST_USER_ID),
+        body: {
+          user_id: 'player_9999999999',
+          character_name: 'maya',
+          trust_level: 7,
+        }
+      })
+
+      const response = await POST(request)
+      expect(response.status).toBe(403)
+    })
   })
 
   describe('GET /api/user/relationship-progress', () => {
-    test('should reject request without userId', async () => {
+    test('should reject unauthenticated requests', async () => {
       const { GET } = await import('@/app/api/user/relationship-progress/route')
 
       const request = createRequest('http://localhost:3000/api/user/relationship-progress')
 
       const response = await GET(request)
-      const data = await response.json()
-
-      expect(response.status).toBe(400)
-      expect(data.error).toContain('userId')
+      expect(response.status).toBe(401)
     })
 
-    test('should return relationships for valid userId', async () => {
+    test('should return relationships for authenticated user', async () => {
       mockSupabaseResponse.data = [
         { user_id: 'player_123', character_name: 'maya', trust_level: 5 },
         { user_id: 'player_123', character_name: 'devon', trust_level: 3 }
@@ -264,14 +333,25 @@ describe('Relationship Progress API (/api/user/relationship-progress)', () => {
       const { GET } = await import('@/app/api/user/relationship-progress/route')
 
       const url = new URL('http://localhost:3000/api/user/relationship-progress')
-      url.searchParams.set('userId', 'player_123')
-      const request = createRequest(url.toString())
+      url.searchParams.set('userId', TEST_USER_ID)
+      const request = createRequest(url.toString(), { cookies: sessionCookieFor() })
 
       const response = await GET(request)
       const data = await response.json()
 
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
+    })
+
+    test('should reject userId mismatch', async () => {
+      const { GET } = await import('@/app/api/user/relationship-progress/route')
+
+      const url = new URL('http://localhost:3000/api/user/relationship-progress')
+      url.searchParams.set('userId', 'player_9999999999')
+      const request = createRequest(url.toString(), { cookies: sessionCookieFor(TEST_USER_ID) })
+
+      const response = await GET(request)
+      expect(response.status).toBe(403)
     })
   })
 })
@@ -289,7 +369,7 @@ describe('Interaction Events API (/api/user/interaction-events)', () => {
   })
 
   describe('POST /api/user/interaction-events', () => {
-    test('should reject request without user_id', async () => {
+    test('should reject unauthenticated requests', async () => {
       const { POST } = await import('@/app/api/user/interaction-events/route')
 
       const request = createRequest('http://localhost:3000/api/user/interaction-events', {
@@ -302,10 +382,7 @@ describe('Interaction Events API (/api/user/interaction-events)', () => {
       })
 
       const response = await POST(request)
-      const data = await response.json()
-
-      expect(response.status).toBe(400)
-      expect(data.error).toBeTruthy()
+      expect(response.status).toBe(401)
     })
 
     test('should reject request without required fields', async () => {
@@ -313,7 +390,8 @@ describe('Interaction Events API (/api/user/interaction-events)', () => {
 
       const request = createRequest('http://localhost:3000/api/user/interaction-events', {
         method: 'POST',
-        body: { user_id: 'player_123' }
+        cookies: sessionCookieFor(),
+        body: { user_id: TEST_USER_ID }
       })
 
       const response = await POST(request)
@@ -328,8 +406,9 @@ describe('Interaction Events API (/api/user/interaction-events)', () => {
 
       const request = createRequest('http://localhost:3000/api/user/interaction-events', {
         method: 'POST',
+        cookies: sessionCookieFor(),
         body: {
-          user_id: 'player_123',
+          user_id: TEST_USER_ID,
           session_id: 'sess-1',
           event_type: 'choice_selected_ui',
           node_id: 'samuel_introduction',
@@ -352,6 +431,24 @@ describe('Interaction Events API (/api/user/interaction-events)', () => {
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
     })
+
+    test('should reject user_id mismatch', async () => {
+      const { POST } = await import('@/app/api/user/interaction-events/route')
+
+      const request = createRequest('http://localhost:3000/api/user/interaction-events', {
+        method: 'POST',
+        cookies: sessionCookieFor(TEST_USER_ID),
+        body: {
+          user_id: 'player_9999999999',
+          session_id: 'sess-1',
+          event_type: 'choice_selected_ui',
+          payload: { foo: 'bar' },
+        }
+      })
+
+      const response = await POST(request)
+      expect(response.status).toBe(403)
+    })
   })
 })
 describe('Skill Demonstrations API (/api/user/skill-demonstrations)', () => {
@@ -368,12 +465,29 @@ describe('Skill Demonstrations API (/api/user/skill-demonstrations)', () => {
   })
 
   describe('POST /api/user/skill-demonstrations', () => {
+    test('should reject unauthenticated requests', async () => {
+      const { POST } = await import('@/app/api/user/skill-demonstrations/route')
+
+      const request = createRequest('http://localhost:3000/api/user/skill-demonstrations', {
+        method: 'POST',
+        body: {
+          user_id: TEST_USER_ID,
+          skill_name: 'Problem Solving',
+          scene_id: 'maya_intro_01',
+        }
+      })
+
+      const response = await POST(request)
+      expect(response.status).toBe(401)
+    })
+
     test('should reject request without required fields', async () => {
       const { POST } = await import('@/app/api/user/skill-demonstrations/route')
 
       const request = createRequest('http://localhost:3000/api/user/skill-demonstrations', {
         method: 'POST',
-        body: { user_id: 'player_123' } // missing skill_name, scene_id
+        cookies: sessionCookieFor(),
+        body: { user_id: TEST_USER_ID } // missing skill_name, scene_id
       })
 
       const response = await POST(request)
@@ -388,8 +502,9 @@ describe('Skill Demonstrations API (/api/user/skill-demonstrations)', () => {
 
       const request = createRequest('http://localhost:3000/api/user/skill-demonstrations', {
         method: 'POST',
+        cookies: sessionCookieFor(),
         body: {
-          user_id: 'player_123',
+          user_id: TEST_USER_ID,
           skill_name: 'Problem Solving',
           scene_id: 'maya_intro_01',
           scene_description: 'First meeting with Maya',
@@ -403,6 +518,23 @@ describe('Skill Demonstrations API (/api/user/skill-demonstrations)', () => {
 
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
+    })
+
+    test('should reject user_id mismatch', async () => {
+      const { POST } = await import('@/app/api/user/skill-demonstrations/route')
+
+      const request = createRequest('http://localhost:3000/api/user/skill-demonstrations', {
+        method: 'POST',
+        cookies: sessionCookieFor(TEST_USER_ID),
+        body: {
+          user_id: 'player_9999999999',
+          skill_name: 'Problem Solving',
+          scene_id: 'maya_intro_01',
+        }
+      })
+
+      const response = await POST(request)
+      expect(response.status).toBe(403)
     })
   })
 })
@@ -418,7 +550,7 @@ describe('Profile API (/api/user/profile)', () => {
   })
 
   describe('POST /api/user/profile', () => {
-    test('should reject request without user_id', async () => {
+    test('should reject unauthenticated requests', async () => {
       const { POST } = await import('@/app/api/user/profile/route')
 
       const request = createRequest('http://localhost:3000/api/user/profile', {
@@ -427,18 +559,16 @@ describe('Profile API (/api/user/profile)', () => {
       })
 
       const response = await POST(request)
-      const data = await response.json()
-
-      expect(response.status).toBe(400)
-      expect(data.error).toContain('user_id')
+      expect(response.status).toBe(401)
     })
 
-    test('should create profile with valid user_id', async () => {
+    test('should create/ensure profile for authenticated user', async () => {
       const { POST } = await import('@/app/api/user/profile/route')
 
       const request = createRequest('http://localhost:3000/api/user/profile', {
         method: 'POST',
-        body: { user_id: 'player_123' }
+        cookies: sessionCookieFor(),
+        body: {}
       })
 
       const response = await POST(request)
@@ -447,33 +577,54 @@ describe('Profile API (/api/user/profile)', () => {
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
     })
+
+    test('should reject user_id mismatch', async () => {
+      const { POST } = await import('@/app/api/user/profile/route')
+
+      const request = createRequest('http://localhost:3000/api/user/profile', {
+        method: 'POST',
+        cookies: sessionCookieFor(TEST_USER_ID),
+        body: { user_id: 'player_9999999999' }
+      })
+
+      const response = await POST(request)
+      expect(response.status).toBe(403)
+    })
   })
 
   describe('GET /api/user/profile', () => {
-    test('should reject request without userId', async () => {
+    test('should reject unauthenticated requests', async () => {
       const { GET } = await import('@/app/api/user/profile/route')
 
       const request = createRequest('http://localhost:3000/api/user/profile')
 
       const response = await GET(request)
-      const data = await response.json()
-
-      expect(response.status).toBe(400)
-      expect(data.error).toContain('userId')
+      expect(response.status).toBe(401)
     })
 
-    test('should return profile for valid userId', async () => {
+    test('should return profile for authenticated user', async () => {
       const { GET } = await import('@/app/api/user/profile/route')
 
       const url = new URL('http://localhost:3000/api/user/profile')
-      url.searchParams.set('userId', 'player_123')
-      const request = createRequest(url.toString())
+      url.searchParams.set('userId', TEST_USER_ID)
+      const request = createRequest(url.toString(), { cookies: sessionCookieFor() })
 
       const response = await GET(request)
       const data = await response.json()
 
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
+    })
+
+    test('should reject userId mismatch', async () => {
+      const { GET } = await import('@/app/api/user/profile/route')
+
+      const url = new URL('http://localhost:3000/api/user/profile')
+      url.searchParams.set('userId', 'player_9999999999')
+      const request = createRequest(url.toString(), { cookies: sessionCookieFor(TEST_USER_ID) })
+
+      const response = await GET(request)
+      expect(response.status).toBe(403)
     })
 
     test('should return null profile for non-existent user', async () => {
@@ -483,8 +634,8 @@ describe('Profile API (/api/user/profile)', () => {
       const { GET } = await import('@/app/api/user/profile/route')
 
       const url = new URL('http://localhost:3000/api/user/profile')
-      url.searchParams.set('userId', 'player_9999999999')
-      const request = createRequest(url.toString())
+      url.searchParams.set('userId', TEST_USER_ID)
+      const request = createRequest(url.toString(), { cookies: sessionCookieFor() })
 
       const response = await GET(request)
       const data = await response.json()

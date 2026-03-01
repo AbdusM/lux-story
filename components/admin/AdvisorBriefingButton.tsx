@@ -47,7 +47,9 @@ export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
     logger.debug('Fetching skills', { operation: 'advisor-briefing.fetch-skills', userId })
 
     try {
-      const response = await fetch(`/api/user/skill-summaries?userId=${userId}`);
+      const response = await fetch(`/api/admin/skill-data?userId=${encodeURIComponent(userId)}`, {
+        credentials: 'include',
+      });
 
       if (!response.ok) {
         console.warn('⚠️ [AdvisorBriefing] Skills API failed, continuing without skills data:', {
@@ -58,14 +60,28 @@ export const AdvisorBriefingButton: React.FC<AdvisorBriefingButtonProps> = ({
 
       const data = await response.json();
 
+      const rows = (data.profile?.skill_summaries || []) as Array<{
+        skill_name: string
+        demonstration_count: number
+        latest_context: string
+        scenes_involved: string[]
+        last_demonstrated: string
+      }>
+
       logger.debug('Skills loaded', {
         operation: 'advisor-briefing.skills-loaded',
         userId,
-        skillCount: data.summaries?.length || 0,
-        topSkills: data.summaries?.slice(0, 3).map((s: SkillSummary) => s.skillName)
+        skillCount: rows.length,
+        topSkills: rows.slice(0, 3).map((s) => s.skill_name)
       })
 
-      return data.summaries || [];
+      return rows.map((row) => ({
+        skillName: row.skill_name,
+        demonstrationCount: row.demonstration_count,
+        latestContext: row.latest_context,
+        scenesInvolved: row.scenes_involved || [],
+        lastDemonstrated: row.last_demonstrated,
+      }))
     } catch (error) {
       console.warn('⚠️ [AdvisorBriefing] Skills fetch error:', error);
       return [];

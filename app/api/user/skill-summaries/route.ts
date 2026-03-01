@@ -11,13 +11,13 @@ import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { logger } from '@/lib/logger'
 import { ensurePlayerProfile } from '@/lib/api/ensure-player-profile'
 import {
-  extractAndValidateUserIdFromQuery,
-  validateUserIdFromBody,
   supabaseErrorResponse,
   handleApiError,
   checkSupabaseConfigured
 } from '@/lib/api/api-utils'
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
+import { readJsonBody } from '@/lib/api/request-body'
+import { ensureProvidedUserIdMatchesSession, requireUserSession } from '@/lib/api/user-session'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -25,6 +25,8 @@ export const runtime = 'nodejs'
 
 const OPERATION_GET = 'skill-summaries.get'
 const OPERATION_POST = 'skill-summaries.post'
+
+const MAX_BODY_BYTES = 32_768
 
 // Rate limiter: 30 requests per minute
 const skillSummariesLimiter = rateLimit({
@@ -37,6 +39,9 @@ const skillSummariesLimiter = rateLimit({
  * Fetch all skill summaries for a user
  */
 export async function GET(request: NextRequest) {
+  const session = requireUserSession(request)
+  if (!session.ok) return session.response
+
   // Rate limiting: 30 requests per minute
   const ip = getClientIp(request)
   try {
@@ -49,22 +54,25 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const validation = extractAndValidateUserIdFromQuery(request, OPERATION_GET)
-    if (!validation.valid) {
-      return validation.response
-    }
-    const { userId } = validation
+    const { searchParams } = new URL(request.url)
+    const requestedUserId = searchParams.get('userId')
+    const mismatch = ensureProvidedUserIdMatchesSession({
+      provided: requestedUserId,
+      sessionUserId: session.userId,
+      fieldName: 'userId',
+    })
+    if (mismatch) return mismatch
 
     const supabase = getSupabaseServerClient()
 
     const { data, error } = await supabase
       .from('skill_summaries')
       .select('*')
-      .eq('user_id', userId)
+      .eq('user_id', session.userId)
       .order('last_demonstrated', { ascending: false })
 
     if (error) {
-      return supabaseErrorResponse(OPERATION_GET, error.code, 'Failed to fetch skill summaries', userId)
+      return supabaseErrorResponse(OPERATION_GET, error.code, 'Failed to fetch skill summaries', session.userId)
     }
 
     // Transform database format to application format
@@ -78,7 +86,7 @@ export async function GET(request: NextRequest) {
 
     logger.debug('Retrieved skill summaries', {
       operation: OPERATION_GET,
-      userId,
+      userId: session.userId,
       count: summaries.length
     })
 
@@ -106,10 +114,15 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const session = requireUserSession(request)
+    if (!session.ok) return session.response
+
+    const parsed = await readJsonBody(request, { maxBytes: MAX_BODY_BYTES })
+    if (!parsed.ok) return parsed.response
+    const body = parsed.body as Record<string, unknown>
     const { user_id, skill_name, demonstration_count, latest_context, scenes_involved, last_demonstrated } = body
 
-    logger.debug('Skill summaries POST request', { operation: OPERATION_POST, userId: user_id, skillName: skill_name })
+    logger.debug('Skill summaries POST request', { operation: OPERATION_POST, userId: session.userId, skillName: skill_name })
 
     // Validate required fields
     if (!skill_name) {
@@ -117,13 +130,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing skill_name' }, { status: 400 })
     }
 
-    const validation = validateUserIdFromBody(user_id, OPERATION_POST)
-    if (!validation.valid) {
-      return validation.response
-    }
+    const mismatch = ensureProvidedUserIdMatchesSession({
+      provided: user_id,
+      sessionUserId: session.userId,
+      fieldName: 'user_id',
+    })
+    if (mismatch) return mismatch
 
     // Validate context length (should be 100-150 words)
-    if (latest_context) {
+    if (typeof latest_context === 'string' && latest_context) {
       const wordCount = latest_context.split(/\s+/).length
       if (wordCount < 50 || wordCount > 200) {
         logger.warn('Context length warning', { operation: OPERATION_POST, skillName: skill_name, wordCount, expected: '100-150 words' })
@@ -135,14 +150,14 @@ export async function POST(request: NextRequest) {
     if (skipResponse) return skipResponse
 
     // Ensure player profile exists BEFORE attempting to insert skill summary
-    await ensurePlayerProfile(user_id, 'skill-summaries')
+    await ensurePlayerProfile(session.userId, 'skill-summaries')
 
     const supabase = getSupabaseServerClient()
 
     const { error } = await supabase
       .from('skill_summaries')
       .upsert({
-        user_id,
+        user_id: session.userId,
         skill_name,
         demonstration_count: demonstration_count || 0,
         latest_context: latest_context || '',
@@ -153,10 +168,10 @@ export async function POST(request: NextRequest) {
       })
 
     if (error) {
-      return supabaseErrorResponse(OPERATION_POST, error.code, 'Failed to save skill summary', user_id)
+      return supabaseErrorResponse(OPERATION_POST, error.code, 'Failed to save skill summary', session.userId)
     }
 
-    logger.debug('Skill summary upsert successful', { operation: OPERATION_POST, userId: user_id, skillName: skill_name })
+    logger.debug('Skill summary upsert successful', { operation: OPERATION_POST, userId: session.userId, skillName: skill_name })
 
     return NextResponse.json({ success: true })
   } catch (error) {

@@ -11,12 +11,12 @@ import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
 import { logger } from '@/lib/logger'
 import { ensurePlayerProfile } from '@/lib/api/ensure-player-profile'
+import { readJsonBody } from '@/lib/api/request-body'
 import {
-  extractAndValidateUserIdFromQuery,
-  validateUserIdFromBody,
   supabaseErrorResponse,
   handleApiError
 } from '@/lib/api/api-utils'
+import { ensureProvidedUserIdMatchesSession, requireUserSession } from '@/lib/api/user-session'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -24,6 +24,8 @@ export const runtime = 'nodejs'
 
 const OPERATION_GET = 'career-explorations.get'
 const OPERATION_POST = 'career-explorations.post'
+
+const MAX_BODY_BYTES = 16_384
 
 // Rate limiter: 30 requests per minute per IP
 const postLimiter = rateLimit({
@@ -37,6 +39,9 @@ const postLimiter = rateLimit({
  */
 export async function POST(request: NextRequest) {
   try {
+    const session = requireUserSession(request)
+    if (!session.ok) return session.response
+
     // Rate limiting
     const ip = getClientIp(request)
     try {
@@ -45,10 +50,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 })
     }
 
-    const body = await request.json()
+    const parsed = await readJsonBody(request, { maxBytes: MAX_BODY_BYTES })
+    if (!parsed.ok) return parsed.response
+    const body = parsed.body as Record<string, unknown>
     const { user_id, career_name, match_score, readiness_level, local_opportunities, education_paths } = body
 
-    logger.debug('Career explorations POST request', { operation: OPERATION_POST, userId: user_id, careerName: career_name })
+    logger.debug('Career explorations POST request', { operation: OPERATION_POST, userId: session.userId, careerName: career_name })
 
     // Validate required fields
     if (!career_name) {
@@ -56,20 +63,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing career_name' }, { status: 400 })
     }
 
-    const validation = validateUserIdFromBody(user_id, OPERATION_POST)
-    if (!validation.valid) {
-      return validation.response
-    }
+    const mismatch = ensureProvidedUserIdMatchesSession({
+      provided: user_id,
+      sessionUserId: session.userId,
+      fieldName: 'user_id',
+    })
+    if (mismatch) return mismatch
 
     // Ensure player profile exists BEFORE attempting to insert
-    await ensurePlayerProfile(user_id, 'career-explorations')
+    await ensurePlayerProfile(session.userId, 'career-explorations')
 
     const supabase = getSupabaseServerClient()
 
     const { data, error } = await supabase
       .from('career_explorations')
       .upsert({
-        user_id,
+        user_id: session.userId,
         career_name,
         match_score: match_score || 0.5,
         readiness_level: readiness_level || 'exploratory',
@@ -82,10 +91,10 @@ export async function POST(request: NextRequest) {
       .select()
 
     if (error) {
-      return supabaseErrorResponse(OPERATION_POST, error.code, 'Failed to save career exploration', user_id)
+      return supabaseErrorResponse(OPERATION_POST, error.code, 'Failed to save career exploration', session.userId)
     }
 
-    logger.debug('Career exploration upsert successful', { operation: OPERATION_POST, userId: user_id, careerName: career_name })
+    logger.debug('Career exploration upsert successful', { operation: OPERATION_POST, userId: session.userId, careerName: career_name })
 
     return NextResponse.json({ success: true, careerExploration: data?.[0] })
   } catch (error) {
@@ -99,25 +108,31 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
-    const validation = extractAndValidateUserIdFromQuery(request, OPERATION_GET)
-    if (!validation.valid) {
-      return validation.response
-    }
-    const { userId } = validation
+    const session = requireUserSession(request)
+    if (!session.ok) return session.response
+
+    const { searchParams } = new URL(request.url)
+    const requestedUserId = searchParams.get('userId')
+    const mismatch = ensureProvidedUserIdMatchesSession({
+      provided: requestedUserId,
+      sessionUserId: session.userId,
+      fieldName: 'userId',
+    })
+    if (mismatch) return mismatch
 
     const supabase = getSupabaseServerClient()
 
     const { data, error } = await supabase
       .from('career_explorations')
       .select('*')
-      .eq('user_id', userId)
+      .eq('user_id', session.userId)
       .order('match_score', { ascending: false })
 
     if (error) {
-      return supabaseErrorResponse(OPERATION_GET, error.code, 'Failed to fetch career explorations', userId)
+      return supabaseErrorResponse(OPERATION_GET, error.code, 'Failed to fetch career explorations', session.userId)
     }
 
-    logger.debug('Retrieved career explorations', { operation: OPERATION_GET, userId, count: data?.length || 0 })
+    logger.debug('Retrieved career explorations', { operation: OPERATION_GET, userId: session.userId, count: data?.length || 0 })
 
     return NextResponse.json({
       success: true,

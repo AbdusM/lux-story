@@ -231,6 +231,25 @@ export class SyncQueue {
       return { success: true, processed: queue.length, failed: 0 }
     }
 
+    // Ensure a signed user session cookie exists before hitting /api/user/* endpoints.
+    // Without this, user APIs fail-closed (401) and we'd spin retries + spam logs.
+    try {
+      const { ensureUserApiSession } = await import('./user-api-session')
+      const candidateUserId = queue.find((a) => typeof a?.data?.user_id === 'string')?.data?.user_id as string | undefined
+      if (candidateUserId) {
+        const ok = await ensureUserApiSession(candidateUserId)
+        if (!ok) {
+          logger.debug('User API session unavailable; deferring sync', {
+            operation: 'sync-queue.session-missing',
+            userId: candidateUserId,
+          })
+          return { success: false, processed: 0, failed: 0 }
+        }
+      }
+    } catch {
+      // If session ensure fails unexpectedly, fall through and let individual API calls handle errors.
+    }
+
     const actionTypes = queue.reduce((acc, a) => {
       acc[a.type] = (acc[a.type] || 0) + 1
       return acc

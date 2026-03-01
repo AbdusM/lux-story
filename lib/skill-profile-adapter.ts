@@ -364,22 +364,24 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
     }
 
     // Try career explorations API (optional - just for logging)
-    try {
-      const careerResponse = await fetch(`/api/user/career-explorations?userId=${encodeURIComponent(userId)}`, {
-        credentials: 'include',
-      })
-      if (careerResponse.ok) {
-        const careerResult = await careerResponse.json()
-        if (careerResult.success && careerResult.careerExplorations) {
-          logger.debug('Loaded career explorations', {
-            operation: 'skill-profile-adapter.load',
-            userId,
-            count: careerResult.careerExplorations.length
-          })
+    if (localStorage.getItem('lux-player-id') === userId) {
+      try {
+        const careerResponse = await fetch(`/api/user/career-explorations?userId=${encodeURIComponent(userId)}`, {
+          credentials: 'include',
+        })
+        if (careerResponse.ok) {
+          const careerResult = await careerResponse.json()
+          if (careerResult.success && careerResult.careerExplorations) {
+            logger.debug('Loaded career explorations', {
+              operation: 'skill-profile-adapter.load',
+              userId,
+              count: careerResult.careerExplorations.length
+            })
+          }
         }
+      } catch (_careerError) {
+        console.warn(`[SkillProfileAdapter] Career explorations API failed for ${userId}`)
       }
-    } catch (_careerError) {
-      console.warn(`[SkillProfileAdapter] Career explorations API failed for ${userId}`)
     }
 
     // Fallback to direct Supabase (may be blocked by RLS)

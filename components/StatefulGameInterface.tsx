@@ -115,6 +115,7 @@ import { filterChoicesByLoad, CognitiveLoadLevel } from '@/lib/cognitive-load' /
 import { generateUserId } from '@/lib/safe-storage'
 import { queueInteractionEventSync, generateActionId } from '@/lib/sync-queue'
 import { consumeChoiceUiSelection } from '@/lib/choice-dispatch-telemetry'
+import { ensureUserApiSession } from '@/lib/user-api-session'
 import {
   DialogueGraph,
   DialogueNode,
@@ -1022,6 +1023,8 @@ export default function StatefulGameInterface() {
       // This prevents foreign key violations (error 23503)
       // FIX: Added 5-second timeout to prevent infinite hang on slow networks
       if (isSupabaseConfigured()) {
+        await ensureUserApiSession(gameState.playerId)
+
         const controller = new AbortController()
         const timeoutId = setTimeout(() => controller.abort(), 5000) // 5-second timeout
 
@@ -3708,11 +3711,15 @@ export default function StatefulGameInterface() {
       state.gameState.patterns
     ) : c.choice.text
     return {
+      id: c.choice.choiceId,
       text: voicedText,
       pattern: c.choice.pattern,
-      feedback: c.choice.interaction === 'shake' ? 'shake' : undefined,
+      enabled: c.enabled,
+      disabledReason: c.reason,
+      feedback: c.choice.interaction === 'shake' ? ('shake' as const) : undefined,
       pivotal: isNodePivotal,
       requiredOrbFill: c.choice.requiredOrbFill,
+      gravity: c.gravity,
       next: String(originalIndex)
     }
   })
