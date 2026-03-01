@@ -2,6 +2,15 @@
 
 Last updated: 2026-02-11
 
+## Status (2026-03-01)
+
+- This is a planning artifact and remains useful for intent/phase history.
+- Current release truth and gating live in:
+  - `docs/03_PROCESS/RELEASE_READINESS_CHECKLIST.md`
+  - `docs/qa/2026-03-01-doc-reconciliation-status.md`
+  - `.github/workflows/test.yml`
+- Latency ratchets are CI regression proxies over deterministic fixtures; do not read this plan as proof of production telemetry p95.
+
 ## Why This Exists
 
 We are past “backend is complete” and into “player trust is earned.” This plan
@@ -170,4 +179,3 @@ Minimum gates:
   - ADR + explicit rollout/backout plan
 - Any gameplay feature behind a flag must include:
   - owner + sunset date in the flag registry
-

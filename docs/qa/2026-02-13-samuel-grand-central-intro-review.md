@@ -3,6 +3,18 @@
 Date: 2026-02-13  
 Repo state: `main` @ `ba46842`
 
+## Status (2026-03-01)
+
+- Historical review; recommendations below are mostly implemented.
+- Resolved in current graph (`content/samuel-dialogue-graph.ts`):
+  - Choice-intent mismatch fixed: station questions route to station/platform explanations, while calibration is behind explicit "static/loud" wording.
+  - First Samuel prompt reduced to 3 core choices.
+  - Theme branch opening line now anchors on a concrete station artifact (departures board/routes).
+  - Orb gift language explicitly names the object as a signal token.
+- Canonical release-truth references:
+  - `docs/03_PROCESS/RELEASE_READINESS_CHECKLIST.md`
+  - `docs/qa/2026-03-01-doc-reconciliation-status.md`
+
 ## Screenshots (UI Evidence)
 
 Captured 2026-02-12 and normalized for repo usage:

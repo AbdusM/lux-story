@@ -1,6 +1,12 @@
 # Process Hub
 
-Last updated: 2026-02-11
+Last updated: 2026-03-01
+
+## Current Release-Truth Docs
+
+- Release readiness checklist: `docs/03_PROCESS/RELEASE_READINESS_CHECKLIST.md`
+- QA reconciliation status: `docs/qa/2026-03-01-doc-reconciliation-status.md`
+- CI gate definitions: `.github/workflows/test.yml`
 
 ## Purpose
 

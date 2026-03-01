@@ -6,6 +6,16 @@ Evidence set: `docs/qa/screenshots-2026-02-12/` (24 screenshots)
 
 This document is intentionally **implementation-facing**: each finding points to **evidence + likely root cause + recommended direction**.
 
+## Status (2026-03-01)
+
+- Historical audit snapshot with several fixes already applied (see Section `6` in this file).
+- Current latency guardrails are CI ratchets over deterministic fixtures (budget proxies), not production telemetry distribution truth.
+- Canonical release-truth references:
+  - `docs/03_PROCESS/RELEASE_READINESS_CHECKLIST.md`
+  - `docs/qa/2026-03-01-doc-reconciliation-status.md`
+  - `docs/qa/choice-dispatch-latency-report.json`
+  - `docs/qa/choice-processing-latency-report.json`
+
 ## 1) Executive Summary (What’s Actually Wrong)
 
 ### P0: Click → next scene delay is largely *intentional* (and currently too slow)
@@ -238,7 +248,7 @@ This is fine on modern devices but can amplify any foreground work (choice handl
 
 ## 5) “Done When” Acceptance Criteria (UX)
 
-- Clicking a choice updates to the next node within **<400ms p95** (excluding intentional typing effects).
+- CI latency ratchets remain green for dispatch + processing budgets (fixture-based proxy); production p95 still requires telemetry distribution verification.
 - Opening Journal/Journey/Settings never closes due to a pending choice resolution.
 - Dialogue card position changes are minimal between nodes (no “jumping” when choice count changes).
 - Choice buttons maintain AA contrast in dark theme (no bright washed-out cards).

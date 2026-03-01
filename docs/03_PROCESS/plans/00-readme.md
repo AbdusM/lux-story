@@ -1,6 +1,6 @@
 # Plans Index
 
-Last updated: 2026-02-11
+Last updated: 2026-03-01
 
 ## Purpose
 
@@ -14,6 +14,8 @@ This folder stores implementation plans and execution handoff docs.
 ## Current Canonical Plan
 
 - `docs/03_PROCESS/plans/2026-02-11-gameplay-improvement-plan.md`
+- `docs/03_PROCESS/plans/2026-03-01-supabase-isolation-plan.md` (infrastructure isolation plan for `lux-story` priority)
+- `docs/03_PROCESS/plans/2026-03-01-lux-story-checkpoint.md` (resume snapshot + operational gates)
 
 ## Notes
 

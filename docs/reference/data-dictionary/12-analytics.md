@@ -1,10 +1,20 @@
 # Analytics & Events - Data Dictionary
 
-**Last Updated:** January 13, 2026
-**Source:** `/lib/event-bus.ts`, `/lib/career-analytics.ts`, `/lib/simple-analytics.ts`, `/lib/simple-career-analytics.ts`, `/lib/admin-analytics.ts`
-**Status:** Manual Documentation
+**Last Updated:** March 1, 2026
+**Source:** `/lib/event-bus.ts`, `/lib/career-analytics.ts`, `/lib/simple-analytics.ts`, `/lib/simple-career-analytics.ts`, `/lib/admin-analytics.ts`, `/lib/telemetry/interaction-events-spec.ts`, `/lib/sync-queue.ts`
+**Status:** Manual documentation with mixed recency (see status note below)
 
 ---
+
+## Status (2026-03-01)
+
+- The `Interaction Events Telemetry (Supabase)` section is current and aligned to runtime emitters/parity checks.
+- Earlier sections (`Event Bus`, `Career Analytics`, `Simple Analytics`, `Admin Analytics`) remain reference material and may contain historical counts/examples.
+- Current operational verification for telemetry and latency uses:
+  - `docs/qa/interaction-event-emitter-parity-report.json`
+  - `docs/qa/choice-dispatch-latency-report.json`
+  - `docs/qa/choice-processing-latency-report.json`
+  - `.github/workflows/test.yml`
 
 ## Overview
 
