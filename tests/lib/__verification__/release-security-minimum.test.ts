@@ -99,7 +99,9 @@ describe('release:security:minimum', () => {
     const req = new NextRequest(new URL('http://localhost:3000/admin/users'))
     const res = await updateSession(req)
 
-    expect(res.headers.get('Location')).toContain('/?login=true')
+    const location = res.headers.get('Location') || ''
+    expect(location).toContain('/admin/login')
+    expect(location).toContain('redirect=')
   })
 
   test('/admin/* rejects authenticated non-admin roles (middleware gate)', async () => {

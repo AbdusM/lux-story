@@ -319,7 +319,9 @@ describe('Admin Auth Helper Functions', () => {
     const request = createRequest('http://localhost:3000/admin/users')
     const response = await updateSession(request)
 
-    expect(response.headers.get('Location')).toContain('/?login=true')
+    const location = response.headers.get('Location') || ''
+    expect(location).toContain('/admin/login')
+    expect(location).toContain('redirect=')
   })
 
   test('updateSession should allow authenticated /admin routes', async () => {
