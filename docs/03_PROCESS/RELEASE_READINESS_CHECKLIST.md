@@ -10,6 +10,27 @@ This project’s promise is **“ship without manual playthroughs”**. Code + C
 
 This checklist defines what “verified” means (evidence + acceptance).
 
+## 0) Production env is complete (P0)
+
+**Why:** missing/weak production env values can make the app look “up” while silently disabling persistence/telemetry or weakening admin protection.
+
+**Where (UI):** `https://vercel.com/link-dap/lux-story/settings/environment-variables`
+
+**Acceptance**
+- ✅ Supabase client env vars are non-empty:
+  - `NEXT_PUBLIC_SUPABASE_URL`
+  - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+  - `SUPABASE_URL`
+  - `SUPABASE_ANON_KEY`
+- ✅ `ADMIN_API_TOKEN` is non-empty and long/unguessable (do not use placeholders).
+- ✅ `USER_API_SESSION_SECRET` is non-empty in production.
+- ⚠️ `SUPABASE_SERVICE_ROLE_KEY` is optional unless you use privileged server-side admin/diagnostic paths.
+
+**Evidence (E1, CLI alternative — lengths only)**
+- `vercel --cwd /Users/abdusmuwwakkil/Development/30_lux-story env run -e production -- bash -lc 'echo NEXT_PUBLIC_SUPABASE_URL_len=${#NEXT_PUBLIC_SUPABASE_URL}; echo NEXT_PUBLIC_SUPABASE_ANON_KEY_len=${#NEXT_PUBLIC_SUPABASE_ANON_KEY}; echo SUPABASE_URL_len=${#SUPABASE_URL}; echo SUPABASE_ANON_KEY_len=${#SUPABASE_ANON_KEY}; echo SUPABASE_SERVICE_ROLE_KEY_len=${#SUPABASE_SERVICE_ROLE_KEY}; echo ADMIN_API_TOKEN_len=${#ADMIN_API_TOKEN}; echo USER_API_SESSION_SECRET_len=${#USER_API_SESSION_SECRET}'`
+
+**Note:** changing `NEXT_PUBLIC_*` values requires a redeploy to affect client bundles.
+
 ## 1) Branch Protection: CI is required (P0)
 
 **Why:** if CI checks aren’t required, a green pipeline is optional and guardrails don’t gate merges.
