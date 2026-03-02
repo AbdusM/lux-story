@@ -41,6 +41,9 @@ jobs:
       - name: Run tests
         run: npm run test:run
 
+      - name: Release security minimum gate
+        run: npm run release:security:minimum
+
       - name: Validate content integrity (node references)
         run: npm run validate-content
 
@@ -86,6 +89,12 @@ jobs:
 
       - name: Verify analytics dictionary
         run: npm run verify:analytics-dict
+
+      - name: Verify choice dispatch latency ratchet
+        run: npm run verify:choice-dispatch-latency
+
+      - name: Verify choice processing latency ratchet
+        run: npm run verify:choice-processing-latency
 
       - name: Verify reserved choice IDs
         run: npm run verify:reserved-choice-ids

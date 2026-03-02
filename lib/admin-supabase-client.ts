@@ -14,76 +14,30 @@
  * - Replaced plaintext password comparison with session validation
  *
  * EMERGENCY FALLBACK (Jan 15, 2026):
- * - Added ADMIN_API_TOKEN as emergency fallback when Supabase auth fails
- * - Heavily rate limited (1 per 5 minutes) and fully audited
+ * - Historical note: this file previously supported token-based fallback auth.
+ * - Current admin access is role-based (Supabase session + profiles.role).
  */
 
 import { createClient } from '@supabase/supabase-js'
 import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
-import { rateLimit, getClientIp } from '@/lib/rate-limit'
-import { logger } from '@/lib/logger'
-
-// Emergency token fallback rate limiter: 1 per 5 minutes
-const emergencyTokenLimiter = rateLimit({
-  interval: 5 * 60 * 1000, // 5 minutes
-  uniqueTokenPerInterval: 100, // Lower pool for emergency access
-})
 
 /**
  * Verify admin authentication via user role
  *
  * Authentication flow:
  * 1. Primary: Supabase session cookies (admin/educator role check)
- * 2. Fallback: ADMIN_API_TOKEN header (emergency access, heavily rate limited)
  *
  * Returns error response if unauthorized, null if authorized
  */
 export async function requireAdminAuth(request: NextRequest): Promise<NextResponse | null> {
-  const ip = getClientIp(request)
-
-  // First, try emergency token fallback (header-based)
-  // This provides disaster recovery when Supabase is unavailable
-  const emergencyToken = request.headers.get('X-Admin-Token')
-  const configuredToken = process.env.ADMIN_API_TOKEN
-
-  if (emergencyToken && configuredToken) {
-    // Emergency token provided - verify and rate limit
-    try {
-      await emergencyTokenLimiter.check(ip, 1) // 1 per 5 minutes
-    } catch {
-      logger.warn('Emergency token rate limit exceeded', {
-        operation: 'admin.auth.emergency-fallback',
-        ip,
-        reason: 'rate_limited'
-      })
-      return NextResponse.json(
-        { error: 'Too many emergency auth attempts. Try again in 5 minutes.' },
-        { status: 429, headers: { 'Retry-After': '300' } }
-      )
-    }
-
-    if (emergencyToken === configuredToken) {
-      // Emergency access granted - log for audit
-      logger.warn('Emergency admin token used', {
-        operation: 'admin.auth.emergency-fallback',
-        ip,
-        reason: 'emergency_access_granted',
-        userAgent: request.headers.get('user-agent')?.substring(0, 100)
-      })
-      return null // Auth passed via emergency token
-    } else {
-      // Invalid emergency token
-      logger.error('Invalid emergency admin token', {
-        operation: 'admin.auth.emergency-fallback',
-        ip,
-        reason: 'invalid_token'
-      })
-      return NextResponse.json(
-        { error: 'Invalid emergency token' },
-        { status: 401 }
-      )
-    }
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return NextResponse.json(
+      { error: 'Admin authentication is not configured' },
+      { status: 503 }
+    )
   }
 
   // Primary auth: Supabase session cookies
@@ -104,7 +58,7 @@ export async function requireAdminAuth(request: NextRequest): Promise<NextRespon
   const { data: profile, error: profileError } = await supabase
     .from('profiles')
     .select('role')
-    .eq('id', user.id)
+    .eq('user_id', user.id)
     .single()
 
   if (profileError || !profile) {
@@ -131,9 +85,15 @@ export async function requireAdminAuth(request: NextRequest): Promise<NextRespon
  * Handles cookies from NextRequest
  */
 function createSupabaseServerClient(request: NextRequest) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Missing Supabase env vars for admin auth client')
+  }
+
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {

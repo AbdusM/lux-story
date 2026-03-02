@@ -41,6 +41,12 @@ const loginSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    // Legacy password-based admin auth is disabled in production.
+    // Admin access is now role-based via Supabase auth sessions.
+    if ((process.env.NODE_ENV as string | undefined) === 'production') {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    }
+
     // Rate limiting
     const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
 
@@ -82,7 +88,7 @@ export async function POST(request: NextRequest) {
       // SECURITY FIX: Previously stored plaintext password in cookie
       response.cookies.set('admin_auth_token', sessionToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: (process.env.NODE_ENV as string | undefined) === 'production',
         sameSite: 'strict',
         maxAge: SESSION_DURATION_SECONDS, // 4 hours (reduced from 7 days)
         path: '/',
@@ -109,6 +115,11 @@ export async function POST(request: NextRequest) {
 
 // Logout endpoint
 export async function DELETE(request: NextRequest) {
+  // Legacy password-based admin auth is disabled in production.
+  if ((process.env.NODE_ENV as string | undefined) === 'production') {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  }
+
   // Audit log: Logout
   const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
   auditLog('admin_logout', 'admin', undefined, { ip })

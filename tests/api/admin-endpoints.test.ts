@@ -41,10 +41,13 @@ vi.mock('@supabase/supabase-js', () => ({
 }))
 
 // Mock Supabase SSR client (used by admin-supabase-client.ts)
+let mockAuthUser: any | null = null
+let mockAuthError: any | null = null
+
 vi.mock('@supabase/ssr', () => ({
   createServerClient: vi.fn(() => ({
     auth: {
-      getUser: vi.fn(() => Promise.resolve({ data: { user: null }, error: null }))
+      getUser: vi.fn(() => Promise.resolve({ data: { user: mockAuthUser }, error: mockAuthError }))
     },
     from: vi.fn(() => ({
       select: vi.fn(() => ({
@@ -266,20 +269,15 @@ describe('Admin User IDs API (/api/admin/user-ids)', () => {
 })
 
 describe('Admin Auth Helper Functions', () => {
-  // TODO: These tests need Supabase SSR client mocking update after auth flow change
-  // The auth now uses Supabase session cookies instead of custom session tokens
-  test.skip('requireAdminAuth should return null for valid token', async () => {
-    const { requireAdminAuth } = await import('@/lib/admin-supabase-client')
-
-    const request = createRequest('http://localhost:3000/api/admin/test', {
-      cookies: { admin_auth_token: MOCK_ADMIN_TOKEN }
-    })
-
-    const result = await requireAdminAuth(request)
-    expect(result).toBeNull()
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockAuthUser = null
+    mockAuthError = null
+    mockSupabaseResponse.data = null
+    mockSupabaseResponse.error = null
   })
 
-  test.skip('requireAdminAuth should return error response for missing token', async () => {
+  test('requireAdminAuth should block without Supabase session', async () => {
     const { requireAdminAuth } = await import('@/lib/admin-supabase-client')
 
     const request = createRequest('http://localhost:3000/api/admin/test')
@@ -289,16 +287,52 @@ describe('Admin Auth Helper Functions', () => {
     expect(result?.status).toBe(401)
   })
 
-  test.skip('requireAdminAuth should return error response for invalid token', async () => {
+  test('requireAdminAuth should allow admin role', async () => {
     const { requireAdminAuth } = await import('@/lib/admin-supabase-client')
 
-    const request = createRequest('http://localhost:3000/api/admin/test', {
-      cookies: { admin_auth_token: 'wrong-token' }
-    })
+    mockAuthUser = { id: '00000000-0000-0000-0000-000000000000', email: 'admin@example.com' }
+    mockSupabaseResponse.data = { role: 'admin' }
+
+    const request = createRequest('http://localhost:3000/api/admin/test')
+
+    const result = await requireAdminAuth(request)
+    expect(result).toBeNull()
+  })
+
+  test('requireAdminAuth should forbid non-admin roles', async () => {
+    const { requireAdminAuth } = await import('@/lib/admin-supabase-client')
+
+    mockAuthUser = { id: '00000000-0000-0000-0000-000000000000', email: 'student@example.com' }
+    mockSupabaseResponse.data = { role: 'student' }
+
+    const request = createRequest('http://localhost:3000/api/admin/test')
 
     const result = await requireAdminAuth(request)
     expect(result).not.toBeNull()
-    expect(result?.status).toBe(401)
+    expect(result?.status).toBe(403)
+  })
+
+  test('updateSession should redirect unauthenticated /admin routes', async () => {
+    const { updateSession } = await import('@/lib/supabase/middleware')
+
+    mockAuthUser = null
+    const request = createRequest('http://localhost:3000/admin/users')
+    const response = await updateSession(request)
+
+    const location = response.headers.get('Location') || ''
+    expect(location).toContain('/admin/login')
+    expect(location).toContain('redirect=')
+  })
+
+  test('updateSession should allow authenticated /admin routes', async () => {
+    const { updateSession } = await import('@/lib/supabase/middleware')
+
+    mockAuthUser = { id: '00000000-0000-0000-0000-000000000000', email: 'admin@example.com' }
+    mockSupabaseResponse.data = { role: 'admin' }
+    const request = createRequest('http://localhost:3000/admin/users')
+    const response = await updateSession(request)
+
+    expect(response.headers.get('Location')).toBeNull()
   })
 
   test('getAdminSupabaseClient should return client when env vars are set', async () => {

@@ -1,0 +1,10 @@
+{
+  "generated_at": "2026-02-13T21:30:11.697Z",
+  "notes": "Baseline for choice dispatch latency p95 gate (regression-only + hard budget).",
+  "budget_ms": 260,
+  "min_samples": 20,
+  "sample_count": 40,
+  "p50_ms": 168,
+  "p95_ms": 252,
+  "max_ms": 259
+}

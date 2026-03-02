@@ -7,21 +7,50 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
+  const createResponse = () => {
+    try {
+      return NextResponse.next({ request: { headers: new Headers(request.headers) } })
+    } catch {
+      return NextResponse.next()
+    }
+  }
+
   // CI/local/dev can run without Supabase configured. Middleware must never hard-crash,
   // or Playwright/web server startup will fail.
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('placeholder') || supabaseAnonKey.includes('placeholder')) {
-    return NextResponse.next({ request })
+  const isSupabaseConfigured = Boolean(
+    supabaseUrl &&
+    supabaseAnonKey &&
+    !supabaseUrl.includes('placeholder') &&
+    !supabaseAnonKey.includes('placeholder')
+  )
+
+  const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
+  const isAdminLoginRoute = request.nextUrl.pathname === '/admin/login'
+
+  // Admin routes must fail closed even when Supabase isn't configured (CI/local/dev).
+  // This keeps the guardrails enforceable without requiring secrets in CI.
+  if (isAdminRoute && !isAdminLoginRoute && !isSupabaseConfigured) {
+    const loginUrl = new URL(request.url)
+    loginUrl.pathname = '/admin/login'
+    loginUrl.search = ''
+    loginUrl.searchParams.set('redirect', request.nextUrl.pathname + request.nextUrl.search)
+    return NextResponse.redirect(loginUrl)
   }
 
-  let supabaseResponse = NextResponse.next({
-    request,
-  })
+  if (!isSupabaseConfigured) {
+    return createResponse()
+  }
+
+  let supabaseResponse = createResponse()
+
+  const configuredSupabaseUrl = supabaseUrl!
+  const configuredSupabaseAnonKey = supabaseAnonKey!
 
   const supabase = createServerClient(
-    supabaseUrl,
-    supabaseAnonKey,
+    configuredSupabaseUrl,
+    configuredSupabaseAnonKey,
     {
       cookies: {
         getAll() {
@@ -31,9 +60,7 @@ export async function updateSession(request: NextRequest) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           )
-          supabaseResponse = NextResponse.next({
-            request,
-          })
+          supabaseResponse = createResponse()
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
           )
@@ -48,15 +75,44 @@ export async function updateSession(request: NextRequest) {
 
   const {
     data: { user },
+    error: userError,
   } = await supabase.auth.getUser()
 
-  // Protection for admin routes (if needed)
-  if (request.nextUrl.pathname.startsWith('/admin') && !user) {
+  // Protection for admin routes
+  if (request.nextUrl.pathname.startsWith('/admin')) {
+    // Allow the informational login page to render without a Supabase session.
+    if (isAdminLoginRoute) {
+      return supabaseResponse
+    }
+
     // Redirect to login if accessing admin routes without auth
-    const url = request.nextUrl.clone()
-    url.pathname = '/'
-    url.searchParams.set('login', 'true')
-    return NextResponse.redirect(url)
+    if (userError || !user) {
+      const loginUrl = new URL(request.url)
+      loginUrl.pathname = '/admin/login'
+      loginUrl.search = ''
+      loginUrl.searchParams.set('redirect', request.nextUrl.pathname + request.nextUrl.search)
+      return NextResponse.redirect(loginUrl)
+    }
+
+    // Role-gate admin pages (API routes also enforce this server-side).
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('user_id', user.id)
+      .single()
+
+    const role = typeof (profile as { role?: unknown } | null)?.role === 'string'
+      ? (profile as { role: string }).role
+      : null
+
+    if (!role || !['admin', 'educator'].includes(role)) {
+      const loginUrl = new URL(request.url)
+      loginUrl.pathname = '/admin/login'
+      loginUrl.search = ''
+      loginUrl.searchParams.set('redirect', request.nextUrl.pathname + request.nextUrl.search)
+      loginUrl.searchParams.set('forbidden', 'admin')
+      return NextResponse.redirect(loginUrl)
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're

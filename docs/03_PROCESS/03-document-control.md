@@ -1,6 +1,6 @@
 # Document Control Policy
 
-Last updated: 2026-02-11
+Last updated: 2026-03-01
 
 ## Objectives
 
@@ -14,6 +14,16 @@ Last updated: 2026-02-11
 - `SUPERSEDED`: Replaced by a newer canonical doc.
 - `ARCHIVED`: Historical context; not maintained.
 - `GENERATED`: Machine output (QA reports, baselines).
+
+## Release-Truth Canonical Set
+
+For current release assertions, use this set before older audit narratives:
+- `docs/03_PROCESS/RELEASE_READINESS_CHECKLIST.md`
+- `docs/qa/2026-03-01-doc-reconciliation-status.md`
+- `.github/workflows/test.yml`
+- `docs/qa/interaction-event-emitter-parity-report.json`
+- `docs/qa/choice-dispatch-latency-report.json`
+- `docs/qa/choice-processing-latency-report.json`
 
 ## Canonical Locations
 
@@ -38,6 +48,11 @@ Compatibility roots (script-bound):
 2. Update or create the new canonical doc.
 3. Add/update links in `docs/README.md` and relevant local index.
 4. Ensure scripts/tests/docs references point to the canonical location.
+
+For historical audits that remain in-place (not archived), add a top-level `Status (YYYY-MM-DD)` section stating:
+- that the file is historical/non-canonical,
+- which claims are superseded, and
+- the current canonical doc(s) to use.
 
 ## 2026-02-11 Supersession Record
 

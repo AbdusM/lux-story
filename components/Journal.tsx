@@ -29,8 +29,10 @@ import { PatternType } from "@/lib/patterns"
 import { ORB_TIERS } from "@/lib/orbs"
 import { useSimulations } from "@/hooks/useSimulations"
 import { useUserRole } from "@/hooks/useUserRole"
+import { hasGodModeUrlParam } from "@/lib/godmode-access"
 import { PrismTabs } from "./journal/PrismTabs"
 import { PrismTabId, getPrismRuntimeTabs } from "@/lib/prism-tabs-config"
+import { Z_INDEX } from "@/lib/ui-constants"
 
 interface JournalProps {
   isOpen: boolean
@@ -149,13 +151,30 @@ export function Journal({ isOpen, onClose }: JournalProps) {
     setDetailPattern(null)
   }, [activeTab])
 
+  // Close panel with Escape for keyboard users.
+  useEffect(() => {
+    if (!isOpen) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose])
+
   // ... (variants)
 
   // Show God Mode tab if:
   // 1. Development mode (always)
   // 2. Production with educator/admin role (authenticated)
-  // 3. Production with ?godmode=true URL parameter (fallback for non-authenticated educators)
-  const hasGodModeParam = typeof window !== 'undefined' && window.location.search.includes('godmode=true')
+  // 3. Non-production with ?godmode=true URL parameter (local/test fallback only)
+  const hasGodModeParam = hasGodModeUrlParam({
+    nodeEnv: process.env.NODE_ENV,
+    search: typeof window !== 'undefined' ? window.location.search : undefined,
+  })
   const showGodMode =
     process.env.NODE_ENV === 'development' ||
     (!roleLoading && isEducator) ||
@@ -173,21 +192,29 @@ export function Journal({ isOpen, onClose }: JournalProps) {
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99]"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            style={{ zIndex: Z_INDEX.modalBackdrop }}
             onClick={onClose}
+            data-testid="journal-backdrop"
+            aria-hidden="true"
           />
           {/* Panel - with pull-to-dismiss */}
           <motion.div
-            className="!fixed left-2 top-2 bottom-2 right-2 sm:right-auto sm:w-full max-w-md glass-panel-solid !rounded-2xl border border-white/10 shadow-2xl z-sticky flex flex-col overflow-hidden"
+            className="!fixed left-2 top-2 bottom-2 right-2 sm:right-auto sm:w-full max-w-md glass-panel-solid !rounded-2xl border border-white/10 shadow-2xl flex flex-col overflow-hidden"
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             {...dragProps}
             onDragEnd={onDragEnd}
+            style={{ zIndex: Z_INDEX.modal }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Prism"
+            data-testid="journal-panel"
           >
             {/* Drag handle indicator - hints swipe-to-dismiss */}
             <div className="flex justify-center py-2 sm:hidden" aria-hidden="true">

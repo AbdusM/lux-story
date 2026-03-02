@@ -5,6 +5,7 @@ import { motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion
 import { X, Users, Sparkles, Compass } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { springs, backdrop, panelFromRight, haptics } from '@/lib/animations'
+import { Z_INDEX } from '@/lib/ui-constants'
 import { useConstellationData, type CharacterWithState, type SkillWithState } from '@/hooks/useConstellationData'
 import { getQuestsWithStatus, type Quest } from '@/lib/quest-system'
 import { useGameSelectors, useGameStore } from '@/lib/game-store'
@@ -146,8 +147,11 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               animate="visible"
               exit="hidden"
               variants={backdrop}
-              className="fixed inset-0 bg-black/50 z-dropdown backdrop-blur-sm"
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+              style={{ zIndex: Z_INDEX.modalBackdrop }}
               onClick={onClose}
+              data-testid="journey-backdrop"
+              aria-hidden="true"
             />
 
             {/* Panel - swipe right to close */}
@@ -165,14 +169,16 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                   onClose()
                 }
               }}
-              className="fixed right-2 top-2 bottom-2 left-2 sm:left-auto sm:w-full max-w-lg glass-panel-solid !rounded-2xl border border-white/10 shadow-2xl z-sticky flex flex-col overflow-hidden"
+              className="fixed right-2 top-2 bottom-2 left-2 sm:left-auto sm:w-full max-w-lg glass-panel-solid !rounded-2xl border border-white/10 shadow-2xl flex flex-col overflow-hidden"
               style={{
                 // Safe area handled by footer only - prevent nested padding
-                paddingRight: 'env(safe-area-inset-right, 0px)'
+                paddingRight: 'env(safe-area-inset-right, 0px)',
+                zIndex: Z_INDEX.modal,
               }}
               role="dialog"
               aria-modal="true"
               aria-label="Your Journey - Character and Skill Progress"
+              data-testid="journey-panel"
             >
               {/* Header */}
               <div className="flex-shrink-0 p-4 border-b border-white/5 flex items-center justify-between bg-transparent">

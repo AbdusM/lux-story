@@ -9,6 +9,14 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 import { POST, GET } from '../../app/api/user/career-explorations/route'
+import { createUserSessionToken, USER_SESSION_COOKIE_NAME } from '@/lib/api/user-session'
+
+const TEST_USER_ID = 'player_1234567890'
+
+function withSession(request: NextRequest, userId: string = TEST_USER_ID): NextRequest {
+  request.cookies.set(USER_SESSION_COOKIE_NAME, createUserSessionToken(userId))
+  return request
+}
 
 // Mock Supabase
 const mockSupabaseData: Record<string, unknown[]> = {}
@@ -73,9 +81,19 @@ describe('Career Explorations API - POST', () => {
     process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-key'
   })
 
+  test('rejects unauthenticated requests', async () => {
+    const request = new NextRequest('http://localhost:3000/api/user/career-explorations', {
+      method: 'POST',
+      body: JSON.stringify({ career_name: 'Software Engineer' })
+    })
+
+    const response = await POST(request)
+    expect(response.status).toBe(401)
+  })
+
   test('creates career exploration record successfully', async () => {
     const requestBody = {
-      user_id: 'player_1234567890',
+      user_id: TEST_USER_ID,
       career_name: 'Software Engineer',
       match_score: 0.85,
       readiness_level: 'near_ready',
@@ -83,10 +101,10 @@ describe('Career Explorations API - POST', () => {
       education_paths: ['CS Degree', 'Bootcamp']
     }
 
-    const request = new NextRequest('http://localhost:3000/api/user/career-explorations', {
+    const request = withSession(new NextRequest('http://localhost:3000/api/user/career-explorations', {
       method: 'POST',
       body: JSON.stringify(requestBody)
-    })
+    }))
 
     const response = await POST(request)
     const data = await response.json()
@@ -98,14 +116,14 @@ describe('Career Explorations API - POST', () => {
 
   test('creates record with default values when optional fields missing', async () => {
     const requestBody = {
-      user_id: 'player_1234567890',
+      user_id: TEST_USER_ID,
       career_name: 'Healthcare Professional'
     }
 
-    const request = new NextRequest('http://localhost:3000/api/user/career-explorations', {
+    const request = withSession(new NextRequest('http://localhost:3000/api/user/career-explorations', {
       method: 'POST',
       body: JSON.stringify(requestBody)
-    })
+    }))
 
     const response = await POST(request)
     const data = await response.json()
@@ -114,21 +132,18 @@ describe('Career Explorations API - POST', () => {
     expect(data.success).toBe(true)
   })
 
-  test('returns 400 when user_id is missing', async () => {
+  test('allows missing user_id when session exists', async () => {
     const requestBody = {
       career_name: 'Software Engineer'
     }
 
-    const request = new NextRequest('http://localhost:3000/api/user/career-explorations', {
+    const request = withSession(new NextRequest('http://localhost:3000/api/user/career-explorations', {
       method: 'POST',
       body: JSON.stringify(requestBody)
-    })
+    }))
 
     const response = await POST(request)
-    const data = await response.json()
-
-    expect(response.status).toBe(400)
-    expect(data.error).toContain('Missing user_id')
+    expect(response.status).toBe(200)
   })
 
   test('returns 400 when career_name is missing', async () => {
@@ -136,10 +151,10 @@ describe('Career Explorations API - POST', () => {
       user_id: 'user123'
     }
 
-    const request = new NextRequest('http://localhost:3000/api/user/career-explorations', {
+    const request = withSession(new NextRequest('http://localhost:3000/api/user/career-explorations', {
       method: 'POST',
       body: JSON.stringify(requestBody)
-    })
+    }))
 
     const response = await POST(request)
     const data = await response.json()
@@ -155,14 +170,14 @@ describe('Career Explorations API - POST', () => {
     } as any
 
     const requestBody = {
-      user_id: 'player_1234567890',
+      user_id: TEST_USER_ID,
       career_name: 'Software Engineer'
     }
 
-    const request = new NextRequest('http://localhost:3000/api/user/career-explorations', {
+    const request = withSession(new NextRequest('http://localhost:3000/api/user/career-explorations', {
       method: 'POST',
       body: JSON.stringify(requestBody)
-    })
+    }))
 
     const response = await POST(request)
     const data = await response.json()
@@ -178,14 +193,14 @@ describe('Career Explorations API - POST', () => {
     expect(rateLimit).toBeDefined()
 
     const requestBody = {
-      user_id: 'player_1234567890',
+      user_id: TEST_USER_ID,
       career_name: 'Software Engineer'
     }
 
-    const request = new NextRequest('http://localhost:3000/api/user/career-explorations', {
+    const request = withSession(new NextRequest('http://localhost:3000/api/user/career-explorations', {
       method: 'POST',
       body: JSON.stringify(requestBody)
-    })
+    }))
 
     const response = await POST(request)
 
@@ -194,27 +209,27 @@ describe('Career Explorations API - POST', () => {
   })
 
   test('handles invalid JSON gracefully', async () => {
-    const request = new NextRequest('http://localhost:3000/api/user/career-explorations', {
+    const request = withSession(new NextRequest('http://localhost:3000/api/user/career-explorations', {
       method: 'POST',
       body: 'invalid json'
-    })
+    }))
 
     const response = await POST(request)
 
-    expect(response.status).toBe(500)
+    expect(response.status).toBe(400)
   })
 
   test('upserts existing career exploration', async () => {
     const requestBody = {
-      user_id: 'player_1234567890',
+      user_id: TEST_USER_ID,
       career_name: 'Software Engineer',
       match_score: 0.85
     }
 
-    const request1 = new NextRequest('http://localhost:3000/api/user/career-explorations', {
+    const request1 = withSession(new NextRequest('http://localhost:3000/api/user/career-explorations', {
       method: 'POST',
       body: JSON.stringify(requestBody)
-    })
+    }))
 
     await POST(request1)
 
@@ -224,10 +239,10 @@ describe('Career Explorations API - POST', () => {
       match_score: 0.90
     }
 
-    const request2 = new NextRequest('http://localhost:3000/api/user/career-explorations', {
+    const request2 = withSession(new NextRequest('http://localhost:3000/api/user/career-explorations', {
       method: 'POST',
       body: JSON.stringify(updatedBody)
-    })
+    }))
 
     const response = await POST(request2)
     const data = await response.json()
@@ -246,23 +261,29 @@ describe('Career Explorations API - GET', () => {
     process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-key'
   })
 
+  test('rejects unauthenticated requests', async () => {
+    const request = new NextRequest('http://localhost:3000/api/user/career-explorations?userId=player_1234567890')
+    const response = await GET(request)
+    expect(response.status).toBe(401)
+  })
+
   test('fetches career explorations for user successfully', async () => {
     mockSupabaseData['career_explorations'] = [
       {
-        user_id: 'player_1234567890',
+        user_id: TEST_USER_ID,
         career_name: 'Software Engineer',
         match_score: 0.85
       },
       {
-        user_id: 'player_1234567890',
+        user_id: TEST_USER_ID,
         career_name: 'Data Scientist',
         match_score: 0.78
       }
     ]
 
-    const request = new NextRequest(
-      'http://localhost:3000/api/user/career-explorations?userId=player_1234567890'
-    )
+    const request = withSession(new NextRequest(
+      `http://localhost:3000/api/user/career-explorations?userId=${TEST_USER_ID}`
+    ))
 
     const response = await GET(request)
     const data = await response.json()
@@ -275,9 +296,9 @@ describe('Career Explorations API - GET', () => {
   test('returns empty array when user has no explorations', async () => {
     mockSupabaseData['career_explorations'] = []
 
-    const request = new NextRequest(
-      'http://localhost:3000/api/user/career-explorations?userId=player_1234567890'
-    )
+    const request = withSession(new NextRequest(
+      `http://localhost:3000/api/user/career-explorations?userId=${TEST_USER_ID}`
+    ))
 
     const response = await GET(request)
     const data = await response.json()
@@ -287,16 +308,15 @@ describe('Career Explorations API - GET', () => {
     expect(data.careerExplorations).toEqual([])
   })
 
-  test('returns 400 when userId parameter is missing', async () => {
-    const request = new NextRequest(
+  test('allows missing userId when session exists', async () => {
+    mockSupabaseData['career_explorations'] = []
+
+    const request = withSession(new NextRequest(
       'http://localhost:3000/api/user/career-explorations'
-    )
+    ))
 
     const response = await GET(request)
-    const data = await response.json()
-
-    expect(response.status).toBe(400)
-    expect(data.error).toContain('Missing userId')
+    expect(response.status).toBe(200)
   })
 
   test('returns 500 when Supabase query fails', async () => {
@@ -305,9 +325,9 @@ describe('Career Explorations API - GET', () => {
       message: 'Database error'
     } as any
 
-    const request = new NextRequest(
-      'http://localhost:3000/api/user/career-explorations?userId=player_1234567890'
-    )
+    const request = withSession(new NextRequest(
+      `http://localhost:3000/api/user/career-explorations?userId=${TEST_USER_ID}`
+    ))
 
     const response = await GET(request)
     const data = await response.json()
@@ -319,7 +339,7 @@ describe('Career Explorations API - GET', () => {
   test('filters results by userId correctly', async () => {
     mockSupabaseData['career_explorations'] = [
       {
-        user_id: 'player_1234567890',
+        user_id: TEST_USER_ID,
         career_name: 'Software Engineer'
       },
       {
@@ -328,16 +348,16 @@ describe('Career Explorations API - GET', () => {
       }
     ]
 
-    const request = new NextRequest(
-      'http://localhost:3000/api/user/career-explorations?userId=player_1234567890'
-    )
+    const request = withSession(new NextRequest(
+      `http://localhost:3000/api/user/career-explorations?userId=${TEST_USER_ID}`
+    ))
 
     const response = await GET(request)
     const data = await response.json()
 
     expect(response.status).toBe(200)
     expect(data.careerExplorations).toHaveLength(1)
-    expect(data.careerExplorations[0].user_id).toBe('player_1234567890')
+    expect(data.careerExplorations[0].user_id).toBe(TEST_USER_ID)
   })
 })
 

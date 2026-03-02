@@ -41,6 +41,11 @@ vi.mock('../lib/supabase', () => ({
   isSupabaseConfigured: vi.fn().mockReturnValue(true)
 }))
 
+// Mock user API session bootstrap so queue tests stay focused on retry + persistence logic.
+vi.mock('../lib/user-api-session', () => ({
+  ensureUserApiSession: vi.fn().mockResolvedValue(true)
+}))
+
 describe('SyncQueue', () => {
   let mockStorage: Map<string, string>
 

@@ -4,6 +4,15 @@ Date: 2026-02-12
 Scope: menus, response/dialogue quality, telemetry integrity, narrative progression contracts  
 Mode: audit-only (no gameplay/content/code changes made in this pass)
 
+## Status (2026-03-01)
+
+- Historical snapshot. Keep for evidence history, not as current release truth.
+- Superseded item: Section `3.F` no longer reflects current telemetry parity (`choice_selected_result` emitter is now present).
+- Current release-truth docs:
+  - `docs/03_PROCESS/RELEASE_READINESS_CHECKLIST.md`
+  - `docs/qa/2026-03-01-doc-reconciliation-status.md`
+  - `docs/qa/interaction-event-emitter-parity-report.json`
+
 ## 1) Evidence Collected
 
 Commands executed (read/verify only):
@@ -197,10 +206,12 @@ What aligns well:
 
 Important gaps:
 
-- `choice_selected_result` is declared in spec/dictionary but no runtime emitter was found in current code scan.
+- Resolved after this snapshot: `choice_selected_result` emitter parity is now present and verified.
   - Declared: `/Users/abdusmuwwakkil/Development/30_lux-story/lib/telemetry/interaction-events-spec.ts:6`
   - Documented: `/Users/abdusmuwwakkil/Development/30_lux-story/docs/reference/data-dictionary/12-analytics.md:499`
-  - Clarification: analytics-dictionary verification currently enforces “documented + known referenced types,” but does not require a runtime emitter per declared type.
+  - Runtime emitter: `/Users/abdusmuwwakkil/Development/30_lux-story/components/StatefulGameInterface.tsx:1466`
+  - Verification: `/Users/abdusmuwwakkil/Development/30_lux-story/docs/qa/interaction-event-emitter-parity-report.json` (`missing_types=[]`).
+  - Clarification: parity is now validated by the emitter-parity report; this older gap is retained only for historical traceability.
 - Data dictionary coverage for APIs is narrow:
   - Only `/api/user/interaction-events` is explicitly documented in data dictionary (`12-analytics.md`).
   - Other active user APIs (`/api/user/profile`, `/api/user/relationship-progress`, `/api/user/platform-state`, `/api/user/pattern-profile`, `/api/user/skill-summaries`, `/api/user/career-analytics`, etc.) are implemented but not cataloged in the dictionary set.

@@ -66,20 +66,6 @@ export const tessDialogueNodes: DialogueNode[] = [
         skills: ['emotionalIntelligence', 'communication']
       },
       {
-        choiceId: 'tess_intro_business',
-        text: "How's business?",
-        nextNodeId: 'tess_the_numbers',
-        pattern: 'building',
-        skills: ['criticalThinking', 'adaptability'],
-        voiceVariations: {
-          analytical: "What do the numbers actually look like?",
-          helping: "Is the shop doing okay? You seem stressed.",
-          building: "How's business? Is this model sustainable?",
-          exploring: "I'm curious. How does a record shop survive these days?",
-          patience: "Business must be complicated. How are things really?"
-        }
-      },
-      {
         choiceId: 'tess_intro_listen',
         text: "[Wait. Let her talk.]",
         nextNodeId: 'tess_the_shop',
@@ -158,7 +144,7 @@ export const tessDialogueNodes: DialogueNode[] = [
     speaker: 'Tess',
     content: [
       {
-        text: "Started this place twelve years ago. me.",
+        text: "Started this place twelve years ago. Just me. Two crates.",
         emotion: 'passionate',
         interaction: 'bloom',
         variation_id: 'shop_v2_minimal',

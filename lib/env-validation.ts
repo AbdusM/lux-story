@@ -62,7 +62,11 @@ const REQUIRED_ENV_VARS = {
     'NEXT_PUBLIC_SUPABASE_URL',
     'NEXT_PUBLIC_SUPABASE_ANON_KEY',
   ],
-  production: [
+  productionServer: [
+    // Anonymous user session signing must not be coupled to the service role key.
+    'USER_API_SESSION_SECRET',
+  ],
+  productionClient: [
     // Nothing strictly required - Sentry is optional monitoring
   ],
 }
@@ -126,7 +130,9 @@ export function validateEnv(context: 'server' | 'client' = 'server'): EnvConfig 
 
   // Add production requirements
   if (process.env.NODE_ENV === 'production') {
-    requiredVars.push(...REQUIRED_ENV_VARS.production)
+    requiredVars.push(
+      ...(context === 'server' ? REQUIRED_ENV_VARS.productionServer : REQUIRED_ENV_VARS.productionClient)
+    )
   }
 
   // Validate each required variable
@@ -269,6 +275,7 @@ export function printEnvStatus(): void {
     { name: 'Gemini API Key', value: process.env.GEMINI_API_KEY },
     { name: 'Admin API Token', value: process.env.ADMIN_API_TOKEN },
     { name: 'Supabase Service Role', value: process.env.SUPABASE_SERVICE_ROLE_KEY },
+    { name: 'User API Session Secret', value: process.env.USER_API_SESSION_SECRET },
     { name: 'Sentry DSN', value: process.env.SENTRY_DSN },
   ]
 

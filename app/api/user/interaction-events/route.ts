@@ -11,19 +11,26 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
 import { logger } from '@/lib/logger'
-import { validateUserIdFromBody, handleApiError } from '@/lib/api/api-utils'
+import { handleApiError } from '@/lib/api/api-utils'
 import { isInteractionEventType, validateInteractionEventPayload } from '@/lib/telemetry/interaction-events-spec'
+import { readJsonBody } from '@/lib/api/request-body'
+import { ensureProvidedUserIdMatchesSession, requireUserSession } from '@/lib/api/user-session'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
 const OPERATION_POST = 'interaction-events.post'
 
+const MAX_BODY_BYTES = 32_768 // 32KB
+
 // Rate limiter: telemetry can be frequent, but keep a ceiling.
 const writeLimiter = rateLimit({ interval: 60 * 1000, uniqueTokenPerInterval: 1000 })
 
 export async function POST(request: NextRequest) {
   try {
+    const session = requireUserSession(request)
+    if (!session.ok) return session.response
+
     const ip = getClientIp(request)
     try {
       await writeLimiter.check(ip, 240)
@@ -31,7 +38,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 })
     }
 
-    const body = await request.json()
+    const parsed = await readJsonBody(request, { maxBytes: MAX_BODY_BYTES })
+    if (!parsed.ok) return parsed.response
+    const body = parsed.body as Record<string, unknown>
     const {
       user_id,
       session_id,
@@ -44,8 +53,12 @@ export async function POST(request: NextRequest) {
       occurred_at,
     } = body ?? {}
 
-    const validation = validateUserIdFromBody(user_id, OPERATION_POST)
-    if (!validation.valid) return validation.response
+    const mismatch = ensureProvidedUserIdMatchesSession({
+      provided: user_id,
+      sessionUserId: session.userId,
+      fieldName: 'user_id',
+    })
+    if (mismatch) return mismatch
 
     if (!session_id || !event_type || payload === undefined) {
       logger.warn('Missing required fields', { operation: OPERATION_POST })
@@ -77,7 +90,7 @@ export async function POST(request: NextRequest) {
     const { data, error } = await supabase
       .from('interaction_events')
       .insert({
-        user_id,
+        user_id: session.userId,
         session_id,
         event_type,
         node_id: node_id ?? null,
@@ -92,7 +105,7 @@ export async function POST(request: NextRequest) {
 
     // PGRST204 = insert succeeded but RLS prevents select (shouldn't happen for service role)
     if (error && error.code !== 'PGRST204') {
-      logger.error('Failed to insert interaction event', { operation: OPERATION_POST, user_id, event_type, code: error.code })
+      logger.error('Failed to insert interaction event', { operation: OPERATION_POST, user_id: session.userId, event_type, code: error.code })
       return NextResponse.json({ error: 'Failed to insert interaction event' }, { status: 500 })
     }
 
@@ -101,4 +114,3 @@ export async function POST(request: NextRequest) {
     return handleApiError(error, OPERATION_POST, 'POST')
   }
 }
-

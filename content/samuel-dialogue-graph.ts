@@ -334,7 +334,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_what_is_this_patient',
         text: "What is this place exactly?",
-        nextNodeId: 'systemic_calibration_start', // ISP: Reroute to Calibration
+        nextNodeId: 'samuel_explains_station',
         pattern: 'exploring',
         skills: ['communication', 'adaptability'],
         voiceVariations: {
@@ -348,7 +348,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_about_platforms_patient',
         text: "The platforms.where do they lead?",
-        nextNodeId: 'systemic_calibration_start', // ISP: Reroute to Calibration
+        nextNodeId: 'samuel_explains_platforms',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
         voiceVariations: {
@@ -648,7 +648,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ask_what_is_this',
         text: "What is this place exactly?",
-        nextNodeId: 'systemic_calibration_start', // ISP: Reroute to Calibration
+        nextNodeId: 'samuel_explains_station',
         pattern: 'exploring',
         skills: ['communication', 'adaptability'],
         consequence: {
@@ -661,24 +661,6 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           building: "What is this place? What can I accomplish here?",
           exploring: "What is this place exactly?",
           patience: "Tell me about this place."
-        }
-      },
-      {
-        choiceId: 'ask_about_platforms',
-        text: "I noticed the different platforms. Where do they all go?",
-        nextNodeId: 'samuel_explains_platforms',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'communication'],
-        consequence: {
-          characterId: 'samuel',
-          trustChange: 1
-        },
-        voiceVariations: {
-          analytical: "The platforms seem organized by purpose. What's the system?",
-          helping: "I see different people heading different ways. Who's on each platform?",
-          building: "Those platforms.what opportunities are on each one?",
-          exploring: "I noticed the different platforms. Where do they all go?",
-          patience: "I see there are different platforms. Could you tell me about them?"
         }
       },
       {
@@ -697,24 +679,6 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           building: "How'd you build your life around this place?",
           exploring: "I'm curious.how'd you end up here?",
           patience: "How'd you end up working here?"
-        }
-      },
-      {
-        choiceId: 'ask_whats_happening',
-        text: "You said more travelers lately. What's happening out there?",
-        nextNodeId: 'samuel_changing_world',
-        pattern: 'analytical',
-        skills: ['criticalThinking', 'curiosity'],
-        consequence: {
-          characterId: 'samuel',
-          trustChange: 1
-        },
-        voiceVariations: {
-          analytical: "You mentioned increased traffic. What's driving the change?",
-          helping: "More travelers... are people struggling out there?",
-          building: "The world's changing. What kind of changes?",
-          exploring: "You said more travelers lately. What's happening out there?",
-          patience: "Sounds like the world is shifting. Tell me more."
         }
       },
       {
@@ -740,7 +704,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "World's changing faster now. Machines do work people once did, and stable jobs vanish quickly.",
+        text: "World's changing faster now. See that departures board? Half those old routes are gone. Machines do work people once did, and stable jobs vanish quick.",
         emotion: 'wise',
         variation_id: 'changing_world_v1',
         patternReflection: [
@@ -965,6 +929,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         skills: ['emotionalIntelligence', 'communication']
       },
       {
+        choiceId: 'ask_about_static',
+        text: "Something feels... loud. In my head. Like static. What's happening to me?",
+        nextNodeId: 'systemic_calibration_start',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'communication']
+      },
+      {
         choiceId: 'ready_to_explore',
         text: "Alright, let me check out the platforms",
         nextNodeId: 'samuel_orb_introduction',
@@ -1000,6 +971,13 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           characterId: 'samuel',
           trustChange: 1
         }
+      },
+      {
+        choiceId: 'ask_whats_happening_from_platforms',
+        text: "You said more travelers lately. What's happening out there?",
+        nextNodeId: 'samuel_changing_world',
+        pattern: 'analytical',
+        skills: ['criticalThinking', 'curiosity']
       },
       {
         choiceId: 'ready_to_meet',
@@ -1810,7 +1788,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Hey, before you head off... here, take this.",
+        text: "Hey, before you head off... here, take this. Signal token from the old boards.",
         emotion: 'warm',
         variation_id: 'orb_intro_v1',
         interaction: 'bloom'
@@ -1868,7 +1846,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You'll start seein' five patterns show up. <shake>Analytical folks</shake> who see through problems. <nod>Patient ones</nod> who know when to wait. <bloom>Explorers</bloom> who gotta find new paths. People who <ripple>help others</ripple> find their way. And <big>builders</big> - turn ideas into real things.\n\nJust pay attention. They'll tell you somethin' about yourself.",
+        text: "You'll start seein' five patterns show up: <shake>Analytical</shake>, <nod>Patient</nod>, <bloom>Explorer</bloom>, <ripple>Helper</ripple>, <big>Builder</big>.\n\nDon't memorize 'em. Notice which one steps up when pressure hits. That's the part that's yours.",
         emotion: 'warm',
         variation_id: 'orb_mechanics_v1'
       }
@@ -7979,31 +7957,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ]
   },
 
-  // Grace Placeholder (Temporary)
-	  {
-	    nodeId: 'grace_revisit_welcome',
-	    speaker: 'System',
-    content: [
-      {
-        text: "[Grace's content is currently under construction. Please check back later.]",
-        emotion: 'neutral',
-        variation_id: 'grace_placeholder'
-      }
-    ],
-	    choices: [
-	      {
-	        choiceId: 'grace_placeholder_return',
-	        text: "Return to Station",
-	        // Route through the hub router so the correct hub variant is selected for the current state.
-	        nextNodeId: 'samuel_hub_router'
-	        // Removed invalid pattern: 'neutral'
-	      }
-	    ]
-	  },
-
-  // ============= PATTERN MILESTONE GREETINGS =============
-  // Samuel greets returning players differently based on pattern progress
-  // INVISIBLE DEPTH: Player feels recognized without explicit notifications
+	  // ============= PATTERN MILESTONE GREETINGS =============
+	  // Samuel greets returning players differently based on pattern progress
+	  // INVISIBLE DEPTH: Player feels recognized without explicit notifications
 
   // Greeting Router - directs to appropriate greeting based on pattern milestones
   {

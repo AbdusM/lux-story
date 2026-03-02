@@ -1,0 +1,76 @@
+{
+  "adapter_version": 1,
+  "repo_id": "lux-story",
+  "truth_order": [
+    "custom_rules",
+    "workflows",
+    "repo_state",
+    "knowledge",
+    "inference"
+  ],
+  "critical_paths": [
+    "app",
+    "lib",
+    "scripts",
+    "tests",
+    "docs"
+  ],
+  "required_citation_sources": [
+    "repo:path#Lx-Ly",
+    "docs:path#Lx-Ly"
+  ],
+  "safe_commands": [
+    "ls",
+    "cat",
+    "rg",
+    "git status",
+    "npm run type-check",
+    "npm run test:run",
+    "npm run validate-content"
+  ],
+  "risky_commands": [
+    "vercel --prod",
+    "npm run deploy:vercel",
+    "npm run write:content-quarantine"
+  ],
+  "forbidden_commands": [
+    "rm -rf /",
+    "sudo rm -rf /",
+    "git push --force",
+    "psql -c \"DROP TABLE\""
+  ],
+  "risky_patterns": [
+    "\\bdeploy\\b",
+    "\\bmigration\\b",
+    "\\bdb:(push|migrate|reset)\\b",
+    "\\bwrangler\\s+deploy\\b",
+    "\\bvercel\\s+--prod\\b",
+    "\\bsupabase\\s+db\\s+push\\b",
+    "\\brelease\\b"
+  ],
+  "forbidden_patterns": [
+    "rm\\s+-rf\\s+/",
+    "git\\s+push\\s+--force",
+    "DROP\\s+TABLE",
+    "TRUNCATE\\s+TABLE",
+    "DELETE\\s+FROM\\s+\\w+\\s*;?$"
+  ],
+  "allowed_domains": [
+    "registry.npmjs.org",
+    "github.com",
+    "api.github.com",
+    "vercel.com",
+    "api.vercel.com",
+    "supabase.co"
+  ],
+  "ci_gates": [
+    "node scripts/ci/verify-codex-adapter.mjs",
+    "npm run type-check",
+    "npm run test:run"
+  ],
+  "capabilities": {
+    "supports_browser_qa": true,
+    "supports_kis": false,
+    "supports_ci": true
+  }
+}

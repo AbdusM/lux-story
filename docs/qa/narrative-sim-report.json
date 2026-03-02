@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-02-12T23:08:59.456Z",
+  "generated_at": "2026-03-02T02:52:00.779Z",
   "options": {
     "max_steps_per_path": 120,
     "max_expansions": 6000,
@@ -7,8 +7,8 @@
   },
   "totals": {
     "graphs": 28,
-    "expansions": 17746,
-    "visited_state_pairs": 17746,
+    "expansions": 18046,
+    "visited_state_pairs": 18046,
     "failures": 0,
     "required_state_mismatches": 0
   },
@@ -126,8 +126,8 @@
       "truncated": false
     },
     "maya": {
-      "expansions": 1106,
-      "visited_state_pairs": 1106,
+      "expansions": 1086,
+      "visited_state_pairs": 1086,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
@@ -161,8 +161,8 @@
       "truncated": false
     },
     "samuel": {
-      "expansions": 1117,
-      "visited_state_pairs": 1117,
+      "expansions": 1439,
+      "visited_state_pairs": 1439,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false
@@ -182,8 +182,8 @@
       "truncated": false
     },
     "tess": {
-      "expansions": 515,
-      "visited_state_pairs": 515,
+      "expansions": 513,
+      "visited_state_pairs": 513,
       "failures": 0,
       "required_state_mismatches": 0,
       "truncated": false

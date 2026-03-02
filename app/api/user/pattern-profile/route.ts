@@ -11,9 +11,9 @@ import { getPatternProfile, getPatternSummaryQuick } from '@/lib/pattern-profile
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
 import { logger } from '@/lib/logger'
 import {
-  extractAndValidateUserIdFromQuery,
   isSupabaseConfigError
 } from '@/lib/api/api-utils'
+import { ensureProvidedUserIdMatchesSession, requireUserSession } from '@/lib/api/user-session'
 
 // Mark as dynamic for Next.js static export compatibility
 export const dynamic = 'force-dynamic'
@@ -30,6 +30,9 @@ const readLimiter = rateLimit({ interval: 60 * 1000, uniqueTokenPerInterval: 500
  */
 export async function GET(request: NextRequest) {
   try {
+    const session = requireUserSession(request)
+    if (!session.ok) return session.response
+
     // Rate limiting
     const ip = getClientIp(request)
     try {
@@ -40,25 +43,26 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url)
     const mode = searchParams.get('mode') || 'full'
+    const requestedUserId = searchParams.get('userId')
+    const mismatch = ensureProvidedUserIdMatchesSession({
+      provided: requestedUserId,
+      sessionUserId: session.userId,
+      fieldName: 'userId',
+    })
+    if (mismatch) return mismatch
 
-    const validation = extractAndValidateUserIdFromQuery(request, OPERATION_GET)
-    if (!validation.valid) {
-      return validation.response
-    }
-    const { userId } = validation
-
-    logger.debug('Pattern profile GET request', { operation: OPERATION_GET, userId, mode })
+    logger.debug('Pattern profile GET request', { operation: OPERATION_GET, userId: session.userId, mode })
 
     // Quick mode for lightweight requests
     if (mode === 'quick') {
-      const summary = await getPatternSummaryQuick(userId)
-      logger.debug('Quick summary retrieved', { operation: OPERATION_GET, userId, totalDemonstrations: summary.totalDemonstrations })
+      const summary = await getPatternSummaryQuick(session.userId)
+      logger.debug('Quick summary retrieved', { operation: OPERATION_GET, userId: session.userId, totalDemonstrations: summary.totalDemonstrations })
       return NextResponse.json({ success: true, mode: 'quick', summary })
     }
 
     // Full mode - comprehensive profile
-    const profile = await getPatternProfile(userId)
-    logger.debug('Full profile retrieved', { operation: OPERATION_GET, userId, totalDemonstrations: profile.totalDemonstrations })
+    const profile = await getPatternProfile(session.userId)
+    logger.debug('Full profile retrieved', { operation: OPERATION_GET, userId: session.userId, totalDemonstrations: profile.totalDemonstrations })
 
     return NextResponse.json({ success: true, mode: 'full', profile })
   } catch (error) {

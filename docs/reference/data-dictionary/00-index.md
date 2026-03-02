@@ -4,6 +4,18 @@
 **Status:** 100% Complete - All Categories Documented
 **Coverage:** 12 of 12 categories documented (100% complete)
 
+## Status (2026-03-01)
+
+- This index is a structural catalog; many numeric counts are historical snapshots from January 2026.
+- For release decisions, prefer current verification artifacts over static counts:
+  - `docs/03_PROCESS/RELEASE_READINESS_CHECKLIST.md`
+  - `docs/qa/2026-03-01-doc-reconciliation-status.md`
+  - `.github/workflows/test.yml`
+- For interaction telemetry truth, use `12-analytics.md` plus:
+  - `docs/qa/interaction-event-emitter-parity-report.json`
+  - `docs/qa/choice-dispatch-latency-report.json`
+  - `docs/qa/choice-processing-latency-report.json`
+
 ---
 
 ## Overview

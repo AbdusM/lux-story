@@ -8,6 +8,7 @@ import { Brain, TrendingUp, Lightbulb, Target, Sparkles } from 'lucide-react'
 import type { PatternProfile } from '@/lib/pattern-profile-adapter'
 import { PatternEvolutionChart } from '@/components/student/PatternEvolutionChart'
 import { formatPatternName, getPatternDescription } from '@/lib/patterns'
+import { ensureUserApiSession } from '@/lib/user-api-session'
 
 interface PatternInsightsSectionProps {
   userId: string
@@ -28,8 +29,12 @@ export function PatternInsightsSection({ userId }: PatternInsightsSectionProps) 
         setLoading(true)
         setError(null)
 
+        await ensureUserApiSession(userId)
+
         // Fetch pattern profile from API
-        const response = await fetch(`/api/user/pattern-profile?userId=${encodeURIComponent(userId)}&mode=full`)
+        const response = await fetch(`/api/user/pattern-profile?userId=${encodeURIComponent(userId)}&mode=full`, {
+          credentials: 'include',
+        })
 
         if (!response.ok) {
           const errorData = await response.json()

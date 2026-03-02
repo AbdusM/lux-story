@@ -1,0 +1,49 @@
+# 2026-03-02 Agentic Session Handoff (Lux Story)
+
+Purpose: prevent context drift in future agent sessions and keep release/readiness claims reproducible.
+
+## Scope Guardrail (Read First)
+
+- **In scope for this repo/session:** Lux Story (`30_lux-story`) and Supabase project `actualizeme` (`tavalvqcebosfxamuvlx`).
+- **Out of scope for this repo/session:** RecipeApp/LinkDap/Five-Tiers migration work. Handle those in their own repos/chats.
+- If a task mentions another product, stop and confirm before changing Lux Story docs/code.
+
+## Current Verified State
+
+- PR: `https://github.com/AbdusM/lux-story/pull/6`
+- Branch: `codex/samuel-intro-review`
+- Latest required checks green:
+  - Test Suite run: `22591101488`
+  - Playwright E2E run: `22591101426`
+- Production deploy live: `https://lux-story.vercel.app`
+
+## Release Gate Truth (as of 2026-03-02)
+
+- CI required checks on `main`: **pass**
+- UUID readiness (`player_profiles.user_id`): **pass**
+- Production env completeness (`NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_API_TOKEN`, `USER_API_SESSION_SECRET`): **pass**
+
+Canonical status file:
+- `docs/qa/2026-03-02-release-readiness-gate-status.md`
+
+## Standard Re-Validation Commands (Agent Quickstart)
+
+1. CI status
+   - `gh pr checks 6`
+2. Branch protection
+   - `gh api repos/AbdusM/lux-story/branches/main/protection --jq '{required_status_checks: .required_status_checks.contexts}'`
+3. UUID readiness
+   - `npm run verify:user-id-uuid-readiness`
+4. Production env lengths (safe: lengths only)
+   - `vercel --cwd /Users/abdusmuwwakkil/Development/30_lux-story env run -e production -- bash -lc 'echo NEXT_PUBLIC_SUPABASE_URL_len=${#NEXT_PUBLIC_SUPABASE_URL}; echo NEXT_PUBLIC_SUPABASE_ANON_KEY_len=${#NEXT_PUBLIC_SUPABASE_ANON_KEY}; echo SUPABASE_URL_len=${#SUPABASE_URL}; echo SUPABASE_ANON_KEY_len=${#SUPABASE_ANON_KEY}; echo SUPABASE_SERVICE_ROLE_KEY_len=${#SUPABASE_SERVICE_ROLE_KEY}; echo ADMIN_API_TOKEN_len=${#ADMIN_API_TOKEN}; echo USER_API_SESSION_SECRET_len=${#USER_API_SESSION_SECRET}'`
+
+## Terminology Control (Do Not Drift)
+
+- Say **“CI latency budget proxy”** for fixture ratchets.
+- Do **not** say **“production p95 proven”** unless runtime distribution telemetry is attached.
+
+## Secrets Handling Rule
+
+- Never print secret values in chat, logs, or docs.
+- Only record presence/non-empty evidence (length checks or UI confirmation).
+- If secrets are rotated, update `docs/qa/2026-03-02-release-readiness-gate-status.md` with new observed evidence and run IDs.

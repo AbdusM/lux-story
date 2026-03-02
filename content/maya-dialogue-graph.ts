@@ -52,25 +52,6 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       },
       {
-        choiceId: 'intro_contradiction',
-        text: "You're trying to be two things at once.",
-        nextNodeId: 'maya_anxiety_check',
-        pattern: 'helping',
-        skills: ['emotionalIntelligence', 'communication'],
-        voiceVariations: {
-          helping: "That sounds exhausting. Being pulled in two directions.",
-          analytical: "Two tracks, one person. That's a structural problem.",
-          building: "You're trying to build two different futures. At the same time.",
-          exploring: "What if you didn't have to choose between them?",
-          patience: "Two paths. That's heavy to carry."
-        },
-        consequence: {
-          characterId: 'maya',
-          trustChange: 1,
-          addKnowledgeFlags: ['noticed_contradiction']
-        }
-      },
-      {
         choiceId: 'intro_place',
         text: "This station appears when we need it most. Why are you here?",
         nextNodeId: 'maya_why_here',
@@ -82,24 +63,6 @@ export const mayaDialogueNodes: DialogueNode[] = [
           helping: "This station finds people who are searching. What are you looking for?",
           building: "People come here to figure out what to build next. You too?",
           patience: "The station knows when we need a pause. Why now, for you?"
-        }
-      },
-      {
-        choiceId: 'intro_patience',
-        text: "[Let her settle. The scattered energy needs room to breathe.]",
-        nextNodeId: 'maya_anxiety_check',
-        pattern: 'patience',
-        skills: ['emotionalIntelligence', 'adaptability'],
-        voiceVariations: {
-          patience: "[Give her space. Let the chaos settle on its own.]",
-          helping: "[She needs a moment. Be present without pushing.]",
-          analytical: "[Wait. Observe. The situation will clarify itself.]",
-          exploring: "[Interesting. See what she does when given room.]",
-          building: "[Sometimes the best thing is to not intervene.]"
-        },
-        consequence: {
-          characterId: 'maya',
-          trustChange: 1
         }
       },
       // Shift Left: Early simulation access

@@ -27,7 +27,7 @@ const skillDataLimiter = rateLimit({
  * Fetch complete skill profile for admin dashboard
  */
 export async function GET(request: NextRequest) {
-  // Authentication check - verify admin cookie
+  // Authentication check - Supabase session + role
   const authError = await requireAdminAuth(request)
   if (authError) return authError
 

@@ -6,19 +6,20 @@
 import { describe, it, expect } from 'vitest'
 
 describe('Phase 1 Fixtures Verification', () => {
+  // Dynamic fixture imports can be slow on colder CI/desktop runtimes.
   it('should be able to import game-state-fixtures module', async () => {
     const module = await import('../../e2e/fixtures/game-state-fixtures')
     expect(module).toBeDefined()
     expect(module.test).toBeDefined()
     expect(module.expect).toBeDefined()
-  })
+  }, 15000)
 
   it('should be able to import auth-fixtures module', async () => {
     const module = await import('../../e2e/fixtures/auth-fixtures')
     expect(module).toBeDefined()
     expect(module.test).toBeDefined()
     expect(module.expect).toBeDefined()
-  })
+  }, 15000)
 
   it('should have testid attributes in game-choice component', async () => {
     const fs = await import('fs/promises')

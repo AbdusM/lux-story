@@ -1,0 +1,11 @@
+{
+  "generated_at": "2026-02-13T00:00:00.000Z",
+  "source": "ci_fixture_choice_selected_result_processing_time_ms",
+  "notes": "Deterministic fixture for CI latency ratchet. Replace with exported interaction_events samples from CI/production telemetry pipeline when available.",
+  "samples": [
+    146, 158, 171, 163, 149, 182, 194, 176, 188, 201,
+    173, 165, 157, 209, 214, 198, 187, 222, 231, 205,
+    216, 224, 239, 247, 233, 252, 261, 244, 238, 269,
+    281, 274, 266, 289, 301, 312, 294, 327, 338, 349
+  ]
+}

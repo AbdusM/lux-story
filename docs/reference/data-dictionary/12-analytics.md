@@ -1,10 +1,20 @@
 # Analytics & Events - Data Dictionary
 
-**Last Updated:** January 13, 2026
-**Source:** `/lib/event-bus.ts`, `/lib/career-analytics.ts`, `/lib/simple-analytics.ts`, `/lib/simple-career-analytics.ts`, `/lib/admin-analytics.ts`
-**Status:** Manual Documentation
+**Last Updated:** March 1, 2026
+**Source:** `/lib/event-bus.ts`, `/lib/career-analytics.ts`, `/lib/simple-analytics.ts`, `/lib/simple-career-analytics.ts`, `/lib/admin-analytics.ts`, `/lib/telemetry/interaction-events-spec.ts`, `/lib/sync-queue.ts`
+**Status:** Manual documentation with mixed recency (see status note below)
 
 ---
+
+## Status (2026-03-01)
+
+- The `Interaction Events Telemetry (Supabase)` section is current and aligned to runtime emitters/parity checks.
+- Earlier sections (`Event Bus`, `Career Analytics`, `Simple Analytics`, `Admin Analytics`) remain reference material and may contain historical counts/examples.
+- Current operational verification for telemetry and latency uses:
+  - `docs/qa/interaction-event-emitter-parity-report.json`
+  - `docs/qa/choice-dispatch-latency-report.json`
+  - `docs/qa/choice-processing-latency-report.json`
+  - `.github/workflows/test.yml`
 
 ## Overview
 
@@ -451,14 +461,14 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
   - Adds `payload.__gct_validation` when the payload is missing expected keys (soft validation).
 
 **Database table:**
-- `interaction_events` via `supabase/migrations/021_interaction_events_table.sql`
+- `interaction_events` via `supabase/migrations/019_interaction_events_table.sql`
 
 ### Table Schema (interaction_events)
 
 | Column | Type | Notes |
 |--------|------|------|
 | `id` | uuid | Primary key |
-| `user_id` | text | Player ID (`player_...` or UUID), FK to `player_profiles.user_id` |
+| `user_id` | text | Player ID (UUID in production), FK to `player_profiles.user_id` (legacy `player_*` formats must be migrated; see `docs/03_PROCESS/RELEASE_READINESS_CHECKLIST.md`) |
 | `session_id` | text | Session identifier (currently `sessionStartTime` string) |
 | `event_type` | text | e.g. `choice_presented`, `choice_selected_ui`, `choice_selected_result`, `node_entered`, `experiment_assigned`, `deadlock_recovery_injected` |
 | `node_id` | text | Dialogue node id (when applicable) |
@@ -497,15 +507,20 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
   - `reaction_time_ms`: number
 
 **`choice_selected_result`** (authoritative result from game logic)
-- Emitted by: `hooks/game/useChoiceHandler.ts`
+- Emitted by: `components/StatefulGameInterface.tsx`
 - Payload keys (subset):
-  - `choice_id`: string|null
-  - `choice_text`: string|null
-  - `choice_pattern`: string|null
-  - `reaction_time_ms`: number
+  - `event_id`: string
+  - `selected_choice_id`: string|null
+  - `selected_choice_text`: string|null
+  - `selected_ui_event_id`: string|null (links to `choice_selected_ui.payload.event_id` when available)
+  - `click_to_dispatch_ms`: number|null (UI click -> resolver dispatch latency; includes intentional commitment animation)
+  - `reaction_time_ms`: number|null
+  - `processing_time_ms`: number
   - `earned_pattern`: string|null
   - `trust_delta`: number|null
-  - `nervous_system_state`: string|null
+  - `result_node_id`: string|null
+  - `outcome`: string (e.g. `resolved`, `travel_pending`, `navigation_error`, `handler_exception`)
+  - `error_code`: string|null
 
 **`node_entered`** (dialogue navigation truth; emitted once per node change)
 - Emitted by:
