@@ -7957,31 +7957,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     ]
   },
 
-  // Grace Placeholder (Temporary)
-	  {
-	    nodeId: 'grace_revisit_welcome',
-	    speaker: 'System',
-    content: [
-      {
-        text: "[Grace's content is currently under construction. Please check back later.]",
-        emotion: 'neutral',
-        variation_id: 'grace_placeholder'
-      }
-    ],
-	    choices: [
-	      {
-	        choiceId: 'grace_placeholder_return',
-	        text: "Return to Station",
-	        // Route through the hub router so the correct hub variant is selected for the current state.
-	        nextNodeId: 'samuel_hub_router'
-	        // Removed invalid pattern: 'neutral'
-	      }
-	    ]
-	  },
-
-  // ============= PATTERN MILESTONE GREETINGS =============
-  // Samuel greets returning players differently based on pattern progress
-  // INVISIBLE DEPTH: Player feels recognized without explicit notifications
+	  // ============= PATTERN MILESTONE GREETINGS =============
+	  // Samuel greets returning players differently based on pattern progress
+	  // INVISIBLE DEPTH: Player feels recognized without explicit notifications
 
   // Greeting Router - directs to appropriate greeting based on pattern milestones
   {

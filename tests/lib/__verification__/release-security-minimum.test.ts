@@ -69,13 +69,13 @@ describe('release:security:minimum', () => {
     })
     expect((await profilePOST(profilePostReq)).status).toBe(401)
 
-    const interactionReq = new NextRequest(new URL('http://localhost:3000/api/user/interaction-events'), {
-      method: 'POST',
-      body: JSON.stringify({ session_id: 's', event_type: 't', payload: {} }),
-      headers: { 'Content-Type': 'application/json' },
-    })
-    expect((await interactionPOST(interactionReq)).status).toBe(401)
-  })
+	    const interactionReq = new NextRequest(new URL('http://localhost:3000/api/user/interaction-events'), {
+	      method: 'POST',
+	      body: JSON.stringify({ session_id: 's', event_type: 'choice_presented', payload: {} }),
+	      headers: { 'Content-Type': 'application/json' },
+	    })
+	    expect((await interactionPOST(interactionReq)).status).toBe(401)
+	  })
 
   test('/api/user/* forbids cross-user writes (user_id mismatch)', async () => {
     const { POST: profilePOST } = await import('@/app/api/user/profile/route')
