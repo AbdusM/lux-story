@@ -10,11 +10,12 @@ Purpose: prevent context drift in future agent sessions and keep release/readine
 
 ## Current Verified State
 
-- PR: `https://github.com/AbdusM/lux-story/pull/7`
+- Feature PR: `https://github.com/AbdusM/lux-story/pull/7`
+- Latest merged docs PR: `https://github.com/AbdusM/lux-story/pull/8`
 - Branch: `main` (post-merge)
 - Latest required checks green:
-  - Test Suite run: `22596086017`
-  - Playwright E2E run: `22596086033`
+  - Test Suite run: `22596652714`
+  - E2E matrix run: `22596650716`
 - Production deploy live: `https://lux-story.vercel.app`
 
 ## Release Gate Truth (as of 2026-03-02)
@@ -32,12 +33,21 @@ UI/design system reference:
 - `docs/03_PROCESS/onboarding/03-design-systems-engineer-prompt.md`
 
 1. CI status
-   - `gh pr checks 7 -R AbdusM/lux-story`
+   - `gh pr checks 8 -R AbdusM/lux-story`
 2. Branch protection
    - `gh api repos/AbdusM/lux-story/branches/main/protection --jq '{required_status_checks: .required_status_checks.contexts}'`
 3. UUID readiness
    - `npm run verify:user-id-uuid-readiness`
-4. Production env lengths (safe: lengths only)
+4. Latency budget proxy checks
+   - `npm run verify:choice-dispatch-latency`
+   - `npm run verify:choice-processing-latency`
+5. Security minimum + UI contracts
+   - `npm run release:security:minimum`
+   - `npm run test:run -- tests/components/ui-layout-stability-contract.test.ts tests/components/stateful-menu-preservation-contract.test.ts tests/components/game-choices-sheet-mode.test.tsx`
+   - `npm run type-check`
+6. Mobile bottom-sheet UX gate
+   - `npx playwright test tests/e2e/mobile/choice-bottom-sheet.spec.ts --project=mobile-iphone-14`
+7. Production env lengths (safe: lengths only)
    - `vercel --cwd /Users/abdusmuwwakkil/Development/30_lux-story env run -e production -- bash -lc 'echo NEXT_PUBLIC_SUPABASE_URL_len=${#NEXT_PUBLIC_SUPABASE_URL}; echo NEXT_PUBLIC_SUPABASE_ANON_KEY_len=${#NEXT_PUBLIC_SUPABASE_ANON_KEY}; echo SUPABASE_URL_len=${#SUPABASE_URL}; echo SUPABASE_ANON_KEY_len=${#SUPABASE_ANON_KEY}; echo SUPABASE_SERVICE_ROLE_KEY_len=${#SUPABASE_SERVICE_ROLE_KEY}; echo ADMIN_API_TOKEN_len=${#ADMIN_API_TOKEN}; echo USER_API_SESSION_SECRET_len=${#USER_API_SESSION_SECRET}'`
 
 ## Terminology Control (Do Not Drift)
