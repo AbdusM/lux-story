@@ -9,7 +9,7 @@ This is the latest operational snapshot for merge/release decisions.
 | CI checks green on release PR (#11) | ✅ Pass | `gh pr checks 11 -R AbdusM/lux-story` shows all checks passing (latest runs `22598111853` + `22598111843`) | None |
 | Branch protection requires CI checks | ✅ Pass | `gh api repos/AbdusM/lux-story/branches/main/protection` shows required checks: `Test Suite / Run Tests`, `Test Suite / Build Project` | None |
 | Release tag published | ✅ Pass | `gh release view v2.3.1 -R AbdusM/lux-story` reports `publishedAt=2026-03-02T22:22:06Z` and tag URL `https://github.com/AbdusM/lux-story/releases/tag/v2.3.1` | None |
-| Production deploy alias updated | ✅ Pass | `npm run deploy:vercel -- --yes` created deployment `https://lux-story-38dns1ymb-link-dap.vercel.app` and aliased `https://lux-story.vercel.app` | None |
+| Production deploy alias updated | ✅ Pass | `npm run deploy:vercel -- --yes` created deployment `https://lux-story-92kyhlu9p-link-dap.vercel.app` and aliased `https://lux-story.vercel.app` | None |
 | Production health endpoints | ✅ Pass | `curl https://lux-story.vercel.app/api/health` and `curl https://lux-story.vercel.app/api/health/db` both report healthy checks | None |
 | Production `user_id` UUID-only | ✅ Pass | `npm run verify:user-id-uuid-readiness` reports `player_profiles non_uuid_rows=0 (status=pass)` | None |
 | Production secrets/env completeness | ✅ Pass | `vercel env run -e production` now reports non-zero lengths for required vars (`NEXT_PUBLIC_SUPABASE_ANON_KEY=208`, `SUPABASE_ANON_KEY=208`, `SUPABASE_SERVICE_ROLE_KEY=219`, `ADMIN_API_TOKEN=43`, `USER_API_SESSION_SECRET=64`) | None |

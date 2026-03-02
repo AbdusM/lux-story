@@ -20,7 +20,7 @@ Purpose: prevent context drift in future agent sessions and keep release/readine
   - E2E matrix run: `22598111843`
 - Latest release tag: `v2.3.1` (`https://github.com/AbdusM/lux-story/releases/tag/v2.3.1`)
 - Production deploy live: `https://lux-story.vercel.app`
-- Latest production deployment URL: `https://lux-story-38dns1ymb-link-dap.vercel.app`
+- Latest production deployment URL: `https://lux-story-92kyhlu9p-link-dap.vercel.app`
 
 ## Release Gate Truth (as of 2026-03-02)
 
