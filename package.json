@@ -66,6 +66,8 @@
     "audit:core-diff": "node scripts/report-core-gameplay-diff.js",
     "verify:analytics-dict": "node --loader ./scripts/ts-loader.mjs scripts/verify-analytics-dictionary.ts && node --loader ./scripts/ts-loader.mjs scripts/verify-no-inmemory-analytics.ts && node --loader ./scripts/ts-loader.mjs scripts/verify-interaction-event-emitters.ts",
     "verify:user-id-uuid-readiness": "node --loader ./scripts/ts-loader.mjs scripts/verify-user-id-uuid-readiness.ts",
+    "migrate:user-id-uuid:dry-run": "node --loader ./scripts/ts-loader.mjs scripts/remediate-legacy-user-ids.ts",
+    "migrate:user-id-uuid:execute": "node --loader ./scripts/ts-loader.mjs scripts/remediate-legacy-user-ids.ts --execute",
     "verify:choice-dispatch-latency": "node --loader ./scripts/ts-loader.mjs scripts/verify-choice-dispatch-latency-ratchet.ts",
     "verify:choice-processing-latency": "node --loader ./scripts/ts-loader.mjs scripts/verify-choice-processing-latency-ratchet.ts",
     "verify:interaction-event-emitters": "node --loader ./scripts/ts-loader.mjs scripts/verify-interaction-event-emitters.ts",
