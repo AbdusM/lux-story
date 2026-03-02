@@ -164,8 +164,12 @@ test.describe('Interrupt Timing Validation', () => {
 
     // Use God Mode to jump to interrupt node
     await page.evaluate(() => {
-      window.godMode.setTrust('maya', 6)
-      window.godMode.jumpToNode('maya_vulnerability_arc')
+      const godMode = window.godMode
+      if (!godMode) {
+        throw new Error('God Mode API unavailable in test runtime')
+      }
+      godMode.setTrust('maya', 6)
+      godMode.jumpToNode('maya_vulnerability_arc')
     })
 
     // Wait for navigation
