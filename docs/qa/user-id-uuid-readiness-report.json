@@ -1,0 +1,185 @@
+{
+  "generated_at": "2026-03-02T18:13:25.911Z",
+  "project_ref": "tavalvqcebosfxamuvlx",
+  "rest_url": "https://tavalvqcebosfxamuvlx.supabase.co/rest/v1",
+  "pagination_limit": 1000,
+  "summary": {
+    "total_rows": 4225,
+    "uuid_rows": 2959,
+    "player_prefixed_rows": 1199,
+    "other_rows": 67,
+    "non_uuid_rows": 1266
+  },
+  "player_profiles_gate": {
+    "status": "fail",
+    "non_uuid_rows": 75,
+    "reason": "Found non-UUID player_profiles.user_id values. Production UUID-only gate is not met."
+  },
+  "tables": [
+    {
+      "table": "player_profiles",
+      "column": "user_id",
+      "total_rows": 1711,
+      "uuid_rows": 1636,
+      "player_prefixed_rows": 67,
+      "other_rows": 8,
+      "non_uuid_rows": 75,
+      "non_uuid_percent": 4.38,
+      "missing_table": false
+    },
+    {
+      "table": "skill_demonstrations",
+      "column": "user_id",
+      "total_rows": 648,
+      "uuid_rows": 0,
+      "player_prefixed_rows": 648,
+      "other_rows": 0,
+      "non_uuid_rows": 648,
+      "non_uuid_percent": 100,
+      "missing_table": false
+    },
+    {
+      "table": "career_explorations",
+      "column": "user_id",
+      "total_rows": 0,
+      "uuid_rows": 0,
+      "player_prefixed_rows": 0,
+      "other_rows": 0,
+      "non_uuid_rows": 0,
+      "non_uuid_percent": 0,
+      "missing_table": false
+    },
+    {
+      "table": "relationship_progress",
+      "column": "user_id",
+      "total_rows": 3,
+      "uuid_rows": 0,
+      "player_prefixed_rows": 0,
+      "other_rows": 3,
+      "non_uuid_rows": 3,
+      "non_uuid_percent": 100,
+      "missing_table": false
+    },
+    {
+      "table": "platform_states",
+      "column": "user_id",
+      "total_rows": 1,
+      "uuid_rows": 0,
+      "player_prefixed_rows": 1,
+      "other_rows": 0,
+      "non_uuid_rows": 1,
+      "non_uuid_percent": 100,
+      "missing_table": false
+    },
+    {
+      "table": "career_analytics",
+      "column": "user_id",
+      "total_rows": 0,
+      "uuid_rows": 0,
+      "player_prefixed_rows": 0,
+      "other_rows": 0,
+      "non_uuid_rows": 0,
+      "non_uuid_percent": 0,
+      "missing_table": false
+    },
+    {
+      "table": "skill_summaries",
+      "column": "user_id",
+      "total_rows": 178,
+      "uuid_rows": 54,
+      "player_prefixed_rows": 117,
+      "other_rows": 7,
+      "non_uuid_rows": 124,
+      "non_uuid_percent": 69.66,
+      "missing_table": false
+    },
+    {
+      "table": "interaction_events",
+      "column": "user_id",
+      "total_rows": 0,
+      "uuid_rows": 0,
+      "player_prefixed_rows": 0,
+      "other_rows": 0,
+      "non_uuid_rows": 0,
+      "non_uuid_percent": 0,
+      "missing_table": false
+    },
+    {
+      "table": "pattern_demonstrations",
+      "column": "user_id",
+      "total_rows": 1635,
+      "uuid_rows": 1269,
+      "player_prefixed_rows": 366,
+      "other_rows": 0,
+      "non_uuid_rows": 366,
+      "non_uuid_percent": 22.39,
+      "missing_table": false
+    },
+    {
+      "table": "visited_scenes",
+      "column": "player_id",
+      "total_rows": 11,
+      "uuid_rows": 0,
+      "player_prefixed_rows": 0,
+      "other_rows": 11,
+      "non_uuid_rows": 11,
+      "non_uuid_percent": 100,
+      "missing_table": false
+    },
+    {
+      "table": "choice_history",
+      "column": "player_id",
+      "total_rows": 33,
+      "uuid_rows": 0,
+      "player_prefixed_rows": 0,
+      "other_rows": 33,
+      "non_uuid_rows": 33,
+      "non_uuid_percent": 100,
+      "missing_table": false
+    },
+    {
+      "table": "player_patterns",
+      "column": "player_id",
+      "total_rows": 1,
+      "uuid_rows": 0,
+      "player_prefixed_rows": 0,
+      "other_rows": 1,
+      "non_uuid_rows": 1,
+      "non_uuid_percent": 100,
+      "missing_table": false
+    },
+    {
+      "table": "player_behavioral_profiles",
+      "column": "player_id",
+      "total_rows": 0,
+      "uuid_rows": 0,
+      "player_prefixed_rows": 0,
+      "other_rows": 0,
+      "non_uuid_rows": 0,
+      "non_uuid_percent": 0,
+      "missing_table": false
+    },
+    {
+      "table": "skill_milestones",
+      "column": "player_id",
+      "total_rows": 1,
+      "uuid_rows": 0,
+      "player_prefixed_rows": 0,
+      "other_rows": 1,
+      "non_uuid_rows": 1,
+      "non_uuid_percent": 100,
+      "missing_table": false
+    },
+    {
+      "table": "player_urgency_scores",
+      "column": "player_id",
+      "total_rows": 3,
+      "uuid_rows": 0,
+      "player_prefixed_rows": 0,
+      "other_rows": 3,
+      "non_uuid_rows": 3,
+      "non_uuid_percent": 100,
+      "missing_table": false
+    }
+  ]
+}

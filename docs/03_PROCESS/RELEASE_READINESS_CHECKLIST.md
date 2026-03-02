@@ -109,3 +109,4 @@ These prove code-level guardrails locally (not production config):
 - `npm run lint`
 - `npm run test:run`
 - `npm run release:security:minimum`
+- `npm run verify:user-id-uuid-readiness` (writes `docs/qa/user-id-uuid-readiness-report.json`; fails if any `player_profiles.user_id` is non-UUID)
