@@ -185,4 +185,30 @@ describe('release:security:minimum', () => {
       ;(process.env as any).NODE_ENV = previous
     }
   })
+
+  test('/api/user write routes fail closed when Supabase is not configured', async () => {
+    const { POST } = await import('@/app/api/user/platform-state/route')
+
+    const prevPublicUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const prevServiceRole = process.env.SUPABASE_SERVICE_ROLE_KEY
+    delete process.env.NEXT_PUBLIC_SUPABASE_URL
+    delete process.env.SUPABASE_SERVICE_ROLE_KEY
+
+    try {
+      const req = new NextRequest(new URL('http://localhost:3000/api/user/platform-state'), {
+        method: 'POST',
+        body: JSON.stringify({ current_scene: 'samuel_introduction' }),
+        headers: { 'Content-Type': 'application/json' },
+      })
+      req.cookies.set(USER_SESSION_COOKIE_NAME, createUserSessionToken('player_123'))
+
+      const res = await POST(req)
+      const body = await res.json()
+      expect(res.status).toBe(503)
+      expect(body?.code).toBe('SUPABASE_NOT_CONFIGURED')
+    } finally {
+      if (typeof prevPublicUrl === 'string') process.env.NEXT_PUBLIC_SUPABASE_URL = prevPublicUrl
+      if (typeof prevServiceRole === 'string') process.env.SUPABASE_SERVICE_ROLE_KEY = prevServiceRole
+    }
+  })
 })

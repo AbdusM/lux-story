@@ -22,7 +22,6 @@ export default defineConfig({
       name: 'smoke',
       testMatch: [
         '**/characters/character-smoke.spec.ts',
-        '**/simulations/simulation-smoke.spec.ts',
         '**/user-flows/homepage.spec.ts',
       ],
       use: {

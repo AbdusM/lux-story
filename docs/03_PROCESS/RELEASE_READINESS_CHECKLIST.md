@@ -43,6 +43,8 @@ This checklist defines what “verified” means (evidence + acceptance).
 - ✅ Required checks include the workflow jobs from `.github/workflows/test.yml`:
   - “Test Suite / Run Tests” (`.github/workflows/test.yml:15`)
   - “Test Suite / Build Project” (`.github/workflows/test.yml:114`)
+- ✅ Required checks include the production-safe Playwright gate from `.github/workflows/playwright.yml`:
+  - “Playwright E2E Tests / report” (`.github/workflows/playwright.yml:208`)
 
 **Evidence (E1)**
 - Screenshot of the branch protection rule showing required status checks (names visible).

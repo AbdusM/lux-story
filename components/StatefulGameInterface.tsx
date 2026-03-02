@@ -227,6 +227,7 @@ import { ReturnHookPrompt } from '@/components/game/ReturnHookPrompt'
 import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
 import { getSkillComboUnlockChoices } from '@/lib/skill-combo-unlock-choices'
 import { calculateSkillDecay, getSkillDecayNarrative } from '@/lib/assessment-derivatives'
+import { buildChoiceOutcomePresentation, type ChoiceOutcomeCard, type ChoiceOutcomePresentationMode } from '@/lib/choice-outcome-presentation'
 // Share prompts removed-too obtrusive
 
 // Trust feedback now dialogue-based via consequence echoes
@@ -247,6 +248,7 @@ interface GameInterfaceState {
   showSaveConfirmation: boolean
   skillToast: { skill: string; message: string } | null
   consequenceFeedback: { message: string } | null
+  choiceOutcomeCard: ChoiceOutcomeCard | null
   error: { title: string; message: string; severity: 'error' | 'warning' | 'info' } | null
   previousSpeaker: string | null
   recentSkills: string[]
@@ -408,6 +410,7 @@ export default function StatefulGameInterface() {
     showSaveConfirmation: false,
     skillToast: null,
     consequenceFeedback: null,
+    choiceOutcomeCard: null,
     error: null,
     recentSkills: [],
     showExperienceSummary: false,
@@ -1323,6 +1326,7 @@ export default function StatefulGameInterface() {
         showSaveConfirmation: false,
         skillToast: null,
         consequenceFeedback: checkInFeedback,
+        choiceOutcomeCard: null,
         error: null,
         previousSpeaker: null,
         recentSkills: [],
@@ -1437,6 +1441,7 @@ export default function StatefulGameInterface() {
       error: null,
       ambientEvent: null,
       consequenceFeedback: null,
+      choiceOutcomeCard: null,
       patternSensation: null
     }))
   }, [safeStart.graph, safeStart.characterId])
@@ -1469,6 +1474,10 @@ export default function StatefulGameInterface() {
     let selectedUiEventId: string | null = null
     let choiceEarnedPattern: string | null = null
     let choiceTrustDelta: number | null = null
+    let outcomePresentationMode: ChoiceOutcomePresentationMode = 'inline'
+    let outcomeHiddenCount = 0
+    let outcomeRewardCount = 0
+    let outcomeCard: ChoiceOutcomeCard | null = null
     let choiceResultEmitted = false
 
     if (uiSelection) {
@@ -1499,6 +1508,9 @@ export default function StatefulGameInterface() {
           processing_time_ms: Date.now() - choiceProcessingStartedAt,
           earned_pattern: choiceEarnedPattern,
           trust_delta: choiceTrustDelta,
+          presentation_mode: outcomePresentationMode,
+          hidden_count: outcomeHiddenCount,
+          reward_count: outcomeRewardCount,
           result_node_id: overrides?.resultNodeId ?? null,
           outcome,
           error_code: overrides?.errorCode ?? null,
@@ -1508,7 +1520,7 @@ export default function StatefulGameInterface() {
 
     // LOCK: Immediate ref lock + UI state update
     isProcessingChoiceRef.current = true
-    setState(prev => ({ ...prev, isProcessing: true }))
+    setState(prev => ({ ...prev, isProcessing: true, choiceOutcomeCard: null }))
 
     // Safety timeout: auto-reset lock if handler crashes or hangs
     const safetyTimeout = setTimeout(() => {
@@ -2989,6 +3001,21 @@ export default function StatefulGameInterface() {
         if (!dominantPattern) dominantPattern = 'exploring'
       }
 
+      const unlockCount = Array.from(newGameState.globalFlags).filter(
+        (flag) => !state.gameState!.globalFlags.has(flag)
+      ).length
+      const outcomePresentation = buildChoiceOutcomePresentation({
+        outcome: 'resolved',
+        trustDelta: choiceTrustDelta,
+        earnedPattern: choiceEarnedPattern,
+        unlockCount,
+        nextSpeaker: nextNode.speaker ?? null,
+      })
+      outcomePresentationMode = outcomePresentation.mode
+      outcomeHiddenCount = outcomePresentation.hiddenCount
+      outcomeRewardCount = outcomePresentation.rewardCount
+      outcomeCard = outcomePresentation.card
+
       emitChoiceSelectedResult('resolved', { resultNodeId: nextNode.nodeId })
 
       setState(prev => ({
@@ -3007,6 +3034,7 @@ export default function StatefulGameInterface() {
         showSaveConfirmation: false, // Disabled-save happens silently, no interruption
         skillToast: null, // Disabled-skills tracked silently
         consequenceFeedback,
+        choiceOutcomeCard: outcomeCard,
         error: null,
         previousSpeaker: prev.currentNode?.speaker || null,
         recentSkills: skillsToKeep,
@@ -4046,6 +4074,34 @@ export default function StatefulGameInterface() {
                               />
                             )
                           })()}
+
+                          {state.choiceOutcomeCard && (
+                            <div
+                              data-testid="choice-outcome-card"
+                              className="mt-4 rounded-lg border border-emerald-400/20 bg-emerald-950/20 px-4 py-3"
+                            >
+                              <p className="text-xs uppercase tracking-[0.08em] text-emerald-300/80">Outcome</p>
+                              <p className="mt-1 text-sm text-emerald-100">{state.choiceOutcomeCard.summary}</p>
+                              {state.choiceOutcomeCard.rewards.length > 0 && (
+                                <ul className="mt-2 flex flex-wrap gap-2">
+                                  {state.choiceOutcomeCard.rewards.map((reward) => (
+                                    <li
+                                      key={reward}
+                                      className="rounded-full border border-emerald-400/30 bg-emerald-900/40 px-2 py-1 text-xs text-emerald-100"
+                                    >
+                                      {reward}
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                              {state.choiceOutcomeCard.hiddenCount > 0 && (
+                                <p className="mt-2 text-xs text-emerald-300/70">
+                                  +{state.choiceOutcomeCard.hiddenCount} more update{state.choiceOutcomeCard.hiddenCount === 1 ? '' : 's'}
+                                </p>
+                              )}
+                              <p className="mt-2 text-xs text-slate-300">{state.choiceOutcomeCard.nextLabel}</p>
+                            </div>
+                          )}
 
                           {/* ISP: INLINE SIMULATION WIDGET (Handshake Protocol) */}
                           {state.currentNode?.simulation && state.currentNode.simulation.mode === 'inline' && (

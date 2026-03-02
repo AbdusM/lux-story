@@ -66,6 +66,16 @@ export function supabaseNotConfiguredResponse(
 ): NextResponse {
   logger.warn('Missing Supabase config - operation skipped', { operation })
 
+  if (method === 'POST') {
+    return NextResponse.json(
+      {
+        error: 'Supabase not configured',
+        code: 'SUPABASE_NOT_CONFIGURED',
+      },
+      { status: 503 }
+    )
+  }
+
   if (method === 'GET' && emptyDataKey) {
     return NextResponse.json({
       success: true,
@@ -194,11 +204,14 @@ export function isSupabaseConfigured(): boolean {
  */
 export function checkSupabaseConfigured(operation: string): NextResponse | null {
   if (!isSupabaseConfigured()) {
-    logger.warn('Supabase not configured - skipping operation', { operation })
-    return NextResponse.json({
-      success: true,
-      message: 'Supabase not configured - sync skipped'
-    })
+    logger.warn('Supabase not configured - rejecting write operation', { operation })
+    return NextResponse.json(
+      {
+        error: 'Supabase not configured',
+        code: 'SUPABASE_NOT_CONFIGURED',
+      },
+      { status: 503 }
+    )
   }
   return null
 }

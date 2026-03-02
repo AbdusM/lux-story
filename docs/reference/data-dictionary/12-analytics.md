@@ -518,6 +518,9 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
   - `processing_time_ms`: number
   - `earned_pattern`: string|null
   - `trust_delta`: number|null
+  - `presentation_mode`: `inline`|`card` (how outcome feedback was shown for this choice result)
+  - `hidden_count`: number (how many reward/update items were suppressed from UI presentation)
+  - `reward_count`: number (how many reward/update items were shown)
   - `result_node_id`: string|null
   - `outcome`: string (e.g. `resolved`, `travel_pending`, `navigation_error`, `handler_exception`)
   - `error_code`: string|null
