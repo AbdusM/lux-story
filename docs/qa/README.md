@@ -5,6 +5,7 @@
 - `2026-03-01-doc-reconciliation-status.md`: canonical reconciliation map for what is current vs historical.
 - `../03_PROCESS/RELEASE_READINESS_CHECKLIST.md`: release-time operational verifications (branch protection, UUID-only IDs, session secret).
 - `2026-03-02-release-readiness-gate-status.md`: latest pass/fail gate snapshot with exact manual actions required before release.
+- `2026-03-02-agentic-session-handoff.md`: future-session continuity guardrails (scope boundaries, quickstart checks, terminology control).
 - `interaction-event-emitter-parity-report.json`: declared vs emitted telemetry parity report (`missing_types` must stay empty).
 - `choice-dispatch-latency-report.json`: dispatch-latency ratchet report (deterministic fixture budget proxy).
 - `choice-processing-latency-report.json`: processing-latency ratchet report (deterministic fixture budget proxy).

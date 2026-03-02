@@ -9,6 +9,8 @@ Purpose: reconcile prior QA findings against current implementation and prevent 
 Use these artifacts first when deciding current readiness:
 
 - `docs/03_PROCESS/RELEASE_READINESS_CHECKLIST.md`
+- `docs/qa/2026-03-02-release-readiness-gate-status.md`
+- `docs/qa/2026-03-02-agentic-session-handoff.md`
 - `.github/workflows/test.yml`
 - `docs/qa/interaction-event-emitter-parity-report.json`
 - `docs/qa/choice-dispatch-latency-report.json`
