@@ -11,7 +11,7 @@ import { springs } from '@/lib/animations'
  * TICKET-002: Handle >3 choices without nested scroll
  *
  * Specs:
- * - Max height: 60% viewport
+ * - Max height: ~70% mobile / ~50% desktop
  * - Backdrop: Blur + 50% opacity
  * - Close triggers: Swipe down, tap backdrop, select choice
  * - Tap target: 52-60px height minimum
@@ -63,6 +63,55 @@ export function BottomSheet({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose()
+        return
+      }
+
+      if (e.key !== 'Tab') return
+
+      const sheet = sheetRef.current
+      if (!sheet) return
+
+      const focusable = Array.from(
+        sheet.querySelectorAll<HTMLElement>(
+          [
+            'a[href]',
+            'button:not([disabled])',
+            'input:not([disabled])',
+            'select:not([disabled])',
+            'textarea:not([disabled])',
+            '[tabindex]:not([tabindex="-1"])',
+          ].join(',')
+        )
+      ).filter((el) => !el.hasAttribute('disabled') && el.getAttribute('aria-hidden') !== 'true')
+
+      if (focusable.length === 0) {
+        e.preventDefault()
+        sheet.focus()
+        return
+      }
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      const active = document.activeElement as HTMLElement | null
+
+      // If focus is outside the sheet, bring it in.
+      if (!active || !sheet.contains(active)) {
+        e.preventDefault()
+        ;(e.shiftKey ? last : first).focus()
+        return
+      }
+
+      if (e.shiftKey) {
+        if (active === first) {
+          e.preventDefault()
+          last.focus()
+        }
+        return
+      }
+
+      if (active === last) {
+        e.preventDefault()
+        first.focus()
       }
     }
 
@@ -112,7 +161,7 @@ export function BottomSheet({
             tabIndex={-1}
             className={cn(
               'fixed bottom-0 left-0 right-0 z-50',
-              'max-h-[60vh] overflow-hidden',
+              'max-h-[70dvh] sm:max-h-[50dvh] overflow-hidden',
               'rounded-t-2xl',
               'bg-slate-950/95 backdrop-blur-xl',
               'border-t border-white/10',
@@ -160,9 +209,8 @@ export function BottomSheet({
 
             {/* Content - scrollable if needed */}
             <div
-              className="overflow-y-auto overscroll-contain"
+              className="overflow-y-auto overscroll-contain max-h-[calc(70dvh-80px)] sm:max-h-[calc(50dvh-80px)]"
               style={{
-                maxHeight: 'calc(60vh - 80px)', // Account for handle + header
                 WebkitOverflowScrolling: 'touch',
               }}
             >

@@ -181,6 +181,13 @@ interface GameChoicesProps {
   playerPatterns?: PlayerPatterns
   /** Claim 16: Cognitive Load Level (truncates text) */
   cognitiveLoad?: CognitiveLoadLevel
+  /**
+   * Layout strategy for the choice list container.
+   * - auto: current behavior (capped internal scroll for 3+)
+   * - inline: no internal scroll/height caps (parent controls scrolling)
+   * - capped: always use internal capped scroll/height guards
+   */
+  layoutMode?: 'auto' | 'inline' | 'capped'
 }
 
 /**
@@ -715,7 +722,7 @@ const groupChoices = (choices: Choice[]) => {
  * - 1-9: Direct selection of choice by number
  * - Escape: Clear focus
  */
-export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevels, glass = false, playerPatterns, cognitiveLoad = 'normal' }: GameChoicesProps) => {
+export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevels, glass = false, playerPatterns, cognitiveLoad = 'normal', layoutMode = 'auto' }: GameChoicesProps) => {
   // SIGNATURE CHOICE ANIMATION (Directive B: 30% Budget)
   const {
     animationState,
@@ -747,7 +754,12 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   const useGrid = sortedChoices.length >= 4
   const useGrouping = sortedChoices.length > 6 // Group only if many choices (6+) to avoid clutter
   // Engage capped mode at 3+ choices to reduce footer-height jumps between nodes.
-  const useCappedSheetLayout = sortedChoices.length > 2
+  const useCappedSheetLayout =
+    layoutMode === 'capped'
+      ? true
+      : layoutMode === 'inline'
+        ? false
+        : sortedChoices.length > 2
   const isTransitioning = isProcessing || isCommitting
 
   const { nonEmptyGroups, presentedChoicesFlat } = useMemo(() => {

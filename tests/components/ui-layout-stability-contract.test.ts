@@ -25,13 +25,23 @@ describe('UI layout stability contracts', () => {
     expect(content).not.toContain('max-w-xl mx-auto shadow-2xl border-x border-white/5 bg-black/10')
   })
 
-  it('enables capped choice-sheet mode when three or more responses are present', () => {
+  it('living atmosphere frame avoids a visible border line (glow-only)', () => {
+    const filePath = path.join(process.cwd(), 'components/LivingAtmosphere.tsx')
+    const content = fs.readFileSync(filePath, 'utf-8')
+
+    expect(content).toContain("border: '1px solid transparent'")
+    expect(content).not.toContain('border: `1px solid ${frameBorderColor}`')
+  })
+
+  it('uses a bottom sheet for four or more responses', () => {
     const filePath = path.join(process.cwd(), 'components/StatefulGameInterface.tsx')
     const content = fs.readFileSync(filePath, 'utf-8')
 
-    expect(content).toContain('const useCappedChoiceSheet = preparedChoices.length > 2')
-    expect(content).toContain("data-choice-sheet-mode={useCappedChoiceSheet ? 'capped' : 'free'}")
-    expect(content).toContain('useCappedChoiceSheet ? "h-[260px] xs:h-[300px] sm:h-[260px]" : "min-h-[160px] xs:min-h-[180px] sm:min-h-[180px]"')
+    expect(content).toContain('const useBottomSheetChoices = preparedChoices.length > 3')
+    expect(content).toContain("data-choice-sheet-mode={useBottomSheetChoices ? 'bottom-sheet'")
+    expect(content).toContain('<BottomSheet')
+    expect(content).toContain('data-testid="choice-sheet-trigger"')
+    expect(content).toContain('layoutMode="inline"')
   })
 
   it('pins dialogue stage geometry and avoids wait-mode footer remounts', () => {
