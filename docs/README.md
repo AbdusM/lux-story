@@ -32,6 +32,7 @@ Do not relocate these paths without updating all script references.
 6. Dialogue style guardrails: `docs/03_PROCESS/22-dialogue-guidelines.md`
 7. Dialogue external review analysis: `docs/03_PROCESS/23-dialogue-external-review-analysis.md`
 8. Dialogue topology migration protocol: `docs/03_PROCESS/24-dialogue-topology-migration-protocol.md`
+9. Agent continuity + UI prompt: `docs/qa/2026-03-02-agentic-session-handoff.md` and `docs/03_PROCESS/onboarding/03-design-systems-engineer-prompt.md`
 
 Primary product directives:
 - `docs/00_PRD.01 - AAA.md`

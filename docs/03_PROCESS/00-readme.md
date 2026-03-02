@@ -37,6 +37,7 @@ This folder is the operational hub for implementation, QA, and release workflow.
 - Testing strategy: `docs/03_PROCESS/01-testing.md`
 - Delivery methodology: `docs/03_PROCESS/02-methodology.md`
 - Document control policy: `docs/03_PROCESS/03-document-control.md`
+- UI / design system agent prompt: `docs/03_PROCESS/onboarding/03-design-systems-engineer-prompt.md`
 - Character deep coverage audit: `docs/03_PROCESS/21-character-deep-coverage-audit.md`
 - Dialogue style guardrails: `docs/03_PROCESS/22-dialogue-guidelines.md`
 - Dialogue external review analysis: `docs/03_PROCESS/23-dialogue-external-review-analysis.md`
