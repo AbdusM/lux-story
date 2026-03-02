@@ -8,6 +8,11 @@ If the goal is to prioritize `lux-story` reliability with lowest migration risk,
 
 This is lower-risk than moving `lux-story` first because `lux-story` already has active gameplay/state tables and larger user-state volume.
 
+## Update (Observed 2026-03-02)
+
+- `five-tiers-connect` production runtime has been disconnected from Supabase (env vars removed in Vercel), reducing shared-tenant write/read blast radius.
+- This does **not** fully eliminate shared-tenancy risk until `five-tiers-connect` uses its own Supabase project ref.
+
 ## Current Observed State
 
 - Supabase projects in org:

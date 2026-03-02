@@ -461,14 +461,14 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
   - Adds `payload.__gct_validation` when the payload is missing expected keys (soft validation).
 
 **Database table:**
-- `interaction_events` via `supabase/migrations/021_interaction_events_table.sql`
+- `interaction_events` via `supabase/migrations/019_interaction_events_table.sql`
 
 ### Table Schema (interaction_events)
 
 | Column | Type | Notes |
 |--------|------|------|
 | `id` | uuid | Primary key |
-| `user_id` | text | Player ID (`player_...` or UUID), FK to `player_profiles.user_id` |
+| `user_id` | text | Player ID (UUID in production), FK to `player_profiles.user_id` (legacy `player_*` formats must be migrated; see `docs/03_PROCESS/RELEASE_READINESS_CHECKLIST.md`) |
 | `session_id` | text | Session identifier (currently `sessionStartTime` string) |
 | `event_type` | text | e.g. `choice_presented`, `choice_selected_ui`, `choice_selected_result`, `node_entered`, `experiment_assigned`, `deadlock_recovery_injected` |
 | `node_id` | text | Dialogue node id (when applicable) |

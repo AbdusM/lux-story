@@ -1,6 +1,6 @@
 # Lux Story Development Checkpoint (Resume Snapshot)
 
-Last updated: 2026-03-01
+Last updated: 2026-03-02
 Scope: `lux-story` / `actualizeme` lane only
 
 ## Verdict / Status
@@ -33,6 +33,22 @@ Scope: `lux-story` / `actualizeme` lane only
 - Branch protection on `main` was configured to require:
   - `Test Suite / Run Tests`
   - `Test Suite / Build Project`
+
+## Update (Observed 2026-03-02)
+
+- Branch protection is confirmed via GitHub API:
+  - `gh api repos/AbdusM/lux-story/branches/main/protection` shows required checks:
+    - `Test Suite / Run Tests`
+    - `Test Suite / Build Project`
+- Vercel production env is currently missing critical secrets (lengths only):
+  - `NEXT_PUBLIC_SUPABASE_URL_len=40`
+  - `NEXT_PUBLIC_SUPABASE_ANON_KEY_len=0`
+  - `SUPABASE_SERVICE_ROLE_KEY_len=0`
+  - `SUPABASE_URL_len=40`
+  - `USER_API_SESSION_SECRET_len=0`
+- `five-tiers-connect` mitigation status:
+  - repo is private (GitHub visibility changed)
+  - Supabase env vars removed from its Vercel production runtime (no shared-tenant writes)
 
 ## Risks (Top 3)
 

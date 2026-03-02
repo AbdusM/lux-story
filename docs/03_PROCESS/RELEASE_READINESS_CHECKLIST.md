@@ -14,7 +14,7 @@ This checklist defines what “verified” means (evidence + acceptance).
 
 **Why:** if CI checks aren’t required, a green pipeline is optional and guardrails don’t gate merges.
 
-**Where:** GitHub → Repo → Settings → Branches → Branch protection rules → `main`
+**Where (UI):** `https://github.com/AbdusM/lux-story/settings/branches` → Branch protection rules → `main`
 
 **Acceptance**
 - ✅ “Require a pull request before merging” enabled (optional but recommended)
@@ -28,7 +28,7 @@ This checklist defines what “verified” means (evidence + acceptance).
 
 **Evidence (E1, CLI alternative)**
 - Output of:
-  - `gh api repos/OWNER/REPO/branches/main/protection`
+  - `gh api repos/AbdusM/lux-story/branches/main/protection`
 
 ## 2) Production `user_id` is UUID-only (unguessable) (P0)
 
@@ -44,6 +44,8 @@ This checklist defines what “verified” means (evidence + acceptance).
 
 **Evidence (E1)**
 - Screenshot of query results (counts only; do not share raw user IDs).
+
+**Where (UI):** `https://supabase.com/dashboard/project/tavalvqcebosfxamuvlx` → SQL Editor (project: `actualizeme`)
 
 **SQL (run in Supabase SQL editor or `psql`)**
 ```sql
@@ -74,6 +76,11 @@ order by count desc;
 **Evidence (E1)**
 - Screenshot of the production environment variables list showing the key name `USER_API_SESSION_SECRET` exists (do not reveal value).
 
+**Where (UI):** `https://vercel.com/link-dap/lux-story/settings/environment-variables`
+
+**Evidence (E1, CLI alternative — lengths only, safe to paste into issues)**
+- `vercel --cwd /Users/abdusmuwwakkil/Development/30_lux-story env run -e production -- bash -lc 'echo NEXT_PUBLIC_SUPABASE_URL_len=${#NEXT_PUBLIC_SUPABASE_URL}; echo NEXT_PUBLIC_SUPABASE_ANON_KEY_len=${#NEXT_PUBLIC_SUPABASE_ANON_KEY}; echo SUPABASE_SERVICE_ROLE_KEY_len=${#SUPABASE_SERVICE_ROLE_KEY}; echo SUPABASE_URL_len=${#SUPABASE_URL}; echo USER_API_SESSION_SECRET_len=${#USER_API_SESSION_SECRET}'`
+
 ## Optional: local “gate run” proof (E2)
 
 These prove code-level guardrails locally (not production config):
@@ -81,4 +88,3 @@ These prove code-level guardrails locally (not production config):
 - `npm run lint`
 - `npm run test:run`
 - `npm run release:security:minimum`
-
