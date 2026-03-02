@@ -82,6 +82,10 @@ group by kind
 order by count desc;
 ```
 
+**One-shot remediation script (preserve data):**
+- `docs/03_PROCESS/plans/2026-03-02-player-id-uuid-remediation.sql`
+- After running it in SQL Editor, re-run: `npm run verify:user-id-uuid-readiness`
+
 ## 3) `USER_API_SESSION_SECRET` exists in production (P0)
 
 **Why:** session signing must be stable and **must not** be coupled to `SUPABASE_SERVICE_ROLE_KEY` rotation.
