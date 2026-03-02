@@ -1,6 +1,6 @@
 # Lux Story Documentation
 
-Last updated: 2026-02-11
+Last updated: 2026-03-02
 
 ## Canonical Structure
 

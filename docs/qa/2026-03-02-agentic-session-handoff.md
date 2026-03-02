@@ -10,11 +10,11 @@ Purpose: prevent context drift in future agent sessions and keep release/readine
 
 ## Current Verified State
 
-- PR: `https://github.com/AbdusM/lux-story/pull/6`
-- Branch: `codex/samuel-intro-review`
+- PR: `https://github.com/AbdusM/lux-story/pull/7`
+- Branch: `main` (post-merge)
 - Latest required checks green:
-  - Test Suite run: `22591101488`
-  - Playwright E2E run: `22591101426`
+  - Test Suite run: `22596086017`
+  - Playwright E2E run: `22596086033`
 - Production deploy live: `https://lux-story.vercel.app`
 
 ## Release Gate Truth (as of 2026-03-02)
@@ -32,7 +32,7 @@ UI/design system reference:
 - `docs/03_PROCESS/onboarding/03-design-systems-engineer-prompt.md`
 
 1. CI status
-   - `gh pr checks 6`
+   - `gh pr checks 7 -R AbdusM/lux-story`
 2. Branch protection
    - `gh api repos/AbdusM/lux-story/branches/main/protection --jq '{required_status_checks: .required_status_checks.contexts}'`
 3. UUID readiness
