@@ -1,6 +1,6 @@
 # Document Control Policy
 
-Last updated: 2026-03-01
+Last updated: 2026-03-02
 
 ## Objectives
 
@@ -20,6 +20,8 @@ Last updated: 2026-03-01
 For current release assertions, use this set before older audit narratives:
 - `docs/03_PROCESS/RELEASE_READINESS_CHECKLIST.md`
 - `docs/qa/2026-03-01-doc-reconciliation-status.md`
+- `docs/qa/2026-03-02-release-readiness-gate-status.md`
+- `docs/qa/2026-03-02-agentic-session-handoff.md`
 - `.github/workflows/test.yml`
 - `docs/qa/interaction-event-emitter-parity-report.json`
 - `docs/qa/choice-dispatch-latency-report.json`
