@@ -24,7 +24,7 @@ This checklist defines what “verified” means (evidence + acceptance).
   - `SUPABASE_ANON_KEY`
 - ✅ `ADMIN_API_TOKEN` is non-empty and long/unguessable (do not use placeholders).
 - ✅ `USER_API_SESSION_SECRET` is non-empty in production.
-- ⚠️ `SUPABASE_SERVICE_ROLE_KEY` is optional unless you use privileged server-side admin/diagnostic paths.
+- ✅ `SUPABASE_SERVICE_ROLE_KEY` is set in production (required for server-side DB operations in `/api/user/*` and admin/diagnostic paths).
 
 **Evidence (E1, CLI alternative — lengths only)**
 - `vercel --cwd /Users/abdusmuwwakkil/Development/30_lux-story env run -e production -- bash -lc 'echo NEXT_PUBLIC_SUPABASE_URL_len=${#NEXT_PUBLIC_SUPABASE_URL}; echo NEXT_PUBLIC_SUPABASE_ANON_KEY_len=${#NEXT_PUBLIC_SUPABASE_ANON_KEY}; echo SUPABASE_URL_len=${#SUPABASE_URL}; echo SUPABASE_ANON_KEY_len=${#SUPABASE_ANON_KEY}; echo SUPABASE_SERVICE_ROLE_KEY_len=${#SUPABASE_SERVICE_ROLE_KEY}; echo ADMIN_API_TOKEN_len=${#ADMIN_API_TOKEN}; echo USER_API_SESSION_SECRET_len=${#USER_API_SESSION_SECRET}'`
