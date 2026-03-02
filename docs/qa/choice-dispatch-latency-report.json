@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-02-13T21:30:32.260Z",
+  "generated_at": "2026-03-02T02:51:57.186Z",
   "budget_ms": 260,
   "min_samples": 20,
   "samples_path": "docs/qa/choice-dispatch-latency-samples.json",

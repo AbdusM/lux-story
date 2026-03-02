@@ -6,17 +6,17 @@ Sources: `content/*-dialogue-graph.ts`, `lib/dialogue-graph.ts`, `lib/story-engi
 
 | character | choice_nodes | condition_refs | interrupts | content_sim_id | lib_sim_id | sim_id_match |
 |---|---:|---:|:---:|---|---|:---:|
-| samuel | 400 | 31 | Y | samuel_ops | samuel_ops | Y |
+| samuel | 401 | 31 | Y | samuel_ops | samuel_ops | Y |
 | quinn | 163 | 5 | Y | quinn_pitch | quinn_pitch | Y |
 | marcus | 149 | 15 | Y | marcus_triage | marcus_triage | Y |
-| maya | 137 | 10 | Y | maya_servo_debugger | maya_servo_debugger | Y |
+| maya | 135 | 10 | Y | maya_servo_debugger | maya_servo_debugger | Y |
 | elena | 130 | 10 | Y | elena_market | elena_market | Y |
 | dante | 114 | 3 | Y | dante_pitch | dante_pitch | Y |
 | devon | 110 | 3 | Y | devon_logic | devon_logic | Y |
 | isaiah | 110 | 3 | Y | isaiah_logistics | isaiah_logistics | Y |
 | nadia | 106 | 2 | Y | nadia_news | nadia_news | Y |
-| tess | 101 | 4 | Y | tess_botany | tess_botany | Y |
 | kai | 100 | 4 | Y | kai_blueprint | kai_blueprint | Y |
+| tess | 100 | 4 | Y | tess_botany | tess_botany | Y |
 | yaquin | 100 | 4 | Y | yaquin_timeline | yaquin_timeline | Y |
 | zara | 97 | 4 | Y | zara_audit | zara_audit | Y |
 | alex | 91 | 5 | Y | alex_negotiation | alex_negotiation | Y |
@@ -33,4 +33,4 @@ Notes:
 - `interrupts`: Whether the character has interrupt-tagged nodes or interrupt blocks.
 - `sim_id_match`: Whether content and lib simulation IDs are unified.
 
-_Generated: 2026-02-11_
+_Generated: 2026-03-02_
