@@ -45,9 +45,12 @@ export async function updateSession(request: NextRequest) {
 
   let supabaseResponse = createResponse()
 
+  const configuredSupabaseUrl = supabaseUrl!
+  const configuredSupabaseAnonKey = supabaseAnonKey!
+
   const supabase = createServerClient(
-    supabaseUrl,
-    supabaseAnonKey,
+    configuredSupabaseUrl,
+    configuredSupabaseAnonKey,
     {
       cookies: {
         getAll() {
