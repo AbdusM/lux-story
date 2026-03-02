@@ -28,6 +28,9 @@ Canonical status file:
 
 ## Standard Re-Validation Commands (Agent Quickstart)
 
+UI/design system reference:
+- `docs/03_PROCESS/onboarding/03-design-systems-engineer-prompt.md`
+
 1. CI status
    - `gh pr checks 6`
 2. Branch protection

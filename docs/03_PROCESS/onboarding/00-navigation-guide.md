@@ -1,7 +1,7 @@
 # Lux Story Documentation Navigation Guide
 
 **For:** New team members, non-technical stakeholders, educators
-**Last Updated:** January 2026
+**Last Updated:** 2026-03-02
 
 ---
 
@@ -42,6 +42,7 @@
 ### For Developers & Engineers
 📂 **Location:** Root directory + `lib/`
 - **Quick context** → `CLAUDE.md` (root directory - PRIMARY reference)
+- **UI / design system agent prompt** → `docs/03_PROCESS/onboarding/03-design-systems-engineer-prompt.md`
 - **How to build** → `docs/03_PROCESS/20-execution-strategy.md`
 - **Code architecture** → `lib/STATE_ARCHITECTURE.md`
 - **Testing guide** → `docs/03_PROCESS/01-testing.md`

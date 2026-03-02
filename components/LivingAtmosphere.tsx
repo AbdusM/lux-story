@@ -357,7 +357,7 @@ export function LivingAtmosphere({
             <motion.div
                 className="absolute inset-2 sm:inset-4 z-0 rounded-2xl pointer-events-none"
                 style={{
-                    border: `1px solid ${frameBorderColor}`,
+                    border: '1px solid transparent',
                     boxShadow: emotionGlow.intensity > 0
                         ? `0 0 ${40 + emotionGlow.intensity * 60}px ${emotionGlow.color}${Math.round(emotionGlow.intensity * 50).toString(16).padStart(2, '0')}, inset 0 0 ${60 + emotionGlow.intensity * 40}px ${emotionGlow.color}${Math.round(emotionGlow.intensity * 30).toString(16).padStart(2, '0')}`
                         : `0 0 30px ${frameBorderColor}20, inset 0 0 60px ${frameBorderColor}10`,

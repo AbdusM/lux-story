@@ -6,10 +6,12 @@ Evidence set: `docs/qa/screenshots-2026-02-12/` (24 screenshots)
 
 This document is intentionally **implementation-facing**: each finding points to **evidence + likely root cause + recommended direction**.
 
-## Status (2026-03-01)
+## Status (2026-03-02)
 
 - Historical audit snapshot with several fixes already applied (see Section `6` in this file).
 - Current latency guardrails are CI ratchets over deterministic fixtures (budget proxies), not production telemetry distribution truth.
+- LivingAtmosphere station frame is now glow-only (no visible border line) to reduce double-framing with glass panels.
+- For 4+ choices, the response UI now uses a bottom sheet trigger to decouple choices from the dialogue layout.
 - Canonical release-truth references:
   - `docs/03_PROCESS/RELEASE_READINESS_CHECKLIST.md`
   - `docs/qa/2026-03-01-doc-reconciliation-status.md`
@@ -262,3 +264,14 @@ This is fine on modern devices but can amplify any foreground work (choice handl
 - Updated regression contracts/tests:
   - `tests/components/game-choices-sheet-mode.test.tsx`
   - `tests/components/ui-layout-stability-contract.test.ts`
+
+### 6.1) Applied Fixes (2026-03-02, Iteration C)
+
+- Preserved overlay/menu flags during async choice resolution by merging from `prev` state in `components/StatefulGameInterface.tsx` (contract: `tests/components/stateful-menu-preservation-contract.test.ts`).
+- Added explicit “transition in progress” affordance in `components/GameChoices.tsx` (unit: `tests/components/game-choices-sheet-mode.test.tsx`).
+- Restricted marquee-border usage to high-salience choices in `components/GameChoices.tsx` (contract: `tests/components/ui-layout-stability-contract.test.ts`).
+- Simplified LivingAtmosphere station frame to glow-only (transparent border) in `components/LivingAtmosphere.tsx` (contract: `tests/components/ui-layout-stability-contract.test.ts`).
+
+### 6.2) Applied Fixes (2026-03-02, Iteration D)
+
+- Implemented bottom-sheet choice presentation for **4+ choices** to prevent dialogue reflow (`components/StatefulGameInterface.tsx`, `components/ui/BottomSheet.tsx`; contract: `tests/components/ui-layout-stability-contract.test.ts`).

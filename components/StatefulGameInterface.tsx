@@ -145,7 +145,8 @@ import { detectArcCompletion } from '@/lib/arc-learning-objectives'
 import { isSupabaseConfigured } from '@/lib/supabase'
 // eslint-disable-next-line
 import { GameChoices } from '@/components/GameChoices'
-import { BookOpen, Stars, Compass } from 'lucide-react'
+import { BottomSheet } from '@/components/ui/BottomSheet'
+import { BookOpen, Stars, Compass, ChevronUp } from 'lucide-react'
 import { Journal } from '@/components/Journal'
 import { SessionSummary } from '@/components/SessionSummary'
 import { ConstellationPanel } from '@/components/constellation'
@@ -375,6 +376,7 @@ export default function StatefulGameInterface() {
   // Keyboard shortcuts
   const { registerHandler, shortcuts, updateShortcut, resetShortcuts } = useKeyboardShortcuts()
   const [showShortcutsHelp, setShowShortcutsHelp] = useState(false)
+  const [isChoicesBottomSheetOpen, setIsChoicesBottomSheetOpen] = useState(false)
 
   // Toast notifications for keyboard hint
   const toast = useToast()
@@ -3636,6 +3638,57 @@ export default function StatefulGameInterface() {
     })
   }, [state.activeExperience, state.gameState])
 
+  const currentCharacter = state.gameState?.characters.get(state.currentCharacterId)
+  const isEnding = state.availableChoices.length === 0
+  const currentNodeTags = state.currentNode?.tags || []
+  const isNodePivotal = currentNodeTags.some(tag =>
+    ['pivotal', 'defining_moment', 'final_choice', 'climax', 'revelation', 'introduction'].includes(tag)
+  )
+  const preparedChoices = filterChoicesByLoad(
+    state.availableChoices,
+    cognitiveLoad,
+    undefined, // Todo: Pass dominant pattern
+    isNodePivotal // Bypass filtering for pivotal moments
+  ).map((c) => {
+    const originalIndex = state.availableChoices.indexOf(c)
+    const voicedText = state.gameState ? getVoicedChoiceText(
+      c.choice.text,
+      c.choice.voiceVariations,
+      state.gameState.patterns
+    ) : c.choice.text
+    return {
+      id: c.choice.choiceId,
+      text: voicedText,
+      pattern: c.choice.pattern,
+      enabled: c.enabled,
+      disabledReason: c.reason,
+      feedback: c.choice.interaction === 'shake' ? ('shake' as const) : undefined,
+      pivotal: isNodePivotal,
+      requiredOrbFill: c.choice.requiredOrbFill,
+      gravity: c.gravity,
+      next: String(originalIndex)
+    }
+  })
+  const useBottomSheetChoices = preparedChoices.length > 3
+  const useCappedChoiceSheet = false
+  const hasBlockingOverlay =
+    state.showJournal ||
+    state.showConstellation ||
+    state.showJourneySummary ||
+    state.showReport
+
+  useEffect(() => {
+    if (!useBottomSheetChoices && isChoicesBottomSheetOpen) {
+      setIsChoicesBottomSheetOpen(false)
+    }
+  }, [useBottomSheetChoices, isChoicesBottomSheetOpen])
+
+  useEffect(() => {
+    if ((state.isProcessing || hasBlockingOverlay) && isChoicesBottomSheetOpen) {
+      setIsChoicesBottomSheetOpen(false)
+    }
+  }, [state.isProcessing, hasBlockingOverlay, isChoicesBottomSheetOpen])
+
 
   // Render Logic-Restored Card Layout
   // Onboarding removed-discovery-based learning happens via Samuel's firstOrb echo
@@ -3688,48 +3741,6 @@ export default function StatefulGameInterface() {
       </div>
     )
   }
-
-
-
-
-  const currentCharacter = state.gameState?.characters.get(state.currentCharacterId)
-  const isEnding = state.availableChoices.length === 0
-  const currentNodeTags = state.currentNode?.tags || []
-  const isNodePivotal = currentNodeTags.some(tag =>
-    ['pivotal', 'defining_moment', 'final_choice', 'climax', 'revelation', 'introduction'].includes(tag)
-  )
-  const preparedChoices = filterChoicesByLoad(
-    state.availableChoices,
-    cognitiveLoad,
-    undefined, // Todo: Pass dominant pattern
-    isNodePivotal // Bypass filtering for pivotal moments
-  ).map((c) => {
-    const originalIndex = state.availableChoices.indexOf(c)
-    const voicedText = state.gameState ? getVoicedChoiceText(
-      c.choice.text,
-      c.choice.voiceVariations,
-      state.gameState.patterns
-    ) : c.choice.text
-    return {
-      id: c.choice.choiceId,
-      text: voicedText,
-      pattern: c.choice.pattern,
-      enabled: c.enabled,
-      disabledReason: c.reason,
-      feedback: c.choice.interaction === 'shake' ? ('shake' as const) : undefined,
-      pivotal: isNodePivotal,
-      requiredOrbFill: c.choice.requiredOrbFill,
-      gravity: c.gravity,
-      next: String(originalIndex)
-    }
-  })
-  const useCappedChoiceSheet = preparedChoices.length > 2
-  const hasBlockingOverlay =
-    state.showJournal ||
-    state.showConstellation ||
-    state.showJourneySummary ||
-    state.showReport
-
   // GOD MODE OVERRIDE-Render simulation if active (must be at end after all hooks)
   if (debugSimulation) {
     return (
@@ -3905,7 +3916,7 @@ export default function StatefulGameInterface() {
         <main
           // Mobile safe-area/corner padding: tests assert the game interface box is inset from edges.
           className="flex-1 overflow-y-auto overscroll-contain mx-2 sm:mx-0"
-          style={{ WebkitOverflowScrolling: 'touch' }}
+          style={{ WebkitOverflowScrolling: 'touch', overflowAnchor: 'none' }}
           data-testid="game-interface"
         >
           <div className="max-w-4xl mx-auto px-3 sm:px-4 py-3 sm:py-4 md:pt-8 lg:pt-12 pb-4 sm:pb-6">
@@ -4181,7 +4192,7 @@ export default function StatefulGameInterface() {
               "flex-shrink-0 sticky bottom-0 glass-panel max-w-4xl mx-auto w-full px-3 sm:px-4 z-20",
               useCappedChoiceSheet ? "rounded-t-2xl border-b-0 overflow-hidden" : ""
             )}
-            data-choice-sheet-mode={useCappedChoiceSheet ? 'capped' : 'free'}
+            data-choice-sheet-mode={useBottomSheetChoices ? 'bottom-sheet' : (useCappedChoiceSheet ? 'capped' : 'free')}
             style={{
               // SINGLE SCROLL REFACTOR: Sticky footer with safe area padding
               // Chrome mobile has 48-56px bottom bar that's NOT in safe-area-inset
@@ -4199,34 +4210,89 @@ export default function StatefulGameInterface() {
               {/* Scrollable choices container with scroll indicator */}
               <div className="relative w-full">
                 {/* SINGLE SCROLL REFACTOR: Removed nested scroll - choices expand naturally */}
-                {/* For >3 choices, TICKET-002 will add bottom sheet */}
+                {/* For >3 choices, render a bottom sheet trigger (TICKET-002). */}
                 <div
                   id="choices-container"
                   className={cn(
                     "w-full",
-                    useCappedChoiceSheet ? "h-[260px] xs:h-[300px] sm:h-[260px]" : "min-h-[160px] xs:min-h-[180px] sm:min-h-[180px]"
+                    useBottomSheetChoices
+                      ? "min-h-[160px] xs:min-h-[180px] sm:min-h-[180px]"
+                      : (useCappedChoiceSheet ? "h-[260px] xs:h-[300px] sm:h-[260px]" : "min-h-[160px] xs:min-h-[180px] sm:min-h-[180px]")
                   )}
                 >
-                  <GameChoices
-                    choices={preparedChoices}
-                    isProcessing={state.isProcessing || hasBlockingOverlay}
-                    orbFillLevels={orbFillLevels}
-                    onChoice={(c) => {
-                      const index = parseInt(c.next || '0', 10)
-                      const original = state.availableChoices[index]
-                      if (original) handleChoice(original)
-                    }}
-                    // FIX: Always use glass mode for dark theme (prevents white background issue)
-                    glass={true}
-                    playerPatterns={state.gameState?.patterns}
-                    cognitiveLoad={cognitiveLoad}
-                  />
+                  {useBottomSheetChoices ? (
+                    <Button
+                      type="button"
+                      variant="ghost-dark"
+                      size="lg"
+                      disabled={state.isProcessing || hasBlockingOverlay}
+                      onClick={() => setIsChoicesBottomSheetOpen(true)}
+                      data-testid="choice-sheet-trigger"
+                      aria-haspopup="dialog"
+                      aria-expanded={isChoicesBottomSheetOpen}
+                      className="w-full justify-between border border-white/10 bg-white/5 hover:bg-white/10"
+                    >
+                      <span className="flex items-center gap-2">
+                        {(state.isProcessing || hasBlockingOverlay) && (
+                          <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" aria-hidden="true" />
+                        )}
+                        <span>
+                          {state.isProcessing
+                            ? 'Loading next response'
+                            : `Choose a response (${preparedChoices.length})`}
+                        </span>
+                      </span>
+                      {!state.isProcessing && <ChevronUp className="h-4 w-4 opacity-70" aria-hidden="true" />}
+                    </Button>
+                  ) : (
+                    <GameChoices
+                      choices={preparedChoices}
+                      isProcessing={state.isProcessing || hasBlockingOverlay}
+                      orbFillLevels={orbFillLevels}
+                      onChoice={(c) => {
+                        const index = parseInt(c.next || '0', 10)
+                        const original = state.availableChoices[index]
+                        if (original) handleChoice(original)
+                      }}
+                      // FIX: Always use glass mode for dark theme (prevents white background issue)
+                      glass={true}
+                      playerPatterns={state.gameState?.patterns}
+                      cognitiveLoad={cognitiveLoad}
+                      layoutMode="inline"
+                    />
+                  )}
                 </div>
 
                 {/* Scroll indicator removed based on user feedback (often unnecessary) */}
               </div>
             </div>
           </footer>
+        )}
+
+        {!isEnding && useBottomSheetChoices && (
+          <BottomSheet
+            open={isChoicesBottomSheetOpen}
+            onClose={() => setIsChoicesBottomSheetOpen(false)}
+            title={`Choose a response (${preparedChoices.length})`}
+          >
+            <div className="px-2 pb-2">
+              <GameChoices
+                choices={preparedChoices}
+                isProcessing={state.isProcessing || hasBlockingOverlay}
+                orbFillLevels={orbFillLevels}
+                onChoice={(c) => {
+                  setIsChoicesBottomSheetOpen(false)
+                  const index = parseInt(c.next || '0', 10)
+                  const original = state.availableChoices[index]
+                  if (original) handleChoice(original)
+                }}
+                glass={true}
+                playerPatterns={state.gameState?.patterns}
+                cognitiveLoad={cognitiveLoad}
+                layoutMode="inline"
+              />
+            </div>
+          </BottomSheet>
         )}
 
         {/* Share prompts removed-too obtrusive */}

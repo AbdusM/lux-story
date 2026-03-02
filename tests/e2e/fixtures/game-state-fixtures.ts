@@ -15,6 +15,8 @@ export type SeedOverrides = {
   patterns?: Partial<GameState['patterns']>
   globalFlags?: string[]
   characterTrust?: Record<string, number>
+  characterConversationHistory?: Record<string, string[]>
+  characterLastInteractionTimestamp?: Record<string, number>
   skillLevels?: Record<string, number>
 }
 
@@ -75,6 +77,24 @@ function applySeedOverrides(base: GameState, overrides: SeedOverrides): GameStat
       if (cs) {
         cs.trust = trust
         cs.lastInteractionTimestamp = Date.now() - 60_000
+      }
+    }
+  }
+
+  if (overrides.characterConversationHistory) {
+    for (const [characterId, history] of Object.entries(overrides.characterConversationHistory)) {
+      const cs = base.characters.get(characterId)
+      if (cs) {
+        cs.conversationHistory = [...history]
+      }
+    }
+  }
+
+  if (overrides.characterLastInteractionTimestamp) {
+    for (const [characterId, ts] of Object.entries(overrides.characterLastInteractionTimestamp)) {
+      const cs = base.characters.get(characterId)
+      if (cs) {
+        cs.lastInteractionTimestamp = ts
       }
     }
   }
