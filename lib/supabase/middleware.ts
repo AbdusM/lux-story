@@ -19,7 +19,27 @@ export async function updateSession(request: NextRequest) {
   // or Playwright/web server startup will fail.
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('placeholder') || supabaseAnonKey.includes('placeholder')) {
+  const isSupabaseConfigured = Boolean(
+    supabaseUrl &&
+    supabaseAnonKey &&
+    !supabaseUrl.includes('placeholder') &&
+    !supabaseAnonKey.includes('placeholder')
+  )
+
+  const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
+  const isAdminLoginRoute = request.nextUrl.pathname === '/admin/login'
+
+  // Admin routes must fail closed even when Supabase isn't configured (CI/local/dev).
+  // This keeps the guardrails enforceable without requiring secrets in CI.
+  if (isAdminRoute && !isAdminLoginRoute && !isSupabaseConfigured) {
+    const loginUrl = new URL(request.url)
+    loginUrl.pathname = '/admin/login'
+    loginUrl.search = ''
+    loginUrl.searchParams.set('redirect', request.nextUrl.pathname + request.nextUrl.search)
+    return NextResponse.redirect(loginUrl)
+  }
+
+  if (!isSupabaseConfigured) {
     return createResponse()
   }
 
@@ -57,12 +77,18 @@ export async function updateSession(request: NextRequest) {
 
   // Protection for admin routes
   if (request.nextUrl.pathname.startsWith('/admin')) {
+    // Allow the informational login page to render without a Supabase session.
+    if (isAdminLoginRoute) {
+      return supabaseResponse
+    }
+
     // Redirect to login if accessing admin routes without auth
     if (userError || !user) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/'
-      url.searchParams.set('login', 'true')
-      return NextResponse.redirect(url)
+      const loginUrl = new URL(request.url)
+      loginUrl.pathname = '/admin/login'
+      loginUrl.search = ''
+      loginUrl.searchParams.set('redirect', request.nextUrl.pathname + request.nextUrl.search)
+      return NextResponse.redirect(loginUrl)
     }
 
     // Role-gate admin pages (API routes also enforce this server-side).
@@ -77,11 +103,12 @@ export async function updateSession(request: NextRequest) {
       : null
 
     if (!role || !['admin', 'educator'].includes(role)) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/'
-      url.searchParams.set('login', 'true')
-      url.searchParams.set('forbidden', 'admin')
-      return NextResponse.redirect(url)
+      const loginUrl = new URL(request.url)
+      loginUrl.pathname = '/admin/login'
+      loginUrl.search = ''
+      loginUrl.searchParams.set('redirect', request.nextUrl.pathname + request.nextUrl.search)
+      loginUrl.searchParams.set('forbidden', 'admin')
+      return NextResponse.redirect(loginUrl)
     }
   }
 

@@ -14,8 +14,8 @@
  * - Replaced plaintext password comparison with session validation
  *
  * EMERGENCY FALLBACK (Jan 15, 2026):
- * - Added ADMIN_API_TOKEN as emergency fallback when Supabase auth fails
- * - Heavily rate limited (1 per 5 minutes) and fully audited
+ * - Historical note: this file previously supported token-based fallback auth.
+ * - Current admin access is role-based (Supabase session + profiles.role).
  */
 
 import { createClient } from '@supabase/supabase-js'
@@ -31,6 +31,15 @@ import { NextRequest, NextResponse } from 'next/server'
  * Returns error response if unauthorized, null if authorized
  */
 export async function requireAdminAuth(request: NextRequest): Promise<NextResponse | null> {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return NextResponse.json(
+      { error: 'Admin authentication is not configured' },
+      { status: 503 }
+    )
+  }
+
   // Primary auth: Supabase session cookies
   // Create Supabase client from request cookies
   const supabase = createSupabaseServerClient(request)
@@ -76,9 +85,15 @@ export async function requireAdminAuth(request: NextRequest): Promise<NextRespon
  * Handles cookies from NextRequest
  */
 function createSupabaseServerClient(request: NextRequest) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Missing Supabase env vars for admin auth client')
+  }
+
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {
