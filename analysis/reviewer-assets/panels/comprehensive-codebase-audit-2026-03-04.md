@@ -45,6 +45,7 @@ No finding below claims runtime exploitability unless marked `Observed (runtime)
 - `analysis/reviewer-assets/panels/evidence/release-smoke-preview-2026-03-04.txt`
 - `analysis/reviewer-assets/panels/evidence/release-smoke-local-2026-03-04-csp-hardening.txt`
 - `analysis/reviewer-assets/panels/evidence/settings-parity-local-2026-03-04.txt`
+- `analysis/reviewer-assets/panels/evidence/overlay-perf-ci-2026-03-04.txt`
 - `docs/qa/keydown-listener-ownership-report.json`
 - `docs/qa/home-route-budget-report.json`
 
@@ -79,6 +80,7 @@ Completed from ship-blocking queue:
 - `AUD-011` complete: debug/test surfaces are middleware-gated to `404` in production (`/test-*`, `/test-env`, `/shadcn-preview`, `/api/test-env`).
 - `AUD-012` complete: home-route bundle budget verifier added and wired into CI build workflow.
 - `AUD-013` complete: constrained `settings-parity` lane is green in CI (`test-settings-parity`) and in local unsandboxed execution (`1 passed`).
+- Overlay perf benchmark lane completed in CI (`Overlay Perf Benchmarks`, run `22688229426`) with CPU-throttled open/close metrics captured to evidence artifact.
 - Security verification tests updated and passing in `tests/lib/__verification__/release-security-minimum.test.ts`.
 
 Residual ship risk:

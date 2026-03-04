@@ -95,7 +95,7 @@ Single source of truth: **overlay store**.
 ## Remaining PRD Backlog (Next)
 
 1. Extended visual/perf pass
-   - Capture desktop/mobile panel snapshots and measure open/close smoothness under CPU throttle.
+   - Optional: capture desktop/mobile panel snapshots for reviewer packaging.
 2. Optional product refinements
    - Additional contextual surfacing copy and timing tuning based on playtest signal.
 
@@ -123,6 +123,11 @@ Single source of truth: **overlay store**.
 - Glass/typography token alignment:
   - Added PRD v2 token aliases (`--glass-surface*`, `--accent-*`, `--font-ui`, `--font-narrative`) and utility classes in `app/globals.css`.
   - Updated `JourneySummary` narrative text to use `font-narrative` class instead of inline `Georgia` styles.
+- Overlay perf benchmark lane:
+  - Added isolated `overlay-perf` Playwright project + spec (`tests/e2e/user-flows/overlay-smoothness.spec.ts`).
+  - Added manual CI workflow lane (`.github/workflows/overlay-perf.yml`) for stable benchmark capture.
+  - Latest successful benchmark run: `Overlay Perf Benchmarks` (`22688229426`), with metrics artifact:
+    `analysis/reviewer-assets/panels/evidence/overlay-perf-ci-2026-03-04.txt`.
 
 ## “Done” Definition
 
