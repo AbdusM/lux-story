@@ -13,6 +13,7 @@ import { SkillGapVisualizer } from '../dashboard/SkillGapVisualizer'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useGameStore } from '@/lib/game-store'
 import { useFocusTrap } from '@/hooks/useFocusTrap'
+import { getConflictProgress, getUnreliableRecordById } from '@/lib/unreliable-narrator-system'
 
 /**
  * STRATEGY REPORT
@@ -31,6 +32,9 @@ export function StrategyReport({ gameState, onClose }: StrategyReportProps) {
     const { ref: reportRef, onKeyDown: handleReportKeyDown } = useFocusTrap<HTMLDivElement>()
     const profile = generateCareerProfile(gameState)
     const skills = useGameStore((state) => state.skills)
+    const contradictionProgress = getConflictProgress(gameState.archivistState, gameState.globalFlags)
+    const contradictionResolved = contradictionProgress.filter((entry) => entry.isVerified)
+    const contradictionReady = contradictionProgress.filter((entry) => entry.isReady && !entry.isVerified)
 
     // Calculate Neuro-Cognitive Cluster Stats
     const clusterStats = {
@@ -132,6 +136,36 @@ export function StrategyReport({ gameState, onClose }: StrategyReportProps) {
                                 <p className="text-slate-800 leading-relaxed text-justify">
                                     {profile.executiveSummary}
                                 </p>
+                            </section>
+
+                            <section className="mb-10">
+                                <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3 border-b border-slate-200 pb-1">
+                                    Contradiction Ledger
+                                </h3>
+                                <p className="text-sm text-slate-700">
+                                    Verified: <strong>{contradictionResolved.length}</strong> / {contradictionProgress.length}
+                                    {' '}| Ready to verify: <strong>{contradictionReady.length}</strong>
+                                </p>
+                                {contradictionReady.length > 0 && (
+                                    <ul className="mt-3 space-y-2">
+                                        {contradictionReady.slice(0, 3).map((entry) => (
+                                            <li key={entry.cluster.id} className="rounded border border-amber-300 bg-amber-50 p-2">
+                                                <p className="font-medium text-amber-900">{entry.cluster.name}</p>
+                                                <p className="text-xs text-amber-800">
+                                                    Missing: {entry.missingRecordIds.length === 0
+                                                        ? 'None'
+                                                        : entry.missingRecordIds
+                                                            .slice(0, 2)
+                                                            .map((recordId) => {
+                                                                const record = getUnreliableRecordById(recordId)
+                                                                return record ? record.sourceFaction.replace('_', ' ') : recordId
+                                                            })
+                                                            .join(', ')}
+                                                </p>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
                             </section>
 
                             {/* Evidence of Capability */}

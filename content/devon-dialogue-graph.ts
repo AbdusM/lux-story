@@ -854,7 +854,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'patience'
       }
     ],
-    tags: ['scene_break', 'pacing', 'devon_arc'],
+    tags: ['scene_break', 'pacing', 'devon_arc', 'micro:devon_father_memory'],
     metadata: {
       sessionBoundary: true  // Session 1: Introduction complete
     }
@@ -2068,7 +2068,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         skills: ['adaptability']
       }
     ],
-    tags: ['career_mention', 'invisible_depth', 'sustainability']
+    tags: ['career_mention', 'invisible_depth', 'sustainability', 'iceberg:the_builders']
   },
 
   // ============= ADDITIONAL CAREER REFLECTIONS =============
@@ -2690,7 +2690,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         skills: ['emotionalIntelligence']
       }
     ],
-    tags: ['devon_arc', 'process', 'vulnerability']
+    tags: ['devon_arc', 'process', 'vulnerability', 'iceberg:midnight_rule', 'iceberg:silent_shift', 'record:record_devon_recycler_constraints']
   },
 
   {
@@ -3182,7 +3182,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'patience'
       }
     ],
-    tags: ['mystery', 'breadcrumb']
+    tags: ['mystery', 'breadcrumb', 'faction:engineers', 'record:record_devon_power_budget_trace', 'record:record_devon_shift_roster_gap']
   },
   {
     nodeId: 'devon_mystery_response_1',
@@ -3207,7 +3207,8 @@ export const devonDialogueNodes: DialogueNode[] = [
         nextNodeId: 'devon_hub_return',
         pattern: 'helping'
       }
-    ]
+    ],
+    tags: ['mystery', 'revelation', 'faction:engineers', 'verify-conflict:silent_shift_protocol']
   },
   {
     nodeId: 'devon_hub_return',
@@ -3218,7 +3219,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       variation_id: 'hub_return_v1'
     }],
     choices: [],
-    tags: ['terminal']
+    tags: ['terminal', 'micro-callback:devon_father_memory']
   },
 
   // ============= PHASE 1 SIMULATION: SYSTEM DEBUGGER (Trust ≥ 2) =============

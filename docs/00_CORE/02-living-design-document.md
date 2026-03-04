@@ -75,7 +75,7 @@ Every major character has one signature **Loyalty Experience** (Deep Dive).
 ---
 
 ## 5. USER CONSTRAINTS (The Guardrails)
-1.  **Grounded Sci-Fi**: **No Magic**. It is a **Logic Cascade** (Software Desynchronization).
+1.  **Grounded Magical Realism**: Supernatural elements can be present, but they are never formalized into a spell system; the **Logic Cascade** remains the in-world explanatory lens.
 2.  **Simple Language**: High-impact, accessible phrasing.
 3.  **Age Appropriateness**: Themes of loss/connection are fine; graphic horror/esoteric fantasy is out.
 4.  **No "Meta" Drift**: The game is about *meeting folks*. The Lore supports that; it doesn't replace it.

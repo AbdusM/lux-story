@@ -1,0 +1,137 @@
+{
+  "generated_at": "2026-03-04T23:17:05.180Z",
+  "mode": "enforce",
+  "thresholds": {
+    "min_tags": 12,
+    "min_characters": 4
+  },
+  "summary": {
+    "total_tags": 16,
+    "tagged_characters": 6,
+    "tagged_topics": 7
+  },
+  "tags_by_topic": {
+    "the_builders": 5,
+    "platform_seven": 2,
+    "burned_district": 1,
+    "the_previous_visitor": 3,
+    "the_oxygen_tax": 1,
+    "before_the_station": 2,
+    "the_letter": 2
+  },
+  "tags": [
+    {
+      "graphKey": "devon",
+      "characterId": "devon",
+      "nodeId": "devon_career_reflection_sustainability",
+      "tag": "iceberg:the_builders",
+      "topicId": "the_builders"
+    },
+    {
+      "graphKey": "elena",
+      "characterId": "elena",
+      "nodeId": "elena_station_seven_detail",
+      "tag": "iceberg:platform_seven",
+      "topicId": "platform_seven"
+    },
+    {
+      "graphKey": "elena",
+      "characterId": "elena",
+      "nodeId": "elena_first_pattern",
+      "tag": "iceberg:the_builders",
+      "topicId": "the_builders"
+    },
+    {
+      "graphKey": "maya",
+      "characterId": "maya",
+      "nodeId": "maya_family_expectations",
+      "tag": "iceberg:burned_district",
+      "topicId": "burned_district"
+    },
+    {
+      "graphKey": "maya",
+      "characterId": "maya",
+      "nodeId": "maya_robotics_passion",
+      "tag": "iceberg:the_builders",
+      "topicId": "the_builders"
+    },
+    {
+      "graphKey": "maya",
+      "characterId": "maya",
+      "nodeId": "maya_family_expectations",
+      "tag": "iceberg:the_previous_visitor",
+      "topicId": "the_previous_visitor"
+    },
+    {
+      "graphKey": "nadia",
+      "characterId": "nadia",
+      "nodeId": "nadia_hiring_story",
+      "tag": "iceberg:the_builders",
+      "topicId": "the_builders"
+    },
+    {
+      "graphKey": "nadia",
+      "characterId": "nadia",
+      "nodeId": "nadia_hiring_story",
+      "tag": "iceberg:the_oxygen_tax",
+      "topicId": "the_oxygen_tax"
+    },
+    {
+      "graphKey": "rohan",
+      "characterId": "rohan",
+      "nodeId": "rohan_erasure_reveal",
+      "tag": "iceberg:the_previous_visitor",
+      "topicId": "the_previous_visitor"
+    },
+    {
+      "graphKey": "samuel",
+      "characterId": "samuel",
+      "nodeId": "samuel_mystery_hint_2",
+      "tag": "iceberg:before_the_station",
+      "topicId": "before_the_station"
+    },
+    {
+      "graphKey": "samuel",
+      "characterId": "samuel",
+      "nodeId": "samuel_station_truth",
+      "tag": "iceberg:before_the_station",
+      "topicId": "before_the_station"
+    },
+    {
+      "graphKey": "samuel",
+      "characterId": "samuel",
+      "nodeId": "samuel_loyalty_trigger",
+      "tag": "iceberg:platform_seven",
+      "topicId": "platform_seven"
+    },
+    {
+      "graphKey": "samuel",
+      "characterId": "samuel",
+      "nodeId": "samuel_hub_hands_travelers",
+      "tag": "iceberg:the_builders",
+      "topicId": "the_builders"
+    },
+    {
+      "graphKey": "samuel",
+      "characterId": "samuel",
+      "nodeId": "samuel_letter_reveal",
+      "tag": "iceberg:the_letter",
+      "topicId": "the_letter"
+    },
+    {
+      "graphKey": "samuel",
+      "characterId": "samuel",
+      "nodeId": "samuel_letter_system",
+      "tag": "iceberg:the_letter",
+      "topicId": "the_letter"
+    },
+    {
+      "graphKey": "samuel",
+      "characterId": "samuel",
+      "nodeId": "samuel_station_truth",
+      "tag": "iceberg:the_previous_visitor",
+      "topicId": "the_previous_visitor"
+    }
+  ],
+  "issues": []
+}

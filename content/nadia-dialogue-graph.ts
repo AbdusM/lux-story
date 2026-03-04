@@ -258,7 +258,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['nadia_arc', 'backstory', 'harm', 'vulnerability']
+    tags: ['nadia_arc', 'backstory', 'harm', 'vulnerability', 'iceberg:the_builders', 'iceberg:the_oxygen_tax', 'record:record_nadia_policy_model', 'micro:nadia_model_regret']
   },
 
   // ============= RESPONSIBLE =============
@@ -1200,7 +1200,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         pattern: 'patience'
       }
     ],
-    tags: ['mystery', 'breadcrumb']
+    tags: ['mystery', 'breadcrumb', 'faction:data_flow', 'record:record_nadia_latency_window']
   },
 
   {
@@ -1224,7 +1224,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         pattern: 'building'
       }
     ],
-    tags: ['mystery', 'breadcrumb']
+    tags: ['mystery', 'breadcrumb', 'faction:data_flow', 'verify-conflict:oxygen_tax_origin']
   },
 
   {
@@ -1236,7 +1236,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       variation_id: 'hub_return_v1'
     }],
     choices: [],
-    tags: ['farewell', 'terminal']
+    tags: ['farewell', 'terminal', 'micro-callback:nadia_model_regret']
   },
 
   // ============= TRUST RECOVERY =============

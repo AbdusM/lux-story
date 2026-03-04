@@ -698,7 +698,8 @@ const nodes: DialogueNode[] = [
         pattern: 'analytical',
         skills: ['criticalThinking']
       }
-    ]
+    ],
+    tags: ['elena_arc', 'station_seven', 'iceberg:platform_seven', 'record:record_elena_archive_gap', 'micro:elena_station_seven_loss']
   },
 
   {
@@ -790,7 +791,8 @@ const nodes: DialogueNode[] = [
         pattern: 'exploring',
         skills: ['criticalThinking']
       }
-    ]
+    ],
+    tags: ['elena_arc', 'resolution', 'iceberg:the_builders', 'record:record_elena_dispatch_index']
   },
 
   {
@@ -2585,7 +2587,7 @@ Your curiosity combined with analysis... that's exactly what they need.`,
         pattern: 'patience'
       }
     ],
-    tags: ['arc_platform_seven', 'elena_arc']
+    tags: ['arc_platform_seven', 'elena_arc', 'iceberg:platform_seven']
   },
 
   {
@@ -2607,7 +2609,8 @@ Your curiosity combined with analysis... that's exactly what they need.`,
           addGlobalFlags: ['platform_records_found']
         }
       }
-    ]
+    ],
+    tags: ['arc_platform_seven', 'elena_arc', 'iceberg:the_builders']
   },
 
   {
@@ -2658,7 +2661,7 @@ Your curiosity combined with analysis... that's exactly what they need.`,
         pattern: 'patience'
       }
     ],
-    tags: ['mystery', 'breadcrumb']
+    tags: ['mystery', 'breadcrumb', 'faction:data_flow', 'record:record_elena_tax_archive_redaction']
   },
 
   {
@@ -2682,7 +2685,7 @@ Your curiosity combined with analysis... that's exactly what they need.`,
         pattern: 'helping'
       }
     ],
-    tags: ['mystery', 'breadcrumb']
+    tags: ['mystery', 'breadcrumb', 'faction:data_flow', 'record:record_elena_burn_notice_chain']
   },
 
   {
@@ -2694,7 +2697,7 @@ Your curiosity combined with analysis... that's exactly what they need.`,
       variation_id: 'hub_return_v1'
     }],
     choices: [],
-    tags: ['terminal']
+    tags: ['terminal', 'micro-callback:elena_station_seven_loss']
   },
 
   // ============= TRUST RECOVERY =============

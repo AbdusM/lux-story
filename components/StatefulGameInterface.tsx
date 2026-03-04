@@ -177,6 +177,13 @@ import { ALL_INFO_TRADES } from '@/content/info-trades'
 import { KNOWLEDGE_ITEMS, TRADE_CHAINS, getKnowledgeItem, type KnowledgeItem } from '@/content/knowledge-items'
 import { calculateCharacterTrustDecay, getPatternRecognitionComments, type PatternRecognitionComment, getUnlockedGates, PATTERN_TRUST_GATES, checkNewAchievements, type PatternAchievement, recordPatternEvolution, type PatternEvolutionHistory } from '@/lib/pattern-derivatives'
 import { getNewlyAvailableCombinations, type KnowledgeCombination, recordIcebergMention, getInvestigableTopics, type IcebergReference } from '@/lib/knowledge-derivatives'
+import {
+  collectUnreliableRecords,
+  extractConflictIdsFromTags,
+  extractRecordIdsFromTags,
+  getReadyConflictClusters,
+  verifyLoreConflict,
+} from '@/lib/unreliable-narrator-system'
 import { getActiveTextEffects, getTextEffectClasses, getTextEffectStyles, getActiveMagicalRealisms, type MagicalRealism, getNewlyDiscoveredArcs, getCascadeEffectsForFlag, getNarrativeFraming, getUnlockedMetaRevelations, type EmergentStoryArc, type CascadeEffect, type MetaNarrativeRevelation } from '@/lib/narrative-derivatives'
 import { getActiveEnvironmentalEffects, getAvailableCrossCharacterExperiences, type EnvironmentalEffect, type CrossCharacterRequirement } from '@/lib/character-derivatives'
 import { getRelevantCrossCharacterEcho } from '@/lib/character-relationships'
@@ -203,6 +210,7 @@ import { getArcCompletionFlag } from '@/lib/arc-learning-objectives'
 import { getPatternVoice, incrementPatternVoiceNodeCounter, checkVoiceConflict, type PatternVoiceResult, type PatternVoiceContext, type VoiceConflictResult } from '@/lib/pattern-voices'
 import { PATTERN_VOICE_LIBRARY } from '@/content/pattern-voice-library'
 import { PatternVoice } from '@/components/game/PatternVoice'
+import { NARRATIVE_RUNTIME_POLICY } from '@/lib/narrative-policy'
 import { useOrbs } from '@/hooks/useOrbs'
 // Analytics Hooks
 // Complex Character Hooks
@@ -234,6 +242,11 @@ import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
 import { getSkillComboUnlockChoices } from '@/lib/skill-combo-unlock-choices'
 import { calculateSkillDecay, getSkillDecayNarrative } from '@/lib/assessment-derivatives'
 import { buildChoiceOutcomePresentation, type ChoiceOutcomeCard, type ChoiceOutcomePresentationMode } from '@/lib/choice-outcome-presentation'
+import {
+  getFactionLeitmotifSoundCue,
+  inferFactionAudioContext,
+  shouldTriggerFactionLeitmotif,
+} from '@/lib/faction-audio'
 // Share prompts removed-too obtrusive
 
 // Trust feedback now dialogue-based via consequence echoes
@@ -500,6 +513,8 @@ export default function StatefulGameInterface() {
   // Refs & Sync
   const skillTrackerRef = useRef<SkillTracker | null>(null)
   const pendingSaveRef = useRef<NodeJS.Timeout | null>(null) // Deferred save for pagehide flush
+  const lastFactionLeitmotifRef = useRef<{ faction: string | null; at: number }>({ faction: null, at: 0 })
+  const lastFactionCharacterRef = useRef<CharacterId | null>(null)
 
   // Share prompts disabled-too obtrusive
   const isProcessingChoiceRef = useRef(false) // Race condition guard
@@ -1034,6 +1049,28 @@ export default function StatefulGameInterface() {
     if (state.gameState && state.currentCharacterId) {
       generativeScore.update(state.gameState, state.currentCharacterId)
     }
+
+    const nodeTags = state.currentNode?.tags ?? []
+    const didCharacterChange = lastFactionCharacterRef.current !== state.currentCharacterId
+    lastFactionCharacterRef.current = state.currentCharacterId
+
+    if (state.currentNode && (shouldTriggerFactionLeitmotif(nodeTags) || didCharacterChange)) {
+      const factionId = inferFactionAudioContext({
+        tags: nodeTags,
+        characterId: state.currentCharacterId,
+      })
+      if (factionId) {
+        const soundCue = getFactionLeitmotifSoundCue(factionId)
+        const now = Date.now()
+        const last = lastFactionLeitmotifRef.current
+        const isCooldown = last.faction === factionId && (now - last.at) < 12000
+        if (soundCue && !isCooldown) {
+          playSound(soundCue)
+          lastFactionLeitmotifRef.current = { faction: factionId, at: now }
+        }
+      }
+    }
+
     return () => {
       if (idleTimerRef.current) {
         clearTimeout(idleTimerRef.current)
@@ -2543,6 +2580,128 @@ export default function StatefulGameInterface() {
         }
       }
 
+      // P2-B: Micro-reactivity memory callbacks
+      // Capture lightweight memory flags (`micro:*`) and trigger delayed callback
+      // echoes on tagged return nodes (`micro-callback:*`) with anti-spam caps.
+      if (nextNode.tags) {
+        const {
+          extractMicroMemoryTags,
+          loadMicroReactivityRuntimeState,
+          recordMicroMemories,
+          resolveMicroCallbackEcho,
+          saveMicroReactivityRuntimeState,
+        } = await import('@/lib/micro-reactivity')
+        const microTags = extractMicroMemoryTags(nextNode.tags)
+        if (microTags.memorySetIds.length > 0 || microTags.callbackIds.length > 0) {
+          const currentTurn = getTotalNodesVisited(newGameState)
+          let microRuntime = loadMicroReactivityRuntimeState()
+
+          const recordResult = recordMicroMemories({
+            runtimeState: microRuntime,
+            globalFlags: newGameState.globalFlags,
+            memorySetIds: microTags.memorySetIds,
+            characterId: targetCharacterId,
+            currentTurn,
+          })
+          microRuntime = recordResult.runtimeState
+
+          if (!consequenceEcho && microTags.callbackIds.length > 0) {
+            const callbackResult = resolveMicroCallbackEcho({
+              runtimeState: microRuntime,
+              globalFlags: newGameState.globalFlags,
+              callbackIds: microTags.callbackIds,
+              characterId: targetCharacterId,
+              currentTurn,
+            })
+            microRuntime = callbackResult.runtimeState
+            if (callbackResult.echo) {
+              consequenceEcho = callbackResult.echo
+            }
+          }
+
+          saveMicroReactivityRuntimeState(microRuntime)
+
+          if (recordResult.newlyRecorded.length > 0) {
+            logger.info('[StatefulGameInterface] P2-B micro memories recorded', {
+              characterId: targetCharacterId,
+              memoryIds: recordResult.newlyRecorded,
+            })
+          }
+        }
+      }
+
+      // D-122: Unreliable narrator loop
+      // Collect record fragments, surface contradiction readiness, and verify
+      // truth on explicit `verify-conflict:` nodes.
+      if (nextNode.tags && newGameState.archivistState) {
+        const recordIds = extractRecordIdsFromTags(nextNode.tags)
+        if (recordIds.length > 0) {
+          const collected = collectUnreliableRecords(newGameState.archivistState, recordIds)
+          if (collected.newlyCollected.length > 0) {
+            newGameState = {
+              ...newGameState,
+              archivistState: collected.nextState
+            }
+
+            if (!consequenceEcho) {
+              const sample = collected.newlyCollected[0]
+              const factionSound = getFactionLeitmotifSoundCue(
+                inferFactionAudioContext({ sourceFaction: sample.sourceFaction }) ?? 'station_core'
+              )
+              consequenceEcho = {
+                text: `You recover a conflicting record fragment (${sample.sourceFaction.replace('_', ' ')} source).`,
+                emotion: 'intrigued',
+                timing: 'immediate',
+                soundCue: factionSound ?? undefined,
+              }
+            }
+          }
+        }
+
+        const readyConflicts = getReadyConflictClusters(newGameState.archivistState)
+        const newlyReady = readyConflicts.filter(
+          (cluster) =>
+            !newGameState.globalFlags.has(cluster.readyFlag) &&
+            !newGameState.globalFlags.has(cluster.verificationFlag)
+        )
+
+        if (newlyReady.length > 0) {
+          for (const cluster of newlyReady) {
+            newGameState.globalFlags.add(cluster.readyFlag)
+          }
+
+          if (!consequenceEcho) {
+            consequenceEcho = {
+              text: `A contradiction emerges: "${newlyReady[0].name}" is now ready to verify.`,
+              emotion: 'revelation',
+              timing: 'immediate'
+            }
+          }
+        }
+
+        const conflictIds = extractConflictIdsFromTags(nextNode.tags)
+        for (const conflictId of conflictIds) {
+          const verified = verifyLoreConflict(newGameState.archivistState, conflictId)
+          if (!verified.success || !verified.cluster) continue
+          if (newGameState.globalFlags.has(verified.cluster.verificationFlag)) continue
+
+          newGameState = {
+            ...newGameState,
+            archivistState: verified.nextState
+          }
+          newGameState.globalFlags.add(verified.cluster.verificationFlag)
+          newGameState.globalFlags.add(`lore_verified_${verified.cluster.targetLoreId}`)
+
+          if (!consequenceEcho) {
+            consequenceEcho = {
+              text: `Contradiction resolved: ${verified.cluster.name}. A deeper truth settles into focus.`,
+              emotion: 'knowing',
+              timing: 'immediate'
+            }
+          }
+        }
+      }
+
       // D-002: Check for newly unlocked pattern-trust gates
       // Special content requires BOTH high trust AND specific pattern development
       if (!consequenceEcho) {
@@ -3010,18 +3169,27 @@ export default function StatefulGameInterface() {
       }
       const achievementNotification: MetaAchievement | null = null
 
-      // Check for pattern voice (Disco Elysium-style inner monologue)
-      // Voices trigger based on pattern level and context
-      // D-003: Pass character trust for voice tone modulation
-      incrementPatternVoiceNodeCounter()
-      const patternVoiceContext: PatternVoiceContext = {
-        trigger: 'node_enter',
-        characterId: targetCharacterId,
-        npcEmotion: content.emotion,
-        nodeTags: nextNode.tags,
-        characterTrust: targetCharacter.trust  // D-003: Trust-based voice tone
+      // Pattern voice policy is explicit (`off|minimal|on`) to avoid silent drift.
+      let patternVoice: PatternVoiceResult | null = null
+      if (NARRATIVE_RUNTIME_POLICY.patternVoicePolicy !== 'off') {
+        incrementPatternVoiceNodeCounter()
+        const patternVoiceContext: PatternVoiceContext = {
+          trigger: 'node_enter',
+          characterId: targetCharacterId,
+          npcEmotion: content.emotion,
+          nodeTags: nextNode.tags,
+          characterTrust: targetCharacter.trust  // D-003: Trust-based voice tone
+        }
+
+        const candidateVoice = getPatternVoice(patternVoiceContext, newGameState, PATTERN_VOICE_LIBRARY)
+        if (candidateVoice) {
+          const suppressForMinimal =
+            NARRATIVE_RUNTIME_POLICY.patternVoicePolicy === 'minimal' &&
+            (Boolean(nextNode.simulation) || Boolean(nextNode.tags?.includes('simulation')))
+
+          patternVoice = suppressForMinimal ? null : candidateVoice
+        }
       }
-      const patternVoice = getPatternVoice(patternVoiceContext, newGameState, PATTERN_VOICE_LIBRARY)
 
       // D-096: Check for voice conflicts (when strong patterns disagree)
       const voiceConflict = checkVoiceConflict(newGameState)
@@ -4396,18 +4564,18 @@ export default function StatefulGameInterface() {
                         </div>
                       )}
 
-                      {/* Disco Elysium-style pattern voice-inner monologue */}
-                      {/* PatternVoice (Inner Monologue)-HIDDEN per user feedback ("show not tell") */}
-                      {/* {state.patternVoice && (
+                      {/* Pattern voice policy: `off|minimal|on` */}
+                      {state.patternVoice && NARRATIVE_RUNTIME_POLICY.patternVoicePolicy !== 'off' && (
                         <div className="mt-6 p-6 md:p-8 pt-0">
                           <PatternVoice
                             pattern={state.patternVoice.pattern}
                             text={state.patternVoice.text}
                             style={state.patternVoice.style}
+                            autoDismissMs={NARRATIVE_RUNTIME_POLICY.patternVoicePolicy === 'minimal' ? 4500 : 8000}
                             onDismiss={() => setState(prev => ({ ...prev, patternVoice: null }))}
                           />
                         </div>
-                      )} */}
+                      )}
 
 
                     </CardContent>

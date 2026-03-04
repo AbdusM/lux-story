@@ -1,0 +1,71 @@
+{
+  "generated_at": "2026-03-04T23:17:05.190Z",
+  "mode": "enforce",
+  "duration_ms": 7477,
+  "policy": {
+    "patternVoicePolicy": "minimal",
+    "icebergActivation": "required"
+  },
+  "checks": [
+    {
+      "id": "policy-explicit",
+      "passed": true,
+      "details": "patternVoicePolicy=minimal, icebergActivation=required"
+    },
+    {
+      "id": "pattern-voice-render-path",
+      "passed": true,
+      "details": "PatternVoice render path found in StatefulGameInterface"
+    },
+    {
+      "id": "simulation-phase-contract",
+      "passed": true,
+      "details": "valid=true entries=15"
+    },
+    {
+      "id": "world-canon-contract",
+      "passed": true,
+      "details": "valid=true"
+    },
+    {
+      "id": "narrative-sim-integrity",
+      "passed": true,
+      "details": "failures=0, required_state_mismatches=0"
+    },
+    {
+      "id": "required-state-strict",
+      "passed": true,
+      "details": "violations=0"
+    },
+    {
+      "id": "iceberg-activation",
+      "passed": true,
+      "details": "total_tags=16 (min 12), tagged_characters=6 (min 4), issues=0"
+    },
+    {
+      "id": "choice-taxonomy-coverage",
+      "passed": true,
+      "details": "strategy=ratchet baseline=true regressions=0 coverage=0%"
+    },
+    {
+      "id": "external-debt-lane",
+      "passed": true,
+      "details": "baseline_exists=true, regressions=0"
+    },
+    {
+      "id": "unreliable-record-lane",
+      "passed": true,
+      "details": "record_tags=14, verify_tags=6, errors=0"
+    },
+    {
+      "id": "micro-reactivity-lane",
+      "passed": true,
+      "details": "memory_ids=5, callback_characters=5, errors=0"
+    }
+  ],
+  "summary": {
+    "total_checks": 11,
+    "failed_checks": 0,
+    "passed": true
+  }
+}

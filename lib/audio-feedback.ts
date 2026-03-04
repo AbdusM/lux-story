@@ -16,6 +16,13 @@ export type SoundType =
   | 'pattern-exploring'
   | 'pattern-helping'
   | 'pattern-building'
+  | 'faction-engineers'
+  | 'faction-syn-bio'
+  | 'faction-data-flow'
+  | 'faction-station-core'
+  | 'faction-technocrats'
+  | 'faction-naturalists'
+  | 'faction-market-brokerage'
   | 'trust'
   | 'identity'
   | 'milestone'
@@ -86,6 +93,78 @@ const SOUND_CONFIGS: Record<SoundType, SoundConfig> = {
     decay: 0.08,
     sustain: 0.3,
     release: 0.1,
+    volume: 0.08
+  },
+
+  // Faction leitmotifs - short signatures, lower volume than trust/milestone cues
+  'faction-engineers': {
+    frequency: 246,      // B3 - grounded, mechanical
+    duration: 0.28,
+    type: 'square',
+    attack: 0.01,
+    decay: 0.08,
+    sustain: 0.3,
+    release: 0.12,
+    volume: 0.08
+  },
+  'faction-syn-bio': {
+    frequency: 415,      // G#4 - organic tension
+    duration: 0.3,
+    type: 'triangle',
+    attack: 0.02,
+    decay: 0.1,
+    sustain: 0.35,
+    release: 0.14,
+    volume: 0.08
+  },
+  'faction-data-flow': {
+    frequency: 622,      // D#5 - bright digital chirp
+    duration: 0.22,
+    type: 'sawtooth',
+    attack: 0.005,
+    decay: 0.06,
+    sustain: 0.28,
+    release: 0.1,
+    volume: 0.075
+  },
+  'faction-station-core': {
+    frequency: 174,      // F3 - deep station hum
+    duration: 0.4,
+    type: 'sine',
+    attack: 0.05,
+    decay: 0.14,
+    sustain: 0.4,
+    release: 0.18,
+    volume: 0.09
+  },
+  'faction-technocrats': {
+    frequency: 659,      // E5 - clean synthetic ping
+    duration: 0.24,
+    type: 'triangle',
+    attack: 0.005,
+    decay: 0.05,
+    sustain: 0.22,
+    release: 0.08,
+    volume: 0.075
+  },
+  'faction-naturalists': {
+    frequency: 293,      // D4 - warm acoustic proxy
+    duration: 0.32,
+    type: 'sine',
+    attack: 0.04,
+    decay: 0.1,
+    sustain: 0.42,
+    release: 0.16,
+    volume: 0.08
+  },
+  'faction-market-brokerage': {
+    frequency: 554,      // C#5 - poised/jazzy tone
+    duration: 0.26,
+    type: 'triangle',
+    attack: 0.01,
+    decay: 0.07,
+    sustain: 0.3,
+    release: 0.11,
     volume: 0.08
   },
 
@@ -307,6 +386,11 @@ export function playPatternSound(pattern: string, modulation?: StateModulation):
   }
 }
 
+export function playFactionLeitmotif(sound: SoundType): void {
+  if (!sound.startsWith('faction-')) return
+  playSound(sound, { patience: 0.4 })
+}
+
 /**
  * Play trust increase sound
  */
@@ -481,4 +565,3 @@ export const musicManager = new MusicManager()
 export function updateAmbientMusic(state: import('./emotions').NervousSystemState) {
   musicManager.playState(state)
 }
-

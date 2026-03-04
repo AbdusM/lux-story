@@ -1,9 +1,13 @@
+import { WORLD_CANON_CONTRACT } from '../content/world-canon-contract'
+
 /**
  * THE LORE MAINFRAME
  * Technical implementation of "The Station History Bible"
  *
  * Philosophy: "The Database is Objective. The Record is Subjective."
  */
+
+export const WORLD_CANON = WORLD_CANON_CONTRACT
 
 export type FactionId = 'engineers' | 'syn_bio' | 'data_flow' | 'station_core'
 

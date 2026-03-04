@@ -260,7 +260,8 @@ export const marketDialogueNodes: DialogueNode[] = [
             variation_id: 'trade_vent_success',
             richEffectContext: 'success'
         }],
-        choices: [{ choiceId: 'broker_continue', text: 'Anything else?', nextNodeId: 'broker_intro' }]
+        choices: [{ choiceId: 'broker_continue', text: 'Anything else?', nextNodeId: 'broker_intro' }],
+        tags: ['faction:market_brokerage']
     },
 
     {
@@ -271,7 +272,8 @@ export const marketDialogueNodes: DialogueNode[] = [
             variation_id: 'trade_samuel_success',
             richEffectContext: 'success'
         }],
-        choices: [{ choiceId: 'broker_continue', text: 'Anything else?', nextNodeId: 'broker_intro' }]
+        choices: [{ choiceId: 'broker_continue', text: 'Anything else?', nextNodeId: 'broker_intro' }],
+        tags: ['faction:market_brokerage', 'faction:technocrats']
     },
 
     {
@@ -282,7 +284,8 @@ export const marketDialogueNodes: DialogueNode[] = [
             variation_id: 'trade_maya_success',
             richEffectContext: 'success'
         }],
-        choices: [{ choiceId: 'broker_continue', text: 'Anything else?', nextNodeId: 'broker_intro' }]
+        choices: [{ choiceId: 'broker_continue', text: 'Anything else?', nextNodeId: 'broker_intro' }],
+        tags: ['faction:market_brokerage', 'faction:engineers']
     },
 
     {
@@ -293,7 +296,8 @@ export const marketDialogueNodes: DialogueNode[] = [
             variation_id: 'trade_blueprint_success',
             richEffectContext: 'success'
         }],
-        choices: [{ choiceId: 'broker_continue', text: 'Anything else?', nextNodeId: 'broker_intro' }]
+        choices: [{ choiceId: 'broker_continue', text: 'Anything else?', nextNodeId: 'broker_intro' }],
+        tags: ['faction:market_brokerage', 'faction:technocrats']
     },
 
     {
@@ -304,7 +308,8 @@ export const marketDialogueNodes: DialogueNode[] = [
             variation_id: 'trade_naturalist_success',
             richEffectContext: 'success'
         }],
-        choices: [{ choiceId: 'broker_continue', text: 'Anything else?', nextNodeId: 'broker_intro' }]
+        choices: [{ choiceId: 'broker_continue', text: 'Anything else?', nextNodeId: 'broker_intro' }],
+        tags: ['faction:market_brokerage', 'faction:naturalists', 'faction:technocrats']
     },
 
 

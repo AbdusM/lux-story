@@ -223,7 +223,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['rohan_arc']
+    tags: ['rohan_arc', 'iceberg:the_previous_visitor', 'record:record_rohan_previous_visitor_note', 'record:record_rohan_vibration_log', 'micro:rohan_previous_visitor_trace']
   },
 
   // Divergent responses for erasure reveal
@@ -1582,7 +1582,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['rohan_arc', 'arc_platform_seven', 'chapter_1']
+    tags: ['rohan_arc', 'arc_platform_seven', 'chapter_1', 'iceberg:platform_seven', 'record:record_rohan_vibration_log']
   },
 
   {
@@ -1593,7 +1593,8 @@ export const rohanDialogueNodes: DialogueNode[] = [
       emotion: 'concerned',
       variation_id: 'warn_samuel_v1'
     }],
-    choices: [{ choiceId: 'continue_arc2', text: "[Note: Ask Samuel about Platform Seven]", nextNodeId: 'rohan_hub_return' }]
+    choices: [{ choiceId: 'continue_arc2', text: "[Note: Ask Samuel about Platform Seven]", nextNodeId: 'rohan_hub_return' }],
+    tags: ['rohan_arc', 'iceberg:platform_seven']
   },
 
   {
@@ -1687,7 +1688,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
         pattern: 'analytical'
       }
     ],
-    tags: ['rohan_arc', 'puzzle_reward', 'legendary_info']
+    tags: ['rohan_arc', 'puzzle_reward', 'legendary_info', 'iceberg:before_the_station']
   },
   {
     nodeId: 'rohan_career_reflection_architect',
@@ -2102,7 +2103,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
         pattern: 'helping'
       }
     ],
-    tags: ['mystery', 'breadcrumb']
+    tags: ['mystery', 'breadcrumb', 'faction:engineers', 'record:record_rohan_firebreak_patchnote']
   },
   {
     nodeId: 'rohan_mystery_response_1',
@@ -2127,7 +2128,8 @@ export const rohanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'rohan_hub_return',
         pattern: 'building'
       }
-    ]
+    ],
+    tags: ['mystery', 'revelation', 'faction:engineers', 'record:record_rohan_manual_override_stamp']
   },
   // ============= SIMULATION 2: LEGACY CODE ARCHAEOLOGY =============
   {
@@ -2391,7 +2393,7 @@ WHERE IS THE 847ms COMING FROM?`,
       variation_id: 'hub_return_v1'
     }],
     choices: [],
-    tags: ['terminal']
+    tags: ['terminal', 'micro-callback:rohan_previous_visitor_trace']
   },
 
   // ============= TRUST RECOVERY =============
@@ -2518,7 +2520,7 @@ WHERE IS THE 847ms COMING FROM?`,
         skills: ['riskManagement']
       }
     ],
-    tags: ['platform_seven', 'mystery', 'arrival']
+    tags: ['platform_seven', 'mystery', 'arrival', 'iceberg:platform_seven']
   }
 ]
 

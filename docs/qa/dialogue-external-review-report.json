@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-12T19:47:18.605Z",
+  "generatedAt": "2026-03-04T23:17:02.064Z",
   "thresholds": {
     "contentSoftWords": 35,
     "contentHardWords": 90,
@@ -18,26 +18,26 @@
   "summary": {
     "characters": 20,
     "totals": {
-      "nodes": 1390,
-      "contentBlocks": 1423,
-      "totalChoices": 2452,
+      "nodes": 1389,
+      "contentBlocks": 1422,
+      "totalChoices": 2448,
       "hardContentIssues": 0,
       "softContentIssues": 59,
       "hardMonologueChains": 0,
       "softMonologueChains": 0,
       "longChoices": 0,
       "veryLongChoices": 0,
-      "terseChoices": 143,
+      "terseChoices": 142,
       "continueChoices": 0,
-      "questionChoices": 625
+      "questionChoices": 624
     },
     "reachabilityTotals": {
-      "structuralReachableNodes": 1390,
+      "structuralReachableNodes": 1389,
       "hardContentIssuesReachable": 0,
       "softContentIssuesReachable": 59,
       "hardMonologueChainsReachable": 0,
       "softMonologueChainsReachable": 0,
-      "narrativeVisitedStatePairs": 17270
+      "narrativeVisitedStatePairs": 17570
     },
     "tierDistribution": {
       "high": 0,
@@ -471,18 +471,18 @@
       ],
       "hasRevisitGraph": false,
       "reachability": {
-        "structuralReachableNodes": 218,
+        "structuralReachableNodes": 217,
         "structuralReachabilityRatio": 1,
         "hardContentIssuesReachable": 0,
         "softContentIssuesReachable": 7,
         "hardMonologueChainsReachable": 0,
         "softMonologueChainsReachable": 0,
-        "narrativeVisitedStatePairs": 1117
+        "narrativeVisitedStatePairs": 1439
       },
       "dialogue": {
-        "nodes": 218,
-        "contentBlocks": 234,
-        "avgContentWords": 11.05,
+        "nodes": 217,
+        "contentBlocks": 233,
+        "avgContentWords": 11.03,
         "p90ContentWords": 28,
         "hardContentIssues": 0,
         "softContentIssues": 7,
@@ -490,17 +490,17 @@
         "softMonologueChains": 0
       },
       "answers": {
-        "totalChoices": 402,
-        "avgChoiceWords": 4.82,
+        "totalChoices": 401,
+        "avgChoiceWords": 4.83,
         "p90ChoiceWords": 8,
         "longChoices": 0,
         "veryLongChoices": 0,
         "terseChoices": 89,
         "continueChoices": 0,
         "questionChoices": 80,
-        "missingPatternChoices": 34,
+        "missingPatternChoices": 33,
         "gatedChoices": 53,
-        "uniqueChoiceTexts": 314,
+        "uniqueChoiceTexts": 313,
         "choiceReuseRatio": 0.22,
         "topRepeatedChoiceTexts": [
           {
@@ -527,9 +527,9 @@
       },
       "changeComplexity": {
         "requiredStateNodes": 31,
-        "highFanInNodes": 28,
-        "highFanOutNodes": 8,
-        "totalEdges": 402
+        "highFanInNodes": 27,
+        "highFanOutNodes": 7,
+        "totalEdges": 401
       },
       "priority": {
         "score": 1,
@@ -558,7 +558,7 @@
         "softContentIssuesReachable": 5,
         "hardMonologueChainsReachable": 0,
         "softMonologueChainsReachable": 0,
-        "narrativeVisitedStatePairs": 1310
+        "narrativeVisitedStatePairs": 1290
       },
       "dialogue": {
         "nodes": 71,
@@ -571,8 +571,8 @@
         "softMonologueChains": 0
       },
       "answers": {
-        "totalChoices": 165,
-        "avgChoiceWords": 8.3,
+        "totalChoices": 163,
+        "avgChoiceWords": 8.29,
         "p90ChoiceWords": 13,
         "longChoices": 0,
         "veryLongChoices": 0,
@@ -581,8 +581,8 @@
         "questionChoices": 48,
         "missingPatternChoices": 0,
         "gatedChoices": 50,
-        "uniqueChoiceTexts": 156,
-        "choiceReuseRatio": 0.05,
+        "uniqueChoiceTexts": 154,
+        "choiceReuseRatio": 0.06,
         "topRepeatedChoiceTexts": [
           {
             "text": "how have you been?",
@@ -608,9 +608,9 @@
       },
       "changeComplexity": {
         "requiredStateNodes": 15,
-        "highFanInNodes": 19,
+        "highFanInNodes": 18,
         "highFanOutNodes": 6,
-        "totalEdges": 165
+        "totalEdges": 163
       },
       "priority": {
         "score": 1,
@@ -796,7 +796,7 @@
       "dialogue": {
         "nodes": 83,
         "contentBlocks": 83,
-        "avgContentWords": 14.71,
+        "avgContentWords": 14.84,
         "p90ContentWords": 31,
         "hardContentIssues": 0,
         "softContentIssues": 0,
@@ -850,12 +850,12 @@
         "softContentIssuesReachable": 0,
         "hardMonologueChainsReachable": 0,
         "softMonologueChainsReachable": 0,
-        "narrativeVisitedStatePairs": 515
+        "narrativeVisitedStatePairs": 513
       },
       "dialogue": {
         "nodes": 55,
         "contentBlocks": 56,
-        "avgContentWords": 8.27,
+        "avgContentWords": 8.32,
         "p90ContentWords": 19,
         "hardContentIssues": 0,
         "softContentIssues": 0,
@@ -863,17 +863,17 @@
         "softMonologueChains": 0
       },
       "answers": {
-        "totalChoices": 101,
-        "avgChoiceWords": 7.35,
+        "totalChoices": 100,
+        "avgChoiceWords": 7.4,
         "p90ChoiceWords": 12,
         "longChoices": 0,
         "veryLongChoices": 0,
-        "terseChoices": 3,
+        "terseChoices": 2,
         "continueChoices": 0,
-        "questionChoices": 26,
+        "questionChoices": 25,
         "missingPatternChoices": 0,
         "gatedChoices": 10,
-        "uniqueChoiceTexts": 99,
+        "uniqueChoiceTexts": 98,
         "choiceReuseRatio": 0.02,
         "topRepeatedChoiceTexts": [
           {
@@ -886,7 +886,7 @@
         "requiredStateNodes": 4,
         "highFanInNodes": 15,
         "highFanOutNodes": 2,
-        "totalEdges": 101
+        "totalEdges": 100
       },
       "priority": {
         "score": 1,
@@ -1408,7 +1408,7 @@
       "dialogue": {
         "nodes": 43,
         "contentBlocks": 44,
-        "avgContentWords": 8.41,
+        "avgContentWords": 8.45,
         "p90ContentWords": 18,
         "hardContentIssues": 0,
         "softContentIssues": 0,

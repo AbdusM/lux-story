@@ -375,7 +375,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['maya_arc', 'backstory_depth']
+    tags: ['maya_arc', 'backstory_depth', 'iceberg:the_previous_visitor', 'iceberg:burned_district', 'record:record_maya_signature_timing']
   },
 
   // ============= DEFLECT PASSION PATH =============
@@ -871,7 +871,7 @@ STATUS: Signal fighting itself`,
         thoughtId: 'community-heart'
       }
     ],
-    tags: ['major_reveal', 'trust_gate', 'maya_arc', 'immersive_scenario']
+    tags: ['major_reveal', 'trust_gate', 'maya_arc', 'immersive_scenario', 'iceberg:the_builders', 'micro:maya_competition_memory']
   },
 
   // ============= INTERRUPT TARGET: Player reached out during vulnerability =============
@@ -3529,7 +3529,7 @@ MISSION: Stabilize the wave form within safety limits.`,
         skills: ['creativity']
       }
     ],
-    tags: ['maya_arc', 'process', 'insight']
+    tags: ['maya_arc', 'process', 'insight', 'iceberg:midnight_rule']
   },
 
   {
@@ -3744,7 +3744,7 @@ MISSION: Stabilize the wave form within safety limits.`,
         pattern: 'patience'
       }
     ],
-    tags: ['mystery', 'breadcrumb']
+    tags: ['mystery', 'breadcrumb', 'faction:engineers', 'record:record_maya_heatmap_snapshot']
   },
   {
     nodeId: 'maya_mystery_response_1',
@@ -3769,7 +3769,8 @@ MISSION: Stabilize the wave form within safety limits.`,
         nextNodeId: 'maya_hub_return',
         pattern: 'patience'
       }
-    ]
+    ],
+    tags: ['mystery', 'revelation', 'faction:engineers', 'verify-conflict:burned_district_cause']
   },
   {
     nodeId: 'maya_hub_return',
@@ -3780,7 +3781,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       variation_id: 'hub_return_v1'
     }],
     choices: [],
-    tags: ['terminal']
+    tags: ['terminal', 'micro-callback:maya_competition_memory']
   },
 
   // ═══════════════════════════════════════════════════════════════

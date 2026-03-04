@@ -234,6 +234,27 @@ export const ICEBERG_TOPICS: Omit<IcebergReference, 'mentions'>[] = [
     description: 'Who constructed the station',
     mentionThreshold: 4,
     investigationNodeId: 'investigate_builders'
+  },
+  {
+    id: 'the_oxygen_tax',
+    topic: 'The Oxygen Tax',
+    description: 'A recurring phrase hinting at resource control and access constraints',
+    mentionThreshold: 3,
+    investigationNodeId: 'investigate_oxygen_tax'
+  },
+  {
+    id: 'burned_district',
+    topic: 'The Burned District',
+    description: 'References to a district-level catastrophe never fully explained',
+    mentionThreshold: 3,
+    investigationNodeId: 'investigate_burned_district'
+  },
+  {
+    id: 'silent_shift',
+    topic: 'The Silent Shift',
+    description: 'Mentions of an overnight transition where procedures changed without announcement',
+    mentionThreshold: 4,
+    investigationNodeId: 'investigate_silent_shift'
   }
 ]
 
