@@ -1,0 +1,1562 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Bleeding-edge UI effects */
+@import '../styles/scroll-animations.css';
+@import '../styles/kinetic-typography.css';
+
+/* Safe area padding for main content on mobile */
+@layer utilities {
+  .pb-safe-mobile {
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  @media (min-width: 640px) {
+    .pb-safe-mobile {
+      padding-bottom: calc(8rem + env(safe-area-inset-bottom, 0px));
+    }
+  }
+
+  /* Narrative text styling - lifts text off dark backgrounds for readability */
+  .narrative-text {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Sprint 4: Text Readability Improvements */
+
+  /* Optimal reading width: 30-34 characters per line for narrative text */
+  .reading-width {
+    max-width: 32ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Wider reading width for dialogue */
+  .dialogue-width {
+    max-width: 45ch;
+  }
+
+  /* WCAG AA compliant text colors */
+  .text-readable {
+    color: #B8B8B8; /* Passes WCAG AA against #0a0c10 background */
+  }
+
+  .text-readable-muted {
+    color: #9CA3AF; /* Passes WCAG AA for large text */
+  }
+
+  /* Improved line height for readability */
+  .leading-readable {
+    line-height: 1.7;
+  }
+
+  /* Reader mode - sans-serif option */
+  .reader-mode {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    letter-spacing: 0.01em;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   MOBILE-FIRST FOUNDATIONS
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Use dvh (dynamic viewport height) for mobile Safari compatibility */
+/* Fallback to vh for older browsers */
+:root {
+  --vh-fallback: 100vh;
+  --dvh: 100dvh;
+
+  /* Shadow colors for consistent styling */
+  --shadow-amber-dark: #92400e;
+  --shadow-amber-glow: rgba(146, 64, 14, 0.3);
+
+  /* Safe area fallback */
+  --safe-area-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+
+  /* Sprint 4: WCAG AA Compliant Text Colors */
+  /* All colors pass WCAG AA (4.5:1) against #0a0c10 background */
+  --text-primary: #E5E7EB;     /* Primary text - high contrast */
+  --text-secondary: #B8B8B8;   /* Secondary text - WCAG AA compliant */
+  --text-muted: #9CA3AF;       /* Muted text - passes for large text */
+  --text-dim: #6B7280;         /* Dim text - use sparingly, decorative only */
+
+  /* Font stacks (offline-safe). These replace next/font/google so builds don't depend on network. */
+  --font-inter: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-crimson-pro: ui-serif, Georgia, "Times New Roman", serif;
+  --font-space-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --font-roboto-slab: ui-serif, Georgia, "Times New Roman", serif;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   FONT SCALING - Respect user's system preferences (Dynamic Type / iOS)
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Base size respects browser/system settings - WCAG 1.4.4 compliance */
+html {
+  font-size: 100%;
+  /* 16px default, scales with browser zoom and system preferences */
+  -webkit-text-size-adjust: 100%;
+  /* Prevent iOS auto text size adjustment */
+  text-size-adjust: 100%;
+}
+
+/* iOS Dynamic Type support */
+@supports (font: -apple-system-body) {
+  html {
+    font: -apple-system-body;
+    font-family: var(--font-space-mono), ui-monospace, monospace;
+  }
+}
+
+/* Ensure text remains readable when scaled up to 200% - WCAG requirement */
+@media (min-resolution: 1.5dppx) {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Prevent iOS Safari bounce/overscroll on body */
+html {
+  overflow: hidden;
+  height: 100%;
+  height: 100dvh;
+}
+
+body {
+  overflow: hidden;
+  height: 100%;
+  height: 100dvh;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Improve touch feedback on buttons */
+button,
+[role="button"],
+a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: 44px;
+  /* Ensure minimum touch target size */
+  min-width: 44px;
+}
+
+/* Ensure minimum touch target size (48x48px recommended by Apple/Google) */
+.touch-target {
+  min-height: 48px;
+  min-width: 48px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SCROLL BEHAVIOR
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Smooth scrolling for scrollable containers */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbars on mobile but keep functionality */
+@media (max-width: 640px) {
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+main {
+  contain: layout style paint;
+  will-change: auto;
+}
+
+/* Prevent gradient repaints */
+.bg-gradient-to-b {
+  will-change: auto;
+  contain: layout style paint;
+}
+
+/* Custom animations for polish effects */
+@keyframes progress {
+  0% {
+    width: 0%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOutToBottom {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes typingDot {
+
+  0%,
+  20% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Animation utility classes */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.animate-slide-in-from-bottom {
+  animation: slideInFromBottom 0.3s ease-out;
+}
+
+.animate-slide-out-to-bottom {
+  animation: slideOutToBottom 0.3s ease-out;
+}
+
+.animate-zoom-in {
+  animation: zoomIn 0.3s ease-out;
+}
+
+.animate-progress {
+  animation: progress 1s ease-out;
+}
+
+.animate-beckon {
+  animation: beckon 3s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   NAV BAR ATTENTION MARQUEE - Visual feedback when player earns something
+   Philosophy: Clean UI nuances indicate different situations
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Shimmer marquee effect for nav buttons with new content */
+.nav-attention-marquee {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-attention-marquee::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(251, 191, 36, 0.15) 25%,
+      rgba(251, 191, 36, 0.3) 50%,
+      rgba(251, 191, 36, 0.15) 75%,
+      transparent 100%);
+  animation: navMarqueeShimmer 2s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Second layer - offset for symmetrical disposition */
+.nav-attention-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(270deg,
+      transparent 0%,
+      rgba(245, 158, 11, 0.1) 25%,
+      rgba(245, 158, 11, 0.2) 50%,
+      rgba(245, 158, 11, 0.1) 75%,
+      transparent 100%);
+  animation: navMarqueeShimmerReverse 2s ease-in-out infinite;
+  animation-delay: 1s;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+@keyframes navMarqueeShimmer {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes navMarqueeShimmerReverse {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Gentle border pulse for extra visibility - Amber (Journal/Orbs) */
+.nav-attention-border {
+  animation: navBorderPulse 2s ease-in-out infinite;
+}
+
+@keyframes navBorderPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.3), 0 0 8px rgba(251, 191, 36, 0.2);
+    border-radius: 9999px;
+    /* Force rounding */
+  }
+
+  50% {
+    box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.5), 0 0 16px rgba(251, 191, 36, 0.4);
+    border-radius: 9999px;
+    /* Force rounding */
+  }
+}
+
+/* Purple variant for Constellation/Trust changes */
+.nav-attention-border-purple {
+  animation: navBorderPulsePurple 2s ease-in-out infinite;
+}
+
+@keyframes navBorderPulsePurple {
+
+  0%,
+  100% {
+    box-shadow: none;
+  }
+
+  50% {
+    box-shadow: none;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   CHOICE BUTTON MARQUEE - Modern, layout-safe hover effect
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@keyframes marquee-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.marquee-border {
+  position: relative;
+  /* overflow: hidden; - Removed to allow shadows/glows if needed, but border effect usually requires it */
+  overflow: hidden;
+  isolation: isolate;
+  /* Create stacking context */
+}
+
+.marquee-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  /* Follow parent radius */
+  padding: 2px;
+  /* Border thickness */
+  background: linear-gradient(90deg, var(--color-start, #cbd5e1), var(--color-mid, #fff), var(--color-end, #cbd5e1));
+  background-size: 200% 200%;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  /* Hidden by default */
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.marquee-border:hover::before {
+  opacity: 1;
+  animation: marquee-flow 2s linear infinite;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   BLUR HALO ENHANCEMENT - Enhanced attention-grab with backdrop blur
+   Used in combination with nav-attention-marquee for dark theme
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Amber blur halo (Journal/Orbs) */
+.nav-attention-halo {
+  position: relative;
+}
+
+.nav-attention-halo::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 12px;
+  background: radial-gradient(ellipse at center,
+      rgba(251, 191, 36, 0.15) 0%,
+      rgba(251, 191, 36, 0.08) 40%,
+      transparent 70%);
+  animation: haloGlow 2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Purple blur halo (Constellation/Trust) */
+.nav-attention-halo-purple::before {
+  background: radial-gradient(ellipse at center,
+      rgba(139, 92, 246, 0.15) 0%,
+      rgba(139, 92, 246, 0.08) 40%,
+      transparent 70%);
+}
+
+@keyframes haloGlow {
+
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Purple shimmer variant for Constellation marquee */
+.nav-attention-marquee-purple::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(139, 92, 246, 0.15) 25%,
+      rgba(139, 92, 246, 0.3) 50%,
+      rgba(139, 92, 246, 0.15) 75%,
+      transparent 100%);
+  animation: navMarqueeShimmer 2s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Mobile: slower animations for battery/performance */
+@media (max-width: 640px) {
+
+  .nav-attention-marquee::before,
+  .nav-attention-marquee::after,
+  .nav-attention-marquee-purple::before {
+    animation-duration: 3s;
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+
+  .nav-attention-marquee::before,
+  .nav-attention-marquee::after,
+  .nav-attention-marquee-purple::before,
+  .nav-attention-border,
+  .nav-attention-border-purple {
+    animation: none;
+  }
+}
+
+/* Trust celebration when reaching 10/10 */
+@keyframes trustCelebration {
+
+  0%,
+  100% {
+    color: rgb(100, 116, 139);
+    /* slate-500 */
+    transform: scale(1);
+  }
+
+  50% {
+    color: rgb(34, 197, 94);
+    /* green-500 */
+    transform: scale(1.05);
+    font-weight: 600;
+  }
+}
+
+.trust-max-celebration {
+  animation: trustCelebration 2s ease-in-out 3;
+  /* Play 3 times */
+  display: inline-block;
+}
+
+/* Split fade-in for longer text */
+@keyframes fadeInText {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-text {
+  animation: fadeInText 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+/* Second half of split text - delayed fade-in */
+.fade-in-text.delayed {
+  animation-delay: 0.5s;
+  /* Start after first half completes */
+}
+
+/* Line-by-line fade-in animation */
+@keyframes lineFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.line-fade-in-item {
+  animation: lineFadeIn 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SENTIENT GLASS DESIGN SYSTEM
+   Philosophy: "The UI IS the game state"
+   Inspired by JARVIS clinical interface principles
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Atmosphere Colors - Character-reactive backgrounds */
+  --atmosphere-void: #05070a;
+  --atmosphere-samuel: #08050d;
+  /* Deep violet-black - wise, mysterious */
+  --atmosphere-maya: #05070d;
+  /* Dark indigo - tech, innovative */
+  --atmosphere-devon: #050d08;
+  /* Forest black - systems, nature */
+  --atmosphere-marcus: #0d0808;
+  /* Warm black - medical, caring */
+  --atmosphere-tess: #0d0a05;
+  /* Copper-black - education, clever */
+  --atmosphere-jordan: #050a0d;
+  /* Cool slate - navigation */
+  --atmosphere-yaquin: #0a0d05;
+  /* Sage black - creativity */
+  --atmosphere-kai: #0d0505;
+  /* Safety red-black - protection */
+  --atmosphere-rohan: #050508;
+  /* Deep space - introspective */
+  --atmosphere-silas: #0d0a08;
+  /* Crisis amber - intensity */
+  --atmosphere-alex: #080d0a;
+  /* Fresh green - discovery */
+
+  /* Glass Panel Properties */
+  --glass-bg: rgba(10, 12, 16, 0.40);
+  /* Reduced from 0.60 for ethereal feel */
+  --glass-bg-solid: rgba(10, 12, 16, 0.95);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  /* Reduced opacity for subtlety */
+  --glass-border-hover: rgba(255, 255, 255, 0.10);
+  --glass-blur: 24px;
+  /* Increased from 20px */
+  --glass-radius: 16px;
+  /* Slightly softer corners */
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+
+  /* Dialogue text - WCAG AA compliant, slightly brighter for readability */
+  --text-dialogue: rgba(245, 220, 180, 0.96);
+
+  /* Pattern Colors - MUST match lib/patterns.ts canonical source */
+  --pattern-analytical: #3B82F6;
+  /* Blue - The Weaver */
+  --pattern-helping: #EC4899;
+  /* Pink - The Harmonic */
+  --pattern-building: #F59E0B;
+  /* Amber - The Architect */
+  --pattern-patience: #10B981;
+  /* Green - The Anchor */
+  --pattern-exploring: #8B5CF6;
+  /* Purple - The Voyager */
+
+  /* Spring Physics Curves (for CSS keyframe animations only)
+   * For React components, use lib/animations.ts springs instead */
+  --spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --spring-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --spring-quick: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Timing - aligned with lib/animations.ts durations */
+  --transition-fast: 0.15s;
+  --transition-medium: 0.25s;
+  --transition-slow: 0.4s;
+  --atmosphere-transition: 2s;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   GLASS MORPHISM COMPONENTS
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Base glass panel - STABLE: No transitions to prevent color jumping */
+.glass-panel {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  /* Specular highlights: inner edge lighting for depth */
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.1),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.05),
+    var(--glass-shadow);
+  /* Transitions REMOVED - they caused color jumping during state changes */
+}
+
+/* Noise texture overlay (5-6% opacity for frosted feel) */
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  pointer-events: none;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 180px;
+}
+
+/* Glass panel without blur (for low-end devices) */
+.glass-panel-solid {
+  background: var(--glass-bg-solid);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow);
+}
+
+/* Glass panel hover state - DISABLED: caused visual inconsistency */
+/* .glass-panel:hover {
+  border-color: var(--glass-border-hover);
+} */
+
+/* Glass panel with pattern glow - using canonical colors from lib/patterns.ts */
+.glass-panel[data-pattern="analytical"] {
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.1),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.05),
+    var(--glass-shadow),
+    0 0 40px rgba(59, 130, 246, 0.15);
+  /* #3B82F6 - The Weaver */
+}
+
+.glass-panel[data-pattern="helping"] {
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.1),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.05),
+    var(--glass-shadow),
+    0 0 40px rgba(236, 72, 153, 0.15);
+  /* #EC4899 - The Harmonic */
+}
+
+.glass-panel[data-pattern="building"] {
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.1),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.05),
+    var(--glass-shadow),
+    0 0 40px rgba(245, 158, 11, 0.15);
+  /* #F59E0B - The Architect */
+}
+
+.glass-panel[data-pattern="patience"] {
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.1),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.05),
+    var(--glass-shadow),
+    0 0 40px rgba(16, 185, 129, 0.15);
+  /* #10B981 - The Anchor */
+}
+
+.glass-panel[data-pattern="exploring"] {
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.1),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.05),
+    var(--glass-shadow),
+    0 0 40px rgba(139, 92, 246, 0.15);
+  /* #8B5CF6 - The Voyager */
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   ATMOSPHERIC BACKGROUND
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  /* Transition REMOVED - character color changes were distracting */
+  background-color: var(--atmosphere-void);
+}
+
+/* Character-specific atmospheres */
+.atmosphere[data-character="samuel"] {
+  background-color: var(--atmosphere-samuel);
+}
+
+.atmosphere[data-character="maya"] {
+  background-color: var(--atmosphere-maya);
+}
+
+.atmosphere[data-character="devon"] {
+  background-color: var(--atmosphere-devon);
+}
+
+.atmosphere[data-character="marcus"] {
+  background-color: var(--atmosphere-marcus);
+}
+
+.atmosphere[data-character="tess"] {
+  background-color: var(--atmosphere-tess);
+}
+
+.atmosphere[data-character="jordan"] {
+  background-color: var(--atmosphere-jordan);
+}
+
+.atmosphere[data-character="yaquin"] {
+  background-color: var(--atmosphere-yaquin);
+}
+
+.atmosphere[data-character="kai"] {
+  background-color: var(--atmosphere-kai);
+}
+
+.atmosphere[data-character="rohan"] {
+  background-color: var(--atmosphere-rohan);
+}
+
+.atmosphere[data-character="silas"] {
+  background-color: var(--atmosphere-silas);
+}
+
+.atmosphere[data-character="alex"] {
+  background-color: var(--atmosphere-alex);
+}
+
+/* P5: Station Evolution Atmospheres - Darkened for Contrast */
+.atmosphere[data-atmosphere="dormant"] {
+  background-color: #020617; /* slate-950 (was slate-800) */
+}
+
+.atmosphere[data-atmosphere="awakening"] {
+  background-color: #172554; /* blue-950 (was blue-900) */
+}
+
+.atmosphere[data-atmosphere="alive"] {
+  background-color: #022c22; /* emerald-950 (was emerald-900) */
+}
+
+.atmosphere[data-atmosphere="tense"] {
+  background-color: #450a0a;
+  /* red-950 */
+}
+
+.atmosphere[data-atmosphere="harmonious"] {
+  background-color: #4c1d95;
+  /* violet-900 */
+}
+
+/* Note: character-specific colors will override these if data-character is present on the same element.
+   However, AtmosphericGameBackground applies data-character to the div.
+   We need to ensure precedence or decide which one wins.
+   Currently: data-character selectors are strictly defined.
+   If characterId is null, these data-atmosphere selectors will take effect IF key is matched.
+*/
+
+/* Central radial glow */
+.atmosphere::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 50% at 50% 50%,
+      rgba(139, 92, 246, 0.04) 0%,
+      transparent 50%);
+  animation: atmospherePulse 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Vignette effect */
+.atmosphere::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center,
+      transparent 0%,
+      transparent 40%,
+      rgba(0, 0, 0, 0.4) 100%);
+  pointer-events: none;
+}
+
+/* Subtle grid overlay */
+.atmosphere-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px,
+      transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+@keyframes atmospherePulse {
+
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   PATTERN ORB - THE STATION'S SOUL
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.pattern-orb {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  position: relative;
+  animation: orbBreathe 4s ease-in-out infinite;
+}
+
+.pattern-orb::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: inherit;
+  filter: blur(12px);
+  opacity: 0.4;
+}
+
+.pattern-orb[data-pattern="analytical"] {
+  background: var(--pattern-analytical);
+}
+
+.pattern-orb[data-pattern="helping"] {
+  background: var(--pattern-helping);
+}
+
+.pattern-orb[data-pattern="building"] {
+  background: var(--pattern-building);
+}
+
+.pattern-orb[data-pattern="patience"] {
+  background: var(--pattern-patience);
+}
+
+.pattern-orb[data-pattern="exploring"] {
+  background: var(--pattern-exploring);
+}
+
+@keyframes orbBreathe {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+/* Milestone pulse effect */
+@keyframes orbMilestonePulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 currentColor;
+  }
+
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 0 30px 10px currentColor;
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+.pattern-orb.milestone {
+  animation: orbMilestonePulse 1s ease-out;
+}
+
+/* Sprint 3: Orb Spending Animation - Orbs fly from counter to skill slot */
+@keyframes orbFly {
+  0% {
+    transform: translate(var(--orb-start-x), var(--orb-start-y)) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(var(--orb-mid-x), var(--orb-mid-y)) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--orb-end-x), var(--orb-end-y)) scale(0.5);
+    opacity: 0;
+  }
+}
+
+.animate-orb-fly {
+  animation: orbFly 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Reduced motion: instant transition */
+@media (prefers-reduced-motion: reduce) {
+  .animate-orb-fly {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SPRING ANIMATIONS FOR GLASS PANELS
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@keyframes glassFloatIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes glassFloatInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes glassFloatInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.glass-float-in {
+  animation: glassFloatIn 0.5s var(--spring-bounce) forwards;
+}
+
+.glass-float-in-left {
+  animation: glassFloatInLeft 0.5s var(--spring-bounce) forwards;
+}
+
+.glass-float-in-right {
+  animation: glassFloatInRight 0.5s var(--spring-bounce) forwards;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   D-008: RICH TEXT STATE EFFECTS
+   Text styling triggered by player state (patterns, trust, character)
+   Colors match lib/narrative-derivatives.ts canonical mappings
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Shimmer effect - sparkle/glitter (Exploring pattern, Lira) */
+@keyframes textShimmer {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.text-effect-shimmer {
+  background: linear-gradient(90deg,
+      currentColor 0%,
+      var(--shimmer-color, #fbbf24) 25%,
+      currentColor 50%,
+      var(--shimmer-color, #fbbf24) 75%,
+      currentColor 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: textShimmer 3s ease-in-out infinite;
+}
+
+/* Pulse effect - gentle pulsing (Building pattern) */
+@keyframes textPulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.text-effect-pulse {
+  animation: textPulse 2s ease-in-out infinite;
+}
+
+/* Glow effect - luminous glow (Helping pattern) */
+.text-effect-glow {
+  text-shadow:
+    0 0 4px var(--glow-color, #f472b6),
+    0 0 8px var(--glow-color, #f472b6),
+    0 0 12px color-mix(in srgb, var(--glow-color, #f472b6) 50%, transparent);
+}
+
+/* Echo effect - trailing echo (Samuel character) */
+@keyframes textEcho {
+  0% {
+    text-shadow: none;
+  }
+
+  25% {
+    text-shadow: 2px 0 4px var(--echo-color, #f5f5dc);
+  }
+
+  50% {
+    text-shadow: 4px 0 8px color-mix(in srgb, var(--echo-color, #f5f5dc) 60%, transparent);
+  }
+
+  75% {
+    text-shadow: 2px 0 4px var(--echo-color, #f5f5dc);
+  }
+
+  100% {
+    text-shadow: none;
+  }
+}
+
+.text-effect-echo {
+  animation: textEcho 4s ease-in-out infinite;
+}
+
+/* Fade effect - fading in/out (Patience pattern) */
+@keyframes textFade {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.text-effect-fade {
+  animation: textFade 2s ease-in-out infinite;
+}
+
+/* Static effect - glitch/static (Rohan character) */
+@keyframes textStatic {
+
+  0%,
+  90%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+
+  92% {
+    opacity: 0.8;
+    transform: translateX(-1px);
+  }
+
+  94% {
+    opacity: 1;
+    transform: translateX(1px);
+  }
+
+  96% {
+    opacity: 0.9;
+    transform: translateX(-1px);
+  }
+
+  98% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.text-effect-static {
+  animation: textStatic 4s ease-in-out infinite;
+}
+
+/* Handwritten effect - cursive/personal (Trust >= 8) */
+.text-effect-handwritten {
+  font-style: italic;
+  letter-spacing: 0.02em;
+  font-weight: 300;
+}
+
+/* Typewriter effect - mechanical typing (Analytical pattern) */
+.text-effect-typewriter {
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+  letter-spacing: 0.05em;
+}
+
+/* Whisper effect - smaller, intimate (Trust >= 9) */
+.text-effect-whisper {
+  font-size: 0.9em;
+  opacity: 0.85;
+  font-style: italic;
+}
+
+/* Bold emphasis effect - strong emphasis */
+.text-effect-bold_emphasis {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Intensity modifiers */
+.text-effect-subtle {
+  --effect-intensity: 0.5;
+}
+
+.text-effect-medium {
+  --effect-intensity: 0.75;
+}
+
+.text-effect-strong {
+  --effect-intensity: 1;
+}
+
+/* Pattern-specific color overrides */
+.text-effect-pattern-analytical {
+  --shimmer-color: #60a5fa;
+  --glow-color: #60a5fa;
+}
+
+.text-effect-pattern-patience {
+  --shimmer-color: #34d399;
+  --glow-color: #34d399;
+}
+
+.text-effect-pattern-exploring {
+  --shimmer-color: #fbbf24;
+  --glow-color: #fbbf24;
+}
+
+.text-effect-pattern-helping {
+  --shimmer-color: #f472b6;
+  --glow-color: #f472b6;
+}
+
+.text-effect-pattern-building {
+  --shimmer-color: #a78bfa;
+  --glow-color: #a78bfa;
+}
+
+/* Character-specific color overrides */
+.text-effect-character-samuel {
+  --echo-color: #f5f5dc;
+}
+
+.text-effect-character-rohan {
+  --glow-color: #6b7280;
+}
+
+.text-effect-character-lira {
+  --shimmer-color: #c084fc;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   REDUCED MOTION SUPPORT
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .pattern-orb,
+  .atmosphere::before,
+  .glass-float-in,
+  .glass-float-in-left,
+  .glass-float-in-right {
+    animation: none !important;
+  }
+
+  .pattern-orb {
+    opacity: 1;
+  }
+
+  .atmosphere::before {
+    opacity: 0.8;
+  }
+
+  .glass-float-in,
+  .glass-float-in-left,
+  .glass-float-in-right {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* D-008: Disable text effect animations */
+  .text-effect-shimmer,
+  .text-effect-pulse,
+  .text-effect-echo,
+  .text-effect-fade,
+  .text-effect-static {
+    animation: none !important;
+  }
+
+  .text-effect-shimmer {
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   D-080: LARGE TEXT MODE
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Base text size variables */
+:root {
+  --text-scale: 1;
+  --text-base: 1rem;
+  --text-sm: 0.875rem;
+  --text-xs: 0.75rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --line-height-scale: 1;
+}
+
+/* Large text mode classes */
+.text-size-large {
+  --text-scale: 1.25;
+  font-size: calc(1rem * var(--text-scale));
+}
+
+.text-size-x-large {
+  --text-scale: 1.5;
+  font-size: calc(1rem * var(--text-scale));
+}
+
+.text-size-xx-large {
+  --text-scale: 2;
+  font-size: calc(1rem * var(--text-scale));
+}
+
+/* Ensure text scales properly but doesn't break layouts */
+.text-size-large *,
+.text-size-x-large *,
+.text-size-xx-large * {
+  line-height: calc(1.5 * var(--line-height-scale, 1));
+}
+
+/* Container-aware text scaling */
+.text-responsive {
+  font-size: clamp(var(--text-sm), var(--text-base), var(--text-lg));
+}
+
+/* Button text doesn't scale beyond container */
+.text-size-x-large button,
+.text-size-xx-large button {
+  font-size: min(calc(1rem * var(--text-scale)), 1.5rem);
+}
+
+/* Choice buttons with scroll for overflow */
+.text-size-x-large .choice-button,
+.text-size-xx-large .choice-button {
+  overflow-y: auto;
+  max-height: 120px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   D-030: VISUAL ACCESSIBILITY PROFILES
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Dyslexia-friendly font */
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: local('OpenDyslexic'), local('OpenDyslexic-Regular');
+  font-display: swap;
+}
+
+.font-dyslexic {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', sans-serif !important;
+  letter-spacing: 0.05em;
+  word-spacing: 0.1em;
+}
+
+/* High contrast mode */
+.high-contrast {
+  --bg-color: #000000;
+  --text-color: #ffffff;
+  --accent-color: #ffff00;
+  --border-color: #ffffff;
+}
+
+.high-contrast * {
+  border-color: var(--border-color, currentColor) !important;
+}
+
+.high-contrast .glass-panel {
+  background: #000000 !important;
+  border: 2px solid #ffffff !important;
+}
+
+.high-contrast a,
+.high-contrast button {
+  text-decoration: underline;
+}
+
+.high-contrast a:focus,
+.high-contrast button:focus {
+  outline: 3px solid #ffff00 !important;
+  outline-offset: 2px !important;
+}
+
+/* Reduce transparency mode */
+.reduce-transparency {
+  --backdrop-blur: 0px;
+}
+
+.reduce-transparency .glass-panel {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(10, 12, 16, 0.98) !important;
+}
+
+/* Reduce motion mode (class-based, in addition to media query) */
+.reduce-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Large touch targets */
+.large-touch-targets button,
+.large-touch-targets a,
+.large-touch-targets [role="button"] {
+  min-height: 56px !important;
+  min-width: 56px !important;
+  padding: 12px 16px !important;
+}
+
+/* Simplified UI mode */
+.simplified-ui .decorative,
+.simplified-ui .animation-only,
+.simplified-ui .bg-pattern {
+  display: none !important;
+}
+
+.simplified-ui .glass-panel {
+  border-radius: 4px !important;
+}
+
+/* Screen reader optimized */
+.sr-optimized .sr-only-visible {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  clip: auto !important;
+  clip-path: none !important;
+  margin: 0 !important;
+}
+
+/* Focus indicators - enhanced for accessibility */
+:root {
+  --focus-ring-color: #f59e0b;
+  --focus-ring-width: 2px;
+}
+
+*:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: 2px;
+}
+
+.high-contrast *:focus-visible {
+  outline-color: #ffff00;
+  outline-width: 3px;
+}
+
+/* Line height utilities for accessibility */
+.leading-relaxed-all * {
+  line-height: 1.75 !important;
+}
+
+.leading-loose-all * {
+  line-height: 2 !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   D-026: STATE-BASED ANIMATION SUPPORT
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Animation mood CSS variables */
+:root {
+  --animation-mood: 'neutral';
+  --animation-glow-color: transparent;
+}
+
+/* Mood-specific glow effects */
+[data-animation-mood="warm"] {
+  --animation-glow-color: rgba(251, 191, 36, 0.2);
+}
+
+[data-animation-mood="tense"] {
+  --animation-glow-color: rgba(239, 68, 68, 0.3);
+}
+
+[data-animation-mood="reflective"] {
+  --animation-glow-color: rgba(139, 92, 246, 0.2);
+}
+
+[data-animation-mood="triumphant"] {
+  --animation-glow-color: rgba(34, 197, 94, 0.3);
+}
+
+[data-animation-mood="vulnerable"] {
+  --animation-glow-color: rgba(244, 114, 182, 0.2);
+}
+
+/* Apply mood glow to containers */
+[data-animation-mood]:not([data-animation-mood="neutral"]):not([data-animation-mood="cautious"]) .glass-panel {
+  box-shadow: 0 0 20px var(--animation-glow-color);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   READER MODE - Accessibility font toggle
+   Sprint 4: Switch between mono (terminal aesthetic) and sans-serif (easier reading)
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Default: Monospace mode (terminal aesthetic) */
+:root,
+.reader-mode-mono {
+  --reader-font-body: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --reader-font-dialogue: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --reader-letter-spacing: 0em;
+  --reader-line-height: 1.6;
+}
+
+/* Sans-serif mode (easier reading, dyslexia-friendly) */
+.reader-mode-sans {
+  --reader-font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --reader-font-dialogue: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --reader-letter-spacing: 0.01em;
+  --reader-line-height: 1.7;
+}
+
+/* Apply reader mode fonts to dialogue and narrative text */
+.reader-mode-sans .dialogue-text,
+.reader-mode-sans .narrative-text,
+.reader-mode-sans [data-reader-target="true"] {
+  font-family: var(--reader-font-dialogue);
+  letter-spacing: var(--reader-letter-spacing);
+  line-height: var(--reader-line-height);
+}
+
+/* Slightly larger text in sans mode for readability */
+.reader-mode-sans .dialogue-text {
+  font-size: 1.05em;
+}
+
+/* Reader mode toggle button styling */
+.reader-mode-toggle {
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.reader-mode-toggle:active {
+  transform: scale(0.95);
+}

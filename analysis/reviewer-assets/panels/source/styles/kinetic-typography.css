@@ -1,0 +1,295 @@
+/**
+ * Kinetic Typography CSS
+ *
+ * CSS-only versions of kinetic text effects for use without JavaScript.
+ * Primarily used as fallbacks or for purely decorative elements.
+ *
+ * The JavaScript KineticText component provides more control,
+ * but these classes work for simpler use cases.
+ */
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   CSS CUSTOM PROPERTIES FOR KINETIC EFFECTS
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Default glow color (purple) */
+  --kinetic-glow-color: rgba(139, 92, 246, 0.6);
+
+  /* Pattern-specific glow colors */
+  --kinetic-glow-analytical: rgba(59, 130, 246, 0.6);
+  --kinetic-glow-patience: rgba(16, 185, 129, 0.6);
+  --kinetic-glow-exploring: rgba(139, 92, 246, 0.6);
+  --kinetic-glow-helping: rgba(236, 72, 153, 0.6);
+  --kinetic-glow-building: rgba(245, 158, 11, 0.6);
+
+  /* Animation durations */
+  --kinetic-wave-duration: 0.6s;
+  --kinetic-shadow-duration: 2s;
+  --kinetic-weight-duration: 1.2s;
+  --kinetic-spacing-duration: 2s;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   WAVE ANIMATION - Letter bounce effect
+   Apply to individual letters via JavaScript splitting
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@keyframes kinetic-wave {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.kinetic-wave {
+  display: inline-block;
+  animation: kinetic-wave var(--kinetic-wave-duration) ease-in-out;
+  animation-iteration-count: 2;
+}
+
+/* Staggered wave - apply data-index for delay */
+.kinetic-wave[data-index] {
+  animation-delay: calc(var(--kinetic-wave-delay, 0.03s) * attr(data-index number, 0));
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SHADOW PULSE - Animated text glow
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@keyframes kinetic-shadow-pulse {
+  0%,
+  100% {
+    text-shadow: 0 0 0px transparent;
+  }
+  25% {
+    text-shadow: 0 0 15px var(--kinetic-glow-color);
+  }
+  50% {
+    text-shadow: 0 0 30px var(--kinetic-glow-color);
+  }
+  75% {
+    text-shadow: 0 0 15px var(--kinetic-glow-color);
+  }
+}
+
+.kinetic-shadow {
+  display: inline-block;
+  animation: kinetic-shadow-pulse var(--kinetic-shadow-duration) ease-in-out;
+}
+
+/* Pattern-specific shadow colors */
+.kinetic-shadow[data-pattern='analytical'] {
+  --kinetic-glow-color: var(--kinetic-glow-analytical);
+}
+.kinetic-shadow[data-pattern='patience'] {
+  --kinetic-glow-color: var(--kinetic-glow-patience);
+}
+.kinetic-shadow[data-pattern='exploring'] {
+  --kinetic-glow-color: var(--kinetic-glow-exploring);
+}
+.kinetic-shadow[data-pattern='helping'] {
+  --kinetic-glow-color: var(--kinetic-glow-helping);
+}
+.kinetic-shadow[data-pattern='building'] {
+  --kinetic-glow-color: var(--kinetic-glow-building);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   WEIGHT SHIFT - Font weight animation
+   Note: Only effective with variable fonts or multiple weight families
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@keyframes kinetic-weight-shift {
+  0%,
+  100% {
+    font-weight: 400;
+  }
+  50% {
+    font-weight: 700;
+  }
+}
+
+.kinetic-weight {
+  display: inline-block;
+  animation: kinetic-weight-shift var(--kinetic-weight-duration) ease-in-out;
+}
+
+/* Variable font version using font-variation-settings */
+@supports (font-variation-settings: 'wght' 400) {
+  @keyframes kinetic-weight-shift-variable {
+    0%,
+    100% {
+      font-variation-settings: 'wght' 400;
+    }
+    50% {
+      font-variation-settings: 'wght' 700;
+    }
+  }
+
+  .kinetic-weight-variable {
+    display: inline-block;
+    animation: kinetic-weight-shift-variable var(--kinetic-weight-duration) ease-in-out;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SPACING BREATHE - Letter-spacing animation
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@keyframes kinetic-spacing-breathe {
+  0%,
+  100% {
+    letter-spacing: 0;
+  }
+  50% {
+    letter-spacing: 0.06em;
+  }
+}
+
+.kinetic-spacing {
+  display: inline-block;
+  animation: kinetic-spacing-breathe var(--kinetic-spacing-duration) ease-in-out;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   EMPHASIS EFFECT - Combined scale + glow for important text
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@keyframes kinetic-emphasis {
+  0%,
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 5px var(--kinetic-glow-color);
+  }
+  50% {
+    transform: scale(1.02);
+    text-shadow: 0 0 15px var(--kinetic-glow-color);
+  }
+}
+
+.kinetic-emphasis {
+  display: inline-block;
+  font-weight: bold;
+  animation: kinetic-emphasis 1.5s ease-in-out;
+}
+
+/* Intensity levels */
+.kinetic-emphasis-1 {
+  --kinetic-glow-color: rgba(139, 92, 246, 0.4);
+}
+.kinetic-emphasis-2 {
+  --kinetic-glow-color: rgba(139, 92, 246, 0.6);
+}
+.kinetic-emphasis-3 {
+  --kinetic-glow-color: rgba(139, 92, 246, 0.8);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   GLITCH EFFECT - Quick offset shake for error/tension moments
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@keyframes kinetic-glitch {
+  0%,
+  100% {
+    transform: translate(0);
+    opacity: 1;
+  }
+  10% {
+    transform: translate(-2px, 1px);
+    opacity: 0.8;
+  }
+  20% {
+    transform: translate(2px, -1px);
+    opacity: 0.9;
+  }
+  30% {
+    transform: translate(-1px, 2px);
+    opacity: 1;
+  }
+  40% {
+    transform: translate(1px, -2px);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate(-2px, -1px);
+    opacity: 0.8;
+  }
+  60% {
+    transform: translate(2px, 1px);
+    opacity: 0.9;
+  }
+  70% {
+    transform: translate(0);
+    opacity: 1;
+  }
+}
+
+.kinetic-glitch {
+  display: inline-block;
+  animation: kinetic-glitch 0.4s ease-in-out;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   TYPEWRITER EFFECT - Character-by-character reveal
+   Requires width/max-width to be set
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@keyframes kinetic-typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes kinetic-cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.kinetic-typewriter {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid currentColor;
+  animation:
+    kinetic-typewriter 2s steps(30) forwards,
+    kinetic-cursor-blink 0.75s step-end infinite;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   REDUCED MOTION
+   Disable all kinetic effects for users who prefer reduced motion
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .kinetic-wave,
+  .kinetic-shadow,
+  .kinetic-weight,
+  .kinetic-weight-variable,
+  .kinetic-spacing,
+  .kinetic-emphasis,
+  .kinetic-glitch,
+  .kinetic-typewriter {
+    animation: none !important;
+    transform: none !important;
+    text-shadow: none !important;
+    letter-spacing: normal !important;
+    font-weight: inherit !important;
+  }
+
+  .kinetic-typewriter {
+    width: auto !important;
+    border-right: none !important;
+  }
+}

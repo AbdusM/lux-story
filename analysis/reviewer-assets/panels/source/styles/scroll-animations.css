@@ -1,0 +1,251 @@
+/**
+ * Scroll-Driven Animations CSS
+ *
+ * Native CSS animations tied to scroll position (Chrome 115+, Safari 17+, Firefox 125+)
+ * Wrapped in @supports for progressive enhancement.
+ *
+ * Performance: These animations run on compositor thread at 60fps.
+ */
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   NATIVE SCROLL-DRIVEN ANIMATIONS
+   Only applied when browser supports animation-timeline
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@supports (animation-timeline: view()) {
+  /* ─────────────────────────────────────────────────────────────────────────────
+     REVEAL ANIMATION - Fade in + slide up when entering viewport
+     ───────────────────────────────────────────────────────────────────────────── */
+
+  .scroll-reveal {
+    animation: scrollReveal ease-out both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+
+  @keyframes scrollReveal {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────────
+     PARALLAX ANIMATION - Move slower than scroll for depth effect
+     ───────────────────────────────────────────────────────────────────────────── */
+
+  .scroll-parallax {
+    animation: scrollParallax linear;
+    animation-timeline: scroll();
+    animation-range: 0% 100%;
+  }
+
+  .scroll-parallax-subtle {
+    animation: scrollParallaxSubtle linear;
+    animation-timeline: scroll();
+    animation-range: 0% 100%;
+  }
+
+  @keyframes scrollParallax {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-50px);
+    }
+  }
+
+  @keyframes scrollParallaxSubtle {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-20px);
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────────
+     PROGRESS ANIMATION - Width tied to scroll position (for progress bars)
+     ───────────────────────────────────────────────────────────────────────────── */
+
+  .scroll-progress {
+    animation: scrollProgress linear;
+    animation-timeline: scroll(root);
+  }
+
+  @keyframes scrollProgress {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────────
+     SCALE REVEAL - Scale up when entering view
+     ───────────────────────────────────────────────────────────────────────────── */
+
+  .scroll-scale {
+    animation: scrollScale ease-out both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
+
+  @keyframes scrollScale {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────────
+     SLIDE FROM LEFT/RIGHT - Horizontal entrance animations
+     ───────────────────────────────────────────────────────────────────────────── */
+
+  .scroll-slide-left {
+    animation: scrollSlideLeft ease-out both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+
+  .scroll-slide-right {
+    animation: scrollSlideRight ease-out both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+
+  @keyframes scrollSlideLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scrollSlideRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────────
+     ATMOSPHERE SHIFT - Subtle brightness shift as user scrolls
+     ───────────────────────────────────────────────────────────────────────────── */
+
+  .scroll-atmosphere {
+    animation: scrollAtmosphere linear;
+    animation-timeline: scroll();
+  }
+
+  @keyframes scrollAtmosphere {
+    from {
+      filter: brightness(1);
+    }
+    50% {
+      filter: brightness(1.03);
+    }
+    to {
+      filter: brightness(1);
+    }
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   FALLBACK ANIMATIONS (Intersection Observer + CSS Transitions)
+   Applied via JavaScript when scroll-driven animations not supported
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Reveal fallback */
+.scroll-reveal-fallback {
+  will-change: opacity, transform;
+}
+
+.scroll-reveal-fallback-hidden {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.scroll-reveal-fallback-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+
+/* Scale fallback */
+.scroll-scale-fallback-hidden {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.scroll-scale-fallback-visible {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+
+/* Slide fallbacks */
+.scroll-slide-left-fallback-hidden {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.scroll-slide-left-fallback-visible {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+
+.scroll-slide-right-fallback-hidden {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.scroll-slide-right-fallback-visible {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   REDUCED MOTION
+   Disable all scroll animations for users who prefer reduced motion
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .scroll-parallax,
+  .scroll-parallax-subtle,
+  .scroll-progress,
+  .scroll-scale,
+  .scroll-slide-left,
+  .scroll-slide-right,
+  .scroll-atmosphere {
+    animation: none !important;
+  }
+
+  /* Ensure fallback elements are visible without animation */
+  .scroll-reveal-fallback-hidden,
+  .scroll-scale-fallback-hidden,
+  .scroll-slide-left-fallback-hidden,
+  .scroll-slide-right-fallback-hidden {
+    opacity: 1;
+    transform: none;
+  }
+}

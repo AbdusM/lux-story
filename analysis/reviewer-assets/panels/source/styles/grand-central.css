@@ -1,0 +1,1036 @@
+/* Grand Central Terminus - Visual Feedback System */
+
+/* Base station atmosphere with subtle Birmingham integration */
+.grand-central-terminus {
+  --station-warmth: 0;
+  --time-speed: 1;
+  --birmingham-earth: 15, 12%, 8%;
+  --birmingham-stone: 25, 8%, 12%;
+  --birmingham-warmth: 35, 15%, 18%;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--birmingham-earth)) 0%,
+    hsl(var(--birmingham-stone)) 50%,
+    hsl(220, 15%, 15%) 100%
+  );
+  transition: all 2s ease-in-out;
+}
+
+/* Subtle regional warmth during career alignment */
+.grand-central-terminus.career-aligned {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--birmingham-earth)) 0%,
+    hsl(var(--birmingham-warmth)) 40%,
+    hsl(220, 18%, 16%) 100%
+  );
+}
+
+/* Alabama-inspired color temperature hints */
+.birmingham-atmosphere {
+  --regional-red: 8, 25%, 45%;
+  --regional-clay: 18, 20%, 35%;
+  --regional-iron: 350, 15%, 25%;
+  --regional-green: 140, 22%, 35%;
+}
+
+/* Enhanced platform warmth states for career alignment */
+.platform-cold {
+  --platform-color: 200, 45%, 25%;
+  filter: hue-rotate(180deg) brightness(0.75) saturate(0.8);
+  animation: cold-pulse 5s ease-in-out infinite;
+  transition: all 2s ease-in-out;
+}
+
+.platform-neutral {
+  --platform-color: 40, 25%, 50%;
+  filter: none;
+  transition: all 2s ease-in-out;
+}
+
+.platform-warm {
+  --platform-color: 40, 65%, 55%;
+  /* Reduced brightness to prevent washed-out UI */
+  filter: hue-rotate(10deg) brightness(1.02) saturate(1.08);
+  animation: warm-glow 4s ease-in-out infinite;
+  transition: all 2s ease-in-out;
+}
+
+.platform-resonant {
+  --platform-color: 280, 75%, 65%;
+  /* Reduced brightness to prevent washed-out UI */
+  filter: hue-rotate(-10deg) brightness(1.05) saturate(1.1);
+  animation: resonant-pulse 2.5s ease-in-out infinite;
+  transition: all 2s ease-in-out;
+}
+
+/* Career value alignment states */
+.career-alignment-low {
+  opacity: 0.85;
+  filter: brightness(0.9) saturate(0.9);
+}
+
+.career-alignment-medium {
+  opacity: 0.95;
+  filter: brightness(1.02) saturate(1.05);
+}
+
+.career-alignment-high {
+  opacity: 1;
+  /* Reduced brightness to prevent washed-out UI */
+  filter: brightness(1.03) saturate(1.1);
+  animation: alignment-glow 3s ease-in-out infinite;
+}
+
+@keyframes alignment-glow {
+  0%, 100% { 
+    box-shadow: 0 0 25px var(--glow);
+  }
+  50% { 
+    box-shadow: 0 0 45px var(--glow);
+  }
+}
+
+/* Quiet Hour effects */
+.quiet-hour {
+  filter: sepia(10%) contrast(1.1) brightness(0.95);
+  animation: time-stop 2s ease-in-out forwards;
+}
+
+.quiet-hour .story-text {
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 1.1em;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  animation: text-crystallize 3s ease-in-out forwards;
+}
+
+/* Enhanced text formatting for Chapter 2 career exploration */
+.story-text {
+  line-height: 1.7;
+  font-size: 1.05em;
+  margin-bottom: 1.2em;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  /* Default dialogue color - WCAG AA compliant */
+  color: var(--text-dialogue, rgba(235, 205, 160, 0.93));
+}
+
+.story-text.career-dialogue {
+  background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.05) 100%);
+  border-left: 3px solid var(--accent, rgba(255,255,255,0.1));
+  padding: 1rem 1.5rem;
+  margin: 1rem 0;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+}
+
+.story-text.career-insight {
+  background: rgba(var(--platform-color, 40, 25%, 50%), 0.03);
+  padding: 0.8rem 1.2rem;
+  border-radius: 6px;
+  margin: 0.8rem 0;
+  border: 1px solid rgba(var(--platform-color, 40, 25%, 50%), 0.1);
+}
+
+/* Character-specific dialogue styling */
+.speaker-maya .story-text {
+  --accent: #5C8FD6;
+  color: rgba(92, 143, 214, 0.95);
+}
+
+.speaker-devon .story-text {
+  --accent: #E6A965;
+  color: rgba(230, 169, 101, 0.95);
+}
+
+.speaker-jordan .story-text {
+  --accent: #A96CC8;
+  color: rgba(169, 108, 200, 0.95);
+}
+
+.speaker-alex .story-text {
+  --accent: #71B67A;
+  color: rgba(113, 182, 122, 0.95);
+}
+
+.speaker-samuel .story-text {
+  --accent: #C4C4C4;
+  color: rgba(196, 196, 196, 0.95);
+  font-weight: 500;
+}
+
+/* Improved readability for longer passages */
+.story-text p {
+  margin-bottom: 1em;
+}
+
+.story-text em {
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* Career theme text emphasis */
+.text-service-theme {
+  color: rgba(92, 143, 214, 0.9);
+  font-weight: 500;
+}
+
+.text-systems-theme {
+  color: rgba(230, 169, 101, 0.9);
+  font-weight: 500;
+}
+
+.text-analysis-theme {
+  color: rgba(169, 108, 200, 0.9);
+  font-weight: 500;
+}
+
+.text-emerging-theme {
+  color: rgba(113, 182, 122, 0.9);
+  font-weight: 500;
+}
+
+.quiet-hour::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at center,
+    transparent 0%,
+    rgba(147, 112, 219, 0.05) 50%,
+    rgba(147, 112, 219, 0.1) 100%
+  );
+  pointer-events: none;
+  animation: quiet-hour-pulse 8s ease-in-out infinite;
+}
+
+/* Time-based animations */
+.time-slowing {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+.time-stopped {
+  animation: frozen 0.1s linear forwards;
+}
+
+.time-rushing {
+  animation: rush 1s linear infinite;
+}
+
+/* Career-themed platform visual differentiation with Birmingham hints */
+.platform-1-service {
+  --accent: #5C8FD6;
+  --glow: rgba(92, 143, 214, 0.4);
+  --career-theme: 'service-impact';
+  --regional-hint: hsl(var(--regional-red));
+  filter: hue-rotate(210deg) saturate(1.1);
+  background: linear-gradient(135deg, transparent 0%, hsla(var(--regional-red), 0.05) 100%);
+}
+
+.platform-3-systems {
+  --accent: #E6A965;
+  --glow: rgba(230, 169, 101, 0.4);
+  --career-theme: 'systems-operations';
+  --regional-hint: hsl(var(--regional-clay));
+  filter: hue-rotate(35deg) saturate(1.2);
+  background: linear-gradient(135deg, transparent 0%, hsla(var(--regional-clay), 0.05) 100%);
+}
+
+.platform-7-analysis {
+  --accent: #A96CC8;
+  --glow: rgba(169, 108, 200, 0.4);
+  --career-theme: 'information-analysis';
+  --regional-hint: hsl(var(--regional-iron));
+  filter: hue-rotate(285deg) saturate(1.15);
+  background: linear-gradient(135deg, transparent 0%, hsla(var(--regional-iron), 0.05) 100%);
+}
+
+.platform-9-emerging {
+  --accent: #71B67A;
+  --glow: rgba(113, 182, 122, 0.4);
+  --career-theme: 'emerging-growth';
+  --regional-hint: hsl(var(--regional-green));
+  filter: hue-rotate(125deg) saturate(1.1);
+  background: linear-gradient(135deg, transparent 0%, hsla(var(--regional-green), 0.05) 100%);
+}
+
+.platform-forgotten-hybrid {
+  --accent: #C4C4C4;
+  --glow: rgba(196, 196, 196, 0.15);
+  --career-theme: 'hybrid-innovation';
+  opacity: 0.75;
+  filter: blur(0.8px) saturate(0.9);
+  transition: all 3s ease-in-out;
+}
+
+.platform-forgotten-hybrid.accessible {
+  opacity: 1;
+  filter: blur(0px) saturate(1.1);
+  --accent: #B8B8B8;
+  --glow: rgba(184, 184, 184, 0.3);
+}
+
+.platform-7-half {
+  background: linear-gradient(
+    45deg,
+    var(--platform-1-care) 0%,
+    var(--platform-3-building) 50%,
+    var(--platform-7-data) 100%
+  );
+  animation: platform-creation 3s ease-in-out forwards;
+}
+
+/* Character trust levels */
+.trust-low .speaker-name {
+  opacity: 0.7;
+}
+
+.trust-medium .speaker-name {
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.trust-high .speaker-name {
+  opacity: 1;
+  font-weight: 600;
+  text-shadow: 0 0 10px var(--glow);
+}
+
+/* Enhanced choice button styling for career themes */
+/* DARK THEME: Use dark slate backgrounds instead of light white gradients */
+.choice-button {
+  position: relative;
+  transition: all 0.4s ease;
+  border-radius: 8px;
+  background: linear-gradient(135deg,
+    rgba(15, 23, 42, 0.8) 0%,
+    rgba(30, 41, 59, 0.7) 100%);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+}
+
+.choice-button:hover {
+  background: linear-gradient(135deg,
+    rgba(30, 41, 59, 0.9) 0%,
+    rgba(51, 65, 85, 0.8) 100%);
+  border-color: rgba(255,255,255,0.2);
+  /* transform: translateY(-2px); -- REMOVED: Framer Motion handles transforms */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Career theme choice indicators */
+.choice-button.consequence-helping {
+  border-left: 3px solid rgba(92, 143, 214, 0.6);
+}
+
+.choice-button.consequence-helping:hover {
+  background: linear-gradient(135deg, 
+    rgba(92, 143, 214, 0.1) 0%, 
+    rgba(92, 143, 214, 0.05) 100%);
+  box-shadow: 0 4px 12px rgba(92, 143, 214, 0.2);
+}
+
+.choice-button.consequence-building {
+  border-left: 3px solid rgba(230, 169, 101, 0.6);
+}
+
+.choice-button.consequence-building:hover {
+  background: linear-gradient(135deg, 
+    rgba(230, 169, 101, 0.1) 0%, 
+    rgba(230, 169, 101, 0.05) 100%);
+  box-shadow: 0 4px 12px rgba(230, 169, 101, 0.2);
+}
+
+.choice-button.consequence-analyzing {
+  border-left: 3px solid rgba(169, 108, 200, 0.6);
+}
+
+.choice-button.consequence-analyzing:hover {
+  background: linear-gradient(135deg, 
+    rgba(169, 108, 200, 0.1) 0%, 
+    rgba(169, 108, 200, 0.05) 100%);
+  box-shadow: 0 4px 12px rgba(169, 108, 200, 0.2);
+}
+
+.choice-button.consequence-exploring {
+  border-left: 3px solid rgba(113, 182, 122, 0.6);
+}
+
+.choice-button.consequence-exploring:hover {
+  background: linear-gradient(135deg, 
+    rgba(113, 182, 122, 0.1) 0%, 
+    rgba(113, 182, 122, 0.05) 100%);
+  box-shadow: 0 4px 12px rgba(113, 182, 122, 0.2);
+}
+
+.choice-button.consequence-patience {
+  border-left: 3px solid rgba(196, 196, 196, 0.6);
+}
+
+.choice-button.consequence-patience:hover {
+  background: linear-gradient(135deg, 
+    rgba(196, 196, 196, 0.1) 0%, 
+    rgba(196, 196, 196, 0.05) 100%);
+  box-shadow: 0 4px 12px rgba(196, 196, 196, 0.2);
+}
+
+.choice-button.consequence-independence {
+  border-left: 3px dashed rgba(200, 200, 200, 0.4);
+}
+
+.choice-button.consequence-independence:hover {
+  background: linear-gradient(135deg, 
+    rgba(200, 200, 200, 0.08) 0%, 
+    rgba(200, 200, 200, 0.04) 100%);
+  box-shadow: 0 4px 12px rgba(200, 200, 200, 0.15);
+}
+
+/* Chapter 2 career-specific choice styling */
+.choice-button.career-values-choice {
+  padding: 1rem 1.2rem;
+  margin: 0.5rem 0;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.choice-button.career-values-choice:hover {
+  /* transform: translateX(4px) translateY(-2px); -- REMOVED: Framer Motion handles transforms */
+}
+
+/* Keyframe animations */
+@keyframes cold-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(100, 150, 200, 0.3);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 30px rgba(100, 150, 200, 0.5);
+    transform: scale(0.98);
+  }
+}
+
+@keyframes warm-glow {
+  0%, 100% { 
+    box-shadow: 0 0 30px var(--glow);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 50px var(--glow);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes resonant-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 40px var(--glow);
+    transform: scale(1) rotate(0deg);
+  }
+  25% { transform: scale(1.01) rotate(0.5deg); }
+  50% { 
+    box-shadow: 0 0 60px var(--glow);
+    transform: scale(1.02) rotate(0deg);
+  }
+  75% { transform: scale(1.01) rotate(-0.5deg); }
+}
+
+@keyframes time-stop {
+  0% { 
+    filter: none;
+  }
+  100% { 
+    filter: sepia(10%) contrast(1.1) brightness(0.95);
+  }
+}
+
+@keyframes text-crystallize {
+  0% { 
+    opacity: 0;
+    transform: translateY(20px);
+    letter-spacing: 0.05em;
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(10px);
+    letter-spacing: 0.03em;
+  }
+  100% { 
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: 0.02em;
+  }
+}
+
+@keyframes quiet-hour-pulse {
+  0%, 100% { 
+    opacity: 0.5;
+  }
+  50% { 
+    opacity: 1;
+  }
+}
+
+@keyframes platform-creation {
+  0% { 
+    opacity: 0;
+    transform: scaleX(0);
+    filter: blur(10px);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scaleX(0.5);
+    filter: blur(5px);
+  }
+  100% { 
+    opacity: 1;
+    transform: scaleX(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes breathe {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% { 
+    transform: scale(1.02);
+    opacity: 1;
+  }
+}
+
+@keyframes frozen {
+  to {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes rush {
+  0%, 100% { 
+    transform: scale(1) rotate(0deg);
+  }
+  25% { 
+    transform: scale(1.01) rotate(0.1deg);
+  }
+  50% { 
+    transform: scale(0.99) rotate(-0.1deg);
+  }
+  75% { 
+    transform: scale(1.01) rotate(0.1deg);
+  }
+}
+
+/* Visual states based on patterns */
+.high-helping {
+  --ui-warmth: 10deg;
+  --ui-brightness: 1.05;
+}
+
+.high-building {
+  --ui-warmth: 20deg;
+  --ui-brightness: 1.1;
+}
+
+.high-rushing {
+  --ui-warmth: -10deg;
+  --ui-brightness: 0.95;
+  animation: anxiety-shake 0.5s ease-in-out infinite;
+}
+
+.high-patience {
+  --ui-warmth: 5deg;
+  --ui-brightness: 1.02;
+  animation: calm-breathe 6s ease-in-out infinite;
+}
+
+@keyframes anxiety-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1px); }
+  75% { transform: translateX(1px); }
+}
+
+@keyframes calm-breathe {
+  0%, 100% { 
+    transform: scale(1);
+  }
+  50% { 
+    transform: scale(1.01);
+  }
+}
+
+/* Environmental response to choices */
+.environment-responsive {
+  transition: all 1s ease-in-out;
+}
+
+.bench-fixed {
+  box-shadow: 0 0 20px rgba(255, 183, 77, 0.3);
+}
+
+.bench-safe-spot {
+  animation: safe-pulse 4s ease-in-out infinite;
+}
+
+@keyframes safe-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 183, 77, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 183, 77, 0.5);
+  }
+}
+
+/* ============================================
+   FOX THEATRE MARQUEE LIGHTS
+   Chasing light border effect on key containers
+   ============================================ */
+
+/* Dialogue Card - Default subtle state */
+[data-testid="dialogue-card"] {
+  position: relative;
+  --marquee-color: 255, 220, 150;
+  --card-bg: rgb(254, 253, 248);
+  /* Default: subtle colored border, no animation */
+  border: 2px solid rgba(var(--marquee-color), 0.25) !important;
+  background: var(--card-bg);
+  transition: border-color 0.3s ease, box-shadow 0.5s ease;
+}
+
+/* STRATEGIC: Full marquee effect for impactful moments */
+/* Base fallback: pulsing border glow for all browsers */
+[data-testid="dialogue-card"].marquee-active,
+[data-testid="dialogue-card"][data-emotional-beat="true"],
+[data-testid="dialogue-card"][data-scene-type="introduction"],
+[data-testid="dialogue-card"][data-scene-type="revelation"],
+[data-testid="dialogue-card"][data-scene-type="climax"],
+[data-testid="dialogue-card"][data-trust-milestone="true"] {
+  border: 3px solid rgba(var(--marquee-color), 0.5) !important;
+  animation: dialogue-glow-pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 25px rgba(var(--marquee-color), 0.3);
+}
+
+/* Enhanced: Rotating conic gradient for @property-supporting browsers */
+@supports (background: conic-gradient(from 0turn, red, blue)) {
+  [data-testid="dialogue-card"].marquee-active,
+  [data-testid="dialogue-card"][data-emotional-beat="true"],
+  [data-testid="dialogue-card"][data-scene-type="introduction"],
+  [data-testid="dialogue-card"][data-scene-type="revelation"],
+  [data-testid="dialogue-card"][data-scene-type="climax"],
+  [data-testid="dialogue-card"][data-trust-milestone="true"] {
+    border: 3px solid transparent !important;
+    background:
+      linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+      conic-gradient(
+        from var(--border-angle, 0turn),
+        rgba(var(--marquee-color), 0.1) 0%,
+        rgba(var(--marquee-color), 0.4) 10%,
+        rgba(var(--marquee-color), 1) 15%,
+        rgba(var(--marquee-color), 0.4) 20%,
+        rgba(var(--marquee-color), 0.1) 25%,
+        transparent 30%,
+        transparent 100%
+      ) border-box;
+    animation: border-spin 2s linear infinite, dialogue-glow-pulse 2s ease-in-out infinite;
+  }
+}
+
+/* Fallback glow pulse for dialogue cards */
+@keyframes dialogue-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(var(--marquee-color), 0.2);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(var(--marquee-color), 0.5), 0 0 50px rgba(var(--marquee-color), 0.2);
+  }
+}
+
+@keyframes border-spin {
+  to { --border-angle: 1turn; }
+}
+
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0turn;
+  inherits: false;
+}
+
+/* Character-specific marquee colors - vibrant for Fox Theatre effect */
+[data-character-id="samuel"][data-testid="dialogue-card"] {
+  --marquee-color: 255, 215, 120; /* Warm gold/amber for the Conductor */
+}
+
+[data-character-id="maya"][data-testid="dialogue-card"] {
+  --marquee-color: 70, 130, 220; /* Rich blue */
+}
+
+[data-character-id="devon"][data-testid="dialogue-card"] {
+  --marquee-color: 240, 150, 60; /* Warm orange */
+}
+
+[data-character-id="jordan"][data-testid="dialogue-card"] {
+  --marquee-color: 180, 90, 220; /* Rich purple */
+}
+
+[data-character-id="marcus"][data-testid="dialogue-card"] {
+  --marquee-color: 80, 190, 100; /* Vibrant green */
+}
+
+[data-character-id="kai"][data-testid="dialogue-card"] {
+  --marquee-color: 50, 180, 210; /* Vibrant cyan/teal */
+}
+
+[data-character-id="tess"][data-testid="dialogue-card"] {
+  --marquee-color: 230, 120, 70; /* Rich coral/orange */
+}
+
+[data-character-id="yaquin"][data-testid="dialogue-card"] {
+  --marquee-color: 220, 190, 80; /* Golden yellow */
+}
+
+/* Character Header - Sweeping underline light */
+[data-testid="character-header"] {
+  position: relative;
+  --marquee-color: 255, 220, 150;
+  border-bottom: 2px solid rgba(var(--marquee-color), 0.15) !important;
+  overflow: hidden;
+}
+
+[data-testid="character-header"]::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: -100%;
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--marquee-color), 0.3) 20%,
+    rgba(var(--marquee-color), 0.9) 50%,
+    rgba(var(--marquee-color), 0.3) 80%,
+    transparent 100%
+  );
+  animation: header-sweep 2s ease-in-out infinite;
+}
+
+@keyframes header-sweep {
+  0% { left: -60%; }
+  100% { left: 100%; }
+}
+
+/* Character-specific header colors */
+[data-character-id="samuel"][data-testid="character-header"] { --marquee-color: 255, 215, 120; }
+[data-character-id="maya"][data-testid="character-header"] { --marquee-color: 70, 130, 220; }
+[data-character-id="devon"][data-testid="character-header"] { --marquee-color: 240, 150, 60; }
+[data-character-id="jordan"][data-testid="character-header"] { --marquee-color: 180, 90, 220; }
+[data-character-id="marcus"][data-testid="character-header"] { --marquee-color: 80, 190, 100; }
+[data-character-id="kai"][data-testid="character-header"] { --marquee-color: 50, 180, 210; }
+[data-character-id="tess"][data-testid="character-header"] { --marquee-color: 230, 120, 70; }
+[data-character-id="yaquin"][data-testid="character-header"] { --marquee-color: 220, 190, 80; }
+
+/* Accessibility: Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .platform-cold,
+  .platform-warm,
+  .platform-resonant,
+  .career-alignment-high,
+  .quiet-hour,
+  .quiet-hour::before,
+  .time-slowing,
+  .time-stopped,
+  .time-rushing,
+  .platform-7-half,
+  .high-rushing,
+  .high-patience,
+  .bench-safe-spot,
+  [data-testid="dialogue-card"],
+  [data-testid="character-header"] {
+    animation: none !important;
+  }
+
+  /* Static fallback for marquee - keep subtle border, disable strategic animation */
+  [data-testid="dialogue-card"].marquee-active,
+  [data-testid="dialogue-card"][data-emotional-beat="true"],
+  [data-testid="dialogue-card"][data-scene-type] {
+    animation: none !important;
+    border: 2px solid rgba(var(--marquee-color), 0.5) !important;
+    background: var(--card-bg, rgb(254, 253, 248)) !important;
+    box-shadow: 0 0 15px rgba(var(--marquee-color), 0.2);
+  }
+
+  /* Static fallback for header - solid underline */
+  [data-testid="character-header"]::after {
+    background: rgba(var(--marquee-color), 0.5) !important;
+  }
+
+  .choice-button:hover {
+    transform: none !important;
+  }
+
+  .trust-high .speaker-name {
+    text-shadow: none;
+  }
+}
+
+/* ============================================
+   INTRO SCREEN MARQUEE
+   Opening title and CTA with theatre effect
+   ============================================ */
+
+/* Intro Title - Underline sweep effect */
+[data-testid="intro-title"] {
+  position: relative;
+  display: inline-block;
+  --marquee-color: 255, 200, 100; /* Warm gold for theatre entrance */
+}
+
+[data-testid="intro-title"]::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--marquee-color), 0.2) 10%,
+    rgba(var(--marquee-color), 0.8) 50%,
+    rgba(var(--marquee-color), 0.2) 90%,
+    transparent 100%
+  );
+  animation: title-sweep 3s ease-in-out infinite;
+}
+
+@keyframes title-sweep {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scaleX(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* Intro CTA Button - Full marquee border */
+[data-testid="intro-cta"] {
+  position: relative;
+  --marquee-color: 255, 200, 100;
+  --btn-bg: rgb(30, 41, 59); /* slate-800 */
+  background: var(--btn-bg) !important;
+  color: rgb(255, 255, 255) !important; /* White text for contrast */
+  border: 3px solid rgba(var(--marquee-color), 0.8) !important;
+  /* Fallback: pulsing glow for browsers without @property support */
+  animation: cta-glow-pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 25px rgba(var(--marquee-color), 0.5);
+}
+
+/* Enhanced effect for browsers supporting @property (Chrome, Safari 16.4+) */
+@supports (background: conic-gradient(from 0turn, red, blue)) {
+  [data-testid="intro-cta"] {
+    border: 2px solid transparent !important;
+    background:
+      linear-gradient(var(--btn-bg), var(--btn-bg)) padding-box,
+      conic-gradient(
+        from var(--border-angle, 0turn),
+        rgba(var(--marquee-color), 0.2) 0%,
+        rgba(var(--marquee-color), 0.6) 10%,
+        rgba(var(--marquee-color), 1) 15%,
+        rgba(var(--marquee-color), 0.6) 20%,
+        rgba(var(--marquee-color), 0.2) 25%,
+        transparent 30%,
+        transparent 100%
+      ) border-box;
+    animation: border-spin 2.5s linear infinite, cta-glow-pulse 2s ease-in-out infinite;
+  }
+}
+
+/* Fallback glow pulse animation - works everywhere */
+@keyframes cta-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(var(--marquee-color), 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(var(--marquee-color), 0.6), 0 0 60px rgba(var(--marquee-color), 0.3);
+  }
+}
+
+/* ============================================
+   NAVIGATION BUTTONS MARQUEE
+   Subtle sweep on hover, glow when active
+   ============================================ */
+
+/* Nav buttons - Base state with subtle underline */
+[data-testid^="nav-"] {
+  position: relative;
+  --nav-color: 180, 180, 180; /* Neutral grey */
+  overflow: hidden;
+}
+
+/* Sweep effect on hover */
+[data-testid^="nav-"]::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: -100%;
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--nav-color), 0.4) 30%,
+    rgba(var(--nav-color), 0.8) 50%,
+    rgba(var(--nav-color), 0.4) 70%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+[data-testid^="nav-"]:hover::after {
+  opacity: 1;
+  animation: nav-sweep 0.6s ease-out forwards;
+}
+
+@keyframes nav-sweep {
+  0% { left: -80%; }
+  100% { left: 100%; }
+}
+
+/* Specific nav button colors */
+[data-testid="nav-journal"] { --nav-color: 180, 140, 80; } /* Amber/journal color */
+[data-testid="nav-thoughts"] { --nav-color: 140, 100, 180; } /* Purple/brain color */
+[data-testid="nav-constellation"] { --nav-color: 100, 160, 220; } /* Blue/star color */
+[data-testid="nav-journey"] { --nav-color: 220, 160, 60; } /* Gold/compass color */
+
+/* ============================================
+   PIVOTAL CHOICE BUTTONS MARQUEE
+   Strategic marquee on important decisions
+   ============================================ */
+
+/* Pivotal choices - Full chasing border */
+[data-testid="choice-button"][data-pivotal="true"] {
+  position: relative;
+  --choice-color: 220, 180, 80; /* Decision gold */
+  --choice-bg: rgb(255, 255, 255);
+  border: 2px solid transparent !important;
+  background:
+    linear-gradient(var(--choice-bg), var(--choice-bg)) padding-box,
+    conic-gradient(
+      from var(--border-angle, 0turn),
+      rgba(var(--choice-color), 0.1) 0%,
+      rgba(var(--choice-color), 0.4) 8%,
+      rgba(var(--choice-color), 0.9) 12%,
+      rgba(var(--choice-color), 0.4) 16%,
+      rgba(var(--choice-color), 0.1) 20%,
+      transparent 25%,
+      transparent 100%
+    ) border-box;
+  animation: border-spin 2s linear infinite;
+  box-shadow: 0 0 15px rgba(var(--choice-color), 0.2);
+}
+
+/* Hover state for pivotal - intensify */
+[data-testid="choice-button"][data-pivotal="true"]:hover {
+  box-shadow: 0 0 25px rgba(var(--choice-color), 0.4);
+}
+
+/* Accessibility: Reduced motion fallbacks for new elements */
+@media (prefers-reduced-motion: reduce) {
+  [data-testid="intro-title"]::after,
+  [data-testid="intro-cta"],
+  [data-testid^="nav-"]::after,
+  [data-testid="choice-button"][data-pivotal="true"] {
+    animation: none !important;
+  }
+
+  /* Static fallback for intro CTA */
+  [data-testid="intro-cta"] {
+    border: 2px solid rgba(var(--marquee-color), 0.5) !important;
+    background: var(--btn-bg, rgb(30, 41, 59)) !important;
+  }
+
+  /* Static fallback for pivotal choices */
+  [data-testid="choice-button"][data-pivotal="true"] {
+    border: 2px solid rgba(var(--choice-color), 0.5) !important;
+    background: var(--choice-bg, white) !important;
+    box-shadow: 0 0 10px rgba(var(--choice-color), 0.15);
+  }
+}
+
+/* ============================================
+   AMBIENT & SENSATION ANIMATIONS
+   Fade effects for atmospheric elements
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Utility class for fade-in */
+.animate-fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* ============================================
+   FOX THEATRE CHARACTER ATMOSPHERE
+   Subtle vignette overlay based on active character
+   ============================================ */
+
+/* Character atmosphere - vignette overlay */
+.character-atmosphere {
+  position: relative;
+}
+
+.character-atmosphere::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1; /* Behind all content */
+  background: radial-gradient(
+    ellipse 120% 80% at 50% 100%,
+    hsla(var(--character-hue, 0), var(--character-sat, 0%), 15%, 0.25) 0%,
+    transparent 60%
+  );
+  transition: background 2s ease-in-out;
+}
+
+/* Character-specific hue and saturation values */
+.character-samuel { --character-hue: 40; --character-sat: 30%; } /* Warm wisdom */
+.character-maya { --character-hue: 210; --character-sat: 35%; } /* Cool analytical blue */
+.character-devon { --character-hue: 35; --character-sat: 45%; } /* Amber builder */
+.character-jordan { --character-hue: 280; --character-sat: 30%; } /* Creative purple */
+.character-marcus { --character-hue: 140; --character-sat: 25%; } /* Steady green */
+.character-kai { --character-hue: 200; --character-sat: 30%; } /* Present cyan */
+.character-tess { --character-hue: 25; --character-sat: 40%; } /* Organized coral */
+.character-yaquin { --character-hue: 45; --character-sat: 35%; } /* Artistic gold */
+.character-rohan { --character-hue: 0; --character-sat: 25%; } /* Direct red */
+.character-silas { --character-hue: 260; --character-sat: 20%; } /* Mysterious deep purple */
+
+/* Reduced motion: static vignette */
+@media (prefers-reduced-motion: reduce) {
+  .character-atmosphere::after {
+    transition: none;
+  }
+}
