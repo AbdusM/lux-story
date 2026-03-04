@@ -91,6 +91,69 @@ describe('release:security:minimum', () => {
     expect((await profilePOST(req)).status).toBe(403)
   })
 
+  test('/api/advisor-briefing rejects unauthenticated requests', async () => {
+    const { POST } = await import('@/app/api/advisor-briefing/route')
+
+    mockAdminUser = null
+    mockAdminRole = null
+
+    const req = new NextRequest(new URL('http://localhost:3000/api/advisor-briefing'), {
+      method: 'POST',
+      body: JSON.stringify({ profile: { totalDemonstrations: 1 } }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+    const res = await POST(req)
+    expect(res.status).toBe(401)
+  })
+
+  test('/api/advisor-briefing returns 400 for malformed JSON payloads', async () => {
+    const { POST } = await import('@/app/api/advisor-briefing/route')
+
+    mockAdminUser = { id: '00000000-0000-0000-0000-000000000000', email: 'admin@example.com' }
+    mockAdminRole = 'admin'
+
+    const req = new NextRequest(new URL('http://localhost:3000/api/advisor-briefing'), {
+      method: 'POST',
+      body: '{"profile":',
+      headers: { 'Content-Type': 'application/json' },
+    })
+    const res = await POST(req)
+    const body = await res.json()
+
+    expect(res.status).toBe(400)
+    expect(body?.error).toBe('Invalid JSON payload')
+  })
+
+  test('/api/samuel-dialogue rejects unauthenticated requests', async () => {
+    const { POST } = await import('@/app/api/samuel-dialogue/route')
+
+    const req = new NextRequest(new URL('http://localhost:3000/api/samuel-dialogue'), {
+      method: 'POST',
+      body: JSON.stringify({ nodeId: 'samuel_hub_initial' }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+
+    const res = await POST(req)
+    expect(res.status).toBe(401)
+  })
+
+  test('/api/samuel-dialogue returns 400 for malformed JSON payloads', async () => {
+    const { POST } = await import('@/app/api/samuel-dialogue/route')
+
+    const req = new NextRequest(new URL('http://localhost:3000/api/samuel-dialogue'), {
+      method: 'POST',
+      body: '{"nodeId":',
+      headers: { 'Content-Type': 'application/json' },
+    })
+    req.cookies.set(USER_SESSION_COOKIE_NAME, createUserSessionToken('00000000-0000-0000-0000-000000000001'))
+
+    const res = await POST(req)
+    const body = await res.json()
+
+    expect(res.status).toBe(400)
+    expect(body?.error).toBe('Invalid JSON payload')
+  })
+
   test('/admin/* rejects unauthenticated requests (middleware gate)', async () => {
     const { updateSession } = await import('@/lib/supabase/middleware')
 
@@ -124,6 +187,24 @@ describe('release:security:minimum', () => {
     const res = await updateSession(req)
 
     expect(res.headers.get('Location')).toBeNull()
+  })
+
+  test('middleware blocks debug test surfaces in production', async () => {
+    const { middleware } = await import('@/middleware')
+
+    const previous = process.env.NODE_ENV
+    ;(process.env as any).NODE_ENV = 'production'
+    try {
+      const pageReq = new NextRequest(new URL('http://localhost:3000/test-env'))
+      const pageRes = await middleware(pageReq)
+      expect(pageRes.status).toBe(404)
+
+      const apiReq = new NextRequest(new URL('http://localhost:3000/api/test-env'))
+      const apiRes = await middleware(apiReq)
+      expect(apiRes.status).toBe(404)
+    } finally {
+      ;(process.env as any).NODE_ENV = previous
+    }
   })
 
   test('godmode URL param is disabled in production', () => {
@@ -181,6 +262,35 @@ describe('release:security:minimum', () => {
       })
       const res = await POST(req)
       expect(res.status).toBe(400)
+    } finally {
+      ;(process.env as any).NODE_ENV = previous
+    }
+  })
+
+  test('/api/health/storage reports healthy server contract', async () => {
+    const { GET } = await import('@/app/api/health/storage/route')
+    const res = await GET()
+    const body = await res.json()
+
+    expect(res.status).toBe(200)
+    expect(body?.status).toBe('healthy')
+    expect(body?.checks?.clientStorage).toBe('deferred-to-client')
+  })
+
+  test('production CSP in next config excludes unsafe-eval', async () => {
+    const previous = process.env.NODE_ENV
+    ;(process.env as any).NODE_ENV = 'production'
+    try {
+      const nextConfigModule = await import('../../../next.config.js')
+      const config = nextConfigModule.default as {
+        headers?: () => Promise<Array<{ headers: Array<{ key: string; value: string }> }>>
+      }
+
+      expect(typeof config.headers).toBe('function')
+      const headerSets = await config.headers!()
+      const csp = headerSets[0]?.headers.find((header) => header.key === 'Content-Security-Policy')?.value ?? ''
+
+      expect(csp).not.toContain("'unsafe-eval'")
     } finally {
       ;(process.env as any).NODE_ENV = previous
     }

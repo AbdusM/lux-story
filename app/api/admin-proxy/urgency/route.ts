@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
       
       const { data: profiles, error } = await supabase
         .from('player_profiles')
-        .select('user_id')
+        .select('user_id,last_activity')
         .order('last_activity', { ascending: false })
         .limit(200)
 
@@ -116,7 +116,7 @@ export async function GET(request: NextRequest) {
         confusionScore: 0,
         stressScore: 0,
         isolationScore: 0,
-        lastActivity: p.user_id
+        lastActivity: p.last_activity || new Date(0).toISOString()
       }))
 
       return NextResponse.json({ students })

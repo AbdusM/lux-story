@@ -95,10 +95,11 @@ export const logger = {
     // Send to Sentry in production
     if (process.env.NODE_ENV === 'production' && error) {
       try {
-        // Sentry will be initialized if available
-        const win = window as unknown as { Sentry: { captureException: (err: Error, ctx: unknown) => void } }
-        if (typeof window !== 'undefined' && win.Sentry) {
-          win.Sentry.captureException(error, {
+        // Sentry will be initialized if available.
+        // Guard browser globals before any access to avoid server runtime exceptions.
+        if (typeof window !== 'undefined') {
+          const win = window as unknown as { Sentry?: { captureException: (err: Error, ctx: unknown) => void } }
+          win.Sentry?.captureException(error, {
             contexts: {
               custom: sanitize(context || {}),
             },

@@ -92,6 +92,26 @@ const nextConfig = {
     // Get Supabase URL from environment or use default
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || 'https://tavalvqcebosfxamuvlx.supabase.co'
     const supabaseHost = new URL(supabaseUrl).hostname
+    const isProduction = process.env.NODE_ENV === 'production'
+
+    // Keep CSP strict in production while preserving dev ergonomics.
+    // Next.js still requires inline bootstrap scripts unless nonce/hash flow is implemented.
+    const scriptSrc = isProduction
+      ? "script-src 'self' 'unsafe-inline'"
+      : "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+
+    const connectSrc = isProduction
+      ? `connect-src 'self' https://${supabaseHost} https://*.ingest.sentry.io`
+      : `connect-src 'self' ws: wss: http://localhost:* https://${supabaseHost} https://*.ingest.sentry.io`
+
+    const cspValue = [
+      "default-src 'self'",
+      scriptSrc,
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "img-src 'self' data: https://api.dicebear.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      connectSrc,
+    ].join('; ')
 
     return [
       {
@@ -99,7 +119,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: `default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://api.dicebear.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://${supabaseHost};`
+            value: cspValue
           },
           {
             key: 'X-Frame-Options',

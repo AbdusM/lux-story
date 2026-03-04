@@ -9,6 +9,17 @@ import type { NextRequest } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
 export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname
+  const isProduction = process.env.NODE_ENV === 'production'
+  const isDebugSurface =
+    pathname === '/shadcn-preview' ||
+    pathname === '/api/test-env' ||
+    pathname.startsWith('/test-')
+
+  if (isProduction && isDebugSurface) {
+    return new NextResponse(null, { status: 404 })
+  }
+
   // First, refresh Supabase auth session
   // This must happen on every request to keep sessions alive
   const supabaseResponse = await updateSession(request)

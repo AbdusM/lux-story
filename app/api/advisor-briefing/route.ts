@@ -15,6 +15,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
 import { logger } from '@/lib/logger'
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
+import { requireAdminAuth } from '@/lib/admin-supabase-client'
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY
 
@@ -191,6 +192,10 @@ Generate only the five sections as clean markdown. No preamble or conclusion. St
  * Generates strategic briefing using Claude (Sonnet 3.5)
  */
 export async function POST(request: NextRequest) {
+  // Admin-only endpoint: fail closed before any expensive work.
+  const authError = await requireAdminAuth(request)
+  if (authError) return authError
+
   // Rate limiting: 10 requests per hour
   const ip = getClientIp(request)
   try {
@@ -207,9 +212,18 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // Parse request body
-  const body: AdvisorBriefingRequest = await request.json()
+  let body: AdvisorBriefingRequest
+  try {
+    body = await request.json() as AdvisorBriefingRequest
+  } catch {
+    return NextResponse.json(
+      { error: 'Invalid JSON payload' },
+      { status: 400 }
+    )
+  }
+
   const { profile, skillsData } = body
+  let validatedProfile: SkillProfile | null = null
 
   try {
     // 1. Validate API key
@@ -227,8 +241,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    validatedProfile = profile
+
     // 3. Validate profile has data
-    if (profile.totalDemonstrations === 0) {
+    if (validatedProfile.totalDemonstrations === 0) {
       return NextResponse.json(
         { error: 'Profile has no skill demonstrations. Student needs to complete more of the journey.' },
         { status: 400 }
@@ -236,12 +252,12 @@ export async function POST(request: NextRequest) {
     }
 
     // 4. Build master prompt with WEF 2030 skills data
-    const masterPrompt = buildMasterPrompt(profile, skillsData)
+    const masterPrompt = buildMasterPrompt(validatedProfile, skillsData)
 
     logger.debug('Generating briefing', {
       operation: 'advisor-briefing.generate',
-      userId: profile.userId,
-      totalDemonstrations: profile.totalDemonstrations,
+      userId: validatedProfile.userId,
+      totalDemonstrations: validatedProfile.totalDemonstrations,
       wefSkillsCount: skillsData?.length || 0,
       promptLength: masterPrompt.length
     })
@@ -311,16 +327,19 @@ export async function POST(request: NextRequest) {
     const err = error as { message?: string; error?: { message?: string } } | null
 
     // Handle insufficient credits by generating a realistic fallback
-    if (err?.message?.includes('credit balance') || err?.error?.message?.includes('credit balance')) {
+    if (
+      validatedProfile &&
+      (err?.message?.includes('credit balance') || err?.error?.message?.includes('credit balance'))
+    ) {
       logger.debug('Handling insufficient credits with data-driven fallback', { operation: 'advisor-briefing.fallback' })
 
       // Extract actual data from the profile
-      const topSkills = Object.entries(profile.skillDemonstrations)
+      const topSkills = Object.entries(validatedProfile.skillDemonstrations)
         .sort(([, a], [, b]: [string, unknown[]]) => (Array.isArray(b) ? b.length : 0) - (Array.isArray(a) ? a.length : 0))
         .slice(0, 3)
 
-      const topCareer = profile.careerMatches[0]
-      const topGap = profile.skillGaps.find(g => g.priority === 'high') || profile.skillGaps[0]
+      const topCareer = validatedProfile.careerMatches[0]
+      const topGap = validatedProfile.skillGaps.find(g => g.priority === 'high') || validatedProfile.skillGaps[0]
 
       // Get actual choice quotes from demonstrations
       const firstChoice = topSkills[0]?.[1][0]?.choice || "what_about_my_path"
