@@ -698,7 +698,8 @@ const nodes: DialogueNode[] = [
         pattern: 'analytical',
         skills: ['criticalThinking']
       }
-    ]
+    ],
+    tags: ['elena_arc', 'station_seven', 'iceberg:platform_seven']
   },
 
   {
@@ -790,7 +791,8 @@ const nodes: DialogueNode[] = [
         pattern: 'exploring',
         skills: ['criticalThinking']
       }
-    ]
+    ],
+    tags: ['elena_arc', 'resolution', 'iceberg:the_builders']
   },
 
   {
@@ -2585,7 +2587,7 @@ Your curiosity combined with analysis... that's exactly what they need.`,
         pattern: 'patience'
       }
     ],
-    tags: ['arc_platform_seven', 'elena_arc']
+    tags: ['arc_platform_seven', 'elena_arc', 'iceberg:platform_seven']
   },
 
   {
@@ -2607,7 +2609,8 @@ Your curiosity combined with analysis... that's exactly what they need.`,
           addGlobalFlags: ['platform_records_found']
         }
       }
-    ]
+    ],
+    tags: ['arc_platform_seven', 'elena_arc', 'iceberg:the_builders']
   },
 
   {

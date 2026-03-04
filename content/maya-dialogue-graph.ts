@@ -375,7 +375,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['maya_arc', 'backstory_depth']
+    tags: ['maya_arc', 'backstory_depth', 'iceberg:the_previous_visitor']
   },
 
   // ============= DEFLECT PASSION PATH =============
@@ -871,7 +871,7 @@ STATUS: Signal fighting itself`,
         thoughtId: 'community-heart'
       }
     ],
-    tags: ['major_reveal', 'trust_gate', 'maya_arc', 'immersive_scenario']
+    tags: ['major_reveal', 'trust_gate', 'maya_arc', 'immersive_scenario', 'iceberg:the_builders']
   },
 
   // ============= INTERRUPT TARGET: Player reached out during vulnerability =============
@@ -3529,7 +3529,7 @@ MISSION: Stabilize the wave form within safety limits.`,
         skills: ['creativity']
       }
     ],
-    tags: ['maya_arc', 'process', 'insight']
+    tags: ['maya_arc', 'process', 'insight', 'iceberg:midnight_rule']
   },
 
   {

@@ -1327,7 +1327,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         skills: ['communication']
       }
     ],
-    tags: ['mystery_reveal', 'letter_sender', 'samuel_arc']
+    tags: ['mystery_reveal', 'letter_sender', 'samuel_arc', 'iceberg:the_letter']
   },
   {
     nodeId: 'samuel_letter_confession',
@@ -1777,7 +1777,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         addKnowledgeFlags: ['knows_letter_system']
       }
     ],
-    tags: ['fridge_logic_fix', 'samuel_arc']
+    tags: ['fridge_logic_fix', 'samuel_arc', 'iceberg:the_letter']
   },
 
   // ============= ORB INTRODUCTION (First-time gift from Samuel) =============
@@ -2158,7 +2158,8 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         pattern: 'building',
         skills: ['sustainability']
       }
-    ]
+    ],
+    tags: ['hub', 'builders', 'iceberg:the_builders']
   },
 
   // Legacy hub fallback for "not sure" responses
@@ -8639,7 +8640,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         }
       }
     ],
-    tags: ['arc_platform_seven', 'samuel_arc']
+    tags: ['arc_platform_seven', 'samuel_arc', 'iceberg:platform_seven']
   },
 
   {
@@ -8991,8 +8992,9 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
 	        skills: ['emotionalIntelligence'],
 	        visibleCondition: undefined
 	      }
-	    ]
-	  },
+	    ],
+	    tags: ['mystery_reveal', 'letter_sender', 'iceberg:the_letter']
+		  },
   {
     nodeId: 'samuel_admission',
     speaker: 'Samuel (The Conductor)',
@@ -9098,7 +9100,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         pattern: 'analytical'
       }
     ],
-    tags: ['mystery', 'revelation']
+    tags: ['mystery', 'revelation', 'iceberg:before_the_station']
   },
 
   {
@@ -9193,7 +9195,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         pattern: 'exploring'
       }
     ],
-    tags: ['mystery', 'revelation', 'climax']
+    tags: ['mystery', 'revelation', 'climax', 'iceberg:the_previous_visitor', 'iceberg:before_the_station']
   },
 
   {
@@ -9312,7 +9314,8 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         text: "I'm not sure I'm the right person for that.",
         nextNodeId: 'samuel_loyalty_declined'
       }
-    ]
+    ],
+    tags: ['arc_quiet_hour', 'samuel_arc', 'iceberg:platform_seven']
   },
 
   {

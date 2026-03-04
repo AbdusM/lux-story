@@ -1,6 +1,6 @@
 # Simulations - Data Dictionary
 
-**Last Updated:** January 13, 2026
+**Last Updated:** March 4, 2026
 **Source:** `/content/simulation-registry.ts`, `/lib/simulation-registry.ts`, `/lib/dialogue-graph.ts`
 **Status:** Auto-generated
 
@@ -15,6 +15,31 @@ Simulations are immersive interactive experiences where players help characters 
 - Difficulty tiers: 3 (introduction, application, mastery)
 - Display modes: 2 (fullscreen, inline)
 - AI tool parallels: 7 real-world tools mapped
+
+---
+
+## Simulation Variant Contract (Canonical)
+
+This section is machine-validated by `scripts/verify-simulation-phase-contract.ts`.
+Entries below are the canonical graph-level simulation variants (`simulation.variantId`).
+
+<!-- SIMULATION_VARIANT_CONTRACT:START -->
+- `dante_active_listening_phase1` | `dante` | `1` | `introduction`
+- `dante_ethical_persuasion_phase2` | `dante` | `2` | `application`
+- `dante_authentic_pitch_phase3` | `dante` | `3` | `mastery`
+- `devon_hvac_debug_phase1` | `devon` | `1` | `introduction`
+- `devon_life_support_phase2` | `devon` | `2` | `application`
+- `devon_human_system_phase3` | `devon` | `3` | `mastery`
+- `isaiah_donor_cultivation_phase1` | `isaiah` | `1` | `introduction`
+- `isaiah_emergency_ask_phase2` | `isaiah` | `2` | `application`
+- `isaiah_marcus_memorial_phase3` | `isaiah` | `3` | `mastery`
+- `jordan_choice_paralysis_phase1` | `jordan` | `1` | `introduction`
+- `jordan_industry_pivot_phase2` | `jordan` | `2` | `application`
+- `jordan_unanswerable_phase3` | `jordan` | `3` | `mastery`
+- `nadia_bias_detection_phase1` | `nadia` | `1` | `introduction`
+- `nadia_ethical_constraints_phase2` | `nadia` | `2` | `application`
+- `nadia_whistleblower_phase3` | `nadia` | `3` | `mastery`
+<!-- SIMULATION_VARIANT_CONTRACT:END -->
 
 ---
 

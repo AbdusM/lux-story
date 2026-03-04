@@ -2068,7 +2068,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         skills: ['adaptability']
       }
     ],
-    tags: ['career_mention', 'invisible_depth', 'sustainability']
+    tags: ['career_mention', 'invisible_depth', 'sustainability', 'iceberg:the_builders']
   },
 
   // ============= ADDITIONAL CAREER REFLECTIONS =============
@@ -2690,7 +2690,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         skills: ['emotionalIntelligence']
       }
     ],
-    tags: ['devon_arc', 'process', 'vulnerability']
+    tags: ['devon_arc', 'process', 'vulnerability', 'iceberg:midnight_rule']
   },
 
   {

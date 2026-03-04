@@ -203,6 +203,7 @@ import { getArcCompletionFlag } from '@/lib/arc-learning-objectives'
 import { getPatternVoice, incrementPatternVoiceNodeCounter, checkVoiceConflict, type PatternVoiceResult, type PatternVoiceContext, type VoiceConflictResult } from '@/lib/pattern-voices'
 import { PATTERN_VOICE_LIBRARY } from '@/content/pattern-voice-library'
 import { PatternVoice } from '@/components/game/PatternVoice'
+import { NARRATIVE_RUNTIME_POLICY } from '@/lib/narrative-policy'
 import { useOrbs } from '@/hooks/useOrbs'
 // Analytics Hooks
 // Complex Character Hooks
@@ -3010,18 +3011,27 @@ export default function StatefulGameInterface() {
       }
       const achievementNotification: MetaAchievement | null = null
 
-      // Check for pattern voice (Disco Elysium-style inner monologue)
-      // Voices trigger based on pattern level and context
-      // D-003: Pass character trust for voice tone modulation
-      incrementPatternVoiceNodeCounter()
-      const patternVoiceContext: PatternVoiceContext = {
-        trigger: 'node_enter',
-        characterId: targetCharacterId,
-        npcEmotion: content.emotion,
-        nodeTags: nextNode.tags,
-        characterTrust: targetCharacter.trust  // D-003: Trust-based voice tone
+      // Pattern voice policy is explicit (`off|minimal|on`) to avoid silent drift.
+      let patternVoice: PatternVoiceResult | null = null
+      if (NARRATIVE_RUNTIME_POLICY.patternVoicePolicy !== 'off') {
+        incrementPatternVoiceNodeCounter()
+        const patternVoiceContext: PatternVoiceContext = {
+          trigger: 'node_enter',
+          characterId: targetCharacterId,
+          npcEmotion: content.emotion,
+          nodeTags: nextNode.tags,
+          characterTrust: targetCharacter.trust  // D-003: Trust-based voice tone
+        }
+
+        const candidateVoice = getPatternVoice(patternVoiceContext, newGameState, PATTERN_VOICE_LIBRARY)
+        if (candidateVoice) {
+          const suppressForMinimal =
+            NARRATIVE_RUNTIME_POLICY.patternVoicePolicy === 'minimal' &&
+            (Boolean(nextNode.simulation) || Boolean(nextNode.tags?.includes('simulation')))
+
+          patternVoice = suppressForMinimal ? null : candidateVoice
+        }
       }
-      const patternVoice = getPatternVoice(patternVoiceContext, newGameState, PATTERN_VOICE_LIBRARY)
 
       // D-096: Check for voice conflicts (when strong patterns disagree)
       const voiceConflict = checkVoiceConflict(newGameState)
@@ -4396,18 +4406,18 @@ export default function StatefulGameInterface() {
                         </div>
                       )}
 
-                      {/* Disco Elysium-style pattern voice-inner monologue */}
-                      {/* PatternVoice (Inner Monologue)-HIDDEN per user feedback ("show not tell") */}
-                      {/* {state.patternVoice && (
+                      {/* Pattern voice policy: `off|minimal|on` */}
+                      {state.patternVoice && NARRATIVE_RUNTIME_POLICY.patternVoicePolicy !== 'off' && (
                         <div className="mt-6 p-6 md:p-8 pt-0">
                           <PatternVoice
                             pattern={state.patternVoice.pattern}
                             text={state.patternVoice.text}
                             style={state.patternVoice.style}
+                            autoDismissMs={NARRATIVE_RUNTIME_POLICY.patternVoicePolicy === 'minimal' ? 4500 : 8000}
                             onDismiss={() => setState(prev => ({ ...prev, patternVoice: null }))}
                           />
                         </div>
-                      )} */}
+                      )}
 
 
                     </CardContent>

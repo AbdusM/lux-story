@@ -258,7 +258,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['nadia_arc', 'backstory', 'harm', 'vulnerability']
+    tags: ['nadia_arc', 'backstory', 'harm', 'vulnerability', 'iceberg:the_builders']
   },
 
   // ============= RESPONSIBLE =============
