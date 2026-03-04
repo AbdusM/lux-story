@@ -3,6 +3,13 @@
 ## Purpose
 Turn the worldbuilding principles into shippable systems with measurable gates, not just documentation.
 
+## Status
+- `P1-A Canon Compiler`: Completed on 2026-03-04 (typed contract + timeline invariants + source snapshot + CI enforce mode).
+- `P1-B ARD Guardrail`: Completed previously (`verify:choice-taxonomy` ratchet lane + CI enforce mode).
+- `P1-C Unreliable Narrator Depth Pass`: Partially completed (baseline lane active; depth expansion still pending).
+- `P2-A Faction Leitmotif Runtime Mapping`: Not started.
+- `P2-B Micro-Reactivity Memory Layer`: Not started.
+
 ## Verified Baseline (Post-Implementation)
 - `npm run verify:iceberg-tags` reports `Total tags: 16`, `Tagged characters: 6` (`docs/qa/iceberg-tag-report.json`).
 - `UNRELIABLE_RECORD_VALIDATOR_MODE=enforce npm run verify:unreliable-records` passes with `Record tags: 6`, `Verify tags: 2`, `Tagged characters: 3` (`docs/qa/unreliable-record-report.json`).
@@ -30,12 +37,15 @@ Turn the worldbuilding principles into shippable systems with measurable gates, 
 ## Expansion Opportunities (Next Execution Queue)
 
 ### P1-A: Canon Compiler (Docs -> Runtime Contract)
+- Status: Completed
 - Goal: One canonical world contract consumed by runtime and generated docs.
 - Why: Avoid drift between `docs/02_WORLD/**`, PRD claims, and runtime behavior.
 - Deliverables:
-  - `content/world-canon.ts` (or JSON schema) as compiled source
-  - generator script for markdown sync
-  - contradiction rule checks (magic policy, station history claims)
+  - `content/world-canon.ts` as compiled source (with timeline + anchor contract)
+  - `scripts/verify-world-canon-contract.ts` generates:
+    - `docs/qa/world-canon-contract-report.json`
+    - `docs/qa/world-canon-source-snapshot.json`
+  - contradiction checks for magic policy + station history era invariants
 - Acceptance:
   - runtime reads canonical contract, not ad-hoc doc strings
   - CI fails on canon contradiction

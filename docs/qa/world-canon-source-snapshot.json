@@ -1,0 +1,139 @@
+{
+  "generated_at": "2026-03-04T22:52:33.085Z",
+  "mode": "enforce",
+  "contract_version": "1.1.0",
+  "docs": {
+    "canonical": [
+      "docs/reference/source-documents/00-lux-story-prd-v2.md",
+      "docs/00_CORE/02-living-design-document.md",
+      "docs/02_WORLD/00-readme.md"
+    ],
+    "timeline": [
+      "docs/02_WORLD/00_CORE_TRUTH/00-timeline-master.md",
+      "docs/02_WORLD/01-station-history-bible.md"
+    ]
+  },
+  "parsed_timeline_docs": [
+    {
+      "doc": "docs/02_WORLD/00_CORE_TRUTH/00-timeline-master.md",
+      "eras": [
+        {
+          "eraNumber": 1,
+          "title": "The Arrival",
+          "startAS": 0,
+          "endAS": 500,
+          "line": "### Era 1: The Arrival (0 - 500 AS)"
+        },
+        {
+          "eraNumber": 2,
+          "title": "The Expansion Wars",
+          "startAS": 500,
+          "endAS": 1500,
+          "line": "### Era 2: The Expansion Wars (500 - 1500 AS)"
+        },
+        {
+          "eraNumber": 3,
+          "title": "The Logic Cascade",
+          "startAS": 1500,
+          "endAS": 3000,
+          "line": "### Era 3: The Logic Cascade (1500 - 3000 AS)"
+        },
+        {
+          "eraNumber": 4,
+          "title": "The Corp-State",
+          "startAS": 3000,
+          "endAS": 4500,
+          "line": "### Era 4: The Corp-State (3000 - 4500 AS)"
+        },
+        {
+          "eraNumber": 5,
+          "title": "The Current Drift",
+          "startAS": 4500,
+          "endAS": null,
+          "line": "### Era 5: The Current Drift (4500 - Present)"
+        }
+      ]
+    },
+    {
+      "doc": "docs/02_WORLD/01-station-history-bible.md",
+      "eras": [
+        {
+          "eraNumber": 1,
+          "title": "The Arrival",
+          "startAS": 0,
+          "endAS": 500,
+          "line": "### Era 1: The Arrival (0 - 500 AS)"
+        },
+        {
+          "eraNumber": 2,
+          "title": "The Expansion Wars",
+          "startAS": 500,
+          "endAS": 1500,
+          "line": "### Era 2: The Expansion Wars (500 - 1500 AS)"
+        },
+        {
+          "eraNumber": 3,
+          "title": "The Logic Cascade",
+          "startAS": 1500,
+          "endAS": 3000,
+          "line": "### Era 3: The Logic Cascade (1500 - 3000 AS)"
+        },
+        {
+          "eraNumber": 4,
+          "title": "The Corp-State",
+          "startAS": 3000,
+          "endAS": 4500,
+          "line": "### Era 4: The Corp-State (3000 - 4500 AS)"
+        },
+        {
+          "eraNumber": 5,
+          "title": "The Current Drift",
+          "startAS": 4500,
+          "endAS": null,
+          "line": "### Era 5: The Current Drift (4500 - Present)"
+        }
+      ]
+    }
+  ],
+  "required_anchor_hits": [
+    {
+      "anchorId": "magic-policy-anchor",
+      "phrase": "magical realism",
+      "doc": "docs/reference/source-documents/00-lux-story-prd-v2.md",
+      "excerpt": "at only make sense in retrospect ### **Magical Realism Framework** LUX Story operates in magical realism territory: the supernatural is present but never expl"
+    },
+    {
+      "anchorId": "magic-policy-anchor",
+      "phrase": "magical realism",
+      "doc": "docs/00_CORE/02-living-design-document.md",
+      "excerpt": "TRAINTS (The Guardrails) 1. **Grounded Magical Realism**: Supernatural elements can be present, but they are never formalized into a spell system; the **Logic"
+    },
+    {
+      "anchorId": "dyson-swarm-fragment-anchor",
+      "phrase": "Dyson Swarm Fragment",
+      "doc": "docs/02_WORLD/00_CORE_TRUTH/00-timeline-master.md",
+      "excerpt": "he Station is not a building. It is a **Dyson Swarm Fragment** that drifted into a stable Lagrange point. It was originally built to harness a star that has sin"
+    },
+    {
+      "anchorId": "dyson-swarm-fragment-anchor",
+      "phrase": "Dyson Swarm Fragment",
+      "doc": "docs/02_WORLD/01-station-history-bible.md",
+      "excerpt": "he Station is not a building. It is a **Dyson Swarm Fragment** that drifted into a stable Lagrange point. It was originally built to harness a star that has sin"
+    },
+    {
+      "anchorId": "breath-tax-anchor",
+      "phrase": "Breath Tax",
+      "doc": "docs/02_WORLD/00_CORE_TRUTH/00-timeline-master.md",
+      "excerpt": "y Detail**: They monetized oxygen. \"The Breath Tax\" was instated. * **Legacy**: Your ID is your credit score. If you go bankrupt, you are \"Recycled\". ### Era"
+    },
+    {
+      "anchorId": "breath-tax-anchor",
+      "phrase": "Breath Tax",
+      "doc": "docs/02_WORLD/01-station-history-bible.md",
+      "excerpt": "y Detail**: They monetized oxygen. \"The Breath Tax\" was instated. * **Legacy**: Your ID is your credit score. If you go bankrupt, you are \"Recycled\". ### Era"
+    }
+  ],
+  "required_anchor_misses": [],
+  "forbidden_phrase_hits": [],
+  "timeline_mismatches": []
+}

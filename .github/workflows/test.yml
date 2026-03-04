@@ -89,6 +89,8 @@ jobs:
 
       - name: Verify world canon contract
         run: npm run verify:world-canon-contract
+        env:
+          WORLD_CANON_VALIDATOR_MODE: enforce
 
       - name: Verify simulation phase contract
         run: npm run verify:simulation-phase-contract
@@ -121,6 +123,7 @@ jobs:
           DIALOGUE_EXTERNAL_DEBT_MODE: enforce
           ICEBERG_VALIDATOR_MODE: enforce
           UNRELIABLE_RECORD_VALIDATOR_MODE: enforce
+          WORLD_CANON_VALIDATOR_MODE: enforce
 
       - name: Verify analytics dictionary
         run: npm run verify:analytics-dict

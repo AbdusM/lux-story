@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-03-04T22:34:17.597Z",
-  "mode": "enforce",
+  "generated_at": "2026-03-04T22:51:40.234Z",
+  "mode": "warn",
   "thresholds": {
     "min_tags": 6,
     "min_characters": 3,

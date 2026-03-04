@@ -1,8 +1,9 @@
 {
-  "generated_at": "2026-03-04T22:24:31.689Z",
+  "generated_at": "2026-03-04T22:52:33.085Z",
+  "mode": "enforce",
   "valid": true,
   "contract": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "settingMode": "grounded_magical_realism",
     "magicPolicy": "supernatural_present_never_explained",
     "explicitMagicSystemAllowed": false,
@@ -10,13 +11,78 @@
       "docs/reference/source-documents/00-lux-story-prd-v2.md",
       "docs/00_CORE/02-living-design-document.md",
       "docs/02_WORLD/00-readme.md"
+    ],
+    "timelineDocs": [
+      "docs/02_WORLD/00_CORE_TRUTH/00-timeline-master.md",
+      "docs/02_WORLD/01-station-history-bible.md"
+    ],
+    "eras": [
+      {
+        "id": "arrival",
+        "title": "The Arrival",
+        "startAS": 0,
+        "endAS": 500
+      },
+      {
+        "id": "expansion_wars",
+        "title": "The Expansion Wars",
+        "startAS": 500,
+        "endAS": 1500
+      },
+      {
+        "id": "logic_cascade",
+        "title": "The Logic Cascade",
+        "startAS": 1500,
+        "endAS": 3000
+      },
+      {
+        "id": "corp_state",
+        "title": "The Corp-State",
+        "startAS": 3000,
+        "endAS": 4500
+      },
+      {
+        "id": "current_drift",
+        "title": "The Current Drift",
+        "startAS": 4500,
+        "endAS": null
+      }
+    ],
+    "forbiddenPhrases": [
+      "no magic"
+    ],
+    "requiredAnchors": [
+      {
+        "id": "magic-policy-anchor",
+        "phrase": "magical realism",
+        "docPaths": [
+          "docs/reference/source-documents/00-lux-story-prd-v2.md",
+          "docs/00_CORE/02-living-design-document.md"
+        ]
+      },
+      {
+        "id": "dyson-swarm-fragment-anchor",
+        "phrase": "Dyson Swarm Fragment",
+        "docPaths": [
+          "docs/02_WORLD/00_CORE_TRUTH/00-timeline-master.md",
+          "docs/02_WORLD/01-station-history-bible.md"
+        ]
+      },
+      {
+        "id": "breath-tax-anchor",
+        "phrase": "Breath Tax",
+        "docPaths": [
+          "docs/02_WORLD/00_CORE_TRUTH/00-timeline-master.md",
+          "docs/02_WORLD/01-station-history-bible.md"
+        ]
+      }
     ]
   },
   "checks": [
     {
       "id": "contract-shape",
       "passed": true,
-      "details": "settingMode=grounded_magical_realism, magicPolicy=supernatural_present_never_explained, explicitMagicSystemAllowed=false"
+      "details": "settingMode=grounded_magical_realism, magicPolicy=supernatural_present_never_explained, explicitMagicSystemAllowed=false, eras=5"
     },
     {
       "id": "canonical-docs-exist",
@@ -24,14 +90,24 @@
       "details": "count=3"
     },
     {
-      "id": "magic-policy-forbidden-phrases",
+      "id": "timeline-docs-exist",
       "passed": true,
-      "details": "no forbidden \"no magic\" phrase in canonical docs"
+      "details": "count=2"
     },
     {
-      "id": "magic-policy-anchor-phrase",
+      "id": "magic-policy-forbidden-phrases",
       "passed": true,
-      "details": "hits=2"
+      "details": "no forbidden phrase hits in canonical/timeline docs"
+    },
+    {
+      "id": "required-anchors",
+      "passed": true,
+      "details": "hits=6"
+    },
+    {
+      "id": "timeline-era-contract",
+      "passed": true,
+      "details": "validated_docs=2"
     },
     {
       "id": "runtime-binding",
@@ -39,16 +115,46 @@
       "details": "WORLD_CANON exported from lib/lore-system.ts"
     }
   ],
-  "magical_realism_hits": [
+  "required_anchor_hits": [
     {
+      "anchorId": "magic-policy-anchor",
+      "phrase": "magical realism",
       "doc": "docs/reference/source-documents/00-lux-story-prd-v2.md",
       "excerpt": "at only make sense in retrospect ### **Magical Realism Framework** LUX Story operates in magical realism territory: the supernatural is present but never expl"
     },
     {
+      "anchorId": "magic-policy-anchor",
+      "phrase": "magical realism",
       "doc": "docs/00_CORE/02-living-design-document.md",
       "excerpt": "TRAINTS (The Guardrails) 1. **Grounded Magical Realism**: Supernatural elements can be present, but they are never formalized into a spell system; the **Logic"
+    },
+    {
+      "anchorId": "dyson-swarm-fragment-anchor",
+      "phrase": "Dyson Swarm Fragment",
+      "doc": "docs/02_WORLD/00_CORE_TRUTH/00-timeline-master.md",
+      "excerpt": "he Station is not a building. It is a **Dyson Swarm Fragment** that drifted into a stable Lagrange point. It was originally built to harness a star that has sin"
+    },
+    {
+      "anchorId": "dyson-swarm-fragment-anchor",
+      "phrase": "Dyson Swarm Fragment",
+      "doc": "docs/02_WORLD/01-station-history-bible.md",
+      "excerpt": "he Station is not a building. It is a **Dyson Swarm Fragment** that drifted into a stable Lagrange point. It was originally built to harness a star that has sin"
+    },
+    {
+      "anchorId": "breath-tax-anchor",
+      "phrase": "Breath Tax",
+      "doc": "docs/02_WORLD/00_CORE_TRUTH/00-timeline-master.md",
+      "excerpt": "y Detail**: They monetized oxygen. \"The Breath Tax\" was instated. * **Legacy**: Your ID is your credit score. If you go bankrupt, you are \"Recycled\". ### Era"
+    },
+    {
+      "anchorId": "breath-tax-anchor",
+      "phrase": "Breath Tax",
+      "doc": "docs/02_WORLD/01-station-history-bible.md",
+      "excerpt": "y Detail**: They monetized oxygen. \"The Breath Tax\" was instated. * **Legacy**: Your ID is your credit score. If you go bankrupt, you are \"Recycled\". ### Era"
     }
   ],
+  "required_anchor_misses": [],
   "forbidden_phrase_hits": [],
+  "timeline_mismatches": [],
   "issues": []
 }

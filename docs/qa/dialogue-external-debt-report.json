@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-03-04T22:24:34.881Z",
-  "mode": "enforce",
-  "duration_ms": 839,
+  "generated_at": "2026-03-04T22:51:43.844Z",
+  "mode": "warn",
+  "duration_ms": 2819,
   "baseline_exists": true,
   "baseline": {
     "generated_at": "2026-03-04T21:50:55.341Z",
