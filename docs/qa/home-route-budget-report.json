@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-03-04T16:50:22.565Z",
+  "source_log": ".next-build-output.log",
+  "budgets_kb": {
+    "route_chunk": 340,
+    "first_load": 1220
+  },
+  "observed_kb": {
+    "route_chunk": 331,
+    "first_load": 1218.56
+  },
+  "violations": [],
+  "note": "Tighten HOME_ROUTE_*_BUDGET_KB over time toward target mobile budget."
+}

@@ -1,0 +1,84 @@
+{
+  "generated_at": "2026-03-04T16:50:22.379Z",
+  "policy": {
+    "canonical_owner": "hooks/useKeyboardShortcuts.ts",
+    "allowlisted_component_files": {
+      "hooks/useKeyboardShortcuts.ts": "Canonical global keyboard dispatcher",
+      "components/GameChoices.tsx": "Gameplay-local navigation and choice focus controls",
+      "components/Journal.tsx": "Panel-local keyboard navigation",
+      "components/KeyboardShortcutsHelp.tsx": "Shortcut recorder/help modal capture phase",
+      "components/JourneySummary.tsx": "Summary modal keyboard affordances",
+      "components/UnifiedMenu.tsx": "Legacy settings menu escape handler (remove after overlay manager migration)",
+      "components/InGameSettings.tsx": "Legacy settings surface (allowlisted until removal)",
+      "components/ui/BottomSheet.tsx": "Sheet-local escape handling",
+      "components/constellation/ConstellationPanel.tsx": "Panel-local keyboard navigation",
+      "components/constellation/ConstellationGraph.tsx": "Graph-local keyboard navigation",
+      "components/constellation/DetailModal.tsx": "Detail modal escape handling",
+      "components/game/InterruptButton.tsx": "Interrupt interaction keyboard support"
+    }
+  },
+  "listeners_found": [
+    {
+      "file": "components/GameChoices.tsx",
+      "line": 257,
+      "source": "window.addEventListener('keydown', handleKeyDown)"
+    },
+    {
+      "file": "components/InGameSettings.tsx",
+      "line": 139,
+      "source": "window.addEventListener('keydown', handleKeyDown)"
+    },
+    {
+      "file": "components/Journal.tsx",
+      "line": 164,
+      "source": "window.addEventListener('keydown', handleKeyDown)"
+    },
+    {
+      "file": "components/JourneySummary.tsx",
+      "line": 87,
+      "source": "window.addEventListener('keydown', handleKeyDown)"
+    },
+    {
+      "file": "components/KeyboardShortcutsHelp.tsx",
+      "line": 80,
+      "source": "window.addEventListener('keydown', handleKeyPress as EventListener)"
+    },
+    {
+      "file": "components/UnifiedMenu.tsx",
+      "line": 111,
+      "source": "window.addEventListener('keydown', handleKeyDown)"
+    },
+    {
+      "file": "components/constellation/ConstellationGraph.tsx",
+      "line": 278,
+      "source": "window.addEventListener('keydown', handleKeyDown)"
+    },
+    {
+      "file": "components/constellation/ConstellationPanel.tsx",
+      "line": 95,
+      "source": "window.addEventListener('keydown', handleKeyDown)"
+    },
+    {
+      "file": "components/constellation/DetailModal.tsx",
+      "line": 52,
+      "source": "window.addEventListener('keydown', handleEscape)"
+    },
+    {
+      "file": "components/game/InterruptButton.tsx",
+      "line": 148,
+      "source": "window.addEventListener('keydown', handleKeyDown)"
+    },
+    {
+      "file": "components/ui/BottomSheet.tsx",
+      "line": 118,
+      "source": "document.addEventListener('keydown', handleKeyDown)"
+    },
+    {
+      "file": "hooks/useKeyboardShortcuts.ts",
+      "line": 98,
+      "source": "window.addEventListener('keydown', handleKeyDown)"
+    }
+  ],
+  "unknown_listeners": [],
+  "stale_allowlist_entries": []
+}

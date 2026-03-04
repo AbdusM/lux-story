@@ -4,6 +4,8 @@ import { dirname, resolve } from 'node:path'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
+const constrained = process.env.PLAYWRIGHT_CONSTRAINED === 'true'
+const projectWorkers = process.env.CI ? 1 : (constrained ? 1 : 2)
 
 /**
  * Playwright E2E Testing Configuration
@@ -19,8 +21,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  // Phase 5: Increased workers for parallelization (4 local, 2 CI)
-  workers: process.env.CI ? 2 : 4,
+  workers: process.env.CI ? 2 : (constrained ? 1 : 4),
 
   // Reporter configuration
   reporter: [
@@ -94,7 +95,19 @@ export default defineConfig({
         '**/journey-summary.spec.ts'
       ],
       fullyParallel: true,
-      workers: 2,
+      workers: projectWorkers,
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: true,
+      },
+    },
+    {
+      name: 'settings-parity',
+      testMatch: [
+        '**/user-flows/settings-parity.spec.ts'
+      ],
+      fullyParallel: false,
+      workers: 1,
       use: {
         ...devices['Desktop Chrome'],
         headless: true,
@@ -107,7 +120,7 @@ export default defineConfig({
         '**/user-flows/homepage.spec.ts'
       ],
       fullyParallel: true,
-      workers: 2,
+      workers: projectWorkers,
       use: {
         ...devices['Desktop Chrome'],
         headless: true,
@@ -117,7 +130,7 @@ export default defineConfig({
       name: 'simulations',
       testDir: './tests/e2e/simulations',
       fullyParallel: true,
-      workers: 2,
+      workers: projectWorkers,
       use: {
         ...devices['Desktop Chrome'],
         headless: true,
@@ -127,7 +140,7 @@ export default defineConfig({
       name: 'knowledge-flags',
       testDir: './tests/e2e/knowledge-flags',
       fullyParallel: true,
-      workers: 2,
+      workers: projectWorkers,
       use: {
         ...devices['Desktop Chrome'],
         headless: true,
@@ -137,7 +150,7 @@ export default defineConfig({
       name: 'interrupts',
       testDir: './tests/e2e/interrupts',
       fullyParallel: true,
-      workers: 2,
+      workers: projectWorkers,
       use: {
         ...devices['Desktop Chrome'],
         headless: true,
@@ -147,7 +160,7 @@ export default defineConfig({
       name: 'trust-derivatives',
       testDir: './tests/e2e/trust',
       fullyParallel: true,
-      workers: 2,
+      workers: projectWorkers,
       use: {
         ...devices['Desktop Chrome'],
         headless: true,
@@ -157,7 +170,7 @@ export default defineConfig({
       name: 'pattern-unlocks',
       testDir: './tests/e2e/patterns',
       fullyParallel: true,
-      workers: 2,
+      workers: projectWorkers,
       use: {
         ...devices['Desktop Chrome'],
         headless: true,
@@ -167,7 +180,7 @@ export default defineConfig({
       name: 'career-analytics',
       testDir: './tests/e2e/careers',
       fullyParallel: true,
-      workers: 2,
+      workers: projectWorkers,
       use: {
         ...devices['Desktop Chrome'],
         headless: true,
@@ -189,7 +202,7 @@ export default defineConfig({
       name: 'mobile-iphone-se',
       testDir: './tests/e2e/mobile',
       fullyParallel: true,
-      workers: 2,
+      workers: projectWorkers,
       use: {
         ...devices['iPhone SE'],
         headless: true,
@@ -199,7 +212,7 @@ export default defineConfig({
       name: 'mobile-iphone-14',
       testDir: './tests/e2e/mobile',
       fullyParallel: true,
-      workers: 2,
+      workers: projectWorkers,
       use: {
         ...devices['iPhone 14'],
         headless: true,
@@ -209,7 +222,7 @@ export default defineConfig({
       name: 'mobile-iphone-14-pro-max',
       testDir: './tests/e2e/mobile',
       fullyParallel: true,
-      workers: 2,
+      workers: projectWorkers,
       use: {
         ...devices['iPhone 14 Pro Max'],
         headless: true,
@@ -219,7 +232,7 @@ export default defineConfig({
       name: 'mobile-galaxy-s21',
       testDir: './tests/e2e/mobile',
       fullyParallel: true,
-      workers: 2,
+      workers: projectWorkers,
       use: {
         ...devices['Galaxy S21'],
         headless: true,
@@ -229,7 +242,7 @@ export default defineConfig({
       name: 'mobile-ipad',
       testDir: './tests/e2e/mobile',
       fullyParallel: true,
-      workers: 2,
+      workers: projectWorkers,
       use: {
         ...devices['iPad (gen 7)'],
         headless: true,
