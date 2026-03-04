@@ -177,6 +177,13 @@ import { ALL_INFO_TRADES } from '@/content/info-trades'
 import { KNOWLEDGE_ITEMS, TRADE_CHAINS, getKnowledgeItem, type KnowledgeItem } from '@/content/knowledge-items'
 import { calculateCharacterTrustDecay, getPatternRecognitionComments, type PatternRecognitionComment, getUnlockedGates, PATTERN_TRUST_GATES, checkNewAchievements, type PatternAchievement, recordPatternEvolution, type PatternEvolutionHistory } from '@/lib/pattern-derivatives'
 import { getNewlyAvailableCombinations, type KnowledgeCombination, recordIcebergMention, getInvestigableTopics, type IcebergReference } from '@/lib/knowledge-derivatives'
+import {
+  collectUnreliableRecords,
+  extractConflictIdsFromTags,
+  extractRecordIdsFromTags,
+  getReadyConflictClusters,
+  verifyLoreConflict,
+} from '@/lib/unreliable-narrator-system'
 import { getActiveTextEffects, getTextEffectClasses, getTextEffectStyles, getActiveMagicalRealisms, type MagicalRealism, getNewlyDiscoveredArcs, getCascadeEffectsForFlag, getNarrativeFraming, getUnlockedMetaRevelations, type EmergentStoryArc, type CascadeEffect, type MetaNarrativeRevelation } from '@/lib/narrative-derivatives'
 import { getActiveEnvironmentalEffects, getAvailableCrossCharacterExperiences, type EnvironmentalEffect, type CrossCharacterRequirement } from '@/lib/character-derivatives'
 import { getRelevantCrossCharacterEcho } from '@/lib/character-relationships'
@@ -2539,6 +2546,74 @@ export default function StatefulGameInterface() {
                 topic: topic.topic,
                 investigationNodeId: topic.investigationNodeId
               })
+            }
+          }
+        }
+      }
+
+      // D-122: Unreliable narrator loop
+      // Collect record fragments, surface contradiction readiness, and verify
+      // truth on explicit `verify-conflict:` nodes.
+      if (nextNode.tags && newGameState.archivistState) {
+        const recordIds = extractRecordIdsFromTags(nextNode.tags)
+        if (recordIds.length > 0) {
+          const collected = collectUnreliableRecords(newGameState.archivistState, recordIds)
+          if (collected.newlyCollected.length > 0) {
+            newGameState = {
+              ...newGameState,
+              archivistState: collected.nextState
+            }
+
+            if (!consequenceEcho) {
+              const sample = collected.newlyCollected[0]
+              consequenceEcho = {
+                text: `You recover a conflicting record fragment (${sample.sourceFaction.replace('_', ' ')} source).`,
+                emotion: 'intrigued',
+                timing: 'immediate'
+              }
+            }
+          }
+        }
+
+        const readyConflicts = getReadyConflictClusters(newGameState.archivistState)
+        const newlyReady = readyConflicts.filter(
+          (cluster) =>
+            !newGameState.globalFlags.has(cluster.readyFlag) &&
+            !newGameState.globalFlags.has(cluster.verificationFlag)
+        )
+
+        if (newlyReady.length > 0) {
+          for (const cluster of newlyReady) {
+            newGameState.globalFlags.add(cluster.readyFlag)
+          }
+
+          if (!consequenceEcho) {
+            consequenceEcho = {
+              text: `A contradiction emerges: "${newlyReady[0].name}" is now ready to verify.`,
+              emotion: 'revelation',
+              timing: 'immediate'
+            }
+          }
+        }
+
+        const conflictIds = extractConflictIdsFromTags(nextNode.tags)
+        for (const conflictId of conflictIds) {
+          const verified = verifyLoreConflict(newGameState.archivistState, conflictId)
+          if (!verified.success || !verified.cluster) continue
+          if (newGameState.globalFlags.has(verified.cluster.verificationFlag)) continue
+
+          newGameState = {
+            ...newGameState,
+            archivistState: verified.nextState
+          }
+          newGameState.globalFlags.add(verified.cluster.verificationFlag)
+          newGameState.globalFlags.add(`lore_verified_${verified.cluster.targetLoreId}`)
+
+          if (!consequenceEcho) {
+            consequenceEcho = {
+              text: `Contradiction resolved: ${verified.cluster.name}. A deeper truth settles into focus.`,
+              emotion: 'knowing',
+              timing: 'immediate'
             }
           }
         }

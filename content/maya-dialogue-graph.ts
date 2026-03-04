@@ -375,7 +375,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['maya_arc', 'backstory_depth', 'iceberg:the_previous_visitor']
+    tags: ['maya_arc', 'backstory_depth', 'iceberg:the_previous_visitor', 'iceberg:burned_district']
   },
 
   // ============= DEFLECT PASSION PATH =============

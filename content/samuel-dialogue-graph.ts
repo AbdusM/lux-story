@@ -1327,7 +1327,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         skills: ['communication']
       }
     ],
-    tags: ['mystery_reveal', 'letter_sender', 'samuel_arc', 'iceberg:the_letter']
+    tags: ['mystery_reveal', 'letter_sender', 'samuel_arc', 'iceberg:the_letter', 'verify-conflict:letter_sender_identity']
   },
   {
     nodeId: 'samuel_letter_confession',
@@ -1777,7 +1777,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         addKnowledgeFlags: ['knows_letter_system']
       }
     ],
-    tags: ['fridge_logic_fix', 'samuel_arc', 'iceberg:the_letter']
+    tags: ['fridge_logic_fix', 'samuel_arc', 'iceberg:the_letter', 'record:record_samuel_letter_fragment']
   },
 
   // ============= ORB INTRODUCTION (First-time gift from Samuel) =============
@@ -9195,7 +9195,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         pattern: 'exploring'
       }
     ],
-    tags: ['mystery', 'revelation', 'climax', 'iceberg:the_previous_visitor', 'iceberg:before_the_station']
+    tags: ['mystery', 'revelation', 'climax', 'iceberg:the_previous_visitor', 'iceberg:before_the_station', 'record:record_samuel_quiet_hour_testimony', 'verify-conflict:platform_seven_blackout']
   },
 
   {

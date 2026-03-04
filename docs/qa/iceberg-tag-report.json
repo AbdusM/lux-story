@@ -1,19 +1,21 @@
 {
-  "generated_at": "2026-03-04T22:24:38.215Z",
-  "mode": "enforce",
+  "generated_at": "2026-03-04T22:36:00.577Z",
+  "mode": "warn",
   "thresholds": {
     "min_tags": 12,
     "min_characters": 4
   },
   "summary": {
-    "total_tags": 14,
+    "total_tags": 16,
     "tagged_characters": 6,
-    "tagged_topics": 5
+    "tagged_topics": 7
   },
   "tags_by_topic": {
     "the_builders": 5,
     "platform_seven": 2,
+    "burned_district": 1,
     "the_previous_visitor": 3,
+    "the_oxygen_tax": 1,
     "before_the_station": 2,
     "the_letter": 2
   },
@@ -42,6 +44,13 @@
     {
       "graphKey": "maya",
       "characterId": "maya",
+      "nodeId": "maya_family_expectations",
+      "tag": "iceberg:burned_district",
+      "topicId": "burned_district"
+    },
+    {
+      "graphKey": "maya",
+      "characterId": "maya",
       "nodeId": "maya_robotics_passion",
       "tag": "iceberg:the_builders",
       "topicId": "the_builders"
@@ -59,6 +68,13 @@
       "nodeId": "nadia_hiring_story",
       "tag": "iceberg:the_builders",
       "topicId": "the_builders"
+    },
+    {
+      "graphKey": "nadia",
+      "characterId": "nadia",
+      "nodeId": "nadia_hiring_story",
+      "tag": "iceberg:the_oxygen_tax",
+      "topicId": "the_oxygen_tax"
     },
     {
       "graphKey": "rohan",

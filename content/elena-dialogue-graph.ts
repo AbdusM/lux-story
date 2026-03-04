@@ -699,7 +699,7 @@ const nodes: DialogueNode[] = [
         skills: ['criticalThinking']
       }
     ],
-    tags: ['elena_arc', 'station_seven', 'iceberg:platform_seven']
+    tags: ['elena_arc', 'station_seven', 'iceberg:platform_seven', 'record:record_elena_archive_gap']
   },
 
   {
@@ -792,7 +792,7 @@ const nodes: DialogueNode[] = [
         skills: ['criticalThinking']
       }
     ],
-    tags: ['elena_arc', 'resolution', 'iceberg:the_builders']
+    tags: ['elena_arc', 'resolution', 'iceberg:the_builders', 'record:record_elena_dispatch_index']
   },
 
   {

@@ -2690,7 +2690,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         skills: ['emotionalIntelligence']
       }
     ],
-    tags: ['devon_arc', 'process', 'vulnerability', 'iceberg:midnight_rule']
+    tags: ['devon_arc', 'process', 'vulnerability', 'iceberg:midnight_rule', 'iceberg:silent_shift']
   },
 
   {

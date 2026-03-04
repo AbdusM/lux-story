@@ -98,6 +98,11 @@ jobs:
         env:
           ICEBERG_VALIDATOR_MODE: enforce
 
+      - name: Verify unreliable narrator record contract
+        run: npm run verify:unreliable-records
+        env:
+          UNRELIABLE_RECORD_VALIDATOR_MODE: enforce
+
       - name: Verify choice taxonomy ratchet
         run: npm run verify:choice-taxonomy
         env:
@@ -115,6 +120,7 @@ jobs:
           CHOICE_TAXONOMY_VALIDATOR_MODE: enforce
           DIALOGUE_EXTERNAL_DEBT_MODE: enforce
           ICEBERG_VALIDATOR_MODE: enforce
+          UNRELIABLE_RECORD_VALIDATOR_MODE: enforce
 
       - name: Verify analytics dictionary
         run: npm run verify:analytics-dict

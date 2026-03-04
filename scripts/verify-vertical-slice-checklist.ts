@@ -60,6 +60,14 @@ type WorldCanonReport = {
   valid?: boolean
 }
 
+type UnreliableRecordReport = {
+  issues?: Array<{ severity?: 'error' | 'warning' }>
+  summary?: {
+    total_record_tags?: number
+    total_verify_tags?: number
+  }
+}
+
 type CheckResult = {
   id: string
   passed: boolean
@@ -77,6 +85,7 @@ const REQUIRED_STATE_STRICT_REPORT_PATH = path.join(REPO_ROOT, 'docs/qa/required
 const CHOICE_TAXONOMY_REPORT_PATH = path.join(REPO_ROOT, 'docs/qa/choice-taxonomy-report.json')
 const EXTERNAL_DEBT_REPORT_PATH = path.join(REPO_ROOT, 'docs/qa/dialogue-external-debt-report.json')
 const WORLD_CANON_REPORT_PATH = path.join(REPO_ROOT, 'docs/qa/world-canon-contract-report.json')
+const UNRELIABLE_RECORD_REPORT_PATH = path.join(REPO_ROOT, 'docs/qa/unreliable-record-report.json')
 const GAME_INTERFACE_PATH = path.join(REPO_ROOT, 'components/StatefulGameInterface.tsx')
 
 const TAXONOMY_MIN_COVERAGE = Number(process.env.CHOICE_TAXONOMY_MIN_COVERAGE ?? 90)
@@ -112,6 +121,7 @@ async function refreshReportsIfRequested(refresh: boolean): Promise<void> {
     { script: 'scripts/verify-world-canon-contract.ts' },
     { script: 'scripts/verify-simulation-phase-contract.ts' },
     { script: 'scripts/verify-choice-taxonomy.ts' },
+    { script: 'scripts/verify-unreliable-records.ts' },
     { script: 'scripts/verify-dialogue-external-debt.ts' },
     { script: 'scripts/verify-required-state-strict.ts' },
     { script: 'scripts/verify-narrative-sim.ts' },
@@ -244,6 +254,17 @@ async function main() {
     details: externalDebt
       ? `baseline_exists=${Boolean(externalDebt.baseline_exists)}, regressions=${regressions.length}`
       : `missing report: ${path.relative(REPO_ROOT, EXTERNAL_DEBT_REPORT_PATH)}`,
+  })
+
+  const unreliableReport = await readJsonIfExists<UnreliableRecordReport>(UNRELIABLE_RECORD_REPORT_PATH)
+  const unreliableIssues = unreliableReport?.issues ?? []
+  const unreliableErrors = unreliableIssues.filter((issue) => issue.severity === 'error')
+  checks.push({
+    id: 'unreliable-record-lane',
+    passed: Boolean(unreliableReport) && unreliableErrors.length === 0,
+    details: unreliableReport
+      ? `record_tags=${unreliableReport.summary?.total_record_tags ?? 'n/a'}, verify_tags=${unreliableReport.summary?.total_verify_tags ?? 'n/a'}, errors=${unreliableErrors.length}`
+      : `missing report: ${path.relative(REPO_ROOT, UNRELIABLE_RECORD_REPORT_PATH)}`,
   })
 
   const failedChecks = checks.filter((check) => !check.passed)

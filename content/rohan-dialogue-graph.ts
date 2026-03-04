@@ -223,7 +223,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['rohan_arc', 'iceberg:the_previous_visitor']
+    tags: ['rohan_arc', 'iceberg:the_previous_visitor', 'record:record_rohan_previous_visitor_note', 'record:record_rohan_vibration_log']
   },
 
   // Divergent responses for erasure reveal
@@ -1582,7 +1582,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['rohan_arc', 'arc_platform_seven', 'chapter_1', 'iceberg:platform_seven']
+    tags: ['rohan_arc', 'arc_platform_seven', 'chapter_1', 'iceberg:platform_seven', 'record:record_rohan_vibration_log']
   },
 
   {

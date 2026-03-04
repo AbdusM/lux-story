@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-03-04T22:24:38.228Z",
-  "mode": "enforce",
-  "duration_ms": 6871,
+  "generated_at": "2026-03-04T22:34:53.810Z",
+  "mode": "warn",
+  "duration_ms": 5,
   "policy": {
     "patternVoicePolicy": "minimal",
     "icebergActivation": "required"
@@ -51,10 +51,15 @@
       "id": "external-debt-lane",
       "passed": true,
       "details": "baseline_exists=true, regressions=0"
+    },
+    {
+      "id": "unreliable-record-lane",
+      "passed": true,
+      "details": "record_tags=6, verify_tags=2, errors=0"
     }
   ],
   "summary": {
-    "total_checks": 9,
+    "total_checks": 10,
     "failed_checks": 0,
     "passed": true
   }
