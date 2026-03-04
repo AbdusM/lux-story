@@ -131,7 +131,8 @@ function toMarkdown(rows: MatrixRow[]): string {
   lines.push('- `interrupts`: Whether the character has interrupt-tagged nodes or interrupt blocks.')
   lines.push('- `sim_id_match`: Whether content and lib simulation IDs are unified.')
   lines.push('')
-  lines.push(`_Generated: ${new Date().toISOString().split('T')[0]}_`)
+  // Keep matrix output deterministic so CI drift checks only fail on real data changes.
+  lines.push('_Generated: deterministic (update reflects source content/registry changes)_')
   lines.push('')
 
   return lines.join('\n')
