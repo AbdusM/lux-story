@@ -39,6 +39,7 @@
     "archived-scripts",
     "scripts",
     "lib/archive",
-    "docs/03_PROCESS/archive"
+    "docs/03_PROCESS/archive",
+    "analysis"
   ]
 }

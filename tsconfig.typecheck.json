@@ -13,6 +13,7 @@
     "test-results",
     "tests/e2e",
     "tests/browser-runtime",
-    "tests/visual"
+    "tests/visual",
+    "analysis"
   ]
 }
