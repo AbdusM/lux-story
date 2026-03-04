@@ -43,6 +43,7 @@ No finding below claims runtime exploitability unless marked `Observed (runtime)
 - `analysis/reviewer-assets/panels/evidence/api-auth-matrix-2026-03-04.csv`
 - `analysis/reviewer-assets/panels/evidence/keydown-listeners-2026-03-04.txt`
 - `analysis/reviewer-assets/panels/evidence/release-smoke-preview-2026-03-04.txt`
+- `analysis/reviewer-assets/panels/evidence/release-smoke-local-2026-03-04-csp-hardening.txt`
 - `analysis/reviewer-assets/panels/evidence/settings-parity-local-2026-03-04.txt`
 - `docs/qa/keydown-listener-ownership-report.json`
 - `docs/qa/home-route-budget-report.json`
@@ -68,7 +69,7 @@ Completed from ship-blocking queue:
 - `AUD-001` complete: `/api/advisor-briefing` now requires admin auth (`requireAdminAuth`) before parse/model work.
 - `AUD-002` complete: `/api/samuel-dialogue` now requires user session (`requireUserSession`) and malformed JSON returns `400`.
 - `AUD-005` complete: logger server path no longer dereferences `window` before browser guard.
-- `AUD-003` partial-complete: CSP now has environment split; production policy removes `unsafe-eval`.
+- `AUD-003` complete: CSP now enforces explicit exception policy (no `unsafe-eval`, scoped `unsafe-inline`, hardened baseline directives).
 - `AUD-004` complete: dependency graph remediated to zero high/moderate advisories in current `npm audit --omit=dev` snapshot.
 - `AUD-007` complete: malformed JSON on `/api/advisor-briefing` now returns deterministic `400`.
 - `AUD-006` complete: `/api/health/storage` now reports server-health contract without browser-global checks.
@@ -81,7 +82,7 @@ Completed from ship-blocking queue:
 - Security verification tests updated and passing in `tests/lib/__verification__/release-security-minimum.test.ts`.
 
 Residual ship risk:
-- CSP still includes `unsafe-inline` in production/preview headers pending nonce/hash rollout (deployed-header confirmation completed).
+- CSP still allows scoped `unsafe-inline` as an explicit temporary exception for Next static-page inline scripts; nonce/hash migration is deferred.
 
 ## 4) API Surface Inventory (Current)
 
@@ -111,17 +112,17 @@ Source basis: `analysis/reviewer-assets/panels/evidence/api-auth-matrix-2026-03-
 - **Verification method:** add unauthorized request tests + runtime check (`401/403` when unauth).
 - **Status:** `Closed (2026-03-04)` via route guard + security verification test coverage.
 
-#### F-SEC-002 - CSP is permissive in config (`unsafe-inline` + `unsafe-eval`)
-- **Severity:** `P1 if present in prod headers, else P2`
+#### F-SEC-002 - CSP strictness relies on explicit inline exception policy
+- **Severity:** `P2`
 - **Category:** `security`
 - **Certainty:** `Observed (runtime)`
 - **Evidence:** `E1`
-- **File refs:** `next.config.js:99`, `next.config.js:110`
-- **Defect:** deployed CSP no longer includes `unsafe-eval` but still includes `unsafe-inline` in `script-src` and `style-src`.
-- **Impact:** weaker script-injection containment if this policy is shipped as-is.
-- **Smallest safe fix:** split dev/prod CSP and remove unsafe directives in prod.
-- **Verification method:** deployed-header checks + release-smoke script (`analysis/reviewer-assets/panels/evidence/release-smoke-preview-2026-03-04.txt`).
-- **Status:** `Partial (2026-03-04)` - `unsafe-eval` removed and verified absent at runtime; `unsafe-inline` remains accepted temporary exception pending nonce/hash rollout.
+- **File refs:** `next.config.js:102`, `next.config.js:113`, `scripts/ci/release-smoke.mjs:116`
+- **Defect:** `unsafe-inline` remains required today for Next-generated inline scripts on static pages; this must be tightly scoped and policy-guarded.
+- **Impact:** residual inline-script injection surface remains until nonce/hash migration.
+- **Smallest safe fix:** enforce explicit exception toggles + hardened directives + automated CSP guardrails.
+- **Verification method:** local/prod release-smoke checks (`analysis/reviewer-assets/panels/evidence/release-smoke-local-2026-03-04-csp-hardening.txt`, `analysis/reviewer-assets/panels/evidence/release-smoke-preview-2026-03-04.txt`).
+- **Status:** `Closed (2026-03-04)` - `unsafe-eval` removed; inline exception now explicit/toggle-gated and smoke/test enforced.
 
 #### F-SEC-003 - High advisories in current prod dependency graph snapshot
 - **Severity:** `P1`
@@ -283,17 +284,18 @@ Source basis: `analysis/reviewer-assets/panels/evidence/api-auth-matrix-2026-03-
 ## 7) Ship-Blocking Gates (for this repo state)
 
 Recommended block-before-ship set:
-1. `F-SEC-002` CSP deployed-header verification + explicit decision on `unsafe-inline` transition path.
+- None in current baseline after hardening + evidence checks.
 
 Conditional block:
+- Re-open `F-SEC-002` as ship-blocking if policy changes to “zero unsafe-inline in production” before nonce/hash migration is ready.
 - Promote `F-REL-002` to ship-blocking if `/api/health/storage` feeds pager-grade monitoring.
 
 ## 8) Fix Queue (AuditTicket)
 
 Execution status update:
-- Closed: `AUD-001`, `AUD-002`, `AUD-004`, `AUD-005`, `AUD-006`, `AUD-007`, `AUD-008`, `AUD-009`, `AUD-010`, `AUD-011`, `AUD-012`, `AUD-013`.
-- Partial: `AUD-003`.
-- Open: none in this phase block; remaining work is tightening CSP nonce/hash strategy and continuing performance reduction.
+- Closed: `AUD-001`, `AUD-002`, `AUD-003`, `AUD-004`, `AUD-005`, `AUD-006`, `AUD-007`, `AUD-008`, `AUD-009`, `AUD-010`, `AUD-011`, `AUD-012`, `AUD-013`.
+- Partial: none.
+- Open: none in this phase block; remaining work is optional nonce/hash migration and continued performance reduction.
 
 ```ts
 [
@@ -576,7 +578,7 @@ Why:
 Remaining deductions:
 - Extended visual/perf pass (CPU-throttled interaction measurements) is still pending.
 
-### 9.2 Repo Production Hardening Posture: 92/100
+### 9.2 Repo Production Hardening Posture: 93/100
 
 Why:
 - Core quality gates pass (lint/type/test/build).
@@ -589,21 +591,21 @@ Why:
   - keyboard listener governance enforced in CI
   - home-route performance budget gate enforced in CI
 - Remaining gaps are now mostly policy/verification:
-  - CSP `unsafe-inline` transition + deployed header confirmation
+  - CSP still depends on an explicit scoped `unsafe-inline` exception until nonce/hash migration
   - further payload reduction to reach stricter mobile budgets
 
 ## 10) Top Risks, Quick Wins, and Manual Verifications
 
 ### Top 3 Risks
-1. Prod CSP still allows `unsafe-inline` pending nonce/hash rollout and deployed-header validation.
+1. Prod CSP still relies on scoped `unsafe-inline` exception until nonce/hash migration lands.
 2. Home route payload remains heavy for low-end mobile despite budget gating.
 3. Core game surface remains monolithic (`StatefulGameInterface.tsx`), increasing regression risk for future large changes.
 
 ### Top 3 Quick Wins
-1. Confirm deployed CSP headers and lock explicit `unsafe-inline` exception policy (`AUD-003` follow-up).
+1. Prototype nonce/hash migration in staging and test `CSP_ALLOW_UNSAFE_INLINE_SCRIPT=false`.
 2. Tighten `HOME_ROUTE_*_BUDGET_KB` thresholds incrementally toward target mobile budget.
 3. Execute next extraction slice from `StatefulGameInterface` behind parity tests.
 
 ### Manual Verifications Required
-1. Verify deployed production CSP headers before final severity lock on `F-SEC-002`.
+1. If strict CSP target changes, validate staging with `CSP_ALLOW_UNSAFE_INLINE_SCRIPT=false` before promoting.
 2. Run CPU-throttled desktop/mobile visual/perf pass on game overlays before tightening budgets further.

@@ -277,7 +277,7 @@ describe('release:security:minimum', () => {
     expect(body?.checks?.clientStorage).toBe('deferred-to-client')
   })
 
-  test('production CSP in next config excludes unsafe-eval', async () => {
+  test('production CSP in next config enforces hardened baseline + scoped inline exceptions', async () => {
     const previous = process.env.NODE_ENV
     ;(process.env as any).NODE_ENV = 'production'
     try {
@@ -289,8 +289,26 @@ describe('release:security:minimum', () => {
       expect(typeof config.headers).toBe('function')
       const headerSets = await config.headers!()
       const csp = headerSets[0]?.headers.find((header) => header.key === 'Content-Security-Policy')?.value ?? ''
+      const directiveEntries = csp
+        .split(';')
+        .map((part) => part.trim())
+        .filter(Boolean)
+        .map((directive) => {
+          const [name, ...values] = directive.split(/\s+/)
+          return { name, values }
+        })
 
       expect(csp).not.toContain("'unsafe-eval'")
+      expect(csp).toContain("object-src 'none'")
+      expect(csp).toContain("base-uri 'self'")
+      expect(csp).toContain("frame-ancestors 'none'")
+
+      const invalidUnsafeInlineDirectives = directiveEntries
+        .filter(({ values }) => values.includes("'unsafe-inline'"))
+        .filter(({ name }) => name !== 'script-src' && name !== 'style-src')
+        .map(({ name }) => name)
+
+      expect(invalidUnsafeInlineDirectives).toEqual([])
     } finally {
       ;(process.env as any).NODE_ENV = previous
     }

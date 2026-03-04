@@ -110,6 +110,10 @@ Single source of truth: **overlay store**.
   - Dedicated constrained lane is green in CI (`test-settings-parity` job in Playwright workflow).
   - Local constrained run passed: `npm run test:e2e:settings-parity`.
   - Evidence: `analysis/reviewer-assets/panels/evidence/settings-parity-local-2026-03-04.txt`.
+- CSP hardening + explicit exception policy lock:
+  - Production CSP removes `unsafe-eval` and adds baseline directives (`object-src 'none'`, `base-uri 'self'`, `frame-ancestors 'none'`, `form-action 'self'`).
+  - `unsafe-inline` is now an explicit, toggle-gated exception (`CSP_ALLOW_UNSAFE_INLINE_SCRIPT`, `CSP_ALLOW_UNSAFE_INLINE_STYLE`) while Next static-page inline scripts remain.
+  - Release smoke now enforces scoped inline usage and hardened directives (`scripts/ci/release-smoke.mjs`).
 - Overlay motion standardization (gameplay + overlay surfaces):
   - Added shared variants/transitions in `lib/animations.ts` (`panelDropDown`, `modalCenter`, `cinematicFade`, `cinematicReveal`, `tabContentSwap`, `tabContentSwapReduced`, `transitions.linearTick`).
   - Migrated overlay surfaces off ad-hoc local variants where practical (`UnifiedMenu`, `Journal`, `ConstellationPanel`, `DetailModal`, `JourneyComplete`, `SettingsMobileSheet`, `BottomSheet`, `IdleWarningModal`, `LoginModalContents`).

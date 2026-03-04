@@ -93,12 +93,25 @@ const nextConfig = {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || 'https://tavalvqcebosfxamuvlx.supabase.co'
     const supabaseHost = new URL(supabaseUrl).hostname
     const isProduction = process.env.NODE_ENV === 'production'
+    const allowUnsafeInlineScript = process.env.CSP_ALLOW_UNSAFE_INLINE_SCRIPT !== 'false'
+    const allowUnsafeInlineStyle = process.env.CSP_ALLOW_UNSAFE_INLINE_STYLE !== 'false'
 
-    // Keep CSP strict in production while preserving dev ergonomics.
-    // Next.js still requires inline bootstrap scripts unless nonce/hash flow is implemented.
+    // Transition policy:
+    // - Production removes unsafe-eval.
+    // - unsafe-inline is currently an explicit exception (toggleable) because Next runtime still
+    //   emits inline bootstrap/flight scripts for static pages.
+    // - Set CSP_ALLOW_UNSAFE_INLINE_SCRIPT=false only after nonce/hash migration is complete.
     const scriptSrc = isProduction
-      ? "script-src 'self' 'unsafe-inline'"
+      ? allowUnsafeInlineScript
+        ? "script-src 'self' 'unsafe-inline'"
+        : "script-src 'self'"
       : "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+
+    const styleSrc = isProduction
+      ? allowUnsafeInlineStyle
+        ? "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com"
+        : "style-src 'self' https://fonts.googleapis.com"
+      : "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com"
 
     const connectSrc = isProduction
       ? `connect-src 'self' https://${supabaseHost} https://*.ingest.sentry.io`
@@ -107,10 +120,14 @@ const nextConfig = {
     const cspValue = [
       "default-src 'self'",
       scriptSrc,
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      styleSrc,
       "img-src 'self' data: https://api.dicebear.com",
       "font-src 'self' https://fonts.gstatic.com",
       connectSrc,
+      "object-src 'none'",
+      "base-uri 'self'",
+      "frame-ancestors 'none'",
+      "form-action 'self'",
     ].join('; ')
 
     return [

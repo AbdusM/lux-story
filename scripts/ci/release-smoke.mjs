@@ -117,6 +117,39 @@ async function run() {
     !csp.includes("'unsafe-eval'"),
     `CSP includes 'unsafe-eval': ${csp}`
   )
+  const cspDirectives = csp
+    .split(';')
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((directive) => {
+      const [name, ...values] = directive.split(/\s+/)
+      return { name, values }
+    })
+  const unsafeInlineOutsideExplicitException = cspDirectives
+    .filter(({ values }) => values.includes("'unsafe-inline'"))
+    .filter(({ name }) => name !== 'script-src' && name !== 'style-src')
+    .map(({ name }) => name)
+
+  assertTruthy(
+    'csp.unsafe-inline-scoped',
+    unsafeInlineOutsideExplicitException.length === 0,
+    `CSP has unsafe-inline outside script/style directives: ${unsafeInlineOutsideExplicitException.join(', ')}`
+  )
+  assertTruthy(
+    'csp.object-src-none',
+    csp.includes("object-src 'none'"),
+    `CSP missing object-src 'none': ${csp}`
+  )
+  assertTruthy(
+    'csp.frame-ancestors-none',
+    csp.includes("frame-ancestors 'none'"),
+    `CSP missing frame-ancestors 'none': ${csp}`
+  )
+  assertTruthy(
+    'csp.base-uri-self',
+    csp.includes("base-uri 'self'"),
+    `CSP missing base-uri 'self': ${csp}`
+  )
 
   const failed = checks.filter((check) => !check.ok)
   const passed = checks.filter((check) => check.ok)
@@ -137,4 +170,3 @@ run().catch((error) => {
   console.error('Release smoke script crashed:', error instanceof Error ? error.message : error)
   process.exit(1)
 })
-
