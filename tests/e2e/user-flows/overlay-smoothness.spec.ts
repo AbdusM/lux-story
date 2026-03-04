@@ -32,10 +32,6 @@ async function measureFps(page: import('@playwright/test').Page, durationMs = 70
 }
 
 test.describe('Overlay Smoothness', () => {
-  const isCI = !!process.env.CI
-
-  test.skip(isCI, 'Benchmark lane is local/reviewer only; CI timing is too noisy.')
-
   test('settings open/close stays responsive under CPU throttle (desktop + mobile)', async ({ page, freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
 
