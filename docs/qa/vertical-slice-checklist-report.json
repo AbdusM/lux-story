@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-03-04T22:51:54.004Z",
+  "generated_at": "2026-03-04T23:00:55.980Z",
   "mode": "warn",
-  "duration_ms": 20149,
+  "duration_ms": 7508,
   "policy": {
     "patternVoicePolicy": "minimal",
     "icebergActivation": "required"
@@ -55,7 +55,7 @@
     {
       "id": "unreliable-record-lane",
       "passed": true,
-      "details": "record_tags=6, verify_tags=2, errors=0"
+      "details": "record_tags=14, verify_tags=6, errors=0"
     }
   ],
   "summary": {

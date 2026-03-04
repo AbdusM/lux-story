@@ -2103,7 +2103,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
         pattern: 'helping'
       }
     ],
-    tags: ['mystery', 'breadcrumb']
+    tags: ['mystery', 'breadcrumb', 'record:record_rohan_firebreak_patchnote']
   },
   {
     nodeId: 'rohan_mystery_response_1',
@@ -2128,7 +2128,8 @@ export const rohanDialogueNodes: DialogueNode[] = [
         nextNodeId: 'rohan_hub_return',
         pattern: 'building'
       }
-    ]
+    ],
+    tags: ['mystery', 'revelation', 'record:record_rohan_manual_override_stamp']
   },
   // ============= SIMULATION 2: LEGACY CODE ARCHAEOLOGY =============
   {

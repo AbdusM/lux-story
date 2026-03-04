@@ -6,13 +6,13 @@ Turn the worldbuilding principles into shippable systems with measurable gates, 
 ## Status
 - `P1-A Canon Compiler`: Completed on 2026-03-04 (typed contract + timeline invariants + source snapshot + CI enforce mode).
 - `P1-B ARD Guardrail`: Completed previously (`verify:choice-taxonomy` ratchet lane + CI enforce mode).
-- `P1-C Unreliable Narrator Depth Pass`: Partially completed (baseline lane active; depth expansion still pending).
+- `P1-C Unreliable Narrator Depth Pass`: Substantially completed on 2026-03-04 (5 conflict clusters, perspective-depth contract, Journal+Report surfacing; playthrough validation still recommended).
 - `P2-A Faction Leitmotif Runtime Mapping`: Not started.
 - `P2-B Micro-Reactivity Memory Layer`: Not started.
 
 ## Verified Baseline (Post-Implementation)
 - `npm run verify:iceberg-tags` reports `Total tags: 16`, `Tagged characters: 6` (`docs/qa/iceberg-tag-report.json`).
-- `UNRELIABLE_RECORD_VALIDATOR_MODE=enforce npm run verify:unreliable-records` passes with `Record tags: 6`, `Verify tags: 2`, `Tagged characters: 3` (`docs/qa/unreliable-record-report.json`).
+- `UNRELIABLE_RECORD_VALIDATOR_MODE=enforce npm run verify:unreliable-records` passes with `Record tags: 14`, `Verify tags: 6`, `Tagged characters: 5` (`docs/qa/unreliable-record-report.json`).
 - Targeted tests pass:
   - `tests/lib/unreliable-narrator-system.test.ts`
   - `tests/lib/knowledge-derivatives.test.ts`
@@ -60,14 +60,15 @@ Turn the worldbuilding principles into shippable systems with measurable gates, 
   - no silent drift in choice taxonomy
 
 ### P1-C: Unreliable Narrator Depth Pass
+- Status: Substantially completed
 - Goal: Move from minimum viable conflict verification to rich contradiction arcs.
 - Deliverables:
-  - +3 conflict clusters
-  - at least 2 source records per conflict side
-  - journal/report surfacing for unresolved vs resolved conflicts
+  - +3 conflict clusters (now 5 total clusters)
+  - at least 2 source records per conflict side (enforced by validator perspective rules)
+  - journal/report surfacing for unresolved vs resolved conflicts (added)
 - Acceptance:
-  - validator thresholds increased (records, verify tags, characters)
-  - playthrough can resolve at least 2 conflicts end-to-end
+  - validator thresholds increased (records, verify tags, characters, cluster count, perspective depth)
+  - playthrough can resolve at least 2 conflicts end-to-end (manual verification recommended)
 
 ### P2-A: Faction Leitmotif Runtime Mapping
 - Goal: Bind faction ideology to sound design triggers.

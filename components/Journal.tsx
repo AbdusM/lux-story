@@ -26,6 +26,7 @@ import { SimulationGodView } from "./journal/SimulationGodView"
 import { OpportunitiesView } from "./journal/OpportunitiesView"
 import { CareerRecommendationsView } from "./journal/CareerRecommendationsView"
 import { SkillCombosView } from "./journal/SkillCombosView"
+import { LoreContradictionsView } from "./journal/LoreContradictionsView"
 import { OrbDetailPanel } from "./OrbDetailPanel"
 import { CognitionView } from "./CognitionView"
 import { PatternType } from "@/lib/patterns"
@@ -347,7 +348,14 @@ export function Journal({ isOpen, onClose, mode = 'legacy' }: JournalProps) {
                     {activeTab === 'toolkit' && <ToolkitView />}
                     {activeTab === 'simulations' && <SimulationsArchive onClose={onClose} />}
                     {activeTab === 'cognition' && <CognitionView />}
-                    {activeTab === 'analysis' && <NarrativeAnalysisDisplay />}
+                    {activeTab === 'analysis' && (
+                      <>
+                        <div className="p-4 pb-0">
+                          <LoreContradictionsView />
+                        </div>
+                        <NarrativeAnalysisDisplay />
+                      </>
+                    )}
                     {activeTab === 'opportunities' && <OpportunitiesView />}
                     {activeTab === 'careers' && <CareerRecommendationsView />}
                     {activeTab === 'combos' && <SkillCombosView />}

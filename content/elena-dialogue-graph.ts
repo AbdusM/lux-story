@@ -2661,7 +2661,7 @@ Your curiosity combined with analysis... that's exactly what they need.`,
         pattern: 'patience'
       }
     ],
-    tags: ['mystery', 'breadcrumb']
+    tags: ['mystery', 'breadcrumb', 'record:record_elena_tax_archive_redaction']
   },
 
   {
@@ -2685,7 +2685,7 @@ Your curiosity combined with analysis... that's exactly what they need.`,
         pattern: 'helping'
       }
     ],
-    tags: ['mystery', 'breadcrumb']
+    tags: ['mystery', 'breadcrumb', 'record:record_elena_burn_notice_chain']
   },
 
   {

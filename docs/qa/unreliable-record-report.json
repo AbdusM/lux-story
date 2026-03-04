@@ -1,17 +1,21 @@
 {
-  "generated_at": "2026-03-04T22:51:40.234Z",
-  "mode": "warn",
+  "generated_at": "2026-03-04T23:00:51.612Z",
+  "mode": "enforce",
   "thresholds": {
-    "min_tags": 6,
-    "min_characters": 3,
-    "min_verify_tags": 2
+    "min_tags": 12,
+    "min_unique_record_ids": 12,
+    "min_characters": 5,
+    "min_verify_tags": 5,
+    "min_conflict_clusters": 5,
+    "min_records_per_perspective": 2
   },
   "summary": {
-    "total_record_tags": 6,
-    "tagged_characters": 3,
-    "total_verify_tags": 2,
-    "unique_record_ids": 6,
-    "unique_conflict_ids": 2
+    "total_record_tags": 14,
+    "tagged_characters": 5,
+    "total_verify_tags": 6,
+    "unique_record_ids": 14,
+    "unique_conflict_ids": 5,
+    "defined_conflict_clusters": 5
   },
   "record_tags": [
     {
@@ -24,9 +28,44 @@
     {
       "graphKey": "elena",
       "characterId": "elena",
+      "nodeId": "elena_mystery_response",
+      "tag": "record:record_elena_burn_notice_chain",
+      "recordId": "record_elena_burn_notice_chain"
+    },
+    {
+      "graphKey": "elena",
+      "characterId": "elena",
       "nodeId": "elena_first_pattern",
       "tag": "record:record_elena_dispatch_index",
       "recordId": "record_elena_dispatch_index"
+    },
+    {
+      "graphKey": "elena",
+      "characterId": "elena",
+      "nodeId": "elena_mystery_hint",
+      "tag": "record:record_elena_tax_archive_redaction",
+      "recordId": "record_elena_tax_archive_redaction"
+    },
+    {
+      "graphKey": "maya",
+      "characterId": "maya",
+      "nodeId": "maya_family_expectations",
+      "tag": "record:record_maya_signature_timing",
+      "recordId": "record_maya_signature_timing"
+    },
+    {
+      "graphKey": "nadia",
+      "characterId": "nadia",
+      "nodeId": "nadia_mystery_hint",
+      "tag": "record:record_nadia_latency_window",
+      "recordId": "record_nadia_latency_window"
+    },
+    {
+      "graphKey": "nadia",
+      "characterId": "nadia",
+      "nodeId": "nadia_hiring_story",
+      "tag": "record:record_nadia_policy_model",
+      "recordId": "record_nadia_policy_model"
     },
     {
       "graphKey": "rohan",
@@ -45,6 +84,20 @@
     {
       "graphKey": "samuel",
       "characterId": "samuel",
+      "nodeId": "samuel_mystery_revelation",
+      "tag": "record:record_samuel_breathing_ward_memory",
+      "recordId": "record_samuel_breathing_ward_memory"
+    },
+    {
+      "graphKey": "samuel",
+      "characterId": "samuel",
+      "nodeId": "samuel_mystery_revelation",
+      "tag": "record:record_samuel_evacuation_oral_history",
+      "recordId": "record_samuel_evacuation_oral_history"
+    },
+    {
+      "graphKey": "samuel",
+      "characterId": "samuel",
       "nodeId": "samuel_letter_system",
       "tag": "record:record_samuel_letter_fragment",
       "recordId": "record_samuel_letter_fragment"
@@ -55,9 +108,23 @@
       "nodeId": "samuel_station_truth",
       "tag": "record:record_samuel_quiet_hour_testimony",
       "recordId": "record_samuel_quiet_hour_testimony"
+    },
+    {
+      "graphKey": "samuel",
+      "characterId": "samuel",
+      "nodeId": "samuel_mystery_revelation",
+      "tag": "record:record_samuel_quiet_shift_prayer",
+      "recordId": "record_samuel_quiet_shift_prayer"
     }
   ],
   "verify_tags": [
+    {
+      "graphKey": "samuel",
+      "characterId": "samuel",
+      "nodeId": "samuel_letter_reveal",
+      "tag": "verify-conflict:burned_district_cause",
+      "conflictId": "burned_district_cause"
+    },
     {
       "graphKey": "samuel",
       "characterId": "samuel",
@@ -66,11 +133,199 @@
       "conflictId": "letter_sender_identity"
     },
     {
+      "graphKey": "nadia",
+      "characterId": "nadia",
+      "nodeId": "nadia_mystery_response",
+      "tag": "verify-conflict:oxygen_tax_origin",
+      "conflictId": "oxygen_tax_origin"
+    },
+    {
+      "graphKey": "samuel",
+      "characterId": "samuel",
+      "nodeId": "samuel_mystery_revelation",
+      "tag": "verify-conflict:oxygen_tax_origin",
+      "conflictId": "oxygen_tax_origin"
+    },
+    {
       "graphKey": "samuel",
       "characterId": "samuel",
       "nodeId": "samuel_station_truth",
       "tag": "verify-conflict:platform_seven_blackout",
       "conflictId": "platform_seven_blackout"
+    },
+    {
+      "graphKey": "samuel",
+      "characterId": "samuel",
+      "nodeId": "samuel_station_truth",
+      "tag": "verify-conflict:silent_shift_protocol",
+      "conflictId": "silent_shift_protocol"
+    }
+  ],
+  "conflict_clusters": [
+    {
+      "id": "platform_seven_blackout",
+      "name": "Platform Seven Blackout",
+      "description": "Three factions report incompatible causes for the same event at Platform Seven.",
+      "targetLoreId": "lore_platform_seven_blackout_cause",
+      "requiredRecordIds": [
+        "record_rohan_vibration_log",
+        "record_devon_power_budget_trace",
+        "record_elena_archive_gap",
+        "record_samuel_quiet_hour_testimony"
+      ],
+      "perspectives": [
+        {
+          "id": "infrastructure-overload",
+          "name": "Infrastructure Overload Narrative",
+          "recordIds": [
+            "record_rohan_vibration_log",
+            "record_devon_power_budget_trace"
+          ]
+        },
+        {
+          "id": "archive-buffer-narrative",
+          "name": "Archive Buffer Narrative",
+          "recordIds": [
+            "record_elena_archive_gap",
+            "record_samuel_quiet_hour_testimony"
+          ]
+        }
+      ],
+      "readyFlag": "lore_conflict_ready_platform_seven_blackout",
+      "verificationFlag": "lore_conflict_verified_platform_seven_blackout",
+      "verificationNodeId": "samuel_station_truth"
+    },
+    {
+      "id": "letter_sender_identity",
+      "name": "Letter Sender Identity",
+      "description": "Fragmentary records disagree on when and how the letter system chooses recipients.",
+      "targetLoreId": "lore_letter_sender_identity",
+      "requiredRecordIds": [
+        "record_samuel_letter_fragment",
+        "record_rohan_previous_visitor_note",
+        "record_elena_dispatch_index",
+        "record_maya_signature_timing"
+      ],
+      "perspectives": [
+        {
+          "id": "automated-dispatch-theory",
+          "name": "Automated Dispatch Theory",
+          "recordIds": [
+            "record_samuel_letter_fragment",
+            "record_elena_dispatch_index"
+          ]
+        },
+        {
+          "id": "traveler-echo-theory",
+          "name": "Traveler Echo Theory",
+          "recordIds": [
+            "record_rohan_previous_visitor_note",
+            "record_maya_signature_timing"
+          ]
+        }
+      ],
+      "readyFlag": "lore_conflict_ready_letter_sender_identity",
+      "verificationFlag": "lore_conflict_verified_letter_sender_identity",
+      "verificationNodeId": "samuel_letter_reveal"
+    },
+    {
+      "id": "oxygen_tax_origin",
+      "name": "Oxygen Tax Origin",
+      "description": "Records disagree on whether the Oxygen Tax started as scarcity management or governance leverage.",
+      "targetLoreId": "lore_oxygen_tax_origin",
+      "requiredRecordIds": [
+        "record_nadia_policy_model",
+        "record_devon_recycler_constraints",
+        "record_elena_tax_archive_redaction",
+        "record_samuel_breathing_ward_memory"
+      ],
+      "perspectives": [
+        {
+          "id": "fiscal-control-narrative",
+          "name": "Fiscal Control Narrative",
+          "recordIds": [
+            "record_nadia_policy_model",
+            "record_elena_tax_archive_redaction"
+          ]
+        },
+        {
+          "id": "scarcity-maintenance-narrative",
+          "name": "Scarcity and Maintenance Narrative",
+          "recordIds": [
+            "record_devon_recycler_constraints",
+            "record_samuel_breathing_ward_memory"
+          ]
+        }
+      ],
+      "readyFlag": "lore_conflict_ready_oxygen_tax_origin",
+      "verificationFlag": "lore_conflict_verified_oxygen_tax_origin",
+      "verificationNodeId": "nadia_mystery_response"
+    },
+    {
+      "id": "burned_district_cause",
+      "name": "Burned District Cause",
+      "description": "Witness and infrastructure records conflict on whether the Burned District was an accident, rollback failure, or suppression event.",
+      "targetLoreId": "lore_burned_district_cause",
+      "requiredRecordIds": [
+        "record_maya_heatmap_snapshot",
+        "record_rohan_firebreak_patchnote",
+        "record_elena_burn_notice_chain",
+        "record_samuel_evacuation_oral_history"
+      ],
+      "perspectives": [
+        {
+          "id": "infrastructure-collapse-narrative",
+          "name": "Infrastructure Collapse Narrative",
+          "recordIds": [
+            "record_maya_heatmap_snapshot",
+            "record_rohan_firebreak_patchnote"
+          ]
+        },
+        {
+          "id": "suppression-memory-narrative",
+          "name": "Suppression and Memory Narrative",
+          "recordIds": [
+            "record_elena_burn_notice_chain",
+            "record_samuel_evacuation_oral_history"
+          ]
+        }
+      ],
+      "readyFlag": "lore_conflict_ready_burned_district_cause",
+      "verificationFlag": "lore_conflict_verified_burned_district_cause",
+      "verificationNodeId": "maya_mystery_response_1"
+    },
+    {
+      "id": "silent_shift_protocol",
+      "name": "Silent Shift Protocol",
+      "description": "Multiple records imply an undocumented Quiet Hour operating protocol executed without named operators.",
+      "targetLoreId": "lore_silent_shift_protocol",
+      "requiredRecordIds": [
+        "record_devon_shift_roster_gap",
+        "record_nadia_latency_window",
+        "record_rohan_manual_override_stamp",
+        "record_samuel_quiet_shift_prayer"
+      ],
+      "perspectives": [
+        {
+          "id": "maintenance-cover-narrative",
+          "name": "Maintenance Cover Narrative",
+          "recordIds": [
+            "record_devon_shift_roster_gap",
+            "record_rohan_manual_override_stamp"
+          ]
+        },
+        {
+          "id": "governance-window-narrative",
+          "name": "Governance Window Narrative",
+          "recordIds": [
+            "record_nadia_latency_window",
+            "record_samuel_quiet_shift_prayer"
+          ]
+        }
+      ],
+      "readyFlag": "lore_conflict_ready_silent_shift_protocol",
+      "verificationFlag": "lore_conflict_verified_silent_shift_protocol",
+      "verificationNodeId": "devon_mystery_response_1"
     }
   ],
   "issues": []

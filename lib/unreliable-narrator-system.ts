@@ -18,9 +18,27 @@ export interface LoreConflictCluster {
   description: string
   targetLoreId: string
   requiredRecordIds: string[]
+  perspectives: LoreConflictPerspective[]
   readyFlag: string
   verificationFlag: string
   verificationNodeId: string
+}
+
+export interface LoreConflictPerspective {
+  id: string
+  name: string
+  recordIds: string[]
+}
+
+export interface LoreConflictProgress {
+  cluster: LoreConflictCluster
+  collectedCount: number
+  requiredCount: number
+  collectedRecordIds: string[]
+  missingRecordIds: string[]
+  isReady: boolean
+  isVerified: boolean
+  completionRatio: number
 }
 
 export const UNRELIABLE_RECORDS: UnreliableRecord[] = [
@@ -49,6 +67,14 @@ export const UNRELIABLE_RECORDS: UnreliableRecord[] = [
     mediaType: 'audio_fragment',
   },
   {
+    id: 'record_devon_power_budget_trace',
+    targetLoreId: 'lore_platform_seven_blackout_cause',
+    sourceFaction: 'engineers',
+    perspective: 'Devon power audit: blackout windows align with unmetered draw rerouted from recycler control rails.',
+    reliability: 0.63,
+    mediaType: 'data_stream',
+  },
+  {
     id: 'record_samuel_letter_fragment',
     targetLoreId: 'lore_letter_sender_identity',
     sourceFaction: 'station_core',
@@ -72,6 +98,110 @@ export const UNRELIABLE_RECORDS: UnreliableRecord[] = [
     reliability: 0.72,
     mediaType: 'data_stream',
   },
+  {
+    id: 'record_maya_signature_timing',
+    targetLoreId: 'lore_letter_sender_identity',
+    sourceFaction: 'engineers',
+    perspective: 'Maya timing trace: envelope signatures are stamped before platform clocks reconcile with local time.',
+    reliability: 0.58,
+    mediaType: 'data_stream',
+  },
+  {
+    id: 'record_nadia_policy_model',
+    targetLoreId: 'lore_oxygen_tax_origin',
+    sourceFaction: 'data_flow',
+    perspective: 'Nadia policy model: Oxygen tax first appeared as an algorithmic stability surcharge, not as an emergency levy.',
+    reliability: 0.66,
+    mediaType: 'text_log',
+  },
+  {
+    id: 'record_devon_recycler_constraints',
+    targetLoreId: 'lore_oxygen_tax_origin',
+    sourceFaction: 'engineers',
+    perspective: 'Devon constraints notebook: recycler throughput dropped years before tax rollout, but repair requests were denied.',
+    reliability: 0.64,
+    mediaType: 'text_log',
+  },
+  {
+    id: 'record_elena_tax_archive_redaction',
+    targetLoreId: 'lore_oxygen_tax_origin',
+    sourceFaction: 'data_flow',
+    perspective: 'Elena archive note: oxygen ordinance debate minutes are redacted exactly where rationing exceptions are named.',
+    reliability: 0.77,
+    mediaType: 'text_log',
+  },
+  {
+    id: 'record_samuel_breathing_ward_memory',
+    targetLoreId: 'lore_oxygen_tax_origin',
+    sourceFaction: 'station_core',
+    perspective: 'Samuel oral history: temporary breathing wards were established before pricing changed, then quietly dissolved.',
+    reliability: 0.57,
+    mediaType: 'audio_fragment',
+  },
+  {
+    id: 'record_maya_heatmap_snapshot',
+    targetLoreId: 'lore_burned_district_cause',
+    sourceFaction: 'engineers',
+    perspective: 'Maya stress heatmap: thermal runaway began in maintenance conduits, not in residential blocks.',
+    reliability: 0.61,
+    mediaType: 'data_stream',
+  },
+  {
+    id: 'record_rohan_firebreak_patchnote',
+    targetLoreId: 'lore_burned_district_cause',
+    sourceFaction: 'engineers',
+    perspective: 'Rohan patchnote: firebreak firmware deploy was rolled back one hour before the district ignition cascade.',
+    reliability: 0.69,
+    mediaType: 'text_log',
+  },
+  {
+    id: 'record_elena_burn_notice_chain',
+    targetLoreId: 'lore_burned_district_cause',
+    sourceFaction: 'data_flow',
+    perspective: 'Elena notice chain: evacuation bulletins were drafted, timestamped, then withheld from public channels.',
+    reliability: 0.82,
+    mediaType: 'text_log',
+  },
+  {
+    id: 'record_samuel_evacuation_oral_history',
+    targetLoreId: 'lore_burned_district_cause',
+    sourceFaction: 'station_core',
+    perspective: 'Samuel testimony: guides were told to keep people calm and stationary, even as smoke spread inward.',
+    reliability: 0.59,
+    mediaType: 'audio_fragment',
+  },
+  {
+    id: 'record_devon_shift_roster_gap',
+    targetLoreId: 'lore_silent_shift_protocol',
+    sourceFaction: 'engineers',
+    perspective: 'Devon roster export: whole maintenance shifts are replaced by blank signatures during Quiet Hour intervals.',
+    reliability: 0.71,
+    mediaType: 'data_stream',
+  },
+  {
+    id: 'record_nadia_latency_window',
+    targetLoreId: 'lore_silent_shift_protocol',
+    sourceFaction: 'data_flow',
+    perspective: 'Nadia latency audit: governance commands pause exactly when those blank maintenance shifts begin.',
+    reliability: 0.67,
+    mediaType: 'data_stream',
+  },
+  {
+    id: 'record_rohan_manual_override_stamp',
+    targetLoreId: 'lore_silent_shift_protocol',
+    sourceFaction: 'engineers',
+    perspective: 'Rohan override ledger: manual override stamps exist with no operator identity, only checksum ghosts.',
+    reliability: 0.62,
+    mediaType: 'text_log',
+  },
+  {
+    id: 'record_samuel_quiet_shift_prayer',
+    targetLoreId: 'lore_silent_shift_protocol',
+    sourceFaction: 'station_core',
+    perspective: 'Samuel note: the elders called it the silent shift, when maintenance is done without names and without witness.',
+    reliability: 0.54,
+    mediaType: 'audio_fragment',
+  },
 ]
 
 export const LORE_CONFLICT_CLUSTERS: LoreConflictCluster[] = [
@@ -82,8 +212,21 @@ export const LORE_CONFLICT_CLUSTERS: LoreConflictCluster[] = [
     targetLoreId: 'lore_platform_seven_blackout_cause',
     requiredRecordIds: [
       'record_rohan_vibration_log',
+      'record_devon_power_budget_trace',
       'record_elena_archive_gap',
       'record_samuel_quiet_hour_testimony',
+    ],
+    perspectives: [
+      {
+        id: 'infrastructure-overload',
+        name: 'Infrastructure Overload Narrative',
+        recordIds: ['record_rohan_vibration_log', 'record_devon_power_budget_trace'],
+      },
+      {
+        id: 'archive-buffer-narrative',
+        name: 'Archive Buffer Narrative',
+        recordIds: ['record_elena_archive_gap', 'record_samuel_quiet_hour_testimony'],
+      },
     ],
     readyFlag: 'lore_conflict_ready_platform_seven_blackout',
     verificationFlag: 'lore_conflict_verified_platform_seven_blackout',
@@ -98,10 +241,104 @@ export const LORE_CONFLICT_CLUSTERS: LoreConflictCluster[] = [
       'record_samuel_letter_fragment',
       'record_rohan_previous_visitor_note',
       'record_elena_dispatch_index',
+      'record_maya_signature_timing',
+    ],
+    perspectives: [
+      {
+        id: 'automated-dispatch-theory',
+        name: 'Automated Dispatch Theory',
+        recordIds: ['record_samuel_letter_fragment', 'record_elena_dispatch_index'],
+      },
+      {
+        id: 'traveler-echo-theory',
+        name: 'Traveler Echo Theory',
+        recordIds: ['record_rohan_previous_visitor_note', 'record_maya_signature_timing'],
+      },
     ],
     readyFlag: 'lore_conflict_ready_letter_sender_identity',
     verificationFlag: 'lore_conflict_verified_letter_sender_identity',
     verificationNodeId: 'samuel_letter_reveal',
+  },
+  {
+    id: 'oxygen_tax_origin',
+    name: 'Oxygen Tax Origin',
+    description: 'Records disagree on whether the Oxygen Tax started as scarcity management or governance leverage.',
+    targetLoreId: 'lore_oxygen_tax_origin',
+    requiredRecordIds: [
+      'record_nadia_policy_model',
+      'record_devon_recycler_constraints',
+      'record_elena_tax_archive_redaction',
+      'record_samuel_breathing_ward_memory',
+    ],
+    perspectives: [
+      {
+        id: 'fiscal-control-narrative',
+        name: 'Fiscal Control Narrative',
+        recordIds: ['record_nadia_policy_model', 'record_elena_tax_archive_redaction'],
+      },
+      {
+        id: 'scarcity-maintenance-narrative',
+        name: 'Scarcity and Maintenance Narrative',
+        recordIds: ['record_devon_recycler_constraints', 'record_samuel_breathing_ward_memory'],
+      },
+    ],
+    readyFlag: 'lore_conflict_ready_oxygen_tax_origin',
+    verificationFlag: 'lore_conflict_verified_oxygen_tax_origin',
+    verificationNodeId: 'nadia_mystery_response',
+  },
+  {
+    id: 'burned_district_cause',
+    name: 'Burned District Cause',
+    description: 'Witness and infrastructure records conflict on whether the Burned District was an accident, rollback failure, or suppression event.',
+    targetLoreId: 'lore_burned_district_cause',
+    requiredRecordIds: [
+      'record_maya_heatmap_snapshot',
+      'record_rohan_firebreak_patchnote',
+      'record_elena_burn_notice_chain',
+      'record_samuel_evacuation_oral_history',
+    ],
+    perspectives: [
+      {
+        id: 'infrastructure-collapse-narrative',
+        name: 'Infrastructure Collapse Narrative',
+        recordIds: ['record_maya_heatmap_snapshot', 'record_rohan_firebreak_patchnote'],
+      },
+      {
+        id: 'suppression-memory-narrative',
+        name: 'Suppression and Memory Narrative',
+        recordIds: ['record_elena_burn_notice_chain', 'record_samuel_evacuation_oral_history'],
+      },
+    ],
+    readyFlag: 'lore_conflict_ready_burned_district_cause',
+    verificationFlag: 'lore_conflict_verified_burned_district_cause',
+    verificationNodeId: 'maya_mystery_response_1',
+  },
+  {
+    id: 'silent_shift_protocol',
+    name: 'Silent Shift Protocol',
+    description: 'Multiple records imply an undocumented Quiet Hour operating protocol executed without named operators.',
+    targetLoreId: 'lore_silent_shift_protocol',
+    requiredRecordIds: [
+      'record_devon_shift_roster_gap',
+      'record_nadia_latency_window',
+      'record_rohan_manual_override_stamp',
+      'record_samuel_quiet_shift_prayer',
+    ],
+    perspectives: [
+      {
+        id: 'maintenance-cover-narrative',
+        name: 'Maintenance Cover Narrative',
+        recordIds: ['record_devon_shift_roster_gap', 'record_rohan_manual_override_stamp'],
+      },
+      {
+        id: 'governance-window-narrative',
+        name: 'Governance Window Narrative',
+        recordIds: ['record_nadia_latency_window', 'record_samuel_quiet_shift_prayer'],
+      },
+    ],
+    readyFlag: 'lore_conflict_ready_silent_shift_protocol',
+    verificationFlag: 'lore_conflict_verified_silent_shift_protocol',
+    verificationNodeId: 'devon_mystery_response_1',
   },
 ]
 
@@ -233,4 +470,37 @@ export function getAllUnreliableRecordIds(): string[] {
 
 export function getAllConflictClusterIds(): string[] {
   return LORE_CONFLICT_CLUSTERS.map((cluster) => cluster.id)
+}
+
+export function getAllConflictClusters(): LoreConflictCluster[] {
+  return LORE_CONFLICT_CLUSTERS
+}
+
+export function getUnreliableRecordById(recordId: string): UnreliableRecord | undefined {
+  return RECORD_BY_ID.get(recordId)
+}
+
+export function getConflictProgress(
+  state: ArchivistState,
+  globalFlags?: Set<string>,
+): LoreConflictProgress[] {
+  return LORE_CONFLICT_CLUSTERS.map((cluster) => {
+    const collectedRecordIds = cluster.requiredRecordIds.filter((recordId) => state.collectedRecords.has(recordId))
+    const missingRecordIds = cluster.requiredRecordIds.filter((recordId) => !state.collectedRecords.has(recordId))
+    const isVerified = state.verifiedLore.has(cluster.targetLoreId) || Boolean(globalFlags?.has(cluster.verificationFlag))
+    const isReady = !isVerified && (missingRecordIds.length === 0 || Boolean(globalFlags?.has(cluster.readyFlag)))
+
+    return {
+      cluster,
+      collectedCount: collectedRecordIds.length,
+      requiredCount: cluster.requiredRecordIds.length,
+      collectedRecordIds,
+      missingRecordIds,
+      isReady,
+      isVerified,
+      completionRatio: cluster.requiredRecordIds.length > 0
+        ? collectedRecordIds.length / cluster.requiredRecordIds.length
+        : 0,
+    }
+  }).sort((a, b) => a.cluster.name.localeCompare(b.cluster.name))
 }

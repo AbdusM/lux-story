@@ -375,7 +375,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['maya_arc', 'backstory_depth', 'iceberg:the_previous_visitor', 'iceberg:burned_district']
+    tags: ['maya_arc', 'backstory_depth', 'iceberg:the_previous_visitor', 'iceberg:burned_district', 'record:record_maya_signature_timing']
   },
 
   // ============= DEFLECT PASSION PATH =============
@@ -3744,7 +3744,7 @@ MISSION: Stabilize the wave form within safety limits.`,
         pattern: 'patience'
       }
     ],
-    tags: ['mystery', 'breadcrumb']
+    tags: ['mystery', 'breadcrumb', 'record:record_maya_heatmap_snapshot']
   },
   {
     nodeId: 'maya_mystery_response_1',
@@ -3769,7 +3769,8 @@ MISSION: Stabilize the wave form within safety limits.`,
         nextNodeId: 'maya_hub_return',
         pattern: 'patience'
       }
-    ]
+    ],
+    tags: ['mystery', 'revelation', 'verify-conflict:burned_district_cause']
   },
   {
     nodeId: 'maya_hub_return',

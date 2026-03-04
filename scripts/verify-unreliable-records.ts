@@ -9,15 +9,19 @@
  *
  * Env:
  * - `UNRELIABLE_RECORD_VALIDATOR_MODE=warn|enforce` (default warn)
- * - `UNRELIABLE_RECORD_MIN_TAGS` (default 6)
- * - `UNRELIABLE_RECORD_MIN_CHARACTERS` (default 3)
- * - `UNRELIABLE_RECORD_MIN_VERIFY_TAGS` (default 2)
+ * - `UNRELIABLE_RECORD_MIN_TAGS` (default 12)
+ * - `UNRELIABLE_RECORD_MIN_UNIQUE_RECORD_IDS` (default 12)
+ * - `UNRELIABLE_RECORD_MIN_CHARACTERS` (default 5)
+ * - `UNRELIABLE_RECORD_MIN_VERIFY_TAGS` (default 5)
+ * - `UNRELIABLE_RECORD_MIN_CONFLICT_CLUSTERS` (default 5)
+ * - `UNRELIABLE_RECORD_MIN_RECORDS_PER_PERSPECTIVE` (default 2)
  */
 
 import fs from 'node:fs'
 import path from 'node:path'
 import { DIALOGUE_GRAPHS, type CharacterId } from '../lib/graph-registry'
 import {
+  getAllConflictClusters,
   getAllConflictClusterIds,
   getAllUnreliableRecordIds,
   RECORD_TAG_PREFIX,
@@ -43,7 +47,18 @@ type VerifyTagHit = {
 }
 
 type VerificationIssue = {
-  type: 'unknown_record' | 'unknown_conflict' | 'below_min_tags' | 'below_min_characters' | 'below_min_verify_tags'
+  type:
+    | 'unknown_record'
+    | 'unknown_conflict'
+    | 'below_min_tags'
+    | 'below_min_unique_record_ids'
+    | 'below_min_characters'
+    | 'below_min_verify_tags'
+    | 'below_min_conflict_clusters'
+    | 'conflict_missing_perspectives'
+    | 'conflict_perspective_too_shallow'
+    | 'conflict_perspective_not_required'
+    | 'conflict_required_not_covered'
   message: string
   severity: 'error' | 'warning'
 }
@@ -97,9 +112,13 @@ function collectTags(): { recordHits: RecordTagHit[]; verifyHits: VerifyTagHit[]
 
 function main(): void {
   const mode = readMode()
-  const minTags = readIntEnv('UNRELIABLE_RECORD_MIN_TAGS', 6)
-  const minCharacters = readIntEnv('UNRELIABLE_RECORD_MIN_CHARACTERS', 3)
-  const minVerifyTags = readIntEnv('UNRELIABLE_RECORD_MIN_VERIFY_TAGS', 2)
+  const minTags = readIntEnv('UNRELIABLE_RECORD_MIN_TAGS', 12)
+  const minUniqueRecordIds = readIntEnv('UNRELIABLE_RECORD_MIN_UNIQUE_RECORD_IDS', 12)
+  const minCharacters = readIntEnv('UNRELIABLE_RECORD_MIN_CHARACTERS', 5)
+  const minVerifyTags = readIntEnv('UNRELIABLE_RECORD_MIN_VERIFY_TAGS', 5)
+  const minConflictClusters = readIntEnv('UNRELIABLE_RECORD_MIN_CONFLICT_CLUSTERS', 5)
+  const minRecordsPerPerspective = readIntEnv('UNRELIABLE_RECORD_MIN_RECORDS_PER_PERSPECTIVE', 2)
+  const conflictClusters = getAllConflictClusters()
   const knownRecords = new Set(getAllUnreliableRecordIds())
   const knownConflicts = new Set(getAllConflictClusterIds())
 
@@ -127,11 +146,21 @@ function main(): void {
   }
 
   const taggedCharacters = new Set(recordHits.map((hit) => hit.characterId))
+  const uniqueRecordIds = new Set(recordHits.map((hit) => hit.recordId))
+  const uniqueConflictIds = new Set(verifyHits.map((hit) => hit.conflictId))
+
   if (recordHits.length < minTags) {
     issues.push({
       type: 'below_min_tags',
       severity: mode === 'enforce' ? 'error' : 'warning',
       message: `Record tag count below threshold: current=${recordHits.length}, required=${minTags}`,
+    })
+  }
+  if (uniqueRecordIds.size < minUniqueRecordIds) {
+    issues.push({
+      type: 'below_min_unique_record_ids',
+      severity: mode === 'enforce' ? 'error' : 'warning',
+      message: `Unique record id coverage below threshold: current=${uniqueRecordIds.size}, required=${minUniqueRecordIds}`,
     })
   }
   if (taggedCharacters.size < minCharacters) {
@@ -148,24 +177,78 @@ function main(): void {
       message: `Verify tag count below threshold: current=${verifyHits.length}, required=${minVerifyTags}`,
     })
   }
+  if (conflictClusters.length < minConflictClusters) {
+    issues.push({
+      type: 'below_min_conflict_clusters',
+      severity: mode === 'enforce' ? 'error' : 'warning',
+      message: `Conflict cluster count below threshold: current=${conflictClusters.length}, required=${minConflictClusters}`,
+    })
+  }
+
+  for (const cluster of conflictClusters) {
+    if (cluster.perspectives.length < 2) {
+      issues.push({
+        type: 'conflict_missing_perspectives',
+        severity: 'error',
+        message: `Conflict "${cluster.id}" must define at least 2 perspectives (current=${cluster.perspectives.length})`,
+      })
+      continue
+    }
+
+    const perspectiveRecordIds = new Set<string>()
+    for (const perspective of cluster.perspectives) {
+      if (perspective.recordIds.length < minRecordsPerPerspective) {
+        issues.push({
+          type: 'conflict_perspective_too_shallow',
+          severity: 'error',
+          message: `Conflict "${cluster.id}" perspective "${perspective.id}" has ${perspective.recordIds.length} record(s), required=${minRecordsPerPerspective}`,
+        })
+      }
+      for (const recordId of perspective.recordIds) {
+        perspectiveRecordIds.add(recordId)
+        if (!cluster.requiredRecordIds.includes(recordId)) {
+          issues.push({
+            type: 'conflict_perspective_not_required',
+            severity: 'error',
+            message: `Conflict "${cluster.id}" perspective "${perspective.id}" references "${recordId}" not present in requiredRecordIds`,
+          })
+        }
+      }
+    }
+
+    for (const requiredRecordId of cluster.requiredRecordIds) {
+      if (!perspectiveRecordIds.has(requiredRecordId)) {
+        issues.push({
+          type: 'conflict_required_not_covered',
+          severity: 'error',
+          message: `Conflict "${cluster.id}" required record "${requiredRecordId}" is not covered by any perspective`,
+        })
+      }
+    }
+  }
 
   const report = {
     generated_at: new Date().toISOString(),
     mode,
     thresholds: {
       min_tags: minTags,
+      min_unique_record_ids: minUniqueRecordIds,
       min_characters: minCharacters,
       min_verify_tags: minVerifyTags,
+      min_conflict_clusters: minConflictClusters,
+      min_records_per_perspective: minRecordsPerPerspective,
     },
     summary: {
       total_record_tags: recordHits.length,
       tagged_characters: taggedCharacters.size,
       total_verify_tags: verifyHits.length,
-      unique_record_ids: Array.from(new Set(recordHits.map((hit) => hit.recordId))).length,
-      unique_conflict_ids: Array.from(new Set(verifyHits.map((hit) => hit.conflictId))).length,
+      unique_record_ids: uniqueRecordIds.size,
+      unique_conflict_ids: uniqueConflictIds.size,
+      defined_conflict_clusters: conflictClusters.length,
     },
     record_tags: recordHits,
     verify_tags: verifyHits,
+    conflict_clusters: conflictClusters,
     issues,
   }
 

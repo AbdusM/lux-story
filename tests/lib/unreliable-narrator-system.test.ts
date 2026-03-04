@@ -3,6 +3,7 @@ import {
   collectUnreliableRecords,
   extractConflictIdsFromTags,
   extractRecordIdsFromTags,
+  getConflictProgress,
   getReadyConflictClusters,
   verifyLoreConflict,
 } from '@/lib/unreliable-narrator-system'
@@ -53,6 +54,7 @@ describe('unreliable narrator system', () => {
     let state = makeArchivistState()
     state = collectUnreliableRecords(state, [
       'record_rohan_vibration_log',
+      'record_devon_power_budget_trace',
       'record_elena_archive_gap',
       'record_samuel_quiet_hour_testimony',
     ]).nextState
@@ -67,6 +69,7 @@ describe('unreliable narrator system', () => {
       'record_samuel_letter_fragment',
       'record_rohan_previous_visitor_note',
       'record_elena_dispatch_index',
+      'record_maya_signature_timing',
     ]).nextState
 
     const verified = verifyLoreConflict(state, 'letter_sender_identity')
@@ -80,5 +83,22 @@ describe('unreliable narrator system', () => {
     const result = verifyLoreConflict(state, 'platform_seven_blackout')
     expect(result.success).toBe(false)
     expect(result.reason?.startsWith('missing_records:')).toBe(true)
+  })
+
+  it('computes conflict progress with ready and verified status', () => {
+    let state = makeArchivistState()
+    state = collectUnreliableRecords(state, [
+      'record_nadia_policy_model',
+      'record_devon_recycler_constraints',
+      'record_elena_tax_archive_redaction',
+      'record_samuel_breathing_ward_memory',
+    ]).nextState
+
+    const progress = getConflictProgress(state, new Set(['lore_conflict_ready_oxygen_tax_origin']))
+    const oxygen = progress.find((item) => item.cluster.id === 'oxygen_tax_origin')
+    expect(oxygen).toBeDefined()
+    expect(oxygen?.isReady).toBe(true)
+    expect(oxygen?.isVerified).toBe(false)
+    expect(oxygen?.collectedCount).toBe(4)
   })
 })

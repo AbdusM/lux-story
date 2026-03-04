@@ -258,7 +258,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['nadia_arc', 'backstory', 'harm', 'vulnerability', 'iceberg:the_builders', 'iceberg:the_oxygen_tax']
+    tags: ['nadia_arc', 'backstory', 'harm', 'vulnerability', 'iceberg:the_builders', 'iceberg:the_oxygen_tax', 'record:record_nadia_policy_model']
   },
 
   // ============= RESPONSIBLE =============
@@ -1200,7 +1200,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         pattern: 'patience'
       }
     ],
-    tags: ['mystery', 'breadcrumb']
+    tags: ['mystery', 'breadcrumb', 'record:record_nadia_latency_window']
   },
 
   {
@@ -1224,7 +1224,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         pattern: 'building'
       }
     ],
-    tags: ['mystery', 'breadcrumb']
+    tags: ['mystery', 'breadcrumb', 'verify-conflict:oxygen_tax_origin']
   },
 
   {

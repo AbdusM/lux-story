@@ -2690,7 +2690,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         skills: ['emotionalIntelligence']
       }
     ],
-    tags: ['devon_arc', 'process', 'vulnerability', 'iceberg:midnight_rule', 'iceberg:silent_shift']
+    tags: ['devon_arc', 'process', 'vulnerability', 'iceberg:midnight_rule', 'iceberg:silent_shift', 'record:record_devon_recycler_constraints']
   },
 
   {
@@ -3182,7 +3182,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'patience'
       }
     ],
-    tags: ['mystery', 'breadcrumb']
+    tags: ['mystery', 'breadcrumb', 'record:record_devon_power_budget_trace', 'record:record_devon_shift_roster_gap']
   },
   {
     nodeId: 'devon_mystery_response_1',
@@ -3207,7 +3207,8 @@ export const devonDialogueNodes: DialogueNode[] = [
         nextNodeId: 'devon_hub_return',
         pattern: 'helping'
       }
-    ]
+    ],
+    tags: ['mystery', 'revelation', 'verify-conflict:silent_shift_protocol']
   },
   {
     nodeId: 'devon_hub_return',
