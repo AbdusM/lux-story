@@ -223,7 +223,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['rohan_arc', 'iceberg:the_previous_visitor', 'record:record_rohan_previous_visitor_note', 'record:record_rohan_vibration_log']
+    tags: ['rohan_arc', 'iceberg:the_previous_visitor', 'record:record_rohan_previous_visitor_note', 'record:record_rohan_vibration_log', 'micro:rohan_previous_visitor_trace']
   },
 
   // Divergent responses for erasure reveal
@@ -2393,7 +2393,7 @@ WHERE IS THE 847ms COMING FROM?`,
       variation_id: 'hub_return_v1'
     }],
     choices: [],
-    tags: ['terminal']
+    tags: ['terminal', 'micro-callback:rohan_previous_visitor_trace']
   },
 
   // ============= TRUST RECOVERY =============

@@ -247,6 +247,13 @@ import {
   inferFactionAudioContext,
   shouldTriggerFactionLeitmotif,
 } from '@/lib/faction-audio'
+import {
+  extractMicroMemoryTags,
+  loadMicroReactivityRuntimeState,
+  recordMicroMemories,
+  resolveMicroCallbackEcho,
+  saveMicroReactivityRuntimeState,
+} from '@/lib/micro-reactivity'
 // Share prompts removed-too obtrusive
 
 // Trust feedback now dialogue-based via consequence echoes
@@ -2576,6 +2583,49 @@ export default function StatefulGameInterface() {
                 investigationNodeId: topic.investigationNodeId
               })
             }
+          }
+        }
+      }
+
+      // P2-B: Micro-reactivity memory callbacks
+      // Capture lightweight memory flags (`micro:*`) and trigger delayed callback
+      // echoes on tagged return nodes (`micro-callback:*`) with anti-spam caps.
+      if (nextNode.tags) {
+        const microTags = extractMicroMemoryTags(nextNode.tags)
+        if (microTags.memorySetIds.length > 0 || microTags.callbackIds.length > 0) {
+          const currentTurn = getTotalNodesVisited(newGameState)
+          let microRuntime = loadMicroReactivityRuntimeState()
+
+          const recordResult = recordMicroMemories({
+            runtimeState: microRuntime,
+            globalFlags: newGameState.globalFlags,
+            memorySetIds: microTags.memorySetIds,
+            characterId: targetCharacterId,
+            currentTurn,
+          })
+          microRuntime = recordResult.runtimeState
+
+          if (!consequenceEcho && microTags.callbackIds.length > 0) {
+            const callbackResult = resolveMicroCallbackEcho({
+              runtimeState: microRuntime,
+              globalFlags: newGameState.globalFlags,
+              callbackIds: microTags.callbackIds,
+              characterId: targetCharacterId,
+              currentTurn,
+            })
+            microRuntime = callbackResult.runtimeState
+            if (callbackResult.echo) {
+              consequenceEcho = callbackResult.echo
+            }
+          }
+
+          saveMicroReactivityRuntimeState(microRuntime)
+
+          if (recordResult.newlyRecorded.length > 0) {
+            logger.info('[StatefulGameInterface] P2-B micro memories recorded', {
+              characterId: targetCharacterId,
+              memoryIds: recordResult.newlyRecorded,
+            })
           }
         }
       }

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-03-04T23:08:44.537Z",
-  "mode": "warn",
-  "duration_ms": 5,
+  "generated_at": "2026-03-04T23:17:05.190Z",
+  "mode": "enforce",
+  "duration_ms": 7477,
   "policy": {
     "patternVoicePolicy": "minimal",
     "icebergActivation": "required"
@@ -56,10 +56,15 @@
       "id": "unreliable-record-lane",
       "passed": true,
       "details": "record_tags=14, verify_tags=6, errors=0"
+    },
+    {
+      "id": "micro-reactivity-lane",
+      "passed": true,
+      "details": "memory_ids=5, callback_characters=5, errors=0"
     }
   ],
   "summary": {
-    "total_checks": 10,
+    "total_checks": 11,
     "failed_checks": 0,
     "passed": true
   }

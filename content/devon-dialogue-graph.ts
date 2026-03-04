@@ -854,7 +854,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'patience'
       }
     ],
-    tags: ['scene_break', 'pacing', 'devon_arc'],
+    tags: ['scene_break', 'pacing', 'devon_arc', 'micro:devon_father_memory'],
     metadata: {
       sessionBoundary: true  // Session 1: Introduction complete
     }
@@ -3219,7 +3219,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       variation_id: 'hub_return_v1'
     }],
     choices: [],
-    tags: ['terminal']
+    tags: ['terminal', 'micro-callback:devon_father_memory']
   },
 
   // ============= PHASE 1 SIMULATION: SYSTEM DEBUGGER (Trust ≥ 2) =============

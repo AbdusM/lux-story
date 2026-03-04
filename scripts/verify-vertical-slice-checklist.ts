@@ -68,6 +68,15 @@ type UnreliableRecordReport = {
   }
 }
 
+type MicroReactivityReport = {
+  valid?: boolean
+  summary?: {
+    unique_memory_ids?: number
+    callback_characters?: number
+  }
+  issues?: Array<{ severity?: 'error' | 'warning' }>
+}
+
 type CheckResult = {
   id: string
   passed: boolean
@@ -86,6 +95,7 @@ const CHOICE_TAXONOMY_REPORT_PATH = path.join(REPO_ROOT, 'docs/qa/choice-taxonom
 const EXTERNAL_DEBT_REPORT_PATH = path.join(REPO_ROOT, 'docs/qa/dialogue-external-debt-report.json')
 const WORLD_CANON_REPORT_PATH = path.join(REPO_ROOT, 'docs/qa/world-canon-contract-report.json')
 const UNRELIABLE_RECORD_REPORT_PATH = path.join(REPO_ROOT, 'docs/qa/unreliable-record-report.json')
+const MICRO_REACTIVITY_REPORT_PATH = path.join(REPO_ROOT, 'docs/qa/micro-reactivity-report.json')
 const GAME_INTERFACE_PATH = path.join(REPO_ROOT, 'components/StatefulGameInterface.tsx')
 
 const TAXONOMY_MIN_COVERAGE = Number(process.env.CHOICE_TAXONOMY_MIN_COVERAGE ?? 90)
@@ -122,6 +132,7 @@ async function refreshReportsIfRequested(refresh: boolean): Promise<void> {
     { script: 'scripts/verify-simulation-phase-contract.ts' },
     { script: 'scripts/verify-choice-taxonomy.ts' },
     { script: 'scripts/verify-unreliable-records.ts' },
+    { script: 'scripts/verify-micro-reactivity.ts' },
     { script: 'scripts/verify-dialogue-external-debt.ts' },
     { script: 'scripts/verify-required-state-strict.ts' },
     { script: 'scripts/verify-narrative-sim.ts' },
@@ -265,6 +276,17 @@ async function main() {
     details: unreliableReport
       ? `record_tags=${unreliableReport.summary?.total_record_tags ?? 'n/a'}, verify_tags=${unreliableReport.summary?.total_verify_tags ?? 'n/a'}, errors=${unreliableErrors.length}`
       : `missing report: ${path.relative(REPO_ROOT, UNRELIABLE_RECORD_REPORT_PATH)}`,
+  })
+
+  const microReactivity = await readJsonIfExists<MicroReactivityReport>(MICRO_REACTIVITY_REPORT_PATH)
+  const microIssues = microReactivity?.issues ?? []
+  const microErrors = microIssues.filter((issue) => issue.severity === 'error')
+  checks.push({
+    id: 'micro-reactivity-lane',
+    passed: Boolean(microReactivity?.valid) && microErrors.length === 0,
+    details: microReactivity
+      ? `memory_ids=${microReactivity.summary?.unique_memory_ids ?? 'n/a'}, callback_characters=${microReactivity.summary?.callback_characters ?? 'n/a'}, errors=${microErrors.length}`
+      : `missing report: ${path.relative(REPO_ROOT, MICRO_REACTIVITY_REPORT_PATH)}`,
   })
 
   const failedChecks = checks.filter((check) => !check.passed)

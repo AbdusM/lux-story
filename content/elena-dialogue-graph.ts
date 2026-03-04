@@ -699,7 +699,7 @@ const nodes: DialogueNode[] = [
         skills: ['criticalThinking']
       }
     ],
-    tags: ['elena_arc', 'station_seven', 'iceberg:platform_seven', 'record:record_elena_archive_gap']
+    tags: ['elena_arc', 'station_seven', 'iceberg:platform_seven', 'record:record_elena_archive_gap', 'micro:elena_station_seven_loss']
   },
 
   {
@@ -2697,7 +2697,7 @@ Your curiosity combined with analysis... that's exactly what they need.`,
       variation_id: 'hub_return_v1'
     }],
     choices: [],
-    tags: ['terminal']
+    tags: ['terminal', 'micro-callback:elena_station_seven_loss']
   },
 
   // ============= TRUST RECOVERY =============

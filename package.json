@@ -58,6 +58,7 @@
     "verify:world-canon-contract": "node --loader ./scripts/ts-loader.mjs scripts/verify-world-canon-contract.ts",
     "verify:iceberg-tags": "node --loader ./scripts/ts-loader.mjs scripts/verify-iceberg-tags.ts",
     "verify:unreliable-records": "node --loader ./scripts/ts-loader.mjs scripts/verify-unreliable-records.ts",
+    "verify:micro-reactivity": "node --loader ./scripts/ts-loader.mjs scripts/verify-micro-reactivity.ts",
     "verify:choice-taxonomy": "node --loader ./scripts/ts-loader.mjs scripts/verify-choice-taxonomy.ts",
     "verify:dialogue-external-debt": "node --loader ./scripts/ts-loader.mjs scripts/verify-dialogue-external-debt.ts",
     "verify:vertical-slice-checklist": "node --loader ./scripts/ts-loader.mjs scripts/verify-vertical-slice-checklist.ts",

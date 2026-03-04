@@ -871,7 +871,7 @@ STATUS: Signal fighting itself`,
         thoughtId: 'community-heart'
       }
     ],
-    tags: ['major_reveal', 'trust_gate', 'maya_arc', 'immersive_scenario', 'iceberg:the_builders']
+    tags: ['major_reveal', 'trust_gate', 'maya_arc', 'immersive_scenario', 'iceberg:the_builders', 'micro:maya_competition_memory']
   },
 
   // ============= INTERRUPT TARGET: Player reached out during vulnerability =============
@@ -3781,7 +3781,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       variation_id: 'hub_return_v1'
     }],
     choices: [],
-    tags: ['terminal']
+    tags: ['terminal', 'micro-callback:maya_competition_memory']
   },
 
   // ═══════════════════════════════════════════════════════════════

@@ -258,7 +258,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['nadia_arc', 'backstory', 'harm', 'vulnerability', 'iceberg:the_builders', 'iceberg:the_oxygen_tax', 'record:record_nadia_policy_model']
+    tags: ['nadia_arc', 'backstory', 'harm', 'vulnerability', 'iceberg:the_builders', 'iceberg:the_oxygen_tax', 'record:record_nadia_policy_model', 'micro:nadia_model_regret']
   },
 
   // ============= RESPONSIBLE =============
@@ -1236,7 +1236,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       variation_id: 'hub_return_v1'
     }],
     choices: [],
-    tags: ['farewell', 'terminal']
+    tags: ['farewell', 'terminal', 'micro-callback:nadia_model_regret']
   },
 
   // ============= TRUST RECOVERY =============
