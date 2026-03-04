@@ -1,0 +1,31 @@
+
+> lux-story@2.3.1 test:e2e:settings-parity
+> PLAYWRIGHT_CONSTRAINED=true playwright test --project=settings-parity --workers=1
+
+
+
+
+
+
+
+
+
+
+
+
+Running 1 test using 1 worker
+
+
+Running 1 test using 1 worker
+
+
+
+
+
+[1A[2K[1/1] [settings-parity] › tests/e2e/user-flows/settings-parity.spec.ts:13:3 › Settings Overlay Parity › settings re-renders cleanly when resizing across breakpoint while open
+
+
+  ✓  1 [settings-parity] › tests/e2e/user-flows/settings-parity.spec.ts:13:3 › Settings Overlay Parity › settings re-renders cleanly when resizing across breakpoint while open (5.3s)
+
+  1 passed (16.2s)
+[1A[2K  1 passed (16.2s)

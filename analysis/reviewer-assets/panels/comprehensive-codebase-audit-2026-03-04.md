@@ -33,7 +33,7 @@ No finding below claims runtime exploitability unless marked `Observed (runtime)
 3. `npm run test:run` passed (`81` files, `1343` passed, `4` skipped) -> `E2`.
 4. `npm run build` passed.
 5. Build output for `/` reports `331 kB` route chunk, `1.19 MB` first load JS.
-6. Targeted Playwright parity run failed in this environment with repeated `EMFILE` watch errors (not a product assertion, an execution-environment constraint).
+6. Initial sandboxed parity attempt failed due environment constraints (`EMFILE`/browser launch limits), but constrained parity now passes in CI and unsandboxed local execution.
 7. No test/build processes left running after audit execution.
 
 ## 3) Evidence Artifacts (Saved)
@@ -43,6 +43,7 @@ No finding below claims runtime exploitability unless marked `Observed (runtime)
 - `analysis/reviewer-assets/panels/evidence/api-auth-matrix-2026-03-04.csv`
 - `analysis/reviewer-assets/panels/evidence/keydown-listeners-2026-03-04.txt`
 - `analysis/reviewer-assets/panels/evidence/release-smoke-preview-2026-03-04.txt`
+- `analysis/reviewer-assets/panels/evidence/settings-parity-local-2026-03-04.txt`
 - `docs/qa/keydown-listener-ownership-report.json`
 - `docs/qa/home-route-budget-report.json`
 
@@ -76,7 +77,7 @@ Completed from ship-blocking queue:
 - `AUD-010` complete: keydown listener governance check added with allowlist policy + CI gate.
 - `AUD-011` complete: debug/test surfaces are middleware-gated to `404` in production (`/test-*`, `/test-env`, `/shadcn-preview`, `/api/test-env`).
 - `AUD-012` complete: home-route bundle budget verifier added and wired into CI build workflow.
-- `AUD-013` partial-complete: dedicated constrained `settings-parity` Playwright project + CI job (single worker, raised `ulimit`) added.
+- `AUD-013` complete: constrained `settings-parity` lane is green in CI (`test-settings-parity`) and in local unsandboxed execution (`1 passed`).
 - Security verification tests updated and passing in `tests/lib/__verification__/release-security-minimum.test.ts`.
 
 Residual ship risk:
@@ -290,8 +291,8 @@ Conditional block:
 ## 8) Fix Queue (AuditTicket)
 
 Execution status update:
-- Closed: `AUD-001`, `AUD-002`, `AUD-004`, `AUD-005`, `AUD-006`, `AUD-007`, `AUD-008`, `AUD-009`, `AUD-010`, `AUD-011`, `AUD-012`.
-- Partial: `AUD-003`, `AUD-013`.
+- Closed: `AUD-001`, `AUD-002`, `AUD-004`, `AUD-005`, `AUD-006`, `AUD-007`, `AUD-008`, `AUD-009`, `AUD-010`, `AUD-011`, `AUD-012`, `AUD-013`.
+- Partial: `AUD-003`.
 - Open: none in this phase block; remaining work is tightening CSP nonce/hash strategy and continuing performance reduction.
 
 ```ts
@@ -565,7 +566,7 @@ Execution status update:
 
 ## 9) Plan Fidelity (Split, per critique)
 
-### 9.1 Overlay Modernization Fidelity Score: 93/100
+### 9.1 Overlay Modernization Fidelity Score: 95/100
 
 Why:
 - Overlay store/config/host architecture is implemented.
@@ -573,7 +574,7 @@ Why:
 - Settings anchored-vs-host parity code exists with dedicated e2e spec.
 
 Remaining deductions:
-- Local parity e2e still needs manual stability confirmation under constrained FD environments.
+- Extended visual/perf pass (CPU-throttled interaction measurements) is still pending.
 
 ### 9.2 Repo Production Hardening Posture: 92/100
 
@@ -596,13 +597,13 @@ Why:
 ### Top 3 Risks
 1. Prod CSP still allows `unsafe-inline` pending nonce/hash rollout and deployed-header validation.
 2. Home route payload remains heavy for low-end mobile despite budget gating.
-3. Local parity e2e stability still depends on constrained-runner behavior.
+3. Core game surface remains monolithic (`StatefulGameInterface.tsx`), increasing regression risk for future large changes.
 
 ### Top 3 Quick Wins
 1. Confirm deployed CSP headers and lock explicit `unsafe-inline` exception policy (`AUD-003` follow-up).
 2. Tighten `HOME_ROUTE_*_BUDGET_KB` thresholds incrementally toward target mobile budget.
-3. Keep constrained settings parity job green and monitor flake rate.
+3. Execute next extraction slice from `StatefulGameInterface` behind parity tests.
 
 ### Manual Verifications Required
 1. Verify deployed production CSP headers before final severity lock on `F-SEC-002`.
-2. Run constrained Playwright parity in CI and confirm flake rate remains acceptable.
+2. Run CPU-throttled desktop/mobile visual/perf pass on game overlays before tightening budgets further.

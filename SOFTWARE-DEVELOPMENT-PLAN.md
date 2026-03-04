@@ -94,11 +94,9 @@ Single source of truth: **overlay store**.
 
 ## Remaining PRD Backlog (Next)
 
-1. Playwright parity execution in CI/local host
-   - `settings-parity.spec.ts` is landed; run in a full browser-capable environment (sandboxed runner cannot launch Chromium reliably).
-2. Extended visual/perf pass
+1. Extended visual/perf pass
    - Capture desktop/mobile panel snapshots and measure open/close smoothness under CPU throttle.
-3. Optional product refinements
+2. Optional product refinements
    - Additional contextual surfacing copy and timing tuning based on playtest signal.
 
 ### Recently Completed (March 4, 2026)
@@ -109,7 +107,9 @@ Single source of truth: **overlay store**.
   - Files: `components/ui/select.tsx`, `components/ui/dropdown-menu.tsx`, `components/ui/tooltip.tsx`, `components/ui/dialog.tsx`
 - Settings parity e2e coverage:
   - Added `tests/e2e/user-flows/settings-parity.spec.ts` and wired it into the `core-game` Playwright project.
-  - Recommended local run: `npm run test:e2e -- --project core-game --grep "Settings Overlay Parity"`
+  - Dedicated constrained lane is green in CI (`test-settings-parity` job in Playwright workflow).
+  - Local constrained run passed: `npm run test:e2e:settings-parity`.
+  - Evidence: `analysis/reviewer-assets/panels/evidence/settings-parity-local-2026-03-04.txt`.
 - Overlay motion standardization (gameplay + overlay surfaces):
   - Added shared variants/transitions in `lib/animations.ts` (`panelDropDown`, `modalCenter`, `cinematicFade`, `cinematicReveal`, `tabContentSwap`, `tabContentSwapReduced`, `transitions.linearTick`).
   - Migrated overlay surfaces off ad-hoc local variants where practical (`UnifiedMenu`, `Journal`, `ConstellationPanel`, `DetailModal`, `JourneyComplete`, `SettingsMobileSheet`, `BottomSheet`, `IdleWarningModal`, `LoginModalContents`).
