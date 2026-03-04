@@ -18,6 +18,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 import type { PlayerPersona } from '@/lib/player-persona'
 import { logger } from '@/lib/logger'
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
+import { requireUserSession } from '@/lib/api/user-session'
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
 
@@ -180,6 +181,9 @@ export async function POST(request: NextRequest) {
 
   logger.debug('Request received', { operation: 'api.samuel-dialogue', timestamp: new Date().toISOString() })
 
+  const session = requireUserSession(request)
+  if (!session.ok) return session.response
+
   // Rate limiting: 20 requests per hour
   const ip = getClientIp(request)
   try {
@@ -196,6 +200,16 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  let body: SamuelDialogueRequest
+  try {
+    body = await request.json() as SamuelDialogueRequest
+  } catch {
+    return NextResponse.json(
+      { error: 'Invalid JSON payload' },
+      { status: 400 }
+    )
+  }
+
   try {
     // 1. Validate API key
     if (!GEMINI_API_KEY) {
@@ -207,7 +221,6 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. Parse request
-    const body: SamuelDialogueRequest = await request.json()
     const { nodeId, playerPersona, gameContext } = body
 
     logger.debug('Request body', {

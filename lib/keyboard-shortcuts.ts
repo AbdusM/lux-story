@@ -6,19 +6,29 @@
  * Modifiers: ctrl, alt, shift, meta (cmd on Mac)
  */
 
-export type ShortcutAction =
-  | 'toggleJournal'
-  | 'toggleConstellation'
-  | 'toggleReport'
-  | 'toggleMute'
-  | 'openSettings'
-  | 'openHelp'
-  | 'selectChoice1'
-  | 'selectChoice2'
-  | 'selectChoice3'
-  | 'selectChoice4'
-  | 'focusChoices'
-  | 'escape'
+import { z } from 'zod'
+
+export const SHORTCUT_ACTIONS = [
+  'toggleJournal',
+  'toggleConstellation',
+  'toggleReport',
+  'toggleMute',
+  'openSettings',
+  'openHelp',
+  'selectChoice1',
+  'selectChoice2',
+  'selectChoice3',
+  'selectChoice4',
+  'selectChoice5',
+  'selectChoice6',
+  'selectChoice7',
+  'selectChoice8',
+  'selectChoice9',
+  'escape',
+] as const
+
+export type ShortcutAction = (typeof SHORTCUT_ACTIONS)[number]
+export const ShortcutActionSchema = z.enum(SHORTCUT_ACTIONS)
 
 export interface KeyboardShortcut {
   action: ShortcutAction
@@ -69,7 +79,7 @@ export const DEFAULT_SHORTCUTS: Record<ShortcutAction, KeyboardShortcut> = {
   },
   openHelp: {
     action: 'openHelp',
-    key: '?',
+    key: 'shift+/',
     description: 'Show Keyboard Shortcuts',
     category: 'general',
     customizable: false,
@@ -104,12 +114,40 @@ export const DEFAULT_SHORTCUTS: Record<ShortcutAction, KeyboardShortcut> = {
     category: 'choices',
     customizable: true,
   },
-  focusChoices: {
-    action: 'focusChoices',
-    key: 'tab',
-    description: 'Focus Choice Buttons',
+  selectChoice5: {
+    action: 'selectChoice5',
+    key: '5',
+    description: 'Select Choice 5',
     category: 'choices',
-    customizable: false,
+    customizable: true,
+  },
+  selectChoice6: {
+    action: 'selectChoice6',
+    key: '6',
+    description: 'Select Choice 6',
+    category: 'choices',
+    customizable: true,
+  },
+  selectChoice7: {
+    action: 'selectChoice7',
+    key: '7',
+    description: 'Select Choice 7',
+    category: 'choices',
+    customizable: true,
+  },
+  selectChoice8: {
+    action: 'selectChoice8',
+    key: '8',
+    description: 'Select Choice 8',
+    category: 'choices',
+    customizable: true,
+  },
+  selectChoice9: {
+    action: 'selectChoice9',
+    key: '9',
+    description: 'Select Choice 9',
+    category: 'choices',
+    customizable: true,
   },
 
   // General
@@ -160,9 +198,10 @@ export function matchesKeyCombo(event: KeyboardEvent, combo: string): boolean {
   // Normalize key names
   const eventKey = event.key.toLowerCase()
   const targetKey = parsed.key.toLowerCase()
+  const normalizedEventKey = eventKey === '?' ? '/' : eventKey
 
   // Special key mappings
-  const keyMatch = eventKey === targetKey ||
+  const keyMatch = normalizedEventKey === targetKey ||
     (targetKey === 'escape' && eventKey === 'escape') ||
     (targetKey === 'tab' && eventKey === 'tab')
 

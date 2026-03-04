@@ -2,8 +2,8 @@
  * Storage Health Check API Endpoint
  * Grand Central Terminus - Birmingham Career Exploration
  *
- * Verifies localStorage accessibility
- * Note: This is a server-side check for client-side storage availability
+ * Server-side health signal for storage subsystem.
+ * Client storage capability must be verified in browser runtime.
  */
 
 import { NextResponse } from 'next/server';
@@ -12,23 +12,20 @@ export const runtime = 'nodejs';
 
 export async function GET() {
   try {
-    // Server-side check: verify that client storage config is present
     const checks = {
+      runtime: runtime === 'nodejs',
       config: true,
-      localStorage: typeof window !== 'undefined' && 'localStorage' in window,
-      sessionStorage: typeof window !== 'undefined' && 'sessionStorage' in window,
+      clientStorage: 'deferred-to-client',
     };
-
-    const allHealthy = Object.values(checks).every(Boolean);
 
     return NextResponse.json(
       {
-        status: allHealthy ? 'healthy' : 'degraded',
+        status: 'healthy',
         timestamp: new Date().toISOString(),
         checks,
-        note: 'Server-side check only. Client-side storage is tested on the client.',
+        note: 'Server route is healthy. Browser storage is validated client-side.',
       },
-      { status: allHealthy ? 200 : 503 }
+      { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(
