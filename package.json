@@ -19,6 +19,7 @@
     "test:validators": "vitest run tests/lib/dialogue-validators.test.ts tests/lib/simulation-validators.test.ts tests/lib/simulation-id-drift.test.ts tests/lib/simulation-entry-nodes.test.ts tests/lib/choice-generator.test.ts",
     "test:e2e": "playwright test",
     "test:e2e:settings-parity": "PLAYWRIGHT_CONSTRAINED=true playwright test --project=settings-parity --workers=1",
+    "test:e2e:overlay-perf": "PLAYWRIGHT_CONSTRAINED=true playwright test --project=overlay-perf --workers=1",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:headed": "playwright test --headed",
