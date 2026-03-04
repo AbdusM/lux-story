@@ -242,6 +242,11 @@ import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
 import { getSkillComboUnlockChoices } from '@/lib/skill-combo-unlock-choices'
 import { calculateSkillDecay, getSkillDecayNarrative } from '@/lib/assessment-derivatives'
 import { buildChoiceOutcomePresentation, type ChoiceOutcomeCard, type ChoiceOutcomePresentationMode } from '@/lib/choice-outcome-presentation'
+import {
+  getFactionLeitmotifSoundCue,
+  inferFactionAudioContext,
+  shouldTriggerFactionLeitmotif,
+} from '@/lib/faction-audio'
 // Share prompts removed-too obtrusive
 
 // Trust feedback now dialogue-based via consequence echoes
@@ -508,6 +513,8 @@ export default function StatefulGameInterface() {
   // Refs & Sync
   const skillTrackerRef = useRef<SkillTracker | null>(null)
   const pendingSaveRef = useRef<NodeJS.Timeout | null>(null) // Deferred save for pagehide flush
+  const lastFactionLeitmotifRef = useRef<{ faction: string | null; at: number }>({ faction: null, at: 0 })
+  const lastFactionCharacterRef = useRef<CharacterId | null>(null)
 
   // Share prompts disabled-too obtrusive
   const isProcessingChoiceRef = useRef(false) // Race condition guard
@@ -1042,6 +1049,28 @@ export default function StatefulGameInterface() {
     if (state.gameState && state.currentCharacterId) {
       generativeScore.update(state.gameState, state.currentCharacterId)
     }
+
+    const nodeTags = state.currentNode?.tags ?? []
+    const didCharacterChange = lastFactionCharacterRef.current !== state.currentCharacterId
+    lastFactionCharacterRef.current = state.currentCharacterId
+
+    if (state.currentNode && (shouldTriggerFactionLeitmotif(nodeTags) || didCharacterChange)) {
+      const factionId = inferFactionAudioContext({
+        tags: nodeTags,
+        characterId: state.currentCharacterId,
+      })
+      if (factionId) {
+        const soundCue = getFactionLeitmotifSoundCue(factionId)
+        const now = Date.now()
+        const last = lastFactionLeitmotifRef.current
+        const isCooldown = last.faction === factionId && (now - last.at) < 12000
+        if (soundCue && !isCooldown) {
+          playSound(soundCue)
+          lastFactionLeitmotifRef.current = { faction: factionId, at: now }
+        }
+      }
+    }
+
     return () => {
       if (idleTimerRef.current) {
         clearTimeout(idleTimerRef.current)
@@ -2566,10 +2595,14 @@ export default function StatefulGameInterface() {
 
             if (!consequenceEcho) {
               const sample = collected.newlyCollected[0]
+              const factionSound = getFactionLeitmotifSoundCue(
+                inferFactionAudioContext({ sourceFaction: sample.sourceFaction }) ?? 'station_core'
+              )
               consequenceEcho = {
                 text: `You recover a conflicting record fragment (${sample.sourceFaction.replace('_', ' ')} source).`,
                 emotion: 'intrigued',
-                timing: 'immediate'
+                timing: 'immediate',
+                soundCue: factionSound ?? undefined,
               }
             }
           }

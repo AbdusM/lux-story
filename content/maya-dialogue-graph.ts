@@ -3744,7 +3744,7 @@ MISSION: Stabilize the wave form within safety limits.`,
         pattern: 'patience'
       }
     ],
-    tags: ['mystery', 'breadcrumb', 'record:record_maya_heatmap_snapshot']
+    tags: ['mystery', 'breadcrumb', 'faction:engineers', 'record:record_maya_heatmap_snapshot']
   },
   {
     nodeId: 'maya_mystery_response_1',
@@ -3770,7 +3770,7 @@ MISSION: Stabilize the wave form within safety limits.`,
         pattern: 'patience'
       }
     ],
-    tags: ['mystery', 'revelation', 'verify-conflict:burned_district_cause']
+    tags: ['mystery', 'revelation', 'faction:engineers', 'verify-conflict:burned_district_cause']
   },
   {
     nodeId: 'maya_hub_return',

@@ -7,7 +7,7 @@ Turn the worldbuilding principles into shippable systems with measurable gates, 
 - `P1-A Canon Compiler`: Completed on 2026-03-04 (typed contract + timeline invariants + source snapshot + CI enforce mode).
 - `P1-B ARD Guardrail`: Completed previously (`verify:choice-taxonomy` ratchet lane + CI enforce mode).
 - `P1-C Unreliable Narrator Depth Pass`: Substantially completed on 2026-03-04 (5 conflict clusters, perspective-depth contract, Journal+Report surfacing; playthrough validation still recommended).
-- `P2-A Faction Leitmotif Runtime Mapping`: Not started.
+- `P2-A Faction Leitmotif Runtime Mapping`: Completed on 2026-03-04 (faction->cue contract, runtime trigger integration, consequence-source cue mapping, fallback inference helpers, test coverage).
 - `P2-B Micro-Reactivity Memory Layer`: Not started.
 
 ## Verified Baseline (Post-Implementation)
@@ -16,6 +16,7 @@ Turn the worldbuilding principles into shippable systems with measurable gates, 
 - Targeted tests pass:
   - `tests/lib/unreliable-narrator-system.test.ts`
   - `tests/lib/knowledge-derivatives.test.ts`
+  - `tests/lib/faction-audio.test.ts`
 - `npm run type-check` and `npm run lint` pass.
 
 ## What Was Activated In This Increment
@@ -71,6 +72,7 @@ Turn the worldbuilding principles into shippable systems with measurable gates, 
   - playthrough can resolve at least 2 conflicts end-to-end (manual verification recommended)
 
 ### P2-A: Faction Leitmotif Runtime Mapping
+- Status: Completed
 - Goal: Bind faction ideology to sound design triggers.
 - Deliverables:
   - faction->audio cue mapping table

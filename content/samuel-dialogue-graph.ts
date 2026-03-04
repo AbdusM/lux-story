@@ -1327,7 +1327,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         skills: ['communication']
       }
     ],
-    tags: ['mystery_reveal', 'letter_sender', 'samuel_arc', 'iceberg:the_letter', 'verify-conflict:letter_sender_identity', 'verify-conflict:burned_district_cause']
+    tags: ['mystery_reveal', 'letter_sender', 'samuel_arc', 'faction:station_core', 'iceberg:the_letter', 'verify-conflict:letter_sender_identity', 'verify-conflict:burned_district_cause']
   },
   {
     nodeId: 'samuel_letter_confession',
@@ -9155,7 +9155,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         pattern: 'exploring'
       }
     ],
-    tags: ['mystery', 'climax', 'record:record_samuel_breathing_ward_memory', 'record:record_samuel_evacuation_oral_history', 'record:record_samuel_quiet_shift_prayer', 'verify-conflict:oxygen_tax_origin']
+    tags: ['mystery', 'climax', 'faction:station_core', 'record:record_samuel_breathing_ward_memory', 'record:record_samuel_evacuation_oral_history', 'record:record_samuel_quiet_shift_prayer', 'verify-conflict:oxygen_tax_origin']
   },
 
   {
@@ -9195,7 +9195,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         pattern: 'exploring'
       }
     ],
-    tags: ['mystery', 'revelation', 'climax', 'iceberg:the_previous_visitor', 'iceberg:before_the_station', 'record:record_samuel_quiet_hour_testimony', 'verify-conflict:platform_seven_blackout', 'verify-conflict:silent_shift_protocol']
+    tags: ['mystery', 'revelation', 'climax', 'faction:station_core', 'iceberg:the_previous_visitor', 'iceberg:before_the_station', 'record:record_samuel_quiet_hour_testimony', 'verify-conflict:platform_seven_blackout', 'verify-conflict:silent_shift_protocol']
   },
 
   {

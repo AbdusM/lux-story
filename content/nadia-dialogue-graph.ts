@@ -1200,7 +1200,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         pattern: 'patience'
       }
     ],
-    tags: ['mystery', 'breadcrumb', 'record:record_nadia_latency_window']
+    tags: ['mystery', 'breadcrumb', 'faction:data_flow', 'record:record_nadia_latency_window']
   },
 
   {
@@ -1224,7 +1224,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         pattern: 'building'
       }
     ],
-    tags: ['mystery', 'breadcrumb', 'verify-conflict:oxygen_tax_origin']
+    tags: ['mystery', 'breadcrumb', 'faction:data_flow', 'verify-conflict:oxygen_tax_origin']
   },
 
   {

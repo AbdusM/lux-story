@@ -3182,7 +3182,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'patience'
       }
     ],
-    tags: ['mystery', 'breadcrumb', 'record:record_devon_power_budget_trace', 'record:record_devon_shift_roster_gap']
+    tags: ['mystery', 'breadcrumb', 'faction:engineers', 'record:record_devon_power_budget_trace', 'record:record_devon_shift_roster_gap']
   },
   {
     nodeId: 'devon_mystery_response_1',
@@ -3208,7 +3208,7 @@ export const devonDialogueNodes: DialogueNode[] = [
         pattern: 'helping'
       }
     ],
-    tags: ['mystery', 'revelation', 'verify-conflict:silent_shift_protocol']
+    tags: ['mystery', 'revelation', 'faction:engineers', 'verify-conflict:silent_shift_protocol']
   },
   {
     nodeId: 'devon_hub_return',
