@@ -87,6 +87,35 @@ jobs:
       - name: Validate simulations data dictionary
         run: npm run validate-simulations-doc
 
+      - name: Verify world canon contract
+        run: npm run verify:world-canon-contract
+
+      - name: Verify simulation phase contract
+        run: npm run verify:simulation-phase-contract
+
+      - name: Verify iceberg activation contract
+        run: npm run verify:iceberg-tags
+        env:
+          ICEBERG_VALIDATOR_MODE: enforce
+
+      - name: Verify choice taxonomy ratchet
+        run: npm run verify:choice-taxonomy
+        env:
+          CHOICE_TAXONOMY_VALIDATOR_MODE: enforce
+
+      - name: Verify dialogue external debt ratchet
+        run: npm run verify:dialogue-external-debt
+        env:
+          DIALOGUE_EXTERNAL_DEBT_MODE: enforce
+
+      - name: Verify narrative vertical slice checklist
+        run: npm run verify:vertical-slice-checklist -- --refresh
+        env:
+          VERTICAL_SLICE_GATE_MODE: enforce
+          CHOICE_TAXONOMY_VALIDATOR_MODE: enforce
+          DIALOGUE_EXTERNAL_DEBT_MODE: enforce
+          ICEBERG_VALIDATOR_MODE: enforce
+
       - name: Verify analytics dictionary
         run: npm run verify:analytics-dict
 
