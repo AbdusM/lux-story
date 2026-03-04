@@ -2,13 +2,14 @@ Overlay Perf CI Evidence - March 4, 2026
 
 Workflow:
 - Name: Overlay Perf Benchmarks
-- URL: https://github.com/AbdusM/lux-story/actions/runs/22688229426
+- URL: https://github.com/AbdusM/lux-story/actions/runs/22688355808
 - Job: overlay-perf
 - Conclusion: success
 
 Benchmark payload (from workflow log):
-{"desktop":{"openMs":1286,"closeMs":644,"openFps":4.3,"closeFps":10},"mobile":{"openMs":986,"closeMs":320,"openFps":11.4,"closeFps":25.7},"cpuThrottleRate":4}
+{"desktop":{"openMs":984,"closeMs":602,"openFps":5.7,"closeFps":10},"mobile":{"openMs":680,"closeMs":376,"openFps":10,"closeFps":20},"cpuThrottleRate":4}
 
 Notes:
 - CPU throttle rate was set to 4x in the test.
 - This lane is an evidence benchmark lane (manual workflow_dispatch), not a required push gate.
+- CI lane now seeds placeholder Supabase env vars to avoid startup validation-noise in benchmark logs.

@@ -126,7 +126,7 @@ Single source of truth: **overlay store**.
 - Overlay perf benchmark lane:
   - Added isolated `overlay-perf` Playwright project + spec (`tests/e2e/user-flows/overlay-smoothness.spec.ts`).
   - Added manual CI workflow lane (`.github/workflows/overlay-perf.yml`) for stable benchmark capture.
-  - Latest successful benchmark run: `Overlay Perf Benchmarks` (`22688229426`), with metrics artifact:
+  - Latest successful benchmark run: `Overlay Perf Benchmarks` (`22688355808`), with metrics artifact:
     `analysis/reviewer-assets/panels/evidence/overlay-perf-ci-2026-03-04.txt`.
 
 ## “Done” Definition
