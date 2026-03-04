@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-03-04T22:23:04.091Z",
+  "generated_at": "2026-03-04T22:24:38.228Z",
   "mode": "enforce",
-  "duration_ms": 6976,
+  "duration_ms": 6871,
   "policy": {
     "patternVoicePolicy": "minimal",
     "icebergActivation": "required"
