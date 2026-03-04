@@ -26,6 +26,8 @@ import { formatSkillName } from '@/lib/admin-dashboard-helpers'
 import { springs } from '@/lib/animations'
 import { ResizablePanel } from '@/components/ResizablePanel'
 import { playMilestoneSound, playEpisodeSound } from '@/lib/audio-feedback'
+import { useOverlayStore } from '@/lib/overlay-store'
+import { useFocusTrap } from '@/hooks/useFocusTrap'
 
 interface JourneySummaryProps {
   narrative: JourneyNarrative
@@ -47,6 +49,7 @@ const PATTERN_COLORS: Record<string, string> = {
 export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
   const [currentSection, setCurrentSection] = useState(0)
   const hasPlayedEntrySound = useRef(false)
+  const { ref: dialogRef, onKeyDown: handleDialogKeyDown } = useFocusTrap<HTMLDivElement>()
 
   // Play ceremonial sound on mount
   useEffect(() => {
@@ -76,9 +79,10 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
   // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose()
-      } else if (e.key === 'ArrowRight' && currentSection < sections.length - 1) {
+      // Only the top overlay should react to navigation keys.
+      if (useOverlayStore.getState().getTopOverlayId() !== 'journeySummary') return
+
+      if (e.key === 'ArrowRight' && currentSection < sections.length - 1) {
         setCurrentSection(prev => prev + 1)
       } else if (e.key === 'ArrowLeft' && currentSection > 0) {
         setCurrentSection(prev => prev - 1)
@@ -86,7 +90,7 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [onClose, currentSection, sections.length])
+  }, [currentSection, sections.length])
 
   const goNext = useCallback(() => {
     if (currentSection < sections.length - 1) {
@@ -106,8 +110,7 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
         return (
           <div className="space-y-6">
             <div
-              className="prose prose-slate prose-lg max-w-none"
-              style={{ fontFamily: 'Georgia, serif' }}
+              className="prose prose-slate prose-lg max-w-none font-narrative"
             >
               {narrative.openingParagraph.split('\n\n').map((para, idx) => (
                 <p
@@ -140,8 +143,7 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
         return (
           <div className="space-y-6">
             <div
-              className="prose prose-slate prose-lg max-w-none"
-              style={{ fontFamily: 'Georgia, serif' }}
+              className="prose prose-slate prose-lg max-w-none font-narrative"
             >
               {narrative.patternReflection.split('\n\n').map((para, idx) => (
                 <p
@@ -173,7 +175,7 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
       case 'relationships':
         return (
           <div className="space-y-6">
-            <p className="text-slate-600" style={{ fontFamily: 'Georgia, serif' }}>
+            <p className="text-slate-600 font-narrative">
               *Samuel glances at the worn photographs on his wall.*
             </p>
 
@@ -198,8 +200,7 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
                       </div>
                     </div>
                     <p
-                      className="text-slate-600 text-sm"
-                      style={{ fontFamily: 'Georgia, serif' }}
+                      className="text-slate-600 text-sm font-narrative"
                     >
                       {rel.narrativeText}
                     </p>
@@ -217,12 +218,12 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
       case 'skills':
         return (
           <div className="space-y-6">
-            <p className="text-slate-600" style={{ fontFamily: 'Georgia, serif' }}>
+            <p className="text-slate-600 font-narrative">
               *Samuel reaches for a worn notebook, flipping through pages.*
             </p>
 
-            <p className="text-slate-700" style={{ fontFamily: 'Georgia, serif' }}>
-              "Let me tell you what I noticed—not what some test says you could do, but what you actually did:"
+            <p className="text-slate-700 font-narrative">
+              "Let me tell you what I noticed, not what some test says you could do, but what you actually did:"
             </p>
 
             <div className="space-y-4">
@@ -247,11 +248,11 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
       case 'careers':
         return (
           <div className="space-y-6">
-            <p className="text-slate-600" style={{ fontFamily: 'Georgia, serif' }}>
+            <p className="text-slate-600 font-narrative">
               *Samuel pulls out a map of Birmingham, marked with possibilities.*
             </p>
 
-            <p className="text-slate-700" style={{ fontFamily: 'Georgia, serif' }}>
+            <p className="text-slate-700 font-narrative">
               "Based on how you moved through these conversations, here's where I see you fitting in Birmingham:"
             </p>
 
@@ -317,8 +318,7 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
             </motion.div>
 
             <div
-              className="prose prose-slate prose-lg max-w-none"
-              style={{ fontFamily: 'Georgia, serif' }}
+              className="prose prose-slate prose-lg max-w-none font-narrative"
             >
               {narrative.closingWisdom.split('\n\n').map((para, idx) => (
                 <motion.p
@@ -390,8 +390,7 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.2 }}
-              className="text-center text-slate-500 italic text-sm pt-4"
-              style={{ fontFamily: 'Georgia, serif' }}
+              className="text-center text-slate-500 italic text-sm pt-4 font-narrative"
             >
               "The trains will always be here, waiting for your next crossing."
             </motion.p>
@@ -407,12 +406,17 @@ export function JourneySummary({ narrative, onClose }: JourneySummaryProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm"
-      onClick={onClose}
+      className="absolute inset-0 flex items-center justify-center p-2 sm:p-4 pointer-events-none"
     >
       <Card
-        className="max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl bg-white rounded-xl border-0"
-        onClick={(e) => e.stopPropagation()}
+        ref={dialogRef}
+        tabIndex={-1}
+        onKeyDown={handleDialogKeyDown}
+        className="max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl bg-white rounded-xl border-0 pointer-events-auto"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Journey summary"
+        data-overlay-surface
       >
         {/* Header */}
         <CardHeader className="bg-gradient-to-r from-slate-800 to-slate-700 text-white p-4 sm:p-6">

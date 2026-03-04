@@ -25,12 +25,6 @@ vi.mock('next/link', () => ({
   ),
 }))
 
-vi.mock('@/components/auth/LoginModal', () => ({
-  LoginModal: ({ isOpen }: { isOpen: boolean }) => (
-    isOpen ? <div data-testid="login-modal">Login Modal</div> : null
-  ),
-}))
-
 const pushNow = vi.fn().mockResolvedValue(undefined)
 vi.mock('@/hooks/useSettingsSync', () => ({
   useSettingsSync: () => ({ pushNow }),
@@ -117,8 +111,8 @@ describe('UnifiedMenu', () => {
     expect(localStorage.getItem('lux_reduced_motion')).toBe('true')
     expect(document.documentElement.classList.contains('reduce-motion')).toBe(true)
 
-    // Close via Escape (backdrop has aria-hidden).
-    fireEvent.keyDown(window, { key: 'Escape' })
+    // Close via explicit close button.
+    await user.click(screen.getByRole('button', { name: /close settings menu/i }))
     expect(screen.queryByRole('dialog', { name: /settings/i })).not.toBeInTheDocument()
   })
 
@@ -147,14 +141,16 @@ describe('UnifiedMenu', () => {
     await waitFor(() => expect(signOut).toHaveBeenCalledTimes(1))
   })
 
-  it('opens login modal from guest account branch', async () => {
+  it('requests login from guest account branch', async () => {
     const user = userEvent.setup()
-    render(<UnifiedMenu />)
+    const onRequestLogin = vi.fn()
+    render(<UnifiedMenu onRequestLogin={onRequestLogin} />)
 
     await user.click(screen.getByRole('button', { name: /settings menu/i }))
     await user.click(screen.getByRole('button', { name: /sign in/i }))
 
-    expect(screen.getByTestId('login-modal')).toBeInTheDocument()
+    expect(onRequestLogin).toHaveBeenCalledTimes(1)
+    expect(screen.queryByRole('dialog', { name: /settings/i })).not.toBeInTheDocument()
   })
 
   it('renders active profile/admin branches and applies text/color settings', async () => {

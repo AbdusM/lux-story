@@ -9,7 +9,7 @@
 
 'use client'
 
-import { useEffect, useCallback, useState } from 'react'
+import { useEffect, useCallback, useRef, useState } from 'react'
 import {
   ShortcutAction,
   getEffectiveShortcuts,
@@ -21,9 +21,45 @@ import {
 
 type ShortcutHandler = () => void
 
-export function useKeyboardShortcuts() {
+interface KeyboardShortcutsOptions {
+  /**
+   * Return true when global shortcuts should be blocked (for example, while an
+   * overlay/modal is open).
+   *
+   * Prefer this over per-component window listeners for determinism.
+   */
+  getIsBlocked?: () => boolean
+  /**
+   * Actions allowed while blocked. Default is Escape only (if a handler exists).
+   */
+  allowedActionsWhenBlocked?: ShortcutAction[]
+  /**
+   * Dynamic allowlist while blocked (for example, from overlay metadata).
+   *
+   * Escape is always allowlisted; dismissal is still governed by overlay policy.
+   */
+  getAllowedActionsWhenBlocked?: () => ShortcutAction[]
+}
+
+function isEditableTarget(target: HTMLElement | null): boolean {
+  if (!target) return false
+
+  const tag = target.tagName
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return true
+  if (target.isContentEditable) return true
+
+  // ARIA roles used by some custom components.
+  const role = target.getAttribute('role')
+  if (role === 'textbox' || role === 'combobox' || role === 'searchbox') return true
+
+  return false
+}
+
+export function useKeyboardShortcuts(options: KeyboardShortcutsOptions = {}) {
   const [shortcuts, setShortcuts] = useState(getEffectiveShortcuts())
   const [handlers, setHandlers] = useState<Map<ShortcutAction, ShortcutHandler>>(new Map())
+  const optionsRef = useRef(options)
+  optionsRef.current = options
 
   /**
    * Register a handler for a specific action
@@ -70,21 +106,29 @@ export function useKeyboardShortcuts() {
    */
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented) return
+      if (event.isComposing || event.keyCode === 229) return
+
+      const { getIsBlocked, allowedActionsWhenBlocked, getAllowedActionsWhenBlocked } = optionsRef.current
+      const isBlocked = getIsBlocked?.() ?? false
+      const allowed = isBlocked
+        ? new Set<ShortcutAction>([
+            'escape',
+            ...(allowedActionsWhenBlocked ?? []),
+            ...(getAllowedActionsWhenBlocked?.() ?? []),
+          ])
+        : null
+
       // Don't trigger shortcuts when typing in inputs
       const target = event.target as HTMLElement
-      if (
-        target.tagName === 'INPUT' ||
-        target.tagName === 'TEXTAREA' ||
-        target.isContentEditable
-      ) {
+      if (isEditableTarget(target)) {
         // Exception: Allow Escape to work in inputs
-        if (event.key !== 'Escape') {
-          return
-        }
+        if (event.key !== 'Escape') return
       }
 
       // Check each shortcut
       Object.entries(shortcuts).forEach(([action, shortcut]) => {
+        if (isBlocked && allowed && !allowed.has(action as ShortcutAction)) return
         if (matchesKeyCombo(event, shortcut.key)) {
           const handler = handlers.get(action as ShortcutAction)
           if (handler) {

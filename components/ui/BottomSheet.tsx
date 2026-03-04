@@ -3,7 +3,8 @@
 import * as React from 'react'
 import { motion, AnimatePresence, useReducedMotion, PanInfo } from 'framer-motion'
 import { cn } from '@/lib/utils'
-import { springs } from '@/lib/animations'
+import { backdrop as backdropVariants, reducedMotion, springs } from '@/lib/animations'
+import { Z_INDEX } from '@/lib/ui-constants'
 
 /**
  * BottomSheet Component
@@ -32,6 +33,12 @@ export interface BottomSheetProps {
   className?: string
   /** Threshold in pixels to trigger close on drag (default: 100) */
   dragCloseThreshold?: number
+  /**
+   * Rendering mode:
+   * - `standalone`: BottomSheet renders its own backdrop + scroll-lock (legacy behavior).
+   * - `host`: BottomSheet is rendered inside OverlayHost (no backdrop, no global listeners, no scroll-lock).
+   */
+  mode?: 'standalone' | 'host'
 }
 
 export function BottomSheet({
@@ -41,6 +48,7 @@ export function BottomSheet({
   children,
   className,
   dragCloseThreshold = 100,
+  mode = 'standalone',
 }: BottomSheetProps) {
   const prefersReducedMotion = useReducedMotion()
   const sheetRef = React.useRef<HTMLDivElement>(null)
@@ -51,13 +59,65 @@ export function BottomSheet({
       // Small delay to ensure animation has started
       const timer = setTimeout(() => {
         sheetRef.current?.focus()
-      }, 100)
+      }, mode === 'standalone' ? 100 : 0)
       return () => clearTimeout(timer)
     }
-  }, [open])
+  }, [open, mode])
 
-  // Close on Escape key
+  const getFocusable = React.useCallback(() => {
+    const sheet = sheetRef.current
+    if (!sheet) return []
+    return Array.from(
+      sheet.querySelectorAll<HTMLElement>(
+        [
+          'a[href]',
+          'button:not([disabled])',
+          'input:not([disabled])',
+          'select:not([disabled])',
+          'textarea:not([disabled])',
+          '[tabindex]:not([tabindex="-1"])',
+        ].join(',')
+      )
+    ).filter((el) => !el.hasAttribute('disabled') && el.getAttribute('aria-hidden') !== 'true')
+  }, [])
+
+  const handleKeyDown = React.useCallback((e: React.KeyboardEvent) => {
+    if (e.key !== 'Tab') return
+
+    const focusable = getFocusable()
+    if (focusable.length === 0) {
+      e.preventDefault()
+      sheetRef.current?.focus()
+      return
+    }
+
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    const active = document.activeElement as HTMLElement | null
+
+    if (!active || !sheetRef.current?.contains(active)) {
+      e.preventDefault()
+      ;(e.shiftKey ? last : first).focus()
+      return
+    }
+
+    if (e.shiftKey) {
+      if (active === first) {
+        e.preventDefault()
+        last.focus()
+      }
+      return
+    }
+
+    if (active === last) {
+      e.preventDefault()
+      first.focus()
+    }
+  }, [getFocusable])
+
+  // Close on Escape key (standalone only; OverlayHost + global shortcuts own it in host mode)
   React.useEffect(() => {
+    if (mode !== 'standalone') return
     if (!open) return
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -65,62 +125,15 @@ export function BottomSheet({
         onClose()
         return
       }
-
-      if (e.key !== 'Tab') return
-
-      const sheet = sheetRef.current
-      if (!sheet) return
-
-      const focusable = Array.from(
-        sheet.querySelectorAll<HTMLElement>(
-          [
-            'a[href]',
-            'button:not([disabled])',
-            'input:not([disabled])',
-            'select:not([disabled])',
-            'textarea:not([disabled])',
-            '[tabindex]:not([tabindex="-1"])',
-          ].join(',')
-        )
-      ).filter((el) => !el.hasAttribute('disabled') && el.getAttribute('aria-hidden') !== 'true')
-
-      if (focusable.length === 0) {
-        e.preventDefault()
-        sheet.focus()
-        return
-      }
-
-      const first = focusable[0]
-      const last = focusable[focusable.length - 1]
-      const active = document.activeElement as HTMLElement | null
-
-      // If focus is outside the sheet, bring it in.
-      if (!active || !sheet.contains(active)) {
-        e.preventDefault()
-        ;(e.shiftKey ? last : first).focus()
-        return
-      }
-
-      if (e.shiftKey) {
-        if (active === first) {
-          e.preventDefault()
-          last.focus()
-        }
-        return
-      }
-
-      if (active === last) {
-        e.preventDefault()
-        first.focus()
-      }
     }
 
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [open, onClose])
+  }, [mode, open, onClose])
 
-  // Prevent body scroll when sheet is open
+  // Prevent body scroll when sheet is open (standalone only; OverlayHost owns it in host mode)
   React.useEffect(() => {
+    if (mode !== 'standalone') return
     if (open) {
       const originalOverflow = document.body.style.overflow
       document.body.style.overflow = 'hidden'
@@ -128,7 +141,7 @@ export function BottomSheet({
         document.body.style.overflow = originalOverflow
       }
     }
-  }, [open])
+  }, [mode, open])
 
   const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     // Close if dragged down past threshold
@@ -137,86 +150,98 @@ export function BottomSheet({
     }
   }
 
+  const sheet = (
+    <motion.div
+      ref={sheetRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label={title}
+      tabIndex={-1}
+      onKeyDown={handleKeyDown}
+      data-overlay-surface
+      className={cn(
+        mode === 'standalone' ? 'fixed bottom-0 left-0 right-0' : 'absolute bottom-0 left-0 right-0',
+        'max-h-[70dvh] sm:max-h-[50dvh] overflow-hidden',
+        'rounded-t-2xl',
+        'bg-slate-950/95 backdrop-blur-xl',
+        'border-t border-white/10',
+        'shadow-[0_-10px_40px_rgba(0,0,0,0.5)]',
+        'focus:outline-none pointer-events-auto',
+        // Safe area padding for iOS
+        'pb-[max(16px,env(safe-area-inset-bottom))]',
+        className
+      )}
+      style={mode === 'standalone' ? { zIndex: Z_INDEX.panel } : undefined}
+      initial={
+        prefersReducedMotion
+          ? { opacity: 0 }
+          : { y: '100%', opacity: 0 }
+      }
+      animate={
+        prefersReducedMotion
+          ? { opacity: 1 }
+          : { y: 0, opacity: 1 }
+      }
+      exit={
+        prefersReducedMotion
+          ? { opacity: 0 }
+          : { y: '100%', opacity: 0 }
+      }
+      transition={springs.smooth}
+      drag={prefersReducedMotion ? false : 'y'}
+      dragConstraints={{ top: 0, bottom: 0 }}
+      dragElastic={{ top: 0, bottom: 0.5 }}
+      onDragEnd={handleDragEnd}
+    >
+      {/* Drag handle */}
+      <div className="flex justify-center pt-3 pb-2">
+        <div
+          className="w-10 h-1 rounded-full bg-white/30"
+          aria-hidden="true"
+        />
+      </div>
+
+      {/* Header */}
+      <div className="px-6 pb-3 border-b border-white/5">
+        <h2 className="text-sm font-medium text-slate-400 uppercase tracking-widest">
+          {title}
+        </h2>
+      </div>
+
+      {/* Content - scrollable if needed */}
+      <div
+        className="overflow-y-auto overscroll-contain max-h-[calc(70dvh-80px)] sm:max-h-[calc(50dvh-80px)]"
+        style={{
+          WebkitOverflowScrolling: 'touch',
+        }}
+      >
+        {children}
+      </div>
+    </motion.div>
+  )
+
+  if (mode === 'host') {
+    if (!open) return null
+    return <div className="absolute inset-0 flex items-end justify-center pointer-events-none">{sheet}</div>
+  }
+
   return (
     <AnimatePresence>
       {open && (
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
-            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+            style={{ zIndex: Z_INDEX.panelBackdrop }}
+            initial={prefersReducedMotion ? { opacity: 1 } : 'hidden'}
+            animate="visible"
+            exit={prefersReducedMotion ? { opacity: 0 } : 'exit'}
+            variants={prefersReducedMotion ? undefined : backdropVariants}
+            transition={prefersReducedMotion ? reducedMotion : undefined}
             onClick={onClose}
             aria-hidden="true"
           />
-
-          {/* Sheet */}
-          <motion.div
-            ref={sheetRef}
-            role="dialog"
-            aria-modal="true"
-            aria-label={title}
-            tabIndex={-1}
-            className={cn(
-              'fixed bottom-0 left-0 right-0 z-50',
-              'max-h-[70dvh] sm:max-h-[50dvh] overflow-hidden',
-              'rounded-t-2xl',
-              'bg-slate-950/95 backdrop-blur-xl',
-              'border-t border-white/10',
-              'shadow-[0_-10px_40px_rgba(0,0,0,0.5)]',
-              'focus:outline-none',
-              // Safe area padding for iOS
-              'pb-[max(16px,env(safe-area-inset-bottom))]',
-              className
-            )}
-            initial={
-              prefersReducedMotion
-                ? { opacity: 0 }
-                : { y: '100%', opacity: 0 }
-            }
-            animate={
-              prefersReducedMotion
-                ? { opacity: 1 }
-                : { y: 0, opacity: 1 }
-            }
-            exit={
-              prefersReducedMotion
-                ? { opacity: 0 }
-                : { y: '100%', opacity: 0 }
-            }
-            transition={springs.smooth}
-            drag={prefersReducedMotion ? false : 'y'}
-            dragConstraints={{ top: 0, bottom: 0 }}
-            dragElastic={{ top: 0, bottom: 0.5 }}
-            onDragEnd={handleDragEnd}
-          >
-            {/* Drag handle */}
-            <div className="flex justify-center pt-3 pb-2">
-              <div
-                className="w-10 h-1 rounded-full bg-white/30"
-                aria-hidden="true"
-              />
-            </div>
-
-            {/* Header */}
-            <div className="px-6 pb-3 border-b border-white/5">
-              <h2 className="text-sm font-medium text-slate-400 uppercase tracking-widest">
-                {title}
-              </h2>
-            </div>
-
-            {/* Content - scrollable if needed */}
-            <div
-              className="overflow-y-auto overscroll-contain max-h-[calc(70dvh-80px)] sm:max-h-[calc(50dvh-80px)]"
-              style={{
-                WebkitOverflowScrolling: 'touch',
-              }}
-            >
-              {children}
-            </div>
-          </motion.div>
+          {sheet}
         </>
       )}
     </AnimatePresence>

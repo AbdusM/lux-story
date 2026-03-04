@@ -499,7 +499,7 @@ export function getPatternPreviewStyles(
   pattern: PatternType | undefined,
   patterns: PlayerPatterns,
   config: PatternPreviewConfig = DEFAULT_PATTERN_PREVIEW_CONFIG
-): { boxShadow?: string; borderColor?: string } {
+): { boxShadow?: string } {
   if (!config.enabled || !pattern) return {}
 
   // Check if we should show based on player's development
@@ -511,7 +511,6 @@ export function getPatternPreviewStyles(
 
   return {
     boxShadow: `inset 0 0 20px ${color}${Math.round(config.opacity * 255).toString(16).padStart(2, '0')}`,
-    borderColor: `${color}40` // 25% opacity border
   }
 }
 

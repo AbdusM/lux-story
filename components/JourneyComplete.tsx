@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button'
 import { getPatternEnding } from '@/lib/pattern-endings'
 import { getAccessiblePatternColor, type PatternType } from '@/lib/patterns'
 import { ArrowLeft } from 'lucide-react'
+import { useFocusTrap } from '@/hooks/useFocusTrap'
+import { cinematicFade, fadeInUp, staggerContainer } from '@/lib/animations'
 
 interface JourneyCompleteProps {
     pattern: PatternType
@@ -14,23 +16,23 @@ interface JourneyCompleteProps {
 export function JourneyComplete({ pattern, onRestart }: JourneyCompleteProps) {
     const ending = getPatternEnding(pattern)
     const patternColor = getAccessiblePatternColor(pattern)
-
-    // Animation variants
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: { duration: 1.5, staggerChildren: 0.3 }
-        }
-    }
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
-    }
+    const { ref: dialogRef, onKeyDown: handleDialogKeyDown } = useFocusTrap<HTMLDivElement>()
 
     return (
-        <div className="absolute inset-0 z-50 flex items-center justify-center overflow-hidden bg-slate-950 text-slate-100">
+        <motion.div
+            ref={dialogRef}
+            tabIndex={-1}
+            onKeyDown={handleDialogKeyDown}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Journey complete"
+            data-overlay-surface
+            className="absolute inset-0 flex items-center justify-center overflow-hidden bg-slate-950 text-slate-100 pointer-events-auto focus:outline-none"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={cinematicFade}
+        >
             {/* Dynamic Background Gradient */}
             <div
                 className="absolute inset-0 opacity-20 pointer-events-none"
@@ -40,13 +42,13 @@ export function JourneyComplete({ pattern, onRestart }: JourneyCompleteProps) {
             />
 
             <motion.div
-                variants={containerVariants}
+                variants={staggerContainer}
                 initial="hidden"
                 animate="visible"
                 className="relative z-10 max-w-2xl px-6 py-12 mx-auto text-center"
             >
                 {/* Title Section */}
-                <motion.div variants={itemVariants} className="mb-12">
+                <motion.div variants={fadeInUp} className="mb-12">
                     <div
                         className="inline-block px-3 py-1 mb-4 text-xs font-medium tracking-widest uppercase border rounded-full bg-slate-900/50 backdrop-blur-sm"
                         style={{ borderColor: patternColor, color: patternColor }}
@@ -62,14 +64,14 @@ export function JourneyComplete({ pattern, onRestart }: JourneyCompleteProps) {
                 </motion.div>
 
                 {/* Narrative Body */}
-                <motion.div variants={itemVariants} className="space-y-6 text-lg leading-relaxed text-slate-300">
+                <motion.div variants={fadeInUp} className="space-y-6 text-lg leading-relaxed text-slate-300">
                     {ending.narrative.map((paragraph, index) => (
                         <p key={index}>{paragraph}</p>
                     ))}
                 </motion.div>
 
                 {/* Call to Action */}
-                <motion.div variants={itemVariants} className="mt-12">
+                <motion.div variants={fadeInUp} className="mt-12">
                     <div className="p-6 mb-8 border border-slate-800 rounded-xl bg-slate-900/50 backdrop-blur-md">
                         <p className="text-xl italic font-medium" style={{ color: patternColor }}>
                             "{ending.callToAction}"
@@ -86,6 +88,6 @@ export function JourneyComplete({ pattern, onRestart }: JourneyCompleteProps) {
                     </Button>
                 </motion.div>
             </motion.div>
-        </div>
+        </motion.div>
     )
 }
