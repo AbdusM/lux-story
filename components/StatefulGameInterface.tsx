@@ -247,13 +247,6 @@ import {
   inferFactionAudioContext,
   shouldTriggerFactionLeitmotif,
 } from '@/lib/faction-audio'
-import {
-  extractMicroMemoryTags,
-  loadMicroReactivityRuntimeState,
-  recordMicroMemories,
-  resolveMicroCallbackEcho,
-  saveMicroReactivityRuntimeState,
-} from '@/lib/micro-reactivity'
 // Share prompts removed-too obtrusive
 
 // Trust feedback now dialogue-based via consequence echoes
@@ -2591,6 +2584,13 @@ export default function StatefulGameInterface() {
       // Capture lightweight memory flags (`micro:*`) and trigger delayed callback
       // echoes on tagged return nodes (`micro-callback:*`) with anti-spam caps.
       if (nextNode.tags) {
+        const {
+          extractMicroMemoryTags,
+          loadMicroReactivityRuntimeState,
+          recordMicroMemories,
+          resolveMicroCallbackEcho,
+          saveMicroReactivityRuntimeState,
+        } = await import('@/lib/micro-reactivity')
         const microTags = extractMicroMemoryTags(nextNode.tags)
         if (microTags.memorySetIds.length > 0 || microTags.callbackIds.length > 0) {
           const currentTurn = getTotalNodesVisited(newGameState)
