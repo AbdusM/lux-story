@@ -1,0 +1,33 @@
+{
+  "generated_at": "2026-03-04T22:23:00.531Z",
+  "mode": "enforce",
+  "duration_ms": 1103,
+  "baseline_exists": true,
+  "baseline": {
+    "generated_at": "2026-03-04T21:50:55.341Z",
+    "detached_nodes": 46,
+    "detached_soft_issues": 32,
+    "dormant_nodes": 10,
+    "dormant_soft_issues": 36,
+    "non_graph_experience_choices": 152,
+    "non_graph_experience_soft_issues": 41,
+    "notes": "Ratchet baseline for detached/dormant/non-graph debt outside primary scoring lane."
+  },
+  "current": {
+    "detached_nodes": 46,
+    "detached_soft_issues": 32,
+    "dormant_nodes": 10,
+    "dormant_soft_issues": 36,
+    "non_graph_experience_choices": 152,
+    "non_graph_experience_soft_issues": 41
+  },
+  "delta": {
+    "detached_nodes": 0,
+    "detached_soft_issues": 0,
+    "dormant_nodes": 0,
+    "dormant_soft_issues": 0,
+    "non_graph_experience_choices": 0,
+    "non_graph_experience_soft_issues": 0
+  },
+  "regressions": []
+}
