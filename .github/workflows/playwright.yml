@@ -119,6 +119,7 @@ jobs:
         retention-days: 7
 
   test-settings-parity:
+    if: ${{ hashFiles('tests/e2e/user-flows/settings-parity.spec.ts') != '' }}
     needs: setup
     runs-on: ubuntu-latest
     timeout-minutes: 15
