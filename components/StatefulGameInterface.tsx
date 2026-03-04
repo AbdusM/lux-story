@@ -588,11 +588,6 @@ export default function StatefulGameInterface() {
       const button = document.querySelector('[data-choice-index="3"]') as HTMLButtonElement
       button?.click()
     })
-    registerHandler('focusChoices', () => {
-      const firstChoice = document.querySelector('[data-choice-index="0"]') as HTMLButtonElement
-      firstChoice?.focus()
-    })
-
     // General shortcuts
     registerHandler('escape', () => {
       if (state.showJournal) setState(prev => ({ ...prev, showJournal: false }))
