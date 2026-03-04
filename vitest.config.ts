@@ -40,6 +40,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      'next/server': resolve(__dirname, './node_modules/next/server.js'),
+      'next/navigation': resolve(__dirname, './node_modules/next/navigation.js'),
+      'next/headers': resolve(__dirname, './node_modules/next/headers.js'),
       '@': resolve(__dirname, '.'),
       '@/lib': resolve(__dirname, './lib'),
       '@/components': resolve(__dirname, './components'),

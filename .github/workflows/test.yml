@@ -98,6 +98,9 @@ jobs:
 
       - name: Verify reserved choice IDs
         run: npm run verify:reserved-choice-ids
+
+      - name: Verify keydown listener ownership policy
+        run: npm run verify:keydown-listeners
       - name: Generate coverage report
         run: npm run test:coverage
         continue-on-error: true
@@ -129,10 +132,13 @@ jobs:
         run: npm ci
 
       - name: Build Next.js application
-        run: npm run build
+        run: npm run build 2>&1 | tee .next-build-output.log
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      - name: Verify home route performance budget
+        run: npm run verify:home-route-budget
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
