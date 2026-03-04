@@ -33,4 +33,4 @@ Notes:
 - `interrupts`: Whether the character has interrupt-tagged nodes or interrupt blocks.
 - `sim_id_match`: Whether content and lib simulation IDs are unified.
 
-_Generated: 2026-03-02_
+_Generated: deterministic (update reflects source content/registry changes)_
