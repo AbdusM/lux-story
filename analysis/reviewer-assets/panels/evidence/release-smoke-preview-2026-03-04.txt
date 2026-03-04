@@ -1,0 +1,18 @@
+
+> lux-story@2.3.1 verify:release-smoke
+> node scripts/ci/release-smoke.mjs
+
+Release smoke target: https://lux-story-mpb9rr4v2-link-dap.vercel.app
+PASS: GET / -> status=200
+PASS: GET /api/health -> status=200
+PASS: health.status -> ok
+PASS: GET /api/health/storage -> status=200
+PASS: storage.status -> ok
+PASS: GET /api/health/db -> status=200
+PASS: db.status -> ok
+PASS: GET /api/user/session (unauth) -> status=401
+PASS: POST /api/advisor-briefing (unauth) -> status=401
+PASS: csp.present -> ok
+PASS: csp.no-unsafe-eval -> ok
+
+Summary: 11 passed, 0 failed

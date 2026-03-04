@@ -42,12 +42,24 @@ No finding below claims runtime exploitability unless marked `Observed (runtime)
 - `analysis/reviewer-assets/panels/evidence/npm-audit-omit-dev-2026-03-04.json`
 - `analysis/reviewer-assets/panels/evidence/api-auth-matrix-2026-03-04.csv`
 - `analysis/reviewer-assets/panels/evidence/keydown-listeners-2026-03-04.txt`
+- `analysis/reviewer-assets/panels/evidence/release-smoke-preview-2026-03-04.txt`
 - `docs/qa/keydown-listener-ownership-report.json`
 - `docs/qa/home-route-budget-report.json`
 
 Snapshot details:
 - Resolved Next version: `15.5.12` (`npm ls next`).
 - `npm audit --omit=dev` snapshot: `0 high`, `0 moderate`, `0 total` advisories in this run.
+
+## 3.2) Release Candidate Validation (March 4, 2026)
+
+- RC tag created/pushed: `rc-2026-03-04-01` -> commit `80e6d24`.
+- Preview deployed: `https://lux-story-mpb9rr4v2-link-dap.vercel.app`.
+- Main-branch CI after merge (`#17`): `Codex Adapter Validation`, `Test Suite`, and `Playwright E2E Tests` all passed.
+- Automated release smoke (`npm run verify:release-smoke`) passed `11/11` checks against preview:
+  - app health endpoints healthy (`/api/health`, `/api/health/storage`, `/api/health/db`)
+  - auth boundaries enforced (`/api/user/session` unauth `401`, `/api/advisor-briefing` unauth `401/403`)
+  - CSP present and `unsafe-eval` absent.
+- Runtime header verification (`E1`) confirms CSP currently includes `'unsafe-inline'` in `script-src` and `style-src`; this remains an explicit accepted exception pending nonce/hash rollout.
 
 ## 3.1) Execution Update (March 4, 2026)
 
@@ -68,7 +80,7 @@ Completed from ship-blocking queue:
 - Security verification tests updated and passing in `tests/lib/__verification__/release-security-minimum.test.ts`.
 
 Residual ship risk:
-- CSP still includes `unsafe-inline` in production pending nonce/hash rollout and deployed-header confirmation.
+- CSP still includes `unsafe-inline` in production/preview headers pending nonce/hash rollout (deployed-header confirmation completed).
 
 ## 4) API Surface Inventory (Current)
 
@@ -101,13 +113,14 @@ Source basis: `analysis/reviewer-assets/panels/evidence/api-auth-matrix-2026-03-
 #### F-SEC-002 - CSP is permissive in config (`unsafe-inline` + `unsafe-eval`)
 - **Severity:** `P1 if present in prod headers, else P2`
 - **Category:** `security`
-- **Certainty:** `Observed (static)`
-- **Evidence:** `E0`
-- **File refs:** `next.config.js:101`, `next.config.js:102`
-- **Defect:** policy string includes unsafe script directives.
+- **Certainty:** `Observed (runtime)`
+- **Evidence:** `E1`
+- **File refs:** `next.config.js:99`, `next.config.js:110`
+- **Defect:** deployed CSP no longer includes `unsafe-eval` but still includes `unsafe-inline` in `script-src` and `style-src`.
 - **Impact:** weaker script-injection containment if this policy is shipped as-is.
 - **Smallest safe fix:** split dev/prod CSP and remove unsafe directives in prod.
-- **Verification method:** confirm actual production response headers (`E1`) before final severity lock.
+- **Verification method:** deployed-header checks + release-smoke script (`analysis/reviewer-assets/panels/evidence/release-smoke-preview-2026-03-04.txt`).
+- **Status:** `Partial (2026-03-04)` - `unsafe-eval` removed and verified absent at runtime; `unsafe-inline` remains accepted temporary exception pending nonce/hash rollout.
 
 #### F-SEC-003 - High advisories in current prod dependency graph snapshot
 - **Severity:** `P1`
