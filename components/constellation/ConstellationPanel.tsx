@@ -4,49 +4,39 @@ import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion'
 import { X, Users, Sparkles, Compass } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { springs, backdrop, panelFromRight, haptics } from '@/lib/animations'
+import { springs, backdrop, panelFromRight, haptics, tabContentSwap } from '@/lib/animations'
 import { Z_INDEX } from '@/lib/ui-constants'
+import { useOverlayStore } from '@/lib/overlay-store'
+import { useFocusTrap } from '@/hooks/useFocusTrap'
 import { useConstellationData, type CharacterWithState, type SkillWithState } from '@/hooks/useConstellationData'
 import { getQuestsWithStatus, type Quest } from '@/lib/quest-system'
 import { useGameSelectors, useGameStore } from '@/lib/game-store'
 import { PeopleView } from './PeopleView'
 import { SkillsView } from './SkillsView'
 import { QuestsView } from './QuestsView'
-import { DetailModal } from './DetailModal'
 
 interface ConstellationPanelProps {
   isOpen: boolean
   onClose: () => void
+  /**
+   * `legacy`: owns backdrop/z-index and is toggled via `isOpen`.
+   * `host`: render inside OverlayHost (backdrop + stacking are centralized).
+   */
+  mode?: 'legacy' | 'host'
 }
 
 type TabId = 'people' | 'skills' | 'quests'
 
 // Using shared animation variants from lib/animations.ts: backdrop, panelFromRight
 
-const contentVariants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: springs.gentle
-  },
-  exit: {
-    opacity: 0,
-    y: -10,
-    transition: { duration: 0.15 }
-  }
-}
-
-type DetailItem =
-  | { type: 'character'; item: CharacterWithState }
-  | { type: 'skill'; item: SkillWithState }
-  | { type: 'quest'; item: Quest }
-  | null
-
-export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps) {
+export function ConstellationPanel({ isOpen, onClose, mode = 'legacy' }: ConstellationPanelProps) {
+  const shouldRender = mode === 'host' ? true : isOpen
   const [activeTab, setActiveTab] = useState<TabId>('people')
-  const [detailItem, setDetailItem] = useState<DetailItem>(null)
   const data = useConstellationData()
+  const pushOverlay = useOverlayStore((s) => s.pushOverlay)
+  const { ref: panelRef, onKeyDown: handlePanelKeyDown } = useFocusTrap<HTMLDivElement>({
+    enabled: shouldRender,
+  })
 
 
 
@@ -73,11 +63,16 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
 
   // Keyboard navigation handler
   useEffect(() => {
-    if (!isOpen) return
+    if (!shouldRender) return
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Escape to close
+      if (mode === 'host') {
+        // Only the top overlay should respond to navigation keys.
+        if (useOverlayStore.getState().getTopOverlayId() !== 'constellation') return
+      }
+
+      // Escape to close (legacy only; OverlayHost + global shortcuts own Escape in host mode).
       if (e.key === 'Escape') {
-        onClose()
+        if (mode === 'legacy') onClose()
         return
       }
 
@@ -94,22 +89,18 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen, onClose, activeTab])
+  }, [activeTab, mode, onClose, shouldRender])
 
   const handleOpenCharacterDetail = (character: CharacterWithState) => {
-    setDetailItem({ type: 'character', item: character })
+    pushOverlay('detailModal', { type: 'character', item: character, allCharacters: data.characters })
   }
 
   const handleOpenSkillDetail = (skill: SkillWithState) => {
-    setDetailItem({ type: 'skill', item: skill })
+    pushOverlay('detailModal', { type: 'skill', item: skill })
   }
 
   const handleOpenQuestDetail = (quest: Quest) => {
-    setDetailItem({ type: 'quest', item: quest })
-  }
-
-  const handleCloseDetail = () => {
-    setDetailItem(null)
+    pushOverlay('detailModal', { type: 'quest', item: quest })
   }
 
   // Unified Tab Structure
@@ -139,23 +130,28 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
   return (
     <LazyMotion features={domAnimation}>
       <AnimatePresence>
-        {isOpen && (
+        {shouldRender && (
           <>
             {/* Backdrop */}
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={backdrop}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-              style={{ zIndex: Z_INDEX.modalBackdrop }}
-              onClick={onClose}
-              data-testid="journey-backdrop"
-              aria-hidden="true"
-            />
+            {mode === 'legacy' && (
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={backdrop}
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+                style={{ zIndex: Z_INDEX.modalBackdrop }}
+                onClick={onClose}
+                data-testid="journey-backdrop"
+                aria-hidden="true"
+              />
+            )}
 
             {/* Panel - swipe right to close */}
             <motion.div
+              ref={panelRef}
+              tabIndex={-1}
+              onKeyDown={handlePanelKeyDown}
               initial="hidden"
               animate="visible"
               exit="hidden"
@@ -169,15 +165,16 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                   onClose()
                 }
               }}
-              className="fixed right-2 top-2 bottom-2 left-2 sm:left-auto sm:w-full max-w-lg glass-panel-solid !rounded-2xl border border-white/10 shadow-2xl flex flex-col overflow-hidden"
+              className="fixed right-2 top-2 bottom-2 left-2 sm:left-auto sm:w-full max-w-lg glass-panel-solid !rounded-2xl border border-white/10 shadow-2xl flex flex-col overflow-hidden pointer-events-auto"
               style={{
                 // Safe area handled by footer only - prevent nested padding
                 paddingRight: 'env(safe-area-inset-right, 0px)',
-                zIndex: Z_INDEX.modal,
+                ...(mode === 'legacy' ? { zIndex: Z_INDEX.modal } : {}),
               }}
               role="dialog"
               aria-modal="true"
               aria-label="Your Journey - Character and Skill Progress"
+              data-overlay-surface
               data-testid="journey-panel"
             >
               {/* Header */}
@@ -245,7 +242,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                       initial="hidden"
                       animate="visible"
                       exit="exit"
-                      variants={contentVariants}
+                      variants={tabContentSwap}
                       className="h-full overflow-y-auto"
                       style={{ WebkitOverflowScrolling: 'touch' }}
                     >
@@ -264,7 +261,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                       initial="hidden"
                       animate="visible"
                       exit="exit"
-                      variants={contentVariants}
+                      variants={tabContentSwap}
                       className="h-full overflow-y-auto"
                       style={{ WebkitOverflowScrolling: 'touch' }}
                     >
@@ -281,7 +278,7 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
                       initial="hidden"
                       animate="visible"
                       exit="exit"
-                      variants={contentVariants}
+                      variants={tabContentSwap}
                       className="h-full overflow-y-auto"
                       style={{ WebkitOverflowScrolling: 'touch' }}
                     >
@@ -304,13 +301,6 @@ export function ConstellationPanel({ isOpen, onClose }: ConstellationPanelProps)
               </div>
             </motion.div>
 
-            {/* Detail Modal */}
-            <DetailModal
-              item={detailItem?.item || null}
-              type={detailItem?.type || 'character'}
-              onClose={handleCloseDetail}
-              allCharacters={data.characters}
-            />
           </>
         )}
       </AnimatePresence>

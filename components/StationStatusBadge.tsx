@@ -44,21 +44,23 @@ export function StationStatusBadge({ gameState, className = '' }: StationStatusB
 
     const { atmosphere } = calculateAmbientContext(gameState)
     const waitingCharacters = getWaitingCharacters(gameState)
+    const totalChoices = Object.values(gameState.patterns).reduce((sum, value) => sum + value, 0)
 
     return {
       atmosphere,
       atmosphereLabel: ATMOSPHERE_LABELS[atmosphere] || ATMOSPHERE_LABELS.dormant,
       waitingCount: waitingCharacters.length,
-      engagement: calculatePlayerEngagement(gameState.playerId).engagementLevel
+      engagement: calculatePlayerEngagement(gameState.playerId).engagementLevel,
+      totalChoices,
     }
   }, [gameState])
 
   if (!statusData) return null
 
-  if (!statusData) return null
-
-  const { atmosphereLabel, waitingCount, engagement } = statusData
+  const { atmosphereLabel, waitingCount, engagement, totalChoices } = statusData
   const engagementMeta = ENGAGEMENT_LABELS[engagement || 'low']
+  // Progressive disclosure: keep early header calm, reveal diagnostic labels after some play.
+  const showAdvancedStatus = totalChoices >= 3 || waitingCount > 0
 
   return (
     <motion.div
@@ -71,9 +73,8 @@ export function StationStatusBadge({ gameState, className = '' }: StationStatusB
         {atmosphereLabel.label}
       </span>
 
-      {/* Waiting characters (only show if there are any) */}
-
-      {waitingCount > 0 && (
+      {/* Waiting characters (only show if there are any and advanced status is unlocked). */}
+      {showAdvancedStatus && waitingCount > 0 && (
         <>
           <span className="text-slate-500">|</span>
           <span className="text-amber-400/80">
@@ -82,11 +83,15 @@ export function StationStatusBadge({ gameState, className = '' }: StationStatusB
         </>
       )}
 
-      {/* Engagement Indicator (Claim 15) */}
-      <span className="text-slate-500">|</span>
-      <span className={engagementMeta.color} title="Neural Synchronization Level">
-        Sync: {engagementMeta.label}
-      </span>
+      {/* Engagement indicator appears once the player has meaningful interaction history. */}
+      {showAdvancedStatus && (
+        <>
+          <span className="text-slate-500">|</span>
+          <span className={engagementMeta.color} title="Neural Synchronization Level">
+            Sync: {engagementMeta.label}
+          </span>
+        </>
+      )}
     </motion.div>
   )
 }

@@ -31,10 +31,16 @@ export const springs = {
 
 export const durations = {
   fast: 0.15,
+  quick: 0.2,
   normal: 0.25,
   slow: 0.4,
   dramatic: 0.6,
+  oneSecond: 1,
 }
+
+export const transitions = {
+  linearTick: { duration: durations.oneSecond, ease: 'linear' } as Transition,
+} as const
 
 // =============================================================================
 // STAGGER CONFIGURATIONS
@@ -213,10 +219,100 @@ export const panelFromBottom: Variants = {
   },
 }
 
+/**
+ * Anchored dropdown/popover surface (desktop settings style).
+ */
+export const panelDropDown: Variants = {
+  hidden: { opacity: 0, y: -10, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: springs.snappy
+  },
+  exit: {
+    opacity: 0,
+    y: -8,
+    scale: 0.97,
+    transition: { duration: durations.fast }
+  },
+}
+
+/**
+ * Center/modal scale fade.
+ */
+export const modalCenter: Variants = {
+  hidden: { opacity: 0, scale: 0.95, y: 24 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: springs.smooth
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.97,
+    y: 12,
+    transition: { duration: durations.quick }
+  },
+}
+
+/**
+ * Cinematic full-screen fade.
+ */
+export const cinematicFade: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: durations.dramatic } },
+  exit: { opacity: 0, transition: { duration: durations.slow } },
+}
+
+/**
+ * Cinematic staged reveal for key content.
+ */
+export const cinematicReveal: Variants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: durations.dramatic, delay: 0.3, ease: 'easeOut' }
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.8,
+    transition: { duration: durations.slow }
+  },
+}
+
+/**
+ * Shared tab/content swap animation.
+ */
+export const tabContentSwap: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: springs.gentle
+  },
+  exit: {
+    opacity: 0,
+    y: -8,
+    transition: { duration: durations.fast }
+  },
+}
+
+/**
+ * Reduced-motion-safe tab/content swap.
+ */
+export const tabContentSwapReduced: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: durations.fast } },
+  exit: { opacity: 0, transition: { duration: durations.fast } },
+}
+
 export const backdrop: Variants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1 },
-  exit: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: durations.quick } },
+  exit: { opacity: 0, transition: { duration: durations.fast } },
 }
 
 // =============================================================================

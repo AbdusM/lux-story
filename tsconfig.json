@@ -36,6 +36,7 @@
   ],
   "exclude": [
     "node_modules",
+    "analysis",
     "archived-scripts",
     "scripts",
     "lib/archive",

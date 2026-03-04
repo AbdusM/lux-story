@@ -1,8 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+'use client'
+
 import { useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Lock, User, MessageCircle, Compass, Target, Clock, ShieldAlert, Trophy, CheckCircle2, Circle } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useFocusTrap } from '@/hooks/useFocusTrap'
+import { backdrop, durations, modalCenter } from '@/lib/animations'
 import type { CharacterWithState, SkillWithState } from '@/hooks/useConstellationData'
 import type { Quest } from '@/lib/quest-system'
 import { CHARACTER_COLORS } from '@/lib/constellation/character-positions'
@@ -14,44 +18,34 @@ import { useGameStore } from '@/lib/game-store'
 import { PATTERN_METADATA } from '@/lib/patterns'
 import type { PatternType } from '@/lib/patterns'
 import type { CharacterId } from '@/lib/graph-registry'
-import { MODAL_HEIGHT, SAFE_AREA } from '@/lib/ui-constants'
+import { MODAL_HEIGHT, SAFE_AREA, Z_INDEX } from '@/lib/ui-constants'
 
 interface DetailModalProps {
   item: CharacterWithState | SkillWithState | Quest | null
   type: 'character' | 'skill' | 'quest'
   onClose: () => void
   allCharacters?: CharacterWithState[]
+  /**
+   * `legacy`: DetailModal owns its own backdrop/z-index.
+   * `host`: render inside OverlayHost (backdrop + stacking are centralized).
+   */
+  mode?: 'legacy' | 'host'
 }
 
-// modalVariants kept local - has unique y:50 motion that scaleFade lacks
-const modalVariants: import('framer-motion').Variants = {
-  hidden: { opacity: 0, y: 50, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { type: 'spring', stiffness: 300, damping: 30 }
-  },
-  exit: {
-    opacity: 0,
-    y: 30,
-    scale: 0.95,
-    transition: { duration: 0.2 }
-  }
-}
-
-// Using shared backdrop variant from lib/animations.ts
-
-export function DetailModal({ item, type, onClose, allCharacters }: DetailModalProps) {
+export function DetailModal({ item, type, onClose, allCharacters, mode = 'legacy' }: DetailModalProps) {
+  const { ref: modalRef, onKeyDown: handleModalKeyDown } = useFocusTrap<HTMLDivElement>({
+    enabled: !!item,
+  })
   // Escape key handler
   useEffect(() => {
     if (!item) return
+    if (mode !== 'legacy') return
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
     window.addEventListener('keydown', handleEscape)
     return () => window.removeEventListener('keydown', handleEscape)
-  }, [item, onClose])
+  }, [item, mode, onClose])
 
   if (!item) return null
 
@@ -67,24 +61,34 @@ export function DetailModal({ item, type, onClose, allCharacters }: DetailModalP
       {item && (
         <>
           {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 z-overlay"
-            onClick={onClose}
-          />
+          {mode === 'legacy' && (
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={backdrop}
+              className="fixed inset-0 bg-black/60"
+              style={{ zIndex: Z_INDEX.modalBackdrop }}
+              onClick={onClose}
+            />
+          )}
 
           {/* Modal */}
           <motion.div
+            ref={modalRef}
+            tabIndex={-1}
+            onKeyDown={handleModalKeyDown}
             initial="hidden"
             animate="visible"
             exit="exit"
-            variants={modalVariants}
-            className="fixed bottom-0 left-0 right-0 z-modal-content sm:max-h-[calc(60vh+max(16px,env(safe-area-inset-bottom)))] overflow-hidden rounded-t-2xl bg-slate-900 border-t border-slate-700 shadow-2xl"
+            variants={modalCenter}
+            className={cn(
+              "fixed bottom-0 left-0 right-0 sm:max-h-[calc(60vh+max(16px,env(safe-area-inset-bottom)))] overflow-hidden rounded-t-2xl bg-slate-900 border-t border-slate-700 shadow-2xl pointer-events-auto"
+            )}
             style={{
               maxHeight: `calc(${MODAL_HEIGHT.mobile} + ${SAFE_AREA.bottom})`,
-              paddingBottom: SAFE_AREA.bottom
+              paddingBottom: SAFE_AREA.bottom,
+              ...(mode === 'legacy' ? { zIndex: Z_INDEX.modal } : {}),
             }}
             onClick={(e) => e.stopPropagation()}
             role="dialog"
@@ -94,6 +98,7 @@ export function DetailModal({ item, type, onClose, allCharacters }: DetailModalP
                 skill ? `${skill.name} skill details` :
                   quest ? `${quest.title} dossier` : 'Details'
             }
+            data-overlay-surface
           >
             {/* Drag handle */}
             <div className="flex justify-center py-2 bg-slate-900" aria-hidden="true">
@@ -197,9 +202,9 @@ function CharacterDetail({ character, onClose, allCharacters }: { character: Cha
       {/* Header */}
       <div className="flex items-start gap-4">
         <div
-          className={cn(
-            "w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold",
-            colors.bg
+            className={cn(
+              "w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold",
+              colors.bg
           )}
         >
           {character.name[0]}
@@ -244,7 +249,7 @@ function CharacterDetail({ character, onClose, allCharacters }: { character: Cha
             className={cn("h-full rounded-full", colors.bg)}
             initial={{ width: 0 }}
             animate={{ width: `${character.trust * 10}%` }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            transition={{ duration: durations.dramatic, ease: 'easeOut' }}
           />
         </div>
       </div>
@@ -505,7 +510,7 @@ function SkillDetail({ skill, onClose }: { skill: SkillWithState; onClose: () =>
             style={{ backgroundColor: isDormant ? '#475569' : skill.color }}
             initial={{ width: 0 }}
             animate={{ width: `${Math.min(skill.demonstrationCount * 10, 100)}%` }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            transition={{ duration: durations.dramatic, ease: 'easeOut' }}
           />
         </div>
         {/* Next Level Indicator */}

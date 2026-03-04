@@ -14,13 +14,15 @@
 
 'use client'
 
+import { useCallback, useEffect, useId, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PatternType } from '@/lib/patterns'
 import { formatIdentityName } from '@/lib/identity-system'
+import { useFocusTrap } from '@/hooks/useFocusTrap'
+import { cinematicFade, cinematicReveal, durations } from '@/lib/animations'
 
 interface IdentityCeremonyProps {
   pattern: PatternType | null
-  isVisible: boolean
   onComplete: () => void
 }
 
@@ -40,7 +42,20 @@ const PATTERN_ICONS: Record<PatternType, string> = {
   building: '⬢'
 }
 
-export function IdentityCeremony({ pattern, isVisible, onComplete }: IdentityCeremonyProps) {
+export function IdentityCeremony({ pattern, onComplete }: IdentityCeremonyProps) {
+  const [show, setShow] = useState(true)
+  const titleId = useId()
+  const hintId = useId()
+  const { ref: dialogRef, onKeyDown: handleDialogKeyDown } = useFocusTrap<HTMLDivElement>()
+
+  const handleDismiss = useCallback(() => setShow(false), [])
+
+  useEffect(() => {
+    // If the ceremony is ever reused with a different pattern without unmounting,
+    // ensure it re-opens.
+    setShow(true)
+  }, [pattern])
+
   if (!pattern) return null
 
   const color = PATTERN_COLORS[pattern]
@@ -48,32 +63,45 @@ export function IdentityCeremony({ pattern, isVisible, onComplete }: IdentityCer
   const name = formatIdentityName(pattern)
 
   return (
-    <AnimatePresence>
-      {isVisible && (
+    <AnimatePresence onExitComplete={onComplete}>
+      {show && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center cursor-pointer"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          onClick={onComplete}  // Tap to dismiss
+          ref={dialogRef}
+          tabIndex={-1}
+          onKeyDown={handleDialogKeyDown}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={titleId}
+          aria-describedby={hintId}
+          data-overlay-surface
+          className="absolute inset-0 flex items-center justify-center cursor-pointer pointer-events-auto focus:outline-none"
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          variants={cinematicFade}
+          onClick={handleDismiss}  // Tap to dismiss (exit anim -> onExitComplete)
         >
+          {/* Screen-reader + keyboard dismissal (visual design remains tap-to-continue). */}
+          <button type="button" onClick={handleDismiss} className="sr-only">
+            Continue
+          </button>
+
           {/* Dim overlay */}
           <motion.div
             className="absolute inset-0 bg-black"
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.85 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: durations.slow }}
           />
 
           {/* Ceremony content */}
           <motion.div
             className="relative flex flex-col items-center gap-6 text-center pointer-events-none"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={cinematicReveal}
           >
             {/* Glowing orb */}
             <motion.div
@@ -84,7 +112,7 @@ export function IdentityCeremony({ pattern, isVisible, onComplete }: IdentityCer
                 opacity: [1, 0.8, 1]
               }}
               transition={{
-                duration: 2,
+                duration: durations.dramatic * 3.33,
                 repeat: 2,
                 ease: 'easeInOut'
               }}
@@ -95,9 +123,10 @@ export function IdentityCeremony({ pattern, isVisible, onComplete }: IdentityCer
             {/* Identity name */}
             <motion.h2
               className="text-3xl font-serif text-white"
+              id={titleId}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.8 }}
+              transition={{ duration: durations.slow, delay: durations.dramatic + durations.quick }}
             >
               {name}
             </motion.h2>
@@ -107,7 +136,7 @@ export function IdentityCeremony({ pattern, isVisible, onComplete }: IdentityCer
               className="text-lg text-slate-300 italic"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 1.2 }}
+              transition={{ duration: durations.slow, delay: durations.dramatic * 2 }}
             >
               Identity Claimed
             </motion.p>
@@ -118,7 +147,7 @@ export function IdentityCeremony({ pattern, isVisible, onComplete }: IdentityCer
               style={{ borderColor: color, color }}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 1.6 }}
+              transition={{ duration: durations.slow, delay: durations.dramatic * 2 + durations.quick }}
             >
               +20% {pattern.charAt(0).toUpperCase() + pattern.slice(1)} gains
             </motion.div>
@@ -126,9 +155,10 @@ export function IdentityCeremony({ pattern, isVisible, onComplete }: IdentityCer
             {/* Continue hint */}
             <motion.p
               className="text-sm text-slate-400 mt-8"
+              id={hintId}
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 1, 0.5, 1] }}
-              transition={{ duration: 2, delay: 3 }}
+              transition={{ duration: durations.dramatic * 3.33, delay: durations.dramatic * 5 }}
             >
               Tap to continue
             </motion.p>

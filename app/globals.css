@@ -87,6 +87,10 @@
   --font-crimson-pro: ui-serif, Georgia, "Times New Roman", serif;
   --font-space-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   --font-roboto-slab: ui-serif, Georgia, "Times New Roman", serif;
+
+  /* PRD v2 typography aliases */
+  --font-ui: var(--font-inter);
+  --font-narrative: var(--font-space-mono);
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
@@ -116,6 +120,14 @@ html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+}
+
+.font-ui {
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-narrative {
+  font-family: var(--font-narrative), ui-monospace, monospace;
 }
 
 /* Prevent iOS Safari bounce/overscroll on body */
@@ -634,8 +646,23 @@ main {
   /* Slightly softer corners */
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 
+  /* PRD v2 glass token aliases */
+  --glass-surface: var(--glass-bg);
+  --glass-surface-elevated: rgba(20, 20, 35, 0.8);
+  --glass-surface-overlay: var(--glass-bg-solid);
+  --glass-border-active: rgba(45, 212, 191, 0.3);
+  --glass-blur-heavy: 24px;
+
+  /* PRD v2 accent aliases */
+  --accent-primary: rgba(45, 212, 191, 1);
+  --accent-primary-glow: rgba(45, 212, 191, 0.3);
+  --accent-secondary: rgba(212, 175, 55, 1);
+  --accent-secondary-glow: rgba(212, 175, 55, 0.3);
+  --accent-danger: rgba(239, 68, 68, 1);
+
   /* Dialogue text - WCAG AA compliant, slightly brighter for readability */
   --text-dialogue: rgba(245, 220, 180, 0.96);
+  --text-narrative: rgba(230, 220, 200, 0.9);
 
   /* Pattern Colors - MUST match lib/patterns.ts canonical source */
   --pattern-analytical: #3B82F6;
@@ -669,7 +696,7 @@ main {
 /* Base glass panel - STABLE: No transitions to prevent color jumping */
 .glass-panel {
   position: relative;
-  background: var(--glass-bg);
+  background: var(--glass-surface);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
@@ -697,7 +724,7 @@ main {
 
 /* Glass panel without blur (for low-end devices) */
 .glass-panel-solid {
-  background: var(--glass-bg-solid);
+  background: var(--glass-surface-overlay);
   border: 1px solid var(--glass-border);
   border-radius: var(--glass-radius);
   box-shadow: var(--glass-shadow);

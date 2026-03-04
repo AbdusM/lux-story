@@ -11,6 +11,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { CheckCircle, XCircle, Info, AlertTriangle, X, Cloud, CloudOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { springs } from '@/lib/animations'
+import { Z_INDEX } from '@/lib/ui-constants'
 
 // Toast types
 export type ToastType = 'success' | 'error' | 'info' | 'warning' | 'sync' | 'offline'
@@ -87,8 +88,11 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       <div
         aria-live="polite"
         aria-label="Notifications"
-        className="fixed bottom-4 right-4 z-[9999] flex flex-col gap-2 pointer-events-none max-w-[min(400px,calc(100vw-32px))]"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+        className="fixed bottom-4 right-4 flex flex-col gap-2 pointer-events-none max-w-[min(400px,calc(100vw-32px))]"
+        style={{
+          zIndex: Z_INDEX.toast,
+          paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        }}
       >
         <AnimatePresence mode="popLayout">
           {toasts.map((toast) => (

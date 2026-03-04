@@ -8,7 +8,37 @@ const mockToggleReaderMode = vi.fn()
 
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    div: React.forwardRef<HTMLDivElement, any>(({ children, ...props }, ref) => {
+      // Strip motion-only props so React doesn't warn in tests.
+      const {
+        initial,
+        animate,
+        exit,
+        variants,
+        transition,
+        layout,
+        layoutId,
+        drag,
+        dragConstraints,
+        dragElastic,
+        dragMomentum,
+        whileHover,
+        whileTap,
+        whileFocus,
+        onDrag,
+        onDragStart,
+        onDragEnd,
+        onTap,
+        onTapStart,
+        onTapCancel,
+        ...rest
+      } = props
+      return (
+        <div ref={ref} {...rest}>
+          {children}
+        </div>
+      )
+    }),
   },
   AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   LazyMotion: ({ children }: { children: React.ReactNode }) => <>{children}</>,
