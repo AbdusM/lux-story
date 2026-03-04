@@ -1,0 +1,43 @@
+Worldbuilding Principles Audit Metrics
+Generated: 2026-03-04T21:24:33Z
+
+# Choice Taxonomy Signal (choiceId lexical scan)
+accept_count=78
+reject_count=3
+deflect_count=11
+
+# Iceberg Tag Adoption
+iceberg_tag_occurrences_in_content=0
+
+# Narrative Simulation Coverage (latest report)
+graphs=28
+expansions=18046
+failures=0
+required_state_mismatches=0
+
+# Reachability + Required-State
+required_state_nodes=150
+unguarded_required_state_nodes=0
+strict_violations=0
+unreachable_nodes=0
+unreferenced_nodes=0
+
+# External Review Scope Exclusions
+detached_nodes=46
+dormant_nodes=10
+non_graph_experiences=20
+non_graph_experience_choices=152
+soft_issues_primary=59
+soft_issues_detached=32
+soft_issues_dormant=36
+
+# Simulation Phase Coverage Signals
+phase2_variants=5
+phase3_variants=5
+phase2_characters=dante,devon,isaiah,jordan,nadia
+phase3_characters=dante,devon,isaiah,jordan,nadia
+simulation_id_map_phase2_entries=0
+simulation_id_map_phase3_entries=0
+
+# Runtime Consumption of World Docs
+runtime_refs_to_docs_02_WORLD=0
