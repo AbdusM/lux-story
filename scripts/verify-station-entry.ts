@@ -3,7 +3,6 @@ import { stationEntryGraph } from '@/content/station-entry-graph';
 import { getGraphForCharacter } from '@/lib/graph-registry';
 import { GameStateUtils } from '@/lib/character-state';
 import { generateUserId } from '@/lib/safe-storage';
-import { DialogueGraphNavigator } from '@/lib/dialogue-graph';
 
 // Mock Browser Environment for "window" checks if any
 const mockGameState = GameStateUtils.createNewGameState(generateUserId());
@@ -15,12 +14,11 @@ console.log("---------------------------------------------------");
 // 1. Registry Check
 console.log("\n[1] Registry Lookup Check:");
 try {
-    // @ts-expect-error - station_entry is added dynamically
     const graph = getGraphForCharacter('station_entry', mockGameState);
-    if (graph && graph.startNodeId === 'sector_0_entry') {
+    if (graph && graph.startNodeId === stationEntryGraph.startNodeId) {
         console.log("✅ Registry correctly maps 'station_entry' to stationEntryGraph.");
     } else {
-        console.error("❌ Registry failed to return correct graph for 'station_entry'.");
+        console.error(`❌ Registry failed to return correct graph for 'station_entry' (expected startNodeId=${stationEntryGraph.startNodeId}).`);
         process.exit(1);
     }
 } catch (e) {
@@ -30,28 +28,38 @@ try {
 
 // 2. Graph Content Check
 console.log("\n[2] Chrono-Spatial Logic Check:");
-const entryNode = stationEntryGraph.nodes.get('sector_0_entry');
-if (entryNode && entryNode.simulation?.type === 'visual_canvas') {
-    console.log("✅ Entry Node contains Visual Canvas simulation (AR Overlay).");
+const entryNode = stationEntryGraph.nodes.get('entry_arrival');
+if (entryNode && (entryNode.choices?.length ?? 0) >= 3) {
+    console.log("✅ Entry node exists with expected initial branching choices.");
 } else {
-    console.error("❌ Entry Node missing Visual Canvas simulation.");
+    console.error("❌ Entry node missing or lacks expected branching choices.");
+    process.exit(1);
 }
 
-const bioNode = stationEntryGraph.nodes.get('sector_0_bio_reveal');
-if (bioNode) {
-    console.log("✅ Bio Reveal Node (Era 1) exists.");
+const samuelNode = stationEntryGraph.nodes.get('entry_samuel_intro');
+if (samuelNode && (samuelNode.choices?.length ?? 0) > 0) {
+    console.log("✅ Samuel anchor node exists and remains interactive.");
 } else {
-    console.error("❌ Bio Reveal Node missing.");
+    console.error("❌ Samuel anchor node missing.");
+    process.exit(1);
 }
 
 // 3. Navigation Check
 console.log("\n[3] Navigation Simulation:");
-// Test transition from Entry -> Mech Reveal (Solving the puzzle)
-const mechNode = stationEntryGraph.nodes.get('sector_0_mech_reveal');
-if (mechNode && mechNode.choices[0]?.nextNodeId === 'sector_0_hub') {
-    console.log("✅ Mech Reveal correctly leads to Hub (Era 2 path).");
+const boothNode = stationEntryGraph.nodes.get('entry_ticket_booth');
+const hubExitNode = stationEntryGraph.nodes.get('entry_hub_exit');
+if (boothNode?.choices?.some((choice) => choice.nextNodeId === 'entry_samuel_intro')) {
+    console.log("✅ Ticket booth path correctly connects to Samuel intro.");
 } else {
-    console.error("❌ Mech Reveal logic flawed.");
+    console.error("❌ Ticket booth path no longer connects to Samuel intro.");
+    process.exit(1);
+}
+
+if (hubExitNode?.choices?.some((choice) => choice.nextNodeId === 'sector_1_hall')) {
+    console.log("✅ Hub exit correctly routes to Sector 1.");
+} else {
+    console.error("❌ Hub exit no longer routes to Sector 1.");
+    process.exit(1);
 }
 
 console.log("\n---------------------------------------------------");

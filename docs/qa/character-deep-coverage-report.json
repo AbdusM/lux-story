@@ -1,16 +1,16 @@
 {
   "summary": {
-    "generatedAt": "2026-02-12T19:47:18.545Z",
+    "generatedAt": "2026-03-04T21:00:34.134Z",
     "characters": 20,
     "rows": 20,
     "totals": {
-      "nodes": 1390,
-      "choices": 2452,
+      "nodes": 1389,
+      "choices": 2448,
       "interruptNodes": 30,
       "simulationNodes": 66,
       "requiredStateNodes": 150,
       "unguardedRequiredStateNodes": 0,
-      "narrativeSimExpansions": 17270,
+      "narrativeSimExpansions": 17570,
       "vulnerabilities": 28,
       "strengths": 29,
       "growthArcs": 21
@@ -103,13 +103,13 @@
       ],
       "hasRevisitGraph": false,
       "graph": {
-        "nodes": 218,
-        "choices": 402,
+        "nodes": 217,
+        "choices": 401,
         "interruptNodes": 1,
         "simulationNodes": 1,
         "requiredStateNodes": 31,
         "unguardedRequiredStateNodes": 0,
-        "narrativeSimExpansions": 1117
+        "narrativeSimExpansions": 1439
       },
       "patternCounts": {
         "analytical": 58,
@@ -161,18 +161,18 @@
       "hasRevisitGraph": true,
       "graph": {
         "nodes": 71,
-        "choices": 165,
+        "choices": 163,
         "interruptNodes": 3,
         "simulationNodes": 4,
         "requiredStateNodes": 14,
         "unguardedRequiredStateNodes": 0,
-        "narrativeSimExpansions": 1310
+        "narrativeSimExpansions": 1290
       },
       "patternCounts": {
         "analytical": 30,
-        "helping": 52,
+        "helping": 51,
         "building": 24,
-        "patience": 34,
+        "patience": 33,
         "exploring": 25
       },
       "patternBalanceWarnings": [],
@@ -364,17 +364,17 @@
       "hasRevisitGraph": false,
       "graph": {
         "nodes": 55,
-        "choices": 101,
+        "choices": 100,
         "interruptNodes": 1,
         "simulationNodes": 3,
         "requiredStateNodes": 4,
         "unguardedRequiredStateNodes": 0,
-        "narrativeSimExpansions": 515
+        "narrativeSimExpansions": 513
       },
       "patternCounts": {
         "analytical": 12,
         "helping": 21,
-        "building": 21,
+        "building": 20,
         "patience": 26,
         "exploring": 21
       },
