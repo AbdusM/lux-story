@@ -1,7 +1,10 @@
+'use client'
+
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { usePullToDismiss, pullToDismissPresets } from "@/hooks/usePullToDismiss"
 import { useReaderMode } from "@/hooks/useReaderMode"
+import { useFocusTrap } from "@/hooks/useFocusTrap"
 import { Users, Zap, Compass, TrendingUp, X, Crown, Cpu, Play, Sparkles, AlertTriangle, Brain, Building2, Type } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useConstellationData } from "@/hooks/useConstellationData"
@@ -33,10 +36,16 @@ import { hasGodModeUrlParam } from "@/lib/godmode-access"
 import { PrismTabs } from "./journal/PrismTabs"
 import { PrismTabId, getPrismRuntimeTabs } from "@/lib/prism-tabs-config"
 import { Z_INDEX } from "@/lib/ui-constants"
+import { springs, tabContentSwap, tabContentSwapReduced } from "@/lib/animations"
 
 interface JournalProps {
   isOpen: boolean
   onClose: () => void
+  /**
+   * `legacy`: Journal owns its own backdrop/z-index and is toggled via `isOpen`.
+   * `host`: Render inside OverlayHost (backdrop + stacking are centralized).
+   */
+  mode?: 'legacy' | 'host'
 }
 
 type TabId = PrismTabId
@@ -56,21 +65,11 @@ const TAB_ICONS: Record<TabId, typeof Users> = {
   god_mode: AlertTriangle,
 }
 
-// Tab content variants - respects prefers-reduced-motion via Framer Motion's global setting
-// but we also pass explicit reduced variants for clarity
-const tabContentVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
-  exit: { opacity: 0, y: -20, transition: { duration: 0.2 } }
-} as const
-
-const tabContentVariantsReduced = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.15 } },
-  exit: { opacity: 0, transition: { duration: 0.1 } }
-} as const
-
-export function Journal({ isOpen, onClose }: JournalProps) {
+export function Journal({ isOpen, onClose, mode = 'legacy' }: JournalProps) {
+  const shouldRender = mode === 'host' ? true : isOpen
+  const { ref: panelRef, onKeyDown: handlePanelKeyDown } = useFocusTrap<HTMLDivElement>({
+    enabled: shouldRender,
+  })
   // "The Prism" Interface
   const [activeTab, setActiveTab] = useState<TabId>('harmonics')
   const [_detailSkillId, setDetailSkillId] = useState<string | null>(null)
@@ -153,7 +152,8 @@ export function Journal({ isOpen, onClose }: JournalProps) {
 
   // Close panel with Escape for keyboard users.
   useEffect(() => {
-    if (!isOpen) return
+    if (!shouldRender) return
+    if (mode !== 'legacy') return
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -163,7 +163,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen, onClose])
+  }, [mode, onClose, shouldRender])
 
   // ... (variants)
 
@@ -188,32 +188,38 @@ export function Journal({ isOpen, onClose }: JournalProps) {
 
   return (
     <AnimatePresence>
-      {isOpen && (
+      {shouldRender && (
         <>
           {/* Backdrop */}
-          <motion.div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            style={{ zIndex: Z_INDEX.modalBackdrop }}
-            onClick={onClose}
-            data-testid="journal-backdrop"
-            aria-hidden="true"
-          />
+          {mode === 'legacy' && (
+            <motion.div
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              style={{ zIndex: Z_INDEX.modalBackdrop }}
+              onClick={onClose}
+              data-testid="journal-backdrop"
+              aria-hidden="true"
+            />
+          )}
           {/* Panel - with pull-to-dismiss */}
           <motion.div
-            className="!fixed left-2 top-2 bottom-2 right-2 sm:right-auto sm:w-full max-w-md glass-panel-solid !rounded-2xl border border-white/10 shadow-2xl flex flex-col overflow-hidden"
+            ref={panelRef}
+            tabIndex={-1}
+            onKeyDown={handlePanelKeyDown}
+            className="!fixed left-2 top-2 bottom-2 right-2 sm:right-auto sm:w-full max-w-md glass-panel-solid !rounded-2xl border border-white/10 shadow-2xl flex flex-col overflow-hidden pointer-events-auto"
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            transition={springs.smooth}
             {...dragProps}
             onDragEnd={onDragEnd}
-            style={{ zIndex: Z_INDEX.modal }}
+            style={mode === 'legacy' ? { zIndex: Z_INDEX.modal } : undefined}
             role="dialog"
             aria-modal="true"
             aria-label="Prism"
+            data-overlay-surface
             data-testid="journal-panel"
           >
             {/* Drag handle indicator - hints swipe-to-dismiss */}
@@ -325,7 +331,7 @@ export function Journal({ isOpen, onClose }: JournalProps) {
                   // --- STANDARD TABS ---
                   <motion.div
                     key={activeTab}
-                    variants={prefersReducedMotion ? tabContentVariantsReduced : tabContentVariants}
+                    variants={prefersReducedMotion ? tabContentSwapReduced : tabContentSwap}
                     initial="hidden"
                     animate="visible"
                     exit="exit"

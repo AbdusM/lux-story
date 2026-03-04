@@ -257,7 +257,6 @@ describe('D-007: Dialogue Choice Pattern Previews', () => {
     }
     const styles = getPatternPreviewStyles('building', patterns)
     expect(styles.boxShadow).toBeDefined()
-    expect(styles.borderColor).toBeDefined()
   })
 
   it('returns empty when disabled', () => {

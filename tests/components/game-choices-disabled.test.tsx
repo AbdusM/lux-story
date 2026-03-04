@@ -82,10 +82,17 @@ describe('GameChoices (Disabled Choices)', () => {
     await user.click(screen.getByText('Disabled option'))
     expect(onChoice).not.toHaveBeenCalled()
 
-    fireEvent.keyDown(window, { key: '1' })
+    const keyboardTarget = screen.getByTestId('choice-button')
+    keyboardTarget.focus()
+
+    // Keyboard navigation should not allow selecting a disabled choice.
+    fireEvent.keyDown(keyboardTarget, { key: 'ArrowDown' })
+    fireEvent.keyDown(keyboardTarget, { key: 'Enter' })
     expect(onChoice).not.toHaveBeenCalled()
 
-    fireEvent.keyDown(window, { key: '2' })
+    // Move focus to the enabled option and select it.
+    fireEvent.keyDown(keyboardTarget, { key: 'ArrowDown' })
+    fireEvent.keyDown(keyboardTarget, { key: 'Enter' })
     expect(onChoice).toHaveBeenCalledTimes(1)
 
     // Telemetry should reflect that the choice was disabled.

@@ -3,6 +3,7 @@
 import * as React from "react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { cn } from "@/lib/utils"
+import { Z_INDEX } from "@/lib/ui-constants"
 
 const DropdownMenu = DropdownMenuPrimitive.Root
 
@@ -13,13 +14,13 @@ const DropdownMenuPortal = DropdownMenuPrimitive.Portal
 const DropdownMenuContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
->(({ className, sideOffset = 4, ...props }, ref) => (
+>(({ className, sideOffset = 4, style, ...props }, ref) => (
   <DropdownMenuPrimitive.Portal>
     <DropdownMenuPrimitive.Content
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        "z-50 min-w-[12rem] overflow-hidden rounded-lg border border-white/10",
+        "min-w-[12rem] overflow-hidden rounded-lg border border-white/10",
         "bg-slate-900/95 backdrop-blur-xl p-1.5 shadow-xl shadow-black/20",
         "data-[state=open]:animate-in data-[state=closed]:animate-out",
         "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
@@ -28,6 +29,7 @@ const DropdownMenuContent = React.forwardRef<
         "data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         className
       )}
+      style={{ zIndex: Z_INDEX.popover, ...style }}
       {...props}
     />
   </DropdownMenuPrimitive.Portal>

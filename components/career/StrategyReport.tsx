@@ -1,3 +1,5 @@
+'use client'
+
 import { generateCareerProfile } from '@/lib/career-translation'
 import { GameState } from '@/lib/character-state'
 import { Button } from '@/components/ui/button'
@@ -10,6 +12,7 @@ import { CareerForecast } from '../dashboard/CareerForecast'
 import { SkillGapVisualizer } from '../dashboard/SkillGapVisualizer'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useGameStore } from '@/lib/game-store'
+import { useFocusTrap } from '@/hooks/useFocusTrap'
 
 /**
  * STRATEGY REPORT
@@ -25,6 +28,7 @@ interface StrategyReportProps {
 }
 
 export function StrategyReport({ gameState, onClose }: StrategyReportProps) {
+    const { ref: reportRef, onKeyDown: handleReportKeyDown } = useFocusTrap<HTMLDivElement>()
     const profile = generateCareerProfile(gameState)
     const skills = useGameStore((state) => state.skills)
 
@@ -56,7 +60,16 @@ export function StrategyReport({ gameState, onClose }: StrategyReportProps) {
     }
 
     return (
-        <div className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-sm overflow-y-auto print:overflow-visible print:bg-white animate-in fade-in duration-200">
+        <div
+            ref={reportRef}
+            tabIndex={-1}
+            onKeyDown={handleReportKeyDown}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Career strategy profile"
+            data-overlay-surface
+            className="absolute inset-0 bg-slate-950/95 backdrop-blur-sm overflow-y-auto print:overflow-visible print:bg-white animate-in fade-in duration-200 pointer-events-auto focus:outline-none"
+        >
             {/* Screen-only Controls */}
             <div className="sticky top-0 z-10 flex justify-between items-center p-4 bg-slate-900 border-b border-slate-800 shadow-sm print:hidden">
                 <div className="flex items-center gap-3">

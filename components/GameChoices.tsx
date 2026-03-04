@@ -16,6 +16,7 @@ import { CHOICE_CONTAINER_HEIGHT } from '@/lib/ui-constants'
 import { deriveChoiceGateReason, type ChoiceGateReason } from '@/lib/choice-gate-reasons'
 
 import { useGameStore } from '@/lib/game-store'
+import { useOverlayStore } from '@/lib/overlay-store'
 import { truncateTextForLoad, CognitiveLoadLevel } from '@/lib/cognitive-load'
 import { queueInteractionEventSync, generateActionId } from '@/lib/sync-queue'
 import { recordChoiceUiSelection } from '@/lib/choice-dispatch-telemetry'
@@ -208,22 +209,33 @@ function useKeyboardNavigation(
   }, [choices])
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.defaultPrevented) return
+    if (e.isComposing || e.keyCode === 229) return
+
     if (isProcessing || choices.length === 0) return
 
-    // Number keys 1-9 for direct selection
-    if (e.key >= '1' && e.key <= '9') {
-      const index = parseInt(e.key) - 1
-      if (index < choices.length) {
-        e.preventDefault()
-        const choice = choices[index]
-        if (choice && canSelectChoice(choice)) onChoice(choice)
-      }
-      return
+    // Ignore keystrokes while typing or interacting with form controls.
+    const rawTarget = e.target
+    const container = containerRef.current
+    // In some environments (notably JSDOM tests) key events may be dispatched on `window`,
+    // which is not a DOM Node and will throw if passed to `Node.contains()`.
+    if (container) {
+      if (!(rawTarget instanceof Node)) return
+      if (!container.contains(rawTarget)) return
     }
+
+    const target = rawTarget instanceof HTMLElement ? rawTarget : null
+
+    // Never allow choice navigation/commit behind unrelated overlays.
+    // Exception: the choices bottom sheet *is* the overlay surface the user is interacting with.
+    const topOverlay = useOverlayStore.getState().getTopOverlayId()
+    if (topOverlay && topOverlay !== 'bottomSheet') return
+
+    const tag = target?.tagName?.toLowerCase()
+    if (tag === 'input' || tag === 'textarea' || tag === 'select' || target?.isContentEditable) return
 
     switch (e.key) {
       case 'ArrowDown':
-      case 'j': // vim-style
         e.preventDefault()
         setFocusedIndex(prev => {
           const next = prev < choices.length - 1 ? prev + 1 : 0
@@ -231,7 +243,6 @@ function useKeyboardNavigation(
         })
         break
       case 'ArrowUp':
-      case 'k': // vim-style
         e.preventDefault()
         setFocusedIndex(prev => {
           const next = prev > 0 ? prev - 1 : choices.length - 1
@@ -261,11 +272,10 @@ function useKeyboardNavigation(
   // Scroll focused choice into view
   useEffect(() => {
     if (focusedIndex >= 0 && containerRef.current) {
-      const buttons = containerRef.current.querySelectorAll('[data-choice-index]')
-      const focusedButton = buttons[focusedIndex] as HTMLElement | undefined
-      if (focusedButton) {
-        focusedButton.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-      }
+      const focusedChoice = containerRef.current.querySelector(
+        `[data-choice-wrapper-index="${focusedIndex}"]`
+      ) as HTMLElement | null
+      focusedChoice?.scrollIntoView?.({ behavior: 'smooth', block: 'nearest' })
     }
   }, [focusedIndex])
 
@@ -460,7 +470,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
           variants={combinedVariants}
           custom={index}
           className="w-full"
-          data-choice-index={index}
+          data-choice-wrapper-index={index}
           style={{ scrollSnapAlign: 'start' }}
         >
 	          <div
@@ -533,7 +543,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
           variants={combinedVariants}
           custom={index}
           className="w-full"
-          data-choice-index={index}
+          data-choice-wrapper-index={index}
           style={{ scrollSnapAlign: 'start' }}
         >
 	          <div
@@ -575,7 +585,7 @@ const ChoiceButton = memo(({ choice, index, onChoice, isProcessing, isFocused, i
         animate={_animateState} // ISP FIX: Prop moved to motion.div
         custom={index}
         className="w-full"
-        data-choice-index={index}
+        data-choice-wrapper-index={index}
         // REMOVED: scrollSnapAlign - fights with touch gestures, causes sticky scroll
       >
         <Button

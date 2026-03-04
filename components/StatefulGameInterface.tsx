@@ -105,12 +105,16 @@ import { synthEngine } from '@/lib/audio/synth-engine'
 import { HeroBadge } from '@/components/HeroBadge'
 import { StrategyReport } from '@/components/career/StrategyReport'
 import { UnifiedMenu } from '@/components/UnifiedMenu'
+import { SettingsMobileSheet } from '@/components/settings/SettingsMobileSheet'
+import { LoginModalContents } from '@/components/auth/LoginModalContents'
 import { GameStateManager } from '@/lib/game-state-manager'
 import { useBackgroundSync } from '@/hooks/useBackgroundSync'
 import { useSettingsSync } from '@/hooks/useSettingsSync'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
+import { OverlayHost } from '@/components/overlays/OverlayHost'
 import { StationState, useStationStore } from '@/lib/station-state'
+import { useOverlayStore } from '@/lib/overlay-store'
 import { filterChoicesByLoad, CognitiveLoadLevel } from '@/lib/cognitive-load' // Fixed: Top-level import
 import { generateUserId } from '@/lib/safe-storage'
 import { queueInteractionEventSync, generateActionId } from '@/lib/sync-queue'
@@ -149,12 +153,14 @@ import { BottomSheet } from '@/components/ui/BottomSheet'
 import { BookOpen, Stars, Compass, ChevronUp } from 'lucide-react'
 import { Journal } from '@/components/Journal'
 import { SessionSummary } from '@/components/SessionSummary'
-import { ConstellationPanel } from '@/components/constellation'
+import { ConstellationPanel, DetailModal } from '@/components/constellation'
 import { SectionErrorBoundary } from '@/components/LayeredErrorBoundaries'
 import { StationStatusBadge } from '@/components/StationStatusBadge'
 import { TextProcessor } from '@/lib/text-processor'
 // InGameSettings removed - consolidated into UnifiedMenu
+import { IdleWarningController } from '@/components/idle/IdleWarningController'
 import { IdleWarningModal } from '@/components/IdleWarningModal'
+import { ErrorOverlay } from '@/components/overlays/ErrorOverlay'
 import { JourneySummary } from '@/components/JourneySummary'
 import { useToast } from '@/components/ui/toast'
 import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } from '@/lib/journey-narrative-generator'
@@ -249,17 +255,10 @@ interface GameInterfaceState {
   skillToast: { skill: string; message: string } | null
   consequenceFeedback: { message: string } | null
   choiceOutcomeCard: ChoiceOutcomeCard | null
-  error: { title: string; message: string; severity: 'error' | 'warning' | 'info' } | null
   previousSpeaker: string | null
   recentSkills: string[]
-  showExperienceSummary: boolean
-  experienceSummaryData: ExperienceSummaryData | null
   // showConfigWarning removed-Samuel mentions it once via consequenceEcho
-  showJournal: boolean
-  showConstellation: boolean
   pendingFloatingModule: null // Floating modules disabled
-  showJourneySummary: boolean
-  showReport: boolean
   journeyNarrative: JourneyNarrative | null
   achievementNotification: MetaAchievement | null
   ambientEvent: AmbientEvent | null  // Station breathing-idle atmosphere
@@ -268,10 +267,6 @@ interface GameInterfaceState {
   // patternToast removed-Journal glow effect replaces it
   sessionBoundary: SessionAnnouncement | null  // Session boundary announcement
   previousTotalNodes: number  // Track total nodes for boundary calculation
-  showIdentityCeremony: boolean  // Identity internalization ceremony
-  ceremonyPattern: PatternType | null  // Pattern being internalized
-  showPatternEnding: boolean  // Pattern-based journey ending screen
-  endingPattern: PatternType | null  // Dominant pattern for ending
   hasNewTrust: boolean  // Track trust changes for Constellation attention indicator
   hasNewMeeting: boolean  // Track first meeting with non-Samuel character
   isMuted: boolean
@@ -290,7 +285,6 @@ interface GameInterfaceState {
   activeExperience: import("@/lib/experience-engine").ActiveExperienceState | null
 }
 
-import type { ExperienceSummaryData } from '@/components/ExperienceSummary'
 
 // D-009: Filter interrupt visibility based on player's developed patterns
 // Only see interrupts aligned with patterns at EMERGING threshold (2+)
@@ -376,9 +370,20 @@ export default function StatefulGameInterface() {
   const { pushNow: pushSettingsToCloud } = useSettingsSync()
 
   // Keyboard shortcuts
-  const { registerHandler, shortcuts, updateShortcut, resetShortcuts } = useKeyboardShortcuts()
-  const [showShortcutsHelp, setShowShortcutsHelp] = useState(false)
-  const [isChoicesBottomSheetOpen, setIsChoicesBottomSheetOpen] = useState(false)
+  const isChoicesBottomSheetOpen = useOverlayStore((s) => s.isOverlayOpen('bottomSheet'))
+  const isJournalOpen = useOverlayStore((s) => s.isOverlayOpen('journal'))
+  const isConstellationOpen = useOverlayStore((s) => s.isOverlayOpen('constellation'))
+  const isSettingsOpen = useOverlayStore((s) => s.isOverlayOpen('settings'))
+  const pushOverlay = useOverlayStore((s) => s.pushOverlay)
+  const closeOverlay = useOverlayStore((s) => s.closeOverlay)
+  const isJourneySummaryOpen = useOverlayStore((s) => s.isOverlayOpen('journeySummary'))
+  const overlayBlocksGameplayInput = useOverlayStore((s) => s.getHasBlockingGameplayInput())
+  const overlayBlocksGlobalShortcuts = useOverlayStore((s) => s.getHasBlockingGlobalShortcuts())
+  const { registerHandler, shortcuts, updateShortcut, resetShortcuts } = useKeyboardShortcuts({
+    // Avoid gameplay-altering shortcuts while overlays are up (Escape still allowed).
+    getIsBlocked: () => overlayBlocksGlobalShortcuts || state.isProcessing,
+    getAllowedActionsWhenBlocked: () => useOverlayStore.getState().getAllowedShortcutsWhenBlocked(),
+  })
 
   // Toast notifications for keyboard hint
   const toast = useToast()
@@ -411,26 +416,15 @@ export default function StatefulGameInterface() {
     skillToast: null,
     consequenceFeedback: null,
     choiceOutcomeCard: null,
-    error: null,
-    recentSkills: [],
-    showExperienceSummary: false,
-    experienceSummaryData: null,
-    showJournal: false,
-    showConstellation: false,
-    pendingFloatingModule: null,
-    showJourneySummary: false,
-    showReport: false,
-    journeyNarrative: null,
+	    recentSkills: [],
+	    pendingFloatingModule: null,
+	    journeyNarrative: null,
     achievementNotification: null,
     ambientEvent: null,
     patternSensation: null,
     consequenceEcho: null,
     sessionBoundary: null,
     previousTotalNodes: 0,
-    showIdentityCeremony: false,
-    ceremonyPattern: null,
-    showPatternEnding: false,
-    endingPattern: null,
     hasNewTrust: false,
     hasNewMeeting: false,
     isMuted: typeof window !== 'undefined' ? localStorage.getItem('lux_audio_muted') === 'true' : false,
@@ -454,6 +448,21 @@ export default function StatefulGameInterface() {
     }
     return 50
   })
+
+  const handleToggleMute = useCallback(() => {
+    const newMuted = !state.isMuted
+    setState(prev => ({ ...prev, isMuted: newMuted }))
+    localStorage.setItem('lux_audio_muted', String(newMuted))
+    synthEngine.setMute(newMuted)
+    setAudioEnabled(!newMuted)
+    pushSettingsToCloud()
+  }, [pushSettingsToCloud, state.isMuted, setAudioEnabled])
+
+  const handleVolumeChange = useCallback((newVolume: number) => {
+    setAudioVolume(newVolume)
+    localStorage.setItem('lux_audio_volume', String(newVolume))
+    pushSettingsToCloud()
+  }, [pushSettingsToCloud])
 
   // 5. GOD MODE OVERRIDE-Access from zustand store (conditional render at end of component)
   const debugSimulation = useGameStore(s => s.debugSimulation)
@@ -546,56 +555,85 @@ export default function StatefulGameInterface() {
   useEffect(() => {
     // Navigation shortcuts
     registerHandler('toggleJournal', () => {
-      setState(prev => ({ ...prev, showJournal: !prev.showJournal }))
+      const overlay = useOverlayStore.getState()
+      if (overlay.isOverlayOpen('journal')) overlay.closeOverlay('journal')
+      else overlay.pushOverlay('journal')
     })
     registerHandler('toggleConstellation', () => {
-      setState(prev => ({ ...prev, showConstellation: !prev.showConstellation }))
+      const overlay = useOverlayStore.getState()
+      if (overlay.isOverlayOpen('constellation')) {
+        overlay.closeOverlay('constellation')
+        return
+      }
+
+      setState(prev => ({ ...prev, hasNewTrust: false, hasNewMeeting: false }))
+      overlay.pushOverlay('constellation')
     })
     registerHandler('toggleReport', () => {
-      setState(prev => ({ ...prev, showReport: !prev.showReport }))
+      const overlay = useOverlayStore.getState()
+      if (overlay.isOverlayOpen('report')) overlay.closeOverlay('report')
+      else overlay.pushOverlay('report')
     })
 
     // Action shortcuts
     registerHandler('toggleMute', () => {
-      const newMuted = !state.isMuted
-      setState(prev => ({ ...prev, isMuted: newMuted }))
-      localStorage.setItem('lux_audio_muted', String(newMuted))
-      synthEngine.setMute(newMuted)
-      setAudioEnabled(!newMuted)
-      pushSettingsToCloud()
+      handleToggleMute()
     })
     registerHandler('openSettings', () => {
-      window.location.href = '/profile'
+      const overlay = useOverlayStore.getState()
+      if (overlay.isOverlayOpen('settings')) overlay.closeOverlay('settings')
+      else overlay.pushOverlay('settings')
     })
     registerHandler('openHelp', () => {
-      setShowShortcutsHelp(true)
+      useOverlayStore.getState().pushOverlay('shortcutsHelp')
     })
 
     // Choice selection shortcuts
     registerHandler('selectChoice1', () => {
-      const button = document.querySelector('[data-choice-index="0"]') as HTMLButtonElement
+      const button = document.querySelector('button[data-choice-index="0"]') as HTMLButtonElement
       button?.click()
     })
     registerHandler('selectChoice2', () => {
-      const button = document.querySelector('[data-choice-index="1"]') as HTMLButtonElement
+      const button = document.querySelector('button[data-choice-index="1"]') as HTMLButtonElement
       button?.click()
     })
     registerHandler('selectChoice3', () => {
-      const button = document.querySelector('[data-choice-index="2"]') as HTMLButtonElement
+      const button = document.querySelector('button[data-choice-index="2"]') as HTMLButtonElement
       button?.click()
     })
     registerHandler('selectChoice4', () => {
-      const button = document.querySelector('[data-choice-index="3"]') as HTMLButtonElement
+      const button = document.querySelector('button[data-choice-index="3"]') as HTMLButtonElement
       button?.click()
     })
+    registerHandler('selectChoice5', () => {
+      const button = document.querySelector('button[data-choice-index="4"]') as HTMLButtonElement
+      button?.click()
+    })
+    registerHandler('selectChoice6', () => {
+      const button = document.querySelector('button[data-choice-index="5"]') as HTMLButtonElement
+      button?.click()
+    })
+    registerHandler('selectChoice7', () => {
+      const button = document.querySelector('button[data-choice-index="6"]') as HTMLButtonElement
+      button?.click()
+    })
+    registerHandler('selectChoice8', () => {
+      const button = document.querySelector('button[data-choice-index="7"]') as HTMLButtonElement
+      button?.click()
+    })
+    registerHandler('selectChoice9', () => {
+      const button = document.querySelector('button[data-choice-index="8"]') as HTMLButtonElement
+      button?.click()
+    })
+
     // General shortcuts
     registerHandler('escape', () => {
-      if (state.showJournal) setState(prev => ({ ...prev, showJournal: false }))
-      else if (state.showConstellation) setState(prev => ({ ...prev, showConstellation: false }))
-      else if (state.showReport) setState(prev => ({ ...prev, showReport: false }))
-      else if (showShortcutsHelp) setShowShortcutsHelp(false)
+      const overlay = useOverlayStore.getState()
+      if (overlay.overlayStack.length > 0) {
+        overlay.popOverlay({ reason: 'escape' })
+      }
     })
-  }, [registerHandler, state.isMuted, state.showJournal, state.showConstellation, state.showReport, showShortcutsHelp, pushSettingsToCloud, setAudioEnabled])
+  }, [registerHandler, handleToggleMute])
 
   // Keyboard shortcut hint - show after 30 seconds of gameplay (only once)
   useEffect(() => {
@@ -615,6 +653,30 @@ export default function StatefulGameInterface() {
 
     return () => clearTimeout(timer)
   }, [state.hasStarted, toast])
+
+  // Contextual surfacing: nudge Journal once when the player has fresh orb insights.
+  useEffect(() => {
+    if (!state.hasStarted) return
+    if (!hasNewOrbs) return
+
+    const key = 'lux_journal_discovery_toast_seen'
+    if (localStorage.getItem(key) === 'true') return
+
+    toast.info('Journal updated', 'Open Journal to review your latest resonance signals.')
+    localStorage.setItem(key, 'true')
+  }, [hasNewOrbs, state.hasStarted, toast])
+
+  // Contextual surfacing: nudge Constellation once when trust/meeting changes land.
+  useEffect(() => {
+    if (!state.hasStarted) return
+    if (!state.hasNewTrust && !state.hasNewMeeting) return
+
+    const key = 'lux_constellation_discovery_toast_seen'
+    if (localStorage.getItem(key) === 'true') return
+
+    toast.info('Journey updated', 'Open Skill Constellation to inspect new relationship and skill movement.')
+    localStorage.setItem(key, 'true')
+  }, [state.hasNewMeeting, state.hasNewTrust, state.hasStarted, toast])
 
   // God Mode Refresh: Reload dialogue when refreshCounter changes (God Mode navigation)
   useEffect(() => {
@@ -933,10 +995,10 @@ export default function StatefulGameInterface() {
         ? IDLE_CONFIG.FIRST_IDLE_MS
         : IDLE_CONFIG.SUBSEQUENT_IDLE_MS
 
-      idleTimerRef.current = setTimeout(() => {
-        // Don't show if max events reached or modals open
-        if (idleCountRef.current >= IDLE_CONFIG.MAX_IDLE_EVENTS) return
-        if (state.showJournal || state.showConstellation || state.showJourneySummary) return
+	      idleTimerRef.current = setTimeout(() => {
+	        // Don't show if max events reached or modals open
+	        if (idleCountRef.current >= IDLE_CONFIG.MAX_IDLE_EVENTS) return
+	        if (useOverlayStore.getState().overlayStack.length > 0) return
 
         const dominantPattern = getDominantPattern()
         const event = selectAmbientEvent(state.currentCharacterId, dominantPattern)
@@ -954,7 +1016,7 @@ export default function StatefulGameInterface() {
     }
 
     scheduleAmbientEvent()
-  }, [state.hasStarted, state.availableChoices.length, state.currentCharacterId, state.showJournal, state.showConstellation, state.showJourneySummary, getDominantPattern])
+	  }, [state.hasStarted, state.availableChoices.length, state.currentCharacterId, getDominantPattern])
 
   // Reset timer when choices change (player made a choice)
   useEffect(() => {
@@ -1322,15 +1384,9 @@ export default function StatefulGameInterface() {
         skillToast: null,
         consequenceFeedback: checkInFeedback,
         choiceOutcomeCard: null,
-        error: null,
         previousSpeaker: null,
-        recentSkills: [],
-        showExperienceSummary: false,
-        experienceSummaryData: null,
-        showJournal: false,
-        showConstellation: false,
-        pendingFloatingModule: null,
-        showJourneySummary: false,
+	        recentSkills: [],
+	        pendingFloatingModule: null,
         journeyNarrative: null,
         achievementNotification: null,
         ambientEvent: null,
@@ -1338,14 +1394,9 @@ export default function StatefulGameInterface() {
         consequenceEcho: returnEcho,
         sessionBoundary: null,
         previousTotalNodes: getTotalNodesVisited(gameState),
-        showIdentityCeremony: false,
-        ceremonyPattern: null,
-        showPatternEnding: false,
-        endingPattern: null,
         hasNewTrust: false,
         hasNewMeeting: false,
         isMuted: false,
-        showReport: false,
         activeInterrupt: shouldShowInterrupt(content.interrupt, gameState.patterns), // D-009: Filter by pattern
         patternVoice: null,
         voiceConflict: null,
@@ -1403,13 +1454,13 @@ export default function StatefulGameInterface() {
         stack: error instanceof Error ? error.stack : undefined,
         operation: 'game-interface.init-failed'
       })
+      useOverlayStore.getState().pushOverlay('error', {
+        title: 'Initialization Error',
+        message: error instanceof Error ? error.message : 'Failed to initialize game. Please refresh the page.',
+        severity: 'error',
+      })
       setState(prev => ({
         ...prev,
-        error: {
-          title: 'Initialization Error',
-          message: error instanceof Error ? error.message : 'Failed to initialize game. Please refresh the page.',
-          severity: 'error' as const
-        },
         isLoading: false,
         hasStarted: true  // FIX: Allow UI to render error state instead of infinite spinner
       }))
@@ -1420,20 +1471,19 @@ export default function StatefulGameInterface() {
   const emergencyReset = useCallback(() => {
     logger.info('[StatefulGameInterface] Emergency Reset to Station', { operation: 'emergencyReset' })
 
+    // Close any migrated overlays deterministically before resetting state.
+    useOverlayStore.getState().closeAll()
+
     // Reset to safe start
     setState(prev => ({
       ...prev,
       currentNode: null,
       currentGraph: safeStart.graph,
       currentCharacterId: safeStart.characterId,
-      currentNodeId: safeStart.graph.startNodeId,
-      availableChoices: [],
-      currentContent: '',
-      showReport: false,
-      showJournal: false,
-      showConstellation: false,
-      showJourneySummary: false,
-      error: null,
+	      currentNodeId: safeStart.graph.startNodeId,
+	      availableChoices: [],
+	      currentContent: '',
+	      journeyNarrative: null,
       ambientEvent: null,
       consequenceFeedback: null,
       choiceOutcomeCard: null,
@@ -1588,11 +1638,9 @@ export default function StatefulGameInterface() {
           })
 
           // Trigger the Identity Ceremony (Visual & Audio)
-          setState(prev => ({
-            ...prev,
-            showIdentityCeremony: true,
-            ceremonyPattern: result.events.earnOrb || null
-          }))
+          if (isValidPattern(result.events.earnOrb)) {
+            useOverlayStore.getState().pushOverlay('identityCeremony', { pattern: result.events.earnOrb })
+          }
 
           if (result.events.checkIdentityThreshold) {
             playIdentitySound()
@@ -1940,13 +1988,13 @@ export default function StatefulGameInterface() {
       if (!searchResult) {
         logger.error('[StatefulGameInterface] Could not find character graph for node:', { nodeId: choice.choice.nextNodeId })
         isProcessingChoiceRef.current = false  // Release lock on error
+        useOverlayStore.getState().pushOverlay('error', {
+          title: 'Navigation Error',
+          message: `Could not find node "${choice.choice.nextNodeId}". Please refresh the page to restart.`,
+          severity: 'error',
+        })
         setState(prev => ({
           ...prev,
-          error: {
-            title: 'Navigation Error',
-            message: `Could not find node "${choice.choice.nextNodeId}". Please refresh the page to restart.`,
-            severity: 'error' as const
-          },
           isLoading: false,
           isProcessing: false
         }))
@@ -1962,13 +2010,13 @@ export default function StatefulGameInterface() {
           graphName: searchResult.graph.metadata?.title || 'unknown'
         })
         isProcessingChoiceRef.current = false  // Release lock on error
+        useOverlayStore.getState().pushOverlay('error', {
+          title: 'Navigation Error',
+          message: `Node "${choice.choice.nextNodeId}" not found in ${searchResult.graph.metadata?.title || 'graph'}. Please refresh.`,
+          severity: 'error',
+        })
         setState(prev => ({
           ...prev,
-          error: {
-            title: 'Navigation Error',
-            message: `Node "${choice.choice.nextNodeId}" not found in ${searchResult.graph.metadata?.title || 'graph'}. Please refresh.`,
-            severity: 'error' as const
-          },
           isProcessing: false
         }))
         emitChoiceSelectedResult('navigation_error', { resultNodeId: choice.choice.nextNodeId, errorCode: 'missing_next_node' })
@@ -2888,7 +2936,6 @@ export default function StatefulGameInterface() {
 
 
       const completedArc = detectArcCompletion(state.gameState, newGameState)
-      const experienceSummaryUpdate = { showExperienceSummary: false, experienceSummaryData: null as ExperienceSummaryData | null }
 
       // Award bonus orbs for arc completion-SILENT (no notification)
       // Gives bonus based on dominant pattern during this arc
@@ -3030,16 +3077,10 @@ export default function StatefulGameInterface() {
         skillToast: null, // Disabled-skills tracked silently
         consequenceFeedback,
         choiceOutcomeCard: outcomeCard,
-        error: null,
         previousSpeaker: prev.currentNode?.speaker || null,
         recentSkills: skillsToKeep,
         activeExperience: prev.activeExperience, // Added to fix build error
-        ...experienceSummaryUpdate,
-        // Preserve live overlay toggles in case the user changes them while async choice work is running.
-        showJournal: prev.showJournal,
-        showConstellation: prev.showConstellation,
         pendingFloatingModule: null, // Floating modules disabled
-        showJourneySummary: prev.showJourneySummary,
         activeInterrupt: shouldShowInterrupt(content.interrupt, newGameState.patterns), // D-009: Filter by pattern
         journeyNarrative: prev.journeyNarrative,
         achievementNotification,
@@ -3048,14 +3089,9 @@ export default function StatefulGameInterface() {
         consequenceEcho,     // Dialogue-based trust feedback
         sessionBoundary: sessionBoundaryAnnouncement,  // Session boundary announcement if triggered
         previousTotalNodes: getTotalNodesVisited(newGameState),  // Track for next boundary check
-        showIdentityCeremony: identityCeremonyPattern !== null,  // Identity ceremony if triggered
-        ceremonyPattern: identityCeremonyPattern,  // Pattern being internalized
-        showPatternEnding: isJourneyCompleteNode,  // Pattern-based journey ending
-        endingPattern: dominantPattern,  // Dominant pattern for ending
         hasNewTrust: trustDelta !== 0 ? true : prev.hasNewTrust,  // Track trust changes for Constellation attention
         hasNewMeeting: isFirstMeeting ? true : prev.hasNewMeeting,  // Track first meeting for Constellation nudge
         isMuted: prev.isMuted,
-        showReport: prev.showReport,
         isProcessing: false, // ISP FIX: Unlock UI
         patternVoice,  // Disco Elysium-style inner monologue
         voiceConflict,  // D-096: Voice conflict when patterns disagree
@@ -3066,6 +3102,14 @@ export default function StatefulGameInterface() {
         isReturningPlayer: prev.isReturningPlayer,
         returnHookDismissed: prev.returnHookDismissed,
       }))
+
+      if (identityCeremonyPattern) {
+        useOverlayStore.getState().pushOverlay('identityCeremony', { pattern: identityCeremonyPattern })
+      }
+      if (isJourneyCompleteNode && dominantPattern) {
+        useOverlayStore.getState().pushOverlay('journeyComplete', { pattern: dominantPattern })
+      }
+
       GameStateManager.saveGameState(newGameState)
 
       // ═══════════════════════════════════════════════════════════════════════════
@@ -3133,7 +3177,7 @@ export default function StatefulGameInterface() {
       // We wait for the useEffect on nodeId change to release it.
       // This ensures we don't accept clicks while the old node is still rendered.
     }
-  }, [state.gameState, state.currentNode, state.recentSkills, state.showJournal, state.showConstellation, state.journeyNarrative, state.showJourneySummary, state.currentCharacterId, state.currentContent, state.previousTotalNodes, earnOrb, earnBonusOrbs, getUnacknowledgedMilestone, acknowledgeMilestone])
+	  }, [state.gameState, state.currentNode, state.recentSkills, state.journeyNarrative, state.currentCharacterId, state.currentContent, state.previousTotalNodes, earnOrb, earnBonusOrbs, getUnacknowledgedMilestone, acknowledgeMilestone])
 
   // ISP: Active Silence Detection
   // Check if the player is being silent and if the current node has a specific reaction to it
@@ -3483,13 +3527,13 @@ export default function StatefulGameInterface() {
           return
         }
         // If fallback also fails, show error
+        useOverlayStore.getState().pushOverlay('error', {
+          title: 'Navigation Error',
+          message: `Could not find hub node "${targetNodeId}" or fallback introduction. Please refresh the page.`,
+          severity: 'error',
+        })
         setState(prev => ({
           ...prev,
-          error: {
-            title: 'Navigation Error',
-            message: `Could not find hub node "${targetNodeId}" or fallback introduction. Please refresh the page.`,
-            severity: 'error' as const
-          },
           isLoading: false,
           isProcessing: false
         }))
@@ -3499,13 +3543,13 @@ export default function StatefulGameInterface() {
       const targetNode = searchResult.graph.nodes.get(targetNodeId)
       if (!targetNode) {
         logger.error('Target node not found:', { targetNodeId })
+        useOverlayStore.getState().pushOverlay('error', {
+          title: 'Navigation Error',
+          message: `Target node "${targetNodeId}" not found in graph. Please refresh the page.`,
+          severity: 'error',
+        })
         setState(prev => ({
           ...prev,
-          error: {
-            title: 'Navigation Error',
-            message: `Target node "${targetNodeId}" not found in graph. Please refresh the page.`,
-            severity: 'error' as const
-          },
           isLoading: false,
           isProcessing: false
         }))
@@ -3628,13 +3672,13 @@ export default function StatefulGameInterface() {
       }
     } catch (error) {
       logger.error('[StatefulGameInterface] Error in handleReturnToStation:', { error })
+      useOverlayStore.getState().pushOverlay('error', {
+        title: 'Navigation Error',
+        message: error instanceof Error ? error.message : 'Failed to return to station. Please refresh the page.',
+        severity: 'error',
+      })
       setState(prev => ({
         ...prev,
-        error: {
-          title: 'Navigation Error',
-          message: error instanceof Error ? error.message : 'Failed to return to station. Please refresh the page.',
-          severity: 'error' as const
-        },
         isLoading: false
       }))
     }
@@ -3694,24 +3738,218 @@ export default function StatefulGameInterface() {
   })
   const useBottomSheetChoices = preparedChoices.length > 3
   const useCappedChoiceSheet = false
-  const hasBlockingOverlay =
-    state.showJournal ||
-    state.showConstellation ||
-    state.showJourneySummary ||
-    state.showReport
+  const hasBlockingGameplayInput = overlayBlocksGameplayInput
+  const hasBlockingGlobalShortcuts = overlayBlocksGlobalShortcuts
 
   useEffect(() => {
     if (!useBottomSheetChoices && isChoicesBottomSheetOpen) {
-      setIsChoicesBottomSheetOpen(false)
+      closeOverlay('bottomSheet', { reason: 'programmatic' })
     }
-  }, [useBottomSheetChoices, isChoicesBottomSheetOpen])
+  }, [closeOverlay, useBottomSheetChoices, isChoicesBottomSheetOpen])
 
   useEffect(() => {
-    if ((state.isProcessing || hasBlockingOverlay) && isChoicesBottomSheetOpen) {
-      setIsChoicesBottomSheetOpen(false)
+    if (state.isProcessing && isChoicesBottomSheetOpen) {
+      closeOverlay('bottomSheet', { reason: 'programmatic' })
     }
-  }, [state.isProcessing, hasBlockingOverlay, isChoicesBottomSheetOpen])
+  }, [closeOverlay, state.isProcessing, isChoicesBottomSheetOpen])
 
+  const wasJourneySummaryOpenRef = useRef(false)
+  useEffect(() => {
+    // Ensure JourneySummary-associated state is cleared regardless of dismissal reason (Escape/backdrop/close).
+    if (wasJourneySummaryOpenRef.current && !isJourneySummaryOpen) {
+      setState(prev => (prev.journeyNarrative ? { ...prev, journeyNarrative: null } : prev))
+    }
+    wasJourneySummaryOpenRef.current = isJourneySummaryOpen
+  }, [isJourneySummaryOpen])
+
+	  const renderOverlay = useCallback((entry: { id: string; data?: Record<string, unknown> }) => {
+	    if (entry.id === 'shortcutsHelp') {
+	      return (
+	        <KeyboardShortcutsHelp
+	          onClose={() => closeOverlay('shortcutsHelp', { reason: 'closeButton' })}
+	          shortcuts={shortcuts}
+	          onUpdateShortcut={updateShortcut}
+	          onResetShortcuts={resetShortcuts}
+	        />
+	      )
+	    }
+	    if (entry.id === 'bottomSheet') {
+	      if (isEnding || !useBottomSheetChoices) return null
+	      return (
+	        <BottomSheet
+	          open={true}
+	          mode="host"
+	          onClose={() => closeOverlay('bottomSheet', { reason: 'closeButton' })}
+	          title={`Choose a response (${preparedChoices.length})`}
+	        >
+	          <div className="px-2 pb-2">
+	            <GameChoices
+	              choices={preparedChoices}
+	              isProcessing={state.isProcessing}
+	              orbFillLevels={orbFillLevels}
+	              onChoice={(c) => {
+	                closeOverlay('bottomSheet', { reason: 'programmatic' })
+	                const index = parseInt(c.next || '0', 10)
+	                const original = state.availableChoices[index]
+	                if (original) handleChoice(original)
+	              }}
+	              glass={true}
+	              playerPatterns={state.gameState?.patterns}
+	              cognitiveLoad={cognitiveLoad}
+	              layoutMode="inline"
+	            />
+	          </div>
+	        </BottomSheet>
+	      )
+	    }
+    if (entry.id === 'report') {
+      if (!state.gameState) return null
+      return (
+        <StrategyReport
+          gameState={state.gameState}
+          onClose={() => closeOverlay('report', { reason: 'closeButton' })}
+        />
+      )
+    }
+	    if (entry.id === 'journeySummary') {
+	      if (!state.journeyNarrative) return null
+	      return (
+	        <JourneySummary
+	          narrative={state.journeyNarrative}
+	          onClose={() => {
+	            closeOverlay('journeySummary', { reason: 'closeButton' })
+	            setState(prev => (prev.journeyNarrative ? { ...prev, journeyNarrative: null } : prev))
+	          }}
+	        />
+	      )
+	    }
+	    if (entry.id === 'journal') {
+	      return (
+	        <SectionErrorBoundary sectionName="Journal" compact>
+	          <Journal
+	            isOpen={true}
+	            mode="host"
+	            onClose={() => closeOverlay('journal', { reason: 'closeButton' })}
+	          />
+	        </SectionErrorBoundary>
+	      )
+	    }
+		    if (entry.id === 'constellation') {
+		      return (
+		        <SectionErrorBoundary sectionName="Constellation" compact>
+		          <ConstellationPanel
+		            isOpen={true}
+		            mode="host"
+		            onClose={() => closeOverlay('constellation', { reason: 'closeButton' })}
+		          />
+		        </SectionErrorBoundary>
+		      )
+		    }
+		    if (entry.id === 'detailModal') {
+		      const type = entry.data?.type
+		      const item = entry.data?.item ?? null
+		      const allCharacters = entry.data?.allCharacters
+		      if (type !== 'character' && type !== 'skill' && type !== 'quest') return null
+		      return (
+		        <DetailModal
+		          item={item as any}
+		          type={type as any}
+		          allCharacters={allCharacters as any}
+		          mode="host"
+		          onClose={() => closeOverlay('detailModal', { reason: 'closeButton' })}
+		        />
+		      )
+		    }
+		    if (entry.id === 'identityCeremony') {
+		      const pattern = entry.data?.pattern
+		      if (typeof pattern !== 'string' || !isValidPattern(pattern)) return null
+		      return (
+		        <IdentityCeremony
+		          pattern={pattern as PatternType}
+		          onComplete={() => closeOverlay('identityCeremony', { reason: 'closeButton' })}
+		        />
+		      )
+		    }
+		    if (entry.id === 'journeyComplete') {
+		      const pattern = entry.data?.pattern
+		      if (typeof pattern !== 'string' || !isValidPattern(pattern)) return null
+		      return (
+		        <JourneyComplete
+		          pattern={pattern as PatternType}
+		          onRestart={emergencyReset}
+		        />
+		      )
+		    }
+		    if (entry.id === 'settings') {
+		      return (
+		        <SettingsMobileSheet
+		          onClose={() => closeOverlay('settings', { reason: 'closeButton' })}
+	          onShowReport={state.gameState ? () => pushOverlay('report') : undefined}
+	          onRequestLogin={() => pushOverlay('loginModal')}
+	          isMuted={state.isMuted}
+	          onToggleMute={handleToggleMute}
+	          volume={audioVolume}
+	          onVolumeChange={handleVolumeChange}
+	          playerId={state.gameState?.playerId}
+	        />
+	      )
+	    }
+	    if (entry.id === 'loginModal') {
+	      return (
+	        <div className="absolute inset-0 flex items-center justify-center px-4 py-6 pointer-events-none">
+	          <LoginModalContents onRequestClose={() => closeOverlay('loginModal', { reason: 'closeButton' })} />
+	        </div>
+	      )
+	    }
+	    if (entry.id === 'idleWarning') {
+	      return (
+	        <IdleWarningModal
+	          onTimeout={() => {
+	            // Auto-save is already handled by the game.
+	            console.log('[IdleWarning] Session timeout - state preserved')
+	          }}
+	          onContinue={() => {
+	            closeOverlay('idleWarning', { reason: 'closeButton' })
+	            console.log('[IdleWarning] User confirmed presence')
+	          }}
+	        />
+	      )
+	    }
+	    if (entry.id === 'error') {
+	      const title = typeof entry.data?.title === 'string' ? entry.data.title : 'Error'
+	      const message = typeof entry.data?.message === 'string' ? entry.data.message : 'Something went wrong.'
+	      return (
+	        <ErrorOverlay
+	          title={title}
+	          message={message}
+	          onRefresh={() => window.location.reload()}
+	          onDismiss={() => closeOverlay('error', { reason: 'closeButton' })}
+	        />
+	      )
+	    }
+	    return null
+	  }, [
+	    audioVolume,
+	    closeOverlay,
+	    cognitiveLoad,
+	    emergencyReset,
+	    handleChoice,
+	    handleToggleMute,
+	    handleVolumeChange,
+	    isEnding,
+	    orbFillLevels,
+	    preparedChoices,
+	    pushOverlay,
+	    resetShortcuts,
+	    shortcuts,
+	    state.availableChoices,
+	    state.gameState,
+	    state.isMuted,
+	    state.isProcessing,
+	    state.journeyNarrative,
+	    updateShortcut,
+	    useBottomSheetChoices,
+	  ])
 
   // Render Logic-Restored Card Layout
   // Onboarding removed-discovery-based learning happens via Samuel's firstOrb echo
@@ -3828,12 +4066,19 @@ export default function StatefulGameInterface() {
                     className="mr-2 hidden sm:flex"
                   />
                 )}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setState(prev => ({ ...prev, showJournal: true }))}
+	                <Button
+	                  variant="ghost"
+	                  size="icon"
+	                  onClick={() => {
+	                    if (isJournalOpen) {
+	                      closeOverlay('journal', { reason: 'programmatic' })
+	                      return
+	                    }
+	                    pushOverlay('journal')
+	                  }}
                   className={cn(
-                    "relative h-9 w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md",
+                    // Touch targets: 44x44 on mobile, compact on desktop.
+                    "relative h-11 w-11 sm:h-9 sm:w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md",
                     hasNewOrbs ? "text-amber-400 nav-attention-halo nav-attention-halo-amber" : ""
                   )}
                   aria-label="Open Journal"
@@ -3841,12 +4086,20 @@ export default function StatefulGameInterface() {
                 >
                   <BookOpen className="h-4 w-4" />
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setState(prev => ({ ...prev, showConstellation: true, hasNewTrust: false, hasNewMeeting: false }))}
+	                <Button
+	                  variant="ghost"
+	                  size="icon"
+	                  onClick={() => {
+	                    if (isConstellationOpen) {
+	                      closeOverlay('constellation', { reason: 'programmatic' })
+	                      return
+	                    }
+	                    setState(prev => ({ ...prev, hasNewTrust: false, hasNewMeeting: false }))
+	                    pushOverlay('constellation')
+	                  }}
                   className={cn(
-                    "relative h-9 w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md",
+                    // Touch targets: 44x44 on mobile, compact on desktop.
+                    "relative h-11 w-11 sm:h-9 sm:w-9 p-0 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-md",
                     (state.hasNewTrust || state.hasNewMeeting) ? "text-purple-400 nav-attention-marquee nav-attention-halo nav-attention-halo-purple" : ""
                   )}
                   aria-label="Open Skill Constellation"
@@ -3856,24 +4109,27 @@ export default function StatefulGameInterface() {
                 </Button>
 
                 {/* Unified Settings Menu - Consolidates game settings, accessibility, and account */}
-                <UnifiedMenu
-                  onShowReport={() => setState(prev => ({ ...prev, showReport: true }))}
+	                <UnifiedMenu
+	                  open={isSettingsOpen}
+	                  onOpenChange={(nextOpen, meta) => {
+	                    if (nextOpen) {
+	                      pushOverlay('settings')
+	                      return
+	                    }
+                      // Preserve deterministic dismissal semantics for anchored vs host settings.
+                      // Anchored desktop can close via backdrop/closeButton/trigger toggles.
+                      const reason = meta?.reason ?? 'closeButton'
+	                    closeOverlay('settings', { reason })
+	                  }}
+                  onShowReport={() => {
+                    if (!state.gameState) return
+                    pushOverlay('report')
+                  }}
+                  onRequestLogin={() => pushOverlay('loginModal')}
                   isMuted={state.isMuted}
-                  onToggleMute={() => {
-                    const newMuted = !state.isMuted
-                    console.log(`[UnifiedMenu] Toggling Mute to: ${newMuted}`)
-                    setState(prev => ({ ...prev, isMuted: newMuted }))
-                    localStorage.setItem('lux_audio_muted', String(newMuted))
-                    synthEngine.setMute(newMuted)
-                    setAudioEnabled(!newMuted)
-                    pushSettingsToCloud()
-                  }}
+                  onToggleMute={handleToggleMute}
                   volume={audioVolume}
-                  onVolumeChange={(newVolume) => {
-                    setAudioVolume(newVolume)
-                    localStorage.setItem('lux_audio_volume', String(newVolume))
-                    pushSettingsToCloud()
-                  }}
+                  onVolumeChange={handleVolumeChange}
                   playerId={state.gameState?.playerId}
                 />
 
@@ -3916,15 +4172,15 @@ export default function StatefulGameInterface() {
             gameState={state.gameState}
             isReturningPlayer={state.isReturningPlayer}
             waitingCharacters={state.waitingCharacters}
-            onOpenJourney={() => {
-              setState(prev => ({
-                ...prev,
-                returnHookDismissed: true,
-                showConstellation: true,
-                hasNewTrust: false,
-                hasNewMeeting: false,
-              }))
-            }}
+	            onOpenJourney={() => {
+	              setState(prev => ({
+	                ...prev,
+	                returnHookDismissed: true,
+	                hasNewTrust: false,
+	                hasNewMeeting: false,
+	              }))
+	              pushOverlay('constellation')
+	            }}
             onVisitCharacter={(characterId) => {
               setState(prev => ({ ...prev, returnHookDismissed: true }))
               useGameStore.getState().setCurrentScene(characterId)
@@ -3982,7 +4238,7 @@ export default function StatefulGameInterface() {
                   <Card
                     className={cn(
                     "shadow-lg backdrop-blur-xl relative overflow-hidden rounded-xl",
-                    !state.activeExperience && !state.currentNode?.simulation ? "min-h-[280px] sm:min-h-[320px]" : "",
+                    !state.activeExperience && !state.currentNode?.simulation ? "min-h-[180px] sm:min-h-[240px]" : "",
                     state.activeExperience || state.currentNode?.simulation
                       ? "bg-slate-950/80 border-amber-500/40 shadow-[0_0_30px_rgba(245,158,11,0.2)]"
                       : (state.currentDialogueContent?.emotion === 'analytical' || state.currentDialogueContent?.emotion === 'knowing')
@@ -4188,7 +4444,8 @@ export default function StatefulGameInterface() {
                               const demonstrations = skillTrackerRef.current?.getAllDemonstrations() || []
                               const trackedSkills = useGameStore.getState().skills // Get tracked skills from game store
                               const narrative = generateJourneyNarrative(state.gameState, demonstrations, trackedSkills)
-                              setState(prev => ({ ...prev, showJourneySummary: true, journeyNarrative: narrative }))
+                              setState(prev => ({ ...prev, journeyNarrative: narrative }))
+                              useOverlayStore.getState().pushOverlay('journeySummary')
                             }
                           }}
                           className="w-full min-h-[48px] bg-amber-600 hover:bg-amber-700 text-white"
@@ -4197,7 +4454,10 @@ export default function StatefulGameInterface() {
                         </Button>
                         <Button
                           variant="secondary"
-                          onClick={() => setState(prev => ({ ...prev, showReport: true }))}
+                          onClick={() => {
+                            if (!state.gameState) return
+                            useOverlayStore.getState().pushOverlay('report')
+                          }}
                           className="w-full min-h-[48px] bg-slate-900 text-white hover:bg-slate-700 border border-slate-700"
                         >
                           Export Career Profile
@@ -4240,23 +4500,11 @@ export default function StatefulGameInterface() {
         {!isEnding && (
           <footer
             className={cn(
-              "flex-shrink-0 sticky bottom-0 glass-panel max-w-4xl mx-auto w-full px-3 sm:px-4 z-20",
+              "flex-shrink-0 sticky bottom-0 glass-panel max-w-4xl mx-auto w-full px-3 sm:px-4 z-20 pb-[max(16px,env(safe-area-inset-bottom,0px))]",
               useCappedChoiceSheet ? "rounded-t-2xl border-b-0 overflow-hidden" : ""
             )}
             data-choice-sheet-mode={useBottomSheetChoices ? 'bottom-sheet' : (useCappedChoiceSheet ? 'capped' : 'free')}
-            style={{
-              // SINGLE SCROLL REFACTOR: Sticky footer with safe area padding
-              // Chrome mobile has 48-56px bottom bar that's NOT in safe-area-inset
-              paddingBottom: 'max(64px, env(safe-area-inset-bottom, 64px))'
-            }}
           >
-            {/* Response label - compact on mobile */}
-            <div className="px-4 sm:px-6 pt-2 pb-0.5 text-center">
-              <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 uppercase tracking-[0.1em]">
-                Your Response
-              </span>
-            </div>
-
             <div className="px-4 sm:px-6 pt-1 pb-2">
               {/* Scrollable choices container with scroll indicator */}
               <div className="relative w-full">
@@ -4276,15 +4524,15 @@ export default function StatefulGameInterface() {
                       type="button"
                       variant="ghost-dark"
                       size="lg"
-                      disabled={state.isProcessing || hasBlockingOverlay}
-                      onClick={() => setIsChoicesBottomSheetOpen(true)}
+                      disabled={state.isProcessing || hasBlockingGameplayInput}
+                      onClick={() => pushOverlay('bottomSheet')}
                       data-testid="choice-sheet-trigger"
                       aria-haspopup="dialog"
                       aria-expanded={isChoicesBottomSheetOpen}
                       className="w-full justify-between border border-white/10 bg-white/5 hover:bg-white/10"
                     >
                       <span className="flex items-center gap-2">
-                        {(state.isProcessing || hasBlockingOverlay) && (
+                        {(state.isProcessing || hasBlockingGameplayInput) && (
                           <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" aria-hidden="true" />
                         )}
                         <span>
@@ -4298,7 +4546,7 @@ export default function StatefulGameInterface() {
                   ) : (
                     <GameChoices
                       choices={preparedChoices}
-                      isProcessing={state.isProcessing || hasBlockingOverlay}
+                      isProcessing={state.isProcessing || hasBlockingGameplayInput}
                       orbFillLevels={orbFillLevels}
                       onChoice={(c) => {
                         const index = parseInt(c.next || '0', 10)
@@ -4320,67 +4568,7 @@ export default function StatefulGameInterface() {
           </footer>
         )}
 
-        {!isEnding && useBottomSheetChoices && (
-          <BottomSheet
-            open={isChoicesBottomSheetOpen}
-            onClose={() => setIsChoicesBottomSheetOpen(false)}
-            title={`Choose a response (${preparedChoices.length})`}
-          >
-            <div className="px-2 pb-2">
-              <GameChoices
-                choices={preparedChoices}
-                isProcessing={state.isProcessing || hasBlockingOverlay}
-                orbFillLevels={orbFillLevels}
-                onChoice={(c) => {
-                  setIsChoicesBottomSheetOpen(false)
-                  const index = parseInt(c.next || '0', 10)
-                  const original = state.availableChoices[index]
-                  if (original) handleChoice(original)
-                }}
-                glass={true}
-                playerPatterns={state.gameState?.patterns}
-                cognitiveLoad={cognitiveLoad}
-                layoutMode="inline"
-              />
-            </div>
-          </BottomSheet>
-        )}
-
         {/* Share prompts removed-too obtrusive */}
-
-        {/* Error Display */}
-        {
-          state.error && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in">
-              <div className="mx-4 max-w-md bg-slate-900 rounded-xl shadow-xl border border-red-900/50 overflow-hidden">
-                <div className="px-6 py-4 bg-red-950/50 border-b border-red-900/30">
-                  <h3 className="text-lg font-semibold text-red-300">{state.error.title}</h3>
-                </div>
-                <div className="px-6 py-4">
-                  <p className="text-slate-300 mb-4">{state.error.message}</p>
-                  <div className="flex gap-3">
-                    <Button
-                      onClick={() => window.location.reload()}
-                      className="flex-1 bg-red-600 hover:bg-red-700 text-white"
-                    >
-                      Refresh Page
-                    </Button>
-                    {/* GameMenu removed from here */}
-                    <Button
-                      onClick={() => setState(prev => ({ ...prev, error: null }))}
-                      variant="outline"
-                      className="flex-1"
-                    >
-                      Dismiss
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )
-        }
-
-
 
         {/* ══════════════════════════════════════════════════════════════════
           OVERLAYS & MODALS-Positioned above everything
@@ -4395,82 +4583,24 @@ export default function StatefulGameInterface() {
         {/* Experience Summary disabled-breaks immersion, available in menus/maps */}
         {/* Users can view arc summaries in admin dashboard or journey summary when they choose */}
 
-        {/* Journal */}
-        <SectionErrorBoundary sectionName="Journal" compact>
-          <Journal
-            isOpen={state.showJournal}
-            onClose={() => setState(prev => ({ ...prev, showJournal: false }))}
-          />
-        </SectionErrorBoundary>
-
-        {/* Constellation */}
-        <SectionErrorBoundary sectionName="Constellation" compact>
-          <ConstellationPanel
-            isOpen={state.showConstellation}
-            onClose={() => setState(prev => ({ ...prev, showConstellation: false }))}
-          />
-        </SectionErrorBoundary>
+        {/* Journal + Constellation now live in OverlayHost (overlay-store: journal/constellation). */}
 
         {/* Floating Module Interlude-DISABLED: broke dialogue immersion */}
 
-        {/* Journey Summary-Samuel's narrative of the complete journey */}
-        {
-          state.showJourneySummary && state.journeyNarrative && (
-            <JourneySummary
-              narrative={state.journeyNarrative}
-              onClose={() => setState(prev => ({ ...prev, showJourneySummary: false, journeyNarrative: null }))}
-            />
-          )
-        }
+        {/* Journey Summary is now OverlayHost-driven (overlay-store: journeySummary). */}
 
-        <IdentityCeremony
-          pattern={state.ceremonyPattern}
-          isVisible={state.showIdentityCeremony}
-          onComplete={() => setState(prev => ({ ...prev, showIdentityCeremony: false, ceremonyPattern: null }))}
-        />
-
-        {/* Pattern-Based Journey Ending */}
-        {state.showPatternEnding && state.endingPattern && (
-          <JourneyComplete
-            pattern={state.endingPattern}
-            onRestart={() => setState(prev => ({ ...prev, showPatternEnding: false, endingPattern: null }))}
-          />
-        )}
+        {/* Identity ceremony + journey complete are now OverlayHost-driven (overlay-store: identityCeremony/journeyComplete). */}
 
         {/* Limbic System Overlay REMOVED-caused distracting color flashing */}
-        {/* The Reality Interface-Career Report */}
-        {
-          state.showReport && state.gameState && (
-            <StrategyReport
-              gameState={state.gameState}
-              onClose={() => setState(prev => ({ ...prev, showReport: false }))}
-            />
-          )
-        }
+        {/* The Reality Interface-Career Report is now OverlayHost-driven (overlay-store: report). */}
 
         {/* PatternOrb moved to Journal panel for cleaner main game view */}
         {/* InGameSettings removed - consolidated into UnifiedMenu in header */}
 
-        {/* Idle Warning Modal - Prevents unexpected session loss */}
-        <IdleWarningModal
-          onTimeout={() => {
-            // Auto-save is already handled by the game
-            // Just show a gentle reminder that they can return anytime
-            console.log('[IdleWarning] Session timeout - state preserved')
-          }}
-          onContinue={() => {
-            console.log('[IdleWarning] User confirmed presence')
-          }}
-        />
+        {/* Idle Warning Controller - opens overlay-store: idleWarning */}
+        <IdleWarningController />
 
-        {/* Keyboard Shortcuts Help Modal */}
-        <KeyboardShortcutsHelp
-          isOpen={showShortcutsHelp}
-          onClose={() => setShowShortcutsHelp(false)}
-          shortcuts={shortcuts}
-          onUpdateShortcut={updateShortcut}
-          onResetShortcuts={resetShortcuts}
-        />
+        <OverlayHost renderOverlay={renderOverlay} />
       </div>
     </LivingAtmosphere>
   )

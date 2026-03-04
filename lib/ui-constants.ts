@@ -130,6 +130,9 @@ export const Z_INDEX = {
   dropdown: 50,
   sticky: 60,
   fixed: 70,
+  // Panels are "tier 1" overlays (below modals). Keep them under modalBackdrop.
+  panelBackdrop: 90,
+  panel: 95,
   modalBackdrop: 100,
   modal: 110,
   popover: 120,

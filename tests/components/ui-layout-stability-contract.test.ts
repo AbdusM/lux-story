@@ -48,7 +48,7 @@ describe('UI layout stability contracts', () => {
     const filePath = path.join(process.cwd(), 'components/StatefulGameInterface.tsx')
     const content = fs.readFileSync(filePath, 'utf-8')
 
-    expect(content).toContain('min-h-[280px] sm:min-h-[320px]')
+    expect(content).toContain('min-h-[180px] sm:min-h-[240px]')
     expect(content).toContain("data-dialogue-stage={(!state.activeExperience && !state.currentNode?.simulation) ? 'pinned' : 'dynamic'}")
     expect(content).not.toContain('AnimatePresence mode="wait"')
   })
