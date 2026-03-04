@@ -84,6 +84,7 @@ export function OverlayHost({ renderOverlay }: OverlayHostProps) {
   return (
     <div
       className="fixed inset-0"
+      style={{ zIndex: Z_INDEX.modalBackdrop }}
       data-testid="overlay-host"
     >
       <AnimatePresence onExitComplete={() => setIsExiting(false)}>

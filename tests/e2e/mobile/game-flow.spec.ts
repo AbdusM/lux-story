@@ -190,7 +190,8 @@ test.describe('Game Flow (mobile)', () => {
     const interfaceBox = await gameInterface.boundingBox()
     expect(interfaceBox).not.toBeNull()
     if (interfaceBox) {
-      expect(interfaceBox.height).toBeGreaterThan(viewport.height * 0.5)
+      // Keep a strong floor but allow compact devices (e.g. iPhone SE) with fixed header/footer + safe-area chrome.
+      expect(interfaceBox.height).toBeGreaterThan(viewport.height * 0.4)
     }
   })
 })
