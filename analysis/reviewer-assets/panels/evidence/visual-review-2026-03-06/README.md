@@ -45,7 +45,13 @@ Covered surfaces:
 - `screenshots/visual-mobile-iphone-se-choice-sheet.png`
 
 ## Capture Commands
-Initial full sweep:
+Preflight the review target first:
+
+```bash
+BASE_URL='https://lux-story.vercel.app' npm run verify:review-target
+```
+
+Then run the full screenshot sweep:
 
 ```bash
 VISUAL_REVIEW_BASE_URL='https://lux-story.vercel.app' npm run test:e2e -- --config playwright.visual-review.config.ts tests/e2e/user-flows/visual-review-capture.spec.ts

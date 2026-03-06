@@ -91,14 +91,16 @@ export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps)
 
   return (
     <div className="space-y-4 p-4">
-      <div className="rounded-lg border border-white/10 bg-black/40 p-3">
-        <div className="flex items-start justify-between gap-3">
+      <div className="rounded-lg border border-white/10 bg-black/40 p-3 sm:p-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
             <div className="text-xs uppercase tracking-[0.16em] text-white/50">Case File</div>
-            <div className="truncate text-sm font-medium text-white">{config.title}</div>
+            <div className="text-sm font-medium leading-snug text-white sm:text-[15px]">
+              {config.title}
+            </div>
             {label && <div className="mt-1 text-[11px] text-white/55">{label}</div>}
           </div>
-          <div className="flex items-center gap-2 text-xs text-white/50">
+          <div className="flex items-center gap-2 self-start text-xs text-white/50">
             {canInteract ? (
               <span className="inline-flex items-center gap-1 rounded border border-amber-500/20 bg-amber-950/20 px-2 py-1">
                 <AlertTriangle className="h-3 w-3 text-amber-300/80" />

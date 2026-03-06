@@ -646,9 +646,17 @@ export default function ProfilePage() {
                 </div>
 
                 {playerId ? (
-                  <p className="text-xs text-slate-500">
-                    Player record: <span className="font-mono text-slate-300">{playerId}</span>
-                  </p>
+                  <div className="space-y-2">
+                    <p className="text-xs text-slate-500">
+                      Device-linked player record ready for research settings.
+                    </p>
+                    <details className="text-xs text-slate-500">
+                      <summary className="cursor-pointer list-none text-slate-400 transition-colors hover:text-slate-200">
+                        Show technical record ID
+                      </summary>
+                      <p className="mt-2 font-mono text-slate-300">{playerId}</p>
+                    </details>
+                  </div>
                 ) : (
                   <div className={cn(PROFILE_INSET_CLASS, 'p-4 text-sm text-slate-300')}>
                     Start the game once on this device before managing research participation.
