@@ -84,6 +84,24 @@ export const SAFE_AREA_PADDING = {
   bottom: 'pb-[max(16px,env(safe-area-inset-bottom))]',
 } as const;
 
+// =============================================================================
+// GAMEPLAY SHELL CONTRACT
+// =============================================================================
+
+export const GAMEPLAY_SHELL = {
+  maxWidth: 'max-w-4xl',
+  storyViewportMinHeight: 'max(360px, calc(100dvh - 21rem))',
+  responseDockMinHeight: '180px',
+  geometryThresholdPx: {
+    stageTopDrift: 16,
+    responseDockHeightDrift: 24,
+  },
+} as const;
+
+export const UI_STORAGE_KEYS = {
+  resumeToReport: 'lux-open-report-on-resume',
+} as const;
+
 // Modal height constants
 export const MODAL_HEIGHT = {
   mobile: '50vh',

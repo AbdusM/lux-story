@@ -5,7 +5,7 @@
  * Sections:
  * 1. Audio (Volume, Mute)
  * 2. Accessibility (Text Size, Color Mode, Reduce Motion)
- * 3. Profile (Career Profile, Clinical Audit, All Settings)
+ * 3. Profile (Profile & Preferences, Research Participation)
  * 4. Account (User info, Sign Out / Sign In)
  */
 
@@ -26,24 +26,20 @@ import { Z_INDEX } from '@/lib/ui-constants'
 type UnifiedMenuCloseReason = 'backdrop' | 'closeButton' | 'programmatic'
 
 interface UnifiedMenuProps {
-  onShowReport?: () => void
   isMuted?: boolean
   onToggleMute?: () => void
   volume?: number
   onVolumeChange?: (volume: number) => void
-  playerId?: string
   onRequestLogin?: () => void
   open?: boolean
   onOpenChange?: (open: boolean, meta?: { reason?: UnifiedMenuCloseReason }) => void
 }
 
 export function UnifiedMenu({
-  onShowReport,
   isMuted = false,
   onToggleMute,
   volume = 50,
   onVolumeChange,
-  playerId,
   onRequestLogin,
   open,
   onOpenChange,
@@ -77,7 +73,12 @@ export function UnifiedMenu({
         variant="ghost"
         size="icon"
         onClick={() => setOpen(!isOpen, isOpen ? { reason: 'programmatic' } : undefined)}
-        className="text-slate-400 hover:text-white hover:bg-white/5 relative"
+        className={cn(
+          "relative text-slate-400 transition-colors",
+          isOpen
+            ? "bg-white/10 text-white ring-1 ring-white/15"
+            : "hover:bg-white/5 hover:text-white"
+        )}
         aria-label="Settings menu"
         aria-expanded={isOpen}
         aria-haspopup="dialog"
@@ -112,8 +113,8 @@ export function UnifiedMenu({
             animate="visible"
             variants={panelDropDown}
             className={cn(
-              'absolute right-0 top-full mt-2 w-72',
-              'glass-panel-solid !rounded-xl border border-white/10 shadow-2xl',
+              'absolute right-0 top-full mt-2 w-[22rem] sm:w-[24rem]',
+              'glass-panel-solid !rounded-[24px] border border-white/10 shadow-[0_28px_80px_rgba(0,0,0,0.42)]',
               'overflow-hidden flex flex-col max-h-[70vh]'
             )}
             style={{ zIndex: Z_INDEX.panel }}
@@ -125,12 +126,10 @@ export function UnifiedMenu({
           >
             <SettingsMenuContents
               onRequestClose={() => setOpen(false, { reason: 'closeButton' })}
-              onShowReport={onShowReport}
               isMuted={isMuted}
               onToggleMute={onToggleMute}
               volume={volume}
               onVolumeChange={onVolumeChange}
-              playerId={playerId}
               onRequestLogin={onRequestLogin}
             />
           </motion.div>

@@ -7,13 +7,14 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { Volume2, VolumeX, User, Eye, Brain, Palette, Monitor, LogOut, Cloud, CloudOff, Loader2, Download, Upload, Keyboard, Shield } from 'lucide-react'
+import { Volume2, VolumeX, User, Eye, Brain, Palette, Monitor, LogOut, Cloud, CloudOff, Loader2, Download, Upload, Keyboard, Shield, FileText } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useAccessibilityProfile } from '@/hooks/useAccessibilityProfile'
 import { useLargeTextMode } from '@/hooks/useLargeTextMode'
 import { useColorBlindMode } from '@/hooks/useColorBlindMode'
 import { useCognitiveLoad } from '@/hooks/useCognitiveLoad'
+import { useUserRole } from '@/hooks/useUserRole'
 import type { AccessibilityProfile } from '@/lib/accessibility-profiles'
 import type { TextSizePreset } from '@/lib/large-text-mode'
 import type { ColorBlindMode } from '@/lib/patterns'
@@ -30,6 +31,8 @@ import type {
   ResearchParticipationLevel,
 } from '@/lib/research-consent'
 import { ensureUserApiSession } from '@/lib/user-api-session'
+import { GameStateManager } from '@/lib/game-state-manager'
+import { UI_STORAGE_KEYS } from '@/lib/ui-constants'
 import { cn } from '@/lib/utils'
 
 type TabId = 'account' | 'audio' | 'accessibility' | 'display' | 'keyboard'
@@ -95,12 +98,20 @@ function formatConsentStatus(status: ResearchConsentResponse['status'] | null): 
   return 'Not Set'
 }
 
+const PROFILE_SURFACE_CLASS =
+  'relative overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.82),rgba(2,6,23,0.92))] shadow-[0_28px_90px_rgba(0,0,0,0.38)] backdrop-blur-xl'
+
+const PROFILE_INSET_CLASS =
+  'rounded-2xl border border-white/10 bg-black/20 backdrop-blur-xl'
+
 export default function ProfilePage() {
   const router = useRouter()
   const supabase = createClient()
+  const { role } = useUserRole()
 
   const [activeTab, setActiveTab] = useState<TabId>('account')
   const [user, setUser] = useState<{ email?: string; created_at?: string } | null>(null)
+  const [saveMetadata, setSaveMetadata] = useState<ReturnType<typeof GameStateManager.getSaveMetadata> | null>(null)
   const [loading, setLoading] = useState(true)
 
   // Audio settings
@@ -158,6 +169,7 @@ export default function ProfilePage() {
   useEffect(() => {
     const storedPlayerId = loadStoredPlayerId()
     setPlayerId(storedPlayerId)
+    setSaveMetadata(GameStateManager.getSaveMetadata())
   }, [])
 
   useEffect(() => {
@@ -345,6 +357,13 @@ export default function ProfilePage() {
     router.push('/')
   }
 
+  const handleOpenStrategyProfile = useCallback(() => {
+    if (!saveMetadata?.exists) return
+
+    localStorage.setItem(UI_STORAGE_KEYS.resumeToReport, 'true')
+    router.push('/')
+  }, [router, saveMetadata])
+
   const handleExportSettings = () => {
     const settings = loadLocalSettings()
     const dataStr = JSON.stringify(settings, null, 2)
@@ -413,10 +432,12 @@ export default function ProfilePage() {
     (participationLevel === 'individual_research' || participationLevel === 'full_research')
   const previewAllowsLongitudinal =
     previewStatus === 'granted' && participationLevel === 'full_research'
+  const showFacilitatorTools = Boolean(saveMetadata?.playerId && (role === 'educator' || role === 'admin'))
 
   return (
-    <div className="min-h-screen bg-[#0a0c10] text-white p-4 sm:p-6">
-      <div className="max-w-4xl mx-auto">
+    <div className="relative min-h-screen overflow-hidden bg-[#05070b] px-4 py-4 text-white sm:px-6 sm:py-6">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.16),transparent_34%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.12),transparent_28%),radial-gradient(circle_at_bottom,rgba(139,92,246,0.12),transparent_32%)]" />
+      <div className="relative mx-auto max-w-5xl">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -424,59 +445,75 @@ export default function ProfilePage() {
           transition={springs.smooth}
           className="mb-8"
         >
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-purple-600 mb-2">
-                Profile & Settings
-              </h1>
-              <p className="text-slate-400">
-                Manage your account and customize your experience
-              </p>
-            </div>
+          <div className={cn(PROFILE_SURFACE_CLASS, 'p-6 sm:p-8')}>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_36%)]" />
+            <div className="relative flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+              <div className="space-y-3">
+                <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-amber-100/80">
+                  <Shield className="h-3.5 w-3.5" />
+                  Profile Lane
+                </div>
+                <div>
+                  <h1 className="mb-2 bg-gradient-to-r from-amber-300 via-white to-cyan-300 bg-clip-text text-3xl font-semibold text-transparent sm:text-4xl">
+                    Profile & Settings
+                  </h1>
+                  <p className="max-w-2xl text-sm leading-relaxed text-slate-300/80 sm:text-base">
+                    Keep system controls, research permissions, exports, and personal preferences in one place outside the active story shell.
+                  </p>
+                </div>
+              </div>
 
-            {/* Sync Status */}
-            <div className="flex items-center gap-2 text-xs text-slate-400">
-              {isSyncing ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin text-amber-400" />
-                  <span>Syncing...</span>
-                </>
-              ) : user ? (
-                <>
-                  <Cloud className="w-4 h-4 text-green-400" />
-                  <span>
-                    {lastSyncTime
-                      ? `Synced ${new Date(lastSyncTime).toLocaleTimeString()}`
-                      : 'Cloud sync enabled'}
-                  </span>
-                </>
-              ) : (
-                <>
-                  <CloudOff className="w-4 h-4 text-slate-500" />
-                  <span>Local only</span>
-                </>
-              )}
+              <div className={cn(PROFILE_INSET_CLASS, 'min-w-[220px] p-4')}>
+                <p className="mb-2 text-[11px] uppercase tracking-[0.18em] text-slate-400">Sync Status</p>
+                <div className="flex items-center gap-2 text-sm text-slate-200">
+                  {isSyncing ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin text-amber-400" />
+                      <span>Syncing preferences…</span>
+                    </>
+                  ) : user ? (
+                    <>
+                      <Cloud className="h-4 w-4 text-emerald-400" />
+                      <span>
+                        {lastSyncTime
+                          ? `Synced ${new Date(lastSyncTime).toLocaleTimeString()}`
+                          : 'Cloud sync enabled'}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <CloudOff className="h-4 w-4 text-slate-500" />
+                      <span>Local-only settings</span>
+                    </>
+                  )}
+                </div>
+                <p className="mt-2 text-xs leading-relaxed text-slate-400">
+                  Gameplay remains story-first while profile, consent, and export controls stay here.
+                </p>
+              </div>
             </div>
           </div>
         </motion.div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={cn(
-                'flex items-center gap-2 px-4 py-2 rounded-lg transition-all whitespace-nowrap',
-                activeTab === tab.id
-                  ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                  : 'bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-800/80 border border-slate-700/50'
-              )}
-            >
-              {tab.icon}
-              <span className="font-medium">{tab.label}</span>
-            </button>
-          ))}
+        <div className={cn(PROFILE_SURFACE_CLASS, 'mb-6 p-3')}>
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={cn(
+                  'flex min-w-fit items-center gap-2 rounded-xl border px-4 py-2.5 whitespace-nowrap transition-all',
+                  activeTab === tab.id
+                    ? 'border-amber-400/30 bg-amber-400/15 text-amber-100 shadow-[0_10px_30px_rgba(245,158,11,0.18)]'
+                    : 'border-white/10 bg-white/[0.04] text-slate-400 hover:bg-white/[0.08] hover:text-white'
+                )}
+              >
+                <span className="opacity-90">{tab.icon}</span>
+                <span className="font-medium">{tab.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Content */}
@@ -485,17 +522,17 @@ export default function ProfilePage() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={springs.gentle}
-          className="glass-panel !rounded-xl p-6 space-y-6"
+          className={cn(PROFILE_SURFACE_CLASS, 'p-6 space-y-6')}
         >
           {/* Account Tab */}
           {activeTab === 'account' && (
             <>
               <div>
-                <h2 className="text-xl font-semibold mb-4">Account Information</h2>
+                <h2 className="mb-4 text-xl font-semibold">Account Information</h2>
                 {loading ? (
                   <p className="text-slate-400">Loading...</p>
                 ) : user ? (
-                  <div className="space-y-3">
+                  <div className={cn(PROFILE_INSET_CLASS, 'space-y-3 p-4')}>
                     <div>
                       <label className="text-sm text-slate-400">Email</label>
                       <p className="text-white font-medium">{user.email}</p>
@@ -508,7 +545,70 @@ export default function ProfilePage() {
                     </div>
                   </div>
                 ) : (
-                  <p className="text-slate-400">Not signed in</p>
+                  <div className={cn(PROFILE_INSET_CLASS, 'p-4 text-slate-400')}>Not signed in</div>
+                )}
+              </div>
+
+              <div className="pt-4 border-t border-white/10 space-y-4">
+                <div>
+                  <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-amber-400" />
+                    Journey Artifacts
+                  </h2>
+                  <p className="text-sm text-slate-400 max-w-2xl">
+                    Career report and facilitator tools now live outside the active story shell so the gameplay menu stays focused on play.
+                  </p>
+                </div>
+
+                {saveMetadata?.exists ? (
+                  <div className="space-y-3">
+                    <div className={cn(PROFILE_INSET_CLASS, 'p-4')}>
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                          <p className="text-sm font-medium text-white">Career Strategy Profile</p>
+                          <p className="text-xs text-slate-400">
+                            Resume your journey and open the profile from the immersive shell.
+                          </p>
+                          {saveMetadata.lastSaved && (
+                            <p className="mt-2 text-xs text-slate-500">
+                              Last saved {saveMetadata.lastSaved.toLocaleString()}
+                            </p>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleOpenStrategyProfile}
+                          className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-sm font-medium text-amber-300 transition-colors hover:bg-amber-500/20"
+                        >
+                          Open Career Strategy Profile
+                        </button>
+                      </div>
+                    </div>
+
+                    {showFacilitatorTools && saveMetadata.playerId && (
+                      <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4 backdrop-blur-xl">
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                          <div>
+                            <p className="text-sm font-medium text-white">Facilitator Tools</p>
+                            <p className="text-xs text-slate-400">
+                              Admin tooling stays outside the immersive shell and opens in the dedicated dashboard lane.
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => router.push(`/admin/${saveMetadata.playerId}`)}
+                            className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-300 transition-colors hover:bg-emerald-500/20"
+                          >
+                            Open Clinical Audit
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className={cn(PROFILE_INSET_CLASS, 'p-4 text-sm text-slate-300')}>
+                    Start or resume a journey on this device before opening the career strategy profile.
+                  </div>
                 )}
               </div>
 
@@ -527,7 +627,7 @@ export default function ProfilePage() {
 
                   <div
                     className={cn(
-                      'px-3 py-1.5 rounded-full text-xs font-medium border',
+                      'rounded-full border px-3 py-1.5 text-xs font-medium',
                       consent?.status === 'granted'
                         ? 'bg-green-500/10 text-green-300 border-green-500/30'
                         : consent?.status === 'pending'
@@ -544,7 +644,7 @@ export default function ProfilePage() {
                     Player record: <span className="font-mono text-slate-300">{playerId}</span>
                   </p>
                 ) : (
-                  <div className="p-4 bg-slate-800/40 border border-slate-700/60 rounded-lg text-sm text-slate-300">
+                  <div className={cn(PROFILE_INSET_CLASS, 'p-4 text-sm text-slate-300')}>
                     Start the game once on this device before managing research participation.
                   </div>
                 )}
@@ -578,7 +678,7 @@ export default function ProfilePage() {
                       ))}
                     </div>
 
-                    <div className="p-4 bg-slate-800/30 rounded-lg border border-slate-700/50 space-y-3">
+                    <div className={cn(PROFILE_INSET_CLASS, 'space-y-3 p-4')}>
                       <div className="flex items-center justify-between gap-4">
                         <div>
                           <p className="text-sm font-medium text-white">Guardian Approval</p>
@@ -631,8 +731,8 @@ export default function ProfilePage() {
                       )}
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                      <div className={cn(PROFILE_INSET_CLASS, 'p-3')}>
                         <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">
                           Cohort Analysis
                         </p>
@@ -640,7 +740,7 @@ export default function ProfilePage() {
                           {previewStatus === 'revoked' ? 'Off' : 'Allowed'}
                         </p>
                       </div>
-                      <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
+                      <div className={cn(PROFILE_INSET_CLASS, 'p-3')}>
                         <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">
                           Identified Export
                         </p>
@@ -648,7 +748,7 @@ export default function ProfilePage() {
                           {previewAllowsIdentified ? 'Allowed' : 'Off'}
                         </p>
                       </div>
-                      <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
+                      <div className={cn(PROFILE_INSET_CLASS, 'p-3')}>
                         <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">
                           Longitudinal Tracking
                         </p>

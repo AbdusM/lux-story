@@ -84,15 +84,16 @@ describe('UnifiedMenu', () => {
         onToggleMute={onToggleMute}
         volume={50}
         onVolumeChange={onVolumeChange}
-        // no onShowReport, no playerId -> unavailable UI should render
       />
     )
 
     await user.click(screen.getByRole('button', { name: /settings menu/i }))
     expect(screen.getByRole('dialog', { name: /settings/i })).toBeInTheDocument()
 
-    expect(screen.getByText(/career profile \(unavailable\)/i)).toBeInTheDocument()
-    expect(screen.getByText(/clinical audit \(start game first\)/i)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /profile & preferences/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /research participation/i })).toBeInTheDocument()
+    expect(screen.queryByText(/career profile/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/clinical audit/i)).not.toBeInTheDocument()
 
     // Audio controls
     fireEvent.change(screen.getByLabelText(/volume level/i), { target: { value: '80' } })
@@ -116,14 +117,24 @@ describe('UnifiedMenu', () => {
     expect(screen.queryByRole('dialog', { name: /settings/i })).not.toBeInTheDocument()
   })
 
-  it('navigates to profile settings when selecting All Settings', async () => {
+  it('navigates to profile settings when selecting Profile & Preferences', async () => {
     const user = userEvent.setup()
 
     render(<UnifiedMenu />)
     await user.click(screen.getByRole('button', { name: /settings menu/i }))
 
-    await user.click(screen.getByRole('button', { name: /all settings/i }))
+    await user.click(screen.getByRole('button', { name: /profile & preferences/i }))
     expect(routerPush).toHaveBeenCalledWith('/profile')
+  })
+
+  it('navigates to research participation from the gameplay menu', async () => {
+    const user = userEvent.setup()
+
+    render(<UnifiedMenu />)
+    await user.click(screen.getByRole('button', { name: /settings menu/i }))
+
+    await user.click(screen.getByRole('button', { name: /research participation/i }))
+    expect(routerPush).toHaveBeenCalledWith('/profile#research-consent')
   })
 
   it('renders authenticated account state and signs out', async () => {
@@ -153,15 +164,14 @@ describe('UnifiedMenu', () => {
     expect(screen.queryByRole('dialog', { name: /settings/i })).not.toBeInTheDocument()
   })
 
-  it('renders active profile/admin branches and applies text/color settings', async () => {
+  it('keeps gameplay menu free of report/admin destinations and applies text/color settings', async () => {
     const user = userEvent.setup()
-    const onShowReport = vi.fn()
 
-    render(<UnifiedMenu onShowReport={onShowReport} playerId="player_123" />)
+    render(<UnifiedMenu />)
     await user.click(screen.getByRole('button', { name: /settings menu/i }))
 
-    const clinicalAuditLink = screen.getByRole('link', { name: /clinical audit/i })
-    expect(clinicalAuditLink).toHaveAttribute('href', '/admin/player_123')
+    expect(screen.queryByRole('link', { name: /clinical audit/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /career profile/i })).not.toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: /accessibility/i }))
     await user.click(screen.getByRole('button', { name: 'Large' }))
@@ -172,9 +182,6 @@ describe('UnifiedMenu', () => {
       expect(setColorBlindMode).toHaveBeenCalledWith('protanopia')
     })
     expect(pushNow).toHaveBeenCalledTimes(2)
-
-    await user.click(screen.getByRole('button', { name: /career profile/i }))
-    expect(onShowReport).toHaveBeenCalledTimes(1)
   })
 
   it('keeps menu stable when sign out fails', async () => {

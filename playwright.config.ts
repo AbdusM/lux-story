@@ -114,6 +114,18 @@ export default defineConfig({
       },
     },
     {
+      name: 'story-contract',
+      testMatch: [
+        '**/user-flows/story-surface-contract.spec.ts'
+      ],
+      fullyParallel: false,
+      workers: 1,
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: true,
+      },
+    },
+    {
       name: 'overlay-perf',
       testMatch: [
         '**/user-flows/overlay-smoothness.spec.ts'

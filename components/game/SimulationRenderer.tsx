@@ -23,7 +23,67 @@ interface SimulationRendererProps {
     onComplete: (result: SimulationResult) => void
 }
 
+type SimulationFrameTheme = {
+    label: string
+    shellClass: string
+    ambientClass: string
+    badgeClass: string
+    timerActiveClass: string
+    timerCriticalClass: string
+    actionClass: string
+}
+
+function getSimulationFrameTheme(simulation: SimulationConfig): SimulationFrameTheme {
+    const lower = `${simulation.type} ${simulation.title} ${simulation.taskDescription}`.toLowerCase()
+
+    if (
+        simulation.type === 'visual_canvas' ||
+        simulation.type === 'architect_3d' ||
+        simulation.type === 'creative_direction' ||
+        simulation.type === 'audio_studio' ||
+        simulation.type === 'news_feed'
+    ) {
+        return {
+            label: 'Studio Exercise',
+            shellClass: 'border-fuchsia-400/20 bg-slate-950 text-slate-100 shadow-[0_0_50px_rgba(217,70,239,0.12)]',
+            ambientClass: 'bg-[radial-gradient(circle_at_top_left,rgba(217,70,239,0.18),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.14),transparent_30%),linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.98))]',
+            badgeClass: 'border-fuchsia-400/20 bg-fuchsia-400/10 text-fuchsia-100',
+            timerActiveClass: 'border-fuchsia-400/20 bg-fuchsia-400/10 text-fuchsia-100',
+            timerCriticalClass: 'border-rose-400/30 bg-rose-500/10 text-rose-100',
+            actionClass: 'border-fuchsia-400/25 bg-fuchsia-400/10 text-fuchsia-100 hover:bg-fuchsia-400/15',
+        }
+    }
+
+    if (
+        simulation.type === 'chat_negotiation' ||
+        simulation.type === 'conversation_tree' ||
+        simulation.type === 'conductor_interface' ||
+        simulation.type === 'botany_grid'
+    ) {
+        return {
+            label: 'Field Exercise',
+            shellClass: 'border-emerald-400/20 bg-slate-950 text-slate-100 shadow-[0_0_50px_rgba(16,185,129,0.12)]',
+            ambientClass: 'bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.16),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.12),transparent_30%),linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.98))]',
+            badgeClass: 'border-emerald-400/20 bg-emerald-400/10 text-emerald-100',
+            timerActiveClass: 'border-emerald-400/20 bg-emerald-400/10 text-emerald-100',
+            timerCriticalClass: 'border-rose-400/30 bg-rose-500/10 text-rose-100',
+            actionClass: 'border-emerald-400/25 bg-emerald-400/10 text-emerald-100 hover:bg-emerald-400/15',
+        }
+    }
+
+    return {
+        label: 'Analysis Exercise',
+        shellClass: 'border-amber-400/20 bg-slate-950 text-slate-100 shadow-[0_0_50px_rgba(245,158,11,0.12)]',
+        ambientClass: 'bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.18),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(99,102,241,0.12),transparent_30%),linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.98))]',
+        badgeClass: 'border-amber-400/20 bg-amber-400/10 text-amber-100',
+        timerActiveClass: 'border-amber-400/20 bg-amber-400/10 text-amber-100',
+        timerCriticalClass: 'border-rose-400/30 bg-rose-500/10 text-rose-100',
+        actionClass: 'border-amber-400/25 bg-amber-400/10 text-amber-100 hover:bg-amber-400/15',
+    }
+}
+
 export function SimulationRenderer({ simulation, onComplete }: SimulationRendererProps) {
+    const frameTheme = getSimulationFrameTheme(simulation)
     const [status, setStatus] = useState<'active' | 'success' | 'failed' | 'skipped'>('active')
     const [secondsRemaining, setSecondsRemaining] = useState<number | null>(() => {
         if (typeof simulation.timeLimit !== 'number') return null
@@ -253,32 +313,31 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
             <div
                 data-testid="simulation-interface"
                 data-simulation-type={simulation.type}
-                className={cn("relative w-full overflow-hidden rounded-lg bg-black/20 border border-white/5", simulation.inlineHeight || 'h-48')}
+                className={cn("relative w-full overflow-hidden rounded-2xl border bg-black/20", frameTheme.shellClass, simulation.inlineHeight || 'h-48')}
             >
+                <div className={cn("absolute inset-0 pointer-events-none opacity-90", frameTheme.ambientClass)} />
                 {/* Countdown (Phase 2/3) */}
                 {typeof secondsRemaining === 'number' && status === 'active' && (
                     <div
                         className={cn(
-                            "absolute top-2 right-2 z-20 rounded border px-2 py-1 text-[10px] font-mono tracking-widest backdrop-blur-sm",
+                            "absolute top-3 right-3 z-20 rounded-full border px-2.5 py-1 text-[10px] font-mono tracking-widest backdrop-blur-sm",
                             secondsRemaining <= 10
-                                ? "bg-red-950/40 border-red-500/30 text-red-200"
-                                : "bg-black/40 border-amber-500/20 text-amber-200/80"
+                                ? frameTheme.timerCriticalClass
+                                : frameTheme.timerActiveClass
                         )}
                         aria-label="Time remaining"
                     >
                         {formatCountdown(secondsRemaining)}
                     </div>
                 )}
-
-                {/* Minimal Header for Context */}
-                {/* <div className="absolute top-0 left-0 right-0 h-6 bg-black/40 flex items-center px-2 z-10 pointer-events-none">
-                    <span className="text-[10px] uppercase font-mono tracking-widest text-slate-500">
-                        Widget // {simulation.type}
-                    </span>
-                </div> */}
+                <div className="absolute left-3 top-3 z-20 pointer-events-none">
+                    <div className={cn("rounded-full border px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.18em] backdrop-blur-sm", frameTheme.badgeClass)}>
+                        {frameTheme.label}
+                    </div>
+                </div>
 
                 {/* Content */}
-                <div className="absolute inset-0" data-testid={`simulation-${simulation.type}`}>
+                <div className="absolute inset-0 z-10" data-testid={`simulation-${simulation.type}`}>
                     {renderContent()}
                 </div>
 
@@ -332,66 +391,91 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
         <div
             data-testid="simulation-interface"
             data-simulation-type={simulation.type}
-            className="relative z-10 flex min-h-[560px] w-full flex-col overflow-hidden rounded-xl border border-amber-500/20 bg-slate-950 text-slate-200 font-sans shadow-[0_0_40px_rgba(245,158,11,0.12)] sm:min-h-[680px]"
+            className={cn(
+                "relative z-10 flex min-h-[560px] w-full flex-col overflow-hidden rounded-[28px] border font-sans sm:min-h-[680px]",
+                frameTheme.shellClass
+            )}
         >
-            {/* SATELLITE OS HEADER */}
-            <div className="h-12 border-b border-slate-800 bg-slate-900/80 flex items-center justify-between px-4 select-none">
-                <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-slate-500">
-                    <Terminal className="w-4 h-4 text-amber-500" />
-                    <span>SIMULATION_CORE // {simulation.type.toUpperCase()}</span>
-                </div>
+            <div className={cn("absolute inset-0 pointer-events-none opacity-90", frameTheme.ambientClass)} />
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_36%)]" />
 
-                <div className="flex items-center gap-3">
-                    {typeof secondsRemaining === 'number' && (
-                        <div
-                            className={cn(
-                                "rounded border px-2 py-1 text-[10px] font-mono tracking-widest",
-                                status !== 'active'
-                                    ? "border-white/10 text-slate-400"
-                                    : secondsRemaining <= 10
-                                        ? "border-red-500/30 text-red-200"
-                                        : "border-amber-500/20 text-amber-200/80"
-                            )}
-                            aria-label="Time remaining"
-                        >
-                            {formatCountdown(secondsRemaining)}
+            <div
+                className="relative border-b border-white/10 bg-black/20 backdrop-blur-xl select-none"
+                data-testid="simulation-shell-header"
+            >
+                <div className="flex flex-col gap-4 px-4 py-4 sm:px-6 sm:py-5">
+                    <div className="flex items-start justify-between gap-4">
+                        <div className="min-w-0 space-y-2">
+                            <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono uppercase tracking-[0.18em] text-slate-300/75">
+                                <span className={cn("rounded-full border px-2.5 py-1 backdrop-blur-sm", frameTheme.badgeClass)}>
+                                    {frameTheme.label}
+                                </span>
+                                {typeof simulation.phase === 'number' && (
+                                    <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-slate-200/80">
+                                        Phase {simulation.phase}
+                                    </span>
+                                )}
+                                {simulation.initialContext?.label && (
+                                    <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-slate-200/80">
+                                        {simulation.initialContext.label}
+                                    </span>
+                                )}
+                            </div>
+                            <div className="space-y-1">
+                                <h2 className="text-lg font-semibold text-white sm:text-xl" data-testid="simulation-frame-title">
+                                    {simulation.title}
+                                </h2>
+                                <p
+                                    className="max-w-3xl text-sm leading-relaxed text-slate-200/80 sm:text-[15px]"
+                                    data-testid="simulation-frame-brief"
+                                >
+                                    {simulation.taskDescription}
+                                </p>
+                            </div>
                         </div>
-                    )}
 
-                    {/* GOD MODE EXIT */}
-                    {simulation.onExit && (
-                        <button
-                            onClick={simulation.onExit}
-                            className="flex items-center gap-2 px-3 py-1 bg-red-900/20 border border-red-500/30 text-red-400 text-xs rounded hover:bg-red-900/40 transition-colors"
-                        >
-                            <X className="w-3 h-3" />
-                            ABORT SIMULATION
-                        </button>
-                    )}
+                        <div className="flex shrink-0 items-center gap-3">
+                            {typeof secondsRemaining === 'number' && (
+                                <div
+                                    className={cn(
+                                        "rounded-full border px-3 py-1.5 text-[10px] font-mono tracking-[0.18em]",
+                                        status !== 'active'
+                                            ? "border-white/10 bg-white/5 text-slate-300/70"
+                                            : secondsRemaining <= 10
+                                                ? frameTheme.timerCriticalClass
+                                                : frameTheme.timerActiveClass
+                                    )}
+                                    aria-label="Time remaining"
+                                >
+                                    {formatCountdown(secondsRemaining)}
+                                </div>
+                            )}
+
+                            {simulation.onExit && (
+                                <button
+                                    onClick={simulation.onExit}
+                                    className={cn(
+                                        "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs transition-colors",
+                                        frameTheme.actionClass
+                                    )}
+                                >
+                                    <X className="h-3.5 w-3.5" />
+                                    Leave exercise
+                                </button>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.18em] text-slate-400/80">
+                        <Terminal className="h-3.5 w-3.5" />
+                        <span>{simulation.type.replace(/_/g, ' ')}</span>
+                    </div>
                 </div>
             </div>
 
-            {/* MAIN VIEWPORT */}
-            <div className="flex-1 relative overflow-y-auto overflow-x-hidden bg-slate-950">
-                {/* CRT Scanline Effect */}
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.03),rgba(0,255,0,0.01),rgba(0,0,255,0.03))] z-20 pointer-events-none bg-[length:100%_2px,3px_100%] opacity-20" />
-
-                {/* Task Context Overlay */}
-                <div className="absolute top-4 left-4 z-30 max-w-md pointer-events-none">
-                    <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5 }}
-                        className="bg-black/60 backdrop-blur-md border border-white/10 p-4 rounded-lg shadow-xl"
-                    >
-                        <h3 className="text-sm font-bold text-white mb-1 tracking-wide">{simulation.title}</h3>
-                        <p className="text-xs text-white/70 leading-relaxed font-mono">
-                            {simulation.taskDescription}
-                        </p>
-                    </motion.div>
-                </div>
-
-                <div className="relative z-10 min-h-full px-4 pb-8 pt-28 sm:px-6 sm:pt-32" data-testid={`simulation-${simulation.type}`}>
+            <div className="relative flex-1 overflow-y-auto overflow-x-hidden">
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white/5 to-transparent" />
+                <div className="relative z-10 min-h-full px-4 pb-8 pt-5 sm:px-6 sm:pt-6" data-testid={`simulation-${simulation.type}`}>
                     {renderContent()}
                 </div>
             </div>
@@ -404,10 +488,10 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                         animate={{ opacity: 1 }}
                         className="absolute inset-0 z-50 bg-emerald-950/90 flex items-center justify-center backdrop-blur-sm"
                     >
-                        <div className="text-center p-8 bg-black/40 border border-emerald-500/30 rounded-lg max-w-md">
+                        <div className="max-w-md rounded-2xl border border-emerald-500/30 bg-black/35 p-8 text-center shadow-2xl">
                             <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
-                            <h2 className="text-2xl font-bold text-emerald-400 mb-2">SEQUENCE COMPLETE</h2>
-                            <p className="text-emerald-200/60 font-mono text-sm">
+                            <h2 className="mb-2 text-2xl font-bold text-emerald-100">Sequence complete</h2>
+                            <p className="text-sm font-mono text-emerald-100/70">
                                 {simulation.successFeedback || "Data synchronized."}
                             </p>
                         </div>
@@ -419,12 +503,12 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                         animate={{ opacity: 1 }}
                         className="absolute inset-0 z-50 bg-red-950/90 flex items-center justify-center backdrop-blur-sm"
                     >
-                        <div className="text-center p-8 bg-black/40 border border-red-500/30 rounded-lg max-w-md">
+                        <div className="max-w-md rounded-2xl border border-red-500/30 bg-black/35 p-8 text-center shadow-2xl">
                             <X className="w-16 h-16 text-red-400 mx-auto mb-4" />
-                            <h2 className="text-2xl font-bold text-red-300 mb-2">
-                                {completionMeta?.timedOut ? 'TIME EXPIRED' : 'PROTOCOL FAILED'}
+                            <h2 className="mb-2 text-2xl font-bold text-red-100">
+                                {completionMeta?.timedOut ? 'Window closed' : 'Signal lost'}
                             </h2>
-                            <p className="text-red-200/60 font-mono text-sm">
+                            <p className="text-sm font-mono text-red-100/70">
                                 {completionMeta?.timedOut ? "The window closed before you could commit." : "Signal integrity was lost."}
                             </p>
                         </div>
@@ -436,10 +520,10 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                         animate={{ opacity: 1 }}
                         className="absolute inset-0 z-50 bg-amber-950/90 flex items-center justify-center backdrop-blur-sm"
                     >
-                        <div className="text-center p-8 bg-black/40 border border-amber-500/30 rounded-lg max-w-md">
+                        <div className="max-w-md rounded-2xl border border-amber-500/30 bg-black/35 p-8 text-center shadow-2xl">
                             <Terminal className="w-16 h-16 text-amber-400 mx-auto mb-4" />
-                            <h2 className="text-2xl font-bold text-amber-200 mb-2">BYPASS ENGAGED</h2>
-                            <p className="text-amber-200/60 font-mono text-sm">
+                            <h2 className="mb-2 text-2xl font-bold text-amber-100">Exercise skipped</h2>
+                            <p className="text-sm font-mono text-amber-100/70">
                                 Continuing without simulation output.
                             </p>
                         </div>

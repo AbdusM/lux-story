@@ -983,29 +983,17 @@ export const GameChoices = memo(({ choices, isProcessing, onChoice, orbFillLevel
   )
 
   const TransitionStatus = () => (
-    <AnimatePresence>
-      {isTransitioning && (
-        <motion.div
-          key="choice-transition-status"
-          className="px-2 pb-1"
-          initial={{ opacity: 0, y: 4 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -2 }}
-          transition={{ duration: 0.12 }}
-        >
-          <div
-            role="status"
-            aria-live="polite"
-            aria-atomic="true"
-            data-testid="choice-transition-status"
-            className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.08em] text-slate-400"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
-            <span>{isCommitting ? 'Committing your response' : 'Loading next response'}</span>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    isTransitioning ? (
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        data-testid="choice-transition-status"
+        className="sr-only"
+      >
+        {isCommitting ? 'Committing your response' : 'Loading next response'}
+      </div>
+    ) : null
   )
 
   if (useGrouping) {

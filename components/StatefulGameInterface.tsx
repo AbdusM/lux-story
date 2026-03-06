@@ -103,7 +103,6 @@ import { getTrustLabel } from '@/lib/trust-labels'
 import { CharacterState, GameState, GameStateUtils } from '@/lib/character-state'
 import { GameLogic } from '@/lib/game-logic'
 import { synthEngine } from '@/lib/audio/synth-engine'
-import { HeroBadge } from '@/components/HeroBadge'
 import { UnifiedMenu } from '@/components/UnifiedMenu'
 import { GameStateManager } from '@/lib/game-state-manager'
 import { useBackgroundSync } from '@/hooks/useBackgroundSync'
@@ -141,7 +140,6 @@ import { generativeScore } from '@/lib/audio/generative-score' // ISP: Symphonic
 import { CHOICE_HANDLER_TIMEOUT_MS } from '@/lib/constants'
 import { logger } from '@/lib/logger'
 
-import { SyncStatusIndicator } from '@/components/SyncStatusIndicator'
 import { detectArcCompletion } from '@/lib/arc-learning-objectives'
 import { isSupabaseConfigured } from '@/lib/supabase'
 // eslint-disable-next-line
@@ -149,13 +147,11 @@ import { GameChoices } from '@/components/GameChoices'
 import { BottomSheet } from '@/components/ui/BottomSheet'
 import { BookOpen, Stars, Compass, ChevronUp } from 'lucide-react'
 import { SectionErrorBoundary } from '@/components/LayeredErrorBoundaries'
-import { StationStatusBadge } from '@/components/StationStatusBadge'
 import { TextProcessor } from '@/lib/text-processor'
 // InGameSettings removed - consolidated into UnifiedMenu
 import { IdleWarningController } from '@/components/idle/IdleWarningController'
 import { IdleWarningModal } from '@/components/IdleWarningModal'
 import { ErrorOverlay } from '@/components/overlays/ErrorOverlay'
-import { useToast } from '@/components/ui/toast'
 import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } from '@/lib/journey-narrative-generator'
 import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
 import { selectAmbientEvent, IDLE_CONFIG, type AmbientEvent } from '@/lib/ambient-events'
@@ -227,12 +223,12 @@ import { playPatternSound, playTrustSound, playIdentitySound, playMilestoneSound
 import { ExperienceRenderer } from '@/components/game/ExperienceRenderer'
 import { SimulationRenderer } from '@/components/game/SimulationRenderer'
 import { GameErrorBoundary } from '@/components/GameErrorBoundary'
-import { ContinuityStrip } from '@/components/game/ContinuityStrip'
 import { ReturnHookPrompt } from '@/components/game/ReturnHookPrompt'
 import { getPatternUnlockChoices } from '@/lib/pattern-unlock-choices'
 import { getSkillComboUnlockChoices } from '@/lib/skill-combo-unlock-choices'
 import { calculateSkillDecay, getSkillDecayNarrative } from '@/lib/assessment-derivatives'
 import { buildChoiceOutcomePresentation, type ChoiceOutcomeCard, type ChoiceOutcomePresentationMode } from '@/lib/choice-outcome-presentation'
+import { GAMEPLAY_SHELL, UI_STORAGE_KEYS } from '@/lib/ui-constants'
 import {
   getFactionLeitmotifSoundCue,
   inferFactionAudioContext,
@@ -258,6 +254,8 @@ const KeyboardShortcutsHelp = dynamic(
   () => import('@/components/KeyboardShortcutsHelp').then((mod) => mod.KeyboardShortcutsHelp),
   { ssr: false, loading: () => null },
 )
+
+const CHARACTER_HEADER_MIN_HEIGHT = 56
 const Journal = dynamic(
   () => import('@/components/Journal').then((mod) => mod.Journal),
   { ssr: false, loading: () => null },
@@ -433,9 +431,6 @@ export default function StatefulGameInterface() {
     getIsBlocked: () => overlayBlocksGlobalShortcuts || state.isProcessing,
     getAllowedActionsWhenBlocked: () => useOverlayStore.getState().getAllowedShortcutsWhenBlocked(),
   })
-
-  // Toast notifications for keyboard hint
-  const toast = useToast()
 
   // Compute orb fill percentages for KOTOR-style locked choices
   const MAX_ORB_COUNT = 100
@@ -686,48 +681,8 @@ export default function StatefulGameInterface() {
     })
   }, [registerHandler, handleToggleMute])
 
-  // Keyboard shortcut hint - show after 30 seconds of gameplay (only once)
-  useEffect(() => {
-    if (!state.hasStarted) return
-
-    // Check if already shown
-    const hintShown = localStorage.getItem('lux_keyboard_hint_shown')
-    if (hintShown === 'true') return
-
-    const timer = setTimeout(() => {
-      // Double-check it hasn't been shown (e.g., user opened shortcuts manually)
-      if (localStorage.getItem('lux_keyboard_hint_shown') !== 'true') {
-        toast.info('Press ? for keyboard shortcuts', 'Navigate faster with hotkeys')
-        localStorage.setItem('lux_keyboard_hint_shown', 'true')
-      }
-    }, 30000) // 30 seconds
-
-    return () => clearTimeout(timer)
-  }, [state.hasStarted, toast])
-
-  // Contextual surfacing: nudge Journal once when the player has fresh orb insights.
-  useEffect(() => {
-    if (!state.hasStarted) return
-    if (!hasNewOrbs) return
-
-    const key = 'lux_journal_discovery_toast_seen'
-    if (localStorage.getItem(key) === 'true') return
-
-    toast.info('Journal updated', 'Open Journal to review your latest resonance signals.')
-    localStorage.setItem(key, 'true')
-  }, [hasNewOrbs, state.hasStarted, toast])
-
-  // Contextual surfacing: nudge Constellation once when trust/meeting changes land.
-  useEffect(() => {
-    if (!state.hasStarted) return
-    if (!state.hasNewTrust && !state.hasNewMeeting) return
-
-    const key = 'lux_constellation_discovery_toast_seen'
-    if (localStorage.getItem(key) === 'true') return
-
-    toast.info('Journey updated', 'Open Skill Constellation to inspect new relationship and skill movement.')
-    localStorage.setItem(key, 'true')
-  }, [state.hasNewMeeting, state.hasNewTrust, state.hasStarted, toast])
+  // Passive discovery toasts are intentionally disabled in active play.
+  // Header halos already surface Journal/Journey changes without breaking immersion.
 
   // God Mode Refresh: Reload dialogue when refreshCounter changes (God Mode navigation)
   useEffect(() => {
@@ -3999,6 +3954,20 @@ export default function StatefulGameInterface() {
     wasJourneySummaryOpenRef.current = isJourneySummaryOpen
   }, [isJourneySummaryOpen])
 
+  const didHandleResumeToReportRef = useRef(false)
+  useEffect(() => {
+    if (didHandleResumeToReportRef.current) return
+    if (!state.gameState) return
+
+    didHandleResumeToReportRef.current = true
+
+    if (typeof window === 'undefined') return
+    if (localStorage.getItem(UI_STORAGE_KEYS.resumeToReport) !== 'true') return
+
+    localStorage.removeItem(UI_STORAGE_KEYS.resumeToReport)
+    pushOverlay('report')
+  }, [pushOverlay, state.gameState])
+
 	  const renderOverlay = useCallback((entry: { id: string; data?: Record<string, unknown> }) => {
 	    if (entry.id === 'shortcutsHelp') {
 	      return (
@@ -4121,13 +4090,11 @@ export default function StatefulGameInterface() {
 		      return (
 		        <SettingsMobileSheet
 		          onClose={() => closeOverlay('settings', { reason: 'closeButton' })}
-	          onShowReport={state.gameState ? () => pushOverlay('report') : undefined}
 	          onRequestLogin={() => pushOverlay('loginModal')}
 	          isMuted={state.isMuted}
 	          onToggleMute={handleToggleMute}
 	          volume={audioVolume}
 	          onVolumeChange={handleVolumeChange}
-	          playerId={state.gameState?.playerId}
 	        />
 	      )
 	    }
@@ -4268,7 +4235,11 @@ export default function StatefulGameInterface() {
       {/* Environmental body class manager - applies pattern/character atmosphere to <body> */}
       <EnvironmentalEffects gameState={state.gameState} />
       <div
-        className="relative z-10 flex flex-col min-h-[100dvh] w-full max-w-xl mx-auto bg-black/10"
+        className={cn(
+          "relative z-10 flex min-h-[100dvh] w-full flex-col bg-black/10",
+          GAMEPLAY_SHELL.maxWidth,
+          "mx-auto"
+        )}
         style={{
           willChange: 'auto',
           contain: 'layout style paint',
@@ -4278,6 +4249,7 @@ export default function StatefulGameInterface() {
           paddingLeft: 'env(safe-area-inset-left)',
           paddingRight: 'env(safe-area-inset-right)'
         }}
+        data-testid="gameplay-shell"
       >
         {/* ══════════════════════════════════════════════════════════════════
           FIXED HEADER-Always visible at top (Claude/ChatGPT pattern)
@@ -4285,24 +4257,15 @@ export default function StatefulGameInterface() {
         <header
           className="relative flex-shrink-0 glass-panel border-b border-white/10 z-10"
           style={{ paddingTop: 'env(safe-area-inset-top)' }}
+          data-testid="gameplay-header"
         >
-          <div className="max-w-4xl mx-auto px-3 sm:px-4">
+          <div className="mx-auto w-full px-4 sm:px-6">
             {/* Top Row-Title and Navigation */}
-            <div className="flex items-center justify-between py-2 border-b border-white/5">
-              <Link href="/" className="text-sm font-semibold text-slate-100 hover:text-white transition-colors truncate min-w-0 flex flex-col">
+            <div className="flex items-center justify-between py-3 sm:py-4 border-b border-white/5">
+              <Link href="/" className="text-sm font-semibold text-slate-100 hover:text-white transition-colors truncate min-w-0">
                 <span>Terminus</span>
-                {/* Station Status-Always visible compact dashboard */}
-                <StationStatusBadge gameState={state.gameState} />
               </Link>
               <div className="flex items-center gap-1 flex-shrink-0">
-                {/* Hero Badge-Player Identity */}
-                {state.gameState && (
-                  <HeroBadge
-                    patterns={state.gameState.patterns}
-                    compact={true}
-                    className="mr-2 hidden sm:flex"
-                  />
-                )}
 	                <Button
 	                  variant="ghost"
 	                  size="icon"
@@ -4348,7 +4311,7 @@ export default function StatefulGameInterface() {
                 {/* Unified Settings Menu - Consolidates game settings, accessibility, and account */}
 	                <UnifiedMenu
 	                  open={isSettingsOpen}
-	                  onOpenChange={(nextOpen, meta) => {
+                  onOpenChange={(nextOpen, meta) => {
 	                    if (nextOpen) {
 	                      pushOverlay('settings')
 	                      return
@@ -4358,49 +4321,34 @@ export default function StatefulGameInterface() {
                       const reason = meta?.reason ?? 'closeButton'
 	                    closeOverlay('settings', { reason })
 	                  }}
-                  onShowReport={() => {
-                    if (!state.gameState) return
-                    pushOverlay('report')
-                  }}
                   onRequestLogin={() => pushOverlay('loginModal')}
                   isMuted={state.isMuted}
                   onToggleMute={handleToggleMute}
                   volume={audioVolume}
                   onVolumeChange={handleVolumeChange}
-                  playerId={state.gameState?.playerId}
                 />
-
-                {/* Connection Status Indicator */}
-                <SyncStatusIndicator />
               </div>
             </div>
-            {/* Character Info Row-extra vertical padding for mobile touch */}
-            {/* Only show if current node has a speaker (hide for atmospheric narration) */}
-            {currentCharacter && state.currentNode?.speaker && (
-              <div
-                className="flex items-center justify-between py-3 sm:py-2"
-                data-testid="character-header"
-                data-character-id={state.currentCharacterId}
-              >
+            <div
+              className="flex min-h-[56px] items-center justify-between py-2"
+              style={{ minHeight: `${CHARACTER_HEADER_MIN_HEIGHT}px` }}
+              data-testid="character-header"
+              data-character-id={state.currentCharacterId}
+            >
+              {currentCharacter && state.currentNode?.speaker ? (
                 <div className="flex items-center gap-2 font-medium text-slate-200 text-sm sm:text-base">
                   <CharacterAvatar
                     characterName={characterNames[state.currentCharacterId]}
                     size="sm"
                   />
-                  <span data-testid="speaker-name" className="truncate max-w-[150px] sm:max-w-none">{characterNames[state.currentCharacterId]}</span>
+                  <span data-testid="speaker-name" className="truncate max-w-[150px] sm:max-w-none">
+                    {characterNames[state.currentCharacterId]}
+                  </span>
                 </div>
-                <div className="flex flex-col items-end">
-                  {/* Trust Label hidden for immersion */}
-                </div>
-              </div>
-            )}
-
-            {state.gameState && (
-              <ContinuityStrip
-                gameState={state.gameState}
-                characterId={state.currentCharacterId}
-              />
-            )}
+              ) : (
+                <div aria-hidden="true" className="h-9" />
+              )}
+            </div>
           </div>
         </header>
 
@@ -4431,13 +4379,18 @@ export default function StatefulGameInterface() {
           ══════════════════════════════════════════════════════════════════ */}
         <main
           // Mobile safe-area/corner padding: tests assert the game interface box is inset from edges.
-          className="flex-1 overflow-y-auto overscroll-contain mx-2 sm:mx-0"
+          className="flex-1 min-h-0 overflow-y-auto overscroll-contain"
           style={{ WebkitOverflowScrolling: 'touch', overflowAnchor: 'none' }}
           data-testid="game-interface"
         >
-          <div className="max-w-4xl mx-auto px-3 sm:px-4 py-3 sm:py-4 md:pt-8 lg:pt-12 pb-4 sm:pb-6">
+          <div className="mx-auto w-full px-4 sm:px-6 py-4 sm:py-6">
             {/* Dialogue container-STABLE: no animations to prevent layout shifts */}
-            <div key="dialogue-wrapper">
+            <div
+              key="dialogue-wrapper"
+              className="flex flex-col justify-center"
+              style={{ minHeight: GAMEPLAY_SHELL.storyViewportMinHeight }}
+              data-testid="story-viewport"
+            >
               <Card
                 className="glass-panel text-white"
                 style={{ transition: 'none', background: 'rgba(10, 12, 16, 0.85)' }}
@@ -4472,22 +4425,22 @@ export default function StatefulGameInterface() {
 
                   {/* Dialogue Card-Dynamic Marquee Effect */}
                   {/* STABILITY: Removed transition-all to prevent container jumping */}
-                  <Card
+                  <div
                     className={cn(
-                    "shadow-lg backdrop-blur-xl relative overflow-hidden rounded-xl",
-                    !state.activeExperience && !state.currentNode?.simulation ? "min-h-[180px] sm:min-h-[240px]" : "",
+                    "relative overflow-hidden rounded-xl backdrop-blur-xl shadow-lg",
+                    !state.activeExperience && !state.currentNode?.simulation ? "min-h-[220px] sm:min-h-[260px]" : "",
                     state.activeExperience || state.currentNode?.simulation
-                      ? "bg-slate-950/80 border-amber-500/40 shadow-[0_0_30px_rgba(245,158,11,0.2)]"
+                      ? "border border-amber-500/40 bg-slate-950/80 shadow-[0_0_30px_rgba(245,158,11,0.2)]"
                       : (state.currentDialogueContent?.emotion === 'analytical' || state.currentDialogueContent?.emotion === 'knowing')
-                        ? "bg-slate-950/80 border-indigo-500/40 shadow-[0_0_30px_rgba(99,102,241,0.2)]"
+                        ? "bg-slate-950/80 ring-1 ring-indigo-500/30 shadow-[0_0_30px_rgba(99,102,241,0.16)]"
                         : (state.currentDialogueContent?.emotion === 'fear' || state.currentDialogueContent?.emotion === 'tension')
-                          ? "bg-slate-950/80 border-red-500/40 shadow-[0_0_30px_rgba(239,68,68,0.2)]"
-                          : "bg-black/40 border-white/5 hover:border-white/10"
+                          ? "bg-slate-950/80 ring-1 ring-red-500/30 shadow-[0_0_30px_rgba(239,68,68,0.16)]"
+                          : "bg-black/25 ring-1 ring-white/5"
                   )}
                     data-dialogue-stage={(!state.activeExperience && !state.currentNode?.simulation) ? 'pinned' : 'dynamic'}
                     data-testid="dialogue-stage"
                   >
-                    <CardContent className="p-0">
+                    <div className="p-0">
                       {/* Marquee Header Overlay */}
                       {(state.activeExperience || state.currentNode?.simulation) && (
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent opacity-50" />
@@ -4568,34 +4521,6 @@ export default function StatefulGameInterface() {
                             )
                           })()}
 
-                          {state.choiceOutcomeCard && (
-                            <div
-                              data-testid="choice-outcome-card"
-                              className="mt-4 rounded-lg border border-emerald-400/20 bg-emerald-950/20 px-4 py-3"
-                            >
-                              <p className="text-xs uppercase tracking-[0.08em] text-emerald-300/80">Outcome</p>
-                              <p className="mt-1 text-sm text-emerald-100">{state.choiceOutcomeCard.summary}</p>
-                              {state.choiceOutcomeCard.rewards.length > 0 && (
-                                <ul className="mt-2 flex flex-wrap gap-2">
-                                  {state.choiceOutcomeCard.rewards.map((reward) => (
-                                    <li
-                                      key={reward}
-                                      className="rounded-full border border-emerald-400/30 bg-emerald-900/40 px-2 py-1 text-xs text-emerald-100"
-                                    >
-                                      {reward}
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                              {state.choiceOutcomeCard.hiddenCount > 0 && (
-                                <p className="mt-2 text-xs text-emerald-300/70">
-                                  +{state.choiceOutcomeCard.hiddenCount} more update{state.choiceOutcomeCard.hiddenCount === 1 ? '' : 's'}
-                                </p>
-                              )}
-                              <p className="mt-2 text-xs text-slate-300">{state.choiceOutcomeCard.nextLabel}</p>
-                            </div>
-                          )}
-
                           {/* ISP: INLINE SIMULATION WIDGET (Handshake Protocol) */}
                           {state.currentNode?.simulation && state.currentNode.simulation.mode === 'inline' && (
                             <div className="mt-6">
@@ -4650,8 +4575,8 @@ export default function StatefulGameInterface() {
                       )}
 
 
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -4740,12 +4665,14 @@ export default function StatefulGameInterface() {
         {!isEnding && !isTimedSimulationActive && (
           <footer
             className={cn(
-              "flex-shrink-0 sticky bottom-0 glass-panel max-w-4xl mx-auto w-full px-3 sm:px-4 z-20 pb-[max(16px,env(safe-area-inset-bottom,0px))]",
+              "flex-shrink-0 sticky bottom-0 glass-panel mx-auto w-full px-4 sm:px-6 z-20 pb-[max(16px,env(safe-area-inset-bottom,0px))]",
               useCappedChoiceSheet ? "rounded-t-2xl border-b-0 overflow-hidden" : ""
             )}
+            style={{ minHeight: GAMEPLAY_SHELL.responseDockMinHeight }}
             data-choice-sheet-mode={useBottomSheetChoices ? 'bottom-sheet' : (useCappedChoiceSheet ? 'capped' : 'free')}
+            data-testid="response-dock"
           >
-            <div className="px-4 sm:px-6 pt-1 pb-2">
+            <div className="pt-2 pb-3">
               {/* Scrollable choices container with scroll indicator */}
               <div className="relative w-full">
                 {/* SINGLE SCROLL REFACTOR: Removed nested scroll - choices expand naturally */}
@@ -4778,7 +4705,7 @@ export default function StatefulGameInterface() {
                         <span>
                           {state.isProcessing
                             ? 'Loading next response'
-                            : `Choose a response (${preparedChoices.length})`}
+                            : `Responses (${preparedChoices.length})`}
                         </span>
                       </span>
                       {!state.isProcessing && <ChevronUp className="h-4 w-4 opacity-70" aria-hidden="true" />}

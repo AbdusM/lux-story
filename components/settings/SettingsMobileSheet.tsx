@@ -21,12 +21,10 @@ export interface SettingsMobileSheetProps extends Omit<SettingsMenuContentsProps
  */
 export function SettingsMobileSheet({
   onClose,
-  onShowReport,
   isMuted,
   onToggleMute,
   volume,
   onVolumeChange,
-  playerId,
   onRequestLogin,
 }: SettingsMobileSheetProps) {
   const prefersReducedMotion = useReducedMotion()
@@ -63,12 +61,10 @@ export function SettingsMobileSheet({
 
         <SettingsMenuContents
           onRequestClose={onClose}
-          onShowReport={onShowReport}
           isMuted={isMuted}
           onToggleMute={onToggleMute}
           volume={volume}
           onVolumeChange={onVolumeChange}
-          playerId={playerId}
           onRequestLogin={onRequestLogin}
         />
       </motion.div>

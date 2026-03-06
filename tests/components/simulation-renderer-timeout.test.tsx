@@ -1,6 +1,6 @@
 import React from 'react'
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
-import { act, render } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 vi.mock('framer-motion', () => ({
   motion: {
@@ -59,5 +59,36 @@ describe('SimulationRenderer', () => {
     })
     expect(onComplete).toHaveBeenCalledTimes(1)
     expect(onComplete.mock.calls[0]?.[0]).toMatchObject({ success: false, timedOut: true })
+  })
+
+  it('uses the Lux Story shared shell instead of the old dashboard chrome', () => {
+    const onComplete = vi.fn()
+    const onExit = vi.fn()
+
+    render(
+      <SimulationRenderer
+        simulation={{
+          type: 'secure_terminal',
+          title: 'Archive Review',
+          taskDescription: 'Trace the record that matters before the window closes.',
+          initialContext: {
+            label: 'ARCHIVE',
+            content: 'LOG ENTRY 01',
+          },
+          onExit,
+        }}
+        onComplete={onComplete}
+      />
+    )
+
+    expect(screen.getByTestId('simulation-shell-header')).toBeInTheDocument()
+    expect(screen.getByTestId('simulation-frame-title')).toHaveTextContent('Archive Review')
+    expect(screen.getByTestId('simulation-frame-brief')).toHaveTextContent('Trace the record that matters before the window closes.')
+    expect(screen.getByRole('button', { name: /leave exercise/i })).toBeInTheDocument()
+    expect(screen.queryByText(/SIMULATION_CORE/i)).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /abort simulation/i })).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: /leave exercise/i }))
+    expect(onExit).toHaveBeenCalledTimes(1)
   })
 })
