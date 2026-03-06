@@ -92,7 +92,10 @@ describe('UnifiedMenu', () => {
 
     expect(screen.getByRole('button', { name: /profile & preferences/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /research participation/i })).toBeInTheDocument()
-    expect(screen.getByText(/account, backups, audio, accessibility, and display controls\./i)).toBeInTheDocument()
+    expect(
+      screen.getByText(/keep audio, accessibility, and account tools close without pushing admin or report ui back into the story\./i)
+    ).toBeInTheDocument()
+    expect(screen.getByText(/audio, accessibility, backups, and account controls\./i)).toBeInTheDocument()
     expect(screen.getByText(/review research sharing and export permissions\./i)).toBeInTheDocument()
     expect(screen.queryByText(/career profile/i)).not.toBeInTheDocument()
     expect(screen.queryByText(/clinical audit/i)).not.toBeInTheDocument()
