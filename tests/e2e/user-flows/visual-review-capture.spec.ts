@@ -37,7 +37,7 @@ async function primeProfileSession(page: import('@playwright/test').Page) {
 test.describe.configure({ mode: 'serial' })
 
 test.describe('Visual Review Capture', () => {
-  test('capture live production review surfaces', async ({ page, seedState }, testInfo) => {
+  test('capture review surfaces', async ({ page, seedState }, testInfo) => {
     const project = testInfo.project.name
     const isDesktop = project === 'visual-desktop-1440'
     const isIPhone14 = project === 'visual-mobile-iphone-14'
