@@ -45,9 +45,9 @@ export function SettingsMobileSheet({
         variants={prefersReducedMotion ? undefined : panelFromBottom}
         transition={prefersReducedMotion ? reducedMotion : undefined}
         className={cn(
-          'w-full max-w-lg',
+          'w-full max-w-xl',
           'glass-panel-solid !rounded-t-2xl border border-white/10 shadow-2xl',
-          'max-h-[85vh] overflow-hidden flex flex-col',
+          'max-h-[92dvh] sm:max-h-[85vh] overflow-hidden flex flex-col',
           'pointer-events-auto',
           // Keep the bottom of the sheet clear of notches/home indicators.
           'pb-0'

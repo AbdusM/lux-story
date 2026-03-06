@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { CheckCircle2, XCircle, AlertTriangle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { SimulationComponentProps, SimulationResult } from './types'
+import { humanizeSimulationContextLabel } from './simulation-copy'
 
 type ExtractedOption = {
   key: string
@@ -42,7 +43,9 @@ function extractCorrectOptions(successFeedback?: string): string[] | null {
 
 export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps) {
   const content = typeof config.initialContext?.content === 'string' ? config.initialContext.content : ''
-  const label = typeof config.initialContext?.label === 'string' ? config.initialContext.label : undefined
+  const label = humanizeSimulationContextLabel(
+    typeof config.initialContext?.label === 'string' ? config.initialContext.label : undefined
+  )
   const displayStyle = config.initialContext?.displayStyle ?? 'text'
 
   const isTimed = typeof config.timeLimit === 'number' && Number.isFinite(config.timeLimit) && config.timeLimit > 0
@@ -91,19 +94,19 @@ export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps)
       <div className="rounded-lg border border-white/10 bg-black/40 p-3">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <div className="text-xs uppercase tracking-widest text-white/50">Analysis Brief</div>
+            <div className="text-xs uppercase tracking-[0.16em] text-white/50">Case File</div>
             <div className="truncate text-sm font-medium text-white">{config.title}</div>
-            {label && <div className="mt-1 truncate font-mono text-[11px] text-white/50">{label}</div>}
+            {label && <div className="mt-1 text-[11px] text-white/55">{label}</div>}
           </div>
           <div className="flex items-center gap-2 text-xs text-white/50">
             {canInteract ? (
               <span className="inline-flex items-center gap-1 rounded border border-amber-500/20 bg-amber-950/20 px-2 py-1">
                 <AlertTriangle className="h-3 w-3 text-amber-300/80" />
-                timed
+                Timed window
               </span>
             ) : (
               <span className="inline-flex items-center gap-1 rounded border border-white/10 bg-white/5 px-2 py-1">
-                read
+                Reference only
               </span>
             )}
           </div>
@@ -113,7 +116,7 @@ export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps)
 
       <div className="rounded-lg border border-white/10 bg-black/30">
         <div className="border-b border-white/5 px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-white/40">
-          Evidence
+          What you know
         </div>
         <pre
           className={cn(
@@ -128,7 +131,7 @@ export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps)
       {options.length > 0 && (
         <div className="space-y-2">
           <div className="text-[10px] uppercase tracking-[0.14em] text-white/50">
-            {canInteract ? 'Commit a decision' : 'Options (use the choices below)'}
+            {canInteract ? 'Choose your response' : 'Available responses'}
           </div>
           <div className="grid gap-2">
             {options.map((opt) => {
@@ -174,12 +177,12 @@ export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps)
                 ? 'cursor-not-allowed border-white/10 bg-white/5 text-white/40'
                 : 'border-emerald-400/30 bg-emerald-950/20 text-emerald-100 hover:bg-emerald-900/30'
             )}
-          >
+            >
             <CheckCircle2 className="h-4 w-4" />
-            Commit Decision
+            Lock in your response
           </button>
 
-          {!correctOptions && (
+          {!correctOptions && process.env.NODE_ENV !== 'production' && (
             <p className="text-xs text-white/50">
               Correct option not detected from `successFeedback`. This run will treat any selection as success.
             </p>
@@ -189,13 +192,12 @@ export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps)
         <div className="rounded-lg border border-red-500/20 bg-red-950/10 p-3 text-sm text-red-200/90">
           <div className="flex items-center gap-2 font-semibold">
             <XCircle className="h-4 w-4 text-red-300" />
-            Simulation options not detected
+            Responses unavailable
           </div>
           <p className="mt-1 text-xs text-red-200/80">
-            This timed analysis node is missing A-D options in `initialContext.content`. Consider adding option lines or
-            an explicit `correctOption` field to the simulation config.
+            This scenario could not load its response options in time.
           </p>
-          {correctOptionLabel && correctOptionTexts.length > 0 && (
+          {correctOptionLabel && correctOptionTexts.length > 0 && process.env.NODE_ENV !== 'production' && (
             <p className="mt-2 text-xs text-red-200/80">
               Expected: Option {correctOptionLabel} ({correctOptionTexts.join(' | ')})
             </p>
@@ -206,7 +208,7 @@ export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps)
             className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-red-400/30 bg-red-950/20 px-4 py-3 text-sm font-semibold text-red-100 transition-colors hover:bg-red-900/30"
           >
             <AlertTriangle className="h-4 w-4" />
-            Bypass Protocol
+            Continue
           </button>
         </div>
       ) : null}

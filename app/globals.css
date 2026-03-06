@@ -20,7 +20,8 @@
 
   /* Narrative text styling - lifts text off dark backgrounds for readability */
   .narrative-text {
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.28);
+    text-rendering: optimizeLegibility;
   }
 
   /* Sprint 4: Text Readability Improvements */

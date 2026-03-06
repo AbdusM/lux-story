@@ -51,8 +51,14 @@ describe('SimulationRenderer (data_analysis)', () => {
       />
     )
 
+    expect(screen.getByText('Case File')).toBeInTheDocument()
+    expect(screen.getAllByText('Working Brief')).toHaveLength(2)
+    expect(screen.getByText('Choose your response')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /lock in your response/i })).toBeInTheDocument()
+    expect(screen.queryByText(/^FRAMEWORK$/i)).not.toBeInTheDocument()
+
     fireEvent.click(screen.getByRole('button', { name: /option a/i }))
-    fireEvent.click(screen.getByRole('button', { name: /commit decision/i }))
+    fireEvent.click(screen.getByRole('button', { name: /lock in your response/i }))
 
     act(() => {
       vi.advanceTimersByTime(2000)
@@ -87,7 +93,7 @@ describe('SimulationRenderer (data_analysis)', () => {
     )
 
     fireEvent.click(screen.getByRole('button', { name: /option b/i }))
-    fireEvent.click(screen.getByRole('button', { name: /commit decision/i }))
+    fireEvent.click(screen.getByRole('button', { name: /lock in your response/i }))
 
     act(() => {
       vi.advanceTimersByTime(2000)

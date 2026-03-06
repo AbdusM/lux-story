@@ -4012,7 +4012,7 @@ export default function StatefulGameInterface() {
 	          onClose={() => closeOverlay('bottomSheet', { reason: 'closeButton' })}
 	          title={`Choose a response (${preparedChoices.length})`}
 	        >
-	          <div className="px-2 pb-2">
+	          <div className="px-3 pb-4 pt-1 sm:px-4 sm:pb-5">
 	            <GameChoices
 	              choices={preparedChoices}
 	              isProcessing={state.isProcessing}
@@ -4734,7 +4734,7 @@ export default function StatefulGameInterface() {
                       data-testid="choice-sheet-trigger"
                       aria-haspopup="dialog"
                       aria-expanded={isChoicesBottomSheetOpen}
-                      className="w-full justify-between border border-white/10 bg-white/5 hover:bg-white/10"
+                      className="min-h-[56px] w-full justify-between rounded-[18px] border border-white/10 bg-white/5 px-4 py-3 hover:bg-white/10"
                     >
                       <span className="flex items-center gap-2">
                         {(state.isProcessing || hasBlockingGameplayInput) && (
@@ -4746,7 +4746,11 @@ export default function StatefulGameInterface() {
                             : `Responses (${preparedChoices.length})`}
                         </span>
                       </span>
-                      {!state.isProcessing && <ChevronUp className="h-4 w-4 opacity-70" aria-hidden="true" />}
+                      {!state.isProcessing && (
+                        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/5" aria-hidden="true">
+                          <ChevronUp className="h-4 w-4 opacity-70" />
+                        </span>
+                      )}
                     </Button>
                   ) : (
                     <GameChoices

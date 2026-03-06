@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, CheckCircle2, Terminal } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -17,6 +17,7 @@ import { DiplomacyTable } from './simulations/DiplomacyTable'
 import { BotanyGrid } from './simulations/BotanyGrid'
 import { PitchDeck } from './simulations/PitchDeck'
 import { DataTicker } from './simulations/handshake/DataTicker'
+import { humanizeSimulationContextLabel } from './simulations/simulation-copy'
 
 interface SimulationRendererProps {
     simulation: SimulationConfig
@@ -34,8 +35,6 @@ type SimulationFrameTheme = {
 }
 
 function getSimulationFrameTheme(simulation: SimulationConfig): SimulationFrameTheme {
-    const lower = `${simulation.type} ${simulation.title} ${simulation.taskDescription}`.toLowerCase()
-
     if (
         simulation.type === 'visual_canvas' ||
         simulation.type === 'architect_3d' ||
@@ -44,7 +43,7 @@ function getSimulationFrameTheme(simulation: SimulationConfig): SimulationFrameT
         simulation.type === 'news_feed'
     ) {
         return {
-            label: 'Studio Thread',
+            label: 'Studio Session',
             shellClass: 'border-fuchsia-400/20 bg-slate-950 text-slate-100 shadow-[0_0_50px_rgba(217,70,239,0.12)]',
             ambientClass: 'bg-[radial-gradient(circle_at_top_left,rgba(217,70,239,0.18),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.14),transparent_30%),linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.98))]',
             badgeClass: 'border-fuchsia-400/20 bg-fuchsia-400/10 text-fuchsia-100',
@@ -61,7 +60,7 @@ function getSimulationFrameTheme(simulation: SimulationConfig): SimulationFrameT
         simulation.type === 'botany_grid'
     ) {
         return {
-            label: 'Field Thread',
+            label: 'Live Scenario',
             shellClass: 'border-emerald-400/20 bg-slate-950 text-slate-100 shadow-[0_0_50px_rgba(16,185,129,0.12)]',
             ambientClass: 'bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.16),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.12),transparent_30%),linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.98))]',
             badgeClass: 'border-emerald-400/20 bg-emerald-400/10 text-emerald-100',
@@ -72,7 +71,7 @@ function getSimulationFrameTheme(simulation: SimulationConfig): SimulationFrameT
     }
 
     return {
-        label: 'Signal Thread',
+        label: 'Active Case',
         shellClass: 'border-amber-400/20 bg-slate-950 text-slate-100 shadow-[0_0_50px_rgba(245,158,11,0.12)]',
         ambientClass: 'bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.18),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(99,102,241,0.12),transparent_30%),linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.98))]',
         badgeClass: 'border-amber-400/20 bg-amber-400/10 text-amber-100',
@@ -84,6 +83,9 @@ function getSimulationFrameTheme(simulation: SimulationConfig): SimulationFrameT
 
 export function SimulationRenderer({ simulation, onComplete }: SimulationRendererProps) {
     const frameTheme = getSimulationFrameTheme(simulation)
+    const contextLabel = humanizeSimulationContextLabel(
+        typeof simulation.initialContext?.label === 'string' ? simulation.initialContext.label : undefined
+    )
     const [status, setStatus] = useState<'active' | 'success' | 'failed' | 'skipped'>('active')
     const [secondsRemaining, setSecondsRemaining] = useState<number | null>(() => {
         if (typeof simulation.timeLimit !== 'number') return null
@@ -125,7 +127,18 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
         // NOTE: timeLimit changes should also reset to keep determinism during dev hot reload.
     }, [simulation.type, simulation.title, simulation.taskDescription, simulation.variantId, simulation.timeLimit])
 
-    const handleSuccess = (result: SimulationResult) => {
+    const handleFailure = useCallback((result: SimulationResult) => {
+        if (completionRef.current) return
+        completionRef.current = true
+        setStatus('failed')
+        setCompletionMeta({ timedOut: Boolean(result.timedOut) })
+        const normalized: SimulationResult = { ...result, success: false }
+        completionTimerRef.current = window.setTimeout(() => {
+            onComplete(normalized)
+        }, 2000)
+    }, [onComplete])
+
+    const handleSuccess = useCallback((result: SimulationResult) => {
         if (result.success === false) {
             handleFailure(result)
             return
@@ -142,20 +155,9 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
         completionTimerRef.current = window.setTimeout(() => {
             onComplete(normalized)
         }, 2000)
-    }
+    }, [handleFailure, onComplete])
 
-    const handleFailure = (result: SimulationResult) => {
-        if (completionRef.current) return
-        completionRef.current = true
-        setStatus('failed')
-        setCompletionMeta({ timedOut: Boolean(result.timedOut) })
-        const normalized: SimulationResult = { ...result, success: false }
-        completionTimerRef.current = window.setTimeout(() => {
-            onComplete(normalized)
-        }, 2000)
-    }
-
-    const handleSkip = () => {
+    const handleSkip = useCallback(() => {
         if (completionRef.current) return
         completionRef.current = true
         setStatus('skipped')
@@ -164,7 +166,7 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
         completionTimerRef.current = window.setTimeout(() => {
             onComplete(normalized)
         }, 1200)
-    }
+    }, [onComplete])
 
     // Time limits live here (not inside simulation implementations) so Phase 2/3 nodes can
     // reliably branch into fail follow-ups without each mini-game needing bespoke timers.
@@ -191,7 +193,7 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
         return () => {
             window.clearInterval(intervalId)
         }
-    }, [simulation.timeLimit, status])
+    }, [handleFailure, simulation.timeLimit, status])
 
     const renderContent = () => {
         const effectivePhase = typeof simulation.phase === 'number' ? simulation.phase : 1
@@ -331,7 +333,7 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                     </div>
                 )}
                 <div className="absolute left-3 top-3 z-20 pointer-events-none">
-                    <div className={cn("rounded-full border px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.18em] backdrop-blur-sm", frameTheme.badgeClass)}>
+                    <div className={cn("rounded-full border px-3 py-1 text-[10px] font-medium tracking-[0.08em] backdrop-blur-sm", frameTheme.badgeClass)}>
                         {frameTheme.label}
                     </div>
                 </div>
@@ -406,18 +408,13 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                 <div className="flex flex-col gap-4 px-4 py-4 sm:px-6 sm:py-5">
                     <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0 space-y-2">
-                            <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono uppercase tracking-[0.18em] text-slate-300/75">
-                                <span className={cn("rounded-full border px-2.5 py-1 backdrop-blur-sm", frameTheme.badgeClass)}>
+                            <div className="flex flex-wrap items-center gap-2 text-[11px] font-medium tracking-[0.08em] text-slate-200/75">
+                                <span className={cn("rounded-full border px-3 py-1.5 backdrop-blur-sm", frameTheme.badgeClass)}>
                                     {frameTheme.label}
                                 </span>
-                                {typeof simulation.phase === 'number' && (
-                                    <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-slate-200/80">
-                                        Phase {simulation.phase}
-                                    </span>
-                                )}
-                                {simulation.initialContext?.label && (
-                                    <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-slate-200/80">
-                                        {simulation.initialContext.label}
+                                {contextLabel && (
+                                    <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-slate-100/75">
+                                        {contextLabel}
                                     </span>
                                 )}
                             </div>

@@ -86,27 +86,28 @@ export function ReturnHookPrompt({
     <div
       data-testid="return-hook"
       className={cn(
-        "rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.22)] backdrop-blur-xl",
+        "rounded-[24px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.18)] backdrop-blur-xl sm:p-5",
         className
       )}
     >
       <div className="flex items-start gap-3">
-        <div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-lg bg-white/5">
+        <div className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-xl border border-white/8 bg-white/[0.03]">
           {icon}
         </div>
         <div className="min-w-0 flex-1">
-          <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400">{title}</div>
+          <div className="text-[10px] uppercase tracking-[0.18em] text-slate-400/90">{title}</div>
           <div className="mt-1 text-sm font-semibold text-white" data-testid="return-hook-primary">
             {primary}
           </div>
           <div className="mt-0.5 text-xs text-slate-400" data-testid="return-hook-secondary">
             {secondary}
           </div>
-          <div className="mt-3 flex gap-2">
+          <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
             <Button
               size="sm"
               variant="secondary"
               onClick={onOpenJourney}
+              className="w-full justify-center border border-white/10 bg-white/8 text-slate-100 hover:bg-white/12 sm:w-auto"
               data-testid="return-hook-open-journey"
             >
               See what changed
@@ -114,22 +115,22 @@ export function ReturnHookPrompt({
             {primaryCharacterId && onVisitCharacter && (
               <Button
                 size="sm"
-                variant="outline"
+                variant="ghost"
                 onClick={() => onVisitCharacter(primaryCharacterId)}
+                className="w-full justify-center border border-transparent bg-transparent px-0 text-amber-100/85 hover:bg-white/5 hover:text-amber-50 sm:w-auto sm:px-3"
                 data-testid="return-hook-visit-character"
               >
                 Go to {prettyName(primaryCharacterId)}
               </Button>
             )}
-            <Button
-              size="sm"
-              variant="ghost"
+            <button
+              type="button"
               onClick={onDismiss}
-              className="ml-auto text-slate-400 hover:text-slate-200"
+              className="w-full text-left text-sm text-slate-400 transition-colors hover:text-slate-200 sm:ml-auto sm:w-auto"
               data-testid="return-hook-dismiss"
             >
               Not now
-            </Button>
+            </button>
           </div>
         </div>
       </div>

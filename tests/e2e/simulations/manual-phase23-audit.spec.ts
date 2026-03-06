@@ -148,7 +148,7 @@ async function assertTimedFooterSuppressed(page: Page) {
 
 async function selectDecision(page: Page, option: 'A' | 'B' | 'C' | 'D') {
   await page.getByRole('button', { name: new RegExp(`^Option ${option}:`, 'i') }).click()
-  await page.getByRole('button', { name: /commit decision/i }).click()
+  await page.getByRole('button', { name: /lock in your response/i }).click()
 }
 
 async function readCurrentNodeId(page: Page): Promise<string | null> {

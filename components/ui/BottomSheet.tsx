@@ -161,14 +161,14 @@ export function BottomSheet({
       data-overlay-surface
       className={cn(
         mode === 'standalone' ? 'fixed bottom-0 left-0 right-0' : 'absolute bottom-0 left-0 right-0',
-        'max-h-[70dvh] sm:max-h-[50dvh] overflow-hidden',
+        'max-h-[76dvh] sm:max-h-[50dvh] overflow-hidden',
         'rounded-t-2xl',
         'bg-slate-950/95 backdrop-blur-xl',
         'border-t border-white/10',
         'shadow-[0_-10px_40px_rgba(0,0,0,0.5)]',
         'focus:outline-none pointer-events-auto',
         // Safe area padding for iOS
-        'pb-[max(16px,env(safe-area-inset-bottom))]',
+        'pb-[calc(max(24px,env(safe-area-inset-bottom))+8px)]',
         className
       )}
       style={mode === 'standalone' ? { zIndex: Z_INDEX.panel } : undefined}
@@ -202,7 +202,7 @@ export function BottomSheet({
       </div>
 
       {/* Header */}
-      <div className="px-6 pb-3 border-b border-white/5">
+      <div className="px-5 pb-3 border-b border-white/5 sm:px-6">
         <h2 className="text-sm font-medium text-slate-400 uppercase tracking-widest">
           {title}
         </h2>
@@ -210,7 +210,7 @@ export function BottomSheet({
 
       {/* Content - scrollable if needed */}
       <div
-        className="overflow-y-auto overscroll-contain max-h-[calc(70dvh-80px)] sm:max-h-[calc(50dvh-80px)]"
+        className="overflow-y-auto overscroll-contain max-h-[calc(76dvh-80px)] sm:max-h-[calc(50dvh-80px)]"
         style={{
           WebkitOverflowScrolling: 'touch',
         }}
@@ -279,7 +279,7 @@ export function BottomSheetItem({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        'w-full min-h-[52px] px-6 py-3',
+        'w-full min-h-[56px] px-5 py-4',
         'flex items-center gap-3',
         'text-left text-base text-white/90',
         'transition-colors duration-150',

@@ -153,8 +153,8 @@ export function SettingsMenuContents({
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-3 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.04),transparent_36%)] px-3 py-3">
-        <section className="rounded-2xl border border-white/10 bg-black/25 p-3 shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
+      <div className="flex-1 overflow-y-auto space-y-3 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.04),transparent_36%)] px-3 py-4 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] sm:px-4">
+        <section className="rounded-2xl border border-white/10 bg-black/25 p-3.5 shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
           <div className="mb-3 flex items-start justify-between gap-3">
             <div>
               <div className="mb-1 flex items-center gap-2">
@@ -321,28 +321,28 @@ export function SettingsMenuContents({
           </AnimatePresence>
 
           {expandedSection !== 'accessibility' && (
-            <div className="mt-3 flex flex-wrap gap-2 text-[11px] text-slate-400">
-              <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1">
+            <div className="mt-3 flex flex-wrap gap-1.5 text-[11px] text-slate-400">
+              <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1 whitespace-normal">
                 Text: {textSize === 'default' ? 'Default' : textSize}
               </span>
-              <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1">
+              <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1 whitespace-normal">
                 Color: {colorBlindMode === 'default' ? 'Standard' : colorBlindMode}
               </span>
-              <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1">
+              <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1 whitespace-normal">
                 Motion: {reducedMotion ? 'Reduced' : 'Standard'}
               </span>
             </div>
           )}
         </section>
 
-        <section className="rounded-2xl border border-white/10 bg-black/25 p-3 shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
+        <section className="rounded-2xl border border-white/10 bg-black/25 p-3.5 shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
           <div className="mb-3">
             <div className="mb-1 flex items-center gap-2">
               <User className="h-4 w-4 text-violet-300" />
               <span className="text-xs font-medium uppercase tracking-[0.18em] text-slate-300">Profile</span>
             </div>
             <p className="text-xs leading-relaxed text-slate-400">
-              Move out of the story shell for deeper preferences, exports, and research controls.
+              Move beyond the story shell for backups, deeper preferences, and research controls.
             </p>
           </div>
 
@@ -358,13 +358,13 @@ export function SettingsMenuContents({
               <div className="rounded-lg border border-white/10 bg-white/5 p-2">
                 <User className="h-4 w-4 text-slate-200" />
               </div>
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1 pr-2">
                 <div className="text-sm font-medium text-white">Profile & Preferences</div>
                 <p className="mt-1 text-xs leading-relaxed text-slate-400" aria-hidden="true">
-                  Account settings, exports, audio, accessibility, and display backups.
+                  Account, backups, audio, accessibility, and display controls.
                 </p>
               </div>
-              <ChevronRight className="mt-1 h-4 w-4 text-slate-500" />
+              <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-slate-500" />
             </button>
 
             <button
@@ -378,13 +378,13 @@ export function SettingsMenuContents({
               <div className="rounded-lg border border-sky-400/15 bg-sky-400/10 p-2">
                 <Shield className="h-4 w-4 text-sky-200" />
               </div>
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1 pr-2">
                 <div className="text-sm font-medium text-white">Research Participation</div>
                 <p className="mt-1 text-xs leading-relaxed text-slate-400" aria-hidden="true">
-                  Review cohort, identified, and longitudinal export permissions.
+                  Review research sharing and export permissions.
                 </p>
               </div>
-              <ChevronRight className="mt-1 h-4 w-4 text-slate-500" />
+              <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-slate-500" />
             </button>
           </div>
         </section>

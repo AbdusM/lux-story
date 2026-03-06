@@ -84,9 +84,13 @@ describe('SimulationRenderer', () => {
     expect(screen.getByTestId('simulation-shell-header')).toBeInTheDocument()
     expect(screen.getByTestId('simulation-frame-title')).toHaveTextContent('Archive Review')
     expect(screen.getByTestId('simulation-frame-brief')).toHaveTextContent('Trace the record that matters before the window closes.')
+    expect(screen.getByText('Active Case')).toBeInTheDocument()
+    expect(screen.getByText('Archive Note')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /step back/i })).toBeInTheDocument()
     expect(screen.queryByText(/secure terminal/i)).not.toBeInTheDocument()
     expect(screen.queryByText(/SIMULATION_CORE/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/signal thread/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/^ARCHIVE$/i)).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: /abort simulation/i })).not.toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: /step back/i }))

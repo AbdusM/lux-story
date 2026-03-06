@@ -45,6 +45,8 @@ test.describe('Settings Overlay Parity', () => {
 
     const settingsDialog = page.getByRole('dialog', { name: /settings/i })
     await expect(settingsDialog).toBeVisible({ timeout: 10000 })
+    await expect(settingsDialog).toContainText(/Account, backups, audio, accessibility, and display controls\./i)
+    await expect(settingsDialog).toContainText(/Review research sharing and export permissions\./i)
 
     // Focus should still be within the overlay surface after mode swap.
     await expect
@@ -62,4 +64,3 @@ test.describe('Settings Overlay Parity', () => {
     await expect(settingsDialog).not.toBeVisible({ timeout: 10000 })
   })
 })
-
