@@ -1,3 +1,5 @@
+import type { SerializableGameState } from './character-state'
+
 /**
  * Test Environment Detection
  *
@@ -25,5 +27,6 @@ export function isTestEnvironment(): boolean {
 declare global {
   interface Window {
     __PLAYWRIGHT__?: boolean
+    __LUX_E2E_SEED__?: SerializableGameState
   }
 }

@@ -90,14 +90,6 @@ export function PatternVoice({
             ${STYLE_CLASSES[style]}
             transition-opacity hover:opacity-100
           `}>
-            {/* Pattern label */}
-            <div className={`
-              text-xs font-mono uppercase tracking-widest mb-1
-              ${patternInfo.color}
-            `}>
-              [{patternInfo.label}]
-            </div>
-
             {/* Voice text */}
             <p className={`
               text-sm leading-relaxed
@@ -105,11 +97,6 @@ export function PatternVoice({
             `}>
               {text}
             </p>
-
-            {/* Dismiss hint */}
-            <div className="absolute right-2 top-2 opacity-0 group-hover:opacity-50 text-xs text-white/50 transition-opacity">
-              click to dismiss
-            </div>
           </div>
         </motion.div>
       )}

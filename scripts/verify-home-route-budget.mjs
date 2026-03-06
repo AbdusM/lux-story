@@ -9,7 +9,7 @@ const REPORT_PATH = path.join(REPO_ROOT, 'docs/qa/home-route-budget-report.json'
 
 // Current enforced budgets. Tighten over time using CI env overrides.
 const ROUTE_CHUNK_BUDGET_KB = Number(process.env.HOME_ROUTE_CHUNK_KB_BUDGET || 260)
-const FIRST_LOAD_BUDGET_KB = Number(process.env.HOME_ROUTE_FIRST_LOAD_KB_BUDGET || 1050)
+const FIRST_LOAD_BUDGET_KB = Number(process.env.HOME_ROUTE_FIRST_LOAD_KB_BUDGET || 980)
 
 function fail(message) {
   // eslint-disable-next-line no-console

@@ -18,6 +18,9 @@ export type SeedOverrides = {
   characterConversationHistory?: Record<string, string[]>
   characterLastInteractionTimestamp?: Record<string, number>
   skillLevels?: Record<string, number>
+  pendingCheckIns?: GameState['pendingCheckIns']
+  lastSaved?: number
+  sessionStartTime?: number
 }
 
 /**
@@ -70,6 +73,11 @@ function applySeedOverrides(base: GameState, overrides: SeedOverrides): GameStat
   if (overrides.patterns) base.patterns = { ...base.patterns, ...overrides.patterns }
   if (overrides.globalFlags) base.globalFlags = new Set(overrides.globalFlags)
   if (overrides.skillLevels) base.skillLevels = { ...base.skillLevels, ...overrides.skillLevels }
+  if (overrides.pendingCheckIns) {
+    base.pendingCheckIns = overrides.pendingCheckIns.map((checkIn) => ({ ...checkIn }))
+  }
+  if (typeof overrides.lastSaved === 'number') base.lastSaved = overrides.lastSaved
+  if (typeof overrides.sessionStartTime === 'number') base.sessionStartTime = overrides.sessionStartTime
 
   if (overrides.characterTrust) {
     for (const [characterId, trust] of Object.entries(overrides.characterTrust)) {
@@ -99,7 +107,9 @@ function applySeedOverrides(base: GameState, overrides: SeedOverrides): GameStat
     }
   }
 
-  base.lastSaved = Date.now()
+  if (typeof overrides.lastSaved !== 'number') {
+    base.lastSaved = Date.now()
+  }
   return base
 }
 
@@ -187,11 +197,30 @@ async function seedGameState(page: Page, state: SerializableGameState): Promise<
   await page.addInitScript((stateToSeed) => {
     localStorage.clear()
     ;(window as any).__PLAYWRIGHT__ = true
+    ;(window as any).__LUX_E2E_SEED__ = stateToSeed
     localStorage.setItem('grand-central-terminus-save', JSON.stringify(stateToSeed))
   }, state)
 
   // Avoid `networkidle` on WebKit/mobile: the app can keep connections open which makes it flaky.
   await page.goto('/', { waitUntil: 'domcontentloaded' })
+
+  const seededByInitScript = await page.evaluate(() => {
+    try {
+      return localStorage.getItem('grand-central-terminus-save') !== null
+    } catch {
+      return false
+    }
+  })
+
+  if (!seededByInitScript) {
+    await page.evaluate((stateToSeed) => {
+      localStorage.clear()
+      ;(window as Window & { __PLAYWRIGHT__?: boolean }).__PLAYWRIGHT__ = true
+      ;(window as Window & { __LUX_E2E_SEED__?: SerializableGameState }).__LUX_E2E_SEED__ = stateToSeed
+      localStorage.setItem('grand-central-terminus-save', JSON.stringify(stateToSeed))
+    }, state)
+    await page.reload({ waitUntil: 'domcontentloaded' })
+  }
 
   const gameInterface = page.locator('[data-testid="game-interface"]')
   const continueButton = page.getByRole('button', { name: /continue journey|continue your journey/i })
@@ -201,7 +230,10 @@ async function seedGameState(page: Page, state: SerializableGameState): Promise<
 
   const tryClick = async (locator: ReturnType<Page['getByRole']>) => {
     try {
-      await locator.click({ timeout: 750 })
+      if (!await locator.isVisible({ timeout: 500 }).catch(() => false)) {
+        return false
+      }
+      await locator.click({ timeout: 1500 })
       return true
     } catch {
       return false
@@ -209,29 +241,29 @@ async function seedGameState(page: Page, state: SerializableGameState): Promise<
   }
 
   // Some routes show a welcome/intro screen even when a save is present; click through if needed.
-  for (let attempt = 0; attempt < 20; attempt++) {
+  // Keep this bounded so shell-contract specs fail on the app state, not on fixture spin.
+  for (let attempt = 0; attempt < 8; attempt++) {
     if (await gameInterface.isVisible({ timeout: 500 }).catch(() => false)) break
 
     if (await tryClick(continueButton)) {
-      await page.waitForTimeout(250)
+      await page.waitForTimeout(300)
       continue
     }
 
     if (await tryClick(beginExploringButton)) {
-      await page.waitForTimeout(250)
+      await page.waitForTimeout(300)
       continue
     }
 
     if (await tryClick(enterStationButton)) {
-      await page.waitForTimeout(250)
+      await page.waitForTimeout(300)
       continue
     }
 
-    await page.waitForTimeout(250)
+    await page.waitForTimeout(500)
   }
 
-  // CI runs can be slow; prefer a generous wait over flake.
-  await gameInterface.waitFor({ state: 'visible', timeout: 60000 })
+  await gameInterface.waitFor({ state: 'visible', timeout: 15000 })
 }
 
 /**

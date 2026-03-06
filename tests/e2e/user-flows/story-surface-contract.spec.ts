@@ -93,4 +93,57 @@ test.describe('Story Surface Contract', () => {
 
     await expectNoStorySurfaceMeta(page)
   })
+
+  test('returning-player prompt stays inside the story lane and does not move the shell', async ({ page, seedState }) => {
+    const eightHoursAgo = Date.now() - (8 * 60 * 60 * 1000)
+
+    await seedState({
+      currentCharacterId: 'samuel',
+      currentNodeId: 'samuel_introduction',
+      lastSaved: eightHoursAgo,
+      pendingCheckIns: [
+        { characterId: 'maya', sessionsRemaining: 0, dialogueNodeId: 'maya_intro' },
+      ],
+      characterTrust: { maya: 4 },
+      characterConversationHistory: { maya: ['maya_intro'] },
+      characterLastInteractionTimestamp: { maya: eightHoursAgo },
+    })
+
+    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
+
+    const returnHook = page.getByTestId('return-hook')
+    await expect(returnHook).toBeVisible({ timeout: 10000 })
+    await expect(returnHook).not.toContainText(/while you were away/i)
+    await expect(returnHook).not.toContainText(/check-ins are ready/i)
+    await expect(returnHook).not.toContainText(/open journey/i)
+    await expect(returnHook).toContainText(/station held your place/i)
+    await expect(returnHook.getByRole('button', { name: /see what changed/i })).toBeVisible()
+
+    const placement = await page.evaluate(() => {
+      const hook = document.querySelector('[data-testid="return-hook"]')
+      return {
+        insideMain: Boolean(hook?.closest('[data-testid="game-interface"]')),
+        insideDialogueCard: Boolean(hook?.closest('[data-testid="dialogue-card"]')),
+      }
+    })
+    expect(placement).toEqual({ insideMain: true, insideDialogueCard: true })
+
+    const before = await measureShell(page)
+    expect(before).not.toBeNull()
+    if (!before) return
+
+    await returnHook.getByRole('button', { name: /not now/i }).click()
+    await expect(returnHook).not.toBeVisible({ timeout: 10000 })
+
+    const after = await measureShell(page)
+    expect(after).not.toBeNull()
+    if (!after) return
+
+    expect(Math.abs(after.stageTopWithinInterface - before.stageTopWithinInterface)).toBeLessThanOrEqual(
+      GAMEPLAY_SHELL.geometryThresholdPx.stageTopDrift
+    )
+    expect(Math.abs(after.dockHeight - before.dockHeight)).toBeLessThanOrEqual(
+      GAMEPLAY_SHELL.geometryThresholdPx.responseDockHeightDrift
+    )
+  })
 })

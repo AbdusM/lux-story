@@ -188,6 +188,33 @@ Bounded v1 simulation decision:
 - reduce generic operating-system chrome
 - support lane-specific visual theming and context framing inside the shared shell
 
+### 5. Fiction-Facing Copy Contract
+
+Visible copy in gameplay and simulation surfaces must read as player-facing fiction or intentional system utility, never as leaked runtime taxonomy.
+
+Rules:
+
+1. Runtime identifiers such as raw `simulation.type`, internal phase bookkeeping, pattern taxonomies, and implementation labels are not player-facing by default.
+2. If a label appears in active play, it must answer one of two questions clearly:
+   - what is happening in the world, or
+   - what immediate action the player can take
+3. Returning-player prompts must read as re-entry into the world, not as inbox/admin/dashboard state.
+4. Pattern voice may express tone or identity, but should not require bracketed behavioral taxonomies to function.
+5. Simulation exception modes may use operational copy for timer/exit affordances, but the surrounding frame language must still be authored for Lux Story rather than inherited from tooling vocabulary.
+
+Default player-hidden metadata:
+
+- raw simulation type strings
+- internal phase numbers unless explicitly designed as part of the player experience
+- bracketed pattern labels
+- save/sync/pending state phrasing
+- dashboard-like summaries such as `+N more updates`
+
+Implementation consequence:
+
+- copy review is part of contract review for shell-affecting UI, not a polish-only follow-up
+- if a surface needs machine-facing terminology for admin/debug reasons, it belongs outside the active story shell
+
 ## Current Runtime Violations To Resolve
 
 1. Header chrome currently contains narrative-adjacent diagnostic surfaces such as `StationStatusBadge`, `HeroBadge`, and `SyncStatusIndicator`.

@@ -44,7 +44,7 @@ function getSimulationFrameTheme(simulation: SimulationConfig): SimulationFrameT
         simulation.type === 'news_feed'
     ) {
         return {
-            label: 'Studio Exercise',
+            label: 'Studio Thread',
             shellClass: 'border-fuchsia-400/20 bg-slate-950 text-slate-100 shadow-[0_0_50px_rgba(217,70,239,0.12)]',
             ambientClass: 'bg-[radial-gradient(circle_at_top_left,rgba(217,70,239,0.18),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.14),transparent_30%),linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.98))]',
             badgeClass: 'border-fuchsia-400/20 bg-fuchsia-400/10 text-fuchsia-100',
@@ -61,7 +61,7 @@ function getSimulationFrameTheme(simulation: SimulationConfig): SimulationFrameT
         simulation.type === 'botany_grid'
     ) {
         return {
-            label: 'Field Exercise',
+            label: 'Field Thread',
             shellClass: 'border-emerald-400/20 bg-slate-950 text-slate-100 shadow-[0_0_50px_rgba(16,185,129,0.12)]',
             ambientClass: 'bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.16),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.12),transparent_30%),linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.98))]',
             badgeClass: 'border-emerald-400/20 bg-emerald-400/10 text-emerald-100',
@@ -72,7 +72,7 @@ function getSimulationFrameTheme(simulation: SimulationConfig): SimulationFrameT
     }
 
     return {
-        label: 'Analysis Exercise',
+        label: 'Signal Thread',
         shellClass: 'border-amber-400/20 bg-slate-950 text-slate-100 shadow-[0_0_50px_rgba(245,158,11,0.12)]',
         ambientClass: 'bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.18),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(99,102,241,0.12),transparent_30%),linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.98))]',
         badgeClass: 'border-amber-400/20 bg-amber-400/10 text-amber-100',
@@ -460,15 +460,10 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                                     )}
                                 >
                                     <X className="h-3.5 w-3.5" />
-                                    Leave exercise
+                                    Step back
                                 </button>
                             )}
                         </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.18em] text-slate-400/80">
-                        <Terminal className="h-3.5 w-3.5" />
-                        <span>{simulation.type.replace(/_/g, ' ')}</span>
                     </div>
                 </div>
             </div>

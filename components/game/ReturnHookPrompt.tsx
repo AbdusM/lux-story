@@ -44,6 +44,7 @@ export function ReturnHookPrompt({
   className,
 }: ReturnHookPromptProps) {
   const kind = useMemo(() => computeKind(gameState, waitingCharacters), [gameState, waitingCharacters])
+  const leadWaitingCharacter = waitingCharacters[0] ?? null
 
   const primaryCharacterId = useMemo(() => {
     if (kind === 'messages') {
@@ -59,14 +60,23 @@ export function ReturnHookPrompt({
   if (!isReturningPlayer) return null
   if (kind === 'none') return null
 
-  const title = 'While you were away'
+  const title = 'The station held your place'
   const primary = kind === 'messages'
-    ? (primaryCharacterId ? `New message from ${prettyName(primaryCharacterId)}.` : 'New messages are waiting.')
-    : (primaryCharacterId ? `${prettyName(primaryCharacterId)} has been waiting.` : 'Someone has been waiting.')
+    ? (primaryCharacterId
+      ? `${prettyName(primaryCharacterId)} has something new to share.`
+      : 'Something in the station shifted while you were gone.')
+    : (
+      leadWaitingCharacter?.waitingMessage
+      || (primaryCharacterId
+        ? `${prettyName(primaryCharacterId)} noticed your absence.`
+        : 'Someone has been keeping your place in mind.')
+    )
 
   const secondary = kind === 'messages'
-    ? 'Check-ins are ready'
-    : (waitingCharacters.length > 1 ? `Plus ${waitingCharacters.length - 1} more` : 'Return when you want')
+    ? 'You can follow what changed when you are ready.'
+    : (waitingCharacters.length > 1
+      ? `${waitingCharacters.length - 1} more voices are holding their place.`
+      : 'You can step back into the conversation when you are ready.')
 
   const icon = kind === 'messages'
     ? <Bell className="h-4 w-4 text-amber-300" />
@@ -76,7 +86,7 @@ export function ReturnHookPrompt({
     <div
       data-testid="return-hook"
       className={cn(
-        "mx-3 sm:mx-4 mt-3 rounded-xl border border-white/10 bg-black/20 backdrop-blur-md p-3",
+        "rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.22)] backdrop-blur-xl",
         className
       )}
     >
@@ -85,7 +95,7 @@ export function ReturnHookPrompt({
           {icon}
         </div>
         <div className="min-w-0 flex-1">
-          <div className="text-xs uppercase tracking-widest text-slate-400">{title}</div>
+          <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400">{title}</div>
           <div className="mt-1 text-sm font-semibold text-white" data-testid="return-hook-primary">
             {primary}
           </div>
@@ -99,7 +109,7 @@ export function ReturnHookPrompt({
               onClick={onOpenJourney}
               data-testid="return-hook-open-journey"
             >
-              Open Journey
+              See what changed
             </Button>
             {primaryCharacterId && onVisitCharacter && (
               <Button
@@ -108,7 +118,7 @@ export function ReturnHookPrompt({
                 onClick={() => onVisitCharacter(primaryCharacterId)}
                 data-testid="return-hook-visit-character"
               >
-                Visit {prettyName(primaryCharacterId)}
+                Go to {prettyName(primaryCharacterId)}
               </Button>
             )}
             <Button
@@ -118,7 +128,7 @@ export function ReturnHookPrompt({
               className="ml-auto text-slate-400 hover:text-slate-200"
               data-testid="return-hook-dismiss"
             >
-              Dismiss
+              Not now
             </Button>
           </div>
         </div>
@@ -126,4 +136,3 @@ export function ReturnHookPrompt({
     </div>
   )
 }
-

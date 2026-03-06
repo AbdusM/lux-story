@@ -116,6 +116,7 @@ import { generateUserId } from '@/lib/safe-storage'
 import { queueInteractionEventSync, generateActionId } from '@/lib/sync-queue'
 import { consumeChoiceUiSelection } from '@/lib/choice-dispatch-telemetry'
 import { ensureUserApiSession } from '@/lib/user-api-session'
+import { isTestEnvironment } from '@/lib/test-environment'
 import {
   DialogueGraph,
   DialogueNode,
@@ -553,6 +554,7 @@ export default function StatefulGameInterface() {
   const { queueStats: _queueStats } = useBackgroundSync({ enabled: true })
   const [hasSaveFile, setHasSaveFile] = useState(false)
   const [_saveIsComplete, setSaveIsComplete] = useState(false)
+  const hasBootstrappedPlaywrightSeedRef = useRef(false)
 
   // Save confirmation disabled-saves happen silently without interruption
   // Achievement notifications disabled-no longer needed
@@ -1143,6 +1145,10 @@ export default function StatefulGameInterface() {
         }
       }
 
+      // Preserve the return-session signal before any session-start persistence mutates
+      // `lastSaved`; otherwise the same init pass can erase the returning-player hook.
+      const waitingContext = detectReturningPlayer(gameState)
+
       // ═══════════════════════════════════════════════════════════════════════════
       // CHECK-IN SYSTEM: Process time passing (P1)
       // Only decrement counters if meaningful time (>30m) has passed since last save
@@ -1376,7 +1382,6 @@ export default function StatefulGameInterface() {
       // ENGAGEMENT LOOPS: Detect Returning Player
       // If player was away for 4+ hours, detect who's been "waiting" for them
       // ═══════════════════════════════════════════════════════════════════════════
-      const waitingContext = detectReturningPlayer(gameState)
       const waitingCharacters = waitingContext.isReturningPlayer
         ? getWaitingCharacters(gameState, waitingContext)
         : []
@@ -1494,6 +1499,25 @@ export default function StatefulGameInterface() {
       }))
     }
   }, [])
+
+  useEffect(() => {
+    if (!isTestEnvironment()) return
+    if (state.hasStarted) return
+    if (hasBootstrappedPlaywrightSeedRef.current) return
+    if (typeof window === 'undefined' || !window.__LUX_E2E_SEED__) return
+
+    try {
+      localStorage.setItem('grand-central-terminus-save', JSON.stringify(window.__LUX_E2E_SEED__))
+      setHasSaveFile(true)
+      hasBootstrappedPlaywrightSeedRef.current = true
+      void initializeGame()
+    } catch (error) {
+      logger.warn('Failed to auto-bootstrap Playwright seed', {
+        operation: 'game-interface.playwright-seed-bootstrap',
+        error,
+      })
+    }
+  }, [initializeGame, state.hasStarted])
 
   // Emergency Reset Handler (used by choice logic)
   const emergencyReset = useCallback(() => {
@@ -4226,6 +4250,25 @@ export default function StatefulGameInterface() {
 
   }
 
+  const dismissReturnHook = () => {
+    setState(prev => ({
+      ...prev,
+      returnHookDismissed: true,
+      hasNewTrust: false,
+      hasNewMeeting: false,
+    }))
+  }
+
+  const handleOpenReturnHookJourney = () => {
+    dismissReturnHook()
+    pushOverlay('constellation')
+  }
+
+  const handleVisitWaitingCharacter = (characterId: CharacterId) => {
+    dismissReturnHook()
+    useGameStore.getState().setCurrentScene(characterId)
+  }
+
   return (
     <LivingAtmosphere
       characterId={state.currentCharacterId}
@@ -4351,28 +4394,6 @@ export default function StatefulGameInterface() {
             </div>
           </div>
         </header>
-
-        {state.gameState && !state.returnHookDismissed && (
-          <ReturnHookPrompt
-            gameState={state.gameState}
-            isReturningPlayer={state.isReturningPlayer}
-            waitingCharacters={state.waitingCharacters}
-	            onOpenJourney={() => {
-	              setState(prev => ({
-	                ...prev,
-	                returnHookDismissed: true,
-	                hasNewTrust: false,
-	                hasNewMeeting: false,
-	              }))
-	              pushOverlay('constellation')
-	            }}
-            onVisitCharacter={(characterId) => {
-              setState(prev => ({ ...prev, returnHookDismissed: true }))
-              useGameStore.getState().setCurrentScene(characterId)
-            }}
-            onDismiss={() => setState(prev => ({ ...prev, returnHookDismissed: true }))}
-          />
-        )}
 
         {/* ══════════════════════════════════════════════════════════════════
           SCROLLABLE DIALOGUE AREA-Middle section
@@ -4500,6 +4521,18 @@ export default function StatefulGameInterface() {
                         </div>
                       ) : (
                         <div className="p-6 md:p-8">
+                          {state.gameState && !state.returnHookDismissed && (
+                            <ReturnHookPrompt
+                              gameState={state.gameState}
+                              isReturningPlayer={state.isReturningPlayer}
+                              waitingCharacters={state.waitingCharacters}
+                              onOpenJourney={handleOpenReturnHookJourney}
+                              onVisitCharacter={handleVisitWaitingCharacter}
+                              onDismiss={dismissReturnHook}
+                              className="mb-5"
+                            />
+                          )}
+
                           {/* D-008: Compute text effects based on player state */}
                           {(() => {
                             const textEffects = state.gameState
