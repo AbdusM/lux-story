@@ -27,7 +27,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
         variation_id: 'orb_emerging_v1'
       },
       {
-        text: "Wait.\n\n*Samuel tilts his head, as if listening to something*\n\nThe station... it's starting to notice you. Not many travelers get that. Most folks come through, make their choices, move on. But you? Something's taking shape.",
+        text: "Wait.\n\n*Samuel tilts his head, as if listening*\n\nThe station is starting to notice you, and that doesn't happen to most travelers. Your choices are taking a clear shape.",
         emotion: 'mystical',
         variation_id: 'orb_emerging_v2'
       }
@@ -147,7 +147,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
         variation_id: 'orb_developing_v1'
       },
       {
-        text: "*Samuel looks at you with new respect*\n\nYou've been busy. Thirty-some choices deep now, if I'm counting right. And the station's been paying attention.\n\nYour patterns... they're taking shape. I can see 'em now too.",
+        text: "*Samuel looks at you with new respect*\n\nYou're thirty-plus choices deep now, and the station has noticed.\n\nYour patterns are taking shape strongly enough that I can see them too.",
         emotion: 'knowing',
         variation_id: 'orb_developing_v2'
       }
@@ -255,7 +255,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
         variation_id: 'orb_flourishing_v1'
       },
       {
-        text: "*The lights in the station seem to pulse gently*\n\nFeel that? The station's welcoming you now. Not as a visitor—as something closer to family.\n\nYou've earned that. Through every careful choice. Every moment of real listening.",
+        text: "*The lights in the station pulse gently*\n\nFeel that? The station is welcoming you now, not as a visitor but as kin.\n\nYou've earned it through careful choices and real listening.",
         emotion: 'awe',
         variation_id: 'orb_flourishing_v2'
       }
@@ -349,7 +349,7 @@ export const samuelOrbResonanceNodes: DialogueNode[] = [
         variation_id: 'orb_mastered_v1'
       },
       {
-        text: "*The station seems to breathe around you*\n\nMost travelers... they come through looking for answers. What job. What path. What future.\n\nBut you? You found something better. You found yourself. And in doing that, you've become part of this place.",
+        text: "*The station seems to breathe around you*\n\nMost travelers come through looking for answers about jobs, paths, and futures.\n\nYou found something better: yourself, and now you've become part of this place.",
         emotion: 'awe',
         variation_id: 'orb_mastered_v2'
       }

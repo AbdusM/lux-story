@@ -1,0 +1,38 @@
+Timestamp: 2026-03-05
+Scope: Devon + Jordan targeted taxonomy activation
+
+Changes applied:
+- content/devon-dialogue-graph.ts
+  - Added taxonomyClass triads to remaining non-compliant nodes:
+    - devon_debug_result_fail_script
+    - devon_people_problem
+    - devon_father_hint
+    - devon_accepts_sympathy
+    - devon_father_aerospace
+    - devon_challenge_accepted
+    - devon_admits_hurt
+    - devon_crossroads
+    - devon_asks_player
+    - devon_loyalty_crisis_1
+- content/jordan-dialogue-graph.ts
+  - Added taxonomyClass triads to remaining non-compliant nodes:
+    - jordan_job_reveal_1
+    - jordan_job_reveal_2
+    - jordan_job_reveal_3
+    - jordan_job_reveal_4
+    - jordan_job_reveal_5
+    - jordan_job_reveal_6
+    - jordan_job_reveal_7
+    - jordan_job_reveal_7_pt2
+    - jordan_crossroads
+
+Validation runs:
+- npm run type-check -> PASS
+- npm run verify:choice-taxonomy -> PASS
+  - Eligible nodes: 258
+  - Coverage: 36.05%
+  - Non-compliant nodes: 165
+- npm run verify:narrative-sim -> PASS (failures 0, mismatches 0, truncated 0)
+- npm run verify:required-state-strict -> PASS (violations 0)
+- npm run verify:unreachable-dialogue-nodes -> PASS (count 0)
+- npm run verify:unreferenced-dialogue-nodes -> PASS (count 0)

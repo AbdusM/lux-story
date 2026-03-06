@@ -346,9 +346,15 @@ export function VisualCanvas({ onSuccess, variant = 'blueprint' }: VisualCanvasP
                         { id: 't3', type: currentConfig.tools[2].id, x: 75, y: 30, color: currentConfig.tools[2]?.color },
                         { id: 't4', type: currentConfig.tools[0].id, x: 50, y: 70, color: currentConfig.tools[0].color },
                     ]
+                    const testConnections: [string, string][] = [['t1', 't2'], ['t2', 't3'], ['t3', 't4']]
                     setElements(testElements)
-                    setConnections([['t1', 't2'], ['t2', 't3'], ['t3', 't4']])
-                    checkCompletion(4)
+                    setConnections(testConnections)
+                    if (!isComplete) {
+                        setIsComplete(true)
+                        setTimeout(() => {
+                            onSuccess({ elements: testElements.length, connections: testConnections.length, variant })
+                        }, 1500)
+                    }
                 }
                 }
                 className="text-[10px] text-white/20 hover:text-white/50 w-full text-center"

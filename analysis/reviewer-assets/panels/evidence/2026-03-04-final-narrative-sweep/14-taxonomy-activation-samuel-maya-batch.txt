@@ -1,0 +1,47 @@
+Timestamp: 2026-03-05
+Scope: Samuel completion + Maya targeted taxonomy activation
+
+Changes applied:
+- content/samuel-dialogue-graph.ts
+  - Added taxonomyClass triads for remaining non-compliant nodes:
+    - samuel_hub_router
+    - samuel_other_travelers
+    - samuel_hub_after_devon
+    - samuel_comprehensive_hub
+    - samuel_greeting_router
+- content/samuel-identity-nodes.ts
+  - Added explicit taxonomyClass to acknowledge/uncertain/explore triads for:
+    - samuel_identity_analytical
+    - samuel_identity_patience
+    - samuel_identity_exploring
+    - samuel_identity_helping
+    - samuel_identity_building
+- content/maya-dialogue-graph.ts
+  - Added explicit taxonomyClass triad coverage for remaining non-compliant nodes:
+    - maya_family_expectations
+    - maya_challenge_accepted
+    - maya_robotics_passion
+    - maya_robotics_fail_burnout
+    - maya_retreat_to_safety
+    - maya_encouraged
+    - maya_grateful_support
+    - maya_simulation_phase_1
+    - maya_simulation_phase_2
+    - maya_simulation_success
+    - maya_simulation_fail
+    - maya_career_reflection_architect
+    - maya_loyalty_practice
+
+Validation runs:
+- npm run type-check -> PASS
+- npm run verify:choice-taxonomy -> PASS
+  - Eligible nodes: 258
+  - Coverage: 28.68%
+  - Non-compliant nodes: 184
+- npm run verify:narrative-sim -> PASS (failures 0, mismatches 0, truncated 0)
+- npm run verify:required-state-strict -> PASS (violations 0)
+- npm run verify:unreachable-dialogue-nodes -> PASS (count 0)
+- npm run verify:unreferenced-dialogue-nodes -> PASS (count 0)
+
+Process check:
+- No active lux-story verify/test/playwright/vitest/jest processes remain.

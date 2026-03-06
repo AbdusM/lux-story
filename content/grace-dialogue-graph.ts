@@ -31,6 +31,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'grace_intro_concern',
+        taxonomyClass: 'accept',
         text: "Twelve hours? What kind of work?",
         voiceVariations: {
           analytical: "Twelve hours. That's a long shift. What kind of work demands that?",
@@ -49,6 +50,7 @@ export const graceDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'grace_intro_honest',
+        taxonomyClass: 'reject',
         text: "I am a little lost. That's why I'm here.",
         voiceVariations: {
           analytical: "I'm trying to figure out my next steps. Still mapping the terrain.",
@@ -67,6 +69,7 @@ export const graceDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'grace_intro_sit',
+        taxonomyClass: 'deflect',
         text: "[Sit down beside her quietly.]",
         nextNodeId: 'grace_quiet_sit',
         pattern: 'patience',
@@ -312,6 +315,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'grace_why_this',
+        taxonomyClass: 'accept',
         text: "How did you end up in this work?",
         voiceVariations: {
           analytical: "What led you to this path? I'm trying to understand the decision.",
@@ -330,6 +334,7 @@ export const graceDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'grace_hard_parts',
+        taxonomyClass: 'reject',
         text: "What's the hardest part?",
         voiceVariations: {
           analytical: "What challenges you most about this work? The variables you can't control?",
@@ -344,6 +349,7 @@ export const graceDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'grace_somebody',
+        taxonomyClass: 'deflect',
         text: "'Somebody's gotta do it' sounds like it's more than that to you.",
         voiceVariations: {
           analytical: "You said 'somebody's gotta do it.' But the way you said it. There's more data there.",
@@ -618,6 +624,7 @@ export const graceDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'grace_not_automated',
+        taxonomyClass: 'accept',
         text: "That can't be automated. That's human.",
         nextNodeId: 'grace_automation_truth',
         pattern: 'analytical',
@@ -625,6 +632,7 @@ export const graceDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'grace_undervalued',
+        taxonomyClass: 'reject',
         text: "And probably underpaid.",
         nextNodeId: 'grace_economics',
         pattern: 'helping',
@@ -632,6 +640,7 @@ export const graceDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'grace_show_me',
+        taxonomyClass: 'deflect',
         text: "Show me what you mean. Give me an example.",
         nextNodeId: 'grace_the_moment_setup',
         pattern: 'exploring',
@@ -820,6 +829,7 @@ QUESTION: How do you approach her?
     choices: [
       {
         choiceId: 'moment_ask_wrong',
+        taxonomyClass: 'accept',
         text: "Ask her what's wrong.",
         nextNodeId: 'grace_moment_ask',
         pattern: 'helping',
@@ -827,6 +837,7 @@ QUESTION: How do you approach her?
       },
       {
         choiceId: 'moment_sit_quiet',
+        taxonomyClass: 'reject',
         text: "Sit down next to her. Don't say anything yet.",
         nextNodeId: 'grace_moment_correct',
         pattern: 'patience',
@@ -838,6 +849,7 @@ QUESTION: How do you approach her?
       },
       {
         choiceId: 'moment_distract',
+        taxonomyClass: 'deflect',
         text: "Try to distract her. Put on music, start a task.",
         nextNodeId: 'grace_moment_distract',
         pattern: 'building',
@@ -947,6 +959,7 @@ QUESTION: How do you approach her?
     choices: [
       {
         choiceId: 'grace_what_tell',
+        taxonomyClass: 'accept',
         text: "What would you tell someone considering this work?",
         nextNodeId: 'grace_advice',
         pattern: 'helping',
@@ -954,6 +967,7 @@ QUESTION: How do you approach her?
       },
       {
         choiceId: 'grace_companion_program',
+        taxonomyClass: 'reject',
         text: "Companion Care. That reframes everything.",
         nextNodeId: 'grace_farewell',
         pattern: 'building',
@@ -965,6 +979,7 @@ QUESTION: How do you approach her?
       },
       {
         choiceId: 'grace_deep_dive_cure',
+        taxonomyClass: 'deflect',
         text: "[Deep Dive] We can do more than comfort. We can cure. Let's synthesize the protocol.",
         nextNodeId: 'grace_deep_dive',
         pattern: 'helping',
@@ -1146,6 +1161,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     choices: [
       {
         choiceId: 'sim_intro_medical',
+        taxonomyClass: 'accept',
         text: "Start with the medical facts. She needs information.",
         nextNodeId: 'grace_simulation_phase_1',
         pattern: 'analytical',
@@ -1153,6 +1169,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       },
       {
         choiceId: 'sim_intro_acknowledge',
+        taxonomyClass: 'reject',
         text: "Start by acknowledging how hard this must be for her.",
         nextNodeId: 'grace_simulation_phase_1',
         pattern: 'helping',
@@ -1164,6 +1181,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       },
       {
         choiceId: 'sim_intro_routine',
+        taxonomyClass: 'deflect',
         text: "Jump into the care routine. Action calms anxiety.",
         nextNodeId: 'grace_simulation_phase_1',
         pattern: 'building',
@@ -1186,6 +1204,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     choices: [
       {
         choiceId: 'phase1_answer_all',
+        taxonomyClass: 'accept',
         text: "Answer each question honestly, one at a time.",
         nextNodeId: 'grace_simulation_phase_2',
         pattern: 'analytical',
@@ -1193,6 +1212,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       },
       {
         choiceId: 'phase1_slow_down',
+        taxonomyClass: 'reject',
         text: "Slow her down gently: 'Let's sit. I'm here. One step at a time.'",
         nextNodeId: 'grace_simulation_phase_2',
         pattern: 'patience',
@@ -1204,6 +1224,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       },
       {
         choiceId: 'phase1_reassure',
+        taxonomyClass: 'deflect',
         text: "Reassure her that everything will be okay.",
         nextNodeId: 'grace_simulation_fail',
         pattern: 'helping',
@@ -1243,6 +1264,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     choices: [
       {
         choiceId: 'phase2_practical',
+        taxonomyClass: 'accept',
         text: "'Let me tell you about the support systems available. Respite care, community resources, flexible scheduling.'",
         nextNodeId: 'grace_simulation_success',
         pattern: 'building',
@@ -1254,6 +1276,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       },
       {
         choiceId: 'phase2_honest',
+        taxonomyClass: 'reject',
         text: "'It's hard, and you're not alone. I'm here, day by day.'",
         nextNodeId: 'grace_simulation_success',
         pattern: 'helping',
@@ -1265,6 +1288,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       },
       {
         choiceId: 'phase2_boundaries',
+        taxonomyClass: 'deflect',
         text: "'That's not really my area. I'm here for the medical care, not the life advice.'",
         nextNodeId: 'grace_simulation_fail',
         pattern: 'analytical',
@@ -1825,7 +1849,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     speaker: 'Grace',
     content: [
       {
-        text: "Healthcare operations. Hospital systems. Twelve hours watching monitors, tracking vitals, making sure the numbers that keep people alive don't slip.\n\nMost people think hospitals run on doctors. They run on data. On systems. On people like me who notice when something's about to go wrong.",
+        text: "I run healthcare operations: twelve-hour shifts watching monitors and catching drift before it harms patients.\n\nPeople think hospitals run only on doctors.\n\nThey also run on data, systems, and staff who notice failures early.",
         emotion: 'matter_of_fact',
         variation_id: 'handshake_vitals_v1'
       }
@@ -1952,6 +1976,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     choices: [
       {
         choiceId: 'let_her_go',
+        taxonomyClass: 'accept',
         text: "Go. I'll stay with him. Take the time you need.",
         nextNodeId: 'grace_loyalty_partial',
         pattern: 'helping',
@@ -1959,6 +1984,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       },
       {
         choiceId: 'stop_her_gently',
+        taxonomyClass: 'reject',
         text: "[Place a hand on her shoulder. Gently.] \"Stay. I'm here. You're not alone in this.\"",
         nextNodeId: 'grace_loyalty_choice',
         pattern: 'patience',
@@ -1970,6 +1996,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       },
       {
         choiceId: 'remind_her',
+        taxonomyClass: 'deflect',
         text: "He asked for you. Not anyone else. You.",
         nextNodeId: 'grace_loyalty_choice',
         pattern: 'helping',
@@ -1991,6 +2018,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
     choices: [
       {
         choiceId: 'reframe_breaking',
+        taxonomyClass: 'accept',
         text: "You're not breaking. You're honoring. Every single time.",
         nextNodeId: 'grace_loyalty_success',
         pattern: 'helping',
@@ -1998,6 +2026,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       },
       {
         choiceId: 'be_present_together',
+        taxonomyClass: 'reject',
         text: "[Take her other hand.] \"Then break with someone beside you. Not alone.\"",
         nextNodeId: 'grace_loyalty_success',
         pattern: 'helping',
@@ -2009,6 +2038,7 @@ CHALLENGE: Build trust while being honest about the difficult road ahead`,
       },
       {
         choiceId: 'step_away_option',
+        taxonomyClass: 'deflect',
         text: "Maybe this is the sign. Maybe it's time to step away from bedside care.",
         nextNodeId: 'grace_loyalty_incomplete',
         pattern: 'analytical',

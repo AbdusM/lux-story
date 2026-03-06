@@ -4,6 +4,13 @@
 **Source:** `/lib/dialogue-graph.ts`, `/content/*-dialogue-graph.ts` (24 files)
 **Status:** Manual documentation with TypeScript interfaces
 
+## Status Note (2026-03-05)
+
+- Numeric counts in this document are historical snapshots (January 2026) and may exclude revisit graphs and newer routed content.
+- For current release-truth coverage and counts, prefer:
+  - `docs/qa/character-deep-coverage-report.json`
+  - `docs/qa/narrative-sim-report.json`
+
 ## Overview
 
 The dialogue system is a conditional branching narrative graph that replaces traditional linear scenes. Every node is state-dependent, and all 1158 nodes are dynamically accessible based on trust, patterns, knowledge flags, and global state.

@@ -1,0 +1,152 @@
+[wave] lazyload constellation+journey mobile
+[cmd] PLAYWRIGHT_CONSTRAINED=true npx playwright test --project=mobile-iphone-14 --workers=1 tests/e2e/constellation/constellation-mobile.spec.ts tests/e2e/journey-summary.spec.ts
+[2m[WebServer] [22m(node:54435) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+[1A[2K[2m[WebServer] [22m(node:54435) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+[2m[WebServer] [22m(node:54460) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+[1A[2K[2m[WebServer] [22m(node:54460) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+[2m[WebServer] [22m ⚠ Attempted to load @next/swc-darwin-arm64, but an error occurred: dlopen(/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node, 0x0001): tried: '/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (segment '__TEXT' load command content extends beyond end of file), '/System/Volumes/Preboot/Cryptexes/OS/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (no such file), '/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (segment '__TEXT' load command content extends beyond end of file)
+[1A[2K[2m[WebServer] [22m ⚠ Attempted to load @next/swc-darwin-arm64, but an error occurred: dlopen(/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node, 0x0001): tried: '/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (segment '__TEXT' load command content extends beyond end of file), '/System/Volumes/Preboot/Cryptexes/OS/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (no such file), '/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (segment '__TEXT' load command content extends beyond end of file)
+
+[2m[WebServer] [22m ⚠ ./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22mCritical dependency: the request of a dependency is an expression
+[2m[WebServer] [22m
+[2m[WebServer] [22mImport trace for requested module:
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/index.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/index.js
+[2m[WebServer] [22m./node_modules/@sentry/nextjs/build/cjs/index.server.js
+[2m[WebServer] [22m./sentry.server.config.ts
+[1A[2K[2m[WebServer] [22m ⚠ ./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22mCritical dependency: the request of a dependency is an expression
+[2m[WebServer] [22m
+[2m[WebServer] [22mImport trace for requested module:
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/index.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/index.js
+[2m[WebServer] [22m./node_modules/@sentry/nextjs/build/cjs/index.server.js
+[2m[WebServer] [22m./sentry.server.config.ts
+
+[2m[WebServer] [22m ⚠ ./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22mCritical dependency: the request of a dependency is an expression
+[2m[WebServer] [22m
+[2m[WebServer] [22mImport trace for requested module:
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/index.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/index.js
+[2m[WebServer] [22m./node_modules/@sentry/nextjs/build/cjs/index.server.js
+[2m[WebServer] [22m./sentry.server.config.ts
+[1A[2K[2m[WebServer] [22m ⚠ ./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22mCritical dependency: the request of a dependency is an expression
+[2m[WebServer] [22m
+[2m[WebServer] [22mImport trace for requested module:
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/index.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/index.js
+[2m[WebServer] [22m./node_modules/@sentry/nextjs/build/cjs/index.server.js
+[2m[WebServer] [22m./sentry.server.config.ts
+
+[2m[WebServer] [22m ⚠ ./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22mCritical dependency: the request of a dependency is an expression
+[2m[WebServer] [22m
+[2m[WebServer] [22mImport trace for requested module:
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/index.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/index.js
+[2m[WebServer] [22m./node_modules/@sentry/nextjs/build/cjs/index.server.js
+[2m[WebServer] [22m./sentry.server.config.ts
+[1A[2K[2m[WebServer] [22m ⚠ ./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22mCritical dependency: the request of a dependency is an expression
+[2m[WebServer] [22m
+[2m[WebServer] [22mImport trace for requested module:
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/index.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/index.js
+[2m[WebServer] [22m./node_modules/@sentry/nextjs/build/cjs/index.server.js
+[2m[WebServer] [22m./sentry.server.config.ts
+
+[2m[WebServer] [22m ⚠ ./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22mCritical dependency: the request of a dependency is an expression
+[2m[WebServer] [22m
+[2m[WebServer] [22mImport trace for requested module:
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/index.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/index.js
+[2m[WebServer] [22m./node_modules/@sentry/nextjs/build/cjs/index.server.js
+[2m[WebServer] [22m./sentry.server.config.ts
+[1A[2K[2m[WebServer] [22m ⚠ ./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22mCritical dependency: the request of a dependency is an expression
+[2m[WebServer] [22m
+[2m[WebServer] [22mImport trace for requested module:
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/index.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/index.js
+[2m[WebServer] [22m./node_modules/@sentry/nextjs/build/cjs/index.server.js
+[2m[WebServer] [22m./sentry.server.config.ts
+
+[2m[WebServer] [22m<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (131kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+[1A[2K[2m[WebServer] [22m<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (131kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+
+[2m[WebServer] [22m ⚠ ./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22mCritical dependency: the request of a dependency is an expression
+[2m[WebServer] [22m
+[2m[WebServer] [22mImport trace for requested module:
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/index.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/index.js
+[2m[WebServer] [22m./node_modules/@sentry/nextjs/build/cjs/index.server.js
+[2m[WebServer] [22m./sentry.server.config.ts
+[1A[2K[2m[WebServer] [22m ⚠ ./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22mCritical dependency: the request of a dependency is an expression
+[2m[WebServer] [22m
+[2m[WebServer] [22mImport trace for requested module:
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+[2m[WebServer] [22m./node_modules/@opentelemetry/instrumentation/build/esm/index.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+[2m[WebServer] [22m./node_modules/@sentry/node/build/cjs/index.js
+[2m[WebServer] [22m./node_modules/@sentry/nextjs/build/cjs/index.server.js
+[2m[WebServer] [22m./sentry.server.config.ts
+
+Error: No tests found.
+Make sure that arguments are regular expressions matching test files.
+You may need to escape symbols like "$" or "*" and quote the arguments.
+Error: No tests found.
+Make sure that arguments are regular expressions matching test files.
+You may need to escape symbols like "$" or "*" and quote the arguments.
+
+
+[1A[2K

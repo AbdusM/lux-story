@@ -1,0 +1,8 @@
+[wave] home-route budget threshold tightening
+[cmd] npm run verify:home-route-budget
+
+> lux-story@2.3.1 verify:home-route-budget
+> node scripts/verify-home-route-budget.mjs .next-build-output.log
+
+[verify-home-route-budget] OK: route_chunk=203.00KB, first_load=965.00KB. Report: docs/qa/home-route-budget-report.json
+[done] evidence=analysis/reviewer-assets/panels/evidence/2026-03-04-final-narrative-sweep/44-home-route-budget-tightened-thresholds-2026-03-05.txt

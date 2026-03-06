@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-03-04T23:17:05.190Z",
-  "mode": "enforce",
-  "duration_ms": 7477,
+  "generated_at": "2026-03-06T04:20:14.392Z",
+  "mode": "warn",
+  "duration_ms": 45,
   "policy": {
     "patternVoicePolicy": "minimal",
     "icebergActivation": "required"
@@ -40,12 +40,12 @@
     {
       "id": "iceberg-activation",
       "passed": true,
-      "details": "total_tags=16 (min 12), tagged_characters=6 (min 4), issues=0"
+      "details": "total_tags=21 (min 12), tagged_characters=6 (min 4), issues=0"
     },
     {
       "id": "choice-taxonomy-coverage",
       "passed": true,
-      "details": "strategy=ratchet baseline=true regressions=0 coverage=0%"
+      "details": "strategy=ratchet baseline=true regressions=0 coverage=100%"
     },
     {
       "id": "external-debt-lane",
@@ -55,12 +55,12 @@
     {
       "id": "unreliable-record-lane",
       "passed": true,
-      "details": "record_tags=14, verify_tags=6, errors=0"
+      "details": "record_tags=14, verify_tags=9, errors=0"
     },
     {
       "id": "micro-reactivity-lane",
       "passed": true,
-      "details": "memory_ids=5, callback_characters=5, errors=0"
+      "details": "memory_ids=7, callback_characters=7, errors=0"
     }
   ],
   "summary": {

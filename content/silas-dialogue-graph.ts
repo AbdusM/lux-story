@@ -33,6 +33,7 @@ export const silasDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'silas_intro_reality',
+        taxonomyClass: 'accept',
         text: "The map isn't the territory.",
         voiceVariations: {
           analytical: "The map isn't the territory. Your sensors are abstractions.",
@@ -51,6 +52,7 @@ export const silasDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'silas_intro_tech',
+        taxonomyClass: 'reject',
         text: "Sensor calibration drift?",
         archetype: 'ASK_FOR_DETAILS',
         nextNodeId: 'silas_handshake_network',
@@ -59,6 +61,7 @@ export const silasDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'silas_intro_empathy',
+        taxonomyClass: 'deflect',
         text: "You look terrified.",
         voiceVariations: {
           analytical: "Your hands are shaking. You're terrified.",
@@ -576,6 +579,7 @@ HINT: Sensors measure WHERE they're placed...`,
     choices: [
       {
         choiceId: 'sim_trust_sensor',
+        taxonomyClass: 'accept',
         text: "Trust the data. Run a diagnostic on the valve software.",
         nextNodeId: 'silas_sim_fail_software',
         pattern: 'analytical', // Wrong tool
@@ -583,6 +587,7 @@ HINT: Sensors measure WHERE they're placed...`,
       },
       {
         choiceId: 'sim_physical_trace',
+        taxonomyClass: 'reject',
         text: "Follow the pipe. Physically trace the water line from the tank to the bed.",
         nextNodeId: 'silas_sim_step_2',
         pattern: 'building',
@@ -590,6 +595,7 @@ HINT: Sensors measure WHERE they're placed...`,
       },
       {
         choiceId: 'sim_override_flood',
+        taxonomyClass: 'deflect',
         text: "Manual Override. Open the emergency floodgates NOW.",
         nextNodeId: 'silas_sim_fail_rot',
         pattern: 'helping', // Panic reaction
@@ -924,6 +930,7 @@ HINT: Sensors measure WHERE they're placed...`,
     choices: [
       {
         choiceId: 'silas_hawkins_now',
+        taxonomyClass: 'accept',
         text: "Where is Mr. Hawkins now?",
         nextNodeId: 'silas_hawkins_death',
         pattern: 'helping',
@@ -931,6 +938,7 @@ HINT: Sensors measure WHERE they're placed...`,
       },
       {
         choiceId: 'silas_future_vision',
+        taxonomyClass: 'reject',
         text: "Where do you see this going?",
         nextNodeId: 'silas_final_vision',
         pattern: 'exploring',
@@ -938,6 +946,7 @@ HINT: Sensors measure WHERE they're placed...`,
       },
       {
         choiceId: 'silas_deep_dive_trigger',
+        taxonomyClass: 'deflect',
         text: "[Deep Dive] You said Ground Truth is a measurement. Let's measure the ghost signal.",
         nextNodeId: 'silas_deep_dive',
         pattern: 'analytical',
@@ -1028,6 +1037,7 @@ HINT: Sensors measure WHERE they're placed...`,
     choices: [
       {
         choiceId: 'silas_farewell_deep',
+        taxonomyClass: 'accept',
         text: "Keep growing, Silas.",
         nextNodeId: 'silas_farewell_good',
         pattern: 'helping',
@@ -1036,6 +1046,7 @@ HINT: Sensors measure WHERE they're placed...`,
       // Career observation route (ISP: Only visible when pattern combo is achieved)
       {
         choiceId: 'career_precision',
+        taxonomyClass: 'reject',
         text: "Your precision combined with patience... that's advanced manufacturing thinking.",
         nextNodeId: 'silas_career_reflection_precision',
         pattern: 'building',
@@ -1047,6 +1058,7 @@ HINT: Sensors measure WHERE they're placed...`,
       },
       {
         choiceId: 'silas_farewell_deep_alt',
+        taxonomyClass: 'deflect',
         text: "Ground truth. I'll remember that.",
         nextNodeId: 'silas_farewell_good',
         pattern: 'analytical',

@@ -26,6 +26,7 @@ const nodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'what_data',
+        taxonomyClass: 'accept',
         text: 'What kind of data?',
         voiceVariations: {
           analytical: "What kind of data? What's the signal-to-noise ratio?",
@@ -40,6 +41,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'calm_down',
+        taxonomyClass: 'reject',
         text: 'Focus, Elena. One stream at a time.',
         voiceVariations: {
           analytical: "Prioritize, Elena. What's the most significant anomaly?",
@@ -54,6 +56,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'elena_intro_pattern_unlock',
+        taxonomyClass: 'deflect',
         text: "[Pattern Recognition] The hum isn't random. You've seen the pattern already.",
         nextNodeId: 'elena_pattern_insight',
         pattern: 'analytical',
@@ -699,7 +702,7 @@ const nodes: DialogueNode[] = [
         skills: ['criticalThinking']
       }
     ],
-    tags: ['elena_arc', 'station_seven', 'iceberg:platform_seven', 'record:record_elena_archive_gap', 'micro:elena_station_seven_loss']
+    tags: ['elena_arc', 'station_seven', 'iceberg:platform_seven', 'iceberg:the_oxygen_tax', 'record:record_elena_archive_gap', 'verify-conflict:platform_seven_blackout', 'micro:elena_station_seven_loss']
   },
 
   {
@@ -1126,6 +1129,7 @@ const nodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'gather_more',
+        taxonomyClass: 'accept',
         text: "Gather more evidence before you act. Make it undeniable.",
         nextNodeId: 'elena_caution_path',
         pattern: 'patience',
@@ -1133,6 +1137,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'find_allies',
+        taxonomyClass: 'reject',
         text: "Find allies. Someone else in the station who's noticed things.",
         nextNodeId: 'elena_allies_path',
         pattern: 'helping',
@@ -1140,6 +1145,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'act_now',
+        taxonomyClass: 'deflect',
         text: "Act now. Every day of silence is a day they might cover more tracks.",
         nextNodeId: 'elena_action_path',
         pattern: 'building',
@@ -1723,6 +1729,7 @@ const nodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'looking_for_direction',
+        taxonomyClass: 'accept',
         text: "I was looking for direction. Too many paths, not enough clarity.",
         nextNodeId: 'elena_reciprocity_direction',
         pattern: 'exploring',
@@ -1730,6 +1737,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'looking_for_purpose',
+        taxonomyClass: 'reject',
         text: "I was looking for purpose. Something that matters.",
         nextNodeId: 'elena_reciprocity_purpose',
         pattern: 'helping',
@@ -1744,6 +1752,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'not_sure',
+        taxonomyClass: 'deflect',
         text: "Honestly? I'm still figuring that out.",
         nextNodeId: 'elena_reciprocity_uncertain',
         pattern: 'patience',
@@ -1921,6 +1930,7 @@ const nodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'elena_vuln_not_your_fault',
+        taxonomyClass: 'accept',
         text: "You followed procedure. The system failed, not you.",
         nextNodeId: 'elena_vulnerability_response',
         pattern: 'helping',
@@ -1932,6 +1942,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'elena_vuln_carry_them',
+        taxonomyClass: 'reject',
         text: "You carry them with you. Every anomaly you chase.",
         nextNodeId: 'elena_vulnerability_response',
         pattern: 'patience',
@@ -1943,6 +1954,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'elena_vuln_silence',
+        taxonomyClass: 'deflect',
         text: "[Let the weight of it sit. She needs a witness, not absolution.]",
         nextNodeId: 'elena_vulnerability_response',
         pattern: 'patience',
@@ -2490,11 +2502,11 @@ const nodes: DialogueNode[] = [
     speaker: 'Elena',
     content: [
       {
-        text: `The way you organize your thinking... patient, analytical. You see how pieces connect.
+        text: `You organize your thinking with patience and analysis.
 
-Information architects do that. They create systems that help people find what they need. Organizers of knowledge.
+Information architects do that: they design systems that help people find what they need.
 
-In a world drowning in data, that skill matters more than ever.`,
+In a world drowning in data, that skill is rare and valuable.`,
         emotion: 'appreciative',
         variation_id: 'career_curator_v1'
       }
@@ -2527,11 +2539,11 @@ In a world drowning in data, that skill matters more than ever.`,
     speaker: 'Elena',
     content: [
       {
-        text: `You explore with purpose. Following threads, asking the right questions.
+        text: `You explore with purpose and ask sharp questions.
 
-Research librarians are like that. Guides through vast seas of information. They help discoveries happen by connecting seekers with knowledge.
+Research librarians guide people through huge information spaces and make discovery possible.
 
-Your curiosity combined with analysis... that's exactly what they need.`,
+That mix of curiosity and analysis fits you.`,
         emotion: 'interested',
         variation_id: 'career_navigator_v1'
       }
@@ -2637,12 +2649,12 @@ Your curiosity combined with analysis... that's exactly what they need.`,
     },
     content: [
       {
-        text: "I've catalogued thousands of documents. Birth records, death records, everything in between.\\n\\nBut this station... it doesn't appear in any archive. It's like it exists <shake>outside</shake> normal records.",
+        text: "I've catalogued thousands of documents: birth records, death records, everything in between.\\n\\nBut this station appears in no archive, like it exists <shake>outside</shake> normal records.",
         emotion: 'mystified',
         variation_id: 'mystery_hint_v1'
       },
       {
-        text: "Places this significant always leave traces. This one doesn't. It's fascinating.",
+        text: "Places this significant always leave traces; this one doesn't, and that's fascinating.",
         emotion: 'intrigued',
         variation_id: 'mystery_hint_v2'
       }
@@ -2661,7 +2673,7 @@ Your curiosity combined with analysis... that's exactly what they need.`,
         pattern: 'patience'
       }
     ],
-    tags: ['mystery', 'breadcrumb', 'faction:data_flow', 'record:record_elena_tax_archive_redaction']
+    tags: ['mystery', 'breadcrumb', 'faction:data_flow', 'iceberg:the_oxygen_tax', 'record:record_elena_tax_archive_redaction', 'verify-conflict:oxygen_tax_origin']
   },
 
   {

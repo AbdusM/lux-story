@@ -54,6 +54,8 @@ function isContinueChoice(text: string): boolean {
 }
 
 function classifyChoice(choice: ConditionalChoice): TaxonomyClass | null {
+  if (choice.taxonomyClass) return choice.taxonomyClass
+
   const choiceId = choice.choiceId.toLowerCase()
   const text = normalizeWhitespace(choice.text)
   const compactText = text.replace(/^["'(]+/, '')

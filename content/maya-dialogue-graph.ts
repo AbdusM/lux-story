@@ -36,6 +36,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'intro_studies',
         text: "Pre-med and robotics? That's an interesting combination.",
+        taxonomyClass: 'accept',
         nextNodeId: 'maya_studies_response',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
@@ -54,6 +55,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'intro_place',
         text: "This station appears when we need it most. Why are you here?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'maya_why_here',
         pattern: 'exploring',
         skills: ['communication', 'criticalThinking'],
@@ -69,6 +71,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'maya_intro_show_work',
         text: "Show me what you're working on.",
+        taxonomyClass: 'reject',
         nextNodeId: 'maya_simulation_intro',
         pattern: 'exploring',
         skills: ['curiosity', 'learningAgility'],
@@ -204,6 +207,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'why_crossroads',
         text: "What kind of crossroads?",
+        taxonomyClass: 'accept',
         nextNodeId: 'maya_studies_response',
         pattern: 'exploring',
         skills: ['communication'],
@@ -218,6 +222,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'why_comfort',
         text: "This place does feel safe, doesn't it?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'maya_anxiety_check',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -236,6 +241,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'why_build_clarity',
         text: "Sometimes crossroads are where we build something new. What would you construct if you could?",
+        taxonomyClass: 'reject',
         nextNodeId: 'maya_deflect_passion',
         pattern: 'building',
         skills: ['creativity', 'communication'],
@@ -276,6 +282,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'family_ask_expectations',
         text: "Crown jewel? What does that clear path look like?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'maya_family_expectations',
         pattern: 'analytical',
         skills: ['communication'],
@@ -290,6 +297,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'family_empathy',
         text: "That sounds heavy to carry alone.",
+        taxonomyClass: 'accept',
         nextNodeId: 'maya_family_pressure',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -311,6 +319,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'family_legacy',
         text: "They built an empire. You respect that.",
+        taxonomyClass: 'reject',
         nextNodeId: 'maya_deflect_passion',
         pattern: 'building',
         skills: ['culturalCompetence'],
@@ -343,6 +352,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'expectations_permission',
+        taxonomyClass: 'accept',
         text: "You aren't a statue they built. You're a person.",
         nextNodeId: 'maya_deflect_passion',
         pattern: 'helping',
@@ -357,6 +367,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'expectations_reality',
+        taxonomyClass: 'reject',
         text: "But is medicine what YOU want?",
         nextNodeId: 'maya_deflect_passion',
         pattern: 'exploring',
@@ -364,6 +375,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'expectations_deep_insight',
+        taxonomyClass: 'deflect',
         text: "[Insight] Their marathon ends at YOUR finish line. What if you ran a different race?",
         nextNodeId: 'maya_deflect_passion',
         pattern: 'analytical',
@@ -410,6 +422,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'deflect_safe',
         text: "You don't sound happy with that.",
+        taxonomyClass: 'accept',
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -427,6 +440,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'deflect_understand',
         text: "I understand duty vs desire.",
+        taxonomyClass: 'reject',
         nextNodeId: 'maya_family_pressure',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'culturalCompetence'],
@@ -441,6 +455,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'deflect_respect',
         text: "[Nod quietly]",
+        taxonomyClass: 'deflect',
         nextNodeId: 'maya_early_gratitude',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
@@ -503,6 +518,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'challenge_follow_up',
+        taxonomyClass: 'accept',
         text: "What would happen if you actually tried?",
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'exploring',
@@ -517,6 +533,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'challenge_support',
+        taxonomyClass: 'deflect',
         text: "Fear of failure isn't the same as failure.",
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
@@ -531,6 +548,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'challenge_patience',
+        taxonomyClass: 'reject',
         text: "[Give her space to process what she just admitted]",
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'patience',
@@ -582,6 +600,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'anxiety_no_judgment',
         text: "We all have our struggles. No judgment here.",
+        taxonomyClass: 'accept',
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -603,6 +622,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'anxiety_relate',
         text: "I understand pressure. Sometimes it helps to share.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
@@ -613,6 +633,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'anxiety_curious_explore',
         text: "What does that struggle feel like? When you're caught between two selves?",
+        taxonomyClass: 'reject',
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'exploring',
         skills: ['curiosity', 'emotionalIntelligence'],
@@ -654,6 +675,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'reveal_curious',
         text: "What are you actually doing?",
+        taxonomyClass: 'reject',
         nextNodeId: 'maya_robotics_passion',
         pattern: 'exploring',
         skills: ['communication'],
@@ -665,6 +687,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'reveal_support',
         text: "It's okay to have your own interests.",
+        taxonomyClass: 'accept',
         nextNodeId: 'maya_grateful_support',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -676,6 +699,7 @@ export const mayaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'reveal_wait',
         text: "[Say nothing. Wait.]",
+        taxonomyClass: 'deflect',
         nextNodeId: 'maya_fills_silence',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
@@ -804,6 +828,7 @@ STATUS: Signal fighting itself`,
     choices: [
       {
         choiceId: 'debug_metaphor',
+        taxonomyClass: 'accept',
         text: "Fighting itself. Like you said. What if it needs support, not force?",
         nextNodeId: 'maya_robotics_debug_success',
         pattern: 'helping',
@@ -815,6 +840,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'debug_force',
+        taxonomyClass: 'reject',
         text: "Force reset the servo.",
         nextNodeId: 'maya_robotics_fail_burnout',
         pattern: 'analytical',
@@ -822,6 +848,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'debug_isolate',
+        taxonomyClass: 'deflect',
         text: "Isolate the noisy signal.",
         nextNodeId: 'maya_robotics_debug_success',
         pattern: 'building',
@@ -925,6 +952,7 @@ STATUS: Signal fighting itself`,
     choices: [
       {
         choiceId: 'fail_comfort',
+        taxonomyClass: 'accept',
         text: "I'm so sorry, Maya. We can fix it.",
         nextNodeId: 'maya_retreat_to_safety',
         pattern: 'helping',
@@ -932,6 +960,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'fail_accept',
+        taxonomyClass: 'reject',
         text: "Maybe it is a sign to focus.",
         nextNodeId: 'maya_retreat_to_safety',
         pattern: 'analytical',
@@ -941,6 +970,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'fail_rebuild_learning',
+        taxonomyClass: 'deflect',
         text: "Three months weren't lost. You learned what fails. That's how builders improve.",
         nextNodeId: 'maya_retreat_to_safety',
         pattern: 'building',
@@ -970,6 +1000,7 @@ STATUS: Signal fighting itself`,
     choices: [
       {
         choiceId: 'retreat_pivot_accepted',
+        taxonomyClass: 'accept',
         text: "Okay. Tell me about UAB.",
         nextNodeId: 'maya_studies_response',
         pattern: 'patience',
@@ -977,6 +1008,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'retreat_pivot_challenged',
+        taxonomyClass: 'reject',
         text: "You just lost months of work. You can take a minute.",
         nextNodeId: 'maya_anxiety_reveal',
         pattern: 'helping',
@@ -991,6 +1023,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'retreat_pivot_curious',
+        taxonomyClass: 'deflect',
         text: "What was the hobby supposed to do?",
         // 'maya_anxiety_reveal' is "late at night...". 
         // Let's stick to pivot accepted/challenged for now to avoid logic loops.
@@ -1080,6 +1113,7 @@ STATUS: Signal fighting itself`,
       // Career observation routes (ISP: Only visible when pattern combos are achieved)
       {
         choiceId: 'encouraged_career_architect',
+        taxonomyClass: 'accept',
         text: "The way you think about systems... it reminds me of something.",
         nextNodeId: 'maya_career_reflection_architect',
         pattern: 'analytical',
@@ -1114,6 +1148,7 @@ STATUS: Signal fighting itself`,
       // Standard choices
       {
         choiceId: 'encouraged_parents',
+        taxonomyClass: 'reject',
         text: "How do you think your parents would react?",
         nextNodeId: 'maya_family_pressure',
         pattern: 'exploring',
@@ -1124,6 +1159,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'encouraged_future',
+        taxonomyClass: 'deflect',
         text: "What would you do if you could choose freely?",
         nextNodeId: 'maya_crossroads',
         pattern: 'helping',
@@ -1337,6 +1373,7 @@ STATUS: Signal fighting itself`,
       {
         choiceId: 'crossroads_robotics',
         text: "What would it mean to choose robotics?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'maya_chooses_robotics',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
@@ -1357,6 +1394,7 @@ STATUS: Signal fighting itself`,
       {
         choiceId: 'crossroads_hybrid',
         text: "Could both paths honor what matters?",
+        taxonomyClass: 'reject',
         nextNodeId: 'maya_chooses_hybrid',
         pattern: 'analytical',
         skills: ['criticalThinking', 'creativity', 'problemSolving']
@@ -1377,6 +1415,7 @@ STATUS: Signal fighting itself`,
       {
         choiceId: 'crossroads_support',
         text: "Whatever you choose, I believe in you.",
+        taxonomyClass: 'accept',
         nextNodeId: 'maya_chooses_self',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'leadership']
@@ -1534,6 +1573,7 @@ STATUS: Signal fighting itself`,
       {
         choiceId: 'player_trust_instinct',
         text: "I trust my gut. If a path feels right, even when scary, I follow it.",
+        taxonomyClass: 'accept',
         nextNodeId: 'maya_farewell_robotics',
         pattern: 'exploring',
         skills: ['emotionalIntelligence', 'adaptability']
@@ -1541,6 +1581,7 @@ STATUS: Signal fighting itself`,
       {
         choiceId: 'player_weigh_options',
         text: "I list options and consequences, but I can stall in analysis.",
+        taxonomyClass: 'reject',
         nextNodeId: 'maya_farewell_robotics',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence']
@@ -1548,6 +1589,7 @@ STATUS: Signal fighting itself`,
       {
         choiceId: 'player_ask_others',
         text: "I ask people I trust, then make the final call for myself.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'maya_farewell_robotics',
         pattern: 'helping',
         skills: ['collaboration', 'emotionalIntelligence']
@@ -1707,6 +1749,7 @@ STATUS: Signal fighting itself`,
     choices: [
       {
         choiceId: 'support_explore',
+        taxonomyClass: 'reject',
         text: "Is there a way to do both?",
         nextNodeId: 'maya_considers_hybrid',
         pattern: 'analytical',
@@ -1714,6 +1757,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'support_trust',
+        taxonomyClass: 'accept',
         text: "Trust yourself. Your instincts are good.",
         nextNodeId: 'maya_robotics_passion',
         pattern: 'helping',
@@ -1728,6 +1772,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'support_explore_feeling',
+        taxonomyClass: 'deflect',
         text: "When you imagine healing AND building. what does that future look like?",
         nextNodeId: 'maya_considers_hybrid',
         pattern: 'exploring',
@@ -1986,6 +2031,7 @@ STATUS: Signal fighting itself`,
       {
         choiceId: 'sim_help_prepare',
         text: "Let's prepare. If your pitch is undeniable, they'll have to see you differently.",
+        taxonomyClass: 'accept',
         nextNodeId: 'maya_simulation_phase_1',
         pattern: 'building',
         skills: ['leadership', 'communication'],
@@ -1997,6 +2043,7 @@ STATUS: Signal fighting itself`,
       {
         choiceId: 'sim_emotional_support',
         text: "You've hidden this for years. Maybe let them meet the real Maya.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'maya_simulation_phase_1',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -2008,6 +2055,7 @@ STATUS: Signal fighting itself`,
       {
         choiceId: 'sim_analyze_situation',
         text: "What's the worst that happens? Walk me through the scenarios.",
+        taxonomyClass: 'reject',
         nextNodeId: 'maya_simulation_phase_1',
         pattern: 'analytical',
         skills: ['criticalThinking', 'problemSolving']
@@ -2058,6 +2106,7 @@ STATUS: Signal fighting itself`,
     choices: [
       {
         choiceId: 'phase1_passion_first',
+        taxonomyClass: 'accept',
         text: "Lead with passion. Tell them this isn't a side project - it's your calling.",
         nextNodeId: 'maya_simulation_phase_1_passion_result',
         pattern: 'helping',
@@ -2065,6 +2114,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'phase1_data_driven',
+        taxonomyClass: 'reject',
         text: "Lead with data: $8B market, 40% lower cost than competitors.",
         nextNodeId: 'maya_simulation_phase_2',
         pattern: 'analytical',
@@ -2089,6 +2139,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'phase1_take_time',
+        taxonomyClass: 'deflect',
         text: "Pause, then: 'I spent 18 months in children's hospitals. I know this need.'",
         nextNodeId: 'maya_simulation_phase_2',
         pattern: 'patience',
@@ -2176,6 +2227,7 @@ STATUS: Signal fighting itself`,
     choices: [
       {
         choiceId: 'phase2_patent_play',
+        taxonomyClass: 'accept',
         text: "Intellectual property. 'I've filed provisional patents on the actuator design. The control algorithm is proprietary.'",
         nextNodeId: 'maya_simulation_success',
         pattern: 'analytical',
@@ -2187,6 +2239,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'phase2_speed_advantage',
+        taxonomyClass: 'reject',
         text: "Speed plus mission: big companies move slow, and every month matters to a kid waiting.",
         nextNodeId: 'maya_simulation_success',
         pattern: 'building',
@@ -2198,6 +2251,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'phase2_honest_vulnerability',
+        taxonomyClass: 'deflect',
         text: "Honest vulnerability: 'They could copy features. They can't copy why this matters to me.'",
         nextNodeId: 'maya_simulation_success',
         pattern: 'helping',
@@ -2268,6 +2322,7 @@ STATUS: Signal fighting itself`,
     choices: [
       {
         choiceId: 'success_proud',
+        taxonomyClass: 'accept',
         text: "You did it, Maya. You showed them who you really are.",
         nextNodeId: 'maya_simulation_aftermath',
         pattern: 'helping',
@@ -2279,6 +2334,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'success_practical',
+        taxonomyClass: 'reject',
         text: "The investors are interested. This could actually happen.",
         nextNodeId: 'maya_simulation_aftermath',
         pattern: 'building',
@@ -2286,6 +2342,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'success_analyze',
+        taxonomyClass: 'deflect',
         text: "Your data and your story worked together. That's the formula.",
         nextNodeId: 'maya_simulation_aftermath',
         pattern: 'analytical',
@@ -2315,6 +2372,7 @@ STATUS: Signal fighting itself`,
     choices: [
       {
         choiceId: 'fail_comfort',
+        taxonomyClass: 'accept',
         text: "A failed pitch isn't a failed dream. You learned something. That's how founders grow.",
         nextNodeId: 'maya_simulation_aftermath_fail',
         pattern: 'helping',
@@ -2326,6 +2384,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'fail_analyze',
+        taxonomyClass: 'reject',
         text: "Let's break it down. Each failed pitch teaches the next one.",
         nextNodeId: 'maya_simulation_aftermath_fail',
         pattern: 'analytical',
@@ -2344,6 +2403,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'fail_patience',
+        taxonomyClass: 'deflect',
         text: "[Sit with her. Sometimes failure needs space, not solutions.]",
         nextNodeId: 'maya_simulation_aftermath_fail',
         pattern: 'patience',
@@ -2613,6 +2673,7 @@ STATUS: Signal fighting itself`,
     choices: [
       {
         choiceId: 'architect_curious',
+        taxonomyClass: 'deflect',
         text: "What do systems architects actually do?",
         nextNodeId: 'maya_crossroads',
         pattern: 'exploring',
@@ -2620,6 +2681,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'architect_interested',
+        taxonomyClass: 'accept',
         text: "That sounds like something I'd be good at.",
         nextNodeId: 'maya_crossroads',
         pattern: 'building',
@@ -2640,6 +2702,7 @@ STATUS: Signal fighting itself`,
       },
       {
         choiceId: 'architect_humble',
+        taxonomyClass: 'reject',
         text: "I'm just trying to understand things.",
         nextNodeId: 'maya_crossroads',
         pattern: 'patience'
@@ -3867,6 +3930,7 @@ MISSION: Stabilize the wave form within safety limits.`,
     choices: [
       {
         choiceId: 'affirm_technical',
+        taxonomyClass: 'accept',
         text: "The data is strong. But lead with the kid, not the stats.",
         nextNodeId: 'maya_loyalty_iteration',
         pattern: 'helping',
@@ -3874,6 +3938,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       },
       {
         choiceId: 'question_clarity',
+        taxonomyClass: 'deflect',
         text: "What does 'frustration behavior' mean? Will parents understand that?",
         nextNodeId: 'maya_loyalty_iteration',
         pattern: 'analytical',
@@ -3881,6 +3946,7 @@ MISSION: Stabilize the wave form within safety limits.`,
       },
       {
         choiceId: 'miss_point',
+        taxonomyClass: 'reject',
         text: "It's great. Just be confident and you'll crush it.",
         nextNodeId: 'maya_loyalty_shallow',
         pattern: 'patience'

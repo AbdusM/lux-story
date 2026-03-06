@@ -1,0 +1,92 @@
+
+
+
+
+
+
+
+
+
+
+
+
+Running 25 tests using 1 worker
+
+
+Running 25 tests using 1 worker
+
+
+
+
+
+[1A[2K[1/25] [settings-parity] › tests/e2e/user-flows/settings-parity.spec.ts:13:3 › Settings Overlay Parity › settings re-renders cleanly when resizing across breakpoint while open
+
+
+  ✓   1 [settings-parity] › tests/e2e/user-flows/settings-parity.spec.ts:13:3 › Settings Overlay Parity › settings re-renders cleanly when resizing across breakpoint while open (5.0s)
+
+
+
+
+[1A[2K[2/25] [overlay-perf] › tests/e2e/user-flows/overlay-smoothness.spec.ts:30:3 › Overlay Smoothness › settings open/close stays responsive under CPU throttle (desktop + mobile)
+{"desktop":{"openMs":373,"closeMs":116,"openFps":20,"closeFps":30},"mobile":{"openMs":311,"closeMs":114,"openFps":38.6,"closeFps":60},"cpuThrottleRate":4}
+[1A[2K[overlay-perf] › tests/e2e/user-flows/overlay-smoothness.spec.ts:30:3 › Overlay Smoothness › settings open/close stays responsive under CPU throttle (desktop + mobile)
+{"desktop":{"openMs":373,"closeMs":116,"openFps":20,"closeFps":30},"mobile":{"openMs":311,"closeMs":114,"openFps":38.6,"closeFps":60},"cpuThrottleRate":4}
+
+  ✓   2 [overlay-perf] › tests/e2e/user-flows/overlay-smoothness.spec.ts:30:3 › Overlay Smoothness › settings open/close stays responsive under CPU throttle (desktop + mobile) (7.0s)
+
+
+
+
+[1A[2K[3/25] [mobile-iphone-14] › tests/e2e/mobile/choice-bottom-sheet.spec.ts:3:3 › Choice Bottom Sheet › 4+ choices use a bottom sheet without reflow or overflow
+  ✓   3 [mobile-iphone-14] › tests/e2e/mobile/choice-bottom-sheet.spec.ts:3:3 › Choice Bottom Sheet › 4+ choices use a bottom sheet without reflow or overflow (14.6s)
+[1A[2K[4/25] [mobile-iphone-14] › tests/e2e/mobile/game-flow.spec.ts:17:3 › Game Flow (mobile) › Complete dialogue → choice → state update cycle
+  ✓   4 [mobile-iphone-14] › tests/e2e/mobile/game-flow.spec.ts:17:3 › Game Flow (mobile) › Complete dialogue → choice → state update cycle (13.3s)
+[1A[2K[5/25] [mobile-iphone-14] › tests/e2e/mobile/game-flow.spec.ts:83:3 › Game Flow (mobile) › Choices stack vertically without horizontal overflow
+  ✓   5 [mobile-iphone-14] › tests/e2e/mobile/game-flow.spec.ts:83:3 › Game Flow (mobile) › Choices stack vertically without horizontal overflow (13.0s)
+[1A[2K[6/25] [mobile-iphone-14] › tests/e2e/mobile/game-flow.spec.ts:127:3 › Game Flow (mobile) › Dialogue card is readable and properly sized
+  ✓   6 [mobile-iphone-14] › tests/e2e/mobile/game-flow.spec.ts:127:3 › Game Flow (mobile) › Dialogue card is readable and properly sized (13.0s)
+[1A[2K[7/25] [mobile-iphone-14] › tests/e2e/mobile/game-flow.spec.ts:151:3 › Game Flow (mobile) › Navigation buttons are accessible
+  ✓   7 [mobile-iphone-14] › tests/e2e/mobile/game-flow.spec.ts:151:3 › Game Flow (mobile) › Navigation buttons are accessible (15.0s)
+[1A[2K[8/25] [mobile-iphone-14] › tests/e2e/mobile/game-flow.spec.ts:185:3 › Game Flow (mobile) › Multiple rapid taps do not cause errors
+  ✓   8 [mobile-iphone-14] › tests/e2e/mobile/game-flow.spec.ts:185:3 › Game Flow (mobile) › Multiple rapid taps do not cause errors (6.7s)
+[1A[2K[9/25] [mobile-iphone-14] › tests/e2e/mobile/game-flow.spec.ts:213:3 › Game Flow (mobile) › Layout is correct in current mobile viewport
+  ✓   9 [mobile-iphone-14] › tests/e2e/mobile/game-flow.spec.ts:213:3 › Game Flow (mobile) › Layout is correct in current mobile viewport (13.6s)
+[1A[2K[10/25] [mobile-iphone-14] › tests/e2e/mobile/prism-menu.spec.ts:14:3 › Prism (Journal) on Mobile › opens Prism and navigates tabs
+  ✓  10 [mobile-iphone-14] › tests/e2e/mobile/prism-menu.spec.ts:14:3 › Prism (Journal) on Mobile › opens Prism and navigates tabs (14.4s)
+[1A[2K[11/25] [mobile-iphone-14] › tests/e2e/mobile/prism-menu.spec.ts:66:3 › Prism (Journal) on Mobile › shows empty state in Harmonics for fresh game
+  ✓  11 [mobile-iphone-14] › tests/e2e/mobile/prism-menu.spec.ts:66:3 › Prism (Journal) on Mobile › shows empty state in Harmonics for fresh game (13.1s)
+[1A[2K[12/25] [mobile-iphone-14] › tests/e2e/mobile/prism-menu.spec.ts:78:3 › Prism (Journal) on Mobile › closes Prism with close button
+  ✓  12 [mobile-iphone-14] › tests/e2e/mobile/prism-menu.spec.ts:78:3 › Prism (Journal) on Mobile › closes Prism with close button (13.5s)
+[1A[2K[13/25] [mobile-iphone-14] › tests/e2e/mobile/prism-menu.spec.ts:110:3 › UnifiedMenu on Mobile › opens settings menu and toggles sections
+  ✓  13 [mobile-iphone-14] › tests/e2e/mobile/prism-menu.spec.ts:110:3 › UnifiedMenu on Mobile › opens settings menu and toggles sections (14.0s)
+[1A[2K[14/25] [mobile-iphone-14] › tests/e2e/mobile/prism-menu.spec.ts:142:3 › UnifiedMenu on Mobile › reduce motion toggle has correct ARIA attributes
+  ✓  14 [mobile-iphone-14] › tests/e2e/mobile/prism-menu.spec.ts:142:3 › UnifiedMenu on Mobile › reduce motion toggle has correct ARIA attributes (5.1s)
+[1A[2K[15/25] [mobile-iphone-14] › tests/e2e/mobile/prism-menu.spec.ts:168:3 › UnifiedMenu on Mobile › shows unavailable states for profile items without game start
+
+
+  ✓  15 [mobile-iphone-14] › tests/e2e/mobile/prism-menu.spec.ts:168:3 › UnifiedMenu on Mobile › shows unavailable states for profile items without game start (3.2s)
+[1A[2K[16/25] [mobile-iphone-14] › tests/e2e/mobile/prism-menu.spec.ts:181:3 › UnifiedMenu on Mobile › closes menu with escape key
+  ✓  16 [mobile-iphone-14] › tests/e2e/mobile/prism-menu.spec.ts:181:3 › UnifiedMenu on Mobile › closes menu with escape key (14.2s)
+[1A[2K[17/25] [mobile-iphone-14] › tests/e2e/mobile/safe-areas.spec.ts:18:3 › Safe Area Boundaries › Bottom navigation stays within viewport
+  ✓  17 [mobile-iphone-14] › tests/e2e/mobile/safe-areas.spec.ts:18:3 › Safe Area Boundaries › Bottom navigation stays within viewport (13.2s)
+[1A[2K[18/25] [mobile-iphone-14] › tests/e2e/mobile/safe-areas.spec.ts:49:3 › Safe Area Boundaries › Modal dialogs render within viewport
+  ✓  18 [mobile-iphone-14] › tests/e2e/mobile/safe-areas.spec.ts:49:3 › Safe Area Boundaries › Modal dialogs render within viewport (13.7s)
+[1A[2K[19/25] [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:12:3 › Touch Target Validation › Choice buttons meet 44px minimum
+  ✓  19 [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:12:3 › Touch Target Validation › Choice buttons meet 44px minimum (13.1s)
+[1A[2K[20/25] [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:38:3 › Touch Target Validation › Navigation buttons meet 44px minimum
+  ✓  20 [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:38:3 › Touch Target Validation › Navigation buttons meet 44px minimum (13.5s)
+[1A[2K[21/25] [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:72:3 › Touch Target Validation › Enter Station button meets 44px minimum
+  ✓  21 [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:72:3 › Touch Target Validation › Enter Station button meets 44px minimum (1.4s)
+[1A[2K[22/25] [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:93:3 › Touch Target Validation › Constellation panel close button meets 44px minimum
+  ✓  22 [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:93:3 › Touch Target Validation › Constellation panel close button meets 44px minimum (13.5s)
+[1A[2K[23/25] [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:124:3 › Touch Target Validation › Constellation tab buttons meet 44px minimum
+  ✓  23 [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:124:3 › Touch Target Validation › Constellation tab buttons meet 44px minimum (13.3s)
+[1A[2K[24/25] [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:185:3 › Touch Target Validation › Cluster filter chips meet 44px minimum
+  -  24 [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:185:3 › Touch Target Validation › Cluster filter chips meet 44px minimum
+[1A[2K[25/25] [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:262:3 › Touch Target Validation › Journal panel close button meets 44px minimum
+  ✓  25 [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:262:3 › Touch Target Validation › Journal panel close button meets 44px minimum (13.2s)
+
+  1 skipped
+  24 passed (5.2m)
+[1A[2K  1 skipped
+  24 passed (5.2m)

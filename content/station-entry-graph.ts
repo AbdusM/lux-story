@@ -32,18 +32,21 @@ export const stationEntryGraph: DialogueGraph = {
             choices: [
                 {
                     choiceId: 'inspect_fog',
+                    taxonomyClass: 'accept',
                     text: 'Look up at the archways disappearing into the fog',
                     nextNodeId: 'entry_look_up',
                     pattern: 'analytical'
                 },
                 {
                     choiceId: 'inspect_floor',
+                    taxonomyClass: 'reject',
                     text: 'Look down at the worn marble floor',
                     nextNodeId: 'entry_look_down',
                     pattern: 'patience'
                 },
                 {
                     choiceId: 'approach_booth',
+                    taxonomyClass: 'deflect',
                     text: 'Approach the welded-shut Ticket Booths',
                     nextNodeId: 'entry_ticket_booth',
                     pattern: 'building'
@@ -126,16 +129,19 @@ export const stationEntryGraph: DialogueGraph = {
             choices: [
                 {
                     choiceId: 'approach_booth_retry',
+                    taxonomyClass: 'accept',
                     text: 'Approach the Ticket Booths',
                     nextNodeId: 'entry_ticket_booth'
                 },
                 {
                     choiceId: 'call_out',
+                    taxonomyClass: 'reject',
                     text: 'Call out: "Is anyone working?"',
                     nextNodeId: 'entry_samuel_intro'
                 },
                 {
                     choiceId: 'ng_plus_reentry',
+                    taxonomyClass: 'deflect',
                     text: '[NEW GAME+] Wake up at the beginning',
                     nextNodeId: 'sector_0_hub',
                     visibleCondition: { hasGlobalFlags: ['ng_plus_1'] }
@@ -236,7 +242,7 @@ export const stationEntryGraph: DialogueGraph = {
                     richEffectContext: 'glitch'
                 },
                 {
-                    text: "[You push open the grate and tumble out onto the marble floor of the Entry Hall. The air is cooler here.]\n\nScale. Silence. The 'Eternal Twilight'. You are back at the beginning.",
+                    text: "[You push open the grate and tumble onto the marble floor of the Entry Hall, where the air is cooler.]\n\nScale and silence, the \"Eternal Twilight\"; you are back at the beginning.",
                     variation_id: 'hub_reentry_v1',
                     visibleCondition: { lacksGlobalFlags: ['ng_plus_1'] }
                 }

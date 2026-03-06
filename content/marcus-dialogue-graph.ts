@@ -44,6 +44,7 @@ const nodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'work_harder',
+        taxonomyClass: 'accept',
         text: 'Drink some coffee. Power through it.',
         nextNodeId: 'marcus_burnout',
         pattern: 'building',
@@ -58,6 +59,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'automate',
+        taxonomyClass: 'reject',
         text: "You're doing the work of a machine. Let the machines do it.",
         nextNodeId: 'marcus_automation_lesson',
         pattern: 'helping',
@@ -72,6 +74,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'ask_why_overloaded',
+        taxonomyClass: 'deflect',
         text: "What put you in this position? This seems... unsustainable.",
         nextNodeId: 'marcus_origin_story',
         pattern: 'exploring',
@@ -227,6 +230,7 @@ const nodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'why_leave_hospital',
+        taxonomyClass: 'accept',
         text: "What made you leave?",
         voiceVariations: {
           analytical: "Walk me through what changed. What shifted?",
@@ -245,6 +249,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'security_interest',
+        taxonomyClass: 'reject',
         text: "Healthcare security... that's critical work. What drew you to it?",
         nextNodeId: 'marcus_calling',
         pattern: 'analytical',
@@ -253,6 +258,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'children_focus',
+        taxonomyClass: 'deflect',
         text: "Working with children's data. That takes a special kind of care.",
         nextNodeId: 'marcus_children_care',
         pattern: 'helping',
@@ -528,6 +534,7 @@ const nodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'fake_it',
+        taxonomyClass: 'accept',
         text: "They won't know the difference if the script is good.",
         nextNodeId: 'marcus_fail_trust',
         pattern: 'analytical',
@@ -535,6 +542,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'agentic_scale',
+        taxonomyClass: 'reject',
         text: "Don't script it. Architect it. Let me show you how to build a triage system.",
         nextNodeId: 'marcus_simulation_automation',
         pattern: 'helping',
@@ -547,6 +555,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'learn_trust_metrics',
+        taxonomyClass: 'deflect',
         text: "Tell me more about how you measure trust. That's fascinating.",
         nextNodeId: 'marcus_trust_philosophy',
         pattern: 'analytical',
@@ -574,6 +583,7 @@ const nodes: DialogueNode[] = [
       // Career observation routes (ISP: Only visible when pattern combos are achieved)
       {
         choiceId: 'trust_career_coordinator',
+        taxonomyClass: 'accept',
         text: "You see something in me. What is it?",
         nextNodeId: 'marcus_career_reflection_coordinator',
         pattern: 'helping',
@@ -585,6 +595,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'trust_career_researcher',
+        taxonomyClass: 'reject',
         text: "The way I approach problems... does it remind you of something?",
         nextNodeId: 'marcus_career_reflection_researcher',
         pattern: 'analytical',
@@ -596,6 +607,7 @@ const nodes: DialogueNode[] = [
       },
       {
         choiceId: 'trust_career_educator',
+        taxonomyClass: 'deflect',
         text: "You mentioned helping people understand. What did you mean?",
         nextNodeId: 'marcus_career_reflection_educator',
         pattern: 'patience',
@@ -1185,6 +1197,7 @@ WARNING: Response time > 48h`,
       },
       {
         choiceId: 'want_to_help',
+        taxonomyClass: 'accept',
         text: "I want to help people. Figure out how my skills can serve others.",
         nextNodeId: 'marcus_reciprocity_helper',
         pattern: 'helping',
@@ -1192,6 +1205,7 @@ WARNING: Response time > 48h`,
       },
       {
         choiceId: 'understanding_systems',
+        taxonomyClass: 'reject',
         text: "I'm trying to understand how systems work. So I can improve them.",
         nextNodeId: 'marcus_reciprocity_analyst',
         pattern: 'analytical',
@@ -1206,6 +1220,7 @@ WARNING: Response time > 48h`,
       },
       {
         choiceId: 'figuring_out',
+        taxonomyClass: 'deflect',
         text: "Honestly? I'm still figuring that out.",
         nextNodeId: 'marcus_reciprocity_uncertain',
         pattern: 'patience',
@@ -1392,6 +1407,7 @@ WARNING: Response time > 48h`,
     choices: [
       {
         choiceId: 'vuln_not_your_fault',
+        taxonomyClass: 'accept',
         text: "That wasn't your failure. You did everything you could.",
         nextNodeId: 'marcus_vulnerability_reflection',
         pattern: 'helping',
@@ -1404,6 +1420,7 @@ WARNING: Response time > 48h`,
       },
       {
         choiceId: 'vuln_system_failure',
+        taxonomyClass: 'reject',
         text: "The system failed those children. Not you.",
         nextNodeId: 'marcus_vulnerability_reflection',
         pattern: 'analytical',
@@ -1412,6 +1429,7 @@ WARNING: Response time > 48h`,
       },
       {
         choiceId: 'vuln_silence',
+        taxonomyClass: 'deflect',
         text: "[Hold space for his grief. Some wounds don't need words.]",
         nextNodeId: 'marcus_vulnerability_reflection',
         pattern: 'patience',
@@ -1445,6 +1463,7 @@ WARNING: Response time > 48h`,
     choices: [
       {
         choiceId: 'challenge_follow_up',
+        taxonomyClass: 'accept',
         text: "You did everything in your power. The failure was above you.",
         nextNodeId: 'marcus_vulnerability_reflection',
         pattern: 'analytical',
@@ -1456,6 +1475,7 @@ WARNING: Response time > 48h`,
       },
       {
         choiceId: 'challenge_support',
+        taxonomyClass: 'reject',
         text: "Carrying guilt that isn't yours doesn't honor those children. It just weighs you down.",
         nextNodeId: 'marcus_vulnerability_reflection',
         pattern: 'helping',
@@ -1467,6 +1487,7 @@ WARNING: Response time > 48h`,
       },
       {
         choiceId: 'challenge_patience',
+        taxonomyClass: 'deflect',
         text: "[Let the realization settle. He needs time with this.]",
         nextNodeId: 'marcus_vulnerability_reflection',
         pattern: 'patience',
@@ -2115,7 +2136,7 @@ WARNING: Response time > 48h`,
     nodeId: 'marcus_burnout',
     speaker: 'Marcus',
     content: [{
-      text: 'I just need a minute. Everything is spinning.\n\nPower through. That is what they always say. But power is finite. And I have been running on empty for three years.',
+      text: 'I need a minute; everything is spinning.\n\nPeople say \"power through,\" but power is finite, and I have been running on empty for three years.',
       emotion: 'exhausted',
       variation_id: 'burnout_v1',
       voiceVariations: {
@@ -2156,7 +2177,7 @@ WARNING: Response time > 48h`,
     nodeId: 'hub_return',
     speaker: 'Narrator',
     content: [{
-      text: 'You leave Marcus to his work. The station hums with new efficiency. But something has changed - in him, and perhaps in you. The weight of protection is lighter when shared.',
+      text: 'You leave Marcus to his work as the station hums with new efficiency.\n\nSomething changed in him, and perhaps in you: the weight of protection is lighter when shared.',
       emotion: 'neutral',
       variation_id: 'hub_return_v1'
     }],
@@ -2282,6 +2303,7 @@ WARNING: Response time > 48h`,
     choices: [
       {
         choiceId: 'adoption_regulatory',
+        taxonomyClass: 'accept',
         text: "Push for regulation. Make it legally required.",
         nextNodeId: 'marcus_challenge_regulation_response',
         pattern: 'analytical',
@@ -2289,6 +2311,7 @@ WARNING: Response time > 48h`,
       },
       {
         choiceId: 'adoption_incremental',
+        taxonomyClass: 'reject',
         text: "Start small. Pilot with one department, prove value, expand.",
         nextNodeId: 'marcus_challenge_pilot_response',
         pattern: 'patience',
@@ -2300,6 +2323,7 @@ WARNING: Response time > 48h`,
       },
       {
         choiceId: 'adoption_crisis',
+        taxonomyClass: 'deflect',
         text: "Wait for a crisis. After breaches, hospitals will demand better systems.",
         nextNodeId: 'marcus_challenge_crisis_response',
         pattern: 'exploring',
@@ -2495,6 +2519,7 @@ WARNING: Response time > 48h`,
     choices: [
       {
         choiceId: 'remember_purpose',
+        taxonomyClass: 'accept',
         text: "Purpose survives failure. It's still there, underneath.",
         nextNodeId: 'marcus_future_vision',
         pattern: 'patience',
@@ -2506,6 +2531,7 @@ WARNING: Response time > 48h`,
       },
       {
         choiceId: 'heal_yourself',
+        taxonomyClass: 'reject',
         text: "Maybe it's time to heal yourself too. Not just systems.",
         nextNodeId: 'marcus_vulnerability_arc',
         pattern: 'helping',
@@ -2520,6 +2546,7 @@ WARNING: Response time > 48h`,
       },
       {
         choiceId: 'heal_deep_dive',
+        taxonomyClass: 'deflect',
         text: "[Deep Dive] We can't fix the past. Let's run Crisis Protocol.",
         nextNodeId: 'marcus_deep_dive',
         pattern: 'analytical',
@@ -2557,6 +2584,7 @@ WARNING: Response time > 48h`,
     choices: [
       {
         choiceId: 'share_uncertainty',
+        taxonomyClass: 'accept',
         text: "I'm carrying uncertainty. Not knowing what comes next, who I'm supposed to become.",
         nextNodeId: 'marcus_connection_uncertainty_response',
         pattern: 'patience',
@@ -2568,6 +2596,7 @@ WARNING: Response time > 48h`,
       },
       {
         choiceId: 'share_pressure',
+        taxonomyClass: 'reject',
         text: "Pressure. From family, from expectations. Feeling like I should already have answers.",
         nextNodeId: 'marcus_connection_pressure_response',
         pattern: 'helping',
@@ -2579,6 +2608,7 @@ WARNING: Response time > 48h`,
       },
       {
         choiceId: 'not_ready',
+        taxonomyClass: 'deflect',
         text: "I'm not ready to share that yet. But I appreciate you asking.",
         nextNodeId: 'marcus_connection_respect_response',
         pattern: 'patience',

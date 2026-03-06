@@ -1,0 +1,8 @@
+
+> lux-story@2.3.1 verify:arc-completion-flags
+> node --loader ./scripts/ts-loader.mjs scripts/verify-arc-completion-flags.ts
+
+(node:36045) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./scripts/ts-loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+Arc completion flags OK (graphs_checked=19).

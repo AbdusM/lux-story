@@ -1,0 +1,27 @@
+Timestamp: 2026-03-05
+Scope: Asha targeted taxonomy activation
+
+Changes applied:
+- content/asha-dialogue-graph.ts
+  - Added taxonomyClass triads to all remaining non-compliant eligible nodes:
+    - asha_introduction
+    - asha_artistic_process
+    - asha_grandmother_story
+    - asha_simulation_setup
+    - asha_simulation_success
+    - asha_vulnerability_arc
+    - asha_mural_description
+    - asha_reciprocity_ask
+    - asha_sim2_community_intro
+    - asha_sim3_critique_intro
+
+Validation runs:
+- npm run type-check -> PASS
+- npm run verify:choice-taxonomy -> PASS
+  - Eligible nodes: 258
+  - Coverage: 84.11%
+  - Non-compliant nodes: 41
+- npm run verify:narrative-sim -> PASS (failures 0, mismatches 0, truncated 0)
+- npm run verify:required-state-strict -> PASS (violations 0)
+- npm run verify:unreachable-dialogue-nodes -> PASS (count 0)
+- npm run verify:unreferenced-dialogue-nodes -> PASS (count 0)

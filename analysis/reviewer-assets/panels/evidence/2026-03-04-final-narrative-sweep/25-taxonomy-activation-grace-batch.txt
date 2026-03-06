@@ -1,0 +1,27 @@
+Timestamp: 2026-03-05
+Scope: Grace targeted taxonomy activation
+
+Changes applied:
+- content/grace-dialogue-graph.ts
+  - Added taxonomyClass triads to all remaining non-compliant eligible nodes:
+    - grace_introduction
+    - grace_the_work
+    - grace_invisible_skill
+    - grace_the_moment_setup
+    - grace_vision
+    - grace_simulation_intro
+    - grace_simulation_phase_1
+    - grace_simulation_phase_2
+    - grace_loyalty_vigil_begins
+    - grace_loyalty_choice
+
+Validation runs:
+- npm run type-check -> PASS
+- npm run verify:choice-taxonomy -> PASS
+  - Eligible nodes: 258
+  - Coverage: 80.23%
+  - Non-compliant nodes: 51
+- npm run verify:narrative-sim -> PASS (failures 0, mismatches 0, truncated 0)
+- npm run verify:required-state-strict -> PASS (violations 0)
+- npm run verify:unreachable-dialogue-nodes -> PASS (count 0)
+- npm run verify:unreferenced-dialogue-nodes -> PASS (count 0)

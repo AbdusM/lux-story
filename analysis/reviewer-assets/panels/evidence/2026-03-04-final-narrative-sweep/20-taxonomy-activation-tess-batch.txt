@@ -1,0 +1,28 @@
+Timestamp: 2026-03-05
+Scope: Tess targeted taxonomy activation
+
+Changes applied:
+- content/tess-dialogue-graph.ts
+  - Added taxonomyClass triads to all remaining non-compliant eligible nodes:
+    - tess_introduction
+    - tess_the_shop
+    - tess_the_numbers
+    - tess_the_pitch_setup
+    - tess_pitch_climax
+    - tess_asks_player
+    - tess_simulation_phase_1
+    - tess_phase2_entry
+    - tess_p2_crisis_reveal
+    - tess_p2_complete
+    - tess_p2_asks_player
+
+Validation runs:
+- npm run type-check -> PASS
+- npm run verify:choice-taxonomy -> PASS
+  - Eligible nodes: 258
+  - Coverage: 60.47%
+  - Non-compliant nodes: 102
+- npm run verify:narrative-sim -> PASS (failures 0, mismatches 0, truncated 0)
+- npm run verify:required-state-strict -> PASS (violations 0)
+- npm run verify:unreachable-dialogue-nodes -> PASS (count 0)
+- npm run verify:unreferenced-dialogue-nodes -> PASS (count 0)

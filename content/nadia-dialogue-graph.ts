@@ -35,6 +35,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'nadia_intro_see',
         text: "What do you mean by 'choosing where to look'?",
+        taxonomyClass: 'accept',
         nextNodeId: 'nadia_choosing_sight',
         pattern: 'analytical',
         skills: ['criticalThinking', 'integrity'],
@@ -49,6 +50,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'nadia_intro_fixed',
         text: "Insight and limitation in the same trait. That's profound.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'nadia_tradeoffs',
         pattern: 'patience',
         skills: ['criticalThinking', 'emotionalIntelligence'],
@@ -68,6 +70,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'nadia_intro_ai',
         text: "So you work with AI?",
+        taxonomyClass: 'reject',
         nextNodeId: 'nadia_work_ai',
         pattern: 'exploring',
         skills: ['curiosity', 'communication'],
@@ -185,6 +188,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'nadia_hiring_harm',
         text: "What happened with the hiring algorithms?",
+        taxonomyClass: 'accept',
         nextNodeId: 'nadia_hiring_story',
         pattern: 'helping',
         skills: ['empathy', 'integrity'],
@@ -197,6 +201,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'nadia_remove_bias',
         text: "Is it possible to remove bias from AI?",
+        taxonomyClass: 'reject',
         nextNodeId: 'nadia_bias_possible',
         pattern: 'analytical',
         skills: ['criticalThinking', 'integrity']
@@ -204,6 +209,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'nadia_whose_truth',
         text: "Whose truth becomes universal—that's terrifying.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'nadia_terrifying_truth',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'integrity']
@@ -234,6 +240,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'nadia_noticed_how',
         text: "How did someone finally notice?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'nadia_noticed',
         pattern: 'exploring',
         skills: ['criticalThinking']
@@ -241,6 +248,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'nadia_your_fault',
         text: "That wasn't your fault. The bias was in the data.",
+        taxonomyClass: 'reject',
         nextNodeId: 'nadia_data_defense',
         pattern: 'helping',
         skills: ['empathy']
@@ -248,6 +256,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'nadia_it_was',
         text: "You left because you felt responsible.",
+        taxonomyClass: 'accept',
         nextNodeId: 'nadia_responsible',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
@@ -355,6 +364,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'nadia_hub_future',
+        taxonomyClass: 'accept',
         text: "The future of AI. Where is this heading?",
         nextNodeId: 'nadia_ai_future',
         pattern: 'exploring',
@@ -362,6 +372,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_hub_audit',
+        taxonomyClass: 'reject',
         text: "Tell me about AI auditing.",
         nextNodeId: 'nadia_audit_work',
         pattern: 'building',
@@ -369,6 +380,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_hub_personal',
+        taxonomyClass: 'deflect',
         text: "Your personal journey through all this.",
         nextNodeId: 'nadia_personal_journey',
         pattern: 'helping',
@@ -399,6 +411,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'nadia_path_one',
+        taxonomyClass: 'accept',
         text: "Path one seems obvious. Why would anyone choose path two?",
         nextNodeId: 'nadia_why_oracle',
         pattern: 'analytical',
@@ -406,6 +419,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_already_chose',
+        taxonomyClass: 'reject',
         text: "Haven't we already started down path two?",
         nextNodeId: 'nadia_already_oracle',
         pattern: 'patience',
@@ -413,6 +427,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_refuse_build',
+        taxonomyClass: 'deflect',
         text: "What have you refused to build?",
         nextNodeId: 'nadia_refused',
         pattern: 'helping',
@@ -470,6 +485,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'nadia_edge_cases',
+        taxonomyClass: 'accept',
         text: "What kind of edge cases get dismissed?",
         nextNodeId: 'nadia_edge_cases',
         pattern: 'analytical',
@@ -477,6 +493,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_resist_audit',
+        taxonomyClass: 'reject',
         text: "Do companies resist your findings?",
         nextNodeId: 'nadia_resistance',
         pattern: 'exploring',
@@ -484,6 +501,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_become_auditor',
+        taxonomyClass: 'deflect',
         text: "How would someone become an AI auditor?",
         nextNodeId: 'nadia_career_path',
         pattern: 'building',
@@ -518,6 +536,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'nadia_vuln_changed',
+        taxonomyClass: 'accept',
         text: "The fact that you're haunted by it means you've changed.",
         nextNodeId: 'nadia_haunted_change',
         pattern: 'helping',
@@ -529,6 +548,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_vuln_both',
+        taxonomyClass: 'reject',
         text: "Maybe you're both. Maybe that's what vigilance looks like.",
         nextNodeId: 'nadia_both_selves',
         pattern: 'patience',
@@ -540,6 +560,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_vuln_beautiful',
+        taxonomyClass: 'deflect',
         text: "Beauty is seductive. That's not a flaw—it's human.",
         nextNodeId: 'nadia_human_beauty',
         pattern: 'analytical',
@@ -597,6 +618,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'nadia_sim_truth',
+        taxonomyClass: 'accept',
         text: "Tell them the truth. AI doesn't understand—it mimics.",
         nextNodeId: 'nadia_sim_truth_response',
         pattern: 'patience',
@@ -608,6 +630,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_sim_scope',
+        taxonomyClass: 'reject',
         text: "Take the contract but scope it honestly. Tell them what's actually achievable.",
         nextNodeId: 'nadia_sim_scope_response',
         pattern: 'building',
@@ -615,6 +638,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_sim_walk',
+        taxonomyClass: 'deflect',
         text: "Walk away. Some contracts aren't worth the compromise.",
         nextNodeId: 'nadia_sim_walk_response',
         pattern: 'helping',
@@ -711,6 +735,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'nadia_team_flag',
+        taxonomyClass: 'accept',
         text: "Flag it. Three months is worth getting it right.",
         nextNodeId: 'nadia_team_flag_response',
         pattern: 'patience',
@@ -718,6 +743,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_team_compromise',
+        taxonomyClass: 'reject',
         text: "Ship with disclosure. Tell users the system may not work equally for everyone.",
         nextNodeId: 'nadia_team_compromise_response',
         pattern: 'analytical',
@@ -725,6 +751,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_team_ship',
+        taxonomyClass: 'deflect',
         text: "Ship it. Fix it in updates. Speed matters.",
         nextNodeId: 'nadia_team_ship_response',
         pattern: 'building',
@@ -757,6 +784,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'nadia_path_technical',
+        taxonomyClass: 'accept',
         text: "The technical side. I want to understand the systems.",
         nextNodeId: 'nadia_technical_path',
         pattern: 'building',
@@ -764,6 +792,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_path_policy',
+        taxonomyClass: 'reject',
         text: "Policy. I want to change how decisions get made.",
         nextNodeId: 'nadia_policy_path',
         pattern: 'helping',
@@ -771,6 +800,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_path_both',
+        taxonomyClass: 'deflect',
         text: "Both, honestly. Can you do that?",
         nextNodeId: 'nadia_both_paths',
         pattern: 'exploring',
@@ -867,6 +897,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'nadia_inconvenient',
+        taxonomyClass: 'accept',
         text: "That sounds lonely.",
         nextNodeId: 'nadia_lonely_work',
         pattern: 'helping',
@@ -878,6 +909,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_predict_fail',
+        taxonomyClass: 'reject',
         text: "How do you predict where systems fail?",
         nextNodeId: 'nadia_prediction_method',
         pattern: 'analytical',
@@ -885,6 +917,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'nadia_explore_more',
+        taxonomyClass: 'deflect',
         text: "What else should I know about this work?",
         nextNodeId: 'nadia_exploration_hub',
         pattern: 'exploring',
@@ -1224,7 +1257,7 @@ export const nadiaDialogueNodes: DialogueNode[] = [
         pattern: 'building'
       }
     ],
-    tags: ['mystery', 'breadcrumb', 'faction:data_flow', 'verify-conflict:oxygen_tax_origin']
+    tags: ['mystery', 'breadcrumb', 'faction:data_flow', 'iceberg:burned_district', 'verify-conflict:oxygen_tax_origin']
   },
 
   {
@@ -1517,7 +1550,7 @@ D) Career gap penalties disadvantage caregivers`,
     nodeId: 'nadia_simulation_phase2_setup',
     speaker: 'Nadia Petrova',
     content: [{
-      text: "Okay. Harder problem.\n\nI've been hired to design guardrails for a medical diagnosis AI. It's 92% accurate. Better than most human doctors at detecting early-stage cancer from scans.\n\nBut that 8% error rate? It's not random. The AI fails more often on darker skin tones. Training data bias again.\n\nI need to decide: Do we deploy it now and save lives, knowing it works better for some than others? Or hold it back until we fix the bias, letting people die while we perfect it?\n\nHelp me think through the ethics.",
+      text: "I'm designing guardrails for a cancer-detection AI that beats most doctors overall but misses more cases on darker skin.\n\nDo we deploy now or hold it back while we fix the bias?",
       emotion: 'conflicted_heavy',
       variation_id: 'simulation_phase2_intro_v1'
     }],
@@ -1606,6 +1639,11 @@ Which option best balances utility and justice?`,
         nextNodeId: 'nadia_simulation_phase2_success',
         pattern: 'helping',
         skills: ['ethicalReasoning', 'systemsThinking']
+      },
+      {
+        choiceId: 'phase2_fail',
+        text: "You pick an extreme. The trade-offs land hard.",
+        nextNodeId: 'nadia_simulation_phase2_fail'
       }
     ],
     onEnter: [{
@@ -1644,7 +1682,7 @@ Which option best balances utility and justice?`,
     nodeId: 'nadia_simulation_phase2_fail',
     speaker: 'Nadia Petrova',
     content: [{
-      text: "That path... it either abandons equity or lets people die for the sake of purity.\n\nThere's a third way. Harder than both.\n\nDeploy where the AI genuinely helps—even 84% beats 87%. Be transparent about the limitations. And treat fixing the bias like the emergency it is.\n\nNot perfect. But better than the status quo. That's the standard we have to work with.",
+      text: "That path either abandons equity or treats perfection as more urgent than people.\n\nThe better move is targeted deployment with explicit limits while we treat bias repair like the emergency it is.",
       emotion: 'patient_firm',
       variation_id: 'phase2_fail_v1'
     }],
@@ -1668,7 +1706,7 @@ Which option best balances utility and justice?`,
     nodeId: 'nadia_simulation_phase3_setup',
     speaker: 'Nadia Petrova',
     content: [{
-      text: "I need your help with the hardest decision I've ever faced.\n\nThere's an AI system I helped build. Predictive policing. It's supposed to allocate police resources efficiently, reduce crime.\n\nBut I've been watching the data. It's creating a feedback loop. Over-policing neighborhoods that were already over-policed. Arresting people for crimes they haven't committed yet. Justifying it with 'predictions.'\n\nI built this. I have the access to shut it down.\n\nBut if I do, I'll violate my NDA. Lose my career. Possibly face legal consequences.\n\nShould I kill my own creation?",
+      text: "I helped build a policing system that harms the neighborhoods it claims to protect, and I can shut it down.\n\nIf I do, I lose my career; should I kill my own creation?",
       emotion: 'vulnerable_desperate',
       variation_id: 'simulation_phase3_intro_v1',
       richEffectContext: 'warning'
@@ -1757,6 +1795,11 @@ Which path balances personal risk and moral responsibility?`,
         nextNodeId: 'nadia_simulation_phase3_success',
         pattern: 'helping',
         skills: ['ethicalReasoning', 'courage']
+      },
+      {
+        choiceId: 'phase3_fail',
+        text: "You delay. The harm continues.",
+        nextNodeId: 'nadia_simulation_phase3_fail'
       }
     ],
     onEnter: [{
@@ -1828,7 +1871,7 @@ Which path balances personal risk and moral responsibility?`,
     nodeId: 'nadia_simulation_phase3_fail',
     speaker: 'Nadia Petrova',
     content: [{
-      text: "That path... it either delays action while people suffer, or protects me at their expense.\n\nI keep looking for a way to do the right thing without losing everything. But maybe there isn't one.\n\nMaybe the cost of building something harmful is facing the cost of stopping it.\n\nI don't know if I'm brave enough for that.",
+      text: "I keep searching for a version of this choice where people stop getting hurt and I keep everything.\n\nMaybe stopping harm costs exactly what building it cost me.",
       emotion: 'defeated_conflicted',
       variation_id: 'phase3_fail_v1'
     }],

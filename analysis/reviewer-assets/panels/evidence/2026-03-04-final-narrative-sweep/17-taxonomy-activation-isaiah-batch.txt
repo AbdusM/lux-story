@@ -1,0 +1,31 @@
+Timestamp: 2026-03-05
+Scope: Isaiah targeted taxonomy activation
+
+Changes applied:
+- content/isaiah-dialogue-graph.ts
+  - Added taxonomyClass triads to all remaining non-compliant eligible nodes:
+    - isaiah_introduction
+    - isaiah_real_cost
+    - isaiah_burnout
+    - isaiah_still_believe
+    - isaiah_kids_work
+    - isaiah_exploration_hub
+    - isaiah_fundraising_mechanics
+    - isaiah_vulnerability_arc
+    - isaiah_sim_donor
+    - isaiah_sim_burnout
+    - isaiah_donor_reality
+    - isaiah_impact_measurement
+    - isaiah_kids_outcomes
+    - isaiah_return_hub
+
+Validation runs:
+- npm run type-check -> PASS
+- npm run verify:choice-taxonomy -> PASS
+  - Eligible nodes: 258
+  - Coverage: 48.06%
+  - Non-compliant nodes: 134
+- npm run verify:narrative-sim -> PASS (failures 0, mismatches 0, truncated 0)
+- npm run verify:required-state-strict -> PASS (violations 0)
+- npm run verify:unreachable-dialogue-nodes -> PASS (count 0)
+- npm run verify:unreferenced-dialogue-nodes -> PASS (count 0)

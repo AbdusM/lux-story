@@ -1,0 +1,25 @@
+Date: 2026-03-05
+Scope: Final targeted dialogue-density cleanup for remaining offenders.
+
+Soft issue progression:
+- 108 -> 89 -> 71 -> 62 -> 55 -> 4 -> 1 -> 0
+
+Final command sequence:
+- npm run verify:dialogue-guidelines
+- npm run type-check
+- npm run verify:choice-taxonomy
+- npm run verify:narrative-sim
+- npm run verify:required-state-strict
+- npm run verify:unreachable-dialogue-nodes
+- npm run verify:unreferenced-dialogue-nodes
+
+Final state:
+- dialogue-guidelines: hard=0, soft=0
+- choice taxonomy: 100% (258/258)
+- narrative sim: failures=0, mismatches=0, truncated=0
+- required-state strict: violations=0
+- unreachable dialogue nodes: 0
+- unreferenced dialogue nodes: 0
+
+Process check:
+- No lux-story verify/test processes left running.

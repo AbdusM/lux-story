@@ -98,17 +98,20 @@ export const marketDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'approach_broker',
+                taxonomyClass: 'accept',
                 text: 'Find "The Broker" (Information Exchange)',
                 nextNodeId: 'broker_intro',
                 pattern: 'analytical'
             },
             {
                 choiceId: 'browse_stalls',
+                taxonomyClass: 'reject',
                 text: 'Browse the stalls (Physical Goods)',
                 nextNodeId: 'market_browse_stalls'
             },
             {
                 choiceId: 'leave_market',
+                taxonomyClass: 'deflect',
                 text: 'Return to Grand Hall',
                 nextNodeId: 'sector_1_hall'
             },
@@ -127,7 +130,7 @@ export const marketDialogueNodes: DialogueNode[] = [
         nodeId: 'broker_intro',
         speaker: 'The Broker',
         content: [{
-            text: "[A figure sits behind a curtain of heavy red velvet. You can't see their face, only their hands—pale, adorned with rings of gold and rusted iron.]\n\nWe do not accept credits here, Traveler. Credits are a lie the Technocrats tell themselves. \n\nWe trade in **Leverage**. What truths have you found?",
+            text: "[A figure waits behind heavy red velvet, only ringed hands visible.]\n\nWe do not trade in credits here; those are Technocrat stories.\n\nWe trade in **Leverage**; what truths have you found?",
             variation_id: 'broker_intro_v3',
             patternReflection: [
                 { pattern: 'analytical', minLevel: 4, altText: "We do not accept credits.\n\n[You notice a neural-link cable running from the Broker's wrist into the wall.]\n\nThey aren't just selling secrets. They are feeding a database directly.", altEmotion: 'suspicious' }
@@ -137,6 +140,7 @@ export const marketDialogueNodes: DialogueNode[] = [
             // TRADE 1: SECRET PASSAGE (Found in Sector 1)
             {
                 choiceId: 'trade_secret_passage',
+                taxonomyClass: 'accept',
                 text: '[Sell] "I found a secret vent in the Grand Hall."',
                 nextNodeId: 'trade_success_vent',
                 visibleCondition: {
@@ -162,6 +166,7 @@ export const marketDialogueNodes: DialogueNode[] = [
             // TRADE 2: TECHNOCRAT BLUEPRINT (Found in Sector 1 Tech Wall)
             {
                 choiceId: 'trade_technocrat_blueprint',
+                taxonomyClass: 'reject',
                 text: '[Sell] "I have the architectural blueprints for Sector 1."',
                 nextNodeId: 'trade_success_blueprint',
                 visibleCondition: {
@@ -243,6 +248,7 @@ export const marketDialogueNodes: DialogueNode[] = [
 
             {
                 choiceId: 'leave_broker',
+                taxonomyClass: 'deflect',
                 text: 'I have nothing to sell.',
                 nextNodeId: 'sector_2_market'
             }
@@ -256,7 +262,7 @@ export const marketDialogueNodes: DialogueNode[] = [
         nodeId: 'trade_success_vent',
         speaker: 'The Broker',
         content: [{
-            text: "A physical vulnerability in the Atrium hull? Fascinating. The Scavengers will pay handsomely for a new route.\n\nHere is your payment: **300 Credits**. Spend them wisely.",
+            text: "A physical vulnerability in the Atrium hull. Fascinating; the Scavengers will pay for a new route.\n\nPayment: **300 Credits**.",
             variation_id: 'trade_vent_success',
             richEffectContext: 'success'
         }],
@@ -268,7 +274,7 @@ export const marketDialogueNodes: DialogueNode[] = [
         nodeId: 'trade_success_samuel',
         speaker: 'The Broker',
         content: [{
-            text: "Ah. The 'Hero' has a cracked shield. This information is worth more than gold. This changes the political landscape of Sector 0.\n\nTake this: **Access Code to Sector 3**. The Technocrats won't stop you now.",
+            text: "Ah, the \"Hero\" has a cracked shield, and that shifts Sector 0's political landscape.\n\nTake this: **Access Code to Sector 3**.",
             variation_id: 'trade_samuel_success',
             richEffectContext: 'success'
         }],
@@ -280,7 +286,7 @@ export const marketDialogueNodes: DialogueNode[] = [
         nodeId: 'trade_success_maya',
         speaker: 'The Broker',
         content: [{
-            text: "Predictable. Another engineer burning out. Still, the Guild calculates staffing risks carefully. We can short their stock.\n\nTake this: **High-Capacity Battery**. You'll need it.",
+            text: "Predictable: another engineer burning out, and the Guild tracks staffing risk carefully.\n\nWe'll short their stock.\n\nTake this: **High-Capacity Battery**.",
             variation_id: 'trade_maya_success',
             richEffectContext: 'success'
         }],
@@ -292,7 +298,7 @@ export const marketDialogueNodes: DialogueNode[] = [
         nodeId: 'trade_success_blueprint',
         speaker: 'The Broker',
         content: [{
-            text: "Schematics? Delicious. The Guild hides these flaws to maintain the illusion of control. We shall sell them to the highest bidder.\n\nTake this: **Black Market Access Key**. You can now trade for... rarer items.",
+            text: "Schematics, delicious.\n\nThe Guild hides these flaws to preserve control, and this will sell fast.\n\nTake this: **Black Market Access Key**.",
             variation_id: 'trade_blueprint_success',
             richEffectContext: 'success'
         }],
@@ -304,7 +310,7 @@ export const marketDialogueNodes: DialogueNode[] = [
         nodeId: 'trade_success_naturalist',
         speaker: 'The Broker',
         content: [{
-            text: "A garden? In the Dead Sector? How very resourceful of them. The Technocrat elimination squads will pay a premium for this coordinate.\n\nTake this: **Bounty Hunter Contact**. Use it if you need 'problems' removed.",
+            text: "A garden in the Dead Sector, resourceful.\n\nTechnocrat elimination squads will pay for this coordinate.\n\nTake this: **Bounty Hunter Contact**.",
             variation_id: 'trade_naturalist_success',
             richEffectContext: 'success'
         }],

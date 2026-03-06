@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-04T23:28:52.866Z",
+  "generated_at": "2026-03-06T04:09:46.277Z",
   "declared_types": [
     "choice_presented",
     "choice_selected_ui",
@@ -41,17 +41,17 @@
     "node_entered": [
       {
         "file": "components/StatefulGameInterface.tsx",
-        "line": 1291
+        "line": 1320
       },
       {
         "file": "components/StatefulGameInterface.tsx",
-        "line": 2170
+        "line": 2199
       }
     ],
     "choice_selected_result": [
       {
         "file": "components/StatefulGameInterface.tsx",
-        "line": 1587
+        "line": 1616
       }
     ],
     "experiment_assigned": [

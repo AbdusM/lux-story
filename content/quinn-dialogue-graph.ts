@@ -34,6 +34,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'quinn_intro_numbers',
+        taxonomyClass: 'accept',
         text: "What truth do the numbers miss?",
         nextNodeId: 'quinn_numbers_truth',
         pattern: 'analytical',
@@ -48,6 +49,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_intro_wealth',
+        taxonomyClass: 'reject',
         text: "Better at building wealth than being wealthy. That's a heavy sentence.",
         nextNodeId: 'quinn_wealth_paradox',
         pattern: 'helping',
@@ -67,6 +69,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_intro_birmingham',
+        taxonomyClass: 'deflect',
         text: "You came back to Birmingham. Why?",
         nextNodeId: 'quinn_birmingham_return',
         pattern: 'exploring',
@@ -149,6 +152,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'quinn_algorithm_guilt',
+        taxonomyClass: 'accept',
         text: "That's not on you. Companies make those decisions.",
         nextNodeId: 'quinn_responsibility',
         pattern: 'helping',
@@ -156,6 +160,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_algorithm_system',
+        taxonomyClass: 'reject',
         text: "The system is designed to optimize for profit. You were just a tool.",
         nextNodeId: 'quinn_tool_reflection',
         pattern: 'analytical',
@@ -163,6 +168,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_algorithm_change',
+        taxonomyClass: 'deflect',
         text: "What would you do differently now?",
         nextNodeId: 'quinn_different_now',
         pattern: 'building',
@@ -214,6 +220,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'quinn_paradox_meaning',
+        taxonomyClass: 'accept',
         text: "Money can't buy meaning. But it can buy time to find it.",
         nextNodeId: 'quinn_time_meaning',
         pattern: 'patience',
@@ -225,6 +232,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_paradox_connection',
+        taxonomyClass: 'reject',
         text: "You were lonely.",
         nextNodeId: 'quinn_loneliness',
         pattern: 'helping',
@@ -236,13 +244,14 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_paradox_question',
+        taxonomyClass: 'deflect',
         text: "What was everyone else supposed to have that you were missing?",
         nextNodeId: 'quinn_what_missing',
         pattern: 'exploring',
         skills: ['communication', 'emotionalIntelligence']
       }
     ],
-    tags: ['quinn_arc', 'vulnerability', 'finance']
+    tags: ['quinn_arc', 'vulnerability', 'finance', 'micro:quinn_meaning_over_metrics']
   },
   {
     nodeId: 'quinn_interrupt_acknowledged',
@@ -295,6 +304,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'quinn_grandma_wisdom',
+        taxonomyClass: 'accept',
         text: "What did she know?",
         nextNodeId: 'quinn_grandma_lesson',
         pattern: 'exploring',
@@ -306,6 +316,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_titusville',
+        taxonomyClass: 'reject',
         text: "Titusville. That's a neighborhood with history.",
         nextNodeId: 'quinn_titusville_history',
         pattern: 'building',
@@ -320,6 +331,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_happiness_equation',
+        taxonomyClass: 'deflect',
         text: "Happiness doesn't scale with income. The research is clear on that.",
         nextNodeId: 'quinn_happiness_research',
         pattern: 'analytical',
@@ -350,6 +362,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'quinn_silence_listen',
+        taxonomyClass: 'accept',
         text: "Sometimes listening is worth more than talking.",
         nextNodeId: 'quinn_listening_value',
         pattern: 'helping',
@@ -357,6 +370,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_silence_wall_street',
+        taxonomyClass: 'reject',
         text: "Wall Street doesn't reward patience?",
         nextNodeId: 'quinn_wall_street_pace',
         pattern: 'exploring',
@@ -364,6 +378,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_silence_continue',
+        taxonomyClass: 'deflect',
         text: "Tell me more about what brought you here.",
         nextNodeId: 'quinn_deeper_story',
         pattern: 'patience',
@@ -391,6 +406,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'quinn_pro_teach',
+        taxonomyClass: 'accept',
         text: "Could you teach someone to read patterns like that?",
         nextNodeId: 'quinn_teaching_offer',
         pattern: 'building',
@@ -402,6 +418,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_pro_predict',
+        taxonomyClass: 'reject',
         text: "Where do you think the economy is going?",
         nextNodeId: 'quinn_economy_prediction',
         pattern: 'analytical',
@@ -409,6 +426,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_pro_why',
+        taxonomyClass: 'deflect',
         text: "Why understand it if you're not trading on it?",
         nextNodeId: 'quinn_why_understand',
         pattern: 'exploring',
@@ -432,6 +450,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'quinn_pitch_yes',
+        taxonomyClass: 'accept',
         text: "Show me.",
         nextNodeId: 'quinn_pitch_setup',
         pattern: 'exploring',
@@ -439,6 +458,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_pitch_criteria',
+        taxonomyClass: 'reject',
         text: "What criteria do you use?",
         nextNodeId: 'quinn_pitch_criteria',
         pattern: 'analytical',
@@ -446,6 +466,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_pitch_later',
+        taxonomyClass: 'deflect',
         text: "Maybe another time. I want to understand you first.",
         nextNodeId: 'quinn_personal_first',
         pattern: 'helping',
@@ -465,13 +486,14 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v5',
-        text: "Three pitches. All different.\n\n**Founder A:** AI-powered financial planning for first-generation college students. Solid tech, unclear revenue model, massive social impact potential.\n\n**Founder B:** Luxury vacation rental arbitrage platform. Clear revenue, proven model, marginal social value.\n\n**Founder C:** Mental health app for finance professionals. Decent tech, uncertain market, personal passion project from a burned-out trader.\n\nYou've got $500K. One choice. What matters to you?",
+        text: "Three live pitches, one $500K check, no perfect option.\n\nA: high-impact with uncertain revenue; B: proven economics with low social upside; C: deep mission with unclear market.\n\nWhat do you optimize first?",
         emotion: 'teaching_intense'
       }
     ],
     choices: [
       {
         choiceId: 'quinn_pitch_founder_a',
+        taxonomyClass: 'accept',
         text: "Founder A. Impact over pure returns.",
         nextNodeId: 'quinn_pitch_choice_a',
         pattern: 'helping',
@@ -486,6 +508,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_pitch_founder_b',
+        taxonomyClass: 'reject',
         text: "Founder B. Proven model, predictable returns.",
         nextNodeId: 'quinn_pitch_choice_b',
         pattern: 'analytical',
@@ -500,6 +523,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_pitch_founder_c',
+        taxonomyClass: 'deflect',
         text: "Founder C. Someone who understands the problem deeply.",
         nextNodeId: 'quinn_pitch_choice_c',
         pattern: 'building',
@@ -663,6 +687,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'quinn_vuln_forgiveness',
+        taxonomyClass: 'accept',
         text: "You can't forgive yourself, can you?",
         nextNodeId: 'quinn_self_forgiveness',
         pattern: 'helping',
@@ -681,6 +706,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_vuln_marcus',
+        taxonomyClass: 'reject',
         text: "Have you tried to make it right with Marcus?",
         nextNodeId: 'quinn_marcus_relationship',
         pattern: 'building',
@@ -688,6 +714,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_vuln_system',
+        taxonomyClass: 'deflect',
         text: "The system put you in that position. You were doing your job.",
         nextNodeId: 'quinn_system_excuse',
         pattern: 'analytical',
@@ -750,6 +777,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'quinn_return_promise',
+        taxonomyClass: 'accept',
         text: "I will.",
         nextNodeId: samuelEntryPoints.HUB_INITIAL,
         pattern: 'helping',
@@ -757,6 +785,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'quinn_return_curious',
+        taxonomyClass: 'reject',
         text: "There's more to learn here.",
         nextNodeId: samuelEntryPoints.HUB_INITIAL,
         pattern: 'exploring',
@@ -765,6 +794,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
       // Loyalty Experience trigger - only visible at high trust + analytical pattern
       {
         choiceId: 'offer_portfolio_help',
+        taxonomyClass: 'deflect',
         text: "[Financial Analyst] Quinn, you mentioned rebuilding your portfolio ethically. Want to work through it together?",
         nextNodeId: 'quinn_loyalty_trigger',
         pattern: 'analytical',
@@ -1254,7 +1284,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v22',
-        text: "I use what I call the 'three returns' framework:\n\n1. **Financial return** - Will this make money?\n2. **Human return** - Who benefits besides shareholders?\n3. **Systemic return** - Does this make the system better or worse?\n\nIf I can't answer all three positively, I don't invest.",
+        text: "I use a three-returns filter: financial, human, and systemic.\n\nIf a deal makes money but harms people or the system, I pass.\n\nAll three must clear.",
         emotion: 'teaching_confident'
       }
     ],
@@ -1403,7 +1433,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v25',
-        text: "Three things:\n\n1. **Resilience** - Have they failed before and gotten back up?\n2. **Why** - Is their motivation deeper than money?\n3. **Awareness** - Do they know what they don't know?\n\nA founder with all three can learn anything else. A founder missing any one will probably crash.",
+        text: "I screen for three things: resilience, purpose beyond money, and self-awareness.\n\nFounders with all three can learn the rest.\n\nMissing one usually means a crash later.",
         emotion: 'teaching_confident'
       }
     ],
@@ -2112,7 +2142,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     content: [
       {
         variation_id: 'quinn_v47',
-        text: "**Founder A:** Year 1 projections are $200K, but that's mostly grants and donations. Year 3 they're projecting $2M through B2B partnerships with colleges. High uncertainty.\n\n**Founder B:** Year 1 at $800K, Year 3 at $5M. Conservative estimates with clear unit economics. Low uncertainty.\n\n**Founder C:** Year 1 at $150K, Year 3 at $1.2M if they nail enterprise sales. Medium uncertainty.\n\nNumbers change everything—and nothing.",
+        text: "Revenue spread: A = $200K-$2M (high uncertainty), B = $800K-$5M (low), C = $150K-$1.2M (medium).\n\nNumbers help, but the real bet is which future you want to fund.",
         emotion: 'teaching'
       }
     ],
@@ -2133,7 +2163,7 @@ export const quinnDialogueNodes: DialogueNode[] = [
     speaker: 'Quinn Almeida',
     content: [
       {
-        text: "**Founder A:** First-gen college student herself. Built the first version while working two jobs. Burning with mission.\n\n**Founder B:** Third startup. Two exits. Knows how to build and sell. Limited emotional investment.\n\n**Founder C:** Finance background. Burned out after 8 years in trading. This is personal—maybe too personal.\n\nThe human story changes everything—and nothing.",
+        text: "Founder A is mission-first under real constraints; Founder B is proven and efficient; Founder C is personal and exposed.\n\nThe people shift risk as much as the spreadsheets.",
         variation_id: 'quinn_v56',
         emotion: 'teaching'
       }
@@ -2241,12 +2271,12 @@ export const quinnDialogueNodes: DialogueNode[] = [
     },
     content: [
       {
-        text: "In finance, everything has a value. Assets, liabilities, risk-adjusted returns.\\n\\nBut the currency here isn't money. It's... <shake>attention</shake>. Real attention. The kind you can't fake.",
+        text: "In finance, everything has a value: assets, liabilities, risk-adjusted returns.\\n\\nBut the currency here isn't money; it's <shake>attention</shake>, the kind you can't fake.",
         emotion: 'reflective',
         variation_id: 'mystery_hint_v1'
       },
       {
-        text: "Every conversation here feels like an investment. And the returns are... different.",
+        text: "Every conversation here feels like an investment, and the returns are different.",
         emotion: 'thoughtful',
         variation_id: 'mystery_hint_v2'
       }
@@ -2347,6 +2377,7 @@ TARGET: 50% needs ($1,312) | 30% wants ($787) | 20% savings ($525)`,
     choices: [
       {
         choiceId: 'sim1_cut_wants',
+        taxonomyClass: 'accept',
         text: "Cut the 'wants': streaming, restaurants, gym. That's $300 right there.",
         nextNodeId: 'quinn_sim1_success',
         pattern: 'analytical',
@@ -2354,6 +2385,7 @@ TARGET: 50% needs ($1,312) | 30% wants ($787) | 20% savings ($525)`,
       },
       {
         choiceId: 'sim1_cut_needs',
+        taxonomyClass: 'reject',
         text: "She needs a cheaper apartment. $950 is 36% of income—too high.",
         nextNodeId: 'quinn_sim1_partial',
         pattern: 'building',
@@ -2361,6 +2393,7 @@ TARGET: 50% needs ($1,312) | 30% wants ($787) | 20% savings ($525)`,
       },
       {
         choiceId: 'sim1_increase_income',
+        taxonomyClass: 'deflect',
         text: "Don't cut anything. Help her increase income instead.",
         nextNodeId: 'quinn_sim1_partial',
         pattern: 'building',
@@ -2474,6 +2507,7 @@ CLASSIC ALLOCATION (Age 28):
     choices: [
       {
         choiceId: 'sim2_stay_course',
+        taxonomyClass: 'accept',
         text: "I'd stay the course. Volatility is the price of growth.",
         nextNodeId: 'quinn_sim2_success',
         pattern: 'patience',
@@ -2481,6 +2515,7 @@ CLASSIC ALLOCATION (Age 28):
       },
       {
         choiceId: 'sim2_more_conservative',
+        taxonomyClass: 'reject',
         text: "Shift to 50/40/10. Sleep better, grow slower.",
         nextNodeId: 'quinn_sim2_partial',
         pattern: 'patience',
@@ -2488,6 +2523,7 @@ CLASSIC ALLOCATION (Age 28):
       },
       {
         choiceId: 'sim2_timing',
+        taxonomyClass: 'deflect',
         text: "What if I wait for the next dip to invest?",
         nextNodeId: 'quinn_sim2_fail',
         pattern: 'analytical',
@@ -2601,6 +2637,7 @@ ALTERNATIVES:
     choices: [
       {
         choiceId: 'sim3_invest',
+        taxonomyClass: 'accept',
         text: "Invest. 36 more kids get scholarships. The ends justify the means.",
         nextNodeId: 'quinn_sim3_pragmatic',
         pattern: 'analytical',
@@ -2608,6 +2645,7 @@ ALTERNATIVES:
       },
       {
         choiceId: 'sim3_decline',
+        taxonomyClass: 'reject',
         text: "Decline. You can't fund education with weapons money.",
         nextNodeId: 'quinn_sim3_principled',
         pattern: 'helping',
@@ -2615,6 +2653,7 @@ ALTERNATIVES:
       },
       {
         choiceId: 'sim3_third_way',
+        taxonomyClass: 'deflect',
         text: "Find a middle ground. ESG funds at 8% still fund 16 scholarships.",
         nextNodeId: 'quinn_sim3_balanced',
         pattern: 'patience',
@@ -2717,7 +2756,7 @@ ALTERNATIVES:
       variation_id: 'hub_return_v1'
     }],
     choices: [],
-    tags: ['terminal']
+    tags: ['terminal', 'micro-callback:quinn_meaning_over_metrics']
   },
 
   // ============= TRUST RECOVERY =============

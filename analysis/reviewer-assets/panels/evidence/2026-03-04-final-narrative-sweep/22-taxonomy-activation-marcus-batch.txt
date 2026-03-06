@@ -1,0 +1,27 @@
+Timestamp: 2026-03-05
+Scope: Marcus targeted taxonomy activation
+
+Changes applied:
+- content/marcus-dialogue-graph.ts
+  - Added taxonomyClass triads to all remaining non-compliant eligible nodes:
+    - marcus_intro
+    - marcus_origin_story
+    - marcus_automation_lesson
+    - marcus_trust_philosophy
+    - marcus_reciprocity_intro
+    - marcus_vulnerability_arc
+    - marcus_challenge_accepted
+    - marcus_challenge_adoption
+    - marcus_reflection_healer
+    - marcus_connection_shared_burden
+
+Validation runs:
+- npm run type-check -> PASS
+- npm run verify:choice-taxonomy -> PASS
+  - Eligible nodes: 258
+  - Coverage: 68.60%
+  - Non-compliant nodes: 81
+- npm run verify:narrative-sim -> PASS (failures 0, mismatches 0, truncated 0)
+- npm run verify:required-state-strict -> PASS (violations 0)
+- npm run verify:unreachable-dialogue-nodes -> PASS (count 0)
+- npm run verify:unreferenced-dialogue-nodes -> PASS (count 0)

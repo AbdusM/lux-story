@@ -20,9 +20,9 @@ export const devonRevisitNodes: DialogueNode[] = [
         speaker: 'Devon Kumar',
         content: [
             {
-                text: `*Devon is typing rapidly, but he looks up when he sees you. He doesn't look as frantic as before.*
+                text: `*Devon types rapidly, then looks up, calmer than before.*
 
-Hey. I was running a diagnostic and... well, you showed up in the logs. Metaphorically.
+Hey. I was running diagnostics and, somehow, you showed up in the logs.
 
 {{devon_chose_logic: I've been optimizing the decision tree. It's much cleaner now.|}}{{!devon_chose_logic: I called him. My dad.|}}`,
                 emotion: 'focused_warm',
@@ -35,6 +35,7 @@ Hey. I was running a diagnostic and... well, you showed up in the logs. Metaphor
         choices: [
             {
                 choiceId: 'devon_revisit_ask_dad',
+                taxonomyClass: 'accept',
                 text: "How did the call go?",
                 nextNodeId: 'devon_revisit_update',
                 skills: ['emotionalIntelligence'],
@@ -44,6 +45,7 @@ Hey. I was running a diagnostic and... well, you showed up in the logs. Metaphor
             },
             {
                 choiceId: 'devon_revisit_ask_system',
+                taxonomyClass: 'reject',
                 text: "How is the system performing?",
                 nextNodeId: 'devon_revisit_update_logic',
                 pattern: 'building',
@@ -54,6 +56,7 @@ Hey. I was running a diagnostic and... well, you showed up in the logs. Metaphor
             },
             {
                 choiceId: 'devon_revisit_general',
+                taxonomyClass: 'deflect',
                 text: "Good to see you're still debugging.",
                 nextNodeId: 'devon_revisit_closing',
                 pattern: 'exploring'
@@ -69,15 +72,9 @@ Hey. I was running a diagnostic and... well, you showed up in the logs. Metaphor
             {
                 text: `*He leans back.*
 
-Weirdest thing. I didn't use the script. I just... told him about the packet loss.
+I skipped the script and said, "Dad, we're dropping frames"; he laughed, called it low bandwidth since Mom died, and we finally talked.
 
-I said, "Dad, I feel we're dropping frames." And he laughed. Actually laughed.
-
-"Low bandwidth," he said. "Since your mom isn't here to boost the signal."
-
-*Devon smiles, a real one.*
-
-We talked about satellites for an hour. It wasn't about feelings, but... it was feeling.`,
+Not a feelings speech, but a real connection.`,
                 emotion: 'relieved',
                 variation_id: 'devon_revisit_update_v1'
             }
@@ -106,13 +103,9 @@ We talked about satellites for an hour. It wasn't about feelings, but... it was 
         speaker: 'Devon Kumar',
         content: [
             {
-                text: `Efficiency is up 40%. I removed the emotional subroutines.
+                text: `Efficiency is up 40%; I removed the emotional subroutines.
 
-If he says "I'm fine,." I just accept the packet. No need to query for hidden data. It's much... quieter this way.
-
-*He looks at his screen, not at you.*
-
-Quieter is good, right?`,
+If he says "I'm fine," I accept the packet instead of probing for hidden data, and *he avoids your eyes* while asking, "Quieter is good, right?"`,
                 emotion: 'resigned',
                 variation_id: 'devon_revisit_logic_v1'
             }
@@ -133,9 +126,9 @@ Quieter is good, right?`,
         speaker: 'Devon Kumar',
         content: [
             {
-                text: `Anyway. I should get back to it.
+                text: `I should get back to it.
 
-But hey. Thanks for the code review. Sometimes you need a second pair of eyes to see the bugs.`,
+Thanks for the code review; sometimes you need a second pair of eyes to spot the bug.`,
                 emotion: 'grateful',
                 variation_id: 'devon_revisit_closing_v1'
             }
@@ -168,11 +161,11 @@ But hey. Thanks for the code review. Sometimes you need a second pair of eyes to
         speaker: 'Devon Kumar',
         content: [
             {
-                text: `Yeah, you caught it. The monitoring cluster has been unstable for days, and now the database is timing out under load.
+                text: `You caught it: the monitoring cluster is unstable and database calls are timing out.
 
-I've patched around symptoms, but I need another systems mind to triage root cause before this becomes an outage.
+I've patched symptoms, but I need another systems mind before this becomes an outage.
 
-Will you help me run this down before it tips over?`,
+Will you help me triage now?`,
                 emotion: 'anxious_determined',
                 variation_id: 'loyalty_trigger_v1',
                 richEffectContext: 'warning'
@@ -219,11 +212,11 @@ Will you help me run this down before it tips over?`,
         speaker: 'Devon Kumar',
         content: [
             {
-                text: `You're right. I've been second-guessing every decision because I'm scared of making it worse.
+                text: `You're right, I've been second-guessing because I'm scared of making it worse.
 
-But I know these systems. I built half of them. Maybe it's time to trust the diagnostic process instead of panicking.
+But I built these systems, and I can trust diagnostics instead of panic.
 
-Okay. Back to first principles. Thanks for the confidence boost.`,
+Back to first principles; thanks for the reset.`,
                 emotion: 'resolved',
                 variation_id: 'loyalty_declined_v1'
             }
@@ -249,9 +242,9 @@ Okay. Back to first principles. Thanks for the confidence boost.`,
         speaker: 'Devon Kumar',
         content: [
             {
-                text: `Thank you. Okay. Let me pull up the full stack trace.
+                text: `Thank you. Let me pull up the full stack trace.
 
-Two heads. One system. Let's find this bug before it finds us.`,
+Two heads, one system; let's find this bug before it finds us.`,
                 emotion: 'focused_grateful',
                 variation_id: 'loyalty_start_v1'
             }

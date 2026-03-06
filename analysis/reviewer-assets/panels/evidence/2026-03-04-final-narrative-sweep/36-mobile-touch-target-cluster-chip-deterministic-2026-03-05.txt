@@ -1,0 +1,28 @@
+
+
+
+
+
+
+
+
+
+
+
+
+Running 1 test using 1 worker
+
+
+Running 1 test using 1 worker
+
+
+
+
+
+[1A[2K[1/1] [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:185:3 › Touch Target Validation › Cluster filter chips meet 44px minimum
+
+
+  ✓  1 [mobile-iphone-14] › tests/e2e/mobile/touch-targets.spec.ts:185:3 › Touch Target Validation › Cluster filter chips meet 44px minimum (17.7s)
+
+  1 passed (29.1s)
+[1A[2K  1 passed (29.1s)

@@ -1,0 +1,12 @@
+
+> lux-story@2.3.1 verify:required-state-guarding
+> node --loader ./scripts/ts-loader.mjs scripts/verify-required-state-guarding.ts
+
+(node:36002) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./scripts/ts-loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+RequiredState Guarding Summary
+Unguarded nodes: 0
+
+No regressions vs baseline.

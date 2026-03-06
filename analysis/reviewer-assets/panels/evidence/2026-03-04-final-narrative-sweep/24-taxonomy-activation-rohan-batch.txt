@@ -1,0 +1,27 @@
+Timestamp: 2026-03-05
+Scope: Rohan targeted taxonomy activation
+
+Changes applied:
+- content/rohan-dialogue-graph.ts
+  - Added taxonomyClass triads to all remaining non-compliant eligible nodes:
+    - rohan_introduction
+    - rohan_erasure_reveal
+    - rohan_origin_david
+    - rohan_david_gone
+    - rohan_simulation_setup
+    - rohan_academy_vision
+    - rohan_legacy_question
+    - rohan_asks_player
+    - rohan_sim2_legacy_intro
+    - rohan_sim3_prod_intro
+
+Validation runs:
+- npm run type-check -> PASS
+- npm run verify:choice-taxonomy -> PASS
+  - Eligible nodes: 258
+  - Coverage: 76.36%
+  - Non-compliant nodes: 61
+- npm run verify:narrative-sim -> PASS (failures 0, mismatches 0, truncated 0)
+- npm run verify:required-state-strict -> PASS (violations 0)
+- npm run verify:unreachable-dialogue-nodes -> PASS (count 0)
+- npm run verify:unreferenced-dialogue-nodes -> PASS (count 0)

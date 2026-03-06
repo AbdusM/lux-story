@@ -355,6 +355,13 @@ export interface ConditionalChoice {
   text: string
   nextNodeId: string // Where this choice leads
 
+  /**
+   * Optional explicit taxonomy classification for dialogue-authoring governance.
+   * Used by CI validators to track Accept/Reject/Deflect coverage without forcing
+   * choiceId/text renames on shipped narrative content.
+   */
+  taxonomyClass?: 'accept' | 'reject' | 'deflect'
+
   // Condition for showing this choice
   visibleCondition?: StateCondition
 

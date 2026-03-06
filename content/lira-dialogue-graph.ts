@@ -79,6 +79,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'intro_listening',
+                taxonomyClass: 'accept',
                 text: "What are you listening for?",
                 voiceVariations: {
                     analytical: "What frequencies are you isolating? What are you listening for?",
@@ -97,6 +98,7 @@ export const liraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'intro_technical',
+                taxonomyClass: 'reject',
                 text: "Are you adjusting the noise gate?",
                 archetype: 'ASK_FOR_DETAILS',
                 nextNodeId: 'lira_explains_tech',
@@ -105,6 +107,7 @@ export const liraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'intro_creative',
+                taxonomyClass: 'deflect',
                 text: "How do you teach a machine about pressure?",
                 voiceVariations: {
                     analytical: "What's the training methodology? How do you teach a machine about pressure?",
@@ -443,6 +446,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'process_skeleton',
+                taxonomyClass: 'accept',
                 text: "Show me the skeleton first.",
                 nextNodeId: 'lira_skeleton_demo',
                 pattern: 'analytical',
@@ -450,6 +454,7 @@ export const liraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'process_soul',
+                taxonomyClass: 'reject',
                 text: "Skip to the soul. That's where you need help.",
                 nextNodeId: 'lira_simulation_setup',
                 pattern: 'building',
@@ -457,6 +462,7 @@ export const liraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'process_why_fail',
+                taxonomyClass: 'deflect',
                 text: "Why do you always fail at the soul?",
                 nextNodeId: 'lira_why_fail',
                 pattern: 'helping',
@@ -550,6 +556,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'fail_tell_more',
+                taxonomyClass: 'accept',
                 text: "Tell me about her.",
                 nextNodeId: 'lira_grandmother_story',
                 pattern: 'helping',
@@ -561,6 +568,7 @@ export const liraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'fail_music_first',
+                taxonomyClass: 'reject',
                 text: "Maybe working on the music will help you tell her story.",
                 nextNodeId: 'lira_simulation_setup',
                 pattern: 'building',
@@ -568,6 +576,7 @@ export const liraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'fail_patience',
+                taxonomyClass: 'deflect',
                 text: "[Let the admission breathe. She'll share when ready.]",
                 nextNodeId: 'lira_grandmother_story',
                 pattern: 'patience',
@@ -638,6 +647,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'fragmenting_honor',
+                taxonomyClass: 'accept',
                 text: "You're not just scoring a film. You're preserving her.",
                 voiceVariations: {
                     analytical: "This is archival work, isn't it? You're preserving her.",
@@ -656,6 +666,7 @@ export const liraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'fragmenting_sound',
+                taxonomyClass: 'reject',
                 text: "That sound exists. It's in your memory. We just need to translate it.",
                 nextNodeId: 'lira_simulation_setup',
                 pattern: 'building',
@@ -667,6 +678,7 @@ export const liraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'fragmenting_silence',
+                taxonomyClass: 'deflect',
                 text: "[Let the weight of loss settle. Don't rush to fix it.]",
                 nextNodeId: 'lira_preservation',
                 pattern: 'patience',
@@ -741,6 +753,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'sim_refine_texture',
+                taxonomyClass: 'accept',
                 text: "Prompt for 'Disintegrating tape loop, nostalgic piano, vinyl crackle, abruptly cutting out'.",
                 nextNodeId: 'lira_simulation_success',
                 pattern: 'building',
@@ -752,6 +765,7 @@ export const liraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'sim_refine_emotion',
+                taxonomyClass: 'reject',
                 text: "Focus on emotion: 'A song that is trying to remember itself'.",
                 nextNodeId: 'lira_simulation_success',
                 pattern: 'helping',
@@ -763,6 +777,7 @@ export const liraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'sim_hybrid',
+                taxonomyClass: 'deflect',
                 text: "'Piano melody, early dementia, the music knows something is wrong before she does.'",
                 nextNodeId: 'lira_simulation_breakthrough',
                 pattern: 'helping',
@@ -1420,6 +1435,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'lira_vuln_honor_her',
+                taxonomyClass: 'accept',
                 text: "You're not just scoring a film. You're preserving her.",
                 voiceVariations: {
                     analytical: "The film is a container. You're preserving her.",
@@ -1438,6 +1454,7 @@ export const liraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'lira_vuln_understand_now',
+                taxonomyClass: 'reject',
                 text: "Now I understand why the generic 'sad music' feels wrong.",
                 nextNodeId: 'lira_vulnerability_response',
                 pattern: 'analytical',
@@ -1449,6 +1466,7 @@ export const liraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'lira_vuln_silence',
+                taxonomyClass: 'deflect',
                 text: "[Let the memory breathe. She needs a witness, not words.]",
                 nextNodeId: 'lira_vulnerability_response',
                 pattern: 'patience',
@@ -2783,6 +2801,7 @@ export const liraDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'collab_yes',
+                taxonomyClass: 'accept',
                 text: "Let's build this together. Show me the dissolving melody.",
                 nextNodeId: 'lira_process_intro',
                 pattern: 'building',
@@ -2794,6 +2813,7 @@ export const liraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'collab_deep_dive',
+                taxonomyClass: 'reject',
                 text: "[Deep Dive] The melody is just one part. Let's harmonize the entire station.",
                 nextNodeId: 'lira_deep_dive',
                 pattern: 'building',
@@ -2807,6 +2827,7 @@ export const liraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'collab_understand',
+                taxonomyClass: 'deflect',
                 text: "Before we start. Tell me about your grandmother. I think she's in this piece.",
                 nextNodeId: 'lira_vulnerability_arc',
                 pattern: 'helping',
@@ -2958,12 +2979,12 @@ Warning: Core Hum saturating mix.`,
         },
         content: [
             {
-                text: "Listen. Really listen.\\n\\nThe station has a sound. Not the trains, not the announcements. Underneath all that. A <shake>hum</shake>.",
+                text: "Listen, really listen.\\n\\nThe station has a sound beneath trains and announcements: a <shake>hum</shake>.",
                 emotion: 'focused',
                 variation_id: 'mystery_hint_v1'
             },
             {
-                text: "It changes based on who's here. More conversations, the hum gets richer. Like we're all contributing to one big chord.",
+                text: "It changes with who's here; more conversation makes the hum richer, like we're all adding to one chord.",
                 emotion: 'inspired',
                 variation_id: 'mystery_hint_v2'
             }

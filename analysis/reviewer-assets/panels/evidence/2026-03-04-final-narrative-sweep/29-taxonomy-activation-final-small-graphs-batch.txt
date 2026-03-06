@@ -1,0 +1,30 @@
+Timestamp: 2026-03-05
+Scope: Final small-graph taxonomy activation (core sectors + revisits)
+
+Changes applied:
+- content/maya-revisit-graph.ts
+- content/yaquin-revisit-graph.ts
+- content/silas-dialogue-graph.ts
+- content/elena-dialogue-graph.ts
+- content/devon-revisit-graph.ts
+- content/grace-revisit-graph.ts
+- content/zara-dialogue-graph.ts
+- content/station-entry-graph.ts
+- content/grand-hall-graph.ts
+- content/market-graph.ts
+- content/deep-station-graph.ts
+
+Notable final cleanup:
+- content/grand-hall-graph.ts
+  - Added missing taxonomyClass to inline `back_real` choice in `wall_real` node.
+
+Validation runs:
+- npm run type-check -> PASS
+- npm run verify:choice-taxonomy -> PASS
+  - Eligible nodes: 258
+  - Coverage: 100.00%
+  - Non-compliant nodes: 0
+- npm run verify:narrative-sim -> PASS (failures 0, mismatches 0, truncated 0)
+- npm run verify:required-state-strict -> PASS (violations 0)
+- npm run verify:unreachable-dialogue-nodes -> PASS (count 0)
+- npm run verify:unreferenced-dialogue-nodes -> PASS (count 0)

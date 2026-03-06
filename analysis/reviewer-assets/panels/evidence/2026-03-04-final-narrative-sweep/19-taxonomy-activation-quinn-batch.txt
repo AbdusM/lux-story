@@ -1,0 +1,30 @@
+Timestamp: 2026-03-05
+Scope: Quinn targeted taxonomy activation
+
+Changes applied:
+- content/quinn-dialogue-graph.ts
+  - Added taxonomyClass triads to all remaining non-compliant eligible nodes:
+    - quinn_introduction
+    - quinn_numbers_truth
+    - quinn_wealth_paradox
+    - quinn_birmingham_return
+    - quinn_silence_response
+    - quinn_professional_recognition
+    - quinn_simulation_pitch_intro
+    - quinn_pitch_setup
+    - quinn_vulnerability_arc
+    - quinn_return_hub
+    - quinn_sim1_diagnosis
+    - quinn_sim2_analysis
+    - quinn_sim3_ethics_intro
+
+Validation runs:
+- npm run type-check -> PASS
+- npm run verify:choice-taxonomy -> PASS
+  - Eligible nodes: 258
+  - Coverage: 56.20%
+  - Non-compliant nodes: 113
+- npm run verify:narrative-sim -> PASS (failures 0, mismatches 0, truncated 0)
+- npm run verify:required-state-strict -> PASS (violations 0)
+- npm run verify:unreachable-dialogue-nodes -> PASS (count 0)
+- npm run verify:unreferenced-dialogue-nodes -> PASS (count 0)

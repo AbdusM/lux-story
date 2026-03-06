@@ -35,6 +35,7 @@ export const tessDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'tess_intro_offer',
+        taxonomyClass: 'accept',
         text: "How much are they offering?",
         voiceVariations: {
           analytical: "What's the number? Let's understand the actual math here.",
@@ -53,6 +54,7 @@ export const tessDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'tess_intro_why_stay',
+        taxonomyClass: 'reject',
         text: "You don't want to sell?",
         voiceVariations: {
           analytical: "The rational move would be to take the money. Why aren't you?",
@@ -67,6 +69,7 @@ export const tessDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'tess_intro_listen',
+        taxonomyClass: 'deflect',
         text: "[Wait. Let her talk.]",
         nextNodeId: 'tess_the_shop',
         pattern: 'patience',
@@ -164,6 +167,7 @@ export const tessDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'tess_shop_story',
+        taxonomyClass: 'accept',
         text: "Tell me about someone this place changed.",
         nextNodeId: 'tess_customer_moment',
         pattern: 'exploring',
@@ -190,6 +194,7 @@ export const tessDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'tess_shop_curious',
+        taxonomyClass: 'deflect',
         text: "What made you start this?",
         voiceVariations: {
           analytical: "Walk me through the decision. What was the catalyst?",
@@ -208,6 +213,7 @@ export const tessDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'tess_shop_algorithm',
+        taxonomyClass: 'reject',
         text: "Algorithm culture. Everything sounds the same now.",
         nextNodeId: 'tess_phoniness',
         pattern: 'analytical',
@@ -231,7 +237,8 @@ export const tessDialogueNodes: DialogueNode[] = [
           patterns: { exploring: { min: 2 } }
         }
       }
-    ]
+    ],
+    tags: ['tess_arc', 'backstory', 'micro:tess_shop_floor_courage']
   },
 
   {
@@ -489,6 +496,7 @@ export const tessDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'tess_numbers_fear',
+        taxonomyClass: 'accept',
         text: "What scares you most? Selling or staying?",
         nextNodeId: 'tess_real_fear',
         pattern: 'helping',
@@ -501,6 +509,7 @@ export const tessDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'tess_numbers_pivot',
+        taxonomyClass: 'reject',
         text: "What if you pivoted? Changed the model?",
         nextNodeId: 'tess_the_pitch_setup',
         pattern: 'building',
@@ -513,6 +522,7 @@ export const tessDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'tess_numbers_accept',
+        taxonomyClass: 'deflect',
         text: "Sometimes endings aren't failures.",
         nextNodeId: 'tess_decision_cautious_path',
         pattern: 'patience',
@@ -607,6 +617,7 @@ RACHEL: What am I missing?
     choices: [
       {
         choiceId: 'pitch_community',
+        taxonomyClass: 'accept',
         text: "Make it about community. Listening parties. Record clubs. Belonging.",
         nextNodeId: 'tess_pitch_community',
         pattern: 'helping',
@@ -614,6 +625,7 @@ RACHEL: What am I missing?
       },
       {
         choiceId: 'pitch_experience',
+        taxonomyClass: 'reject',
         text: "Sell the experience, not the product. What streaming can't give you.",
         nextNodeId: 'tess_pitch_experience',
         pattern: 'building',
@@ -621,6 +633,7 @@ RACHEL: What am I missing?
       },
       {
         choiceId: 'pitch_safe',
+        taxonomyClass: 'deflect',
         text: "Cut costs. Go online-only. Reduce risk.",
         nextNodeId: 'tess_pitch_fail_safe',
         pattern: 'analytical',
@@ -814,6 +827,7 @@ RACHEL: What am I missing?
     choices: [
       {
         choiceId: 'climax_bold',
+        taxonomyClass: 'accept',
         text: "Do it. Call the developer. Tell them no.",
         nextNodeId: 'tess_moment_before',
         pattern: 'building',
@@ -826,6 +840,7 @@ RACHEL: What am I missing?
       },
       {
         choiceId: 'climax_time',
+        taxonomyClass: 'reject',
         text: "Take a week. Let it settle.",
         nextNodeId: 'tess_moment_before',
         pattern: 'patience',
@@ -833,6 +848,7 @@ RACHEL: What am I missing?
       },
       {
         choiceId: 'climax_explore',
+        taxonomyClass: 'deflect',
         text: "What's the first step? Start there.",
         nextNodeId: 'tess_moment_before',
         pattern: 'exploring',
@@ -1138,6 +1154,7 @@ RACHEL: What am I missing?
     choices: [
       {
         choiceId: 'player_own_build',
+        taxonomyClass: 'accept',
         text: "Something I can build. Something that's mine.",
         nextNodeId: 'tess_reciprocity_response',
         pattern: 'building',
@@ -1145,6 +1162,7 @@ RACHEL: What am I missing?
       },
       {
         choiceId: 'player_own_meaning',
+        taxonomyClass: 'reject',
         text: "Something that matters. Not just money or status.",
         nextNodeId: 'tess_reciprocity_response',
         pattern: 'exploring',
@@ -1152,6 +1170,7 @@ RACHEL: What am I missing?
       },
       {
         choiceId: 'player_own_help',
+        taxonomyClass: 'deflect',
         text: "Ways to help people. Make their lives better.",
         nextNodeId: 'tess_reciprocity_response',
         pattern: 'helping',
@@ -1278,6 +1297,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
     choices: [
       {
         choiceId: 'tess_p1_authority',
+        taxonomyClass: 'accept',
         text: "Stop. Both of you, outside. Now. We're not doing this in front of everyone.",
         nextNodeId: 'tess_simulation_phase_2_authority',
         pattern: 'building',
@@ -1285,6 +1305,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
       },
       {
         choiceId: 'tess_p1_empathy',
+        taxonomyClass: 'reject',
         text: "Maya, I hear frustration. Jordan, something's off. Let's pause and breathe.",
         nextNodeId: 'tess_simulation_phase_2_empathy',
         pattern: 'helping',
@@ -1299,6 +1320,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
       },
       {
         choiceId: 'tess_p1_wait',
+        taxonomyClass: 'deflect',
         text: "[Wait. Let them speak first. People need to be heard before hearing.]",
         nextNodeId: 'tess_simulation_phase_2_patience',
         pattern: 'patience',
@@ -1598,6 +1620,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
     choices: [
       {
         choiceId: 'p2_delegate',
+        taxonomyClass: 'accept',
         text: "You need help. Can't do it all alone.",
         nextNodeId: 'tess_p2_crisis_reveal',
         pattern: 'analytical',
@@ -1605,6 +1628,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
       },
       {
         choiceId: 'p2_celebrate',
+        taxonomyClass: 'reject',
         text: "Forty people. That's amazing.",
         nextNodeId: 'tess_p2_crisis_reveal',
         pattern: 'helping',
@@ -1616,6 +1640,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
       },
       {
         choiceId: 'p2_explore',
+        taxonomyClass: 'deflect',
         text: "What's working? What isn't?",
         nextNodeId: 'tess_p2_crisis_reveal',
         pattern: 'exploring',
@@ -1640,6 +1665,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
     choices: [
       {
         choiceId: 'p2_hire',
+        taxonomyClass: 'accept',
         text: "Hire someone. Even part-time. You'll burn out.",
         nextNodeId: 'tess_p2_solution',
         pattern: 'building',
@@ -1647,6 +1673,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
       },
       {
         choiceId: 'p2_systems',
+        taxonomyClass: 'reject',
         text: "Systems. You need systems. Simplify the operation.",
         nextNodeId: 'tess_p2_solution',
         pattern: 'analytical',
@@ -1654,6 +1681,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
       },
       {
         choiceId: 'p2_breathe',
+        taxonomyClass: 'deflect',
         text: "One day at a time. Rome wasn't built in six weeks.",
         nextNodeId: 'tess_p2_solution',
         pattern: 'patience',
@@ -1820,6 +1848,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
     choices: [
       {
         choiceId: 'p2_asks_player',
+        taxonomyClass: 'accept',
         text: "What's next for The B-Side?",
         nextNodeId: 'tess_p2_asks_player',
         pattern: 'exploring',
@@ -1827,6 +1856,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
       },
       {
         choiceId: 'return_to_samuel_tess_p2',
+        taxonomyClass: 'reject',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.TESS_REFLECTION_GATEWAY,
         visibleCondition: {
@@ -1838,6 +1868,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
       // Loyalty Experience trigger - only visible at high trust + helping pattern
       {
         choiceId: 'offer_first_class_help',
+        taxonomyClass: 'deflect',
         text: "[Helper's Intuition] First cohort launches soon. Want backup in your corner?",
         nextNodeId: 'tess_loyalty_trigger',
         pattern: 'helping',
@@ -1872,6 +1903,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
     choices: [
       {
         choiceId: 'p2_player_building',
+        taxonomyClass: 'accept',
         text: "Still figuring it out. But something real.",
         nextNodeId: 'tess_p2_reciprocity_response',
         pattern: 'building',
@@ -1879,6 +1911,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
       },
       {
         choiceId: 'p2_player_helping',
+        taxonomyClass: 'reject',
         text: "Helping where I can. Making things a little better.",
         nextNodeId: 'tess_p2_reciprocity_response',
         pattern: 'helping',
@@ -1886,6 +1919,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
       },
       {
         choiceId: 'p2_player_exploring',
+        taxonomyClass: 'deflect',
         text: "Exploring. Trying things. Seeing what sticks.",
         nextNodeId: 'tess_p2_reciprocity_response',
         pattern: 'exploring',
@@ -2103,7 +2137,7 @@ Stakes: Trust, fairness, emotional safety for both students`,
       variation_id: 'hub_return_v1'
     }],
     choices: [],
-    tags: ['terminal']
+    tags: ['terminal', 'micro-callback:tess_shop_floor_courage']
   },
 
   // ============= TRUST RECOVERY =============

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-04T23:16:59.412Z",
+  "generated_at": "2026-03-06T04:19:40.671Z",
   "mode": "warn",
   "strategy": "ratchet",
   "thresholds": {
@@ -7,10 +7,10 @@
   },
   "summary": {
     "eligible_nodes": 258,
-    "compliant_nodes": 0,
+    "compliant_nodes": 258,
     "waived_nodes": 0,
-    "non_compliant_nodes": 258,
-    "coverage_percent": 0
+    "non_compliant_nodes": 0,
+    "coverage_percent": 100
   },
   "baseline": {
     "generated_at": "2026-03-04T22:12:21.448Z",
@@ -26,1224 +26,200 @@
   "by_graph": {
     "samuel": {
       "eligible_nodes": 43,
-      "compliant_nodes": 0,
+      "compliant_nodes": 43,
       "waived_nodes": 0,
-      "non_compliant_nodes": 43,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "maya": {
       "eligible_nodes": 22,
-      "compliant_nodes": 0,
+      "compliant_nodes": 22,
       "waived_nodes": 0,
-      "non_compliant_nodes": 22,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "maya_revisit": {
       "eligible_nodes": 3,
-      "compliant_nodes": 0,
+      "compliant_nodes": 3,
       "waived_nodes": 0,
-      "non_compliant_nodes": 3,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "devon": {
       "eligible_nodes": 13,
-      "compliant_nodes": 0,
+      "compliant_nodes": 13,
       "waived_nodes": 0,
-      "non_compliant_nodes": 13,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "jordan": {
       "eligible_nodes": 12,
-      "compliant_nodes": 0,
+      "compliant_nodes": 12,
       "waived_nodes": 0,
-      "non_compliant_nodes": 12,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "marcus": {
       "eligible_nodes": 10,
-      "compliant_nodes": 0,
+      "compliant_nodes": 10,
       "waived_nodes": 0,
-      "non_compliant_nodes": 10,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "tess": {
       "eligible_nodes": 11,
-      "compliant_nodes": 0,
+      "compliant_nodes": 11,
       "waived_nodes": 0,
-      "non_compliant_nodes": 11,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "yaquin": {
       "eligible_nodes": 17,
-      "compliant_nodes": 0,
+      "compliant_nodes": 17,
       "waived_nodes": 0,
-      "non_compliant_nodes": 17,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "yaquin_revisit": {
       "eligible_nodes": 2,
-      "compliant_nodes": 0,
+      "compliant_nodes": 2,
       "waived_nodes": 0,
-      "non_compliant_nodes": 2,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "kai": {
       "eligible_nodes": 10,
-      "compliant_nodes": 0,
+      "compliant_nodes": 10,
       "waived_nodes": 0,
-      "non_compliant_nodes": 10,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "alex": {
       "eligible_nodes": 7,
-      "compliant_nodes": 0,
+      "compliant_nodes": 7,
       "waived_nodes": 0,
-      "non_compliant_nodes": 7,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "rohan": {
       "eligible_nodes": 10,
-      "compliant_nodes": 0,
+      "compliant_nodes": 10,
       "waived_nodes": 0,
-      "non_compliant_nodes": 10,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "silas": {
       "eligible_nodes": 4,
-      "compliant_nodes": 0,
+      "compliant_nodes": 4,
       "waived_nodes": 0,
-      "non_compliant_nodes": 4,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "elena": {
       "eligible_nodes": 4,
-      "compliant_nodes": 0,
+      "compliant_nodes": 4,
       "waived_nodes": 0,
-      "non_compliant_nodes": 4,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "grace": {
       "eligible_nodes": 10,
-      "compliant_nodes": 0,
+      "compliant_nodes": 10,
       "waived_nodes": 0,
-      "non_compliant_nodes": 10,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "devon_revisit": {
       "eligible_nodes": 1,
-      "compliant_nodes": 0,
+      "compliant_nodes": 1,
       "waived_nodes": 0,
-      "non_compliant_nodes": 1,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "grace_revisit": {
       "eligible_nodes": 1,
-      "compliant_nodes": 0,
+      "compliant_nodes": 1,
       "waived_nodes": 0,
-      "non_compliant_nodes": 1,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "asha": {
       "eligible_nodes": 10,
-      "compliant_nodes": 0,
+      "compliant_nodes": 10,
       "waived_nodes": 0,
-      "non_compliant_nodes": 10,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "lira": {
       "eligible_nodes": 7,
-      "compliant_nodes": 0,
+      "compliant_nodes": 7,
       "waived_nodes": 0,
-      "non_compliant_nodes": 7,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "zara": {
       "eligible_nodes": 4,
-      "compliant_nodes": 0,
+      "compliant_nodes": 4,
       "waived_nodes": 0,
-      "non_compliant_nodes": 4,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "quinn": {
       "eligible_nodes": 13,
-      "compliant_nodes": 0,
+      "compliant_nodes": 13,
       "waived_nodes": 0,
-      "non_compliant_nodes": 13,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "dante": {
       "eligible_nodes": 11,
-      "compliant_nodes": 0,
+      "compliant_nodes": 11,
       "waived_nodes": 0,
-      "non_compliant_nodes": 11,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "nadia": {
       "eligible_nodes": 11,
-      "compliant_nodes": 0,
+      "compliant_nodes": 11,
       "waived_nodes": 0,
-      "non_compliant_nodes": 11,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "isaiah": {
       "eligible_nodes": 14,
-      "compliant_nodes": 0,
+      "compliant_nodes": 14,
       "waived_nodes": 0,
-      "non_compliant_nodes": 14,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "station_entry": {
       "eligible_nodes": 2,
-      "compliant_nodes": 0,
+      "compliant_nodes": 2,
       "waived_nodes": 0,
-      "non_compliant_nodes": 2,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "grand_hall": {
       "eligible_nodes": 2,
-      "compliant_nodes": 0,
+      "compliant_nodes": 2,
       "waived_nodes": 0,
-      "non_compliant_nodes": 2,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "market": {
       "eligible_nodes": 2,
-      "compliant_nodes": 0,
+      "compliant_nodes": 2,
       "waived_nodes": 0,
-      "non_compliant_nodes": 2,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     },
     "deep_station": {
       "eligible_nodes": 2,
-      "compliant_nodes": 0,
+      "compliant_nodes": 2,
       "waived_nodes": 0,
-      "non_compliant_nodes": 2,
-      "coverage_percent": 0
+      "non_compliant_nodes": 0,
+      "coverage_percent": 100
     }
   },
-  "non_compliant_sample": [
-    {
-      "graphKey": "samuel",
-      "nodeId": "systemic_calibration_start",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "calib_defensive",
-        "calib_masking",
-        "calib_vulnerable"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "systemic_calibration_test",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "calib_fear_failure",
-        "calib_fear_disconnection",
-        "calib_fear_stagnation"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "station_arrival",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "step_forward_confident",
-        "observe_first",
-        "check_others"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_introduction_patient",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "ask_what_is_this_patient",
-        "ask_about_platforms_patient",
-        "ask_who_are_you_patient"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_introduction_curious",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "tell_me_more_platforms",
-        "who_are_you_curious",
-        "ready_to_explore_curious"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_introduction_noticed",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "ask_about_others",
-        "ask_about_self",
-        "samuel_story_noticed"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_introduction_humble",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "ask_what_is_this_humble",
-        "ask_about_others_humble",
-        "why_get_along"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_simulation_crm",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "sim_reassure_data",
-        "sim_analyze_pattern",
-        "sim_dismiss"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_introduction",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "ask_what_is_this",
-        "ask_who_are_you",
-        "ready_to_explore_intro"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_changing_world",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "trades_wisdom",
-        "patterns_survival",
-        "back_to_exploring"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_pattern_survival",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "ready_after_wisdom",
-        "who_should_i_meet",
-        "pattern_wisdom_deep"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_explains_station",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "ask_your_story",
-        "ask_about_static",
-        "ready_to_explore"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_explains_platforms",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "ask_backstory",
-        "ask_whats_happening_from_platforms",
-        "ready_to_meet"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_letter_reveal",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "letter_you_wrote_it",
-        "letter_wait_patiently",
-        "letter_why_now"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_purpose_found",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "beautiful",
-        "ready_for_my_blueprint",
-        "how_did_you_find_station"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_origin_keeper_choice",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "samuel_courage_recognition",
-        "ask_about_daughter_after",
-        "ask_about_letters"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_hub_router",
-      "choiceCount": 6,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "route_to_hub_after_maya",
-        "route_to_hub_initial",
-        "route_to_hub_after_devon_complete",
-        "route_to_hub_after_devon_maya",
-        "route_to_hub_after_devon_devon",
-        "route_to_hub_after_devon_jordan"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_hub_initial",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "hub_category_heart",
-        "hub_category_mind",
-        "hub_category_hands"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_hub_heart_travelers",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "meet_maya_from_heart",
-        "meet_marcus_from_heart",
-        "hub_heart_other"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_hub_mind_travelers",
-      "choiceCount": 4,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "meet_devon_from_mind",
-        "meet_kai_from_mind",
-        "meet_alex_from_mind",
-        "meet_rohan_from_mind"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_hub_hands_travelers",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "meet_jordan_from_hands",
-        "meet_tess_from_hands",
-        "meet_silas_from_hands"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_discovers_building",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "meet_devon",
-        "devon_empathy",
-        "ask_about_others"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_other_travelers",
-      "choiceCount": 15,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "meet_maya_alt",
-        "meet_devon_alt",
-        "meet_jordan_alt",
-        "meet_marcus_alt",
-        "meet_tess_alt",
-        "meet_yaquin_alt",
-        "meet_kai_alt",
-        "meet_rohan_alt",
-        "meet_silas_alt",
-        "meet_alex_alt",
-        "meet_asha_alt",
-        "meet_elena_alt",
-        "meet_grace_alt",
-        "meet_lira_alt",
-        "meet_zara_alt"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_maya_reflection_gateway",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "hope_i_helped",
-        "unsure_what_i_did",
-        "skip_reflection"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_reflect_on_influence_pt2",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "what_did_maya_choose",
-        "how_do_you_know",
-        "accept_insight"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_yaquin_reflection_gateway",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "yaquin_launched_now",
-        "yaquin_building_audience",
-        "yaquin_general_reflection"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_devon_reflection_gateway",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "helped_him_integrate",
-        "focused_on_connection",
-        "just_listened_devon"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_jordan_reflection_gateway",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "seemed_lost",
-        "was_building",
-        "reminded_me"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_jordan_mentorship_reflection",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "offered_mirror",
-        "asked_questions",
-        "just_listened"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_check_messages",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "check_grace",
-        "check_devon",
-        "close_messages"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_hub_after_maya",
-      "choiceCount": 5,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "meet_devon_from_maya",
-        "return_to_maya",
-        "show_all_from_maya",
-        "tell_me_pattern",
-        "ask_about_letter"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_devon_intro",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "go_to_devon",
-        "devon_understand",
-        "why_me"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_jordan_intro",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "go_to_marcus",
-        "jordan_empathy",
-        "why_me_jordan"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_hub_after_devon",
-      "choiceCount": 6,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "meet_marcus",
-        "return_to_maya_2",
-        "return_to_devon",
-        "meet_jordan",
-        "show_all_travelers",
-        "tell_me_pattern_2"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_comprehensive_hub",
-      "choiceCount": 12,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "comprehensive_meet_maya",
-        "comprehensive_revisit_maya",
-        "comprehensive_meet_devon",
-        "comprehensive_meet_jordan",
-        "comprehensive_meet_marcus",
-        "comprehensive_meet_tess",
-        "comprehensive_meet_yaquin",
-        "comprehensive_meet_kai",
-        "comprehensive_meet_rohan",
-        "comprehensive_meet_silas",
-        "comprehensive_meet_alex",
-        "comprehensive_back"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_orb_exploring_reveal",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "hub_check_messages",
-        "hub_wait_quietly",
-        "exploring_continue"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_greeting_router",
-      "choiceCount": 16,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "route_to_mastery",
-        "route_to_mastery_helping",
-        "route_to_mastery_building",
-        "route_to_mastery_patience",
-        "route_to_mastery_exploring",
-        "route_to_recognition",
-        "route_to_recognition_helping",
-        "route_to_recognition_building",
-        "route_to_recognition_patience",
-        "route_to_recognition_exploring",
-        "route_to_noticing",
-        "route_to_noticing_helping",
-        "route_to_noticing_building",
-        "route_to_noticing_patience",
-        "route_to_noticing_exploring",
-        "route_to_default"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_contextual_hub",
-      "choiceCount": 8,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "ctx_about_station",
-        "ctx_about_patterns",
-        "ctx_about_patterns_helping",
-        "ctx_about_patterns_building",
-        "ctx_about_people",
-        "ctx_about_careers",
-        "ctx_about_careers_helping",
-        "ctx_meet_someone"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_identity_analytical",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "acknowledge_analytical",
-        "uncertain_analytical",
-        "explore_analytical"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_identity_patience",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "acknowledge_patience",
-        "uncertain_patience",
-        "explore_patience"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_identity_exploring",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "acknowledge_exploring",
-        "uncertain_exploring",
-        "explore_exploring"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_identity_helping",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "acknowledge_helping",
-        "uncertain_helping",
-        "explore_helping"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "samuel",
-      "nodeId": "samuel_identity_building",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "acknowledge_building",
-        "uncertain_building",
-        "explore_building"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_introduction",
-      "choiceCount": 5,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "intro_studies",
-        "intro_place",
-        "maya_intro_show_work",
-        "intro_workshop_unlock",
-        "intro_technical_unlock"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_why_here",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "why_crossroads",
-        "why_comfort",
-        "why_build_clarity"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_family_intro",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "family_ask_expectations",
-        "family_empathy",
-        "family_legacy"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_family_expectations",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "expectations_permission",
-        "expectations_reality",
-        "expectations_deep_insight"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_deflect_passion",
-      "choiceCount": 5,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "deflect_safe",
-        "deflect_understand",
-        "deflect_respect",
-        "deflect_build_both",
-        "deflect_patience_deep"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_challenge_accepted",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "challenge_follow_up",
-        "challenge_support",
-        "challenge_patience"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_anxiety_check",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "anxiety_no_judgment",
-        "anxiety_relate",
-        "anxiety_curious_explore"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_anxiety_reveal",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "reveal_curious",
-        "reveal_support",
-        "reveal_wait"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_robotics_passion",
-      "choiceCount": 5,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "debug_metaphor",
-        "debug_force",
-        "debug_isolate",
-        "debug_assist",
-        "debug_agentic"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_robotics_fail_burnout",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "fail_comfort",
-        "fail_accept",
-        "fail_rebuild_learning"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_retreat_to_safety",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "retreat_pivot_accepted",
-        "retreat_pivot_challenged",
-        "retreat_pivot_curious"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_encouraged",
-      "choiceCount": 6,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "encouraged_career_architect",
-        "encouraged_career_data",
-        "encouraged_career_creative",
-        "encouraged_parents",
-        "encouraged_future",
-        "encouraged_build_visibility"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_crossroads",
-      "choiceCount": 6,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "crossroads_robotics_analytical",
-        "crossroads_robotics",
-        "crossroads_hybrid_building",
-        "crossroads_hybrid",
-        "crossroads_support_patience",
-        "crossroads_support"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_reciprocity_ask",
-      "choiceCount": 4,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "player_trust_instinct",
-        "player_weigh_options",
-        "player_ask_others",
-        "player_still_figuring"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_grateful_support",
-      "choiceCount": 3,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "support_explore",
-        "support_trust",
-        "support_explore_feeling"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_simulation_intro",
-      "choiceCount": 4,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "sim_help_prepare",
-        "sim_emotional_support",
-        "sim_analyze_situation",
-        "sim_explore_options"
-      ],
-      "waived": false
-    },
-    {
-      "graphKey": "maya",
-      "nodeId": "maya_simulation_phase_1",
-      "choiceCount": 4,
-      "categorizedChoices": {
-        "accept": [],
-        "reject": [],
-        "deflect": []
-      },
-      "uncategorizedChoiceIds": [
-        "phase1_passion_first",
-        "phase1_data_driven",
-        "phase1_bridge_narrative",
-        "phase1_take_time"
-      ],
-      "waived": false
-    }
-  ]
+  "non_compliant_sample": []
 }

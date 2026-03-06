@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-03-04T23:17:05.180Z",
-  "mode": "enforce",
+  "generated_at": "2026-03-06T04:20:15.104Z",
+  "mode": "warn",
   "thresholds": {
     "min_tags": 12,
     "min_characters": 4
   },
   "summary": {
-    "total_tags": 16,
+    "total_tags": 21,
     "tagged_characters": 6,
     "tagged_topics": 7
   },
   "tags_by_topic": {
     "the_builders": 5,
     "platform_seven": 2,
-    "burned_district": 1,
+    "the_oxygen_tax": 4,
+    "burned_district": 3,
     "the_previous_visitor": 3,
-    "the_oxygen_tax": 1,
     "before_the_station": 2,
     "the_letter": 2
   },
@@ -42,6 +42,20 @@
       "topicId": "the_builders"
     },
     {
+      "graphKey": "elena",
+      "characterId": "elena",
+      "nodeId": "elena_mystery_hint",
+      "tag": "iceberg:the_oxygen_tax",
+      "topicId": "the_oxygen_tax"
+    },
+    {
+      "graphKey": "elena",
+      "characterId": "elena",
+      "nodeId": "elena_station_seven_detail",
+      "tag": "iceberg:the_oxygen_tax",
+      "topicId": "the_oxygen_tax"
+    },
+    {
       "graphKey": "maya",
       "characterId": "maya",
       "nodeId": "maya_family_expectations",
@@ -65,6 +79,13 @@
     {
       "graphKey": "nadia",
       "characterId": "nadia",
+      "nodeId": "nadia_mystery_response",
+      "tag": "iceberg:burned_district",
+      "topicId": "burned_district"
+    },
+    {
+      "graphKey": "nadia",
+      "characterId": "nadia",
       "nodeId": "nadia_hiring_story",
       "tag": "iceberg:the_builders",
       "topicId": "the_builders"
@@ -75,6 +96,13 @@
       "nodeId": "nadia_hiring_story",
       "tag": "iceberg:the_oxygen_tax",
       "topicId": "the_oxygen_tax"
+    },
+    {
+      "graphKey": "rohan",
+      "characterId": "rohan",
+      "nodeId": "rohan_erasure_reveal",
+      "tag": "iceberg:burned_district",
+      "topicId": "burned_district"
     },
     {
       "graphKey": "rohan",
@@ -124,6 +152,13 @@
       "nodeId": "samuel_letter_system",
       "tag": "iceberg:the_letter",
       "topicId": "the_letter"
+    },
+    {
+      "graphKey": "samuel",
+      "characterId": "samuel",
+      "nodeId": "samuel_station_truth",
+      "tag": "iceberg:the_oxygen_tax",
+      "topicId": "the_oxygen_tax"
     },
     {
       "graphKey": "samuel",

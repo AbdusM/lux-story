@@ -22,6 +22,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'intro_ask_why',
+                taxonomyClass: 'accept',
                 text: "Why is it flagging them?",
                 voiceVariations: {
                     analytical: "What's the classification logic? Why is it flagging them?",
@@ -40,6 +41,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'intro_efficiency',
+                taxonomyClass: 'reject',
                 text: "Maybe they ARE sub-optimal. Let's check the logs.",
                 nextNodeId: 'zara_handshake_audit',
                 pattern: 'building',
@@ -47,6 +49,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'zara_intro_pattern_unlock',
+                taxonomyClass: 'deflect',
                 text: "[Pattern Recognition] The 40% isn't random. You've already found the demographic pattern. Show me.",
                 nextNodeId: 'zara_demographic_insight',
                 pattern: 'analytical',
@@ -292,6 +295,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'sim_filter_context',
+                taxonomyClass: 'accept',
                 text: "Filter by 'Safety Check'. The algorithm counts safety protocols as 'Idle Time'.",
                 nextNodeId: 'zara_simulation_success',
                 pattern: 'analytical',
@@ -303,6 +307,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'sim_human_factor',
+                taxonomyClass: 'reject',
                 text: "It's penalizing 'Mandatory Breaks'. It violates labor laws.",
                 nextNodeId: 'zara_simulation_success',
                 pattern: 'helping',
@@ -314,6 +319,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'sim_delete_outliers',
+                taxonomyClass: 'deflect',
                 text: "Just delete the failing rows. Make the numbers look good.",
                 nextNodeId: 'zara_simulation_fail',
                 pattern: 'building' // "shortcuts" not valid
@@ -499,6 +505,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'zara_vuln_system_failed',
+                taxonomyClass: 'accept',
                 text: "The system failed. Not you. You were one analyst in a chain.",
                 nextNodeId: 'zara_vulnerability_response',
                 pattern: 'helping',
@@ -510,6 +517,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'zara_vuln_carry_them',
+                taxonomyClass: 'reject',
                 text: "You carry those fourteen with you. Every audit is for them.",
                 voiceVariations: {
                     analytical: "The connection is clear. Every audit is for them.",
@@ -528,6 +536,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'zara_vuln_silence',
+                taxonomyClass: 'deflect',
                 text: "[Let the weight of it sit. She's carrying enough without needing absolution.]",
                 archetype: 'STAY_SILENT',
                 nextNodeId: 'zara_vulnerability_response',
@@ -605,6 +614,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'zara_method_step_three',
+                taxonomyClass: 'accept',
                 text: "What's step three?",
                 archetype: 'ASK_FOR_DETAILS',
                 nextNodeId: 'zara_audit_step_three',
@@ -617,6 +627,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'zara_method_how_learn',
+                taxonomyClass: 'reject',
                 text: "How did you learn to think this way?",
                 nextNodeId: 'zara_learning_path',
                 pattern: 'exploring',
@@ -624,6 +635,7 @@ export const zaraDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'zara_method_apply',
+                taxonomyClass: 'deflect',
                 text: "Let's apply this to the logistics data right now.",
                 nextNodeId: 'zara_simulation_setup',
                 pattern: 'building',
@@ -2968,12 +2980,12 @@ export const zaraDialogueNodes: DialogueNode[] = [
         },
         content: [
             {
-                text: "I study how algorithms shape human behavior. Usually, it's manipulative. Surveillance capitalism, attention hijacking.\\n\\nBut whatever algorithm runs this place? It's... <shake>kind</shake>.",
+                text: "I study how algorithms shape human behavior, and usually it's manipulative: surveillance capitalism, attention hijacking.\\n\\nBut whatever runs this place feels <shake>kind</shake>.",
                 emotion: 'surprised',
                 variation_id: 'mystery_hint_v1'
             },
             {
-                text: "It brings people together without exploiting them. I didn't think that was possible.",
+                text: "It brings people together without exploiting them, and I didn't think that was possible.",
                 emotion: 'hopeful',
                 variation_id: 'mystery_hint_v2'
             }

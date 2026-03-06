@@ -21,6 +21,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'intro_curious',
+                taxonomyClass: 'accept',
                 text: "What are you creating?",
                 voiceVariations: {
                     analytical: "What's the intended output? What are you creating?",
@@ -39,6 +40,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'intro_technical',
+                taxonomyClass: 'reject',
                 text: "Is that a projection mapping setup or AR?",
                 archetype: 'ASK_FOR_DETAILS',
                 nextNodeId: 'asha_explains_tech',
@@ -51,6 +53,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'intro_offer_help',
+                taxonomyClass: 'deflect',
                 text: "You look like you could use a second pair of eyes.",
                 voiceVariations: {
                     analytical: "Fresh perspective might help. Need a second pair of eyes?",
@@ -173,6 +176,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'process_validate',
+                taxonomyClass: 'accept',
                 text: "The curation IS the art. Knowing what to keep and what to break.",
                 voiceVariations: {
                     analytical: "Selection criteria define the output. Curation IS the art.",
@@ -191,6 +195,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'process_question',
+                taxonomyClass: 'reject',
                 text: "Do you ever miss just... painting? No algorithm. Just you and the wall.",
                 archetype: 'EXPRESS_CURIOSITY',
                 nextNodeId: 'asha_before_ai',
@@ -203,6 +208,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'process_patience',
+                taxonomyClass: 'deflect',
                 text: "[Let her sit with the question she just asked herself.]",
                 archetype: 'STAY_SILENT',
                 nextNodeId: 'asha_self_reflection',
@@ -282,6 +288,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'grandmother_honor',
+                taxonomyClass: 'accept',
                 text: "She's still painting through you. Different tools, same devotion.",
                 voiceVariations: {
                     analytical: "The methodology evolved, but the core practice continues through you.",
@@ -300,6 +307,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'grandmother_parallel',
+                taxonomyClass: 'reject',
                 text: "She died doing what she loved. That's not tragedy. That's completion.",
                 nextNodeId: 'asha_grandmother_connection',
                 pattern: 'patience',
@@ -311,6 +319,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'grandmother_building',
+                taxonomyClass: 'deflect',
                 text: "She built something that outlasted her. That's what artists do. What will YOU leave behind?",
                 nextNodeId: 'asha_legacy_question',
                 pattern: 'building',
@@ -696,6 +705,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'sim_refine_nature',
+                taxonomyClass: 'accept',
                 text: "Inject 'Biophilic Design'. Add 'Overgrown Iron City' aesthetic. Use warm sunlight.",
                 nextNodeId: 'asha_simulation_success',
                 pattern: 'building',
@@ -707,6 +717,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'sim_refine_history',
+                taxonomyClass: 'reject',
                 text: "Ground it in history. 'Civil Rights District merged with Solarpunk'.",
                 nextNodeId: 'asha_simulation_success',
                 pattern: 'analytical',
@@ -718,6 +729,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'sim_randomize',
+                taxonomyClass: 'deflect',
                 text: "Just hit 'Re-roll'. Hopefully it gets better.",
                 nextNodeId: 'asha_simulation_fail',
                 pattern: 'exploring'
@@ -745,6 +757,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'success_humble',
+                taxonomyClass: 'accept',
                 text: "I just described what I wanted to see.",
                 nextNodeId: 'asha_post_success_reflection',
                 pattern: 'helping',
@@ -753,6 +766,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'success_pride',
+                taxonomyClass: 'reject',
                 text: "It's about knowing the story behind the image.",
                 nextNodeId: 'asha_post_success_reflection',
                 pattern: 'building',
@@ -777,6 +791,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'asha_go_deeper',
+                taxonomyClass: 'deflect',
                 text: "There's something else behind this work, isn't there? Something personal.",
                 nextNodeId: 'asha_vulnerability_arc',
                 pattern: 'helping',
@@ -1080,6 +1095,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'asha_vuln_they_were_wrong',
+                taxonomyClass: 'accept',
                 text: "They were wrong. Not you. Your vision was right.",
                 nextNodeId: 'asha_vulnerability_response',
                 pattern: 'helping',
@@ -1091,6 +1107,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'asha_vuln_hiding',
+                taxonomyClass: 'reject',
                 text: "You're using the AI to hide. So they can't hurt you again.",
                 nextNodeId: 'asha_vulnerability_deeper',
                 pattern: 'analytical',
@@ -1102,6 +1119,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'asha_vuln_silence',
+                taxonomyClass: 'deflect',
                 text: "[Let the grief breathe. Three days to erase six weeks.]",
                 nextNodeId: 'asha_vulnerability_silence_response',
                 pattern: 'patience',
@@ -1237,6 +1255,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'mural_powerful',
+                taxonomyClass: 'accept',
                 text: "That sounds powerful. No wonder they were afraid.",
                 nextNodeId: 'asha_fear_of_truth',
                 pattern: 'analytical',
@@ -1248,6 +1267,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'mural_recreate',
+                taxonomyClass: 'reject',
                 text: "You should recreate it. Bigger. Where they can't paint over it.",
                 nextNodeId: 'asha_recreate_dream',
                 pattern: 'building',
@@ -1259,6 +1279,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'mural_grieve',
+                taxonomyClass: 'deflect',
                 text: "You poured everything into that. The loss must have been devastating.",
                 nextNodeId: 'asha_vulnerability_response',
                 pattern: 'helping',
@@ -1411,6 +1432,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'reciprocity_exploring',
+                taxonomyClass: 'accept',
                 text: "I'm figuring out who I want to become.",
                 nextNodeId: 'asha_reciprocity_response',
                 pattern: 'exploring',
@@ -1418,6 +1440,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'reciprocity_building',
+                taxonomyClass: 'reject',
                 text: "I'm looking for something to build. Something that matters.",
                 nextNodeId: 'asha_reciprocity_response',
                 pattern: 'building',
@@ -1425,6 +1448,7 @@ export const ashaDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'reciprocity_helping',
+                taxonomyClass: 'deflect',
                 text: "I want to help people find their path.",
                 nextNodeId: 'asha_reciprocity_response',
                 pattern: 'helping',
@@ -2355,6 +2379,7 @@ CHALLENGE: One mural. All voices honored.`,
         choices: [
             {
                 choiceId: 'sim2_layered_time',
+                taxonomyClass: 'accept',
                 text: "Three panels: Past (civil rights), Present (community today), Future (green tech). Linear narrative.",
                 nextNodeId: 'asha_sim2_partial',
                 pattern: 'analytical',
@@ -2362,6 +2387,7 @@ CHALLENGE: One mural. All voices honored.`,
             },
             {
                 choiceId: 'sim2_tree_metaphor',
+                taxonomyClass: 'reject',
                 text: "A tree: roots (Black history), trunk (current community), branches (sustainable future). All connected.",
                 nextNodeId: 'asha_sim2_success',
                 pattern: 'building',
@@ -2369,6 +2395,7 @@ CHALLENGE: One mural. All voices honored.`,
             },
             {
                 choiceId: 'sim2_compromise',
+                taxonomyClass: 'deflect',
                 text: "Split the wall: 50% history, 50% future. Keep everyone half-happy.",
                 nextNodeId: 'asha_sim2_fail',
                 pattern: 'patience',
@@ -2483,6 +2510,7 @@ YOUR RESPONSE OPTIONS:
         choices: [
             {
                 choiceId: 'sim3_defend',
+                taxonomyClass: 'accept',
                 text: "Write a response: 'Art isn't for critics. It's for the people it serves.'",
                 nextNodeId: 'asha_sim3_defensive',
                 pattern: 'building',
@@ -2490,6 +2518,7 @@ YOUR RESPONSE OPTIONS:
             },
             {
                 choiceId: 'sim3_listen_integrate',
+                taxonomyClass: 'reject',
                 text: "Read the criticism carefully. Ask: 'What truth is buried in the harshness?'",
                 nextNodeId: 'asha_sim3_success',
                 pattern: 'analytical',
@@ -2497,6 +2526,7 @@ YOUR RESPONSE OPTIONS:
             },
             {
                 choiceId: 'sim3_ignore_all',
+                taxonomyClass: 'deflect',
                 text: "Ignore critics entirely. Focus on the grandmother and the teacher. That's enough.",
                 nextNodeId: 'asha_sim3_partial',
                 pattern: 'patience',

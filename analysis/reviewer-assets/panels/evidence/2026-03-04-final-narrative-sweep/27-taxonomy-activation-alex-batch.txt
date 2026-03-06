@@ -1,0 +1,24 @@
+Timestamp: 2026-03-05
+Scope: Alex targeted taxonomy activation
+
+Changes applied:
+- content/alex-dialogue-graph.ts
+  - Added taxonomyClass triads to all remaining non-compliant eligible nodes:
+    - alex_introduction
+    - alex_contradiction
+    - alex_player_learning_pattern
+    - alex_crossroads_moment
+    - alex_turn
+    - alex_simulation_phase_1
+    - alex_sim3_curriculum_intro
+
+Validation runs:
+- npm run type-check -> PASS
+- npm run verify:choice-taxonomy -> PASS
+  - Eligible nodes: 258
+  - Coverage: 86.82%
+  - Non-compliant nodes: 34
+- npm run verify:narrative-sim -> PASS (failures 0, mismatches 0, truncated 0)
+- npm run verify:required-state-strict -> PASS (violations 0)
+- npm run verify:unreachable-dialogue-nodes -> PASS (count 0)
+- npm run verify:unreferenced-dialogue-nodes -> PASS (count 0)

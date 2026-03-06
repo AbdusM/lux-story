@@ -19,7 +19,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
         speaker: 'Samuel Washington',
         content: [
             {
-                text: "Hold up a second. <shake>You're vibratin' like a tuning fork.</shake>\n\nI can hear it from here. The static. You carryin' a lot of noise with you, traveler.",
+                text: "Hold up a second. <shake>You're vibratin' like a tuning fork.</shake>\n\nI can hear the static from here, traveler.",
                 emotion: 'concerned',
                 variation_id: 'calibration_v1'
             }
@@ -28,6 +28,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
             {
                 choiceId: 'calib_defensive',
                 text: "I'm fine. Just let me through.",
+                taxonomyClass: 'reject',
                 nextNodeId: 'systemic_calibration_friction',
                 pattern: 'analytical', // SYMPATHETIC ATTRACTOR (If Anxious, this floats to top)
                 skills: ['criticalThinking'],
@@ -39,6 +40,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
             {
                 choiceId: 'calib_masking',
                 text: "It's just been a long trip.",
+                taxonomyClass: 'deflect',
                 nextNodeId: 'systemic_calibration_friction',
                 pattern: 'building', // SYMPATHETIC NEUTRAL/REPULSION
                 skills: ['adaptability']
@@ -46,6 +48,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
             {
                 choiceId: 'calib_vulnerable',
                 text: "It is... loud. In my head.",
+                taxonomyClass: 'accept',
                 nextNodeId: 'systemic_calibration_acceptance',
                 pattern: 'patience', // SYMPATHETIC REPULSOR (If Anxious, this sinks to bottom & dims)
                 skills: ['emotionalIntelligence'],
@@ -63,7 +66,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
         speaker: 'Samuel Washington',
         content: [
             {
-                text: "See? That's the static talking. Tight. Fast. <bloom>Reactive.</bloom>\n\nYou can't find your platform looking like that. The Station won't let you. It responds to what you bring it.",
+                text: "See? That's the static talking: tight, fast, <bloom>reactive</bloom>.\n\nYou can't find your platform like that; the Station responds to what you bring it.",
                 emotion: 'stern',
                 variation_id: 'friction_v1'
             }
@@ -126,6 +129,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
             {
                 choiceId: 'calib_fear_failure',
                 text: "The fear that I'm wasting time.",
+                taxonomyClass: 'reject',
                 nextNodeId: 'samuel_explains_station', // Loop back to main flow
                 pattern: 'analytical', // Sympathetic Attract
                 skills: ['criticalThinking'],
@@ -138,6 +142,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
             {
                 choiceId: 'calib_fear_disconnection',
                 text: "The feeling that I'm invisible.",
+                taxonomyClass: 'deflect',
                 nextNodeId: 'samuel_explains_station',
                 pattern: 'helping',
                 skills: ['emotionalIntelligence'],
@@ -150,6 +155,7 @@ export const systemicCalibrationNodes: DialogueNode[] = [
             {
                 choiceId: 'calib_fear_stagnation',
                 text: "The weight of everything I haven't built yet.",
+                taxonomyClass: 'accept',
                 nextNodeId: 'samuel_explains_station',
                 pattern: 'building',
                 skills: ['creativity'],

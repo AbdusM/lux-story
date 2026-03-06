@@ -1,0 +1,10 @@
+
+> lux-story@2.3.1 report:character-deep-coverage
+> node --loader ./scripts/ts-loader.mjs scripts/report-character-deep-coverage.ts
+
+(node:36072) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./scripts/ts-loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+Character deep coverage report written: /Users/abdusmuwwakkil/Development/30_lux-story/docs/qa/character-deep-coverage-report.json
+Characters: 20
+Risk distribution: high=0, medium=0, low=20

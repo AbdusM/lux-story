@@ -1,0 +1,161 @@
+
+> lux-story@2.3.1 test:run
+> vitest run tests/content/golden-paths.test.ts
+
+
+ RUN  v3.2.4 /Users/abdusmuwwakkil/Development/30_lux-story
+
+ ✓ tests/content/golden-paths.test.ts (21 tests) 6ms
+
+ Test Files  1 passed (1)
+      Tests  21 passed (21)
+   Start at  21:56:22
+   Duration  1.79s (transform 621ms, setup 119ms, collect 811ms, tests 6ms, environment 460ms, prepare 62ms)
+
+
+> lux-story@2.3.1 verify:narrative-sim
+> node --loader ./scripts/ts-loader.mjs scripts/verify-narrative-sim.ts
+
+
+Narrative Sim Summary
+Failures: 0 (new: 0)
+requiredState mismatches: 0 (new: 0)
+truncated graphs: 0 (new: 0)
+
+No regressions vs baseline.
+
+> lux-story@2.3.1 verify:required-state-strict
+> node --loader ./scripts/ts-loader.mjs scripts/verify-required-state-strict.ts
+
+RequiredState strict check OK (violations=0, no regressions).
+
+> lux-story@2.3.1 verify:choice-taxonomy
+> node --loader ./scripts/ts-loader.mjs scripts/verify-choice-taxonomy.ts
+
+[verify-choice-taxonomy] OK
+- Mode: warn
+- Strategy: ratchet
+- Eligible nodes: 258
+- Coverage: 100%
+- Non-compliant nodes (unwaived): 0
+- Report: docs/qa/choice-taxonomy-report.json
+
+> lux-story@2.3.1 verify:dialogue-guidelines
+> node --loader ./scripts/ts-loader.mjs scripts/verify-dialogue-guidelines-ratchet.ts && node --loader ./scripts/ts-loader.mjs scripts/verify-dialogue-soft-ratchet.ts
+
+[dialogue-guidelines] report written: /Users/abdusmuwwakkil/Development/30_lux-story/docs/qa/dialogue-guidelines-report.json
+[dialogue-guidelines] hard content issues: 0
+[dialogue-guidelines] soft content issues: 0
+[dialogue-guidelines] hard monologue chains: 0
+[dialogue-guidelines] soft monologue chains: 0
+[verify-dialogue-guidelines] OK
+- Hard content issues: baseline=123, current=0
+- Hard monologue chains: baseline=7, current=0
+- Report: docs/qa/dialogue-guidelines-ratchet-report.json
+[dialogue-guidelines] report written: /Users/abdusmuwwakkil/Development/30_lux-story/docs/qa/dialogue-guidelines-report.json
+[dialogue-guidelines] hard content issues: 0
+[dialogue-guidelines] soft content issues: 0
+[dialogue-guidelines] hard monologue chains: 0
+[dialogue-guidelines] soft monologue chains: 0
+[verify-dialogue-soft-ratchet] OK for 6 graphs. Report: docs/qa/dialogue-soft-ratchet-report.json
+
+> lux-story@2.3.1 verify:world-canon-contract
+> node --loader ./scripts/ts-loader.mjs scripts/verify-world-canon-contract.ts
+
+[verify-world-canon-contract] OK
+- Mode: warn
+- Canonical docs: 3
+- Required anchor hits: 6
+- Timeline docs validated: 2
+- Report: docs/qa/world-canon-contract-report.json
+- Snapshot: docs/qa/world-canon-source-snapshot.json
+
+> lux-story@2.3.1 verify:simulation-phase-contract
+> node --loader ./scripts/ts-loader.mjs scripts/verify-simulation-phase-contract.ts
+
+Simulation phase contract verification passed.
+Contract entries: 15
+Graph variants: 15
+Doc entries: 15
+Report: /Users/abdusmuwwakkil/Development/30_lux-story/docs/qa/simulation-phase-contract-report.json
+
+> lux-story@2.3.1 verify:iceberg-tags
+> node --loader ./scripts/ts-loader.mjs scripts/verify-iceberg-tags.ts
+
+Iceberg tag verification completed.
+Mode: warn
+Total tags: 16
+Tagged characters: 6
+Report: /Users/abdusmuwwakkil/Development/30_lux-story/docs/qa/iceberg-tag-report.json
+
+> lux-story@2.3.1 verify:unreliable-records
+> node --loader ./scripts/ts-loader.mjs scripts/verify-unreliable-records.ts
+
+Unreliable record tag verification completed.
+Mode: warn
+Record tags: 14
+Verify tags: 6
+Tagged characters: 5
+Report: /Users/abdusmuwwakkil/Development/30_lux-story/docs/qa/unreliable-record-report.json
+
+> lux-story@2.3.1 verify:micro-reactivity
+> node --loader ./scripts/ts-loader.mjs scripts/verify-micro-reactivity.ts
+
+[verify-micro-reactivity] OK
+- mode: warn
+- unique_memory_ids: 5
+- callback_characters: 5
+- issues: 0 (errors: 0)
+- report: docs/qa/micro-reactivity-report.json
+
+> lux-story@2.3.1 verify:vertical-slice-checklist
+> node --loader ./scripts/ts-loader.mjs scripts/verify-vertical-slice-checklist.ts
+
+[verify-vertical-slice-checklist] OK
+- Mode: warn
+- Failed checks: 0
+- Report: docs/qa/vertical-slice-checklist-report.json
+
+> lux-story@2.3.1 verify:arc-completion-flags
+> node --loader ./scripts/ts-loader.mjs scripts/verify-arc-completion-flags.ts
+
+Arc completion flags OK (graphs_checked=19).
+
+> lux-story@2.3.1 verify:unreachable-dialogue-nodes
+> node --loader ./scripts/ts-loader.mjs scripts/verify-unreachable-dialogue-nodes.ts
+
+Unreachable dialogue nodes OK (count=0, no regressions).
+
+> lux-story@2.3.1 verify:unreferenced-dialogue-nodes
+> node --loader ./scripts/ts-loader.mjs scripts/verify-unreferenced-dialogue-nodes.ts
+
+Unreferenced dialogue nodes OK (count=0, no regressions).
+
+> lux-story@2.3.1 report:character-deep-coverage
+> node --loader ./scripts/ts-loader.mjs scripts/report-character-deep-coverage.ts
+
+Character deep coverage report written: /Users/abdusmuwwakkil/Development/30_lux-story/docs/qa/character-deep-coverage-report.json
+Characters: 20
+Risk distribution: high=0, medium=0, low=20
+
+> lux-story@2.3.1 verify:dialogue-external-debt
+> node --loader ./scripts/ts-loader.mjs scripts/verify-dialogue-external-debt.ts
+
+Dialogue external review report written: /Users/abdusmuwwakkil/Development/30_lux-story/docs/qa/dialogue-external-review-report.json
+Characters: 20
+Priority tiers: high=0, medium=0, low=20
+Reachability-weighted tiers: high=0, medium=0, low=20
+Hard content issues: 0
+Hard monologue chains: 0
+Reachable hard content issues: 0
+Reachable hard monologue chains: 0
+Detached dialogue hard issues: 0 content, 0 chains
+Non-graph answer long choices: 0 (very long: 0)
+Loyalty experience (non-graph) hard issues: 0 content
+Dormant JSON dialogue hard issues: 0 content
+[verify-dialogue-external-debt] OK
+- Mode: warn
+- Detached nodes: 46
+- Dormant nodes: 10
+- Non-graph experience choices: 152
+- Report: docs/qa/dialogue-external-debt-report.json

@@ -1,0 +1,79 @@
+Manual Simulation Audit
+Run timestamp: 2026-03-05 21:23:12 EST
+Environment: local Next dev server at http://localhost:3005
+Browser: Playwright Desktop Chrome (headless)
+Viewport: 1280x720
+Spec: tests/e2e/simulations/manual-phase23-audit.spec.ts
+
+Preflight
+- npm run type-check -> PASS
+- npm run test:run -- tests/components/simulation-renderer-timeout.test.tsx tests/components/simulation-renderer-data-analysis.test.tsx -> PASS
+- npm run test:validators -> PASS
+- npm run verify:narrative-sim -> PASS
+- npm run verify:simulation-phase-contract -> PASS
+
+Timed Phase 2/3 decision audit
+- dante_simulation_phase2
+  correct option C -> dante_simulation_phase2_success PASS
+  wrong option A -> dante_simulation_phase2_fail PASS
+  footer choices hidden during sim PASS
+  input resumed after route PASS
+- dante_simulation_phase3
+  correct option D -> dante_simulation_phase3_success PASS
+  wrong option A -> dante_simulation_phase3_fail PASS
+  footer choices hidden during sim PASS
+  input resumed after route PASS
+- devon_simulation_phase2
+  correct option A -> devon_simulation_phase2_success PASS
+  wrong option B -> devon_simulation_phase2_fail PASS
+  footer choices hidden during sim PASS
+  input resumed after route PASS
+- isaiah_simulation_phase2
+  correct option B -> isaiah_simulation_phase2_success PASS
+  wrong option A -> isaiah_simulation_phase2_fail PASS
+  footer choices hidden during sim PASS
+  input resumed after route PASS
+- isaiah_simulation_phase3
+  correct option B -> isaiah_simulation_phase3_success PASS
+  wrong option A -> isaiah_simulation_phase3_fail PASS
+  footer choices hidden during sim PASS
+  input resumed after route PASS
+- jordan_simulation_phase2
+  correct option A -> jordan_simulation_phase2_success PASS
+  wrong option B -> jordan_simulation_phase2_fail PASS
+  footer choices hidden during sim PASS
+  input resumed after route PASS
+- jordan_simulation_phase3
+  correct option A -> jordan_simulation_phase3_success PASS
+  wrong option B -> jordan_simulation_phase3_fail PASS
+  footer choices hidden during sim PASS
+  input resumed after route PASS
+- nadia_simulation_phase2
+  correct option D -> nadia_simulation_phase2_success PASS
+  wrong option A -> nadia_simulation_phase2_fail PASS
+  footer choices hidden during sim PASS
+  input resumed after route PASS
+- nadia_simulation_phase3
+  correct option A -> nadia_simulation_phase3_success PASS
+  wrong option B -> nadia_simulation_phase3_fail PASS
+  footer choices hidden during sim PASS
+  input resumed after route PASS
+
+Representative timeout audit
+- dante_simulation_phase2 timeout -> dante_simulation_phase2_fail PASS
+- dante_simulation_phase3 timeout -> dante_simulation_phase3_fail PASS
+- devon_simulation_phase3 timeout -> devon_simulation_phase3_fail PASS
+
+Devon Phase 3 component completion audit
+- devon_simulation_phase3 completion path through VisualCanvas component -> devon_simulation_phase3_success PASS
+- footer choices hidden during sim PASS
+- input resumed after route PASS
+
+Defects found and fixed during this pass
+- Fullscreen simulation shell used a fixed overlay inside the dialogue stage, trapping the timed sim UI and blocking clicks.
+- Phase 2/3 setup and fail nodes for dante/devon/isaiah/jordan/nadia were still quarantined out of shipped graphs, so fail routes could not resolve at runtime.
+- VisualCanvas [DEBUG] Auto - Design populated the canvas but did not complete deterministically; fixed so automated completion coverage can assert the success route.
+
+Final result
+- Final Playwright audit run: 4 passed (2.3m)
+- No routing mismatches remained in the final run.

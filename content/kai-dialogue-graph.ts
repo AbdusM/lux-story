@@ -33,6 +33,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'kai_intro_systemic',
+        taxonomyClass: 'accept',
         text: "Compliance theater. The company gets liability protection, workers get a checkbox.",
         nextNodeId: 'kai_systemic_response',
         pattern: 'analytical',
@@ -47,6 +48,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'kai_intro_curious',
+        taxonomyClass: 'reject',
         text: "Why does that matter to you personally?",
         voiceVariations: {
           analytical: "There's history behind that frustration. Why does it matter to you personally?",
@@ -65,6 +67,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'kai_intro_practical',
+        taxonomyClass: 'deflect',
         text: "So redesign it. Make something better.",
         nextNodeId: 'kai_practical_response',
         pattern: 'building',
@@ -204,6 +207,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'kai_what_happened',
+        taxonomyClass: 'accept',
         text: "What happened last week?",
         voiceVariations: {
           analytical: "What's the timeline? What happened last week?",
@@ -222,6 +226,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'kai_knew_coming',
+        taxonomyClass: 'reject',
         text: "Something went wrong. You saw it coming.",
         nextNodeId: 'kai_accident_reveal',
         pattern: 'analytical',
@@ -229,6 +234,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'kai_system_exploring',
+        taxonomyClass: 'deflect',
         text: "What would real learning look like? If you could redesign it from scratch?",
         nextNodeId: 'kai_accident_reveal',
         pattern: 'exploring',
@@ -265,6 +271,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'kai_tell_more',
+        taxonomyClass: 'accept',
         text: "Tell me what happened.",
         nextNodeId: 'kai_accident_reveal',
         pattern: 'helping',
@@ -280,6 +287,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'kai_your_fault',
+        taxonomyClass: 'reject',
         text: "You designed the training. You feel responsible.",
         nextNodeId: 'kai_accident_reveal',
         pattern: 'analytical',
@@ -288,6 +296,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'kai_hint_exploring',
+        taxonomyClass: 'deflect',
         text: "What would it take to actually prepare someone? Not just check a box?",
         nextNodeId: 'kai_accident_reveal',
         pattern: 'exploring',
@@ -329,6 +338,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'kai_accountability',
+        taxonomyClass: 'accept',
         text: "You feel responsible because you designed the checkmark.",
         voiceVariations: {
           analytical: "The system worked as designed. You designed the checkmark.",
@@ -343,6 +353,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'kai_system_fail',
+        taxonomyClass: 'reject',
         text: "The paperwork protected them. Not him.",
         nextNodeId: 'kai_origin_story',
         pattern: 'analytical',
@@ -350,6 +361,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'kai_marcus_connection',
+        taxonomyClass: 'deflect',
         text: "I met Marcus, a nurse who says the same: machine versus patient.",
         nextNodeId: 'kai_marcus_reference',
         pattern: 'building',
@@ -770,6 +782,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'kai_automation_human',
+        taxonomyClass: 'accept',
         text: "The human expertise becomes more valuable, not less.",
         nextNodeId: 'kai_hybrid_path',
         pattern: 'helping',
@@ -777,6 +790,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'kai_automation_adapt',
+        taxonomyClass: 'reject',
         text: "Then you train people to work WITH the machines.",
         nextNodeId: 'kai_hybrid_path',
         pattern: 'analytical',
@@ -784,6 +798,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'kai_automation_workers',
+        taxonomyClass: 'deflect',
         text: "What happens to the workers? The ones who can't retire yet?",
         nextNodeId: 'kai_retraining_reality',
         pattern: 'patience',
@@ -963,6 +978,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'kai_synthesis_to_corporate',
+        taxonomyClass: 'accept',
         text: "So what are you still doing at Protective Life?",
         nextNodeId: 'kai_corporate_truth',
         pattern: 'exploring',
@@ -970,6 +986,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'kai_synthesis_validation',
+        taxonomyClass: 'reject',
         text: "That's exactly what the world needs.",
         nextNodeId: 'kai_corporate_truth',
         pattern: 'helping',
@@ -981,6 +998,7 @@ export const kaiDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'kai_deep_dive_unlock',
+        taxonomyClass: 'deflect',
         text: "[Deep Dive] Show me the real blueprint. The one you're afraid to build.",
         nextNodeId: 'kai_deep_dive',
         pattern: 'building',
@@ -1511,6 +1529,7 @@ Available Components:
     choices: [
       {
         choiceId: 'kai_choose_depth',
+        taxonomyClass: 'accept',
         text: "Depth. One person who learns beats a thousand who click through.",
         nextNodeId: 'kai_climax_decision',
         pattern: 'helping',
@@ -1525,6 +1544,7 @@ Available Components:
       },
       {
         choiceId: 'kai_choose_reach',
+        taxonomyClass: 'reject',
         text: "Reach matters: you can't save everyone, but you can widen access.",
         nextNodeId: 'kai_climax_decision',
         pattern: 'building',
@@ -1535,6 +1555,7 @@ Available Components:
       },
       {
         choiceId: 'kai_choose_both',
+        taxonomyClass: 'deflect',
         text: "Both: go deep first, then scale what works without losing quality.",
         nextNodeId: 'kai_climax_decision',
         pattern: 'analytical',
@@ -1569,7 +1590,7 @@ Available Components:
     speaker: 'Kai',
     content: [
       {
-        text: "<bloom>Kairos Learning Design</bloom>. No certificates. Just survival.\n\nIt's terrifying. I'm giving up the salary, the benefits... the green checkmarks.\n\nBut I'll never have to click 'Next' again.",
+        text: "<bloom>Kairos Learning Design</bloom>: no certificates, just survival.\n\nIt's terrifying because I'm giving up salary, benefits, and green checkmarks.\n\nBut I'll never have to click \"Next\" again.",
         emotion: 'liberated',
         variation_id: 'climax_v2'
       }
@@ -1800,6 +1821,7 @@ Available Components:
     choices: [
       {
         choiceId: 'kai_asks_before_leave',
+        taxonomyClass: 'accept',
         text: "I'll tell you what I'm building...",
         nextNodeId: 'kai_asks_player',
         pattern: 'helping',
@@ -1807,6 +1829,7 @@ Available Components:
       },
       {
         choiceId: 'return_to_samuel_kai',
+        taxonomyClass: 'reject',
         text: "Return to Samuel",
         nextNodeId: samuelEntryPoints.KAI_REFLECTION_GATEWAY,
         pattern: 'exploring',
@@ -1818,6 +1841,7 @@ Available Components:
       // Loyalty Experience trigger - only visible at high trust + building pattern
       {
         choiceId: 'offer_inspection_help',
+        taxonomyClass: 'deflect',
         text: "[Builder's Eye] You mentioned a high-stakes safety audit. Want a second set of eyes?",
         nextNodeId: 'kai_loyalty_trigger',
         pattern: 'building',
@@ -1935,6 +1959,7 @@ Available Components:
     choices: [
       {
         choiceId: 'player_building_helping',
+        taxonomyClass: 'accept',
         text: "Depth. Real conversations that change something. One person at a time, but done right.",
         nextNodeId: 'kai_reciprocity_response',
         pattern: 'helping',
@@ -1946,6 +1971,7 @@ Available Components:
       },
       {
         choiceId: 'player_building_systems',
+        taxonomyClass: 'reject',
         text: "Reach: help more people while scaling without losing the soul.",
         nextNodeId: 'kai_reciprocity_response',
         pattern: 'building',
@@ -1964,6 +1990,7 @@ Available Components:
       },
       {
         choiceId: 'player_still_figuring',
+        taxonomyClass: 'deflect',
         text: "Still figuring that out. I'm here to stop pretending otherwise.",
         nextNodeId: 'kai_reciprocity_response',
         pattern: 'exploring',
@@ -2168,6 +2195,7 @@ Which approach actually reduces injuries?`,
     choices: [
       {
         choiceId: 'sim3_compliance',
+        taxonomyClass: 'accept',
         text: "Option A. Harder tests ensure they actually learn the material.",
         nextNodeId: 'kai_sim3_fail',
         pattern: 'analytical',
@@ -2175,6 +2203,7 @@ Which approach actually reduces injuries?`,
       },
       {
         choiceId: 'sim3_vr_simulation',
+        taxonomyClass: 'reject',
         text: "Option B. Simulation lets them practice before real danger.",
         nextNodeId: 'kai_sim3_partial',
         pattern: 'building',
@@ -2182,6 +2211,7 @@ Which approach actually reduces injuries?`,
       },
       {
         choiceId: 'sim3_peer_training',
+        taxonomyClass: 'deflect',
         text: "Option C. Real workers teaching real context beats any module.",
         nextNodeId: 'kai_sim3_success',
         pattern: 'helping',

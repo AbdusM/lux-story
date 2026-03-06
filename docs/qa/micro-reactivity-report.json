@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-03-04T23:17:00.847Z",
-  "mode": "enforce",
+  "generated_at": "2026-03-06T04:20:15.296Z",
+  "mode": "warn",
   "thresholds": {
     "min_memory_ids": 5,
     "min_callback_characters": 5
   },
   "summary": {
-    "memory_set_tags": 5,
-    "callback_tags": 5,
-    "unique_memory_ids": 5,
-    "callback_characters": 5,
-    "callback_nodes": 5
+    "memory_set_tags": 7,
+    "callback_tags": 7,
+    "unique_memory_ids": 7,
+    "callback_characters": 7,
+    "callback_nodes": 7
   },
   "coverage": {
     "memory_ids": [
@@ -18,14 +18,18 @@
       "elena_station_seven_loss",
       "maya_competition_memory",
       "nadia_model_regret",
-      "rohan_previous_visitor_trace"
+      "quinn_meaning_over_metrics",
+      "rohan_previous_visitor_trace",
+      "tess_shop_floor_courage"
     ],
     "callback_characters": [
       "devon",
       "elena",
       "maya",
       "nadia",
-      "rohan"
+      "quinn",
+      "rohan",
+      "tess"
     ],
     "callbacks_per_character": {
       "devon": [
@@ -40,8 +44,14 @@
       "nadia": [
         "nadia_model_regret"
       ],
+      "quinn": [
+        "quinn_meaning_over_metrics"
+      ],
       "rohan": [
         "rohan_previous_visitor_trace"
+      ],
+      "tess": [
+        "tess_shop_floor_courage"
       ]
     }
   },

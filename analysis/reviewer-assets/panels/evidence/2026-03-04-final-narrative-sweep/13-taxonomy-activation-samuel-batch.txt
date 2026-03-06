@@ -1,0 +1,41 @@
+
+> lux-story@2.3.1 type-check
+> tsc --noEmit -p tsconfig.typecheck.json
+
+
+> lux-story@2.3.1 verify:choice-taxonomy
+> node --loader ./scripts/ts-loader.mjs scripts/verify-choice-taxonomy.ts
+
+[verify-choice-taxonomy] OK
+- Mode: warn
+- Strategy: ratchet
+- Eligible nodes: 258
+- Coverage: 19.77%
+- Non-compliant nodes (unwaived): 207
+- Report: docs/qa/choice-taxonomy-report.json
+
+> lux-story@2.3.1 verify:narrative-sim
+> node --loader ./scripts/ts-loader.mjs scripts/verify-narrative-sim.ts
+
+
+Narrative Sim Summary
+Failures: 0 (new: 0)
+requiredState mismatches: 0 (new: 0)
+truncated graphs: 0 (new: 0)
+
+No regressions vs baseline.
+
+> lux-story@2.3.1 verify:required-state-strict
+> node --loader ./scripts/ts-loader.mjs scripts/verify-required-state-strict.ts
+
+RequiredState strict check OK (violations=0, no regressions).
+
+> lux-story@2.3.1 verify:unreachable-dialogue-nodes
+> node --loader ./scripts/ts-loader.mjs scripts/verify-unreachable-dialogue-nodes.ts
+
+Unreachable dialogue nodes OK (count=0, no regressions).
+
+> lux-story@2.3.1 verify:unreferenced-dialogue-nodes
+> node --loader ./scripts/ts-loader.mjs scripts/verify-unreferenced-dialogue-nodes.ts
+
+Unreferenced dialogue nodes OK (count=0, no regressions).

@@ -34,6 +34,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'isaiah_intro_cost',
+        taxonomyClass: 'accept',
         text: "What does it actually cost?",
         nextNodeId: 'isaiah_real_cost',
         pattern: 'helping',
@@ -48,6 +49,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_intro_cynical',
+        taxonomyClass: 'reject',
         text: "You sound more than honest. You sound burned out.",
         nextNodeId: 'isaiah_burnout',
         pattern: 'patience',
@@ -67,6 +69,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_intro_difference',
+        taxonomyClass: 'deflect',
         text: "But you're still here. You still believe in the work.",
         nextNodeId: 'isaiah_still_believe',
         pattern: 'exploring',
@@ -136,6 +139,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'isaiah_cost_hold',
+        taxonomyClass: 'accept',
         text: "Who holds you when you crack?",
         nextNodeId: 'isaiah_who_holds',
         pattern: 'helping',
@@ -148,6 +152,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_cost_betrayal',
+        taxonomyClass: 'reject',
         text: "Betrayal of whom?",
         nextNodeId: 'isaiah_betrayal',
         pattern: 'patience',
@@ -155,6 +160,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_cost_worth',
+        taxonomyClass: 'deflect',
         text: "Is it worth it? Honestly?",
         nextNodeId: 'isaiah_worth_it',
         pattern: 'analytical',
@@ -258,6 +264,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'isaiah_destroyed_recover',
+        taxonomyClass: 'accept',
         text: "Can you come back from destroyed?",
         nextNodeId: 'isaiah_recovery',
         pattern: 'helping',
@@ -269,6 +276,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_badge_honor',
+        taxonomyClass: 'reject',
         text: "Why is suffering glorified in nonprofit work?",
         nextNodeId: 'isaiah_suffering_culture',
         pattern: 'analytical',
@@ -276,6 +284,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_burnout_hub',
+        taxonomyClass: 'deflect',
         text: "Let's talk about something else for now.",
         nextNodeId: 'isaiah_exploration_hub',
         pattern: 'patience',
@@ -299,6 +308,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'isaiah_alternative',
+        taxonomyClass: 'accept',
         text: "What would actually solving problems look like?",
         nextNodeId: 'isaiah_real_solutions',
         pattern: 'building',
@@ -306,6 +316,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_donors_feel_good',
+        taxonomyClass: 'reject',
         text: "Tell me about making donors feel good.",
         nextNodeId: 'isaiah_donor_reality',
         pattern: 'analytical',
@@ -313,6 +324,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_kids_believe',
+        taxonomyClass: 'deflect',
         text: "The kids you believe in. Tell me about them.",
         nextNodeId: 'isaiah_kids_stories',
         pattern: 'helping',
@@ -341,6 +353,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'isaiah_real_work',
+        taxonomyClass: 'accept',
         text: "What happens in the room with the kids?",
         nextNodeId: 'isaiah_room_kids',
         pattern: 'helping',
@@ -348,6 +361,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_fundraising',
+        taxonomyClass: 'reject',
         text: "Tell me about the fundraising side.",
         nextNodeId: 'isaiah_fundraising_reality',
         pattern: 'building',
@@ -355,6 +369,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_youth_ministry',
+        taxonomyClass: 'deflect',
         text: "Youth ministry at fourteen. That's young to take on that responsibility.",
         nextNodeId: 'isaiah_early_calling',
         pattern: 'exploring',
@@ -383,6 +398,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'isaiah_hub_fundraising',
+        taxonomyClass: 'accept',
         text: "How fundraising actually works.",
         nextNodeId: 'isaiah_fundraising_mechanics',
         pattern: 'building',
@@ -390,6 +406,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_hub_impact',
+        taxonomyClass: 'reject',
         text: "How you measure real impact.",
         nextNodeId: 'isaiah_impact_measurement',
         pattern: 'analytical',
@@ -404,6 +421,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_hub_samuel',
+        taxonomyClass: 'deflect',
         text: "I need to explore other parts of the station.",
         nextNodeId: samuelEntryPoints.HUB_INITIAL,
         pattern: 'exploring',
@@ -436,6 +454,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'isaiah_cultivation',
+        taxonomyClass: 'accept',
         text: "What does cultivation actually look like?",
         nextNodeId: 'isaiah_cultivation_detail',
         pattern: 'building',
@@ -443,6 +462,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_manipulative',
+        taxonomyClass: 'reject',
         text: "Where's the line between connection and manipulation?",
         nextNodeId: 'isaiah_manipulation_line',
         pattern: 'analytical',
@@ -450,6 +470,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_major_ask',
+        taxonomyClass: 'deflect',
         text: "Walk me through a major gift ask.",
         nextNodeId: 'isaiah_major_gift_sim',
         pattern: 'exploring',
@@ -484,6 +505,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'isaiah_vuln_not_fault',
+        taxonomyClass: 'accept',
         text: "That wasn't your fault.",
         nextNodeId: 'isaiah_fault_response',
         pattern: 'helping',
@@ -491,6 +513,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_vuln_kept_going',
+        taxonomyClass: 'reject',
         text: "And you kept going. After that.",
         nextNodeId: 'isaiah_kept_going',
         pattern: 'patience',
@@ -502,6 +525,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_vuln_silence',
+        taxonomyClass: 'deflect',
         text: "[Sit with him in silence. Some things don't need words.]",
         nextNodeId: 'isaiah_silence',
         pattern: 'patience',
@@ -609,6 +633,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_sim_redirect',
+        taxonomyClass: 'deflect',
         text: "Thank her and redirect. Explain what you do offer.",
         nextNodeId: 'isaiah_sim_redirect_response',
         pattern: 'patience',
@@ -616,6 +641,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_sim_connect',
+        taxonomyClass: 'accept',
         text: "Find out why music matters to her. Maybe there's a bridge.",
         nextNodeId: 'isaiah_sim_connect_response',
         pattern: 'helping',
@@ -627,6 +653,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_sim_decline',
+        taxonomyClass: 'reject',
         text: "Decline gracefully. Refer her to an organization with music programs.",
         nextNodeId: 'isaiah_sim_decline_response',
         pattern: 'analytical',
@@ -686,6 +713,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'isaiah_burn_push',
+        taxonomyClass: 'reject',
         text: "Push through. The program staff need their jobs.",
         nextNodeId: 'isaiah_burn_push_response',
         pattern: 'helping',
@@ -693,6 +721,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_burn_boundaries',
+        taxonomyClass: 'accept',
         text: "Set boundaries. Tell the ED you'll do what you can, sustainably.",
         nextNodeId: 'isaiah_burn_boundary_response',
         pattern: 'patience',
@@ -700,6 +729,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_burn_quit',
+        taxonomyClass: 'deflect',
         text: "Start looking for another job.",
         nextNodeId: 'isaiah_burn_quit_response',
         pattern: 'exploring',
@@ -723,6 +753,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'isaiah_motivation_spectrum',
+        taxonomyClass: 'accept',
         text: "Walk me through that motivation spectrum.",
         nextNodeId: 'isaiah_motivations',
         pattern: 'analytical',
@@ -730,6 +761,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_uncomfortable_donors',
+        taxonomyClass: 'reject',
         text: "Have you ever taken money you felt uncomfortable about?",
         nextNodeId: 'isaiah_uncomfortable_money',
         pattern: 'exploring',
@@ -737,6 +769,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_best_donors',
+        taxonomyClass: 'deflect',
         text: "Who are your favorite donors?",
         nextNodeId: 'isaiah_favorite_donors',
         pattern: 'helping',
@@ -760,6 +793,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'isaiah_better_measurement',
+        taxonomyClass: 'accept',
         text: "Is there a better way to measure?",
         nextNodeId: 'isaiah_measurement_innovation',
         pattern: 'building',
@@ -767,6 +801,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_hope_enough',
+        taxonomyClass: 'reject',
         text: "Is hope enough to build a career on?",
         nextNodeId: 'isaiah_hope_career',
         pattern: 'building',
@@ -774,6 +809,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_stories_matter',
+        taxonomyClass: 'deflect',
         text: "Tell me about stories that resonated.",
         nextNodeId: 'isaiah_resonant_stories',
         pattern: 'helping',
@@ -797,6 +833,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'isaiah_jasmine_tyler',
+        taxonomyClass: 'accept',
         text: "Tell me more about Jasmine and Tyler first.",
         nextNodeId: 'isaiah_success_detail',
         pattern: 'exploring',
@@ -804,6 +841,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_marcus_story',
+        taxonomyClass: 'reject',
         text: "I want to hear about Marcus.",
         nextNodeId: 'isaiah_vulnerability_arc',
         pattern: 'helping',
@@ -816,6 +854,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_patterns',
+        taxonomyClass: 'deflect',
         text: "What pattern separates the kids who made it from those who didn't?",
         nextNodeId: 'isaiah_patterns_seen',
         pattern: 'analytical',
@@ -839,6 +878,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'isaiah_return_station',
+        taxonomyClass: 'accept',
         text: "I'll explore other parts of the station.",
         nextNodeId: samuelEntryPoints.HUB_INITIAL,
         pattern: 'exploring',
@@ -846,6 +886,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'isaiah_return_stay',
+        taxonomyClass: 'reject',
         text: "I have more questions.",
         nextNodeId: 'isaiah_exploration_hub',
         pattern: 'patience',
@@ -853,6 +894,7 @@ export const isaiahDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'offer_site_visit',
+        taxonomyClass: 'deflect',
         text: "[Helper] Isaiah, you look like you could use support. Something happening today?",
         nextNodeId: 'isaiah_loyalty_trigger',
         pattern: 'helping',
@@ -1088,12 +1130,12 @@ export const isaiahDialogueNodes: DialogueNode[] = [
     },
     content: [
       {
-        text: "I've spent my life building communities. Bringing people together around shared purpose.\\n\\nThis station does that effortlessly. No fundraising, no marketing, no struggle for attention. People just... <shake>show up</shake>.",
+        text: "I've spent my life building communities around shared purpose.\\n\\nThis station does it effortlessly: no fundraising, no marketing, no struggle for attention; people just <shake>show up</shake>.",
         emotion: 'amazed',
         variation_id: 'mystery_hint_v1'
       },
       {
-        text: "And they show up ready. Ready to help. Ready to connect. Ready to change.",
+        text: "And they show up ready: ready to help, connect, and change.",
         emotion: 'inspired',
         variation_id: 'mystery_hint_v2'
       }
@@ -1425,7 +1467,7 @@ What builds authentic connection instead of transactional fundraising?`,
     nodeId: 'isaiah_simulation_phase2_setup',
     speaker: 'Isaiah Greene',
     content: [{
-      text: "Crisis. Big one.\n\nLost our largest corporate sponsor. Budget shortfall: $50,000. We have 30 days before we have to cut the after-school program. That\'s 80 kids who won\'t have anywhere safe to go after school.\n\nI need to make emergency asks to donors we\'ve been cultivating. But emergency appeals can burn relationships if you\'re not careful.\n\nHow do you ask for urgent help without being manipulative? Want to work through it?",
+      text: "We lost our biggest sponsor and need $50,000 in 30 days or eighty kids lose after-school care.\n\nI need an urgent ask that protects the relationship; will you work through it with me?",
       emotion: 'anxious',
       variation_id: 'sim_phase2_setup_v1'
     }],
@@ -1496,13 +1538,20 @@ What honors both the urgency and the relationship?`,
         previousPhaseCompleted: 'isaiah_donor_cultivation_phase1'
       }
     },
-    choices: [{
-      choiceId: 'phase2_success',
-      text: "You invited her in as a partner, not a solution.",
-      nextNodeId: 'isaiah_simulation_phase2_success',
-      pattern: 'helping',
-      skills: ['communication', 'integrity']
-    }],
+    choices: [
+      {
+        choiceId: 'phase2_success',
+        text: "You invited her in as a partner, not a solution.",
+        nextNodeId: 'isaiah_simulation_phase2_success',
+        pattern: 'helping',
+        skills: ['communication', 'integrity']
+      },
+      {
+        choiceId: 'phase2_fail',
+        text: "You push too hard. The relationship bends.",
+        nextNodeId: 'isaiah_simulation_phase2_fail'
+      }
+    ],
     onEnter: [{
       characterId: 'isaiah',
       addKnowledgeFlags: ['isaiah_simulation_phase2_complete']
@@ -1537,7 +1586,7 @@ What honors both the urgency and the relationship?`,
     nodeId: 'isaiah_simulation_phase2_fail',
     speaker: 'Isaiah Greene',
     content: [{
-      text: "That approach... yeah, it might get the money. This time.\n\nBut next time you call Sarah, she\'ll see your name and think: \'What crisis is it now? What do they want from me?\'\n\nEmergency appeals work once. Maybe twice. Then donors start avoiding you.\n\nBecause they don\'t feel like partners. They feel like rescue services you only call when you\'re drowning.\n\nThe best fundraisers share the full truth—the good AND the hard—so donors can be genuine partners in both.",
+      text: "That might raise money once, but it teaches donors to see us as a crisis line.\n\nThe better move is full truth, so they can stand with us beyond the emergency.",
       emotion: 'weary',
       variation_id: 'phase2_fail_v1',
       richEffectContext: 'error'
@@ -1564,7 +1613,7 @@ What honors both the urgency and the relationship?`,
     nodeId: 'isaiah_simulation_phase3_setup',
     speaker: 'Isaiah Greene',
     content: [{
-      text: "[Isaiah\'s voice is tight. Controlled.]\n\nGot an email this morning. Donor I\'ve never met. Elizabeth Morrison.\n\nHer son died two years ago. Eighteen years old. Car accident on the way to his college orientation.\n\nShe wants to fund a scholarship program in his name. Full ride for kids aging out of foster care. $500,000 over five years.\n\nIt\'s... it\'s exactly what we need. It would change everything.\n\nBut I have to sit across from a mother who lost her son and talk about Marcus. About what we do. About hope.\n\nAnd I don\'t... I don\'t know if I can hold her grief and mine at the same time without breaking.\n\nWill you... can you be there? In case I need...",
+      text: "Elizabeth Morrison wants to fund a scholarship for foster youth in her dead son's name.\n\nThe gift could change everything, but I have to hold her grief and mine at once; stay with me?",
       emotion: 'vulnerable_afraid',
       variation_id: 'sim_phase3_setup_v1',
       richEffectContext: 'warning'
@@ -1644,13 +1693,20 @@ What honors both Elizabeth\'s grief and Isaiah\'s without breaking either?`,
         requiredFlags: ['isaiah_vulnerability_revealed']
       }
     },
-    choices: [{
-      choiceId: 'phase3_success',
-      text: "You didn\'t accept a donation. You honored two boys who deserved better.",
-      nextNodeId: 'isaiah_simulation_phase3_success',
-      pattern: 'helping',
-      skills: ['emotionalIntelligence', 'integrity']
-    }],
+    choices: [
+      {
+        choiceId: 'phase3_success',
+        text: "You didn\'t accept a donation. You honored two boys who deserved better.",
+        nextNodeId: 'isaiah_simulation_phase3_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'integrity']
+      },
+      {
+        choiceId: 'phase3_fail',
+        text: "You can\'t hold it. The room goes cold.",
+        nextNodeId: 'isaiah_simulation_phase3_fail'
+      }
+    ],
     onEnter: [{
       characterId: 'isaiah',
       addKnowledgeFlags: ['isaiah_simulation_phase3_complete', 'isaiah_elizabeth_partnership']
@@ -1686,7 +1742,7 @@ What honors both Elizabeth\'s grief and Isaiah\'s without breaking either?`,
     nodeId: 'isaiah_simulation_phase3_fail',
     speaker: 'Isaiah Greene',
     content: [{
-      text: "[Isaiah stares at the signed gift agreement. $500,000.]\n\nI got the money. Stayed professional. Didn\'t break down.\n\nBut when Elizabeth left, she looked... empty. Like she\'d written a check to assuage guilt, not to honor love.\n\nI didn\'t give her what she needed. I gave her what was easiest for me.\n\nAnd now I have half a million dollars that feels... hollow.\n\nMarcus would have told me to do better. To be braver. To let people see the wound, not just the work.\n\nI failed him again.",
+      text: "I stayed professional and secured the $500,000, but I left Elizabeth with a transaction when she needed shared grief.\n\nMarcus would have asked for more courage, and I know I gave her distance instead.",
       emotion: 'hollow_regret',
       variation_id: 'phase3_fail_v1',
       richEffectContext: 'error'

@@ -21,17 +21,20 @@ export const grandHallDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'inspect_wall_tech',
+                taxonomyClass: 'accept',
                 text: 'Admire the Founders Wall',
                 nextNodeId: 'wall_tech'
             },
             {
                 choiceId: 'switch_to_real',
+                taxonomyClass: 'reject',
                 text: '[Lens] Disable AR Layer',
                 nextNodeId: 'sector_1_hall_real',
                 consequence: { addGlobalFlags: ['view_mode_reality'] }
             },
             {
                 choiceId: 'enter_market',
+                taxonomyClass: 'deflect',
                 text: 'Visit the "Asset Exchange" (Sector 2)',
                 nextNodeId: 'sector_2_market'
             },
@@ -125,7 +128,7 @@ export const grandHallDialogueNodes: DialogueNode[] = [
         nodeId: 'wall_tech',
         speaker: 'Narrator',
         content: [{
-            text: 'The holographic faces of the Founders smile down. They look perfect. Too perfect. Their eyes follow you with a pre-programmed warmth.',
+            text: 'The holographic Founders smile down, perfect to the point of uncanny.\n\nTheir eyes follow you with pre-programmed warmth.',
             variation_id: 'wall_tech_desc_v2'
         }],
         choices: [
@@ -148,7 +151,7 @@ export const grandHallDialogueNodes: DialogueNode[] = [
         nodeId: 'found_blueprint',
         speaker: 'System',
         content: [{
-            text: 'Download Complete. You pulled the raw schematics for Sector 1. It shows hidden structural weaknesses the holograms are masking.\n\nTechnocrat Item Obtained: [Sector 1 Blueprints]',
+            text: 'Download complete: raw Sector 1 schematics reveal hidden structural weaknesses beneath the holograms.\n\nTechnocrat Item Obtained: [Sector 1 Blueprints]',
             variation_id: 'blueprint_found_v1',
             richEffectContext: 'success'
         }],
@@ -159,12 +162,13 @@ export const grandHallDialogueNodes: DialogueNode[] = [
         nodeId: 'wall_real',
         speaker: 'Narrator',
         content: [{
-            text: 'You peel back the edge of the poster. Behind it is a manual airlock handle modeled in heavy iron. It is labeled "EMERGENCY VENT - SECTOR 0.".\n\nSomeone tried to scratch a message here: "THEY LEFT US."',
+            text: 'You peel back the poster and find a heavy iron airlock handle labeled "EMERGENCY VENT - SECTOR 0."\n\nScratched beside it: "THEY LEFT US."',
             variation_id: 'wall_real_desc_v2'
         }],
         choices: [
             {
                 choiceId: 'use_handle',
+                taxonomyClass: 'accept',
                 text: 'Turn the handle',
                 nextNodeId: 'found_secret_passage',
                 skills: ['systemsThinking', 'curiosity'],
@@ -175,6 +179,7 @@ export const grandHallDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'inspect_scratches',
+                taxonomyClass: 'reject',
                 text: 'Analyze the graffiti map',
                 nextNodeId: 'found_naturalist_clue',
                 skills: ['observation', 'curiosity'],
@@ -183,7 +188,7 @@ export const grandHallDialogueNodes: DialogueNode[] = [
                     addKnowledgeFlags: ['found_naturalist_location']
                 }
             },
-            { choiceId: 'back_real', text: 'Step back', nextNodeId: 'sector_1_hall_real' }
+            { choiceId: 'back_real', taxonomyClass: 'deflect', text: 'Step back', nextNodeId: 'sector_1_hall_real' }
         ]
     },
 
@@ -191,7 +196,7 @@ export const grandHallDialogueNodes: DialogueNode[] = [
         nodeId: 'found_naturalist_clue',
         speaker: 'Narrator',
         content: [{
-            text: 'You trace the scratches. It\'s not just words—it\'s a map of the hydroponic supply lines. It points to a "Hidden Garden." in Sector 4.\n\nNaturalist Secret Obtained: [Garden Location]',
+            text: 'You trace the scratches and realize they map hydroponic supply lines to a "Hidden Garden" in Sector 4.\n\nNaturalist Secret Obtained: [Garden Location]',
             variation_id: 'naturalist_clue_v1',
             richEffectContext: 'success'
         }],
@@ -202,7 +207,7 @@ export const grandHallDialogueNodes: DialogueNode[] = [
         nodeId: 'found_secret_passage',
         speaker: 'Narrator',
         content: [{
-            text: 'The wall groans. Not a door, but a panel in the hull itself slides back. A dark ventilation shaft leads back to the Station Entry.\n\nIt works both ways. The "Rat." (Alex) probably uses this.',
+            text: 'The wall groans and a hull panel slides open to a dark ventilation shaft leading to Station Entry.\n\nIt runs both ways.\n\nAlex probably uses it.',
             variation_id: 'secret_reveal_v2'
         }],
         choices: [

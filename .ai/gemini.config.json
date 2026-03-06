@@ -1,0 +1,9 @@
+{
+  "profile": "balanced",
+  "overlayPrompt": "Prefer concise outputs with concrete evidence and actionable next steps.",
+  "generationConfig": {
+    "temperature": 0.2,
+    "maxOutputTokens": 2048
+  },
+  "outDir": ".ai/runs"
+}

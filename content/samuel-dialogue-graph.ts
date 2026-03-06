@@ -186,6 +186,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'step_forward_confident',
         text: "Step off the train",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_introduction',
         pattern: 'exploring',
         skills: ['adaptability'],
@@ -200,6 +201,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'observe_first',
         text: "Take a moment to look around first",
+        taxonomyClass: 'deflect',
         nextNodeId: 'station_observation',
         pattern: 'patience',
         skills: ['criticalThinking'],
@@ -214,6 +216,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'check_others',
         text: "See if anyone else is getting off",
+        taxonomyClass: 'reject',
         nextNodeId: 'observe_passengers',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -334,6 +337,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_what_is_this_patient',
         text: "What is this place exactly?",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_explains_station',
         pattern: 'exploring',
         skills: ['communication', 'adaptability'],
@@ -348,6 +352,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_about_platforms_patient',
         text: "The platforms.where do they lead?",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_explains_platforms',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
@@ -362,6 +367,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_who_are_you_patient',
         text: "How'd you end up here?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
@@ -390,6 +396,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'tell_me_more_platforms',
         text: "Tell me more about the platforms",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_explains_platforms',
         pattern: 'exploring',
         skills: ['communication', 'adaptability'],
@@ -404,6 +411,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'who_are_you_curious',
         text: "And you help people... how?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
@@ -418,6 +426,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ready_to_explore_curious',
         text: "I'm ready to look around",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['communication'],
@@ -446,6 +455,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_about_others',
         text: "Who were those other passengers?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_explains_platforms',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -460,6 +470,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_about_self',
         text: "What's my reason for being here?",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_explains_station',
         pattern: 'analytical',
         skills: ['criticalThinking'],
@@ -474,6 +485,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'samuel_story_noticed',
         text: "You said you've been here a while...",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
@@ -506,6 +518,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_what_is_this_humble',
         text: "What is this place?",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_explains_station',
         pattern: 'exploring',
         skills: ['communication'],
@@ -520,6 +533,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_about_others_humble',
         text: "Will I see those other travelers again?",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_explains_platforms',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -534,6 +548,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'why_get_along',
         text: "Why do you say we'll get along?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
         skills: ['communication', 'emotionalIntelligence'],
@@ -574,6 +589,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'sim_reassure_data',
         text: "Check logs: 'Train 415 merged with 530 for maintenance. You have coffee time.'",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_orb_introduction', // Proceed to main flow
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'digitalLiteracy'],
@@ -594,6 +610,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'sim_analyze_pattern',
         text: "Notice this happens every Tuesday. Suggest better signage for the merge.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'analytical',
         skills: ['systemsThinking', 'informationLiteracy'],
@@ -614,6 +631,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'sim_dismiss',
         text: "Tell them to just wait. The board is never wrong.",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'patience',
         voiceVariations: {
@@ -648,6 +666,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ask_what_is_this',
         text: "What is this place exactly?",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_explains_station',
         pattern: 'exploring',
         skills: ['communication', 'adaptability'],
@@ -666,6 +685,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ask_who_are_you',
         text: "How'd you end up working here?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
@@ -684,6 +704,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ready_to_explore_intro',
         text: "I'm ready to look around",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['communication'],
@@ -704,7 +725,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "World's changing faster now. See that departures board? Half those old routes are gone. Machines do work people once did, and stable jobs vanish quick.",
+        text: "World's changing faster now; half those old routes are gone, and machines do work people once did.\n\nStable jobs vanish quick, but adaptive problem-solvers still matter.",
         emotion: 'wise',
         variation_id: 'changing_world_v1',
         patternReflection: [
@@ -718,6 +739,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'trades_wisdom',
         text: "What about people who work with their hands? Factory workers, welders?",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_trades_wisdom',
         pattern: 'building',
         skills: ['curiosity', 'communication'],
@@ -736,6 +758,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'patterns_survival',
         text: "How do patterns help when everything's uncertain?",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_pattern_survival',
         pattern: 'analytical',
         skills: ['criticalThinking'],
@@ -750,6 +773,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'back_to_exploring',
         text: "Thanks. I'd like to look around now.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         voiceVariations: {
@@ -825,18 +849,21 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ready_after_wisdom',
         text: "I think I understand.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring'
       },
       {
         choiceId: 'who_should_i_meet',
         text: "Who should I talk to first?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_explains_platforms',
         pattern: 'helping'
       },
       {
         choiceId: 'pattern_wisdom_deep',
         text: "[Wisdom] You're describing emergence. Patterns that adapt create new possibilities.",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['systemsThinking', 'criticalThinking'],
@@ -924,6 +951,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ask_your_story',
         text: "You been doing this long?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication']
@@ -931,6 +959,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ask_about_static',
         text: "Something feels... loud. In my head. Like static. What's happening to me?",
+        taxonomyClass: 'reject',
         nextNodeId: 'systemic_calibration_start',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication']
@@ -938,6 +967,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ready_to_explore',
         text: "Alright, let me check out the platforms",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['communication']
@@ -964,6 +994,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ask_backstory',
         text: "What about you? How'd you end up here?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication'],
@@ -975,6 +1006,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ask_whats_happening_from_platforms',
         text: "You said more travelers lately. What's happening out there?",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_changing_world',
         pattern: 'analytical',
         skills: ['criticalThinking', 'curiosity']
@@ -982,6 +1014,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ready_to_meet',
         text: "I'm ready to meet somebody",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['curiosity', 'communication']
@@ -1037,7 +1070,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "It was solid. But it <shake>wasn't mine</shake>, you know?\n\nOne day I'm standin' up at Vulcan, lookin' down at the whole city. Twenty-three years buildin' other people's systems.\n\nI was good at it. Real good. But I'd never once asked myself what I actually wanted to build.",
+        text: "It was solid, but it <shake>wasn't mine</shake>.\n\nAfter twenty-three years building other people's systems, I finally asked what I wanted to build.\n\nThat question changed everything.",
         emotion: 'vulnerable',
         variation_id: 'revelation_v1',
         patternReflection: [
@@ -1302,6 +1335,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'letter_you_wrote_it',
         text: "You wrote it. Didn't you?",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_letter_confession',
         pattern: 'analytical',
         skills: ['criticalThinking', 'observation'],
@@ -1310,6 +1344,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'letter_wait_patiently',
         text: "[Wait for him to continue]",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_letter_confession',
         pattern: 'patience',
         skills: ['emotionalIntelligence'],
@@ -1322,6 +1357,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'letter_why_now',
         text: "Why tell me now?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_letter_confession',
         pattern: 'exploring',
         skills: ['communication']
@@ -1436,6 +1472,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'beautiful',
         text: "That's a beautiful purpose.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -1447,6 +1484,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ready_for_my_blueprint',
         text: "I'm ready to find my blueprint.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['communication']
@@ -1454,6 +1492,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'how_did_you_find_station',
         text: "How did you find the station?",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_traveler_origin',
         pattern: 'exploring',
         skills: ['communication', 'creativity'],
@@ -1663,6 +1702,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'samuel_courage_recognition',
         text: "That takes real courage.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_daughter_path',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -1675,6 +1715,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ask_about_daughter_after',
         text: "Where is your daughter now?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_daughter_path',
         pattern: 'exploring',
         skills: ['communication'],
@@ -1686,6 +1727,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ask_about_letters',
         text: "The letters... do you send them?",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_letter_system',
         visibleCondition: {
           trust: { min: 5 }
@@ -1820,7 +1862,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Noticed those patterns already, didn't you? <bloom>Curious things</bloom>, aren't they?\n\nStation's got a way of rememberin'. Every choice you make leaves an echo. Those orbs you're seein'? They're mirrors.not what you've done, but <ripple>who you're becomin'</ripple>.",
+        text: "Noticed the patterns already, didn't you?\n\nThis Station remembers; every choice leaves an echo.\n\nThose orbs are mirrors, not of what you've done, but of <ripple>who you're becoming</ripple>.",
         emotion: 'knowing',
         variation_id: 'orb_explanation_v1'
       }
@@ -1846,7 +1888,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You'll start seein' five patterns show up: <shake>Analytical</shake>, <nod>Patient</nod>, <bloom>Explorer</bloom>, <ripple>Helper</ripple>, <big>Builder</big>.\n\nDon't memorize 'em. Notice which one steps up when pressure hits. That's the part that's yours.",
+        text: "You'll keep seeing five patterns: <shake>Analytical</shake>, <nod>Patient</nod>, <bloom>Explorer</bloom>, <ripple>Helper</ripple>, and <big>Builder</big>.\n\nDon't memorize them.\n\nNotice which one steps up when pressure hits.",
         emotion: 'warm',
         variation_id: 'orb_mechanics_v1'
       }
@@ -1907,6 +1949,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       // If Maya is complete but Devon isn't, route to the Maya hub variant.
       {
         choiceId: 'route_to_hub_after_maya',
+        taxonomyClass: 'accept',
         text: 'Proceed.',
         nextNodeId: 'samuel_hub_after_maya',
         visibleCondition: {
@@ -1918,6 +1961,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       // Brand-new player: before meeting Maya/Devon/Jordan, use the initial hub.
       {
         choiceId: 'route_to_hub_initial',
+        taxonomyClass: 'reject',
         text: 'Proceed.',
         nextNodeId: 'samuel_hub_initial',
         visibleCondition: {
@@ -1928,6 +1972,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       // Once Devon is complete, the Devon hub is the universal return point.
       {
         choiceId: 'route_to_hub_after_devon_complete',
+        taxonomyClass: 'deflect',
         text: 'Proceed.',
         nextNodeId: 'samuel_hub_after_devon',
         visibleCondition: {
@@ -2011,6 +2056,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'hub_category_heart',
         text: "I want to help people, but I'm not sure how.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_hub_heart_travelers',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -2022,6 +2068,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'hub_category_mind',
         text: "I want to understand how things work. Really work.",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_hub_mind_travelers',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
@@ -2033,6 +2080,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'hub_category_hands',
         text: "I want to build something real.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_hub_hands_travelers',
         pattern: 'building',
         skills: ['creativity', 'communication'],
@@ -2062,6 +2110,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'meet_maya_from_heart',
         text: "Tell me more about Maya.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_discovers_helping',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
@@ -2069,6 +2118,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'meet_marcus_from_heart',
         text: "I'd like to meet Marcus.",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_discovers_marcus',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
@@ -2076,6 +2126,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'hub_heart_other',
         text: "[Consider other paths]",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience'
       }
@@ -2097,6 +2148,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'meet_devon_from_mind',
         text: "Tell me about Devon.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_discovers_building',
         pattern: 'analytical',
         skills: ['criticalThinking']
@@ -2104,6 +2156,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'meet_kai_from_mind',
         text: "I want to hear Kai's story.",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_discovers_kai',
         pattern: 'analytical',
         skills: ['strategicThinking']
@@ -2111,6 +2164,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'meet_alex_from_mind',
         text: "What happened with Alex?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_discovers_alex',
         pattern: 'analytical',
         skills: ['criticalThinking']
@@ -2140,6 +2194,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'meet_jordan_from_hands',
         text: "Tell me about Jordan.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_discovers_exploring',
         pattern: 'exploring',
         skills: ['adaptability']
@@ -2147,6 +2202,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'meet_tess_from_hands',
         text: "Tess's dream sounds bold.",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_discovers_tess',
         pattern: 'building',
         skills: ['leadership']
@@ -2154,6 +2210,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'meet_silas_from_hands',
         text: "What's happening with Silas?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_discovers_silas',
         pattern: 'building',
         skills: ['sustainability']
@@ -2248,6 +2305,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ask_about_others',
         text: "Who else is here tonight?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_other_travelers',
         pattern: 'exploring',
         skills: ['communication', 'collaboration']
@@ -2270,6 +2328,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'meet_devon',
         text: "That sounds... familiar. I'll find him.",
+        taxonomyClass: 'accept',
         nextNodeId: 'devon_introduction',
         pattern: 'building',
         skills: ['problemSolving'],
@@ -2280,6 +2339,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'devon_empathy',
         text: "He must feel so lost. Trying to help but not knowing how.",
+        taxonomyClass: 'reject',
         nextNodeId: 'devon_introduction',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -2292,6 +2352,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ask_about_others',
         text: "Are there other travelers here?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_other_travelers',
         pattern: 'exploring',
         skills: ['communication']
@@ -2324,6 +2385,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ask_about_others',
         text: "Tell me about the others first.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_other_travelers',
         pattern: 'patience',
         skills: ['communication', 'collaboration', 'adaptability']
@@ -2656,6 +2718,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'meet_maya_alt',
+        taxonomyClass: 'accept',
         text: "Maya on Platform 1.",
         nextNodeId: 'maya_introduction',
         pattern: 'helping',
@@ -2666,6 +2729,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'meet_devon_alt',
+        taxonomyClass: 'reject',
         text: "Devon on Platform 3.",
         nextNodeId: 'devon_introduction',
         pattern: 'building',
@@ -2676,6 +2740,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'meet_jordan_alt',
+        taxonomyClass: 'deflect',
         text: "Jordan at Railroad Park.",
         nextNodeId: 'jordan_introduction',
         pattern: 'exploring',
@@ -2841,6 +2906,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'hope_i_helped',
         text: "I hope I helped her.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_reflect_helped_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence']
@@ -2848,6 +2914,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'unsure_what_i_did',
         text: "I'm not sure what I actually did.",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_reflect_unsure_response',
         pattern: 'exploring',
         skills: ['criticalThinking', 'adaptability']
@@ -2855,6 +2922,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'skip_reflection',
         text: "She made her own choice.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_reflect_on_agency',
         pattern: 'patience',
         skills: ['criticalThinking', 'emotionalIntelligence']
@@ -2954,6 +3022,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'what_did_maya_choose',
         text: "What path did she choose?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_beat_after_reflect_on_influence',
         pattern: 'exploring',
         skills: ['communication', 'creativity']
@@ -2961,6 +3030,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'how_do_you_know',
         text: "How do you know I didn't just tell her?",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_systemic_proof',
         pattern: 'analytical',
         skills: ['criticalThinking']
@@ -2968,6 +3038,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'accept_insight',
         text: "That distinction matters.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_beat_after_reflect_on_influence',
         pattern: 'patience',
         skills: ['criticalThinking', 'emotionalIntelligence'],
@@ -3081,7 +3152,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "The station doesn't just connect platforms. It connects moments. I saw her at the robotics lab when she was sixteen, sneaking in after her parents thought she was at SAT prep.\n\nShe's always known. You just helped her believe knowing was allowed.",
+        text: "The station connects more than platforms; it connects moments, and I saw her at the robotics lab at sixteen, sneaking in after SAT prep.\n\nShe's always known, and you helped her believe that knowing was allowed.",
         emotion: 'mystical_truth',
         variation_id: 'station_truth_v1'
       }
@@ -3523,6 +3594,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'yaquin_launched_now',
         text: "He stopped waiting for perfect and started building.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_reflects_yaquin_launch',
         pattern: 'building',
         skills: ['problemSolving', 'adaptability'],
@@ -3533,6 +3605,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'yaquin_building_audience',
         text: "He's building trust first. Playing the long game.",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_reflects_yaquin_audience',
         pattern: 'analytical',
         skills: ['collaboration'],
@@ -3544,6 +3617,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         // Fallback choice if neither specific flag is set (defensive)
         choiceId: 'yaquin_general_reflection',
         text: "I'm glad I could help him find clarity.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_hub_after_devon',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -4623,6 +4697,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'helped_him_integrate',
         text: "I helped him see that logic and emotion aren't enemies.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_devon_integrate_response',
         pattern: 'analytical',
         skills: ['criticalThinking', 'emotionalIntelligence']
@@ -4630,6 +4705,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'focused_on_connection',
         text: "We focused on connection instead of fixing.",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_devon_connection_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
@@ -4637,6 +4713,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'just_listened_devon',
         text: "I just let him talk until he found his own answer.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_devon_listened_response',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication']
@@ -5216,6 +5293,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'seemed_lost',
         text: "She seemed lost, searching for solid ground.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_jordan_lost_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
@@ -5223,6 +5301,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'was_building',
         text: "She was building something, even if she didn't realize it.",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_jordan_building_response',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication']
@@ -5230,6 +5309,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'reminded_me',
         text: "She reminded me of myself.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_jordan_resonance_response',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'emotionalIntelligence', 'communication']
@@ -5302,6 +5382,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'offered_mirror',
         text: "I tried to show her what she couldn't see in herself.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_jordan_mirror_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication', 'leadership']
@@ -5309,6 +5390,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'asked_questions',
         text: "I asked questions. Let her find her own answers.",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_jordan_questions_response',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication', 'leadership'],
@@ -5320,6 +5402,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'just_listened',
         text: "Just listened. Sometimes that's enough.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_jordan_listened_response',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'communication', 'communication']
@@ -5683,6 +5766,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'check_grace',
         text: "Message from Grace: \"Writing things down...\"",
+        taxonomyClass: 'deflect',
         nextNodeId: 'grace_revisit_welcome',
         pattern: 'helping',
         visibleCondition: {
@@ -5692,6 +5776,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'check_devon',
         text: "Message from Devon: \"System Update.\"",
+        taxonomyClass: 'accept',
         nextNodeId: 'devon_revisit_welcome',
         pattern: 'building',
         visibleCondition: {
@@ -5701,6 +5786,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'close_messages',
         text: "Close messages",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_hub_router'
       }
     ],
@@ -5754,6 +5840,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'meet_devon_from_maya',
         text: "Tell me about Devon.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_devon_intro',
         pattern: 'exploring',
         skills: ['communication', 'creativity']
@@ -5761,6 +5848,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'return_to_maya',
         text: "I'd like to talk to Maya again.",
+        taxonomyClass: 'deflect',
         nextNodeId: mayaRevisitEntryPoints.WELCOME,
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'collaboration'],
@@ -5771,6 +5859,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'show_all_from_maya',
         text: "Who else is here tonight? Show me everyone.",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_comprehensive_hub',
         pattern: 'exploring',
         skills: ['communication', 'collaboration']
@@ -6062,6 +6151,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'go_to_devon',
         text: "I'll go meet Devon.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_devon_eager_response',
         pattern: 'exploring',
         skills: ['communication'],
@@ -6072,6 +6162,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'devon_understand',
         text: "Hearts are harder than mechanics. I understand that struggle.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_devon_empathy_response',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -6084,6 +6175,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'why_me',
         text: "Why do you think I should talk to him?",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_why_devon',
         pattern: 'analytical',
         skills: ['criticalThinking']
@@ -6170,6 +6262,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'go_to_marcus',
         text: 'I\'ll go talk to him.',
+        taxonomyClass: 'accept',
         nextNodeId: 'marcus_intro',
         pattern: 'helping',
         skills: ['communication'],
@@ -6180,6 +6273,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'jordan_empathy',
         text: "Seven jobs means seven times she took a risk. That takes courage.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'jordan_introduction',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication', 'leadership'],
@@ -6192,6 +6286,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'why_me_jordan',
         text: "Why do you think I should talk to her?",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_why_jordan',
         pattern: 'analytical',
         skills: ['criticalThinking']
@@ -6229,7 +6324,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "{{maya_arc_complete:Maya's on Platform 1, still finding her path.|}}{{devon_arc_complete:Devon's on Platform 3, building his bridges.|}}{{maya_arc_complete:{{devon_arc_complete:\n\n|}}\n\n|}}Jordan's by the conference rooms. Guest instructor. Wrestling with whether seven jobs makes her qualified or fraudulent.\n\nTwenty minutes before she speaks.\n\nWhere does your attention pull you?",
+        text: "{{maya_arc_complete:Maya's on Platform 1, still finding her path.|}}{{devon_arc_complete:Devon's on Platform 3, building his bridges.|}}{{maya_arc_complete:{{devon_arc_complete:\n\n|}}\n\n|}}Jordan's by the conference rooms, a guest instructor wrestling with whether seven jobs make her qualified or fraudulent.\n\nShe speaks in twenty minutes.\n\nWhere does your attention pull you?",
         emotion: 'offering_space',
         variation_id: 'hub_after_devon_v3_clean',
         patternReflection: [
@@ -6271,6 +6366,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'meet_marcus',
+        taxonomyClass: 'accept',
         text: "There's someone near the medical bay?",
         nextNodeId: 'samuel_marcus_intro',
         pattern: 'building',
@@ -6288,6 +6384,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'return_to_devon',
+        taxonomyClass: 'reject',
         text: "I'll check in with Devon.",
         nextNodeId: 'devon_introduction',
         pattern: 'exploring',
@@ -6306,6 +6403,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'show_all_travelers',
+        taxonomyClass: 'deflect',
         text: "Who else is here tonight? Show me everyone.",
         nextNodeId: 'samuel_comprehensive_hub',
         pattern: 'exploring',
@@ -6338,6 +6436,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'go_to_marcus',
         text: "I'll go talk to him.",
+        taxonomyClass: 'accept',
         nextNodeId: 'marcus_intro', // Links to new graph
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -6370,6 +6469,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'comprehensive_meet_maya',
+        taxonomyClass: 'accept',
         text: "Maya - Platform 1",
         nextNodeId: 'maya_introduction',
         pattern: 'helping',
@@ -6390,6 +6490,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'comprehensive_meet_devon',
+        taxonomyClass: 'reject',
         text: "Devon - Platform 3",
         nextNodeId: 'devon_introduction',
         pattern: 'building',
@@ -6465,6 +6566,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'comprehensive_back',
+        taxonomyClass: 'deflect',
         text: "Actually, let me think about it.",
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience',
@@ -7755,6 +7857,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'hub_check_messages',
         text: "Check new messages (1)",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_check_messages',
         pattern: 'exploring',
         visibleCondition: {
@@ -7764,6 +7867,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'hub_wait_quietly',
         text: "Just wait for a while. Watch the station breathe.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_hub_wait_loop',
         pattern: 'patience',
         skills: ['adaptability']
@@ -7771,6 +7875,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'exploring_continue',
         text: "That's... a lot to think about.",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_hub_router',
         pattern: 'patience',
         skills: ['communication']
@@ -7976,6 +8081,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     choices: [
       {
         choiceId: 'route_to_mastery',
+        taxonomyClass: 'accept',
         text: "Proceed.",
         nextNodeId: 'samuel_greeting_mastery',
         visibleCondition: {
@@ -8026,6 +8132,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_recognition',
+        taxonomyClass: 'reject',
         text: "Proceed.",
         nextNodeId: 'samuel_greeting_recognition',
         visibleCondition: {
@@ -8126,6 +8233,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       {
         choiceId: 'route_to_default',
+        taxonomyClass: 'deflect',
         text: "Proceed.",
         nextNodeId: 'samuel_greeting_return'
       }
@@ -8233,7 +8341,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       // ALIVE (3+ arcs) - Station is waking up
       {
-        text: "The corridors are brighter tonight. You notice?\n\nThree threads woven, three lives touched. The station's rememberin' what it's for.\n\nWhat brings you through?",
+        text: "The corridors are brighter tonight; three threads are woven, three lives touched, and the station remembers what it's for.\n\nWhat brings you through?",
         emotion: 'warm_proud',
         variation_id: 'greeting_return_alive',
         condition: {
@@ -8242,7 +8350,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       // AWAKENING (1 arc - maya) - Station is stirring
       {
-        text: "The lights hum different now. Warmer.\n\nOne thread woven. The station takes notice. It's been a long time since someone cared enough to really listen.\n\nWhat's on your mind?",
+        text: "The lights hum different tonight, warmer.\n\nOne thread is woven, the station takes notice, and it's been a long time since someone cared enough to really listen.\n\nWhat's on your mind?",
         emotion: 'hopeful',
         variation_id: 'greeting_return_awakening_maya',
         condition: {
@@ -8251,7 +8359,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       },
       // AWAKENING (1 arc - devon)
       {
-        text: "Somethin's different tonight. Feel that hum?\n\nDevon's been talkin' about you. Said you actually listened. That's rare.\n\nThe station notices kindness. What brings you back?",
+        text: "Somethin's different tonight; feel that hum?\n\nDevon's been talkin' about you and said you actually listened, which is rare.\n\nThe station notices kindness, so what brings you back?",
         emotion: 'hopeful',
         variation_id: 'greeting_return_awakening_devon',
         condition: {
@@ -8292,6 +8400,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ctx_about_station',
         text: "What is this place, really?",
+        taxonomyClass: 'accept',
         nextNodeId: 'samuel_station_deep_explanation',
         pattern: 'exploring',
         skills: ['criticalThinking']
@@ -8299,6 +8408,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ctx_about_patterns',
         text: "These patterns I'm developing...",
+        taxonomyClass: 'reject',
         nextNodeId: 'samuel_pattern_insight',
         pattern: 'analytical',
         skills: ['criticalThinking'],
@@ -8311,6 +8421,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
       {
         choiceId: 'ctx_about_patterns_helping',
         text: "I keep wanting to help people. Is that a pattern?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'samuel_pattern_insight',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -9081,7 +9192,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     },
     content: [
       {
-        text: "The station... it ain't just a place. It's more like a <shake>mirror</shake>.\\n\\nShows you what you need to see. Not always what you want to.",
+        text: "The station ain't just a place; it's more like a <shake>mirror</shake>.\\n\\nIt shows what you need to see, not always what you want.",
         emotion: 'vulnerable',
         variation_id: 'mystery_hint_2_v1'
       }
@@ -9136,7 +9247,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     },
     content: [
       {
-        text: "You've been here a while now. Talked to a lot of folks. Learned their stories.\\n\\n<bloom>You ready to hear what this place really is?</bloom>",
+        text: "You've been here a while, talked to a lot of folks, and learned their stories.\\n\\n<bloom>You ready to hear what this place really is?</bloom>",
         emotion: 'serious',
         variation_id: 'mystery_revelation_v1'
       }
@@ -9163,17 +9274,17 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'samuel',
     content: [
       {
-        text: "Grand Central Terminus ain't a train station. Not really.\\n\\nIt's a <bloom>crossroads</bloom>. A place between who you were and who you're becoming.",
+        text: "Grand Central Terminus ain't a train station, not really; it's a <bloom>crossroads</bloom> between who you were and who you're becoming.",
         emotion: 'vulnerable',
         variation_id: 'station_truth_v1'
       },
       {
-        text: "Every person you met here? They're real. Their struggles are real. But you found 'em because <shake>you needed to</shake>.\\n\\nTheir paths crossed yours for a reason.",
+        text: "Every person you met here is real, and so are their struggles, but you found 'em because <shake>you needed to</shake>.\\n\\nTheir paths crossed yours for a reason.",
         emotion: 'knowing',
         variation_id: 'station_truth_v2'
       },
       {
-        text: "The patterns you've been building... analytical, helping, building, exploring, patience...\\n\\nThey ain't just words. They're <bloom>who you are</bloom>. And now you know it.",
+        text: "The patterns you've been building. analytical, helping, building, exploring, patience.\\n\\nThey ain't just words; they're <bloom>who you are</bloom>, and now you know it.",
         emotion: 'proud',
         variation_id: 'station_truth_v3'
       }
@@ -9195,7 +9306,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
         pattern: 'exploring'
       }
     ],
-    tags: ['mystery', 'revelation', 'climax', 'faction:station_core', 'iceberg:the_previous_visitor', 'iceberg:before_the_station', 'record:record_samuel_quiet_hour_testimony', 'verify-conflict:platform_seven_blackout', 'verify-conflict:silent_shift_protocol']
+    tags: ['mystery', 'revelation', 'climax', 'faction:station_core', 'iceberg:the_previous_visitor', 'iceberg:before_the_station', 'iceberg:the_oxygen_tax', 'record:record_samuel_quiet_hour_testimony', 'verify-conflict:platform_seven_blackout', 'verify-conflict:silent_shift_protocol']
   },
 
   {
@@ -9203,12 +9314,12 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'samuel',
     content: [
       {
-        text: "Now? You take what you learned here and you <bloom>live it</bloom>.\\n\\nThe station will always be here if you need it. But the real journey... that's out there.",
+        text: "Now you take what you learned here and <bloom>live it</bloom>.\\n\\nThe station will always be here if you need it, but the real journey is out there.",
         emotion: 'warm',
         variation_id: 'truth_farewell_v1'
       },
       {
-        text: "I'm proud of you. Truly.\\n\\nNow go. Show the world who you've become.",
+        text: "I'm proud of you, truly.\\n\\nNow go show the world who you've become.",
         emotion: 'proud',
         variation_id: 'truth_farewell_v2'
       }

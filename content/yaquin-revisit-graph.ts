@@ -19,17 +19,17 @@ export const yaquinRevisitNodes: DialogueNode[] = [
     content: [
       {
         // Deep callbacks to specific moments from the first arc
-        text: `*He's pacing again, but this time with a tablet. He looks tired but electric.*
+        text: `*He's pacing with a tablet, tired but electric.*
 
-It happened. It actually happened.{{yaquin_chose_practical:
+It happened{{yaquin_chose_practical:
 
-Remember when you said to just start small? A mini-course instead of the whole thing? That's exactly what I did.|}}{{yaquin_chose_psych:
+ — your start-small advice worked: I shipped a mini-course first|}}{{yaquin_chose_psych:
 
-That psychology angle you pushed me toward. understanding *why* dental assistants struggle, not just what they struggle with. that's what resonated.|}}{{generous_refunds:
+ — your psychology angle landed: *why* assistants struggle, not just what|}}{{generous_refunds:
 
-And the generous refund policy you suggested? Zero refund requests. People trust me because I trusted them first.|}}\n\nThe 'Alginate Mixing Hack' video? 400,000 views. I have 12,000 subscribers. My inbox is full of people asking for the course.
+ — your refund policy worked: zero requests and higher trust|}}: the "Alginate Mixing Hack" hit 400,000 views, I have 12,000 subscribers, and requests keep flooding in.
 
-I... I don't know what to do.`,
+I don't know what to do next.`,
         emotion: 'overwhelmed_excited',
         variation_id: 'revisit_intro_v2_callbacks',
         richEffectContext: 'thinking'
@@ -43,6 +43,7 @@ I... I don't know what to do.`,
     choices: [
       {
         choiceId: 'yaquin_celebrate',
+        taxonomyClass: 'accept',
         text: "That's incredible!",
         nextNodeId: 'yaquin_the_problem',
         pattern: 'helping',
@@ -50,6 +51,7 @@ I... I don't know what to do.`,
       },
       {
         choiceId: 'yaquin_analyze_traffic',
+        taxonomyClass: 'reject',
         text: "That's a lot of traffic. What's the conversion rate?",
         nextNodeId: 'yaquin_the_problem',
         pattern: 'exploring',
@@ -57,6 +59,7 @@ I... I don't know what to do.`,
       },
       {
         choiceId: 'yaquin_ask_problem',
+        taxonomyClass: 'deflect',
         text: "Why is that a problem? You have customers.",
         nextNodeId: 'yaquin_the_problem',
         pattern: 'exploring',
@@ -71,11 +74,11 @@ I... I don't know what to do.`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `The problem is... I'm still working full-time at the clinic. I'm answering YouTube comments at 2 AM.
+        text: `I'm still full-time at the clinic, answering comments at 2 AM while sponsors push quick endorsements.
 
-And now brands are emailing me. 'Sponsor our dental floss!' 'Review our curing light!'
+Every option has a cost: sell credibility, delay revenue, or quit too soon.
 
-Do I sell out? Do I launch the paid course now? Do I quit my job? I feel like I'm holding a tiger by the tail.`,
+Help me choose the strategy.`,
         emotion: 'anxious',
         variation_id: 'the_problem_v1'
       }
@@ -97,15 +100,9 @@ Do I sell out? Do I launch the paid course now? Do I quit my job? I feel like I'
     speaker: 'Yaquin',
     content: [
       {
-        text: `Okay. Strategy. 
+        text: `Okay, strategy: A sponsorship cash now, B launch "Chairside Masterclass" at $497, C membership at $10/month with weekly tips.
 
-Option A: Take the sponsorship money. Quick cash, easy.
-
-Option B: Launch the 'Chairside Masterclass' for $497. High effort, high reward.
-
-Option C: Membership. $10/month for weekly tips. Recurring revenue.
-
-Which one builds a real school?`,
+Which path builds a real school?`,
         emotion: 'calculating',
         variation_id: 'strategy_session_v1',
         useChatPacing: true,
@@ -115,6 +112,7 @@ Which one builds a real school?`,
     choices: [
       {
         choiceId: 'strat_course',
+        taxonomyClass: 'accept',
         text: "Launch the Course.",
         nextNodeId: 'yaquin_course_path',
         pattern: 'building',
@@ -125,6 +123,7 @@ Which one builds a real school?`,
       },
       {
         choiceId: 'strat_membership',
+        taxonomyClass: 'reject',
         text: "Membership. Build a community of practice, not just a transaction.",
         nextNodeId: 'yaquin_membership_path',
         pattern: 'helping',
@@ -135,6 +134,7 @@ Which one builds a real school?`,
       },
       {
         choiceId: 'strat_sponsorship',
+        taxonomyClass: 'deflect',
         text: "Sponsorships give you runway to quit your job. Then build the course.",
         nextNodeId: 'yaquin_sponsorship_path',
         pattern: 'analytical',
@@ -153,11 +153,11 @@ Which one builds a real school?`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `You're right. If I take ads, I'm just an influencer. If I sell a course, I'm an educator.
+        text: `You're right: ads make me an influencer, but a course makes me an educator.
 
-It's scary though. Asking for $500. But I know the value is there. One raise negotiation pays for it.
+Charging $500 is scary, yet one raise negotiation could repay it.
 
-I'm going to do it. 'The Chairside Masterclass.' Launching next week.`,
+I'm launching "The Chairside Masterclass" next week.`,
         emotion: 'determined',
         variation_id: 'course_path_v1'
       }
@@ -180,11 +180,11 @@ I'm going to do it. 'The Chairside Masterclass.' Launching next week.`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `A community. Yeah. 'The Assistant's Lounge.'
+        text: `A community, yes: "The Assistant's Lounge."
 
-They're lonely. They want to talk to each other, not just listen to me.
+They're lonely and need peers, not just my voice.
 
-Recurring revenue means I can quit the clinic safely. And I build a tribe, not just a customer list.`,
+Recurring revenue lets me leave the clinic safely and build a real network.`,
         emotion: 'inspired',
         variation_id: 'membership_path_v1'
       }
@@ -207,11 +207,11 @@ Recurring revenue means I can quit the clinic safely. And I build a tribe, not j
     speaker: 'Yaquin',
     content: [
       {
-        text: `Runway. That's the smart play. I can't film a masterclass while working 40 hours a week.
+        text: `Runway is the smart play; I can't film a masterclass while working full-time.
 
-I'll take the dental floss deal. Use the cash to buy better lights, a mic, and... time.
+I'll take one floss sponsorship, buy better gear, and buy time.
 
-It feels like selling out a little, but it's actually buying my freedom.`,
+It feels messy, but it's a bridge to freedom.`,
         emotion: 'pragmatic',
         variation_id: 'sponsorship_path_v1'
       }
@@ -235,19 +235,19 @@ It feels like selling out a little, but it's actually buying my freedom.`,
     content: [
       {
         // Deep callbacks to both original arc choices and this revisit's choices
-        text: `Thanks. Again.{{yaquin_chose_practical:
+        text: `Thanks again.{{yaquin_chose_practical:
 
-You told me to start small. I did. Now I'm scaling big.|}}{{yaquin_chose_psych:
+You told me to start small, and I did.|}}{{yaquin_chose_psych:
 
-You pushed me to understand the psychology, not just the technique. That's why the community stuck around.|}}{{credentialed_advisor:
+You pushed me toward psychology, not just technique.|}}{{credentialed_advisor:
 
-Getting that advisor you suggested? Best decision I made. She's helped me avoid so many beginner mistakes.|}}\n\nFirst you helped me start. Now you're helping me scale.{{yaquin_chose_course:
+Getting that advisor you suggested was my best move.|}}\n\nFirst you helped me start, now you're helping me scale.{{yaquin_chose_course:
 
-A real course. A real product. My product.|}}{{yaquin_chose_membership:
+A real course and a real product.|}}{{yaquin_chose_membership:
 
-A real community. Not just viewers. a tribe.|}}{{yaquin_chose_sponsorship:
+A real community, not just viewers.|}}{{yaquin_chose_sponsorship:
 
-The sponsorship money is buying me freedom to build something real.|}}\n\nI guess this is what a Founder's journey looks like. It never stops being scary, does it?`,
+Sponsorship money is buying me freedom to build something real.|}}\n\nI guess this is a founder's journey; it never stops being scary, does it?`,
         emotion: 'grateful_mature',
         variation_id: 'revisit_farewell_v2_callbacks'
       }
@@ -290,13 +290,11 @@ The sponsorship money is buying me freedom to build something real.|}}\n\nI gues
     speaker: 'Yaquin',
     content: [
       {
-        text: `You know about the course.
+        text: `Eight months, forty-seven lessons, still in draft because I can't press Publish.
 
-Eight months of work, forty-seven lessons, still in draft because I cannot press Publish.
+If I launch, they judge the course and me.
 
-If I launch, I get judged on content and on me.
-
-Will you stay with me when I press the button so I do not face that first moment alone?`,
+Will you stay while I hit the button?`,
         emotion: 'anxious_vulnerable',
         variation_id: 'loyalty_trigger_v1',
         richEffectContext: 'warning'
@@ -343,13 +341,11 @@ Will you stay with me when I press the button so I do not face that first moment
     speaker: 'Yaquin',
     content: [
       {
-        text: `You're right. I built this. All of it.
+        text: `You're right: I built this, and I can launch it.
 
-I don't need someone holding my hand. I just needed someone to remind me that it's real.
+I didn't need rescue, just a reminder that it's real.
 
-Okay. I'm doing this. Tonight.
-
-Thanks for believing in it. That's enough.`,
+I'm publishing tonight, and thanks for believing in me.`,
         emotion: 'resolved_determined',
         variation_id: 'loyalty_declined_v1'
       }
@@ -379,11 +375,9 @@ Thanks for believing in it. That's enough.`,
     speaker: 'Yaquin',
     content: [
       {
-        text: `Thank you. God, thank you.
+        text: `Thank you, seriously.
 
-Okay. Let's do this. Together.
-
-Here we go. "Dental Assisting Fundamentals: From Certified to Confident."
+Let's do this together: "Dental Assisting Fundamentals: From Certified to Confident."
 
 Ready?`,
         emotion: 'nervous_hopeful',

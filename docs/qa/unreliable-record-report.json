@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-03-04T23:17:00.150Z",
-  "mode": "enforce",
+  "generated_at": "2026-03-05T03:22:46.942Z",
+  "mode": "warn",
   "thresholds": {
     "min_tags": 12,
     "min_unique_record_ids": 12,
@@ -12,7 +12,7 @@
   "summary": {
     "total_record_tags": 14,
     "tagged_characters": 5,
-    "total_verify_tags": 6,
+    "total_verify_tags": 9,
     "unique_record_ids": 14,
     "unique_conflict_ids": 5,
     "defined_conflict_clusters": 5
@@ -119,6 +119,13 @@
   ],
   "verify_tags": [
     {
+      "graphKey": "rohan",
+      "characterId": "rohan",
+      "nodeId": "rohan_erasure_reveal",
+      "tag": "verify-conflict:burned_district_cause",
+      "conflictId": "burned_district_cause"
+    },
+    {
       "graphKey": "samuel",
       "characterId": "samuel",
       "nodeId": "samuel_letter_reveal",
@@ -133,6 +140,13 @@
       "conflictId": "letter_sender_identity"
     },
     {
+      "graphKey": "elena",
+      "characterId": "elena",
+      "nodeId": "elena_mystery_hint",
+      "tag": "verify-conflict:oxygen_tax_origin",
+      "conflictId": "oxygen_tax_origin"
+    },
+    {
       "graphKey": "nadia",
       "characterId": "nadia",
       "nodeId": "nadia_mystery_response",
@@ -145,6 +159,13 @@
       "nodeId": "samuel_mystery_revelation",
       "tag": "verify-conflict:oxygen_tax_origin",
       "conflictId": "oxygen_tax_origin"
+    },
+    {
+      "graphKey": "elena",
+      "characterId": "elena",
+      "nodeId": "elena_station_seven_detail",
+      "tag": "verify-conflict:platform_seven_blackout",
+      "conflictId": "platform_seven_blackout"
     },
     {
       "graphKey": "samuel",

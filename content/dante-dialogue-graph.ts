@@ -34,6 +34,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'dante_intro_silence',
+        taxonomyClass: 'accept',
         text: "Silence as trust. That's not the sales I've heard about.",
         nextNodeId: 'dante_silence_truth',
         pattern: 'analytical',
@@ -48,6 +49,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_intro_practice',
+        taxonomyClass: 'reject',
         text: "You practice pausing?",
         nextNodeId: 'dante_practice_pause',
         pattern: 'exploring',
@@ -62,6 +64,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_intro_skill',
+        taxonomyClass: 'deflect',
         text: "So the skill isn't talking—it's restraint.",
         nextNodeId: 'dante_restraint',
         pattern: 'patience',
@@ -135,6 +138,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'dante_silence_respect',
+        taxonomyClass: 'accept',
         text: "Respect for what exactly?",
         nextNodeId: 'dante_respect_depth',
         pattern: 'analytical',
@@ -142,6 +146,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_silence_learned',
+        taxonomyClass: 'reject',
         text: "What made you stop performing?",
         nextNodeId: 'dante_stopped_performing',
         pattern: 'helping',
@@ -153,6 +158,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_silence_hub',
+        taxonomyClass: 'deflect',
         text: "I'd like to explore more of your approach.",
         nextNodeId: 'dante_exploration_hub',
         pattern: 'exploring',
@@ -253,6 +259,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'dante_grew_up',
+        taxonomyClass: 'accept',
         text: "You learned to read people because you had to. What happened?",
         nextNodeId: 'dante_childhood',
         pattern: 'helping',
@@ -265,6 +272,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_power_ethics',
+        taxonomyClass: 'reject',
         text: "So how do you decide when to use that power?",
         nextNodeId: 'dante_ethics_framework',
         pattern: 'analytical',
@@ -272,6 +280,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_liability',
+        taxonomyClass: 'deflect',
         text: "A liability to whom?",
         nextNodeId: 'dante_liability_who',
         pattern: 'patience',
@@ -295,6 +304,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'dante_grandmother',
+        taxonomyClass: 'accept',
         text: "Your grandmother sounds wise.",
         nextNodeId: 'dante_grandmother_lessons',
         pattern: 'helping',
@@ -306,6 +316,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_ninth_ward',
+        taxonomyClass: 'reject',
         text: "The Ninth Ward. Katrina?",
         nextNodeId: 'dante_katrina',
         pattern: 'exploring',
@@ -313,6 +324,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_pralines_lesson',
+        taxonomyClass: 'deflect',
         text: "Product incidental, connection primary. That flips everything.",
         nextNodeId: 'dante_flip_everything',
         pattern: 'analytical',
@@ -341,6 +353,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'dante_hub_ethics',
+        taxonomyClass: 'accept',
         text: "The ethics of persuasion.",
         nextNodeId: 'dante_ethics_deep',
         pattern: 'analytical',
@@ -348,6 +361,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_hub_technique',
+        taxonomyClass: 'reject',
         text: "Your actual techniques.",
         nextNodeId: 'dante_techniques',
         pattern: 'building',
@@ -355,6 +369,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_hub_story',
+        taxonomyClass: 'deflect',
         text: "Your story. How you got here.",
         nextNodeId: 'dante_origin_story',
         pattern: 'helping',
@@ -394,6 +409,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'dante_single_mom',
+        taxonomyClass: 'accept',
         text: "Tell me more about her.",
         nextNodeId: 'dante_single_mom_story',
         pattern: 'helping',
@@ -406,6 +422,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_lost_commission',
+        taxonomyClass: 'reject',
         text: "Did you ever regret losing that commission?",
         nextNodeId: 'dante_no_regrets',
         pattern: 'exploring',
@@ -413,6 +430,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_need_line',
+        taxonomyClass: 'deflect',
         text: "But who decides 'need'?",
         nextNodeId: 'dante_need_philosophy',
         pattern: 'analytical',
@@ -470,6 +488,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'dante_listen_first',
+        taxonomyClass: 'accept',
         text: "How do you know when you've listened enough?",
         nextNodeId: 'dante_listening_depth',
         pattern: 'patience',
@@ -477,6 +496,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_mirror_how',
+        taxonomyClass: 'reject',
         text: "What does 'mirror, don't manipulate' look like in practice?",
         nextNodeId: 'dante_mirroring',
         pattern: 'building',
@@ -484,6 +504,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_exit_cost',
+        taxonomyClass: 'deflect',
         text: "Exiting gracefully costs money. How do you afford that?",
         nextNodeId: 'dante_exit_economics',
         pattern: 'analytical',
@@ -522,6 +543,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'dante_who_actual',
+        taxonomyClass: 'accept',
         text: "And who are you? Beneath the charm?",
         nextNodeId: 'dante_beneath_charm',
         pattern: 'helping',
@@ -534,6 +556,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_why_birmingham',
+        taxonomyClass: 'reject',
         text: "Why Birmingham specifically?",
         nextNodeId: 'dante_birmingham_choice',
         pattern: 'exploring',
@@ -541,6 +564,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_origin_reflect',
+        taxonomyClass: 'deflect',
         text: "Starting over takes courage.",
         nextNodeId: 'dante_courage_acknowledgment',
         pattern: 'patience',
@@ -597,6 +621,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'dante_vuln_something_there',
+        taxonomyClass: 'accept',
         text: "The fact that you're asking means there's something underneath.",
         nextNodeId: 'dante_something_underneath',
         pattern: 'helping',
@@ -608,6 +633,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_vuln_performing_now',
+        taxonomyClass: 'reject',
         text: "Are you performing right now?",
         nextNodeId: 'dante_performing_now',
         pattern: 'analytical',
@@ -615,6 +641,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_vuln_understand',
+        taxonomyClass: 'deflect',
         text: "[Stay quiet. Let the question hang between you.]",
         nextNodeId: 'dante_silent_understanding',
         pattern: 'patience',
@@ -642,6 +669,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'dante_sim_listen',
+        taxonomyClass: 'accept',
         text: "I'd ask what burned her before.",
         nextNodeId: 'dante_sim_listen_response',
         pattern: 'helping',
@@ -649,6 +677,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_sim_demo',
+        taxonomyClass: 'reject',
         text: "I'd offer a free trial. Let her experience it risk-free.",
         nextNodeId: 'dante_sim_demo_response',
         pattern: 'building',
@@ -656,6 +685,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_sim_walk',
+        taxonomyClass: 'deflect',
         text: "I'd acknowledge her hesitation might be warranted and offer to walk away.",
         nextNodeId: 'dante_sim_walk_response',
         pattern: 'patience',
@@ -752,6 +782,7 @@ export const danteDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'dante_return_explore',
+        taxonomyClass: 'accept',
         text: "I'll explore more of the station.",
         nextNodeId: samuelEntryPoints.HUB_INITIAL,
         pattern: 'exploring',
@@ -759,6 +790,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'dante_return_stay',
+        taxonomyClass: 'reject',
         text: "Actually, I have more questions.",
         nextNodeId: 'dante_exploration_hub',
         pattern: 'patience',
@@ -766,6 +798,7 @@ export const danteDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'offer_real_pitch',
+        taxonomyClass: 'deflect',
         text: "[Helper] Dante, you look troubled. Someone need your help?",
         nextNodeId: 'dante_loyalty_trigger',
         pattern: 'helping',
@@ -1756,7 +1789,7 @@ D) Online ordering system`,
     nodeId: 'dante_simulation_phase2_setup',
     speaker: 'Dante Moreau',
     content: [{
-      text: "This one's harder.\n\nThere's a founder who wants to rebrand their entire nonprofit. New logo, new messaging, new website. Six-figure project.\n\nHere's the problem: their current brand is working. Donors love it. Volunteers recognize it. The community trusts it.\n\nBut the founder... he's bored of it. Wants something 'fresh'.\n\nHow do I tell him the truth without losing his trust? Or worse—letting him make a mistake because I was afraid to speak up?",
+      text: "A founder wants a six-figure rebrand even though donors, volunteers, and the community already trust the current brand.\n\nHow do I tell him the truth without losing his trust?",
       emotion: 'conflicted',
       variation_id: 'simulation_phase2_intro_v1'
     }],
@@ -1840,6 +1873,11 @@ What's the most ethical approach?`,
         nextNodeId: 'dante_simulation_phase2_success',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'phase2_fail',
+        text: "You hesitate. The window closes.",
+        nextNodeId: 'dante_simulation_phase2_fail'
       }
     ],
     onEnter: [{
@@ -1878,7 +1916,7 @@ What's the most ethical approach?`,
     nodeId: 'dante_simulation_phase2_fail',
     speaker: 'Dante Moreau',
     content: [{
-      text: "That approach... it either takes his money or loses his trust.\n\nThere's a third way. Harder than both.\n\nYou ask questions that help him see what you see. Not telling. Not selling. Just... illuminating.\n\n'What problem does your current brand fail to solve?'\n\nIf he can't answer that, he'll realize the brand isn\'t broken. And you didn't have to be the one to say it.",
+      text: "That approach either takes his money or loses his trust.\n\nThe better move is one sharp question that lets him see the brand isn't broken.",
       emotion: 'patient_teaching',
       variation_id: 'phase2_fail_v1'
     }],
@@ -1902,7 +1940,7 @@ What's the most ethical approach?`,
     nodeId: 'dante_simulation_phase3_setup',
     speaker: 'Dante Moreau',
     content: [{
-      text: "I need your help with something I've never done before.\n\nActual selling. Not manipulation. Not charm. Just... truth.\n\nThere's a youth program in New Orleans. Kids like I used to be. Learning to read people, but not being taught why it matters. How to use that gift without losing yourself.\n\nI want to pitch them on building an ethical sales curriculum. Teaching influence as service, not extraction.\n\nBut I've spent so long avoiding my own talent... I don't know if I can pitch something I genuinely believe in.\n\nWill you help me practice?",
+      text: "I want to pitch a youth program on ethical sales, but I've hidden from this talent so long that I do not know how to sell something I believe in.\n\nWill you help me practice?",
       emotion: 'vulnerable_determined',
       variation_id: 'simulation_phase3_intro_v1',
       richEffectContext: 'warning'
@@ -1987,6 +2025,11 @@ Which structure creates genuine persuasion without manipulation?`,
         nextNodeId: 'dante_simulation_phase3_success',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'phase3_fail',
+        text: "You freeze. The window closes.",
+        nextNodeId: 'dante_simulation_phase3_fail'
       }
     ],
     onEnter: [{
@@ -2058,7 +2101,7 @@ Which structure creates genuine persuasion without manipulation?`,
     nodeId: 'dante_simulation_phase3_fail',
     speaker: 'Dante Moreau',
     content: [{
-      text: "That structure... it\'s still a technique. Still a framework. Still manipulation dressed up as authenticity.\n\nI don't know if I can pitch this without it feeling like I'm selling them on something. Even if I believe in it.\n\nMaybe some people aren't meant to sell truth. Maybe I'm one of them.",
+      text: "That still sounds like technique dressed up as truth.\n\nIf I cannot pitch this without slipping into performance, maybe I am still trying to manipulate instead of serve.",
       emotion: 'defeated_vulnerable',
       variation_id: 'phase3_fail_v1'
     }],

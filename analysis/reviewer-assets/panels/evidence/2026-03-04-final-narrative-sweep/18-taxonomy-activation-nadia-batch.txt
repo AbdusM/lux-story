@@ -1,0 +1,25 @@
+Timestamp: 2026-03-05
+Scope: Nadia targeted taxonomy activation
+
+Changes applied:
+- content/nadia-dialogue-graph.ts
+  - Added taxonomyClass triads to all remaining non-compliant eligible nodes:
+    - nadia_exploration_hub
+    - nadia_ai_future
+    - nadia_audit_work
+    - nadia_vulnerability_arc
+    - nadia_sim_hype
+    - nadia_sim_team
+    - nadia_career_path
+    - nadia_work_ai
+
+Validation runs:
+- npm run type-check -> PASS
+- npm run verify:choice-taxonomy -> PASS
+  - Eligible nodes: 258
+  - Coverage: 51.16%
+  - Non-compliant nodes: 126
+- npm run verify:narrative-sim -> PASS (failures 0, mismatches 0, truncated 0)
+- npm run verify:required-state-strict -> PASS (violations 0)
+- npm run verify:unreachable-dialogue-nodes -> PASS (count 0)
+- npm run verify:unreferenced-dialogue-nodes -> PASS (count 0)

@@ -36,6 +36,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'jordan_intro_ask_jobs',
         text: "That's a lot of different roles. What's the through-line?",
+        taxonomyClass: 'accept',
         nextNodeId: 'jordan_handshake_layout',
         pattern: 'exploring',
         skills: ['communication'],
@@ -55,6 +56,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'jordan_intro_relate_rewriting',
         text: "Six rewrites means you care about getting it right.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'jordan_career_question',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -73,6 +75,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'jordan_intro_observe_doubt',
         text: "You seem uncertain about your own story.",
+        taxonomyClass: 'reject',
         nextNodeId: 'jordan_career_question',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
@@ -211,6 +214,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'jordan_career_ask_path',
         text: "What does your path look like?",
+        taxonomyClass: 'accept',
         nextNodeId: 'jordan_job_reveal_1',
         pattern: 'exploring',
         skills: ['communication'],
@@ -233,6 +237,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'jordan_career_relate_messy',
         text: "Maybe messy paths are the most honest ones to share.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'jordan_job_reveal_1',
         pattern: 'exploring',
         skills: ['curiosity', 'communication', 'leadership'],
@@ -255,6 +260,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'jordan_career_analyze_rewrites',
         text: "Six rewrites means you're overthinking the story you're telling.",
+        taxonomyClass: 'reject',
         nextNodeId: 'jordan_job_reveal_1',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
@@ -323,6 +329,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'jordan_job1_ask_next',
+        taxonomyClass: 'accept',
         text: "What did you do after the startup collapsed?",
         nextNodeId: 'jordan_job_reveal_2',
         pattern: 'exploring',
@@ -345,6 +352,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'jordan_job1_validate_risk',
+        taxonomyClass: 'reject',
         text: "At least you took a risk. That's more than most people do at twenty.",
         nextNodeId: 'jordan_job_reveal_2',
         pattern: 'helping',
@@ -367,6 +375,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'jordan_job1_pattern_observe',
+        taxonomyClass: 'deflect',
         text: "Sounds like you've been figuring it out as you go since the beginning.",
         nextNodeId: 'jordan_job_reveal_2',
         pattern: 'analytical',
@@ -438,6 +447,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'jordan_job2_ask_next',
+        taxonomyClass: 'accept',
         text: "Did you stay in sales after that?",
         nextNodeId: 'jordan_job_reveal_3',
         pattern: 'exploring',
@@ -460,6 +470,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'jordan_job2_validate_skill',
+        taxonomyClass: 'reject',
         text: "That's actually a really valuable skill. reading people that quickly.",
         nextNodeId: 'jordan_job_reveal_3',
         pattern: 'helping',
@@ -482,6 +493,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'jordan_job2_connect_ux',
+        taxonomyClass: 'deflect',
         text: "Applied empathy sounds a lot like user experience design.",
         nextNodeId: 'jordan_job_reveal_3',
         pattern: 'analytical',
@@ -545,6 +557,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'jordan_job3_ask_growth',
+        taxonomyClass: 'accept',
         text: "Where did the graphic design lead?",
         nextNodeId: 'jordan_pattern_acknowledgment',
         pattern: 'exploring',
@@ -558,6 +571,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'jordan_job3_validate_learning',
+        taxonomyClass: 'reject',
         text: "Teaching yourself a whole new skill from scratch takes real discipline.",
         nextNodeId: 'jordan_pattern_acknowledgment',
         pattern: 'building',
@@ -574,6 +588,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'jordan_job3_pattern_skills',
+        taxonomyClass: 'deflect',
         text: "Each skill was a piece. What were you building?",
         nextNodeId: 'jordan_pattern_acknowledgment',
         pattern: 'analytical',
@@ -652,6 +667,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'jordan_job4_ask_making',
+        taxonomyClass: 'accept',
         text: "What kind of making did you want to do?",
         nextNodeId: 'jordan_pause_after_job4',
         pattern: 'exploring',
@@ -664,6 +680,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'jordan_job4_validate_clarity',
+        taxonomyClass: 'reject',
         text: "That makes perfect sense. You were getting closer to what you actually wanted.",
         nextNodeId: 'jordan_pause_after_job4',
         pattern: 'helping',
@@ -676,6 +693,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'jordan_job4_pattern_creator',
+        taxonomyClass: 'deflect',
         text: "You're a builder, not a promoter. That's an important distinction.",
         nextNodeId: 'jordan_pause_after_job4',
         pattern: 'building',
@@ -730,6 +748,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'jordan_job5_ask_connection',
+        taxonomyClass: 'accept',
         text: "How did you get from personal training to tech?",
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'exploring',
@@ -745,6 +764,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'jordan_job5_validate_insight',
+        taxonomyClass: 'reject',
         text: "That's actually brilliant. seeing the deeper pattern underneath the job title.",
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'exploring',
@@ -760,6 +780,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'jordan_job5_pattern_thread',
+        taxonomyClass: 'deflect',
         text: "You've been doing UX design this whole time. You kept changing the medium.",
         nextNodeId: 'jordan_job_reveal_6',
         pattern: 'analytical',
@@ -808,6 +829,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'jordan_job6_ask_turning_point',
+        taxonomyClass: 'accept',
         text: "When did everything finally come together?",
         nextNodeId: 'jordan_job_reveal_7',
         pattern: 'exploring',
@@ -823,6 +845,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'jordan_job6_validate_learning',
+        taxonomyClass: 'reject',
         text: "Most people would see that as survival work. You made it an education.",
         nextNodeId: 'jordan_job_reveal_7',
         pattern: 'building',
@@ -838,6 +861,7 @@ export const jordanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'jordan_job6_pattern_systems',
+        taxonomyClass: 'deflect',
         text: "You learned systems thinking and user flows.",
         nextNodeId: 'jordan_job_reveal_7',
         pattern: 'analytical',
@@ -889,6 +913,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     choices: [
       {
         choiceId: 'ux_debug_visuals',
+        taxonomyClass: 'accept',
         text: "Make the buttons bigger. Improve the color contrast.",
         nextNodeId: 'jordan_ux_fail_visuals',
         pattern: 'analytical', // Surface level fix
@@ -896,6 +921,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       },
       {
         choiceId: 'ux_debug_empathy',
+        taxonomyClass: 'reject',
         text: "Look at the user's state. Day 3 is when the diagnosis reality hits.",
         nextNodeId: 'jordan_ux_insight',
         pattern: 'helping',
@@ -903,6 +929,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       },
       {
         choiceId: 'ux_debug_motivation',
+        taxonomyClass: 'deflect',
         text: "Check the reward loop. Are they getting positive feedback?",
         nextNodeId: 'jordan_ux_insight', // This also works
         pattern: 'building',
@@ -997,6 +1024,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     choices: [
       {
         choiceId: 'jordan_job7_ask_mentor',
+        taxonomyClass: 'accept',
         text: "So why are you nervous about the mentorship talk?",
         nextNodeId: 'jordan_mentor_context',
         pattern: 'exploring',
@@ -1005,6 +1033,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       },
       {
         choiceId: 'jordan_job7_celebrate',
+        taxonomyClass: 'reject',
         text: "That's an incredible story. You should be proud of every single step.",
         nextNodeId: 'jordan_mentor_context',
         pattern: 'helping',
@@ -1013,6 +1042,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       },
       {
         choiceId: 'jordan_job7_pattern_complete',
+        taxonomyClass: 'deflect',
         text: "You didn't wander. You were assembling exactly the skills you needed.",
         nextNodeId: 'jordan_mentor_context',
         pattern: 'analytical',
@@ -1229,6 +1259,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       {
         choiceId: 'player_trust_process',
         text: "I try to trust that even wrong turns teach me something.",
+        taxonomyClass: 'accept',
         nextNodeId: 'jordan_crossroads',
         pattern: 'exploring',
         skills: ['adaptability', 'criticalThinking'],
@@ -1240,6 +1271,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       {
         choiceId: 'player_analyze_options',
         text: "I research every option and weigh tradeoffs, but I can get analysis-paralyzed.",
+        taxonomyClass: 'reject',
         nextNodeId: 'jordan_crossroads',
         pattern: 'analytical',
         skills: ['criticalThinking', 'problemSolving'],
@@ -1251,6 +1283,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       {
         choiceId: 'player_ask_others',
         text: "I ask people who've faced this. Their stories show options I miss.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'jordan_crossroads',
         pattern: 'helping',
         skills: ['collaboration', 'communication'],
@@ -1312,6 +1345,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     choices: [
       {
         choiceId: 'jordan_crossroads_deep_dive',
+        taxonomyClass: 'accept',
         text: "[Deep Dive] Forget the speech. Show them what adaptation looks like.",
         nextNodeId: 'jordan_deep_dive',
         pattern: 'building',
@@ -1326,6 +1360,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       // Career observation route (ISP: Only visible when pattern combo is achieved)
       {
         choiceId: 'jordan_crossroads_career_counselor',
+        taxonomyClass: 'reject',
         text: "You help people find their way. That sounds like a calling.",
         nextNodeId: 'jordan_career_reflection_counselor',
         pattern: 'helping',
@@ -1390,6 +1425,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
       },
       {
         choiceId: 'jordan_crossroads_internal',
+        taxonomyClass: 'deflect',
         text: "What if the story you tell yourself is the only one that matters?",
         nextNodeId: 'jordan_chooses_internal',
         pattern: 'patience',
@@ -1407,7 +1443,7 @@ PM_Alex: Ship the old flow. We'll patch it later.`,
     nodeId: 'jordan_chooses_accumulation',
     speaker: 'Jordan Packard',
     content: [{
-      text: "You're right.\n\nI'm going to write all seven jobs on the whiteboard. Then draw lines between them.\n\nCustomer service to user research. Visual design to interface work. Motivation psychology to engagement.\n\nI'm not a fraud. I'm a composite.\n\nThose students need to hear that nothing is wasted.\n\n{{met_yaquin:I met a dental assistant, Yaquin. He gets it.|I heard about a guy teaching dental skills on TikTok. Yaquin? He gets it.}} Accumulating skills, not titles.",
+      text: "You're right.\n\nI'm mapping all seven jobs and their through-lines, because I'm not a fraud; I'm a composite and students need to hear that.\n\n{{met_yaquin:I met a dental assistant, Yaquin. He gets it.|I heard about a guy teaching dental skills on TikTok. Yaquin gets it.}} Skills, not titles.",
       emotion: 'empowered',
       variation_id: 'jordan_accumulation_1'
     }],
@@ -2483,7 +2519,7 @@ What's the most empowering guidance?`,
     nodeId: 'jordan_simulation_phase2_setup',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Got a tough one. Finance professional. Ten years in. Wants to pivot to nonprofit work.\n\nEveryone says it\'s career suicide. She says it\'s her calling.\n\nBut she\'s terrified her skills won\'t transfer. That she\'ll start over at the bottom.\n\nThis is where career guidance gets hard. Want to work through it with me?",
+      text: "A finance professional wants nonprofit work, but everyone calls it suicide and she fears her skills won't transfer.\n\nHelp me show her what carries across the gap.",
       emotion: 'serious',
       variation_id: 'sim_phase2_setup_v1'
     }],
@@ -2561,13 +2597,20 @@ What helps her see what she\'s actually built?`,
         previousPhaseCompleted: 'jordan_choice_paralysis_phase1'
       }
     },
-    choices: [{
-      choiceId: 'phase2_success',
-      text: "She didn\'t lose her expertise. She just found a new place to use it.",
-      nextNodeId: 'jordan_simulation_phase2_success',
-      pattern: 'analytical',
-      skills: ['systemsThinking', 'communication']
-    }],
+    choices: [
+      {
+        choiceId: 'phase2_success',
+        text: "She didn\'t lose her expertise. She just found a new place to use it.",
+        nextNodeId: 'jordan_simulation_phase2_success',
+        pattern: 'analytical',
+        skills: ['systemsThinking', 'communication']
+      },
+      {
+        choiceId: 'phase2_fail',
+        text: "You play it safe. She stays stuck.",
+        nextNodeId: 'jordan_simulation_phase2_fail'
+      }
+    ],
     onEnter: [{
       characterId: 'jordan',
       addKnowledgeFlags: ['jordan_simulation_phase2_complete']
@@ -2602,7 +2645,7 @@ What helps her see what she\'s actually built?`,
     nodeId: 'jordan_simulation_phase2_fail',
     speaker: 'Jordan Packard',
     content: [{
-      text: "Safe advice. Practical.\n\nBut she didn\'t come to me for safe. She came because she\'s ready to leap and doesn\'t know how.\n\nIf I don\'t help her see what she\'s really built, she\'ll stay stuck. Or worse - she\'ll leap without seeing her own parachute.\n\nGuidance isn\'t about reducing risk. It\'s about helping people see what they\'re capable of carrying across the gap.",
+      text: "That is safe advice, but safe is not what she came for.\n\nIf I cannot help her name what she has already built, I leave her stuck or leaping blind.",
       emotion: 'disappointed',
       variation_id: 'phase2_fail_v1',
       richEffectContext: 'error'
@@ -2629,7 +2672,7 @@ What helps her see what she\'s actually built?`,
     nodeId: 'jordan_simulation_phase3_setup',
     speaker: 'Jordan Packard',
     content: [{
-      text: "There\'s a question I can\'t answer. The one that student asked me last year.\n\n\"How do you know when to quit versus when to push through?\"\n\nI froze then. Still don\'t have the answer.\n\nBut now... there\'s another student asking the exact same thing. Different context. Same impossible question.\n\nI have to face it this time. Will you... be there while I try?",
+      text: "A student asked when to quit versus push through, and I froze.\n\nAnother student is asking today; stay with me while I answer it honestly.",
       emotion: 'vulnerable',
       variation_id: 'sim_phase3_setup_v1',
       richEffectContext: 'thinking'
@@ -2709,13 +2752,20 @@ What does Jordan say this time?`,
         requiredFlags: ['jordan_vulnerability_revealed']
       }
     },
-    choices: [{
-      choiceId: 'phase3_success',
-      text: "You didn\'t give the answer. You gave yourself. That was braver.",
-      nextNodeId: 'jordan_simulation_phase3_success',
-      pattern: 'helping',
-      skills: ['emotionalIntelligence', 'leadership']
-    }],
+    choices: [
+      {
+        choiceId: 'phase3_success',
+        text: "You didn\'t give the answer. You gave yourself. That was braver.",
+        nextNodeId: 'jordan_simulation_phase3_success',
+        pattern: 'helping',
+        skills: ['emotionalIntelligence', 'leadership']
+      },
+      {
+        choiceId: 'phase3_fail',
+        text: "You retreat into distance. The question stays open.",
+        nextNodeId: 'jordan_simulation_phase3_fail'
+      }
+    ],
     onEnter: [{
       characterId: 'jordan',
       addKnowledgeFlags: ['jordan_simulation_phase3_complete', 'jordan_faced_the_question']
@@ -2751,7 +2801,7 @@ What does Jordan say this time?`,
     nodeId: 'jordan_simulation_phase3_fail',
     speaker: 'Jordan Packard',
     content: [{
-      text: "I gave advice. Clean. Professional. Safe.\n\nAnd I saw it in her eyes. The same thing I saw last year.\n\n\"You don\'t really get it, do you?\"\n\nShe was right. I didn\'t give guidance. I gave distance.\n\nThe question still stands. Unanswered. And now I\'ve failed twice.",
+      text: "I gave polished advice and watched her realize I was hiding behind professionalism.\n\nThe question is still open, and now I have failed it twice.",
       emotion: 'defeated',
       variation_id: 'phase3_fail_v1',
       richEffectContext: 'error'

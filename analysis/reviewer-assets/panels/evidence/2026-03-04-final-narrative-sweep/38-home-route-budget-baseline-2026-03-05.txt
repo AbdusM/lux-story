@@ -1,0 +1,131 @@
+[wave] home-route-budget baseline
+[cmd] rm -rf .next
+[cmd] npm run build > .next-build-output.log
+[build-tail]
+--- Checking Vercel Configuration ---
+[32mOK:[0m Custom function configuration found
+[32mOK:[0m vercel.json is valid
+
+==================================================
+[32mALL CHECKS PASSED[0m
+
+> lux-story@2.3.1 build
+> next build
+
+   ▲ Next.js 15.5.12
+   - Environments: .env.local, .env.production
+   - Experiments (use with caution):
+     · serverActions
+     · optimizePackageImports
+
+   Creating an optimized production build ...
+ ⚠ Attempted to load @next/swc-darwin-arm64, but an error occurred: dlopen(/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node, 0x0001): tried: '/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (segment '__TEXT' load command content extends beyond end of file), '/System/Volumes/Preboot/Cryptexes/OS/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (no such file), '/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (segment '__TEXT' load command content extends beyond end of file)
+ ⚠ Compiled with warnings in 12.6s
+
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/@sentry/node/build/cjs/index.js
+./node_modules/@sentry/nextjs/build/cjs/index.server.js
+./sentry.server.config.ts
+
+ ⚠ Attempted to load @next/swc-darwin-arm64, but an error occurred: dlopen(/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node, 0x0001): tried: '/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (segment '__TEXT' load command content extends beyond end of file), '/System/Volumes/Preboot/Cryptexes/OS/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (no such file), '/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (segment '__TEXT' load command content extends beyond end of file)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (131kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ⚠ Attempted to load @next/swc-darwin-arm64, but an error occurred: dlopen(/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node, 0x0001): tried: '/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (segment '__TEXT' load command content extends beyond end of file), '/System/Volumes/Preboot/Cryptexes/OS/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (no such file), '/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (segment '__TEXT' load command content extends beyond end of file)
+ ✓ Compiled successfully in 24.7s
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+ ⚠ Attempted to load @next/swc-darwin-arm64, but an error occurred: dlopen(/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node, 0x0001): tried: '/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (segment '__TEXT' load command content extends beyond end of file), '/System/Volumes/Preboot/Cryptexes/OS/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (no such file), '/Users/abdusmuwwakkil/Development/30_lux-story/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node' (segment '__TEXT' load command content extends beyond end of file)
+   Generating static pages (0/33) ...
+   Generating static pages (8/33) 
+   Generating static pages (16/33) 
+   Generating static pages (24/33) 
+ ✓ Generating static pages (33/33)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                     337 kB         1.2 MB
+├ ○ /_not-found                            219 B         103 kB
+├ ƒ /admin                                 219 B         103 kB
+├ ƒ /admin/[userId]                        489 B         222 kB
+├ ƒ /admin/[userId]/action               4.38 kB         115 kB
+├ ƒ /admin/[userId]/careers              6.95 kB         121 kB
+├ ƒ /admin/[userId]/evidence             7.29 kB         124 kB
+├ ƒ /admin/[userId]/gaps                 5.66 kB         167 kB
+├ ƒ /admin/[userId]/patterns             32.9 kB         280 kB
+├ ƒ /admin/[userId]/skills               5.82 kB         166 kB
+├ ƒ /admin/[userId]/urgency                489 B         222 kB
+├ ○ /admin/diagnostics                   5.43 kB         116 kB
+├ ○ /admin/login                            2 kB         112 kB
+├ ○ /admin/preview                       5.52 kB         613 kB
+├ ○ /admin/skills                         6.9 kB         742 kB
+├ ○ /admin/users                         3.75 kB         201 kB
+├ ƒ /api/admin-proxy/urgency               219 B         103 kB
+├ ƒ /api/admin/auth                        219 B         103 kB
+├ ƒ /api/admin/check-profile               219 B         103 kB
+├ ƒ /api/admin/consistency-check           219 B         103 kB
+├ ƒ /api/admin/evidence/[userId]           219 B         103 kB
+├ ƒ /api/admin/pattern-profile             219 B         103 kB
+├ ƒ /api/admin/research-export             219 B         103 kB
+├ ƒ /api/admin/skill-data                  219 B         103 kB
+├ ƒ /api/admin/urgency                     219 B         103 kB
+├ ƒ /api/admin/user-ids                    219 B         103 kB
+├ ƒ /api/advisor-briefing                  219 B         103 kB
+├ ƒ /api/content/validate                  219 B         103 kB
+├ ƒ /api/health                            219 B         103 kB
+├ ƒ /api/health/db                         219 B         103 kB
+├ ƒ /api/health/storage                    219 B         103 kB
+├ ƒ /api/log-error                         219 B         103 kB
+├ ƒ /api/samuel-dialogue                   219 B         103 kB
+├ ƒ /api/test-env                          219 B         103 kB
+├ ƒ /api/user/action-plan                  219 B         103 kB
+├ ƒ /api/user/career-analytics             219 B         103 kB
+├ ƒ /api/user/career-explorations          219 B         103 kB
+├ ƒ /api/user/interaction-events           219 B         103 kB
+├ ƒ /api/user/pattern-demonstrations       219 B         103 kB
+├ ƒ /api/user/pattern-profile              219 B         103 kB
+├ ƒ /api/user/platform-state               219 B         103 kB
+├ ƒ /api/user/profile                      219 B         103 kB
+├ ƒ /api/user/relationship-progress        219 B         103 kB
+├ ƒ /api/user/session                      219 B         103 kB
+├ ƒ /api/user/skill-demonstrations         219 B         103 kB
+├ ƒ /api/user/skill-summaries              219 B         103 kB
+├ ƒ /auth/callback                         219 B         103 kB
+├ ○ /profile                             7.88 kB         249 kB
+├ ○ /shadcn-preview                      10.2 kB         188 kB
+├ ○ /student/insights                    9.32 kB         740 kB
+├ ○ /test-data                           5.14 kB         119 kB
+├ ○ /test-dialogue-styles                7.24 kB         166 kB
+├ ○ /test-emotions-interactions          6.68 kB         173 kB
+├ ○ /test-env                              219 B         103 kB
+├ ○ /test-game-styles                    7.87 kB         166 kB
+├ ○ /test-pixels                           163 B         106 kB
+├ ○ /test-pixels/compare                 1.88 kB         104 kB
+├ ○ /test-voices                         5.07 kB         172 kB
+└ ○ /welcome                             8.83 kB         215 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/1255-a1c02572a6d511aa.js      45.7 kB
+  ├ chunks/4bd1b696-100b9d70ed4e49c1.js  54.2 kB
+  └ other shared chunks (total)          2.38 kB
+
+
+ƒ Middleware                              129 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+[cmd] npm run verify:home-route-budget
+
+> lux-story@2.3.1 verify:home-route-budget
+> node scripts/verify-home-route-budget.mjs .next-build-output.log
+
+[verify-home-route-budget] OK: route_chunk=337.00KB, first_load=1228.80KB. Report: docs/qa/home-route-budget-report.json
+[done] evidence=analysis/reviewer-assets/panels/evidence/2026-03-04-final-narrative-sweep/38-home-route-budget-baseline-2026-03-05.txt

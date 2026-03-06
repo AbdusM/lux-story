@@ -34,6 +34,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'yaquin_intro_garbage',
+        taxonomyClass: 'accept',
         text: "If the textbook doesn't work, it's garbage.",
         voiceVariations: {
           analytical: "Theory without application is incomplete data.",
@@ -52,6 +53,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'yaquin_intro_authority',
+        taxonomyClass: 'reject',
         text: "Why do you think you're uneducated?",
         voiceVariations: {
           analytical: "What's the metric? How are you measuring 'educated'?",
@@ -66,6 +68,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'yaquin_intro_content',
+        taxonomyClass: 'deflect',
         text: "You're teaching online?",
         nextNodeId: 'yaquin_creator_path',
         pattern: 'exploring',
@@ -109,6 +112,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'yaquin_tacit_knowledge',
+        taxonomyClass: 'accept',
         text: "That's knowledge nobody else can teach.",
         voiceVariations: {
           analytical: "Tacit knowledge. It's the hidden variable textbooks can't capture.",
@@ -123,6 +127,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'yaquin_teach_that',
+        taxonomyClass: 'reject',
         text: "So teach THAT. The real stuff.",
         voiceVariations: {
           analytical: "Strip away the theory. Document what actually works.",
@@ -141,6 +146,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'yaquin_explore_patient_fear',
+        taxonomyClass: 'deflect',
         text: "Tell me about the patient fear. What do you see that textbooks miss?",
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'exploring',
@@ -180,6 +186,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'yaquin_competence',
+        taxonomyClass: 'accept',
         text: "Eight years doing the work. That's the credential.",
         voiceVariations: {
           analytical: "Eight years of data. That's a more reliable sample than any degree.",
@@ -201,6 +208,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'yaquin_explore_credential_meaning',
+        taxonomyClass: 'reject',
         text: "What does 'educated' mean to you? Who decides?",
         nextNodeId: 'yaquin_curriculum_dream',
         pattern: 'exploring',
@@ -212,6 +220,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'yaquin_build_own_credential',
+        taxonomyClass: 'deflect',
         text: "What if your students are the proof?",
         voiceVariations: {
           analytical: "Outcomes are the only metric that matters. Track your students.",
@@ -241,7 +250,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       {
         // NOTE: Strategic targeting - jitter applied only to the anxious core question about validation and audience.
         // Targets the existential doubt ("shouting into void?"), not the factual setup about followers.
-        text: "Started six months ago. Phone videos. No plan.|'Here's what textbooks miss.'|87 followers. Some dental assistants. Some students. Few actual dentists watching.|<jitter>Real question. teaching online or shouting into void?</jitter>",
+        text: "Six months in, phone videos with no plan became a small channel of 87 assistants, students, and a few dentists.|<jitter>Real question: am I teaching or shouting into a void?</jitter>",
         emotion: 'curious',
         variation_id: 'creator_v1',
         useChatPacing: true
@@ -250,6 +259,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'yaquin_creator_continue',
+        taxonomyClass: 'accept',
         text: "87 followers who found value. That's not nothing.",
         nextNodeId: 'yaquin_creator_encouraged',
         pattern: 'helping',
@@ -261,6 +271,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'yaquin_explore_who_watches',
+        taxonomyClass: 'reject',
         text: "Those dentists watching. what draws them? What are they looking for?",
         nextNodeId: 'yaquin_creator_explored',
         pattern: 'exploring',
@@ -272,6 +283,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'yaquin_build_community',
+        taxonomyClass: 'deflect',
         text: "87 is a tribe. What if you built with them, not just for them?",
         nextNodeId: 'yaquin_creator_community',
         pattern: 'building',
@@ -336,7 +348,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         }
       },
       {
-        text: "Or maybe they see what I see. The gap between textbook and chair. What you're supposed to know versus what actually works.|That gap? Eight years of filling it. Maybe that's what they want.",
+        text: "Maybe they see what I see: the gap between textbook and chair, between supposed knowledge and what actually works.|I spent eight years filling that gap, and maybe that's what they want.",
         emotion: 'realizing',
         variation_id: 'explored_v2'
       }
@@ -369,7 +381,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         }
       },
       {
-        text: "But you're right. Some of them been doing this longer than me. Different clinics. Different problems. Different solutions.|What if the course isn't me telling them things but us figuring it out together?",
+        text: "You're right: some of them have done this longer than me, in different clinics with different problems.|What if the course isn't me lecturing, but all of us figuring it out together?",
         emotion: 'excited',
         variation_id: 'community_v2'
       }
@@ -391,7 +403,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
       {
         // NOTE: Strategic targeting - jitter applied only to the anxiety about scope creep and fluff.
         // Isolates the moment of panic ("keeps adding..."), not the vision statement.
-        text: "Want to build a course. 'The Real Dental Assistant.'|Reality. not theory. Calm crying kids. Mix paste. Anticipate doctor needs.|<jitter>But the syllabus keeps adding history. Anatomy. Ethics.</jitter>",
+        text: "I want to build \"The Real Dental Assistant,\" focused on reality over theory: calm crying kids, mix paste, anticipate doctor needs.|<jitter>But the syllabus keeps bloating with history, anatomy, and ethics.</jitter>",
         emotion: 'anxious',
         variation_id: 'dream_v1',
         useChatPacing: true
@@ -466,7 +478,7 @@ export const yaquinDialogueNodes: DialogueNode[] = [
         // NOTE: Removed "slams" and "points" - showing environment and result, not choreography
         // NOTE: Strategic targeting - shake applied only to the high-stakes consequence statement.
         // Targets the climactic moment of pressure ("Back to cleaning spit valves"), not the setup.
-        text: "This list. 8 years instinct to checklist. Impossible.\n\n<shake>One pilot this weekend. Pick wrong. nobody watches. Back to cleaning spit valves.</shake>",
+        text: "This list turns eight years of instinct into one checklist, and it feels impossible.\n\n<shake>One pilot this weekend: pick wrong and nobody watches, then it's back to cleaning spit valves.</shake>",
         emotion: 'tense',
         variation_id: 'curriculum_setup_v2',
         richEffectContext: 'warning',
@@ -505,6 +517,7 @@ Which opening sells the VALUE of practical experience?`,
     choices: [
       {
         choiceId: 'module_history',
+        taxonomyClass: 'accept',
         text: "'Module 1: The History of Dentistry (1800-Present).'",
         nextNodeId: 'yaquin_fail_boring',
         pattern: 'analytical', // Trap choice: boring
@@ -512,6 +525,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'module_practical',
+        taxonomyClass: 'reject',
         text: "'Module 1: The Perfect Impression (How not to choke your patient).'",
         nextNodeId: 'yaquin_success_practical',
         pattern: 'building',
@@ -519,6 +533,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'module_soft_skills',
+        taxonomyClass: 'deflect',
         text: "'Module 1: Reading the Room (Patient Psychology).'",
         nextNodeId: 'yaquin_success_psych',
         pattern: 'helping',
@@ -574,7 +589,7 @@ Which opening sells the VALUE of practical experience?`,
         // TODO: [SFX] Mixing sounds, laughter, timer ticking
         // TODO: [VFX] Success glow on playback screen
         // NOTE: Removed filming process and "grins" - converted to audio cues only
-        text: "Pink. Goopy. 30 seconds before stone. Go!\n\n<bloom>That's it.</bloom> Not lecture. Cooking show for teeth.",
+        text: "Pink, goopy, 30 seconds before stone.\n\n<bloom>That's it: not a lecture, a cooking show for teeth.</bloom>",
         emotion: 'excited',
         interaction: 'bloom',
         variation_id: 'success_practical_v1',
@@ -635,7 +650,7 @@ Which opening sells the VALUE of practical experience?`,
       {
         // NOTE: Strategic targeting - jitter applied only to the anxiety peaks about career consequences.
         // Targets the panic about professional risk, not the factual readiness statement.
-        text: "Video ready. Platform ready.|<jitter>Publish. dentists see it. Might fire me. 'Who's this guy?'</jitter>|Don't publish. guy shouting at phone in basement.",
+        text: "Video ready, platform ready.|<jitter>Publish and dentists see it, maybe fire me, ask \"who's this guy?\"</jitter>|Don't publish and stay the guy shouting at a phone in a basement.",
         emotion: 'anxious',
         variation_id: 'launch_v1',
         useChatPacing: true,
@@ -674,6 +689,7 @@ Which opening sells the VALUE of practical experience?`,
     choices: [
       {
         choiceId: 'launch_now',
+        taxonomyClass: 'accept',
         text: "Launch it. Ask for forgiveness, not permission.",
         nextNodeId: 'yaquin_launched',
         pattern: 'building',
@@ -681,6 +697,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'launch_wait',
+        taxonomyClass: 'reject',
         text: "Build an audience anonymously first.",
         nextNodeId: 'yaquin_audience_first',
         pattern: 'analytical',
@@ -688,6 +705,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'launch_patience',
+        taxonomyClass: 'deflect',
         text: "[Let the decision breathe. This isn't a choice to rush.]",
         nextNodeId: 'yaquin_audience_first',
         pattern: 'patience',
@@ -992,7 +1010,7 @@ Which opening sells the VALUE of practical experience?`,
       // TODO: [VFX] Screen overlays showing dashboards, red notification badges
       // NOTE: Strategic targeting - shake applied only to the overwhelming cascade of problems and realizations.
       // Targets the crescendo moment revealing the full scope of challenges.
-      text: "It worked. The course launched. 127 students enrolled.\n\nEight weeks later. Three laptops. Support tickets. Dashboards.\n\n<shake>47 unread messages. 15 refunds. DDS calling it 'amateur hour.'</shake>\n\nTeaching? Easy. Running a course business? That's the real education.",
+      text: "The course launched with 127 students, and eight weeks later I'm buried in support tickets, refunds, and public DDS criticism.\n\n<shake>Teaching was easy; running the business is the real education.</shake>",
       emotion: 'exhausted',
       variation_id: 'p2_entry_v1',
       useChatPacing: true
@@ -1025,7 +1043,7 @@ Which opening sells the VALUE of practical experience?`,
     content: [{
       // NOTE: Strategic targeting - shake applied only to the realization of the fundamental format problem.
       // Targets the vulnerability moment of failure awareness ("Struggling. Refunds."), not the customer feedback.
-      text: "Self-paced doesn't work. Need live instruction. Videos too fast. Can't stay motivated.\n\nGreat content, wrong format. Need teacher, not YouTube.\n\n<shake>Half career-switchers. crushing it. Other half. boss-mandated. Struggling. Refunds.</shake>",
+      text: "Self-paced alone isn't working; the content is solid, but the format is wrong.\n\nCareer-switchers are thriving, while boss-mandated students struggle and request refunds.\n\n<shake>I need live instruction, not just videos</shake>",
       emotion: 'tense',
       variation_id: 'quality_crisis_v1',
       useChatPacing: true
@@ -1033,6 +1051,7 @@ Which opening sells the VALUE of practical experience?`,
     choices: [
       {
         choiceId: 'p2_two_student_types',
+        taxonomyClass: 'accept',
         text: "You have two different student types. One format won't work.",
         nextNodeId: 'yaquin_p2_format_decision',
         pattern: 'analytical',
@@ -1040,6 +1059,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'p2_refund_policy',
+        taxonomyClass: 'reject',
         text: "What's your refund policy?",
         nextNodeId: 'yaquin_p2_refund_pressure',
         pattern: 'building',
@@ -1047,6 +1067,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'p2_synthetic_director',
+        taxonomyClass: 'deflect',
         text: "[AI] Stop doing the manual labor. Design the curriculum, let a synthetic system deliver it.",
         nextNodeId: 'yaquin_p2_format_decision',
         pattern: 'patience',
@@ -1068,7 +1089,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_p2_dds_comment',
     speaker: 'Yaquin',
     content: [{
-      text: "**Dr. Sarah Chen, DDS**: 'Amateur hour. No credentials, structure, accountability. YouTube videos for $497. Assistants deserve real education, not shortcuts.'\n\nNot wrong about credentials. Assistant teaching assistants. No degree. No training.\n\nWant to ignore her. Defend myself. Or maybe she's right.",
+      text: "**Dr. Sarah Chen, DDS** called it \"amateur hour\" with no credentials, structure, or accountability, and she's harsh but not fully wrong.\n\nDo I ignore it, defend myself, or learn from it?",
       emotion: 'vulnerable',
       interaction: 'small',
       variation_id: 'dds_comment_v1',
@@ -1099,7 +1120,7 @@ Which opening sells the VALUE of practical experience?`,
     content: [{
       // NOTE: Strategic targeting - jitter applied only to the core moment of self-doubt and uncertainty.
       // Targets the anxiety about whether the criticism is valid ("Maybe IS..."), isolating the panic from policy discussion.
-      text: "30-day guarantee. No questions. Stand behind quality.\n\nBoss made me. Too hard. Didn't finish, want money.\n\nHonor all. lose $7,500. Get strict. look like scammer.\n\n<jitter>Worst part? Don't know if they're right. Maybe IS too hard. Maybe IS 'amateur hour.'</jitter>",
+      text: "I promised a 30-day no-questions guarantee.\n\nRefunds now total $7,500, and I must choose: honor every claim or tighten policy.\n\n<jitter>Worst part: I wonder whether the course is too hard</jitter>",
       emotion: 'conflicted',
       variation_id: 'refund_v1',
       useChatPacing: true
@@ -1107,6 +1128,7 @@ Which opening sells the VALUE of practical experience?`,
     choices: [
       {
         choiceId: 'p2_generous_refunds',
+        taxonomyClass: 'accept',
         text: "Honor the refunds. Build reputation over revenue.",
         nextNodeId: 'yaquin_p2_format_decision',
         pattern: 'helping',
@@ -1118,6 +1140,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'p2_firm_policy',
+        taxonomyClass: 'reject',
         text: "Hold the line. 'Not finishing' isn't a refund reason.",
         nextNodeId: 'yaquin_p2_format_decision',
         pattern: 'building',
@@ -1125,6 +1148,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'p2_case_by_case',
+        taxonomyClass: 'deflect',
         text: "Case-by-case. Talk to each student, understand why.",
         nextNodeId: 'yaquin_p2_format_decision',
         pattern: 'patience',
@@ -1147,6 +1171,7 @@ Which opening sells the VALUE of practical experience?`,
     choices: [
       {
         choiceId: 'p2_invite_advisor',
+        taxonomyClass: 'accept',
         text: "Invite her to be an advisor. Turn critic into collaborator.",
         nextNodeId: 'yaquin_p2_scaling_offer',
         pattern: 'building',
@@ -1159,6 +1184,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'p2_defend_experience',
+        taxonomyClass: 'reject',
         text: "Defend your expertise. You know things DDS programs don't teach.",
         nextNodeId: 'yaquin_p2_scaling_offer',
         pattern: 'helping',
@@ -1166,6 +1192,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'p2_credibility_patience',
+        taxonomyClass: 'deflect',
         text: "[Sit with the criticism. Not every wound needs immediate defense.]",
         nextNodeId: 'yaquin_p2_scaling_offer',
         pattern: 'patience',
@@ -1185,7 +1212,7 @@ Which opening sells the VALUE of practical experience?`,
     content: [{
       // TODO: [SFX] Pen scratching on paper, data visualization sounds
       // TODO: [VFX] Animated charts/graphs showing completion rates, decision tree branches
-      text: "Data:\n**Self-motivated**: 85% completion. Glowing reviews.\n**Boss-mandated**: 32% completion. Most refunds.\n\n**Option 1**: Cohort-based. Fewer students, live, higher price.\n**Option 2**: Improve self-paced. Forums, office hours.\n**Option 3**: Two-tier. Self-paced ($497) + Cohort ($1,497).\n\nWhat would you do?",
+      text: "Data snapshot: self-motivated students finish at 85%; boss-mandated students finish at 32% with most refunds.\n\nOptions: cohort-only, improve self-paced support, or two-tier pricing.\n\nWhich path should I choose?",
       emotion: 'analytical',
       interaction: 'nod',
       variation_id: 'format_v1',
@@ -1194,6 +1221,7 @@ Which opening sells the VALUE of practical experience?`,
     choices: [
       {
         choiceId: 'p2_cohort_based',
+        taxonomyClass: 'accept',
         text: "Go cohort-based. Quality over quantity.",
         nextNodeId: 'yaquin_p2_scaling_choice',
         pattern: 'helping',
@@ -1205,6 +1233,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'p2_improve_self_paced',
+        taxonomyClass: 'reject',
         text: "Double down on self-paced. Fix what's broken.",
         nextNodeId: 'yaquin_p2_scaling_choice',
         pattern: 'building',
@@ -1212,6 +1241,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'p2_two_tier',
+        taxonomyClass: 'deflect',
         text: "Two-tier. Serve both student types.",
         nextNodeId: 'yaquin_p2_scaling_choice',
         pattern: 'analytical',
@@ -1232,7 +1262,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_p2_scaling_offer',
     speaker: 'Yaquin',
     content: [{
-      text: "Three Birmingham offices reached out. License course for new hires. 50+ students.\n\n**Offer**: $15K/office, annual. They onboard, I provide content.\n\n$45K. Nine months salary.\n\nBut not teaching. licensing. Content creator, not educator.\n\nThat what I want?",
+      text: "Three Birmingham offices offered to license the course: $15K each, $45K total.\n\nGreat money, but licensing pulls me away from teaching.\n\nDo I choose scale or direct education?",
       emotion: 'conflicted',
       interaction: 'small',
       variation_id: 'scaling_v1',
@@ -1241,6 +1271,7 @@ Which opening sells the VALUE of practical experience?`,
     choices: [
       {
         choiceId: 'p2_take_license',
+        taxonomyClass: 'accept',
         text: "Take the deal. Sustainable income lets you teach better.",
         nextNodeId: 'yaquin_p2_implementation',
         pattern: 'analytical',
@@ -1252,6 +1283,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'p2_stay_direct',
+        taxonomyClass: 'reject',
         text: "Stay direct. Teaching is the point, not licensing.",
         nextNodeId: 'yaquin_p2_implementation',
         pattern: 'helping',
@@ -1259,6 +1291,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'p2_both',
+        taxonomyClass: 'deflect',
         text: "Do both. License for income, teach for impact.",
         nextNodeId: 'yaquin_p2_implementation',
         pattern: 'building',
@@ -1318,7 +1351,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_p2_student_reactions',
     speaker: 'Yaquin',
     content: [{
-      text: "Mixed. Refunded students. 1-star reviews: 'Bait and switch.' Stayed students thriving: 'Real teaching now, not just videos.'\n\n**Student**: 'Almost quit. Cohort saved me. Getting hired next week because of you.'\n\nThat's why. Not revenue. Not validation. That message.",
+      text: "Mixed results: some refunds and bad \"bait-and-switch\" reviews, but students who stayed are thriving.\n\nOne student wrote, \"I almost quit; the cohort saved me, and I'm getting hired next week.\"\n\nThat's the point.",
       emotion: 'grateful',
       interaction: 'small',
       variation_id: 'reactions_v1',
@@ -1362,7 +1395,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_p2_operational_wisdom',
     speaker: 'Yaquin',
     content: [{
-      text: "{{met_jordan:Jordan calls it 'user experience.' I call it survival.|I learned that from running the clinic floor.}}|If the student is confused, it's my fault. If the tool is hard to use, fix the tool.|Academics blame the student. I blame the design.",
+      text: "{{met_jordan:Jordan calls it 'user experience'; I call it survival.|I learned this on the clinic floor.}}|If students are confused, that's on me: fix the tool, not the learner.|Academics blame students; I blame design.",
       emotion: 'confident',
       interaction: 'nod',
       variation_id: 'operational_wisdom_v1',
@@ -1454,6 +1487,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'player_challenge_balance',
+        taxonomyClass: 'accept',
         text: "Holding everyone's stories. Each person's struggle. I carry them home. Some nights they're heavy.",
         nextNodeId: 'yaquin_reciprocity_response',
         pattern: 'helping',
@@ -1461,6 +1495,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'player_challenge_impostor',
+        taxonomyClass: 'reject',
         text: "Standing before experts, wondering why they should trust me.",
         nextNodeId: 'yaquin_reciprocity_response',
         pattern: 'analytical',
@@ -1468,6 +1503,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'player_challenge_patience',
+        taxonomyClass: 'deflect',
         text: "Planting seeds I'll never see bloom. Community change moves slowly.",
         nextNodeId: 'yaquin_reciprocity_response',
         pattern: 'patience',
@@ -1517,7 +1553,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_simulation_intro',
     speaker: 'Yaquin',
     content: [{
-      text: "Reviews came in. 200 students, 47 reviews posted.\n\nMost are good. Five stars. 'Changed my career.' 'Finally understand mixing ratios.'\n\nBut three reviews. They're brutal. And one of them? From a DDS. Says I'm teaching 'dangerous misinformation.'\n\n<shake>Posted publicly. Other students are asking questions now.</shake>",
+      text: "Reviews came in: 200 students, 47 public reviews, mostly five-star, but three are brutal and include a public DDS claim of dangerous misinformation.\n\n<shake>Students are already questioning me.</shake>",
       emotion: 'anxious',
       variation_id: 'sim_intro_v1',
       richEffectContext: 'warning',
@@ -1526,6 +1562,7 @@ Which opening sells the VALUE of practical experience?`,
     choices: [
       {
         choiceId: 'sim_intro_show_reviews',
+        taxonomyClass: 'accept',
         text: "Show me the reviews. Let's see what we're dealing with.",
         nextNodeId: 'yaquin_simulation_phase_1',
         pattern: 'analytical',
@@ -1533,6 +1570,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'sim_intro_how_feel',
+        taxonomyClass: 'reject',
         text: "How are you feeling about this? That sounds hard.",
         nextNodeId: 'yaquin_simulation_phase_1',
         pattern: 'helping',
@@ -1544,6 +1582,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'sim_intro_wait',
+        taxonomyClass: 'deflect',
         text: "[Give him a moment. He's processing.]",
         nextNodeId: 'yaquin_simulation_phase_1',
         pattern: 'patience',
@@ -1561,7 +1600,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_simulation_phase_1',
     speaker: 'Yaquin',
     content: [{
-      text: "**Review from Dr. Patricia Lam, DDS:**\n\"Outdated impression guidance. The 45-second alginate mix time is wrong for modern formulations. This can risk patient safety.\"\n\n**Review from DentalTech_Mike:**\n\"Practical tips, but anatomy labels conflict between modules.\"\n\n**Review from Anonymous:**\n\"Why trust advice from an assistant, not a dentist? Refund requested.\"\n\nThree problems: technical accuracy, production quality, and credibility.\n\nWhich do I fix first?",
+      text: "Three reviews hit at once: a DDS flagged technical accuracy, another reviewer flagged production inconsistency, and an anonymous user attacked credibility.\n\nThat's accuracy, quality, and trust in one stack.\n\nWhich risk gets first response?",
       emotion: 'conflicted',
       variation_id: 'phase1_v1',
       useChatPacing: true
@@ -1592,6 +1631,7 @@ Which opening sells the VALUE of practical experience?`,
     choices: [
       {
         choiceId: 'phase1_technical_first',
+        taxonomyClass: 'accept',
         text: "Address Dr. Lam's technical critique first: verify, fix, or defend with evidence.",
         nextNodeId: 'yaquin_simulation_phase_2',
         pattern: 'analytical',
@@ -1604,6 +1644,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'phase1_credential_first',
+        taxonomyClass: 'reject',
         text: "Address credentials first. If you own your expertise, other critiques weaken.",
         nextNodeId: 'yaquin_simulation_phase_2',
         pattern: 'building',
@@ -1626,6 +1667,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'phase1_patience',
+        taxonomyClass: 'deflect',
         text: "[Don't rush to respond. Reactive responses often make things worse.]",
         nextNodeId: 'yaquin_simulation_phase_2',
         pattern: 'patience',
@@ -1669,6 +1711,7 @@ Which opening sells the VALUE of practical experience?`,
     choices: [
       {
         choiceId: 'phase2_defensive',
+        taxonomyClass: 'reject',
         text: "Go defensive. Your experience is valid. Don't let one DDS undermine your authority.",
         nextNodeId: 'yaquin_simulation_fail',
         pattern: 'building',
@@ -1691,6 +1734,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'phase2_balanced',
+        taxonomyClass: 'accept',
         text: "Balanced response. Acknowledge what's valid, reinforce what's still true, and improve the course.",
         nextNodeId: 'yaquin_simulation_success',
         pattern: 'analytical',
@@ -1703,6 +1747,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'phase2_explore',
+        taxonomyClass: 'deflect',
         text: "What if you reached out to Dr. Lam privately first? Before responding publicly?",
         nextNodeId: 'yaquin_simulation_success',
         pattern: 'exploring',
@@ -1721,7 +1766,7 @@ Which opening sells the VALUE of practical experience?`,
     nodeId: 'yaquin_simulation_success',
     speaker: 'Yaquin',
     content: [{
-      text: "<bloom>That's it.</bloom>\n\nAcknowledge what is true, stand by what still works, then improve.\n\nI can thank Dr. Lam, add the missing comparison chart this week, keep the texture method as core, and invite collaboration.\n\nThat's professional, not defensive.\n\nI won't engage anonymous attacks; I will model how to respond to legitimate critique.\n\nStudents are watching that behavior more than the argument.",
+      text: "<bloom>That's it.</bloom>\n\nAcknowledge what's valid, defend what still works, and ship the fix quickly.\n\nI'll publish the comparison chart this week, keep the texture method, and invite collaboration.",
       emotion: 'confident',
       interaction: 'bloom',
       variation_id: 'success_v1',
@@ -2092,6 +2137,7 @@ Which opening sells the VALUE of practical experience?`,
     choices: [
       {
         choiceId: 'review_again',
+        taxonomyClass: 'accept',
         text: "If reviewing again will give you confidence, do it. There's no rush.",
         nextNodeId: 'yaquin_loyalty_perfectionist',
         pattern: 'patience',
@@ -2099,6 +2145,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'publish_now',
+        taxonomyClass: 'reject',
         text: "You've reviewed it ten times. It's ready. Hit publish.",
         nextNodeId: 'yaquin_loyalty_choice',
         pattern: 'building',
@@ -2106,6 +2153,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'acknowledge_fear',
+        taxonomyClass: 'deflect',
         text: "This fear isn't about the video quality. What are you really afraid of?",
         nextNodeId: 'yaquin_loyalty_choice',
         pattern: 'helping',
@@ -2135,6 +2183,7 @@ Which opening sells the VALUE of practical experience?`,
     choices: [
       {
         choiceId: 'publish_imperfect',
+        taxonomyClass: 'reject',
         text: "Then be terrified and publish anyway. Courage isn't the absence of fear.",
         nextNodeId: 'yaquin_loyalty_success',
         pattern: 'helping',
@@ -2142,6 +2191,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'publish_together',
+        taxonomyClass: 'accept',
         text: "You're not claiming it alone. Your students will claim it with you. Together.",
         nextNodeId: 'yaquin_loyalty_success',
         pattern: 'helping',
@@ -2149,6 +2199,7 @@ Which opening sells the VALUE of practical experience?`,
       },
       {
         choiceId: 'wait_one_week',
+        taxonomyClass: 'deflect',
         text: "What if you wait one week? Polish it. Then publish with confidence.",
         nextNodeId: 'yaquin_loyalty_partial',
         pattern: 'patience',

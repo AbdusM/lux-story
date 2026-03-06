@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-04T23:17:02.064Z",
+  "generatedAt": "2026-03-05T03:04:33.355Z",
   "thresholds": {
     "contentSoftWords": 35,
     "contentHardWords": 90,
@@ -22,7 +22,7 @@
       "contentBlocks": 1422,
       "totalChoices": 2448,
       "hardContentIssues": 0,
-      "softContentIssues": 59,
+      "softContentIssues": 0,
       "hardMonologueChains": 0,
       "softMonologueChains": 0,
       "longChoices": 0,
@@ -34,7 +34,7 @@
     "reachabilityTotals": {
       "structuralReachableNodes": 1389,
       "hardContentIssuesReachable": 0,
-      "softContentIssuesReachable": 59,
+      "softContentIssuesReachable": 0,
       "hardMonologueChainsReachable": 0,
       "softMonologueChainsReachable": 0,
       "narrativeVisitedStatePairs": 17570
@@ -277,6 +277,7 @@
           "runtimeReachableNow": false,
           "reachableByNavigation": false,
           "devOnly": false,
+          "disposition": "wire",
           "nodes": 7,
           "contentBlocks": 7,
           "choices": 9,
@@ -289,6 +290,7 @@
           "runtimeReachableNow": false,
           "reachableByNavigation": false,
           "devOnly": false,
+          "disposition": "wire",
           "nodes": 6,
           "contentBlocks": 6,
           "choices": 9,
@@ -301,6 +303,7 @@
           "runtimeReachableNow": false,
           "reachableByNavigation": false,
           "devOnly": false,
+          "disposition": "wire",
           "nodes": 7,
           "contentBlocks": 7,
           "choices": 9,
@@ -313,6 +316,7 @@
           "runtimeReachableNow": false,
           "reachableByNavigation": false,
           "devOnly": false,
+          "disposition": "wire",
           "nodes": 6,
           "contentBlocks": 6,
           "choices": 12,
@@ -325,6 +329,7 @@
           "runtimeReachableNow": false,
           "reachableByNavigation": false,
           "devOnly": true,
+          "disposition": "archive",
           "nodes": 2,
           "contentBlocks": 2,
           "choices": 2,
@@ -337,6 +342,7 @@
           "runtimeReachableNow": false,
           "reachableByNavigation": false,
           "devOnly": true,
+          "disposition": "archive",
           "nodes": 4,
           "contentBlocks": 4,
           "choices": 7,
@@ -349,6 +355,7 @@
           "runtimeReachableNow": false,
           "reachableByNavigation": false,
           "devOnly": true,
+          "disposition": "archive",
           "nodes": 5,
           "contentBlocks": 5,
           "choices": 10,
@@ -361,6 +368,7 @@
           "runtimeReachableNow": false,
           "reachableByNavigation": false,
           "devOnly": true,
+          "disposition": "archive",
           "nodes": 9,
           "contentBlocks": 9,
           "choices": 19,
@@ -369,7 +377,69 @@
           "hardMonologueChains": 0
         }
       ],
+      "detachedDialogueDebtSources": [
+        {
+          "sourceId": "intersection_alex_jordan",
+          "runtimeReachableNow": false,
+          "reachableByNavigation": false,
+          "devOnly": false,
+          "disposition": "wire",
+          "nodes": 7,
+          "contentBlocks": 7,
+          "choices": 9,
+          "hardContentIssues": 0,
+          "softContentIssues": 7,
+          "hardMonologueChains": 0
+        },
+        {
+          "sourceId": "intersection_maya_devon",
+          "runtimeReachableNow": false,
+          "reachableByNavigation": false,
+          "devOnly": false,
+          "disposition": "wire",
+          "nodes": 6,
+          "contentBlocks": 6,
+          "choices": 9,
+          "hardContentIssues": 0,
+          "softContentIssues": 6,
+          "hardMonologueChains": 0
+        },
+        {
+          "sourceId": "intersection_tess_rohan",
+          "runtimeReachableNow": false,
+          "reachableByNavigation": false,
+          "devOnly": false,
+          "disposition": "wire",
+          "nodes": 7,
+          "contentBlocks": 7,
+          "choices": 9,
+          "hardContentIssues": 0,
+          "softContentIssues": 7,
+          "hardMonologueChains": 0
+        },
+        {
+          "sourceId": "samuel_waiting_nodes",
+          "runtimeReachableNow": false,
+          "reachableByNavigation": false,
+          "devOnly": false,
+          "disposition": "wire",
+          "nodes": 6,
+          "contentBlocks": 6,
+          "choices": 12,
+          "hardContentIssues": 0,
+          "softContentIssues": 1,
+          "hardMonologueChains": 0
+        }
+      ],
       "detachedDialogueTotals": {
+        "nodes": 26,
+        "contentBlocks": 26,
+        "choices": 39,
+        "hardContentIssues": 0,
+        "softContentIssues": 21,
+        "hardMonologueChains": 0
+      },
+      "detachedDialogueAllTotals": {
         "nodes": 46,
         "contentBlocks": 46,
         "choices": 77,
@@ -409,6 +479,7 @@
           "runtimeReachableNow": true,
           "reachableByNavigation": false,
           "devOnly": false,
+          "disposition": "active_non_graph",
           "experiences": 20,
           "phases": 75,
           "textBlocks": 309,
@@ -419,7 +490,18 @@
           "veryLongChoices": 0
         }
       ],
+      "nonGraphExperienceDebtSources": [],
       "nonGraphExperienceTotals": {
+        "experiences": 0,
+        "phases": 0,
+        "textBlocks": 0,
+        "choices": 0,
+        "hardContentIssues": 0,
+        "softContentIssues": 0,
+        "longChoices": 0,
+        "veryLongChoices": 0
+      },
+      "nonGraphExperienceAllTotals": {
         "experiences": 20,
         "phases": 75,
         "textBlocks": 309,
@@ -436,6 +518,7 @@
           "runtimeReachableNow": false,
           "reachableByNavigation": false,
           "devOnly": false,
+          "disposition": "archive",
           "nodes": 10,
           "contentBlocks": 42,
           "choices": 17,
@@ -445,7 +528,17 @@
           "veryLongChoices": 0
         }
       ],
+      "dormantDialogueDebtSources": [],
       "dormantDialogueTotals": {
+        "nodes": 0,
+        "contentBlocks": 0,
+        "choices": 0,
+        "hardContentIssues": 0,
+        "softContentIssues": 0,
+        "longChoices": 0,
+        "veryLongChoices": 0
+      },
+      "dormantDialogueAllTotals": {
         "nodes": 10,
         "contentBlocks": 42,
         "choices": 17,
@@ -458,7 +551,7 @@
     "caveats": [
       "Primary character scoring uses graph-registry-routable character graphs only.",
       "Reachability weighting uses structural reachability (unreachable-dialogue-nodes report) and narrative sim visit-state counts when available.",
-      "Detached dialogue sources may be in prototype/unwired state and are reported separately to prevent false \"full corpus\" assumptions.",
+      "Detached/dormant/non-graph sources include a disposition (`wire|archive|delete|active_non_graph`). Debt totals include unresolved `wire/delete` sources only; all-source totals are provided separately.",
       "Sentence-overflow style flags from dialogue-guidelines are not used in the character soft-content metric (word-based for comparability).",
       "Continue-chain detection focuses on explicit continue-style links and may undercount non-standard deterministic chain wording."
     ]
@@ -474,7 +567,7 @@
         "structuralReachableNodes": 217,
         "structuralReachabilityRatio": 1,
         "hardContentIssuesReachable": 0,
-        "softContentIssuesReachable": 7,
+        "softContentIssuesReachable": 0,
         "hardMonologueChainsReachable": 0,
         "softMonologueChainsReachable": 0,
         "narrativeVisitedStatePairs": 1439
@@ -482,10 +575,10 @@
       "dialogue": {
         "nodes": 217,
         "contentBlocks": 233,
-        "avgContentWords": 11.03,
+        "avgContentWords": 10.71,
         "p90ContentWords": 28,
         "hardContentIssues": 0,
-        "softContentIssues": 7,
+        "softContentIssues": 0,
         "hardMonologueChains": 0,
         "softMonologueChains": 0
       },
@@ -555,7 +648,7 @@
         "structuralReachableNodes": 71,
         "structuralReachabilityRatio": 1,
         "hardContentIssuesReachable": 0,
-        "softContentIssuesReachable": 5,
+        "softContentIssuesReachable": 0,
         "hardMonologueChainsReachable": 0,
         "softMonologueChainsReachable": 0,
         "narrativeVisitedStatePairs": 1290
@@ -563,10 +656,10 @@
       "dialogue": {
         "nodes": 71,
         "contentBlocks": 71,
-        "avgContentWords": 11.13,
-        "p90ContentWords": 26,
+        "avgContentWords": 9.51,
+        "p90ContentWords": 25,
         "hardContentIssues": 0,
-        "softContentIssues": 5,
+        "softContentIssues": 0,
         "hardMonologueChains": 0,
         "softMonologueChains": 0
       },
@@ -636,7 +729,7 @@
         "structuralReachableNodes": 66,
         "structuralReachabilityRatio": 1,
         "hardContentIssuesReachable": 0,
-        "softContentIssuesReachable": 5,
+        "softContentIssuesReachable": 0,
         "hardMonologueChainsReachable": 0,
         "softMonologueChainsReachable": 0,
         "narrativeVisitedStatePairs": 1205
@@ -644,10 +737,10 @@
       "dialogue": {
         "nodes": 66,
         "contentBlocks": 66,
-        "avgContentWords": 11.09,
-        "p90ContentWords": 33,
+        "avgContentWords": 9.47,
+        "p90ContentWords": 23,
         "hardContentIssues": 0,
-        "softContentIssues": 5,
+        "softContentIssues": 0,
         "hardMonologueChains": 0,
         "softMonologueChains": 0
       },
@@ -712,7 +805,7 @@
         "structuralReachableNodes": 46,
         "structuralReachabilityRatio": 1,
         "hardContentIssuesReachable": 0,
-        "softContentIssuesReachable": 1,
+        "softContentIssuesReachable": 0,
         "hardMonologueChainsReachable": 0,
         "softMonologueChainsReachable": 0,
         "narrativeVisitedStatePairs": 1053
@@ -720,10 +813,10 @@
       "dialogue": {
         "nodes": 46,
         "contentBlocks": 47,
-        "avgContentWords": 8,
+        "avgContentWords": 7.51,
         "p90ContentWords": 22,
         "hardContentIssues": 0,
-        "softContentIssues": 1,
+        "softContentIssues": 0,
         "hardMonologueChains": 0,
         "softMonologueChains": 0
       },
@@ -796,7 +889,7 @@
       "dialogue": {
         "nodes": 83,
         "contentBlocks": 83,
-        "avgContentWords": 14.84,
+        "avgContentWords": 14.77,
         "p90ContentWords": 31,
         "hardContentIssues": 0,
         "softContentIssues": 0,
@@ -912,7 +1005,7 @@
         "structuralReachableNodes": 61,
         "structuralReachabilityRatio": 1,
         "hardContentIssuesReachable": 0,
-        "softContentIssuesReachable": 17,
+        "softContentIssuesReachable": 0,
         "hardMonologueChainsReachable": 0,
         "softMonologueChainsReachable": 0,
         "narrativeVisitedStatePairs": 1310
@@ -920,10 +1013,10 @@
       "dialogue": {
         "nodes": 61,
         "contentBlocks": 65,
-        "avgContentWords": 20.18,
-        "p90ContentWords": 47,
+        "avgContentWords": 16.43,
+        "p90ContentWords": 34,
         "hardContentIssues": 0,
-        "softContentIssues": 17,
+        "softContentIssues": 0,
         "hardMonologueChains": 0,
         "softMonologueChains": 0
       },
@@ -984,7 +1077,7 @@
       "dialogue": {
         "nodes": 56,
         "contentBlocks": 56,
-        "avgContentWords": 9.25,
+        "avgContentWords": 9.23,
         "p90ContentWords": 20,
         "hardContentIssues": 0,
         "softContentIssues": 0,
@@ -1040,7 +1133,7 @@
         "structuralReachableNodes": 56,
         "structuralReachabilityRatio": 1,
         "hardContentIssuesReachable": 0,
-        "softContentIssuesReachable": 8,
+        "softContentIssuesReachable": 0,
         "hardMonologueChainsReachable": 0,
         "softMonologueChainsReachable": 0,
         "narrativeVisitedStatePairs": 696
@@ -1048,10 +1141,10 @@
       "dialogue": {
         "nodes": 56,
         "contentBlocks": 57,
-        "avgContentWords": 13.95,
-        "p90ContentWords": 51,
+        "avgContentWords": 10.82,
+        "p90ContentWords": 34,
         "hardContentIssues": 0,
-        "softContentIssues": 8,
+        "softContentIssues": 0,
         "hardMonologueChains": 0,
         "softMonologueChains": 0
       },
@@ -1100,7 +1193,7 @@
         "structuralReachableNodes": 49,
         "structuralReachabilityRatio": 1,
         "hardContentIssuesReachable": 0,
-        "softContentIssuesReachable": 2,
+        "softContentIssuesReachable": 0,
         "hardMonologueChainsReachable": 0,
         "softMonologueChainsReachable": 0,
         "narrativeVisitedStatePairs": 820
@@ -1108,10 +1201,10 @@
       "dialogue": {
         "nodes": 49,
         "contentBlocks": 49,
-        "avgContentWords": 11.02,
+        "avgContentWords": 10,
         "p90ContentWords": 19,
         "hardContentIssues": 0,
-        "softContentIssues": 2,
+        "softContentIssues": 0,
         "hardMonologueChains": 0,
         "softMonologueChains": 0
       },
@@ -1220,7 +1313,7 @@
         "structuralReachableNodes": 87,
         "structuralReachabilityRatio": 1,
         "hardContentIssuesReachable": 0,
-        "softContentIssuesReachable": 2,
+        "softContentIssuesReachable": 0,
         "hardMonologueChainsReachable": 0,
         "softMonologueChainsReachable": 0,
         "narrativeVisitedStatePairs": 952
@@ -1228,10 +1321,10 @@
       "dialogue": {
         "nodes": 87,
         "contentBlocks": 88,
-        "avgContentWords": 8.3,
+        "avgContentWords": 8.05,
         "p90ContentWords": 18,
         "hardContentIssues": 0,
-        "softContentIssues": 2,
+        "softContentIssues": 0,
         "hardMonologueChains": 0,
         "softMonologueChains": 0
       },
@@ -1276,7 +1369,7 @@
         "structuralReachableNodes": 56,
         "structuralReachabilityRatio": 1,
         "hardContentIssuesReachable": 0,
-        "softContentIssuesReachable": 7,
+        "softContentIssuesReachable": 0,
         "hardMonologueChainsReachable": 0,
         "softMonologueChainsReachable": 0,
         "narrativeVisitedStatePairs": 345
@@ -1284,10 +1377,10 @@
       "dialogue": {
         "nodes": 56,
         "contentBlocks": 57,
-        "avgContentWords": 13.98,
-        "p90ContentWords": 43,
+        "avgContentWords": 12.11,
+        "p90ContentWords": 31,
         "hardContentIssues": 0,
-        "softContentIssues": 7,
+        "softContentIssues": 0,
         "hardMonologueChains": 0,
         "softMonologueChains": 0
       },
@@ -1408,8 +1501,8 @@
       "dialogue": {
         "nodes": 43,
         "contentBlocks": 44,
-        "avgContentWords": 8.45,
-        "p90ContentWords": 18,
+        "avgContentWords": 8.3,
+        "p90ContentWords": 17,
         "hardContentIssues": 0,
         "softContentIssues": 0,
         "hardMonologueChains": 0,
@@ -1468,7 +1561,7 @@
       "dialogue": {
         "nodes": 57,
         "contentBlocks": 58,
-        "avgContentWords": 13.57,
+        "avgContentWords": 13.59,
         "p90ContentWords": 24,
         "hardContentIssues": 0,
         "softContentIssues": 0,
@@ -1515,7 +1608,7 @@
         "structuralReachableNodes": 100,
         "structuralReachabilityRatio": 1,
         "hardContentIssuesReachable": 0,
-        "softContentIssuesReachable": 5,
+        "softContentIssuesReachable": 0,
         "hardMonologueChainsReachable": 0,
         "softMonologueChainsReachable": 0,
         "narrativeVisitedStatePairs": 1065
@@ -1523,10 +1616,10 @@
       "dialogue": {
         "nodes": 100,
         "contentBlocks": 101,
-        "avgContentWords": 12.08,
-        "p90ContentWords": 28,
+        "avgContentWords": 10.72,
+        "p90ContentWords": 27,
         "hardContentIssues": 0,
-        "softContentIssues": 5,
+        "softContentIssues": 0,
         "hardMonologueChains": 0,
         "softMonologueChains": 0
       },
@@ -1703,7 +1796,7 @@
       "dialogue": {
         "nodes": 71,
         "contentBlocks": 72,
-        "avgContentWords": 14.57,
+        "avgContentWords": 14.49,
         "p90ContentWords": 23,
         "hardContentIssues": 0,
         "softContentIssues": 0,

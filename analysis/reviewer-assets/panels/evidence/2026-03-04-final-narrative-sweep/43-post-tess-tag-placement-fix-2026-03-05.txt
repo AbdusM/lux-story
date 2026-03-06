@@ -1,0 +1,49 @@
+[wave] post tess tag placement fix
+[cmd] npm run verify:micro-reactivity
+
+> lux-story@2.3.1 verify:micro-reactivity
+> node --loader ./scripts/ts-loader.mjs scripts/verify-micro-reactivity.ts
+
+(node:60289) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./scripts/ts-loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+[verify-micro-reactivity] OK
+- mode: warn
+- unique_memory_ids: 7
+- callback_characters: 7
+- issues: 0 (errors: 0)
+- report: docs/qa/micro-reactivity-report.json
+[cmd] npm run verify:narrative-sim
+
+> lux-story@2.3.1 verify:narrative-sim
+> node --loader ./scripts/ts-loader.mjs scripts/verify-narrative-sim.ts
+
+(node:60303) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./scripts/ts-loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Narrative Sim Summary
+Failures: 0 (new: 0)
+requiredState mismatches: 0 (new: 0)
+truncated graphs: 0 (new: 0)
+
+No regressions vs baseline.
+[cmd] npm run verify:unreachable-dialogue-nodes
+
+> lux-story@2.3.1 verify:unreachable-dialogue-nodes
+> node --loader ./scripts/ts-loader.mjs scripts/verify-unreachable-dialogue-nodes.ts
+
+(node:60487) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./scripts/ts-loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+Unreachable dialogue nodes OK (count=0, no regressions).
+[cmd] npm run verify:unreferenced-dialogue-nodes
+
+> lux-story@2.3.1 verify:unreferenced-dialogue-nodes
+> node --loader ./scripts/ts-loader.mjs scripts/verify-unreferenced-dialogue-nodes.ts
+
+(node:60501) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./scripts/ts-loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+Unreferenced dialogue nodes OK (count=0, no regressions).
+[done] evidence=analysis/reviewer-assets/panels/evidence/2026-03-04-final-narrative-sweep/43-post-tess-tag-placement-fix-2026-03-05.txt

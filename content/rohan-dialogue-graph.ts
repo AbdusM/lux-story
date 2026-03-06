@@ -36,6 +36,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'rohan_intro_fear',
+        taxonomyClass: 'accept',
         text: "You sound afraid of it.",
         nextNodeId: 'rohan_fear_acknowledged',
         pattern: 'helping',
@@ -54,6 +55,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'rohan_intro_tech',
+        taxonomyClass: 'reject',
         text: "Hallucinated dependency? That's a supply chain attack vector.",
         nextNodeId: 'rohan_technical_dismissal',
         pattern: 'analytical',
@@ -68,6 +70,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'rohan_intro_wonder',
+        taxonomyClass: 'deflect',
         text: "If it works, who cares how it got written?",
         voiceVariations: {
           analytical: "Results matter. If it works, who cares how it got written?",
@@ -170,6 +173,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'rohan_value_human',
+        taxonomyClass: 'accept',
         text: "Understanding matters more than speed.",
         voiceVariations: {
           analytical: "Velocity without comprehension is just technical debt. Understanding matters.",
@@ -185,6 +189,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'rohan_defense',
+        taxonomyClass: 'reject',
         text: "The machine missed the bug. You didn't.",
         nextNodeId: 'rohan_bug_defense_response',
         pattern: 'analytical',
@@ -200,6 +205,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'rohan_tess_connection',
+        taxonomyClass: 'deflect',
         text: "Tess talked about this. Making choices when the map runs out.",
         nextNodeId: 'rohan_tess_reference',
         pattern: 'helping',
@@ -223,7 +229,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
         }
       }
     ],
-    tags: ['rohan_arc', 'iceberg:the_previous_visitor', 'record:record_rohan_previous_visitor_note', 'record:record_rohan_vibration_log', 'micro:rohan_previous_visitor_trace']
+    tags: ['rohan_arc', 'iceberg:the_previous_visitor', 'iceberg:burned_district', 'record:record_rohan_previous_visitor_note', 'record:record_rohan_vibration_log', 'verify-conflict:burned_district_cause', 'micro:rohan_previous_visitor_trace']
   },
 
   // Divergent responses for erasure reveal
@@ -418,6 +424,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'rohan_david_more',
+        taxonomyClass: 'accept',
         text: "What did six months of assembly teach you?",
         nextNodeId: 'rohan_david_lesson',
         pattern: 'helping',
@@ -425,6 +432,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'rohan_david_whereabouts',
+        taxonomyClass: 'reject',
         text: "Where is David now?",
         nextNodeId: 'rohan_david_gone',
         pattern: 'helping',
@@ -432,6 +440,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'rohan_david_patience',
+        taxonomyClass: 'deflect',
         text: "[Nod slowly. That kind of mentorship deserves reverent silence.]",
         nextNodeId: 'rohan_david_lesson',
         pattern: 'patience',
@@ -522,6 +531,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'rohan_honor_david',
+        taxonomyClass: 'accept',
         text: "David matters to you.",
         voiceVariations: {
           analytical: "There's a connection here. David matters to you.",
@@ -540,6 +550,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'rohan_preserve',
+        taxonomyClass: 'reject',
         text: "That's knowledge that could be lost. Someone needs to preserve it.",
         nextNodeId: 'rohan_honor_path',
         pattern: 'building',
@@ -547,6 +558,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'rohan_gone_patience',
+        taxonomyClass: 'deflect',
         text: "[Hold the moment. This grief has been waiting for someone to witness it.]",
         nextNodeId: 'rohan_honor_path',
         pattern: 'patience',
@@ -647,6 +659,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'sim_ask_ai',
+        taxonomyClass: 'accept',
         text: "Ask the AI to 'fix the import error'.",
         nextNodeId: 'rohan_sim_fail_hallucination',
         pattern: 'building',
@@ -654,6 +667,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'sim_manual_trace',
+        taxonomyClass: 'reject',
         text: "Open the source code. Trace the user_integrity_check function manually.",
         nextNodeId: 'rohan_sim_step_2',
         pattern: 'analytical',
@@ -661,6 +675,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'sim_comment_out',
+        taxonomyClass: 'deflect',
         text: "Comment out line 402. Skip the check.",
         nextNodeId: 'rohan_sim_fail_corruption',
         pattern: 'helping', // Trying to "help" by bypassing
@@ -734,7 +749,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "You open the file viewer. The file isn't there. You check the git history.\n\n**LAST MODIFIED:** 3 years ago by [David_V].\n**COMMIT MESSAGE:** \"Temporary bypass. Fix before 2025.\"\n\nDavid. He knew. He wrote a bypass because the legacy system couldn't handle UTF-8 characters.\n\nThe AI saw the bypass and thought it was a feature. It's trying to import a hack that David deleted.",
+        text: "The file is gone, but git shows David_V left a UTF-8 bypass years back.\n\nThe AI replayed that workaround as a feature.\n\nNo more patches; we need a clean check from first principles.",
         emotion: 'reverent_sadness',
         variation_id: 'sim_step_2_v1',
         richEffectContext: 'thinking'
@@ -763,7 +778,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     speaker: 'Rohan',
     content: [
       {
-        text: "You type the new function. You verify the inputs. You write a test case for \"Zoe\".\n\n**TEST PASSED.**\n**MIGRATION SUCCESSFUL.**\n\nThe hum of the servers seems to quiet.\n\nYou talked to the ghosts. You didn't just prompt. You listened to what David was trying to tell us.\n\nThat's not janitorial work. That's... communion.",
+        text: "You rebuild the check, add the Zoe test, and the migration passes.\n\nThe room quiets because this time we respected intent instead of cargo-culting old code.\n\nThat's not janitorial work; that's stewardship.",
         emotion: 'profound_relief',
         variation_id: 'sim_success_v2',
         richEffectContext: 'success'
@@ -861,6 +876,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'rohan_academy_how',
+        taxonomyClass: 'accept',
         text: "What would the curriculum look like?",
         nextNodeId: 'rohan_curriculum_design',
         pattern: 'analytical',
@@ -868,6 +884,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'rohan_academy_who',
+        taxonomyClass: 'reject',
         text: "Who would teach? You can't scale David.",
         nextNodeId: 'rohan_teacher_challenge',
         pattern: 'building',
@@ -875,6 +892,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'rohan_academy_building_framework',
+        taxonomyClass: 'deflect',
         text: "Start with a framework. What's the first principle you'd teach?",
         voiceVariations: {
           analytical: "What's the logical foundation? What's the first principle you'd teach?",
@@ -1116,6 +1134,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'rohan_legacy_farewell',
+        taxonomyClass: 'accept',
         text: "That's a legacy worth building. Passing on that feeling. That's what teaching really is.",
         voiceVariations: {
           analytical: "Knowledge transfer with emotional context. That's what teaching really is.",
@@ -1134,6 +1153,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'rohan_legacy_reflect',
+        taxonomyClass: 'reject',
         text: "I hope someone remembers that feeling from me too: seeing what they couldn't before.",
         nextNodeId: 'rohan_farewell',
         pattern: 'helping',
@@ -1145,6 +1165,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'rohan_legacy_question_back',
+        taxonomyClass: 'deflect',
         text: "What do you want people to remember about you?",
         nextNodeId: 'rohan_asks_player',
         pattern: 'exploring',
@@ -1176,6 +1197,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'player_remember_helping',
+        taxonomyClass: 'accept',
         text: "I want them to remember I helped them see possibility in themselves.",
         nextNodeId: 'rohan_farewell',
         pattern: 'helping',
@@ -1187,6 +1209,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'player_remember_teaching',
+        taxonomyClass: 'reject',
         text: "I want them to remember that click: they can build this too.",
         nextNodeId: 'rohan_farewell',
         pattern: 'building',
@@ -1209,6 +1232,7 @@ export const rohanDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'player_uncertain_legacy',
+        taxonomyClass: 'deflect',
         text: "I don't know yet. I'm here to figure out the impact I want to leave.",
         nextNodeId: 'rohan_farewell',
         pattern: 'exploring',
@@ -2184,6 +2208,7 @@ HINT: The gateway sometimes responds AFTER the timeout window.`,
     choices: [
       {
         choiceId: 'sim2_race_condition',
+        taxonomyClass: 'accept',
         text: "The retry logic doesn't check if the first charge already succeeded.",
         nextNodeId: 'rohan_sim2_success',
         pattern: 'analytical',
@@ -2191,6 +2216,7 @@ HINT: The gateway sometimes responds AFTER the timeout window.`,
       },
       {
         choiceId: 'sim2_gateway_bug',
+        taxonomyClass: 'reject',
         text: "The payment gateway is broken. Not our code's fault.",
         nextNodeId: 'rohan_sim2_partial',
         pattern: 'exploring',
@@ -2198,6 +2224,7 @@ HINT: The gateway sometimes responds AFTER the timeout window.`,
       },
       {
         choiceId: 'sim2_add_logging',
+        taxonomyClass: 'deflect',
         text: "Add more logging to capture the exact failure pattern.",
         nextNodeId: 'rohan_sim2_partial',
         pattern: 'patience',
@@ -2295,6 +2322,7 @@ WHERE IS THE 847ms COMING FROM?`,
     choices: [
       {
         choiceId: 'sim3_distributed_trace',
+        taxonomyClass: 'accept',
         text: "Check distributed tracing. Look at the FULL request path, not individual services.",
         nextNodeId: 'rohan_sim3_success',
         pattern: 'analytical',
@@ -2302,6 +2330,7 @@ WHERE IS THE 847ms COMING FROM?`,
       },
       {
         choiceId: 'sim3_restart_services',
+        taxonomyClass: 'reject',
         text: "Restart all services. Clear whatever's stuck.",
         nextNodeId: 'rohan_sim3_fail',
         pattern: 'building',
@@ -2309,6 +2338,7 @@ WHERE IS THE 847ms COMING FROM?`,
       },
       {
         choiceId: 'sim3_add_caching',
+        taxonomyClass: 'deflect',
         text: "Add caching layer. Buy time while investigating.",
         nextNodeId: 'rohan_sim3_partial',
         pattern: 'patience',

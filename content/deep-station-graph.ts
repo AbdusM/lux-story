@@ -42,11 +42,13 @@ export const deepStationDialogueNodes: DialogueNode[] = [
         choices: [
             {
                 choiceId: 'approach_core',
+                taxonomyClass: 'accept',
                 text: 'Approach the Central Terminal',
                 nextNodeId: 'core_terminal'
             },
             {
                 choiceId: 'analyze_server_logs',
+                taxonomyClass: 'reject',
                 text: '[Systems] Analyze the rack health',
                 nextNodeId: 'deep_server_logs',
                 skills: ['systemsThinking'],
@@ -54,6 +56,7 @@ export const deepStationDialogueNodes: DialogueNode[] = [
             },
             {
                 choiceId: 'look_down_void',
+                taxonomyClass: 'deflect',
                 text: 'Look over the edge',
                 nextNodeId: 'void_gaze'
             }
@@ -155,28 +158,31 @@ export const deepStationDialogueNodes: DialogueNode[] = [
                 emotion: 'patient'
             },
             {
-                text: "The silence stretches. Ten seconds. Fifteen. The station's lights flicker in time with your indecision.\n\n\"You're waiting for a script error,\" Samuel notes. \"But the silence... that's yours.\"",
+                text: "The silence stretches, the station lights flicker with your indecision, and Samuel says, \"You're waiting for a script error, but this silence is yours.\"",
                 variation_id: 'samuel_truth_silence',
                 condition: { hasGlobalFlags: ['temporary_silence'] },
                 emotion: 'curious'
             },
             {
-                text: "I am the Garbage Collector. I clean up the errors when the simulation runs too long.\n\nAnd you, my friend, are an Error. A beautiful one, but an Error.",
+                text: "I am the Garbage Collector; I clean up errors when the simulation runs too long.\n\nAnd you, my friend, are an error. A beautiful one.",
                 variation_id: 'samuel_truth_v3'
             }],
         choices: [
             {
                 choiceId: 'ask_architects',
+                taxonomyClass: 'accept',
                 text: '"Who built this place?"',
                 nextNodeId: 'samuel_architects'
             },
             {
                 choiceId: 'ask_glitch',
+                taxonomyClass: 'reject',
                 text: '"Why is it falling apart?"',
                 nextNodeId: 'samuel_glitch_reason'
             },
             {
                 choiceId: 'continue_endgame',
+                taxonomyClass: 'deflect',
                 text: 'What happens now?',
                 nextNodeId: 'endgame_choice'
             }

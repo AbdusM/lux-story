@@ -26,15 +26,9 @@ export const graceRevisitNodes: DialogueNode[] = [
         speaker: 'Grace',
         content: [
             {
-                text: `*Grace is sitting on the same bench. But the worn tote bag is gone, replaced by a small sketchbook.*
-        
-*She looks up as you approach. The tired lines around her eyes seem softer today.*
+                text: `*Grace sits with a sketchbook in her hands.*
 
-You came back.
-
-*She closes the book.*
-
-I was just thinking about you. About... how we met.{{player_sat_quietly: Most people rush to fill the silence. You sat with me. That meant a lot.|}}{{player_asked_questions: You asked the hard questions. Made me say out loud things I'd been keeping quiet.|}}`,
+You came back, and I've been thinking about how we met and how {{player_sat_quietly:you stayed in the silence when most people rush past it.|}}{{player_asked_questions:you asked the questions I was avoiding.|}} It still matters to me.`,
                 emotion: 'warm',
                 variation_id: 'grace_revisit_welcome_v1'
             }
@@ -66,13 +60,11 @@ I was just thinking about you. About... how we met.{{player_sat_quietly: Most pe
         speaker: 'Grace',
         content: [
             {
-                text: `*She exhales, like she's been holding something in her chest all day.*
+                text: `*She exhales.*
 
-Some days I still feel heavy. But lately... the heaviness doesn't feel like a sentence. More like weather. It passes.
+Some days still feel heavy, but lately it feels like weather instead of a sentence.
 
-*She taps the edge of the sketchbook.*
-
-What do you want to know?`,
+*She taps the sketchbook* and asks what you want to know.`,
                 emotion: 'reflective',
                 variation_id: 'grace_revisit_list_v1'
             }
@@ -83,6 +75,7 @@ What do you want to know?`,
         choices: [
             {
                 choiceId: 'grace_revisit_list_sketchbook',
+                taxonomyClass: 'accept',
                 text: "Show me what you're writing.",
                 nextNodeId: 'grace_revisit_update',
                 pattern: 'building',
@@ -90,6 +83,7 @@ What do you want to know?`,
             },
             {
                 choiceId: 'grace_revisit_list_presence',
+                taxonomyClass: 'reject',
                 text: "I keep thinking about that silence we shared.",
                 nextNodeId: 'grace_revisit_closing',
                 pattern: 'patience',
@@ -97,6 +91,7 @@ What do you want to know?`,
             },
             {
                 choiceId: 'grace_revisit_list_witness',
+                taxonomyClass: 'deflect',
                 text: "I'm glad you're still here.",
                 nextNodeId: 'grace_revisit_closing',
                 pattern: 'helping',
@@ -115,17 +110,11 @@ What do you want to know?`,
         speaker: 'Grace',
         content: [
             {
-                text: `*She touches the cover of the book.*
+                text: `*She taps the sketchbook cover.*
 
-Writing things down. Stories.
+Miss Williams passed last week, and {{handled_moment_well:I stayed with her the way we talked about.|}} before the end she told me stories I never want to lose.
 
-Mrs. Willams passed last week.{{handled_moment_well: I stayed with her, just like we talked about. It was peaceful.|}} But before the end, she told me about her life. About dancing in the jazz clubs on 52nd Street.
-
-*She looks at you.*
-
-I realized... if I don't write it down, who remembers? I'm not just a caregiver anymore. I'm a witness.
-
-{{knows_invisible_skill: You said presence was a skill. I'm starting to believe you.|}}`,
+I'm not just caregiving now; I'm witnessing and writing it down.`,
                 emotion: 'reflective',
                 variation_id: 'grace_revisit_update_v1'
             }
@@ -158,13 +147,9 @@ I realized... if I don't write it down, who remembers? I'm not just a caregiver 
         speaker: 'Grace',
         content: [
             {
-                text: `Exactly.
+                text: `*She settles the book in her lap.* Thank you for seeing me then; it helped me see myself clearly.
 
-*She puts the book in her lap.*
-
-Thank you. For seeing me back then. It helped me see myself a little clearer.
-
-Samuel's over by the boards if you need him. But... feel free to come sit quietly anytime. I won't mind.`,
+Samuel's by the boards if you need him, but you can sit quietly with me anytime.`,
                 emotion: 'grateful',
                 variation_id: 'grace_revisit_closing_v1'
             }
@@ -197,11 +182,11 @@ Samuel's over by the boards if you need him. But... feel free to come sit quietl
         speaker: 'Grace',
         content: [
             {
-                text: `Mr. Davis may have hours left, and he's afraid of dying alone more than dying.
+                text: `A patient may have hours left, and he's more afraid of being alone than dying.
 
-I'm exhausted, still on shift, and I can't hold this vigil by myself.
+I'm exhausted and still on shift, so I need help holding the room.
 
-Will you sit with us for a few hours and help me hold the room?`,
+Will you sit with us?`,
                 emotion: 'vulnerable_determined',
                 variation_id: 'loyalty_trigger_v1',
                 richEffectContext: 'warning'
@@ -248,11 +233,11 @@ Will you sit with us for a few hours and help me hold the room?`,
         speaker: 'Grace',
         content: [
             {
-                text: `You're right. I've been doing this a long time. I know how to hold space.
+                text: `You're right, I've done this a long time and I know how to hold space.
 
-Sometimes I second-guess myself. But I know what presence looks like. I can do this.
+I second-guess myself sometimes, but I can do this.
 
-Thank you for believing in me. That's its own kind of witnessing.`,
+Thank you for believing in me.`,
                 emotion: 'resolved',
                 variation_id: 'loyalty_declined_v1'
             }
@@ -278,9 +263,9 @@ Thank you for believing in me. That's its own kind of witnessing.`,
         speaker: 'Grace',
         content: [
             {
-                text: `Thank you. I— thank you.
+                text: `Thank you, truly.
 
-Room 412. The night shift starts in an hour. I'll meet you there.
+Room 412; the night shift starts in an hour and I'll meet you there.
 
 This matters more than you know.`,
                 emotion: 'grateful_hopeful',

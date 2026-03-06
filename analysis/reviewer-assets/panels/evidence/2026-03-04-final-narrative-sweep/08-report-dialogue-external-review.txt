@@ -1,0 +1,19 @@
+
+> lux-story@2.3.1 report:dialogue-external-review
+> node --loader ./scripts/ts-loader.mjs scripts/report-dialogue-external-review.ts
+
+(node:36093) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./scripts/ts-loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+Dialogue external review report written: /Users/abdusmuwwakkil/Development/30_lux-story/docs/qa/dialogue-external-review-report.json
+Characters: 20
+Priority tiers: high=0, medium=0, low=20
+Reachability-weighted tiers: high=0, medium=0, low=20
+Hard content issues: 0
+Hard monologue chains: 0
+Reachable hard content issues: 0
+Reachable hard monologue chains: 0
+Detached dialogue hard issues: 0 content, 0 chains
+Non-graph answer long choices: 0 (very long: 0)
+Loyalty experience (non-graph) hard issues: 0 content
+Dormant JSON dialogue hard issues: 0 content

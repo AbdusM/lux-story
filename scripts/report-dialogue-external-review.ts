@@ -14,6 +14,7 @@ import { reciprocityQuestions } from '../content/player-questions'
 import { LOYALTY_EXPERIENCES } from '../lib/loyalty-experience'
 
 type CharacterTier = 'high' | 'medium' | 'low'
+type DebtDisposition = 'wire' | 'archive' | 'delete' | 'active_non_graph'
 
 type DialogueGuidelineGraphStats = {
   hardContentIssues?: number
@@ -105,6 +106,7 @@ type DetachedDialogueSourceRow = {
   runtimeReachableNow: boolean
   reachableByNavigation: boolean
   devOnly: boolean
+  disposition: DebtDisposition
   nodes: number
   contentBlocks: number
   choices: number
@@ -133,6 +135,7 @@ type NonGraphExperienceSourceRow = {
   runtimeReachableNow: boolean
   reachableByNavigation: boolean
   devOnly: boolean
+  disposition: DebtDisposition
   experiences: number
   phases: number
   textBlocks: number
@@ -149,6 +152,7 @@ type DormantDialogueSourceRow = {
   runtimeReachableNow: boolean
   reachableByNavigation: boolean
   devOnly: boolean
+  disposition: DebtDisposition
   nodes: number
   contentBlocks: number
   choices: number
@@ -340,6 +344,7 @@ function analyzeDetachedDialogueSource(sourceId: string, nodes: DialogueNode[]):
     runtimeReachableNow: false,
     reachableByNavigation: false,
     devOnly: false,
+    disposition: 'wire',
     nodes: nodes.length,
     contentBlocks,
     choices,
@@ -437,6 +442,7 @@ function analyzeLoyaltyExperienceSource(): NonGraphExperienceSourceRow {
     runtimeReachableNow: true,
     reachableByNavigation: false,
     devOnly: false,
+    disposition: 'active_non_graph',
     experiences: experiences.length,
     phases,
     textBlocks,
@@ -457,6 +463,7 @@ function analyzeDormantJsonDialogueSource(sourceId: string, filePath: string): D
       runtimeReachableNow: false,
       reachableByNavigation: false,
       devOnly: false,
+      disposition: 'archive',
       nodes: 0,
       contentBlocks: 0,
       choices: 0,
@@ -510,6 +517,7 @@ function analyzeDormantJsonDialogueSource(sourceId: string, filePath: string): D
       runtimeReachableNow: false,
       reachableByNavigation: false,
       devOnly: false,
+      disposition: 'archive',
       nodes: nodes.length,
       contentBlocks,
       choices,
@@ -525,6 +533,7 @@ function analyzeDormantJsonDialogueSource(sourceId: string, filePath: string): D
       runtimeReachableNow: false,
       reachableByNavigation: false,
       devOnly: false,
+      disposition: 'archive',
       nodes: 0,
       contentBlocks: 0,
       choices: 0,
@@ -910,15 +919,17 @@ function main(): void {
     analyzeDetachedDialogueSource('reciprocity_samuel_reflections', samuelReflectionNodes),
     analyzeDetachedDialogueSource('maya_reciprocity_example', mayaReciprocityNodes),
   ].map((source) => {
-    const classification: Record<string, Pick<DetachedDialogueSourceRow, 'runtimeReachableNow' | 'reachableByNavigation' | 'devOnly'>> = {
-      intersection_alex_jordan: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: false },
-      intersection_maya_devon: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: false },
-      intersection_tess_rohan: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: false },
-      samuel_waiting_nodes: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: false },
-      reciprocity_graceful_decline: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: true },
-      reciprocity_enhanced_reactions: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: true },
-      reciprocity_samuel_reflections: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: true },
-      maya_reciprocity_example: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: true },
+    const classification: Record<string, Pick<DetachedDialogueSourceRow, 'runtimeReachableNow' | 'reachableByNavigation' | 'devOnly' | 'disposition'>> = {
+      // Active backlog to wire into routed graphs.
+      intersection_alex_jordan: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: false, disposition: 'wire' },
+      intersection_maya_devon: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: false, disposition: 'wire' },
+      intersection_tess_rohan: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: false, disposition: 'wire' },
+      samuel_waiting_nodes: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: false, disposition: 'wire' },
+      // Archived prototypes/examples; tracked for visibility but excluded from active debt budgets.
+      reciprocity_graceful_decline: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: true, disposition: 'archive' },
+      reciprocity_enhanced_reactions: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: true, disposition: 'archive' },
+      reciprocity_samuel_reflections: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: true, disposition: 'archive' },
+      maya_reciprocity_example: { runtimeReachableNow: false, reachableByNavigation: false, devOnly: true, disposition: 'archive' },
     }
     return {
       ...source,
@@ -926,19 +937,77 @@ function main(): void {
         runtimeReachableNow: false,
         reachableByNavigation: false,
         devOnly: false,
+        disposition: 'wire',
       }),
     }
   })
 
   const nonGraphAnswerSources: NonGraphAnswerSourceRow[] = [analyzeReciprocityQuestionSource()]
 
-  const nonGraphExperienceSources: NonGraphExperienceSourceRow[] = [analyzeLoyaltyExperienceSource()]
+  const nonGraphExperienceSources: NonGraphExperienceSourceRow[] = [analyzeLoyaltyExperienceSource()].map((source) => {
+    const classification: Record<string, Pick<NonGraphExperienceSourceRow, 'runtimeReachableNow' | 'reachableByNavigation' | 'devOnly' | 'disposition'>> = {
+      // Runtime-reachable system, intentionally non-graph. Track quality, but not as unwired debt.
+      loyalty_experience_system: {
+        runtimeReachableNow: true,
+        reachableByNavigation: false,
+        devOnly: false,
+        disposition: 'active_non_graph',
+      },
+    }
+    return {
+      ...source,
+      ...(classification[source.sourceId] ?? {
+        runtimeReachableNow: source.runtimeReachableNow,
+        reachableByNavigation: source.reachableByNavigation,
+        devOnly: source.devOnly,
+        disposition: 'wire',
+      }),
+    }
+  })
 
   const dormantDialogueSources: DormantDialogueSourceRow[] = [
     analyzeDormantJsonDialogueSource('maya_dialogue_enhanced_json', 'content/maya-dialogue-enhanced.json'),
-  ]
+  ].map((source) => {
+    const classification: Record<string, Pick<DormantDialogueSourceRow, 'runtimeReachableNow' | 'reachableByNavigation' | 'devOnly' | 'disposition'>> = {
+      // Legacy JSON artifact retained for history; excluded from active debt budget.
+      maya_dialogue_enhanced_json: {
+        runtimeReachableNow: false,
+        reachableByNavigation: false,
+        devOnly: false,
+        disposition: 'archive',
+      },
+    }
+    return {
+      ...source,
+      ...(classification[source.sourceId] ?? {
+        runtimeReachableNow: source.runtimeReachableNow,
+        reachableByNavigation: source.reachableByNavigation,
+        devOnly: source.devOnly,
+        disposition: 'wire',
+      }),
+    }
+  })
 
-  const detachedDialogueTotals = detachedDialogueSources.reduce((acc, s) => {
+  const detachedDialogueAllTotals = detachedDialogueSources.reduce((acc, s) => {
+    acc.nodes += s.nodes
+    acc.contentBlocks += s.contentBlocks
+    acc.choices += s.choices
+    acc.hardContentIssues += s.hardContentIssues
+    acc.softContentIssues += s.softContentIssues
+    acc.hardMonologueChains += s.hardMonologueChains
+    return acc
+  }, {
+    nodes: 0,
+    contentBlocks: 0,
+    choices: 0,
+    hardContentIssues: 0,
+    softContentIssues: 0,
+    hardMonologueChains: 0,
+  })
+
+  const detachedDialogueDebtSources = detachedDialogueSources.filter((source) =>
+    source.disposition === 'wire' || source.disposition === 'delete')
+  const detachedDialogueTotals = detachedDialogueDebtSources.reduce((acc, s) => {
     acc.nodes += s.nodes
     acc.contentBlocks += s.contentBlocks
     acc.choices += s.choices
@@ -976,7 +1045,7 @@ function main(): void {
     npcResponseSoftContent: 0,
   })
 
-  const nonGraphExperienceTotals = nonGraphExperienceSources.reduce((acc, s) => {
+  const nonGraphExperienceAllTotals = nonGraphExperienceSources.reduce((acc, s) => {
     acc.experiences += s.experiences
     acc.phases += s.phases
     acc.textBlocks += s.textBlocks
@@ -997,7 +1066,51 @@ function main(): void {
     veryLongChoices: 0,
   })
 
-  const dormantDialogueTotals = dormantDialogueSources.reduce((acc, s) => {
+  const nonGraphExperienceDebtSources = nonGraphExperienceSources.filter((source) =>
+    source.disposition === 'wire' || source.disposition === 'delete')
+  const nonGraphExperienceTotals = nonGraphExperienceDebtSources.reduce((acc, s) => {
+    acc.experiences += s.experiences
+    acc.phases += s.phases
+    acc.textBlocks += s.textBlocks
+    acc.choices += s.choices
+    acc.hardContentIssues += s.hardContentIssues
+    acc.softContentIssues += s.softContentIssues
+    acc.longChoices += s.longChoices
+    acc.veryLongChoices += s.veryLongChoices
+    return acc
+  }, {
+    experiences: 0,
+    phases: 0,
+    textBlocks: 0,
+    choices: 0,
+    hardContentIssues: 0,
+    softContentIssues: 0,
+    longChoices: 0,
+    veryLongChoices: 0,
+  })
+
+  const dormantDialogueAllTotals = dormantDialogueSources.reduce((acc, s) => {
+    acc.nodes += s.nodes
+    acc.contentBlocks += s.contentBlocks
+    acc.choices += s.choices
+    acc.hardContentIssues += s.hardContentIssues
+    acc.softContentIssues += s.softContentIssues
+    acc.longChoices += s.longChoices
+    acc.veryLongChoices += s.veryLongChoices
+    return acc
+  }, {
+    nodes: 0,
+    contentBlocks: 0,
+    choices: 0,
+    hardContentIssues: 0,
+    softContentIssues: 0,
+    longChoices: 0,
+    veryLongChoices: 0,
+  })
+
+  const dormantDialogueDebtSources = dormantDialogueSources.filter((source) =>
+    source.disposition === 'wire' || source.disposition === 'delete')
+  const dormantDialogueTotals = dormantDialogueDebtSources.reduce((acc, s) => {
     acc.nodes += s.nodes
     acc.contentBlocks += s.contentBlocks
     acc.choices += s.choices
@@ -1052,18 +1165,24 @@ function main(): void {
       },
       excludedFromPrimaryScoring: {
         detachedDialogueSources,
+        detachedDialogueDebtSources,
         detachedDialogueTotals,
+        detachedDialogueAllTotals,
         nonGraphAnswerSources,
         nonGraphAnswerTotals,
         nonGraphExperienceSources,
+        nonGraphExperienceDebtSources,
         nonGraphExperienceTotals,
+        nonGraphExperienceAllTotals,
         dormantDialogueSources,
+        dormantDialogueDebtSources,
         dormantDialogueTotals,
+        dormantDialogueAllTotals,
       },
       caveats: [
         'Primary character scoring uses graph-registry-routable character graphs only.',
         'Reachability weighting uses structural reachability (unreachable-dialogue-nodes report) and narrative sim visit-state counts when available.',
-        'Detached dialogue sources may be in prototype/unwired state and are reported separately to prevent false "full corpus" assumptions.',
+        'Detached/dormant/non-graph sources include a disposition (`wire|archive|delete|active_non_graph`). Debt totals include unresolved `wire/delete` sources only; all-source totals are provided separately.',
         'Sentence-overflow style flags from dialogue-guidelines are not used in the character soft-content metric (word-based for comparability).',
         'Continue-chain detection focuses on explicit continue-style links and may undercount non-standard deterministic chain wording.',
       ],
@@ -1086,10 +1205,10 @@ function main(): void {
   console.log(`Hard monologue chains: ${totals.hardMonologueChains}`)
   console.log(`Reachable hard content issues: ${reachabilityTotals.hardContentIssuesReachable}`)
   console.log(`Reachable hard monologue chains: ${reachabilityTotals.hardMonologueChainsReachable}`)
-  console.log(`Detached dialogue hard issues: ${detachedDialogueTotals.hardContentIssues} content, ${detachedDialogueTotals.hardMonologueChains} chains`)
+  console.log(`Detached dialogue hard issues (debt/all): ${detachedDialogueTotals.hardContentIssues}/${detachedDialogueAllTotals.hardContentIssues} content, ${detachedDialogueTotals.hardMonologueChains}/${detachedDialogueAllTotals.hardMonologueChains} chains`)
   console.log(`Non-graph answer long choices: ${nonGraphAnswerTotals.longChoices} (very long: ${nonGraphAnswerTotals.veryLongChoices})`)
-  console.log(`Loyalty experience (non-graph) hard issues: ${nonGraphExperienceTotals.hardContentIssues} content`)
-  console.log(`Dormant JSON dialogue hard issues: ${dormantDialogueTotals.hardContentIssues} content`)
+  console.log(`Loyalty experience (non-graph) hard issues (debt/all): ${nonGraphExperienceTotals.hardContentIssues}/${nonGraphExperienceAllTotals.hardContentIssues} content`)
+  console.log(`Dormant JSON dialogue hard issues (debt/all): ${dormantDialogueTotals.hardContentIssues}/${dormantDialogueAllTotals.hardContentIssues} content`)
 }
 
 main()

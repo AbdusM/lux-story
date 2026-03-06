@@ -30,6 +30,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'alex_intro_burnout',
+        taxonomyClass: 'accept',
         text: "You sound burned out.",
         voiceVariations: {
           analytical: "That pitch sounds rehearsed. And exhausted.",
@@ -48,6 +49,7 @@ export const alexDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'alex_intro_ai_worth',
+        taxonomyClass: 'reject',
         text: "Is learning AI actually worth it?",
         voiceVariations: {
           analytical: "Is learning AI actually worth it? What's the ROI?",
@@ -66,6 +68,7 @@ export const alexDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'alex_intro_ready',
+        taxonomyClass: 'deflect',
         text: "What do you mean 'finally feel ready'?",
         archetype: 'ASK_FOR_DETAILS',
         nextNodeId: 'alex_response_exploring',
@@ -329,6 +332,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'alex_contradict_success',
+        taxonomyClass: 'accept',
         text: "So what actually helped the students who did succeed?",
         archetype: 'ASK_FOR_DETAILS',
         nextNodeId: 'alex_students_success',
@@ -341,6 +345,7 @@ export const alexDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'alex_contradict_cares',
+        taxonomyClass: 'reject',
         text: "It sounds like you still care about teaching.",
         voiceVariations: {
           analytical: "You're still analyzing what went wrong. You still care.",
@@ -359,6 +364,7 @@ export const alexDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'alex_contradict_learning',
+        taxonomyClass: 'deflect',
         text: "What are YOU learning right now?",
         voiceVariations: {
           analytical: "Enough about them. What are YOU learning right now?",
@@ -409,7 +415,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "The ones who made it? They weren't the best coders.\n\nThey were the ones who could explain what they built and why it mattered.\n\nTechnical skills got them in the door. <bloom>Storytelling</bloom> got them the job.\n\nWeird, right? We spend all this time on syntax and none on \"why should anyone care?\"",
+        text: "The students who lasted weren't the best coders; they could explain what they built and why it mattered.\n\nTechnical skill opened doors, but story and judgment closed offers.\n\nWe under-teach that.",
         emotion: 'reflective',
         interaction: 'nod',
         variation_id: 'success_v1',
@@ -469,7 +475,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "What am I learning?\n\n...Okay, fine. I've been messing with local LLMs. Running models on my own machine. Not for a job or a side hustle.\n\nJust because I remembered what <bloom>curiosity</bloom> felt like before I had to monetize it.\n\nIt's dumb. It won't look good on a resume. But it's the first thing that's felt real in a while.",
+        text: "I've been running local LLM experiments with no monetization plan because I wanted <bloom>curiosity</bloom> back.\n\nIt may never become a credential, but it feels honest.\n\nThat's the first signal I've trusted lately.",
         emotion: 'surprised_honest',
         interaction: 'bloom',
         variation_id: 'learning_v1',
@@ -771,7 +777,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "I'm building an anti-curriculum.\n\nIt starts with real curiosity, not job titles, then maps <bloom>how you learn</bloom> instead of what course to buy.\n\nIt's messy and maybe unmonetizable, but it's the first thing I've built in years that feels honest.",
+        text: "I'm building an anti-curriculum.\n\nIt starts with curiosity and maps <bloom>how you learn</bloom> instead of what course to buy.\n\nIt's messy and unmonetizable, but it's the first honest thing I've built.",
         emotion: 'vulnerable_proud',
         interaction: 'bloom',
         variation_id: 'project_v1',
@@ -821,7 +827,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Because I'm not selling an outcome anymore.\n\nBootcamps sold linear promises, but this is curiosity-driven exploration, and I've stayed up late chasing questions with no deadline or payout.\n\nThat's the feeling we should chase, not certificates. <ripple>That.</ripple>",
+        text: "Because I'm not selling outcomes anymore.\n\nBootcamps sold linear promises; this is curiosity-driven, and I stay up chasing questions without a deadline or payout.\n\nThat's the feeling we should chase, not certificates.",
         emotion: 'illuminated',
         interaction: 'bloom',
         variation_id: 'curiosity_v1',
@@ -856,6 +862,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'alex_pattern_analytical',
+        taxonomyClass: 'accept',
         text: "I like understanding how things work. Systems. Causes.",
         nextNodeId: 'alex_crossroads_moment',
         pattern: 'analytical',
@@ -863,6 +870,7 @@ export const alexDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'alex_pattern_helping',
+        taxonomyClass: 'reject',
         text: "I care about people. What helps them. What hurts them.",
         nextNodeId: 'alex_crossroads_moment',
         pattern: 'helping',
@@ -870,6 +878,7 @@ export const alexDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'alex_pattern_exploring',
+        taxonomyClass: 'deflect',
         text: "I'm always asking 'what if?' Connecting dots others miss.",
         nextNodeId: 'alex_crossroads_moment',
         pattern: 'exploring',
@@ -908,6 +917,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'alex_crossroads_mastery',
+        taxonomyClass: 'accept',
         text: "I want the real thing. Even if it's harder.",
         nextNodeId: 'alex_final_synthesis',
         pattern: 'building',
@@ -919,6 +929,7 @@ export const alexDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'alex_crossroads_pragmatic',
+        taxonomyClass: 'reject',
         text: "I need to be practical. Bills don't pay themselves.",
         nextNodeId: 'alex_final_synthesis',
         pattern: 'analytical',
@@ -930,6 +941,7 @@ export const alexDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'alex_crossroads_both',
+        taxonomyClass: 'deflect',
         text: "Can it be both? Practical AND meaningful?",
         voiceVariations: {
           analytical: "False dichotomy. Can't practical and meaningful overlap?",
@@ -978,7 +990,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Real answer:\n\nCredentials follow once you get good at work you can keep caring about.\n\nI watched students burn out chasing marketable skills they hated. The ones who lasted followed curiosity and built proof.\n\nThis station isn't about perfect paths. It's about finding signal in noise.\n\nYou're doing that now.\n\nDistrust anyone, <bloom>including me</bloom>, who makes it sound easy.",
+        text: "Credentials follow once you get good at work you care about.\n\nThe edge is learning fast, explaining your choices, and adapting when tools change.\n\nDistrust anyone, <bloom>including me</bloom>, who makes it sound easy.",
         emotion: 'knowing_warm',
         interaction: 'bloom',
         variation_id: 'synthesis_v1',
@@ -1005,7 +1017,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Here's what I wish someone told me earlier:\n\nWinners aren't people who found the perfect course.\n\nThey're people who <bloom>stayed curious longer than they stayed scared</bloom>.\n\nIn five years, the tools will change and most courses will be obsolete.\n\nPeople who learned <ripple>how to learn</ripple> adapt again.",
+        text: "Winners aren't people who found a perfect course; they're the ones who <bloom>stay curious and act</bloom>.\n\nTools keep changing, but people who learn in public adapt faster.\n\nKeep that, and fear loses leverage.",
         emotion: 'knowing',
         interaction: 'bloom',
         variation_id: 'turn_v1',
@@ -1047,6 +1059,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'alex_turn_practical',
+        taxonomyClass: 'accept',
         text: "Okay, but practically. What do I do tomorrow?",
         nextNodeId: 'alex_practical_advice',
         pattern: 'building',
@@ -1054,6 +1067,7 @@ export const alexDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'alex_turn_fear',
+        taxonomyClass: 'reject',
         text: "What if I'm both curious AND scared?",
         nextNodeId: 'alex_fear_acknowledgment',
         pattern: 'helping',
@@ -1061,6 +1075,7 @@ export const alexDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'alex_turn_balance',
+        taxonomyClass: 'deflect',
         text: "How do I balance credentials and genuine learning?",
         nextNodeId: 'alex_credential_wisdom',
         pattern: 'analytical',
@@ -1076,7 +1091,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "If I were restarting tomorrow:\n\n<bloom>One:</bloom> pick a small problem you actually care about.\n\n<bloom>Two:</bloom> build something, even rough.\n\n<bloom>Three:</bloom> when stuck, struggle before buying another course.\n\n<bloom>Four:</bloom> share what you made and explain your choices.\n\nRepeat until your own learning pattern becomes obvious.\n\nThen choose the next skill with evidence, not panic.\n\nNo grand curriculum required.",
+        text: "If I were restarting tomorrow, I'd pick one problem, ship a solution, and share weekly lessons.\n\nStruggle before buying another course, then pick the next skill from evidence instead of panic.\n\nNo grand curriculum required.",
         emotion: 'direct_practical',
         interaction: 'nod',
         variation_id: 'practical_v1',
@@ -1100,7 +1115,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     speaker: 'Alex',
     content: [
       {
-        text: "Both is the honest answer.\n\nAnyone claiming zero fear is lying or numb.\n\nI'm scared too: scared this pivot fails, scared I burned years teaching the wrong thing, scared I'm wrong again.\n\nFear doesn't vanish when you find a perfect path.\n\nIt shrinks when you stop demanding certainty and keep learning anyway.\n\n<bloom>Curiosity doesn't erase fear; it makes it livable.</bloom>",
+        text: "Curiosity and fear can coexist.\n\n<bloom>Fear shrinks when you keep learning without perfect certainty, and curiosity lets you move anyway.</bloom>",
         emotion: 'vulnerable_warm',
         interaction: 'bloom',
         variation_id: 'fear_v1',
@@ -1350,6 +1365,7 @@ export const alexDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'alex_sim_supplier_a',
+        taxonomyClass: 'accept',
         text: "Supplier A. Speed is everything. Kids can't wait.",
         nextNodeId: 'alex_simulation_phase_2_speed',
         pattern: 'building',
@@ -1357,6 +1373,7 @@ export const alexDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'alex_sim_supplier_b',
+        taxonomyClass: 'reject',
         text: "Supplier B. Balance of speed, cost, and ethics.",
         nextNodeId: 'alex_simulation_phase_2_balance',
         pattern: 'analytical',
@@ -1371,6 +1388,7 @@ export const alexDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'alex_sim_hybrid',
+        taxonomyClass: 'deflect',
         text: "Wait. Can we split the order? Hybrid approach?",
         nextNodeId: 'alex_simulation_phase_2_hybrid',
         pattern: 'exploring',
@@ -2089,6 +2107,7 @@ How do you design for genuine learning AND employability?`,
     choices: [
       {
         choiceId: 'sim3_portfolio_over_cert',
+        taxonomyClass: 'accept',
         text: "No certificates. Build portfolios. Real projects are better proof than paper.",
         nextNodeId: 'alex_sim3_partial',
         pattern: 'building',
@@ -2096,6 +2115,7 @@ How do you design for genuine learning AND employability?`,
       },
       {
         choiceId: 'sim3_micro_credentials',
+        taxonomyClass: 'reject',
         text: "Micro-credentials. Students earn badges for genuine skill demonstrations, not tests.",
         nextNodeId: 'alex_sim3_success',
         pattern: 'analytical',
@@ -2103,6 +2123,7 @@ How do you design for genuine learning AND employability?`,
       },
       {
         choiceId: 'sim3_dual_track',
+        taxonomyClass: 'deflect',
         text: "Dual track: exploration modules + optional certification prep for those who want it.",
         nextNodeId: 'alex_sim3_fail',
         pattern: 'patience',

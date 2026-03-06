@@ -32,6 +32,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'intro_curious',
         text: "What are you working on?",
+        taxonomyClass: 'accept',
         nextNodeId: 'devon_explains_system',
         pattern: 'exploring',
         skills: ['communication'],
@@ -50,6 +51,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'intro_technical',
         text: "That looks like a decision tree. For what?",
+        taxonomyClass: 'reject',
         nextNodeId: 'devon_technical_response',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
@@ -69,6 +71,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'intro_gentle',
         text: "I'm just passing through. You seem focused.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'devon_defends_focus',
         pattern: 'patience',
         skills: ['emotionalIntelligence', 'adaptability'],
@@ -136,6 +139,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'debug_literal',
         text: "[DEBUG] Accept input literal: \"Fine\" = No distress. End conversation.",
+        taxonomyClass: 'accept',
         nextNodeId: 'devon_debug_result_fail_literal',
         pattern: 'analytical',
         skills: ['systemsThinking'], // Logical but wrong contextually
@@ -150,6 +154,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'debug_tone',
         text: "[DEBUG] Analyze audio spectrum. Detect stress micro-tremors.",
+        taxonomyClass: 'reject',
         nextNodeId: 'devon_debug_step_2', // Deeper analysis
         pattern: 'analytical',
         skills: ['criticalThinking', 'digitalLiteracy'],
@@ -164,6 +169,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'debug_emotional',
         text: "[OVERRIDE] Ignore logical branch. Query emotional state directly.",
+        taxonomyClass: 'deflect',
         nextNodeId: 'devon_debug_result_override',
         pattern: 'helping',
         skills: ['emotionalIntelligence'],
@@ -308,7 +314,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     content: [
       {
         // NOTE: Removed "Devon reads" - the scripted line speaks for itself
-        text: "\"Dad, data suggests you are distressed. Are you sure you are okay?\"\n\nSilence.\n\nThen a click.\n\nRed text: \"SCRIPT <glitch>FAILED</glitch>. EXCEPTION: HUMAN_VARIANCE.\"\n\nHe hung up. He heard the script in my voice.\n\nHe heard me debugging him instead of just... talking to him.\n\nThis whole thing is stupid.",
+        text: "\"Dad, data suggests you're distressed; are you okay?\"\n\nHe hung up the second he heard the script in my voice, and I optimized the sentence but lost the person.",
         emotion: 'devastated',
         variation_id: 'debug_fail_script_v1',
         richEffectContext: 'error'
@@ -317,6 +323,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'retry_script',
+        taxonomyClass: 'accept',
         text: "I'm sorry. Let's try without the script.",
         nextNodeId: 'devon_explains_system',
         pattern: 'helping',
@@ -331,6 +338,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'give_up_script',
+        taxonomyClass: 'reject',
         text: "Maybe emotions really are just bugs.",
         nextNodeId: 'devon_bad_ending',
         pattern: 'analytical',
@@ -347,6 +355,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'sit_with_failure',
+        taxonomyClass: 'deflect',
         text: "Sometimes we just need to sit with failure. Let's take a breath.",
         nextNodeId: 'devon_explains_system',
         pattern: 'patience',
@@ -440,6 +449,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'ask_purpose',
         text: "What's the use case for this system?",
+        taxonomyClass: 'accept',
         nextNodeId: 'devon_father_hint',
         pattern: 'analytical',
         skills: ['criticalThinking', 'communication'],
@@ -451,6 +461,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'validate_approach',
         text: "Systems make sense. People don't.",
+        taxonomyClass: 'reject',
         nextNodeId: 'devon_father_hint',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication'],
@@ -463,6 +474,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       {
         choiceId: 'technical_building',
         text: "What if you built in emotional states as first-class variables?",
+        taxonomyClass: 'deflect',
         nextNodeId: 'devon_father_hint',
         pattern: 'building',
         skills: ['systemsThinking', 'creativity'],
@@ -607,6 +619,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'suggest_empathy',
+        taxonomyClass: 'accept',
         text: "Maybe feelings aren't bugs to fix?",
         nextNodeId: 'devon_father_hint',
         pattern: 'helping',
@@ -619,6 +632,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'ask_specific_case',
+        taxonomyClass: 'reject',
         text: "Is there someone specific you're trying to understand?",
         nextNodeId: 'devon_father_hint',
         pattern: 'exploring',
@@ -631,6 +645,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'let_devon_process',
+        taxonomyClass: 'deflect',
         text: "[Nod slowly. Give them space to think.]",
         nextNodeId: 'devon_father_hint',
         pattern: 'patience',
@@ -690,6 +705,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'ask_who',
+        taxonomyClass: 'accept',
         text: "Who is it?",
         nextNodeId: 'devon_father_reveal',
         pattern: 'exploring',
@@ -701,6 +717,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'devon_recognize_care',
+        taxonomyClass: 'deflect',
         text: "The caring is obvious. Even if the conversations aren't working.",
         nextNodeId: 'devon_father_reveal',
         pattern: 'helping',
@@ -712,6 +729,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'ask_why_failing',
+        taxonomyClass: 'reject',
         text: "Why do you think conversations are failing?",
         nextNodeId: 'devon_system_failure',
         pattern: 'analytical',
@@ -880,6 +898,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'ask_about_dad_work',
+        taxonomyClass: 'accept',
         text: "What does your dad do in Huntsville?",
         nextNodeId: 'devon_father_aerospace',
         pattern: 'exploring',
@@ -902,6 +921,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'did_it_work',
+        taxonomyClass: 'reject',
         text: "Did it work?",
         nextNodeId: 'devon_system_failure',
         pattern: 'analytical',
@@ -909,6 +929,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'hold_space_grief',
+        taxonomyClass: 'deflect',
         text: "[Stay quiet. Some things need space, not words.]",
         nextNodeId: 'devon_system_failure',
         pattern: 'patience',
@@ -926,7 +947,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     speaker: 'Devon Kumar',
     content: [
       {
-        text: "{{trust>3:He's an aerospace engineer at NASA Marshall.|He's an engineer. Precision is everything.}}\n\nTwenty-five years debugging rocket systems. Guidance control, error detection, mission-critical protocols.\n\nHe can troubleshoot a spacecraft traveling 17,000 miles per hour, but he can't...\n\nHe can't debug his own grief.",
+        text: "{{trust>3:He's an aerospace engineer at NASA Marshall.|He's an engineer where precision is everything.}}\n\nTwenty-five years debugging rocket systems: guidance control, error detection, mission-critical protocols.\n\nHe can troubleshoot a spacecraft at 17,000 miles per hour, but he can't debug his own grief.",
         emotion: 'frustrated_admiration',
         variation_id: 'father_aerospace_v1'
       }
@@ -934,6 +955,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'ask_devon_engineering',
+        taxonomyClass: 'accept',
         text: "Is that why you went into engineering?",
         nextNodeId: 'devon_uab_systems_engineering',
         pattern: 'exploring',
@@ -945,6 +967,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'devon_grief_recognition',
+        taxonomyClass: 'deflect',
         text: "Grief can't be debugged. It can only be felt.",
         nextNodeId: 'devon_grief_felt_response',
         pattern: 'helping',
@@ -956,6 +979,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'comment_on_similarity',
+        taxonomyClass: 'reject',
         text: "You're doing what he does - trying to debug systems.",
         nextNodeId: 'devon_debug_parallel_response',
         pattern: 'analytical',
@@ -1094,6 +1118,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'challenge_follow_systems',
+        taxonomyClass: 'reject',
         text: "Systems thinking might be exactly what grief needs.",
         nextNodeId: 'devon_realizes_bridge',
         pattern: 'analytical',
@@ -1105,6 +1130,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'challenge_follow_patience',
+        taxonomyClass: 'deflect',
         text: "Debugging requires patience. So does grief.",
         nextNodeId: 'devon_career_context',
         pattern: 'patience',
@@ -1116,6 +1142,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'challenge_follow_connection',
+        taxonomyClass: 'accept',
         text: "You already have the skills. You just need to apply them differently.",
         nextNodeId: 'devon_career_context',
         pattern: 'helping',
@@ -1222,6 +1249,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'devon_presence_validation',
+        taxonomyClass: 'accept',
         text: "[Say nothing. Just be here with him.]",
         nextNodeId: 'devon_reframe',
         pattern: 'patience',
@@ -1233,6 +1261,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'reframe_empathy',
+        taxonomyClass: 'reject',
         text: "What if understanding someone is its own kind of information?",
         nextNodeId: 'devon_reframe',
         pattern: 'building',
@@ -1244,6 +1273,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'explore_other_ways',
+        taxonomyClass: 'deflect',
         text: "What would it look like if helping wasn't fixing? What else could it be?",
         nextNodeId: 'devon_reframe',
         pattern: 'exploring',
@@ -1404,6 +1434,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       // Career observation routes (ISP: Only visible when pattern combos are achieved)
       {
         choiceId: 'crossroads_career_systems',
+        taxonomyClass: 'accept',
         text: "The way you analyze systems... it reminds me of something.",
         nextNodeId: 'devon_career_reflection_systems',
         pattern: 'analytical',
@@ -1462,6 +1493,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'crossroads_emotional',
+        taxonomyClass: 'reject',
         text: "What does your gut say?",
         nextNodeId: 'devon_chooses_heart',
         pattern: 'helping',
@@ -1485,6 +1517,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'crossroads_support',
+        taxonomyClass: 'deflect',
         text: "Whatever feels right. He needs you there.",
         nextNodeId: 'devon_chooses_presence',
         pattern: 'patience',
@@ -1782,6 +1815,7 @@ export const devonDialogueNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'player_try_to_fix',
+        taxonomyClass: 'reject',
         text: "I try to fix it fast, and sometimes I make it worse.",
         nextNodeId: 'devon_crossroads',
         pattern: 'building',
@@ -1789,6 +1823,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'player_listen_first',
+        taxonomyClass: 'accept',
         text: "I try to listen first, but I still jump into fixing.",
         nextNodeId: 'devon_crossroads',
         pattern: 'helping',
@@ -1796,6 +1831,7 @@ export const devonDialogueNodes: DialogueNode[] = [
       },
       {
         choiceId: 'player_analyze_patterns',
+        taxonomyClass: 'deflect',
         text: "I look for patterns: what worked, what failed, and where emotion breaks the model.",
         nextNodeId: 'devon_crossroads',
         pattern: 'analytical',
@@ -3357,7 +3393,7 @@ Hint: Check the hysteresis logic`,
     nodeId: 'devon_simulation_phase2_setup',
     speaker: 'Devon Kumar',
     content: [{
-      text: "I've been thinking about redundancy. The station's life support has a single point of failure in the oxygen recycler.\n\nIf it goes down, we have 6 hours of reserve air. That's it.\n\nI've been designing a backup system, but... I can't get the constraints to balance. Power budget is maxed. Space is limited. Cost matters.\n\nWant to see if you can architect something I missed?",
+      text: "The oxygen recycler still has a single point of failure, and every backup I sketch breaks cost, space, or power.\n\nSee an architecture I missed?",
       emotion: 'focused_vulnerable',
       variation_id: 'simulation_phase2_intro_v1'
     }],
@@ -3436,6 +3472,11 @@ Which architecture balances the constraints?`,
         nextNodeId: 'devon_simulation_phase2_success',
         pattern: 'analytical',
         skills: ['systemsThinking', 'problemSolving']
+      },
+      {
+        choiceId: 'phase2_fail',
+        text: "You stall. The system stays brittle.",
+        nextNodeId: 'devon_simulation_phase2_fail'
       }
     ],
     onEnter: [{
@@ -3474,7 +3515,7 @@ Which architecture balances the constraints?`,
     nodeId: 'devon_simulation_phase2_fail',
     speaker: 'Devon Kumar',
     content: [{
-      text: "That design... it violates the power budget. Or the space constraint. One of them.\n\nIt's harder than it looks, right? Optimizing for everything at once.\n\nI've been stuck on this for weeks. Maybe there isn't a perfect solution.",
+      text: "That design still breaks either the power budget or the space constraint.\n\nThis is why I've been stuck: every fix solves one limit and trips another.",
       emotion: 'frustrated_tired',
       variation_id: 'phase2_fail_v1'
     }],
@@ -3498,7 +3539,7 @@ Which architecture balances the constraints?`,
     nodeId: 'devon_simulation_phase3_setup',
     speaker: 'Devon Kumar',
     content: [{
-      text: "I need your help with something.\n\nNot a technical system. A human one.\n\nMy dad. We haven't really talked since mom died. I keep trying to... debug the relationship. Fix the communication protocol. But every time I try to optimize for efficiency, I just make it worse.\n\nYou've seen how I think. Maybe... maybe you can help me design a better approach.\n\nNot a fix. Just... a framework.",
+      text: "My dad and I barely talk since mom died, and every time I debug the relationship I make it colder.\n\nCan you help me design something human instead of optimized?",
       emotion: 'vulnerable_hopeful',
       variation_id: 'simulation_phase3_intro_v1',
       richEffectContext: 'warning'
@@ -3583,6 +3624,11 @@ What communication approach balances these?`,
         nextNodeId: 'devon_simulation_phase3_success',
         pattern: 'helping',
         skills: ['emotionalIntelligence', 'communication']
+      },
+      {
+        choiceId: 'phase3_fail',
+        text: "You over-engineer the moment. It collapses.",
+        nextNodeId: 'devon_simulation_phase3_fail'
       }
     ],
     onEnter: [{
@@ -3654,7 +3700,7 @@ What communication approach balances these?`,
     nodeId: 'devon_simulation_phase3_fail',
     speaker: 'Devon Kumar',
     content: [{
-      text: "That still feels like I'm trying to engineer the outcome. To optimize for a result.\n\nBut relationships aren't systems. They're... messier than that.\n\nI don't know if I can do this without turning it into another flowchart.",
+      text: "That still feels like I'm engineering an outcome.\n\nIf I turn this into another flowchart, I miss the relationship entirely.",
       emotion: 'defeated_vulnerable',
       variation_id: 'phase3_fail_v1'
     }],
@@ -3756,6 +3802,7 @@ What communication approach balances these?`,
     choices: [
       {
         choiceId: 'prioritize_servers',
+        taxonomyClass: 'reject',
         text: "Server room. If we lose data, everything else is meaningless.",
         nextNodeId: 'devon_loyalty_servers_first',
         pattern: 'analytical',
@@ -3763,6 +3810,7 @@ What communication approach balances these?`,
       },
       {
         choiceId: 'prioritize_fire',
+        taxonomyClass: 'accept',
         text: "Fire suppression. If something catches, it's all over.",
         nextNodeId: 'devon_loyalty_fire_first',
         pattern: 'helping',
@@ -3770,6 +3818,7 @@ What communication approach balances these?`,
       },
       {
         choiceId: 'freeze_indecision',
+        taxonomyClass: 'deflect',
         text: "I... I don't know. You decide.",
         nextNodeId: 'devon_loyalty_freeze',
         pattern: 'patience'

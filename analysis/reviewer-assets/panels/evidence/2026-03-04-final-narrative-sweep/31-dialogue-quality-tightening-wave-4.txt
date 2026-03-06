@@ -1,0 +1,25 @@
+Date: 2026-03-05
+Scope: Additional targeted sentence-density cleanup after wave-3.
+
+Soft issue progression:
+- 108 -> 89 -> 71 -> 62 -> 55
+
+Commands run:
+- npm run verify:dialogue-guidelines
+- npm run type-check
+- npm run verify:choice-taxonomy
+- npm run verify:narrative-sim
+- npm run verify:required-state-strict
+- npm run verify:unreachable-dialogue-nodes
+- npm run verify:unreferenced-dialogue-nodes
+
+Current status:
+- dialogue guidelines: hard=0, soft=55
+- taxonomy coverage: 100% (258/258)
+- narrative sim failures: 0
+- required-state strict violations: 0
+- unreachable nodes: 0
+- unreferenced nodes: 0
+
+Process hygiene:
+- No lux-story verify/test processes left running after completion.

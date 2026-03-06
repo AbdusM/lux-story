@@ -43,6 +43,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'acknowledge_analytical',
+        taxonomyClass: 'accept',
         text: '"I guess I do analyze things carefully"',
         nextNodeId: 'samuel_analytical_affirm',
         pattern: 'analytical',
@@ -54,6 +55,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       },
       {
         choiceId: 'uncertain_analytical',
+        taxonomyClass: 'reject',
         text: '"I\'m not sure if that\'s really me"',
         nextNodeId: 'samuel_analytical_uncertain',
         pattern: 'patience',
@@ -65,6 +67,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       },
       {
         choiceId: 'explore_analytical',
+        taxonomyClass: 'deflect',
         text: '"What do you notice about how I think?"',
         nextNodeId: 'samuel_analytical_reflect',
         pattern: 'exploring',
@@ -160,7 +163,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
         variation_id: 'patience_observation_v1'
       },
       {
-        text: "Most folks fight that. They think movin' fast means gettin' somewhere. But you... you seem to know better. That true? Or you still figurin' it out?",
+        text: "Most folks fight patience and think movin' fast means gettin' somewhere.\n\nYou seem to know better; that true, or are you still figurin' it out?",
         emotion: 'warm',
         variation_id: 'patience_question_v1'
       }
@@ -168,6 +171,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'acknowledge_patience',
+        taxonomyClass: 'accept',
         text: '"I think rushing usually makes things worse"',
         nextNodeId: 'samuel_patience_affirm',
         pattern: 'patience',
@@ -179,6 +183,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       },
       {
         choiceId: 'uncertain_patience',
+        taxonomyClass: 'reject',
         text: '"Sometimes I wonder if I\'m just being slow"',
         nextNodeId: 'samuel_patience_uncertain',
         pattern: 'analytical',
@@ -190,6 +195,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       },
       {
         choiceId: 'explore_patience',
+        taxonomyClass: 'deflect',
         text: '"What makes you think that about me?"',
         nextNodeId: 'samuel_patience_reflect',
         pattern: 'exploring',
@@ -293,6 +299,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'acknowledge_exploring',
+        taxonomyClass: 'accept',
         text: '"I\'ve always needed to understand things"',
         nextNodeId: 'samuel_exploring_affirm',
         pattern: 'exploring',
@@ -304,6 +311,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       },
       {
         choiceId: 'uncertain_exploring',
+        taxonomyClass: 'reject',
         text: '"Maybe I just don\'t know what I\'m looking for"',
         nextNodeId: 'samuel_exploring_uncertain',
         pattern: 'patience',
@@ -315,6 +323,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       },
       {
         choiceId: 'explore_exploring',
+        taxonomyClass: 'deflect',
         text: '"What corners have I checked?"',
         nextNodeId: 'samuel_exploring_reflect',
         pattern: 'exploring',
@@ -418,6 +427,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'acknowledge_helping',
+        taxonomyClass: 'accept',
         text: '"I care when people are struggling"',
         nextNodeId: 'samuel_helping_affirm',
         pattern: 'helping',
@@ -429,6 +439,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       },
       {
         choiceId: 'uncertain_helping',
+        taxonomyClass: 'reject',
         text: '"Sometimes I wonder if I help too much"',
         nextNodeId: 'samuel_helping_uncertain',
         pattern: 'patience',
@@ -440,6 +451,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       },
       {
         choiceId: 'explore_helping',
+        taxonomyClass: 'deflect',
         text: '"When have you seen me do that?"',
         nextNodeId: 'samuel_helping_reflect',
         pattern: 'exploring',
@@ -543,6 +555,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
     choices: [
       {
         choiceId: 'acknowledge_building',
+        taxonomyClass: 'accept',
         text: '"I\'ve always liked creating things"',
         nextNodeId: 'samuel_building_affirm',
         pattern: 'building',
@@ -554,6 +567,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       },
       {
         choiceId: 'uncertain_building',
+        taxonomyClass: 'reject',
         text: '"I\'m not sure I\'m good enough to call myself a builder"',
         nextNodeId: 'samuel_building_uncertain',
         pattern: 'patience',
@@ -565,6 +579,7 @@ export const samuelIdentityNodes: DialogueNode[] = [
       },
       {
         choiceId: 'explore_building',
+        taxonomyClass: 'deflect',
         text: '"What have you seen me want to build?"',
         nextNodeId: 'samuel_building_reflect',
         pattern: 'exploring',

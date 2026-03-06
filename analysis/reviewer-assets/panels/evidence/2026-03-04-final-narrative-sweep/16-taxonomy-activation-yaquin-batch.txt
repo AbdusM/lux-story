@@ -1,0 +1,34 @@
+Timestamp: 2026-03-05
+Scope: Yaquin targeted taxonomy activation
+
+Changes applied:
+- content/yaquin-dialogue-graph.ts
+  - Added taxonomyClass triads to all remaining non-compliant eligible nodes:
+    - yaquin_introduction
+    - yaquin_textbook_problem
+    - yaquin_credential_gap
+    - yaquin_creator_path
+    - yaquin_curriculum_setup
+    - yaquin_launch_decision
+    - yaquin_p2_quality_crisis
+    - yaquin_p2_refund_pressure
+    - yaquin_p2_credibility_response
+    - yaquin_p2_format_decision
+    - yaquin_p2_scaling_offer
+    - yaquin_asks_player
+    - yaquin_simulation_intro
+    - yaquin_simulation_phase_1
+    - yaquin_simulation_phase_2
+    - yaquin_loyalty_start
+    - yaquin_loyalty_choice
+
+Validation runs:
+- npm run type-check -> PASS
+- npm run verify:choice-taxonomy -> PASS
+  - Eligible nodes: 258
+  - Coverage: 42.64%
+  - Non-compliant nodes: 148
+- npm run verify:narrative-sim -> PASS (failures 0, mismatches 0, truncated 0)
+- npm run verify:required-state-strict -> PASS (violations 0)
+- npm run verify:unreachable-dialogue-nodes -> PASS (count 0)
+- npm run verify:unreferenced-dialogue-nodes -> PASS (count 0)

@@ -11,6 +11,8 @@ type MicroMemoryId =
   | 'nadia_model_regret'
   | 'elena_station_seven_loss'
   | 'rohan_previous_visitor_trace'
+  | 'quinn_meaning_over_metrics'
+  | 'tess_shop_floor_courage'
 
 type MicroMemoryRecord = {
   setAtTurn: number
@@ -100,6 +102,32 @@ const CALLBACK_DEFINITIONS: readonly MicroCallbackDefinition[] = [
       emotion: 'approving',
       timing: 'immediate',
       soundCue: 'echo-rohan',
+    },
+  },
+  {
+    memoryId: 'quinn_meaning_over_metrics',
+    characterId: 'quinn',
+    minTurnsSinceSet: 2,
+    cooldownTurns: 12,
+    maxTriggersPerSession: 1,
+    echo: {
+      text: "Quinn nods toward the platform lights. \"You caught the real equation. Returns matter, but meaning compounds faster.\"",
+      emotion: 'reflective',
+      timing: 'immediate',
+      soundCue: 'faction-market-brokerage',
+    },
+  },
+  {
+    memoryId: 'tess_shop_floor_courage',
+    characterId: 'tess',
+    minTurnsSinceSet: 2,
+    cooldownTurns: 12,
+    maxTriggersPerSession: 1,
+    echo: {
+      text: "\"Thanks for naming it,\" Tess says, hand on the mixer. \"Courage is easier to carry when someone else sees it too.\"",
+      emotion: 'warm',
+      timing: 'immediate',
+      soundCue: 'pattern-helping',
     },
   },
 ]
@@ -303,4 +331,3 @@ export function resolveMicroCallbackEcho(input: {
 export function getMicroCallbackDefinitions(): readonly MicroCallbackDefinition[] {
   return CALLBACK_DEFINITIONS
 }
-

@@ -365,9 +365,12 @@ Entries below are the canonical graph-level simulation variants (`simulation.var
 | **2** | Application | 5+ | Complex scenarios, real pressure | 120s | 85% |
 | **3** | Mastery | 8+ | Expert challenges, high stakes | 60s | 95% |
 
-**Current Status:** All 20 simulations are Phase 1 (Introduction)
+**Current Status (2026-03-05):**
+- Phase 1 is implemented for all 20 character simulations.
+- Phase 2/3 variants are implemented for a subset of characters (currently 5: Dante, Devon, Isaiah, Jordan, Nadia) and tracked by the `SIMULATION_VARIANT_CONTRACT` block.
+- The unlock requirements below are design targets; actual gating is enforced per-graph via `requiredState` and completion flags and validated by `scripts/verify-simulation-phase-contract.ts`.
 
-**Phase Unlocks:**
+**Phase Unlocks (Design Targets):**
 - Phase 1: Always available (or trust >= 2)
 - Phase 2: Requires Phase 1 completion
 - Phase 3: Requires Phase 2 completion + trust >= 8
@@ -558,7 +561,7 @@ const mayaNode: DialogueNode = {
 
 ### Phase 2/3 Expansion Strategy
 
-**Current State:** All 20 simulations at Phase 1
+**Current State (2026-03-05):** Phase 1 exists for all 20 simulations. Phase 2/3 variants exist for a subset of characters (see the canonical `SIMULATION_VARIANT_CONTRACT` block); generalizing Phase 2/3 coverage across the remaining simulations is still planned.
 
 **Phase 2 Design:**
 - Time pressure (120s limit)

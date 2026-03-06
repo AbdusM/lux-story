@@ -12,6 +12,7 @@ import {
   CONTENT_REGISTRY,
   LIB_REGISTRY
 } from '@/lib/validators/simulation-validators'
+import { DIALOGUE_GRAPHS } from '@/lib/graph-registry'
 import { DialogueGraph, DialogueNode } from '@/lib/dialogue-graph'
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -224,6 +225,53 @@ describe('Registry integrity', () => {
       expect(sim.description).toBeTruthy()
       expect(sim.entryNodeId).toBeTruthy()
       expect(sim.completionFlag).toBeTruthy()
+    }
+  })
+})
+
+// ═══════════════════════════════════════════════════════════════════════════
+// PHASE 2/3 TIMED DECISION CONTRACT (REAL GRAPHS)
+// ═══════════════════════════════════════════════════════════════════════════
+
+describe('Timed simulation decision contract', () => {
+  it('Phase 2/3 timed sims with A-D options include both success and fail choices', () => {
+    const violations: string[] = []
+
+    for (const [graphKey, graph] of Object.entries(DIALOGUE_GRAPHS)) {
+      for (const node of graph.nodes.values()) {
+        const sim = node.simulation
+        if (!sim) continue
+
+        const phase = sim.phase ?? 1
+        const timeLimit = sim.timeLimit
+        const content = typeof sim.initialContext?.content === 'string' ? sim.initialContext.content : ''
+        const hasDecisionOptions = /(^|\n)\s*[A-D]\)\s+\S/.test(content)
+
+        if (!hasDecisionOptions) continue
+        if (!(phase >= 2)) continue
+        if (!(typeof timeLimit === 'number' && Number.isFinite(timeLimit) && timeLimit > 0)) continue
+
+        const choiceIds = (node.choices || []).map((c) => (c.choiceId || '').toLowerCase())
+        const nextIds = (node.choices || []).map((c) => (c.nextNodeId || '').toLowerCase())
+
+        const hasSuccess =
+          choiceIds.some((id) => id.includes('success')) || nextIds.some((id) => id.includes('success'))
+        const hasFail = choiceIds.some((id) => id.includes('fail')) || nextIds.some((id) => id.includes('fail'))
+
+        if (!hasSuccess || !hasFail) {
+          violations.push(
+            `${graphKey}/${node.nodeId}: missing ${!hasSuccess ? 'success' : ''}${!hasSuccess && !hasFail ? '+' : ''}${!hasFail ? 'fail' : ''} choice ` +
+            `(choices=${(node.choices || []).map((c) => c.choiceId).join(', ')})`
+          )
+        }
+      }
+    }
+
+    if (violations.length > 0) {
+      throw new Error(
+        `Timed simulation decision contract failed (${violations.length}):\n` +
+        violations.map((v) => `  - ${v}`).join('\n')
+      )
     }
   })
 })

@@ -1,10 +1,12 @@
 export type SimulationType =
+    | 'terminal_coding'
     | 'system_architecture'
     | 'visual_canvas'
     | 'architect_3d'
     | 'botany_grid'
     | 'dashboard_triage'
     | 'market_visualizer'
+    | 'data_analysis'
     | 'data_audit'
     | 'historical_timeline'
     | 'audio_studio'
@@ -29,9 +31,19 @@ export interface BaseSimulationContext {
 export interface SimulationResult {
     success?: boolean
     skipped?: boolean
+    timedOut?: boolean
     score?: number
     data?: unknown
     [key: string]: unknown
+}
+
+export type SimulationPhase = 1 | 2 | 3
+export type SimulationDifficulty = 'introduction' | 'application' | 'mastery'
+
+export interface SimulationUnlockRequirements {
+    trustMin?: number
+    previousPhaseCompleted?: string
+    requiredFlags?: string[]
 }
 
 export interface SimulationConfig<TContext = BaseSimulationContext> {
@@ -44,6 +56,14 @@ export interface SimulationConfig<TContext = BaseSimulationContext> {
     onExit?: () => void
     mode?: 'fullscreen' | 'inline'
     inlineHeight?: string
+
+    // Optional multi-phase progression metadata (mirrors lib/dialogue-graph.ts).
+    phase?: SimulationPhase
+    difficulty?: SimulationDifficulty
+    variantId?: string
+    unlockRequirements?: SimulationUnlockRequirements
+    timeLimit?: number // seconds
+    successThreshold?: number // 0-100
 }
 
 export interface SimulationComponentProps<TContext = BaseSimulationContext> {

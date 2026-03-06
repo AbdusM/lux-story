@@ -91,3 +91,7 @@ tests/visual/output/
 
 # Local doc staging (large/unstructured assets, not for repo)
 docs/toAllocate/
+
+# Local AI audit runtime outputs
+.ai/runs/
+.ai/tmp-global-gemini-*.mjs

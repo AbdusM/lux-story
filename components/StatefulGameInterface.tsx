@@ -85,6 +85,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -103,15 +104,11 @@ import { CharacterState, GameState, GameStateUtils } from '@/lib/character-state
 import { GameLogic } from '@/lib/game-logic'
 import { synthEngine } from '@/lib/audio/synth-engine'
 import { HeroBadge } from '@/components/HeroBadge'
-import { StrategyReport } from '@/components/career/StrategyReport'
 import { UnifiedMenu } from '@/components/UnifiedMenu'
-import { SettingsMobileSheet } from '@/components/settings/SettingsMobileSheet'
-import { LoginModalContents } from '@/components/auth/LoginModalContents'
 import { GameStateManager } from '@/lib/game-state-manager'
 import { useBackgroundSync } from '@/hooks/useBackgroundSync'
 import { useSettingsSync } from '@/hooks/useSettingsSync'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
-import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
 import { OverlayHost } from '@/components/overlays/OverlayHost'
 import { StationState, useStationStore } from '@/lib/station-state'
 import { useOverlayStore } from '@/lib/overlay-store'
@@ -151,9 +148,6 @@ import { isSupabaseConfigured } from '@/lib/supabase'
 import { GameChoices } from '@/components/GameChoices'
 import { BottomSheet } from '@/components/ui/BottomSheet'
 import { BookOpen, Stars, Compass, ChevronUp } from 'lucide-react'
-import { Journal } from '@/components/Journal'
-import { SessionSummary } from '@/components/SessionSummary'
-import { ConstellationPanel, DetailModal } from '@/components/constellation'
 import { SectionErrorBoundary } from '@/components/LayeredErrorBoundaries'
 import { StationStatusBadge } from '@/components/StationStatusBadge'
 import { TextProcessor } from '@/lib/text-processor'
@@ -161,7 +155,6 @@ import { TextProcessor } from '@/lib/text-processor'
 import { IdleWarningController } from '@/components/idle/IdleWarningController'
 import { IdleWarningModal } from '@/components/IdleWarningModal'
 import { ErrorOverlay } from '@/components/overlays/ErrorOverlay'
-import { JourneySummary } from '@/components/JourneySummary'
 import { useToast } from '@/components/ui/toast'
 import { generateJourneyNarrative, isJourneyComplete, type JourneyNarrative } from '@/lib/journey-narrative-generator'
 import { evaluateAchievements, type MetaAchievement } from '@/lib/meta-achievements'
@@ -228,8 +221,6 @@ import { selectAnnouncement } from '@/lib/platform-announcements'
 import { checkSessionBoundary, incrementBoundaryCounter, getTotalNodesVisited, type SessionAnnouncement } from '@/lib/session-structure'
 import { setupPlayTimeTracking } from '@/lib/session-tracker'
 import { SessionBoundaryAnnouncement } from '@/components/SessionBoundaryAnnouncement'
-import { IdentityCeremony } from '@/components/IdentityCeremony'
-import { JourneyComplete } from '@/components/JourneyComplete'
 import { playPatternSound, playTrustSound, playIdentitySound, playMilestoneSound, playEpisodeSound, playSound, initializeAudio, setAudioEnabled } from '@/lib/audio-feedback'
 // OnboardingScreen removed-discovery-based learning via Samuel's firstOrb echo instead
 // FoxTheatreGlow import removed-unused
@@ -250,6 +241,51 @@ import {
 // Share prompts removed-too obtrusive
 
 // Trust feedback now dialogue-based via consequence echoes
+
+const StrategyReport = dynamic(
+  () => import('@/components/career/StrategyReport').then((mod) => mod.StrategyReport),
+  { ssr: false, loading: () => null },
+)
+const SettingsMobileSheet = dynamic(
+  () => import('@/components/settings/SettingsMobileSheet').then((mod) => mod.SettingsMobileSheet),
+  { ssr: false, loading: () => null },
+)
+const LoginModalContents = dynamic(
+  () => import('@/components/auth/LoginModalContents').then((mod) => mod.LoginModalContents),
+  { ssr: false, loading: () => null },
+)
+const KeyboardShortcutsHelp = dynamic(
+  () => import('@/components/KeyboardShortcutsHelp').then((mod) => mod.KeyboardShortcutsHelp),
+  { ssr: false, loading: () => null },
+)
+const Journal = dynamic(
+  () => import('@/components/Journal').then((mod) => mod.Journal),
+  { ssr: false, loading: () => null },
+)
+const SessionSummary = dynamic(
+  () => import('@/components/SessionSummary').then((mod) => mod.SessionSummary),
+  { ssr: false, loading: () => null },
+)
+const ConstellationPanel = dynamic(
+  () => import('@/components/constellation/ConstellationPanel').then((mod) => mod.ConstellationPanel),
+  { ssr: false, loading: () => null },
+)
+const DetailModal = dynamic(
+  () => import('@/components/constellation/DetailModal').then((mod) => mod.DetailModal),
+  { ssr: false, loading: () => null },
+)
+const JourneySummary = dynamic(
+  () => import('@/components/JourneySummary').then((mod) => mod.JourneySummary),
+  { ssr: false, loading: () => null },
+)
+const IdentityCeremony = dynamic(
+  () => import('@/components/IdentityCeremony').then((mod) => mod.IdentityCeremony),
+  { ssr: false, loading: () => null },
+)
+const JourneyComplete = dynamic(
+  () => import('@/components/JourneyComplete').then((mod) => mod.JourneyComplete),
+  { ssr: false, loading: () => null },
+)
 
 // Types
 interface GameInterfaceState {
@@ -3875,6 +3911,14 @@ export default function StatefulGameInterface() {
 
   const currentCharacter = state.gameState?.characters.get(state.currentCharacterId)
   const isEnding = state.availableChoices.length === 0
+  const activeSimulation = state.currentNode?.simulation
+  const isTimedSimulationActive = Boolean(
+    activeSimulation &&
+    activeSimulation.mode !== 'inline' &&
+    typeof activeSimulation.timeLimit === 'number' &&
+    activeSimulation.timeLimit > 0 &&
+    (activeSimulation.phase ?? 1) >= 2
+  )
   const currentNodeTags = state.currentNode?.tags || []
   const isNodePivotal = currentNodeTags.some(tag =>
     ['pivotal', 'defining_moment', 'final_choice', 'climax', 'revelation', 'introduction'].includes(tag)
@@ -3908,6 +3952,31 @@ export default function StatefulGameInterface() {
   const useCappedChoiceSheet = false
   const hasBlockingGameplayInput = overlayBlocksGameplayInput
   const hasBlockingGlobalShortcuts = overlayBlocksGlobalShortcuts
+
+  const selectSimulationOutcomeChoice = (
+    result: { success?: boolean; skipped?: boolean; timedOut?: boolean },
+    choices: EvaluatedChoice[],
+  ): EvaluatedChoice | null => {
+    if (choices.length === 0) return null
+
+    // Skips are almost always technical (unknown sim type, render failure). Treat as "success"
+    // so players aren't punished for missing UI implementations.
+    const token: 'success' | 'fail' =
+      result.skipped
+        ? 'success'
+        : (result.timedOut === true || result.success === false)
+          ? 'fail'
+          : 'success'
+    const enabledChoices = choices.filter((c) => c.enabled)
+    const haystack = enabledChoices.length > 0 ? enabledChoices : choices
+
+    return (
+      haystack.find((c) => c.choice.choiceId?.toLowerCase().includes(token)) ??
+      haystack.find((c) => c.choice.nextNodeId?.toLowerCase().includes(token)) ??
+      haystack[0] ??
+      null
+    )
+  }
 
   useEffect(() => {
     if (!useBottomSheetChoices && isChoicesBottomSheetOpen) {
@@ -4448,7 +4517,14 @@ export default function StatefulGameInterface() {
                               <div className="flex flex-col items-center justify-center h-full p-8 text-center border-l-2 border-red-500/50 bg-red-500/5 rounded-r-lg">
                                 <h3 className="text-lg font-bold text-red-400 mb-2">Simulation Offline</h3>
                                 <p className="text-sm text-red-300/80 mb-4">Connection to the internal network was interrupted.</p>
-                                <Button onClick={() => handleChoice(state.availableChoices[0])} variant="outline" className="border-red-500/20 hover:bg-red-500/10 text-red-400">
+                                <Button
+                                  onClick={() => {
+                                    const bypass = selectSimulationOutcomeChoice({ skipped: true }, state.availableChoices)
+                                    if (bypass) handleChoice(bypass)
+                                  }}
+                                  variant="outline"
+                                  className="border-red-500/20 hover:bg-red-500/10 text-red-400"
+                                >
                                   Bypass Protocol
                                 </Button>
                               </div>
@@ -4458,10 +4534,8 @@ export default function StatefulGameInterface() {
                               simulation={state.currentNode.simulation as any}
                               onComplete={(result) => {
                                 logger.info('Simulation Complete', result)
-                                // Auto-advance to next node if choices exist
-                                if (state.availableChoices.length > 0) {
-                                  handleChoice(state.availableChoices[0])
-                                }
+                                const nextChoice = selectSimulationOutcomeChoice(result, state.availableChoices)
+                                if (nextChoice) handleChoice(nextChoice)
                               }}
                             />
                           </GameErrorBoundary>
@@ -4537,10 +4611,8 @@ export default function StatefulGameInterface() {
                                   simulation={state.currentNode.simulation as any}
                                   onComplete={(result) => {
                                     logger.info('Inline Simulation Complete', result)
-                                    // Auto-advance logic
-                                    if (state.availableChoices.length > 0) {
-                                      handleChoice(state.availableChoices[0])
-                                    }
+                                    const nextChoice = selectSimulationOutcomeChoice(result, state.availableChoices)
+                                    if (nextChoice) handleChoice(nextChoice)
                                   }}
                                 />
                               </GameErrorBoundary>
@@ -4665,7 +4737,7 @@ export default function StatefulGameInterface() {
           PC: Closer to content (not stuck at very bottom)
           Mobile: Bottom with proper safe area padding
           ══════════════════════════════════════════════════════════════════ */}
-        {!isEnding && (
+        {!isEnding && !isTimedSimulationActive && (
           <footer
             className={cn(
               "flex-shrink-0 sticky bottom-0 glass-panel max-w-4xl mx-auto w-full px-3 sm:px-4 z-20 pb-[max(16px,env(safe-area-inset-bottom,0px))]",
