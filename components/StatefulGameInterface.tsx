@@ -4387,7 +4387,12 @@ export default function StatefulGameInterface() {
             {/* Dialogue container-STABLE: no animations to prevent layout shifts */}
             <div
               key="dialogue-wrapper"
-              className="flex flex-col justify-center"
+              className={cn(
+                "flex flex-col",
+                !state.activeExperience && !state.currentNode?.simulation
+                  ? "justify-start pt-2 sm:pt-4"
+                  : "justify-center"
+              )}
               style={{ minHeight: GAMEPLAY_SHELL.storyViewportMinHeight }}
               data-testid="story-viewport"
             >
