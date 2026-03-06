@@ -100,6 +100,17 @@ test.describe('Choice Bottom Sheet', () => {
     })
 
     expect(bottomGap).not.toBeNull()
-    expect(bottomGap ?? 0).toBeGreaterThanOrEqual(12)
+    expect(bottomGap ?? 0).toBeGreaterThanOrEqual(20)
+
+    const sheetVisualContract = await sheet.evaluate((element) => {
+      const style = window.getComputedStyle(element)
+      return {
+        backgroundColor: style.backgroundColor,
+        backdropFilter: style.backdropFilter,
+      }
+    })
+
+    expect(sheetVisualContract.backgroundColor).toMatch(/rgb/)
+    expect(sheetVisualContract.backdropFilter === 'none').toBe(false)
   })
 })

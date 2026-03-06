@@ -161,14 +161,15 @@ export function BottomSheet({
       data-overlay-surface
       className={cn(
         mode === 'standalone' ? 'fixed bottom-0 left-0 right-0' : 'absolute bottom-0 left-0 right-0',
-        'max-h-[76dvh] sm:max-h-[50dvh] overflow-hidden',
+        'relative isolate max-h-[82dvh] overflow-hidden sm:max-h-[52dvh]',
         'rounded-t-2xl',
-        'bg-slate-950/95 backdrop-blur-xl',
+        mode === 'host' ? 'bg-slate-950' : 'bg-slate-950/98',
+        'supports-[backdrop-filter]:backdrop-blur-xl',
         'border-t border-white/10',
         'shadow-[0_-10px_40px_rgba(0,0,0,0.5)]',
         'focus:outline-none pointer-events-auto',
         // Safe area padding for iOS
-        'pb-[calc(max(24px,env(safe-area-inset-bottom))+8px)]',
+        'pb-[calc(max(28px,env(safe-area-inset-bottom))+12px)]',
         className
       )}
       style={mode === 'standalone' ? { zIndex: Z_INDEX.panel } : undefined}
@@ -193,6 +194,9 @@ export function BottomSheet({
       dragElastic={{ top: 0, bottom: 0.5 }}
       onDragEnd={handleDragEnd}
     >
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-t-2xl bg-slate-950" />
+
+      <div className="relative z-10">
       {/* Drag handle */}
       <div className="flex justify-center pt-3 pb-2">
         <div
@@ -210,12 +214,13 @@ export function BottomSheet({
 
       {/* Content - scrollable if needed */}
       <div
-        className="overflow-y-auto overscroll-contain max-h-[calc(76dvh-80px)] sm:max-h-[calc(50dvh-80px)]"
+        className="overflow-y-auto overscroll-contain max-h-[calc(82dvh-80px)] sm:max-h-[calc(52dvh-80px)]"
         style={{
           WebkitOverflowScrolling: 'touch',
         }}
       >
         {children}
+      </div>
       </div>
     </motion.div>
   )

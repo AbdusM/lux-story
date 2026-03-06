@@ -104,6 +104,9 @@ const PROFILE_SURFACE_CLASS =
 const PROFILE_INSET_CLASS =
   'rounded-2xl border border-white/10 bg-black/20 backdrop-blur-xl'
 
+const RESEARCH_SETTINGS_UNAVAILABLE_MESSAGE =
+  'Research settings are temporarily unavailable on this deployment. Your journey progress is unaffected.'
+
 export default function ProfilePage() {
   const router = useRouter()
   const supabase = createClient()
@@ -191,7 +194,7 @@ export default function ProfilePage() {
         if (!cancelled) {
           setConsent(null)
           setConsentLoading(false)
-          setConsentError('Unable to establish a secure player session for research settings.')
+          setConsentError(RESEARCH_SETTINGS_UNAVAILABLE_MESSAGE)
         }
         return
       }
@@ -303,8 +306,8 @@ export default function ProfilePage() {
     const sessionReady = await ensureUserApiSession(playerId)
     if (!sessionReady) {
       setConsentSaving(false)
-      setConsentError('Unable to establish a secure player session for research settings.')
-      toast.error('Research consent unavailable', 'The player session could not be verified.')
+      setConsentError(RESEARCH_SETTINGS_UNAVAILABLE_MESSAGE)
+      toast.error('Research consent unavailable', 'Research settings are temporarily unavailable right now.')
       return
     }
 
@@ -433,6 +436,9 @@ export default function ProfilePage() {
   const previewAllowsLongitudinal =
     previewStatus === 'granted' && participationLevel === 'full_research'
   const showFacilitatorTools = Boolean(saveMetadata?.playerId && (role === 'educator' || role === 'admin'))
+  const consentErrorToneClass = consentError === RESEARCH_SETTINGS_UNAVAILABLE_MESSAGE
+    ? 'bg-amber-500/10 border-amber-500/20 text-amber-100'
+    : 'bg-red-500/10 border-red-500/20 text-red-200'
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#05070b] px-4 py-4 text-white sm:px-6 sm:py-6">
@@ -650,7 +656,7 @@ export default function ProfilePage() {
                 )}
 
                 {consentError && (
-                  <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-200">
+                  <div className={cn('rounded-lg border p-4 text-sm', consentErrorToneClass)}>
                     {consentError}
                   </div>
                 )}

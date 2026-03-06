@@ -4011,8 +4011,9 @@ export default function StatefulGameInterface() {
 	          mode="host"
 	          onClose={() => closeOverlay('bottomSheet', { reason: 'closeButton' })}
 	          title={`Choose a response (${preparedChoices.length})`}
+            className="border-white/12 shadow-[0_-18px_60px_rgba(0,0,0,0.62)]"
 	        >
-	          <div className="px-3 pb-4 pt-1 sm:px-4 sm:pb-5">
+	          <div className="px-3 pb-6 pt-2 sm:px-4 sm:pb-6">
 	            <GameChoices
 	              choices={preparedChoices}
 	              isProcessing={state.isProcessing}
