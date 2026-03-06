@@ -3,7 +3,7 @@
  * Fetches and caches user role from Supabase profiles table
  */
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
 
@@ -21,17 +21,13 @@ export function useUserRole(): UserRoleData {
   const [role, setRole] = useState<UserRole>('student')
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState<any | null>(null)
-
-  // Create client outside useEffect (following LinkDap pattern)
-  const supabase = createClient()
+  const [supabase] = useState(() => createClient())
 
   useEffect(() => {
     async function fetchRole() {
       try {
         // Get current user
         const { data: { user: currentUser } } = await supabase.auth.getUser()
-
-        console.log('[useUserRole] Current user:', currentUser?.email || 'none')
 
         if (!currentUser) {
           setRole('student')
@@ -53,7 +49,6 @@ export function useUserRole(): UserRoleData {
           console.error('[useUserRole] Error fetching profile:', error)
           setRole('student') // Fallback
         } else {
-          console.log('[useUserRole] Profile role:', profile?.role || 'student')
           setRole(profile?.role || 'student')
         }
       } catch (error) {
@@ -68,8 +63,6 @@ export function useUserRole(): UserRoleData {
 
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
-      console.log('[useUserRole] Auth state changed:', event, session?.user?.email || 'none')
-
       if (!session?.user) {
         setRole('student')
         setUser(null)
