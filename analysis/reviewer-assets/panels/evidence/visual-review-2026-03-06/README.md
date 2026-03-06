@@ -1,13 +1,13 @@
 # Visual Review Evidence Pack (March 6, 2026)
 
 ## Scope
-- Preview candidate: `https://lux-story-kuqxzvegj-link-dap.vercel.app`
-- Candidate SHA under review: `5401a36`
-- Stable production alias for comparison: `https://lux-story.vercel.app` on `5620b96`
+- Production alias: `https://lux-story.vercel.app`
+- Exact deployment URL: `https://lux-story-k8fe7qa72-link-dap.vercel.app`
+- Candidate SHA under review: `8e3bd04`
 - Prompt artifact: `analysis/reviewer-assets/panels/gemini-antigravity-visual-review-2026-03-06.md`
 
 ## What Is Included
-Fresh preview-candidate screenshots for:
+Fresh production screenshots for:
 - desktop `1440x900`
 - `iPhone 14`
 - `iPhone SE`
@@ -48,11 +48,11 @@ Covered surfaces:
 Initial full sweep:
 
 ```bash
-VISUAL_REVIEW_BASE_URL='https://lux-story-kuqxzvegj-link-dap.vercel.app' npm run test:e2e -- --config playwright.visual-review.config.ts tests/e2e/user-flows/visual-review-capture.spec.ts
+VISUAL_REVIEW_BASE_URL='https://lux-story.vercel.app' npm run test:e2e -- --config playwright.visual-review.config.ts tests/e2e/user-flows/visual-review-capture.spec.ts
 ```
 
 ## Final Capture Status
-- target preview: complete
+- target production alias: complete
 - desktop: complete
 - iPhone 14: complete
 - iPhone SE: complete
@@ -61,3 +61,4 @@ VISUAL_REVIEW_BASE_URL='https://lux-story-kuqxzvegj-link-dap.vercel.app' npm run
 - This repo-local lane prepares evidence for external visual review.
 - The current repo Gemini runtime is text-oriented; it does not itself prove browser/visual interaction by Gemini Antigravity.
 - Use the prompt artifact plus this screenshot pack together for the external review.
+- Do not use preview deployment `https://lux-story-kuqxzvegj-link-dap.vercel.app` for review; that environment is missing `USER_API_SESSION_SECRET` and produces false session failures.

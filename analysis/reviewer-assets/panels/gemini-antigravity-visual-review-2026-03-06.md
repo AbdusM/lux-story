@@ -1,10 +1,11 @@
 # Gemini Antigravity Visual Review Prompt (March 6, 2026)
 
 ## Target
-- Preview candidate URL: `https://lux-story-kuqxzvegj-link-dap.vercel.app`
-- Exact candidate SHA: `5401a36`
-- Stable production alias for comparison: `https://lux-story.vercel.app` on `5620b96`
-- Context: follow-up visual-QA candidate after simulation-copy, settings-wrap, return-hook, and mobile choice-sheet fixes
+- Production alias: `https://lux-story.vercel.app`
+- Exact deployment URL: `https://lux-story-k8fe7qa72-link-dap.vercel.app`
+- Exact candidate SHA: `8e3bd04`
+- Context: follow-up visual-QA candidate after simulation-copy, settings-wrap, return-hook, mobile choice-sheet, and session-fallback fixes
+- Ignore stale preview target `https://lux-story-kuqxzvegj-link-dap.vercel.app`; that preview environment is missing `USER_API_SESSION_SECRET` and is not a valid review surface
 
 ## Review Intent
 Run a true visual/product review of the candidate build. Interact with the site like a player and evaluate what is actually rendered on screen.
@@ -17,7 +18,7 @@ This is not a code review. It is a visual, UX, and polish critique of the produc
 - Mobile small: `iPhone SE`
 
 ## Evidence Pack
-Fresh browser screenshots for the preview candidate are attached in:
+Fresh browser screenshots for the live production candidate are attached in:
 - `analysis/reviewer-assets/panels/evidence/visual-review-2026-03-06/screenshots/`
 
 Use those screenshots as baseline evidence, but prefer live interaction findings if the live build differs.
