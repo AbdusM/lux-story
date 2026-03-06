@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { describe, it, expect } from 'vitest'
-import { CHOICE_CONTAINER_HEIGHT } from '@/lib/ui-constants'
+import { CHOICE_CONTAINER_HEIGHT, GAMEPLAY_SHELL } from '@/lib/ui-constants'
 
 describe('UI layout stability contracts', () => {
   it('choice container height config includes minimum-height guards', () => {
@@ -21,7 +21,8 @@ describe('UI layout stability contracts', () => {
     const filePath = path.join(process.cwd(), 'components/StatefulGameInterface.tsx')
     const content = fs.readFileSync(filePath, 'utf-8')
 
-    expect(content).toContain('className="relative z-10 flex flex-col min-h-[100dvh] w-full max-w-xl mx-auto bg-black/10"')
+    expect(content).toContain('GAMEPLAY_SHELL.maxWidth')
+    expect(content).toContain('data-testid="gameplay-shell"')
     expect(content).not.toContain('max-w-xl mx-auto shadow-2xl border-x border-white/5 bg-black/10')
   })
 
@@ -48,7 +49,12 @@ describe('UI layout stability contracts', () => {
     const filePath = path.join(process.cwd(), 'components/StatefulGameInterface.tsx')
     const content = fs.readFileSync(filePath, 'utf-8')
 
-    expect(content).toContain('min-h-[180px] sm:min-h-[240px]')
+    expect(GAMEPLAY_SHELL.storyViewportMinHeight).toBe('max(360px, calc(100dvh - 21rem))')
+    expect(GAMEPLAY_SHELL.responseDockMinHeight).toBe('180px')
+    expect(content).toContain('data-testid="story-viewport"')
+    expect(content).toContain('GAMEPLAY_SHELL.storyViewportMinHeight')
+    expect(content).toContain('data-testid="response-dock"')
+    expect(content).toContain('GAMEPLAY_SHELL.responseDockMinHeight')
     expect(content).toContain("data-dialogue-stage={(!state.activeExperience && !state.currentNode?.simulation) ? 'pinned' : 'dynamic'}")
     expect(content).not.toContain('AnimatePresence mode="wait"')
   })
