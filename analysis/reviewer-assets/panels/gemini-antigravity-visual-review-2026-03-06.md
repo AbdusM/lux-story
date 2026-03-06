@@ -2,9 +2,9 @@
 
 ## Target
 - Production alias: `https://lux-story.vercel.app`
-- Exact deployment URL: `https://lux-story-k8fe7qa72-link-dap.vercel.app`
-- Exact candidate SHA: `8e3bd04`
-- Context: follow-up visual-QA candidate after simulation-copy, settings-wrap, return-hook, mobile choice-sheet, and session-fallback fixes
+- Exact deployment URL: `https://lux-story-jjk0q1mbv-link-dap.vercel.app`
+- Exact candidate SHA: `ede228e`
+- Context: follow-up visual-QA candidate after simulation-copy, settings-wrap, return-hook, mobile choice-sheet, session-fallback, review-target preflight, and final profile/sim polish fixes
 - Ignore stale preview target `https://lux-story-kuqxzvegj-link-dap.vercel.app`; that preview environment is missing `USER_API_SESSION_SECRET` and is not a valid review surface
 
 ## Review Intent

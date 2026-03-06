@@ -2,8 +2,8 @@
 
 ## Scope
 - Production alias: `https://lux-story.vercel.app`
-- Exact deployment URL: `https://lux-story-k8fe7qa72-link-dap.vercel.app`
-- Candidate SHA under review: `8e3bd04`
+- Exact deployment URL: `https://lux-story-jjk0q1mbv-link-dap.vercel.app`
+- Candidate SHA under review: `ede228e`
 - Prompt artifact: `analysis/reviewer-assets/panels/gemini-antigravity-visual-review-2026-03-06.md`
 
 ## What Is Included
@@ -68,3 +68,4 @@ VISUAL_REVIEW_BASE_URL='https://lux-story.vercel.app' npm run test:e2e -- --conf
 - The current repo Gemini runtime is text-oriented; it does not itself prove browser/visual interaction by Gemini Antigravity.
 - Use the prompt artifact plus this screenshot pack together for the external review.
 - Do not use preview deployment `https://lux-story-kuqxzvegj-link-dap.vercel.app` for review; that environment is missing `USER_API_SESSION_SECRET` and produces false session failures.
+- The capture spec now performs the same session-bootstrap preflight itself before taking screenshots.

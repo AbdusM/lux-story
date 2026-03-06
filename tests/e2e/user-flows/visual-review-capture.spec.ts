@@ -43,6 +43,19 @@ test.describe('Visual Review Capture', () => {
     const isIPhone14 = project === 'visual-mobile-iphone-14'
     const isIPhoneSE = project === 'visual-mobile-iphone-se'
 
+    await test.step('Review target preflight', async () => {
+      const sessionResponse = await page.request.post('/api/user/session', {
+        data: { user_id: PROFILE_PLAYER_ID },
+      })
+      expect(sessionResponse.status()).toBe(200)
+
+      const payload = await sessionResponse.json()
+      expect(payload).toMatchObject({
+        success: true,
+        user_id: PROFILE_PLAYER_ID,
+      })
+    })
+
     await test.step('Landing', async () => {
       await page.goto('/', { waitUntil: 'domcontentloaded' })
       await expect(page.getByRole('button', { name: /begin your journey|enter station/i })).toBeVisible({
