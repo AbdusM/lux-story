@@ -11,6 +11,7 @@ import { SKILL_NODES } from '@/lib/constellation/skill-positions'
 import { CareerForecast } from '../dashboard/CareerForecast'
 import { SkillGapVisualizer } from '../dashboard/SkillGapVisualizer'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { getCanonicalCareerRecommendations } from '@/lib/canonical-career-analysis'
 import { useGameStore } from '@/lib/game-store'
 import { useFocusTrap } from '@/hooks/useFocusTrap'
 import { getConflictProgress, getUnreliableRecordById } from '@/lib/unreliable-narrator-system'
@@ -309,17 +310,12 @@ export function StrategyReport({ gameState, onClose }: StrategyReportProps) {
     )
 }
 
-import { getCareerRecommendations } from '@/lib/assessment-derivatives'
-
 function SkillGapVisualizerWrapper() {
     // Wrapper to get the top career ID from the store logic
     const skills = useGameStore(state => state.skills)
-    const patterns = useGameStore(state => state.patterns)
 
-    // We try to find the top recommended career
-    // This logic mimics CareerForecast but just grabs the first ID
-    const recommendations = patterns && skills ? getCareerRecommendations(patterns, skills as unknown as Record<string, number>, 1) : []
-    const topCareerId = recommendations.length > 0 ? recommendations[0].career.id : null
+    const recommendations = skills ? getCanonicalCareerRecommendations(skills, 1) : []
+    const topCareerId = recommendations.length > 0 ? recommendations[0].id : null
 
     if (!topCareerId) {
         return (
@@ -333,7 +329,7 @@ function SkillGapVisualizerWrapper() {
         <div className="h-[400px] w-full">
             <SkillGapVisualizer careerId={topCareerId} height={350} />
             <p className="text-center text-xs text-slate-500 mt-2">
-                Comparing against: <span className="text-slate-300 font-medium capitalize">{topCareerId.replace(/_/g, ' ')}</span> requirements
+                Comparing against: <span className="text-slate-300 font-medium capitalize">{topCareerId.replace(/-/g, ' ')}</span> requirements
             </p>
         </div>
     )

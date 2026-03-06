@@ -4,6 +4,13 @@
 ## Overview
 This directory contains database migrations and setup instructions for integrating Supabase as the persistent storage backend for Grand Central Terminus.
 
+## Directory Layout
+- `migrations/`: numbered migration chain managed by the Supabase CLI.
+- `manual/`: SQL kept outside the numbered chain for one-off SQL Editor setup.
+
+Do not place manual bootstrap scripts in `migrations/` unless they should become
+part of the canonical remote migration history.
+
 ## Prerequisites
 - Supabase project created at https://supabase.com
 - Project credentials added to `.env.local`

@@ -11,54 +11,58 @@
 import { describe, it, expect } from 'vitest'
 import { GameStateUtils } from '@/lib/character-state'
 import { generateJourneyNarrative } from '@/lib/journey-narrative-generator'
-
-// Import all dialogue graphs
-import { alexDialogueNodes } from '@/content/alex-dialogue-graph'
-import { tessDialogueNodes } from '@/content/tess-dialogue-graph'
-import { jordanDialogueNodes } from '@/content/jordan-dialogue-graph'
-import { rohanDialogueNodes } from '@/content/rohan-dialogue-graph'
-import { samuelDialogueNodes } from '@/content/samuel-dialogue-graph'
-import { mayaDialogueNodes } from '@/content/maya-dialogue-graph'
-import { devonDialogueNodes } from '@/content/devon-dialogue-graph'
+import { DIALOGUE_GRAPHS } from '@/lib/graph-registry'
 
 // Import intersection scenes
 import { mayaDevonIntersectionNodes } from '@/content/intersection-maya-devon'
 import { tessRohanIntersectionNodes } from '@/content/intersection-tess-rohan'
 import { alexJordanIntersectionNodes } from '@/content/intersection-alex-jordan'
 
+const PILOT_CHARACTER_IDS = [
+  'alex',
+  'tess',
+  'jordan',
+  'rohan',
+  'samuel',
+  'maya',
+  'devon',
+] as const
+
+type PilotCharacterId = (typeof PILOT_CHARACTER_IDS)[number]
+
+function getShippedNodeCount(characterId: PilotCharacterId): number {
+  return DIALOGUE_GRAPHS[characterId].nodes.size
+}
+
 describe('Urban Chamber Pilot Readiness', () => {
   describe('Character Arc Expansions', () => {
     it('Alex arc should have 30+ nodes', () => {
-      expect(alexDialogueNodes.length).toBeGreaterThanOrEqual(30)
-      console.log(`✓ Alex: ${alexDialogueNodes.length} nodes`)
+      expect(getShippedNodeCount('alex')).toBeGreaterThanOrEqual(30)
+      console.log(`✓ Alex: ${getShippedNodeCount('alex')} shipped nodes`)
     })
 
     it('Tess arc should have 30+ nodes', () => {
-      expect(tessDialogueNodes.length).toBeGreaterThanOrEqual(30)
-      console.log(`✓ Tess: ${tessDialogueNodes.length} nodes`)
+      expect(getShippedNodeCount('tess')).toBeGreaterThanOrEqual(30)
+      console.log(`✓ Tess: ${getShippedNodeCount('tess')} shipped nodes`)
     })
 
     it('Jordan arc should have 30+ nodes', () => {
-      expect(jordanDialogueNodes.length).toBeGreaterThanOrEqual(30)
-      console.log(`✓ Jordan: ${jordanDialogueNodes.length} nodes`)
+      expect(getShippedNodeCount('jordan')).toBeGreaterThanOrEqual(30)
+      console.log(`✓ Jordan: ${getShippedNodeCount('jordan')} shipped nodes`)
     })
 
     it('Rohan arc should have 30+ nodes', () => {
-      expect(rohanDialogueNodes.length).toBeGreaterThanOrEqual(30)
-      console.log(`✓ Rohan: ${rohanDialogueNodes.length} nodes`)
+      expect(getShippedNodeCount('rohan')).toBeGreaterThanOrEqual(30)
+      console.log(`✓ Rohan: ${getShippedNodeCount('rohan')} shipped nodes`)
     })
 
-    it('should have comprehensive content across all arcs', () => {
-      const totalNodes =
-        alexDialogueNodes.length +
-        tessDialogueNodes.length +
-        jordanDialogueNodes.length +
-        rohanDialogueNodes.length +
-        samuelDialogueNodes.length +
-        mayaDialogueNodes.length +
-        devonDialogueNodes.length
+    it('should have comprehensive shipped content across all arcs', () => {
+      const totalNodes = PILOT_CHARACTER_IDS.reduce(
+        (sum, characterId) => sum + getShippedNodeCount(characterId),
+        0
+      )
 
-      console.log(`\n📊 Total Content: ${totalNodes} nodes across 7 characters`)
+      console.log(`\n📊 Total Content: ${totalNodes} shipped nodes across 7 characters`)
       expect(totalNodes).toBeGreaterThan(200)
     })
   })
@@ -250,13 +254,13 @@ describe('Urban Chamber Pilot Readiness', () => {
     it('should generate comprehensive pilot readiness report', () => {
       const report = {
         characterArcs: {
-          alex: alexDialogueNodes.length,
-          tess: tessDialogueNodes.length,
-          jordan: jordanDialogueNodes.length,
-          rohan: rohanDialogueNodes.length,
-          maya: mayaDialogueNodes.length,
-          devon: devonDialogueNodes.length,
-          samuel: samuelDialogueNodes.length
+          alex: getShippedNodeCount('alex'),
+          tess: getShippedNodeCount('tess'),
+          jordan: getShippedNodeCount('jordan'),
+          rohan: getShippedNodeCount('rohan'),
+          maya: getShippedNodeCount('maya'),
+          devon: getShippedNodeCount('devon'),
+          samuel: getShippedNodeCount('samuel')
         },
         intersectionScenes: {
           mayaDevon: mayaDevonIntersectionNodes.length,
@@ -264,13 +268,13 @@ describe('Urban Chamber Pilot Readiness', () => {
           alexJordan: alexJordanIntersectionNodes.length
         },
         totalContent:
-          alexDialogueNodes.length +
-          tessDialogueNodes.length +
-          jordanDialogueNodes.length +
-          rohanDialogueNodes.length +
-          mayaDialogueNodes.length +
-          devonDialogueNodes.length +
-          samuelDialogueNodes.length +
+          getShippedNodeCount('alex') +
+          getShippedNodeCount('tess') +
+          getShippedNodeCount('jordan') +
+          getShippedNodeCount('rohan') +
+          getShippedNodeCount('maya') +
+          getShippedNodeCount('devon') +
+          getShippedNodeCount('samuel') +
           mayaDevonIntersectionNodes.length +
           tessRohanIntersectionNodes.length +
           alexJordanIntersectionNodes.length,
@@ -283,7 +287,7 @@ describe('Urban Chamber Pilot Readiness', () => {
       console.log('\n📚 Character Arcs:')
       Object.entries(report.characterArcs).forEach(([char, count]) => {
         const status = count >= 30 ? '✅' : '⚠️ '
-        console.log(`  ${status} ${char}: ${count} nodes`)
+        console.log(`  ${status} ${char}: ${count} shipped nodes`)
       })
 
       console.log('\n🔗 Intersection Scenes:')
@@ -292,7 +296,7 @@ describe('Urban Chamber Pilot Readiness', () => {
       })
 
       console.log('\n💼 Career Framing:', report.careerFraming)
-      console.log('\n📊 Total Content:', report.totalContent, 'nodes')
+      console.log('\n📊 Total Content:', report.totalContent, 'shipped nodes')
       console.log('\n✨ Status:', report.status)
       console.log('========================================\n')
 

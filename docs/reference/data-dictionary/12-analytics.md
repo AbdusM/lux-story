@@ -461,7 +461,7 @@ Bias and engagement telemetry is stored in a dedicated table so we can distingui
   - Adds `payload.__gct_validation` when the payload is missing expected keys (soft validation).
 
 **Database table:**
-- `interaction_events` via `supabase/migrations/019_interaction_events_table.sql`
+- `interaction_events` via `supabase/migrations/021_interaction_events_table.sql`
 
 ### Table Schema (interaction_events)
 

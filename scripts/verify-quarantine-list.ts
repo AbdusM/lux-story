@@ -15,6 +15,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { QUARANTINED_NODE_IDS_BY_GRAPH } from '../content/drafts/quarantined-node-ids'
+import { getRuntimeRoutedSimulationSetupNodeIds } from '../lib/simulation-runtime-routes'
 
 type Report = {
   unreachable: Array<{ graphKey: string; nodeId: string }>
@@ -42,7 +43,12 @@ function buildSetFromQuarantine(): Set<string> {
 }
 
 function buildSetFromReport(report: Report): Set<string> {
-  return new Set(report.unreachable.map((n) => toKey(n.graphKey, n.nodeId)))
+  const runtimeRouted = getRuntimeRoutedSimulationSetupNodeIds()
+  return new Set(
+    report.unreachable
+      .map((n) => toKey(n.graphKey, n.nodeId))
+      .filter((key) => !runtimeRouted.has(key))
+  )
 }
 
 function main(): void {
@@ -74,4 +80,3 @@ function main(): void {
 }
 
 main()
-

@@ -7,7 +7,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { Volume2, VolumeX, User, Eye, Brain, Palette, Monitor, LogOut, Cloud, CloudOff, Loader2, Download, Upload, Keyboard } from 'lucide-react'
+import { Volume2, VolumeX, User, Eye, Brain, Palette, Monitor, LogOut, Cloud, CloudOff, Loader2, Download, Upload, Keyboard, Shield } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useAccessibilityProfile } from '@/hooks/useAccessibilityProfile'
@@ -25,6 +25,11 @@ import { loadLocalSettings } from '@/lib/settings-sync'
 import { CATEGORY_LABELS, formatKeyCombo } from '@/lib/keyboard-shortcuts'
 import type { KeyboardShortcut } from '@/lib/keyboard-shortcuts'
 import { springs } from '@/lib/animations'
+import type {
+  ResearchConsentResponse,
+  ResearchParticipationLevel,
+} from '@/lib/research-consent'
+import { ensureUserApiSession } from '@/lib/user-api-session'
 import { cn } from '@/lib/utils'
 
 type TabId = 'account' | 'audio' | 'accessibility' | 'display' | 'keyboard'
@@ -42,6 +47,53 @@ const tabs: Tab[] = [
   { id: 'keyboard', label: 'Keyboard', icon: <Keyboard className="w-5 h-5" /> },
   { id: 'display', label: 'Display', icon: <Monitor className="w-5 h-5" /> },
 ]
+
+const PLAYER_ID_STORAGE_KEYS = ['lux-player-id', 'playerId', 'gameUserId'] as const
+
+const RESEARCH_PARTICIPATION_OPTIONS: Array<{
+  id: ResearchParticipationLevel
+  title: string
+  description: string
+}> = [
+  {
+    id: 'none',
+    title: 'No Research Sharing',
+    description: 'Disable identified exports and longitudinal research access.',
+  },
+  {
+    id: 'cohort_only',
+    title: 'Anonymous Cohort Only',
+    description: 'Allow pseudonymized cohort analysis without identified export.',
+  },
+  {
+    id: 'individual_research',
+    title: 'Individual Research',
+    description: 'Allow identified single-participant export when consent is granted.',
+  },
+  {
+    id: 'full_research',
+    title: 'Full Longitudinal Research',
+    description: 'Allow identified export plus longitudinal timeline analysis.',
+  },
+]
+
+function loadStoredPlayerId(): string | null {
+  if (typeof window === 'undefined') return null
+
+  for (const key of PLAYER_ID_STORAGE_KEYS) {
+    const value = localStorage.getItem(key)
+    if (value) return value
+  }
+
+  return null
+}
+
+function formatConsentStatus(status: ResearchConsentResponse['status'] | null): string {
+  if (status === 'granted') return 'Granted'
+  if (status === 'pending') return 'Pending'
+  if (status === 'revoked') return 'Revoked'
+  return 'Not Set'
+}
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -82,6 +134,17 @@ export default function ProfilePage() {
   // Keyboard shortcuts
   const { shortcuts, resetShortcuts } = useKeyboardShortcuts()
 
+  // Research consent
+  const [playerId, setPlayerId] = useState<string | null>(null)
+  const [consent, setConsent] = useState<ResearchConsentResponse | null>(null)
+  const [consentLoading, setConsentLoading] = useState(true)
+  const [consentSaving, setConsentSaving] = useState(false)
+  const [consentError, setConsentError] = useState<string | null>(null)
+  const [participationLevel, setParticipationLevel] =
+    useState<ResearchParticipationLevel>('none')
+  const [guardianRequired, setGuardianRequired] = useState(false)
+  const [guardianVerified, setGuardianVerified] = useState(false)
+
   // Load user data
   useEffect(() => {
     const loadUser = async () => {
@@ -91,6 +154,84 @@ export default function ProfilePage() {
     }
     loadUser()
   }, [supabase.auth])
+
+  useEffect(() => {
+    const storedPlayerId = loadStoredPlayerId()
+    setPlayerId(storedPlayerId)
+  }, [])
+
+  useEffect(() => {
+    if (!playerId) {
+      setConsentLoading(false)
+      setConsent(null)
+      setConsentError('Start the game once on this device to create a player record before managing research participation.')
+      return
+    }
+
+    let cancelled = false
+
+    const loadConsent = async () => {
+      setConsentLoading(true)
+      setConsentError(null)
+
+      const sessionReady = await ensureUserApiSession(playerId)
+      if (!sessionReady) {
+        if (!cancelled) {
+          setConsent(null)
+          setConsentLoading(false)
+          setConsentError('Unable to establish a secure player session for research settings.')
+        }
+        return
+      }
+
+      try {
+        const response = await fetch(`/api/user/research-consent?userId=${encodeURIComponent(playerId)}`, {
+          credentials: 'include',
+        })
+        const body = await response.json()
+
+        if (!response.ok) {
+          throw new Error(
+            typeof body?.error === 'string' ? body.error : 'Unable to load research consent.'
+          )
+        }
+
+        if (cancelled) return
+
+        const nextConsent = (body.consent ?? null) as ResearchConsentResponse | null
+        setConsent(nextConsent)
+        setParticipationLevel(nextConsent?.selectedParticipation ?? 'none')
+        setGuardianRequired(nextConsent?.guardianRequired ?? false)
+        setGuardianVerified(nextConsent?.guardianVerified ?? false)
+      } catch (error) {
+        if (cancelled) return
+        setConsent(null)
+        setConsentError(error instanceof Error ? error.message : 'Unable to load research consent.')
+      } finally {
+        if (!cancelled) {
+          setConsentLoading(false)
+        }
+      }
+    }
+
+    loadConsent()
+
+    return () => {
+      cancelled = true
+    }
+  }, [playerId])
+
+  useEffect(() => {
+    if (participationLevel === 'none') {
+      setGuardianRequired(false)
+      setGuardianVerified(false)
+      return
+    }
+
+    if (!guardianRequired && guardianVerified) {
+      setGuardianVerified(false)
+    }
+  }, [guardianRequired, guardianVerified, participationLevel])
 
   const handleToggleMute = async () => {
     const newMuted = !isMuted
@@ -137,6 +278,67 @@ export default function ProfilePage() {
       toast.offlineNotice()
     }
   }, [pushNow, isOnline, toast])
+
+  const handleSaveResearchConsent = useCallback(async () => {
+    if (!playerId) {
+      toast.error('Research consent unavailable', 'Start the game once to create a player record.')
+      return
+    }
+
+    setConsentSaving(true)
+    setConsentError(null)
+
+    const sessionReady = await ensureUserApiSession(playerId)
+    if (!sessionReady) {
+      setConsentSaving(false)
+      setConsentError('Unable to establish a secure player session for research settings.')
+      toast.error('Research consent unavailable', 'The player session could not be verified.')
+      return
+    }
+
+    try {
+      const response = await fetch('/api/user/research-consent', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          user_id: playerId,
+          consent_enabled: participationLevel !== 'none',
+          consent_scope: participationLevel === 'none' ? 'cohort_only' : participationLevel,
+          guardian_required: guardianRequired,
+          guardian_verified: guardianVerified,
+        }),
+      })
+
+      const body = await response.json()
+      if (!response.ok) {
+        throw new Error(
+          typeof body?.error === 'string' ? body.error : 'Unable to save research consent.'
+        )
+      }
+
+      const nextConsent = (body.consent ?? null) as ResearchConsentResponse | null
+      setConsent(nextConsent)
+      setParticipationLevel(nextConsent?.selectedParticipation ?? 'none')
+      setGuardianRequired(nextConsent?.guardianRequired ?? false)
+      setGuardianVerified(nextConsent?.guardianVerified ?? false)
+
+      if (nextConsent?.status === 'granted') {
+        toast.success('Research consent updated', 'Your export permissions are active.')
+      } else if (nextConsent?.status === 'pending') {
+        toast.warning('Research consent pending', 'Guardian verification is still required.')
+      } else {
+        toast.info('Research consent revoked', 'Identified research export is disabled.')
+      }
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Unable to save research consent.'
+      setConsentError(message)
+      toast.error('Research consent failed', message)
+    } finally {
+      setConsentSaving(false)
+    }
+  }, [guardianRequired, guardianVerified, participationLevel, playerId, toast])
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -199,6 +401,18 @@ export default function ProfilePage() {
     }
     input.click()
   }
+
+  const previewStatus =
+    participationLevel === 'none'
+      ? 'revoked'
+      : guardianRequired && !guardianVerified
+        ? 'pending'
+        : 'granted'
+  const previewAllowsIdentified =
+    previewStatus === 'granted' &&
+    (participationLevel === 'individual_research' || participationLevel === 'full_research')
+  const previewAllowsLongitudinal =
+    previewStatus === 'granted' && participationLevel === 'full_research'
 
   return (
     <div className="min-h-screen bg-[#0a0c10] text-white p-4 sm:p-6">
@@ -295,6 +509,184 @@ export default function ProfilePage() {
                   </div>
                 ) : (
                   <p className="text-slate-400">Not signed in</p>
+                )}
+              </div>
+
+              <div id="research-consent" className="pt-4 border-t border-white/10 space-y-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
+                      <Shield className="w-5 h-5 text-amber-400" />
+                      Research Participation
+                    </h2>
+                    <p className="text-sm text-slate-400 max-w-2xl">
+                      Control whether your data can be used for pseudonymized cohort analysis,
+                      identified single-participant export, or full longitudinal research.
+                    </p>
+                  </div>
+
+                  <div
+                    className={cn(
+                      'px-3 py-1.5 rounded-full text-xs font-medium border',
+                      consent?.status === 'granted'
+                        ? 'bg-green-500/10 text-green-300 border-green-500/30'
+                        : consent?.status === 'pending'
+                          ? 'bg-amber-500/10 text-amber-300 border-amber-500/30'
+                          : 'bg-slate-800/60 text-slate-300 border-slate-700/60'
+                    )}
+                  >
+                    {formatConsentStatus(consent?.status ?? null)}
+                  </div>
+                </div>
+
+                {playerId ? (
+                  <p className="text-xs text-slate-500">
+                    Player record: <span className="font-mono text-slate-300">{playerId}</span>
+                  </p>
+                ) : (
+                  <div className="p-4 bg-slate-800/40 border border-slate-700/60 rounded-lg text-sm text-slate-300">
+                    Start the game once on this device before managing research participation.
+                  </div>
+                )}
+
+                {consentError && (
+                  <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-200">
+                    {consentError}
+                  </div>
+                )}
+
+                {playerId && (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {RESEARCH_PARTICIPATION_OPTIONS.map((option) => (
+                        <button
+                          key={option.id}
+                          type="button"
+                          onClick={() => setParticipationLevel(option.id)}
+                          disabled={consentLoading || consentSaving}
+                          className={cn(
+                            'text-left p-4 rounded-lg border transition-all',
+                            participationLevel === option.id
+                              ? 'bg-amber-500/15 border-amber-500/40 text-white'
+                              : 'bg-slate-800/30 border-slate-700/60 text-slate-300 hover:border-slate-500/60',
+                            (consentLoading || consentSaving) && 'opacity-60 cursor-not-allowed'
+                          )}
+                        >
+                          <div className="font-medium mb-1">{option.title}</div>
+                          <div className="text-sm text-slate-400">{option.description}</div>
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="p-4 bg-slate-800/30 rounded-lg border border-slate-700/50 space-y-3">
+                      <div className="flex items-center justify-between gap-4">
+                        <div>
+                          <p className="text-sm font-medium text-white">Guardian Approval</p>
+                          <p className="text-xs text-slate-400">
+                            Mark this if a guardian must approve research participation for this player.
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          role="switch"
+                          aria-checked={guardianRequired}
+                          aria-label="Guardian approval required"
+                          disabled={participationLevel === 'none' || consentLoading || consentSaving}
+                          onClick={() => setGuardianRequired((current) => !current)}
+                          className={cn(
+                            'relative w-11 h-6 rounded-full transition-colors',
+                            guardianRequired ? 'bg-amber-500/40' : 'bg-slate-700',
+                            (participationLevel === 'none' || consentLoading || consentSaving) &&
+                              'opacity-50 cursor-not-allowed'
+                          )}
+                        >
+                          <span
+                            className={cn(
+                              'absolute top-1 left-1 h-4 w-4 rounded-full bg-white transition-transform',
+                              guardianRequired && 'translate-x-5'
+                            )}
+                          />
+                        </button>
+                      </div>
+
+                      {guardianRequired && participationLevel !== 'none' && (
+                        <label className="flex items-start gap-3 text-sm text-slate-300">
+                          <input
+                            type="checkbox"
+                            checked={guardianVerified}
+                            disabled={consentLoading || consentSaving}
+                            onChange={(event) => setGuardianVerified(event.target.checked)}
+                            className="mt-0.5 h-4 w-4 rounded border-slate-600 bg-slate-900 text-amber-500 focus:ring-amber-500/50"
+                          />
+                          <span>
+                            Guardian approval has been collected for this research participation setting.
+                          </span>
+                        </label>
+                      )}
+
+                      {participationLevel !== 'none' && guardianRequired && !guardianVerified && (
+                        <div className="rounded-lg border border-amber-500/20 bg-amber-500/10 px-3 py-2 text-xs text-amber-200">
+                          This consent will remain pending until guardian approval is verified.
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
+                        <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">
+                          Cohort Analysis
+                        </p>
+                        <p className="text-sm text-white">
+                          {previewStatus === 'revoked' ? 'Off' : 'Allowed'}
+                        </p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
+                        <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">
+                          Identified Export
+                        </p>
+                        <p className="text-sm text-white">
+                          {previewAllowsIdentified ? 'Allowed' : 'Off'}
+                        </p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
+                        <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">
+                          Longitudinal Tracking
+                        </p>
+                        <p className="text-sm text-white">
+                          {previewAllowsLongitudinal ? 'Allowed' : 'Off'}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={handleSaveResearchConsent}
+                        disabled={consentLoading || consentSaving}
+                        className={cn(
+                          'inline-flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors',
+                          'bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border-amber-500/30',
+                          (consentLoading || consentSaving) && 'opacity-60 cursor-not-allowed'
+                        )}
+                      >
+                        {(consentLoading || consentSaving) && (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        )}
+                        <span>Save Research Settings</span>
+                      </button>
+
+                      {consent?.status === 'revoked' && consent.revokedAt && (
+                        <p className="text-xs text-slate-500">
+                          Last revoked {new Date(consent.revokedAt).toLocaleString()}
+                        </p>
+                      )}
+                      {consent?.status !== 'revoked' && consent?.consentedAt && (
+                        <p className="text-xs text-slate-500">
+                          Last granted {new Date(consent.consentedAt).toLocaleString()}
+                        </p>
+                      )}
+                    </div>
+                  </>
                 )}
               </div>
 

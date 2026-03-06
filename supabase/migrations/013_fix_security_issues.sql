@@ -13,7 +13,6 @@
 -- ============================================================================
 
 BEGIN;
-
 -- ============================================================================
 -- 1. FIX SECURITY DEFINER VIEWS
 -- Recreate views without SECURITY DEFINER property
@@ -34,7 +33,6 @@ SELECT
   ARRAY_AGG(DISTINCT character_id ORDER BY character_id) as characters_involved
 FROM pattern_demonstrations
 GROUP BY user_id, pattern_name;
-
 -- Recreate pattern_evolution view without SECURITY DEFINER
 DROP VIEW IF EXISTS pattern_evolution CASCADE;
 CREATE VIEW pattern_evolution
@@ -47,7 +45,6 @@ SELECT
 FROM pattern_demonstrations
 GROUP BY user_id, pattern_name, DATE_TRUNC('week', demonstrated_at)
 ORDER BY user_id, week_start, pattern_name;
-
 -- Recreate user_decision_styles view without SECURITY DEFINER
 DROP VIEW IF EXISTS user_decision_styles CASCADE;
 CREATE VIEW user_decision_styles
@@ -113,39 +110,64 @@ SELECT
   END as decision_style
 FROM ranked_patterns
 GROUP BY user_id;
-
 -- ============================================================================
 -- 2. ENABLE RLS ON TABLES MISSING IT
 -- ============================================================================
 
 -- Enable RLS on player_urgency_scores
 ALTER TABLE player_urgency_scores ENABLE ROW LEVEL SECURITY;
-
 -- Enable RLS on visited_scenes
 ALTER TABLE visited_scenes ENABLE ROW LEVEL SECURITY;
-
 -- Enable RLS on choice_history
 ALTER TABLE choice_history ENABLE ROW LEVEL SECURITY;
-
 -- Enable RLS on player_patterns
 ALTER TABLE player_patterns ENABLE ROW LEVEL SECURITY;
-
 -- Enable RLS on player_behavioral_profiles
 ALTER TABLE player_behavioral_profiles ENABLE ROW LEVEL SECURITY;
-
 -- Enable RLS on skill_milestones
 ALTER TABLE skill_milestones ENABLE ROW LEVEL SECURITY;
-
 -- Enable RLS on relationship_key_moments
 ALTER TABLE relationship_key_moments ENABLE ROW LEVEL SECURITY;
-
 -- Enable RLS on career_local_opportunities
 ALTER TABLE career_local_opportunities ENABLE ROW LEVEL SECURITY;
-
 -- ============================================================================
 -- 3. CREATE RLS POLICIES FOR EACH TABLE
 -- ============================================================================
 
+-- Drop existing policies to allow idempotent re-run
+DROP POLICY IF EXISTS "Users can view own urgency scores" ON player_urgency_scores;
+DROP POLICY IF EXISTS "Service role can view all urgency scores" ON player_urgency_scores;
+DROP POLICY IF EXISTS "Service role can manage urgency scores" ON player_urgency_scores;
+DROP POLICY IF EXISTS "Users can view own visited scenes" ON visited_scenes;
+DROP POLICY IF EXISTS "Users can insert own visited scenes" ON visited_scenes;
+DROP POLICY IF EXISTS "Service role can view all visited scenes" ON visited_scenes;
+DROP POLICY IF EXISTS "Service role can insert all visited scenes" ON visited_scenes;
+DROP POLICY IF EXISTS "Users can view own choice history" ON choice_history;
+DROP POLICY IF EXISTS "Users can insert own choices" ON choice_history;
+DROP POLICY IF EXISTS "Service role can view all choice history" ON choice_history;
+DROP POLICY IF EXISTS "Service role can insert all choice history" ON choice_history;
+DROP POLICY IF EXISTS "Users can view own patterns" ON player_patterns;
+DROP POLICY IF EXISTS "Users can update own patterns" ON player_patterns;
+DROP POLICY IF EXISTS "Users can insert own patterns" ON player_patterns;
+DROP POLICY IF EXISTS "Service role can view all player patterns" ON player_patterns;
+DROP POLICY IF EXISTS "Service role can manage all player patterns" ON player_patterns;
+DROP POLICY IF EXISTS "Users can view own behavioral profile" ON player_behavioral_profiles;
+DROP POLICY IF EXISTS "Users can update own behavioral profile" ON player_behavioral_profiles;
+DROP POLICY IF EXISTS "Users can insert own behavioral profile" ON player_behavioral_profiles;
+DROP POLICY IF EXISTS "Service role can view all behavioral profiles" ON player_behavioral_profiles;
+DROP POLICY IF EXISTS "Service role can manage all behavioral profiles" ON player_behavioral_profiles;
+DROP POLICY IF EXISTS "Users can view own milestones" ON skill_milestones;
+DROP POLICY IF EXISTS "Users can insert own milestones" ON skill_milestones;
+DROP POLICY IF EXISTS "Service role can view all milestones" ON skill_milestones;
+DROP POLICY IF EXISTS "Service role can insert all milestones" ON skill_milestones;
+DROP POLICY IF EXISTS "Users can view own relationship key moments" ON relationship_key_moments;
+DROP POLICY IF EXISTS "Users can insert own relationship key moments" ON relationship_key_moments;
+DROP POLICY IF EXISTS "Service role can view all relationship key moments" ON relationship_key_moments;
+DROP POLICY IF EXISTS "Service role can insert all relationship key moments" ON relationship_key_moments;
+DROP POLICY IF EXISTS "Users can view own career opportunities" ON career_local_opportunities;
+DROP POLICY IF EXISTS "Users can insert own career opportunities" ON career_local_opportunities;
+DROP POLICY IF EXISTS "Service role can view all career opportunities" ON career_local_opportunities;
+DROP POLICY IF EXISTS "Service role can insert all career opportunities" ON career_local_opportunities;
 -- ============================================================================
 -- player_urgency_scores policies
 -- ============================================================================
@@ -155,14 +177,12 @@ CREATE POLICY "Users can view own urgency scores"
   ON player_urgency_scores
   FOR SELECT
   USING (auth.uid()::text = player_id);
-
 -- Service role can view all (for admin dashboard)
 CREATE POLICY "Service role can view all urgency scores"
   ON player_urgency_scores
   FOR SELECT
   TO service_role
   USING (true);
-
 -- Service role can insert/update (for background calculations)
 CREATE POLICY "Service role can manage urgency scores"
   ON player_urgency_scores
@@ -170,7 +190,6 @@ CREATE POLICY "Service role can manage urgency scores"
   TO service_role
   USING (true)
   WITH CHECK (true);
-
 -- ============================================================================
 -- visited_scenes policies
 -- ============================================================================
@@ -180,27 +199,23 @@ CREATE POLICY "Users can view own visited scenes"
   ON visited_scenes
   FOR SELECT
   USING (auth.uid()::text = player_id);
-
 -- Users can insert their own visited scenes
 CREATE POLICY "Users can insert own visited scenes"
   ON visited_scenes
   FOR INSERT
   WITH CHECK (auth.uid()::text = player_id);
-
 -- Service role can view all (for admin dashboard)
 CREATE POLICY "Service role can view all visited scenes"
   ON visited_scenes
   FOR SELECT
   TO service_role
   USING (true);
-
 -- Service role can insert all (for background sync)
 CREATE POLICY "Service role can insert all visited scenes"
   ON visited_scenes
   FOR INSERT
   TO service_role
   WITH CHECK (true);
-
 -- ============================================================================
 -- choice_history policies
 -- ============================================================================
@@ -210,27 +225,23 @@ CREATE POLICY "Users can view own choice history"
   ON choice_history
   FOR SELECT
   USING (auth.uid()::text = player_id);
-
 -- Users can insert their own choices
 CREATE POLICY "Users can insert own choices"
   ON choice_history
   FOR INSERT
   WITH CHECK (auth.uid()::text = player_id);
-
 -- Service role can view all (for admin dashboard)
 CREATE POLICY "Service role can view all choice history"
   ON choice_history
   FOR SELECT
   TO service_role
   USING (true);
-
 -- Service role can insert all (for background sync)
 CREATE POLICY "Service role can insert all choice history"
   ON choice_history
   FOR INSERT
   TO service_role
   WITH CHECK (true);
-
 -- ============================================================================
 -- player_patterns policies
 -- ============================================================================
@@ -240,27 +251,23 @@ CREATE POLICY "Users can view own patterns"
   ON player_patterns
   FOR SELECT
   USING (auth.uid()::text = player_id);
-
 -- Users can update their own patterns
 CREATE POLICY "Users can update own patterns"
   ON player_patterns
   FOR UPDATE
   USING (auth.uid()::text = player_id)
   WITH CHECK (auth.uid()::text = player_id);
-
 -- Users can insert their own patterns
 CREATE POLICY "Users can insert own patterns"
   ON player_patterns
   FOR INSERT
   WITH CHECK (auth.uid()::text = player_id);
-
 -- Service role can view all (for admin dashboard)
 CREATE POLICY "Service role can view all player patterns"
   ON player_patterns
   FOR SELECT
   TO service_role
   USING (true);
-
 -- Service role can manage all (for background sync)
 CREATE POLICY "Service role can manage all player patterns"
   ON player_patterns
@@ -268,7 +275,6 @@ CREATE POLICY "Service role can manage all player patterns"
   TO service_role
   USING (true)
   WITH CHECK (true);
-
 -- ============================================================================
 -- player_behavioral_profiles policies
 -- ============================================================================
@@ -278,27 +284,23 @@ CREATE POLICY "Users can view own behavioral profile"
   ON player_behavioral_profiles
   FOR SELECT
   USING (auth.uid()::text = player_id);
-
 -- Users can update their own behavioral profile
 CREATE POLICY "Users can update own behavioral profile"
   ON player_behavioral_profiles
   FOR UPDATE
   USING (auth.uid()::text = player_id)
   WITH CHECK (auth.uid()::text = player_id);
-
 -- Users can insert their own behavioral profile
 CREATE POLICY "Users can insert own behavioral profile"
   ON player_behavioral_profiles
   FOR INSERT
   WITH CHECK (auth.uid()::text = player_id);
-
 -- Service role can view all (for admin dashboard)
 CREATE POLICY "Service role can view all behavioral profiles"
   ON player_behavioral_profiles
   FOR SELECT
   TO service_role
   USING (true);
-
 -- Service role can manage all (for background sync)
 CREATE POLICY "Service role can manage all behavioral profiles"
   ON player_behavioral_profiles
@@ -306,7 +308,6 @@ CREATE POLICY "Service role can manage all behavioral profiles"
   TO service_role
   USING (true)
   WITH CHECK (true);
-
 -- ============================================================================
 -- skill_milestones policies
 -- ============================================================================
@@ -316,27 +317,23 @@ CREATE POLICY "Users can view own milestones"
   ON skill_milestones
   FOR SELECT
   USING (auth.uid()::text = player_id);
-
 -- Users can insert their own milestones
 CREATE POLICY "Users can insert own milestones"
   ON skill_milestones
   FOR INSERT
   WITH CHECK (auth.uid()::text = player_id);
-
 -- Service role can view all (for admin dashboard)
 CREATE POLICY "Service role can view all milestones"
   ON skill_milestones
   FOR SELECT
   TO service_role
   USING (true);
-
 -- Service role can insert all (for background sync)
 CREATE POLICY "Service role can insert all milestones"
   ON skill_milestones
   FOR INSERT
   TO service_role
   WITH CHECK (true);
-
 -- ============================================================================
 -- relationship_key_moments policies
 -- ============================================================================
@@ -352,7 +349,6 @@ CREATE POLICY "Users can view own relationship key moments"
       AND rp.user_id = auth.uid()::text
     )
   );
-
 -- Users can insert their own relationship key moments
 CREATE POLICY "Users can insert own relationship key moments"
   ON relationship_key_moments
@@ -364,21 +360,18 @@ CREATE POLICY "Users can insert own relationship key moments"
       AND rp.user_id = auth.uid()::text
     )
   );
-
 -- Service role can view all (for admin dashboard)
 CREATE POLICY "Service role can view all relationship key moments"
   ON relationship_key_moments
   FOR SELECT
   TO service_role
   USING (true);
-
 -- Service role can insert all (for background sync)
 CREATE POLICY "Service role can insert all relationship key moments"
   ON relationship_key_moments
   FOR INSERT
   TO service_role
   WITH CHECK (true);
-
 -- ============================================================================
 -- career_local_opportunities policies
 -- ============================================================================
@@ -394,7 +387,6 @@ CREATE POLICY "Users can view own career opportunities"
       AND ce.user_id = auth.uid()::text
     )
   );
-
 -- Users can insert their own career opportunities
 CREATE POLICY "Users can insert own career opportunities"
   ON career_local_opportunities
@@ -406,23 +398,19 @@ CREATE POLICY "Users can insert own career opportunities"
       AND ce.user_id = auth.uid()::text
     )
   );
-
 -- Service role can view all (for admin dashboard)
 CREATE POLICY "Service role can view all career opportunities"
   ON career_local_opportunities
   FOR SELECT
   TO service_role
   USING (true);
-
 -- Service role can insert all (for background sync)
 CREATE POLICY "Service role can insert all career opportunities"
   ON career_local_opportunities
   FOR INSERT
   TO service_role
   WITH CHECK (true);
-
 COMMIT;
-
 -- ============================================================================
 -- Success Message
 -- ============================================================================

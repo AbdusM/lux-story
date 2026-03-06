@@ -360,6 +360,18 @@ export function SettingsMenuContents({
           <span className="text-sm text-slate-300">All Settings</span>
           <ChevronRight className="w-4 h-4 text-slate-500 ml-auto" />
         </button>
+
+        <button
+          onClick={() => {
+            router.push('/profile#research-consent')
+            onRequestClose()
+          }}
+          className="w-full flex items-center gap-3 p-2.5 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+        >
+          <Shield className="w-4 h-4 text-sky-400" />
+          <span className="text-sm text-slate-300">Research Participation</span>
+          <ChevronRight className="w-4 h-4 text-slate-500 ml-auto" />
+        </button>
       </div>
 
         {/* Account */}

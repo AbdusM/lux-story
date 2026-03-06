@@ -4,7 +4,10 @@ import React, { useMemo } from 'react'
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
-import { getCareerRecommendations, type CareerRecommendation } from '@/lib/assessment-derivatives'
+import {
+  getCanonicalCareerRecommendations,
+  type CanonicalCareerRecommendation,
+} from '@/lib/canonical-career-analysis'
 import { useGameStore } from '@/lib/game-store'
 import { motion } from 'framer-motion'
 import { Briefcase, TrendingUp, AlertCircle, User } from 'lucide-react'
@@ -21,12 +24,8 @@ export function CareerForecast({ className, limit = 3 }: CareerForecastProps) {
     // Calculate recommendations
     const recommendations = useMemo(() => {
         if (!skills || !patterns) return []
-        return getCareerRecommendations(
-            patterns,
-            skills as unknown as Record<string, number>,
-            limit
-        )
-    }, [skills, patterns, limit])
+        return getCanonicalCareerRecommendations(skills, limit)
+    }, [skills, limit, patterns])
 
     if (recommendations.length === 0) {
         return (
@@ -51,15 +50,21 @@ export function CareerForecast({ className, limit = 3 }: CareerForecastProps) {
             </CardHeader>
             <CardContent className="space-y-6">
                 {recommendations.map((rec, index) => (
-                    <CareerItem key={rec.career.id} recommendation={rec} index={index} />
+                    <CareerItem key={rec.id} recommendation={rec} index={index} />
                 ))}
             </CardContent>
         </Card>
     )
 }
 
-function CareerItem({ recommendation, index }: { recommendation: CareerRecommendation, index: number }) {
-    const { career, confidenceScore, matchReasons, growthAreas, characterToTalkTo } = recommendation
+function CareerItem({
+    recommendation,
+    index,
+}: {
+    recommendation: CanonicalCareerRecommendation
+    index: number
+}) {
+    const gapCount = Object.values(recommendation.requiredSkills).filter(({ gap }) => gap > 0).length
 
     return (
         <motion.div
@@ -70,42 +75,55 @@ function CareerItem({ recommendation, index }: { recommendation: CareerRecommend
         >
             <div className="flex justify-between items-end">
                 <div>
-                    <h4 className="font-medium text-slate-200">{career.name}</h4>
-                    <p className="text-xs text-slate-500">{career.sector}</p>
+                    <h4 className="font-medium text-slate-200">{recommendation.name}</h4>
+                    <p className="text-xs text-slate-500">{recommendation.sector}</p>
                 </div>
                 <div className="text-right">
-                    <span className={`text-lg font-bold ${getScoreColor(confidenceScore)}`}>
-                        {confidenceScore}%
+                    <span className={`text-lg font-bold ${getScoreColor(recommendation.confidenceScore)}`}>
+                        {recommendation.confidenceScore}%
                     </span>
                     <span className="text-xs text-slate-500 block">Match</span>
                 </div>
             </div>
 
-            <Progress value={confidenceScore} className="h-2 bg-slate-800" indicatorClassName={getProgressBarColor(confidenceScore)} />
+            <Progress
+                value={recommendation.confidenceScore}
+                className="h-2 bg-slate-800"
+                indicatorClassName={getProgressBarColor(recommendation.confidenceScore)}
+            />
 
             <div className="flex flex-wrap gap-2 mt-2">
-                {matchReasons.slice(0, 2).map((reason, i) => (
+                {recommendation.evidenceForMatch.slice(0, 2).map((reason, i) => (
                     <Badge key={i} variant="outline" className="text-[10px] bg-emerald-950/30 border-emerald-900 text-emerald-400">
                         <TrendingUp className="w-3 h-3 mr-1" />
                         {reason}
                     </Badge>
                 ))}
-                {growthAreas.length > 0 && (
+                <Badge variant="outline" className="text-[10px] bg-sky-950/30 border-sky-900 text-sky-300">
+                    {formatReadiness(recommendation.readiness)}
+                </Badge>
+                {gapCount > 0 && (
                     <Badge variant="outline" className="text-[10px] bg-amber-950/30 border-amber-900 text-amber-400">
                         <AlertCircle className="w-3 h-3 mr-1" />
-                        Grow: {growthAreas[0].split('(')[0]}
+                        Gaps: {gapCount}
                     </Badge>
                 )}
             </div>
 
-            {characterToTalkTo && (
+            {recommendation.localOpportunities[0] && (
                 <div className="text-xs text-slate-400 mt-1 flex items-center gap-1">
                     <User className="w-3 h-3" />
-                    <span>Mentor: <span className="text-slate-300 capitalize">{characterToTalkTo}</span></span>
+                    <span>Next stop: <span className="text-slate-300">{recommendation.localOpportunities[0]}</span></span>
                 </div>
             )}
         </motion.div>
     )
+}
+
+function formatReadiness(readiness: CanonicalCareerRecommendation['readiness']): string {
+    if (readiness === 'near_ready') return 'Near Ready'
+    if (readiness === 'developing') return 'Developing'
+    return 'Exploring'
 }
 
 function getScoreColor(score: number): string {

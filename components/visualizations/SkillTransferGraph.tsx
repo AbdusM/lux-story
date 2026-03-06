@@ -4,7 +4,11 @@ import React, { useEffect, useRef, useMemo, useState } from 'react'
 import * as d3 from 'd3'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card } from '@/components/ui/card'
-import { buildSkillNetwork, SkillNetworkNode, SkillNetworkEdge, getSkillTransfers } from '@/lib/assessment-derivatives'
+import {
+    buildCanonicalSkillNetwork,
+    type CanonicalSkillNetworkNode as SkillNetworkNode,
+    type CanonicalSkillNetworkEdge as SkillNetworkEdge,
+} from '@/lib/canonical-career-analysis'
 import { useGameStore, GameState, GameActions } from '@/lib/game-store'
 
 interface SkillTransferGraphProps {
@@ -25,6 +29,11 @@ interface SimulatedLink extends d3.SimulationLinkDatum<SimulatedNode>, Omit<Skil
     target: SimulatedNode | string
 }
 
+interface SkillTransferSummary {
+    toCareers: string[]
+    toDomains: string[]
+}
+
 export function SkillTransferGraph({ className, width = 600, height = 400 }: SkillTransferGraphProps) {
     const svgRef = useRef<SVGSVGElement>(null)
     const [hoveredNode, setHoveredNode] = useState<SimulatedNode | null>(null)
@@ -34,12 +43,63 @@ export function SkillTransferGraph({ className, width = 600, height = 400 }: Ski
 
     // Memoize the network data
     const data = useMemo(() => {
-        const rawData = buildSkillNetwork((skills || {}) as unknown as Record<string, number>)
+        const rawData = buildCanonicalSkillNetwork(skills || {})
         // Create deep copies for D3 mutation
         const nodes: SimulatedNode[] = rawData.nodes.map(n => ({ ...n }))
         const links: SimulatedLink[] = rawData.edges.map(e => ({ ...e }))
         return { nodes, links }
     }, [skills])
+
+    const skillTransfers = useMemo(() => {
+        const transfers = new Map<string, SkillTransferSummary>()
+        const careerLabels = new Map(
+            data.nodes
+                .filter((node) => node.type === 'career')
+                .map((node) => [node.id, node.label] as const)
+        )
+        const domainLabels = new Map(
+            data.nodes
+                .filter((node) => node.type === 'domain')
+                .map((node) => [node.id, node.label] as const)
+        )
+        const careerToDomains = new Map<string, string[]>()
+
+        const addUnique = (values: string[], value: string) => {
+            if (!values.includes(value)) {
+                values.push(value)
+            }
+        }
+
+        for (const node of data.nodes) {
+            if (node.type === 'skill') {
+                transfers.set(node.id, { toCareers: [], toDomains: [] })
+            }
+        }
+
+        for (const link of data.links) {
+            if (typeof link.source !== 'string' || typeof link.target !== 'string') continue
+            if (!link.source.startsWith('career_') || !link.target.startsWith('domain_')) continue
+
+            const domainIds = careerToDomains.get(link.source) ?? []
+            addUnique(domainIds, link.target)
+            careerToDomains.set(link.source, domainIds)
+        }
+
+        for (const link of data.links) {
+            if (typeof link.source !== 'string' || typeof link.target !== 'string') continue
+            if (!transfers.has(link.source) || !link.target.startsWith('career_')) continue
+
+            const summary = transfers.get(link.source)
+            if (!summary) continue
+
+            addUnique(summary.toCareers, careerLabels.get(link.target) ?? link.target)
+            for (const domainId of careerToDomains.get(link.target) ?? []) {
+                addUnique(summary.toDomains, domainLabels.get(domainId) ?? domainId)
+            }
+        }
+
+        return transfers
+    }, [data])
 
     useEffect(() => {
         if (!svgRef.current || data.nodes.length === 0) return
@@ -152,6 +212,10 @@ export function SkillTransferGraph({ className, width = 600, height = 400 }: Ski
         }
     }, [data, width, height, skills])
 
+    const hoveredTransfer = hoveredNode ? skillTransfers.get(hoveredNode.id) : null
+    const hoveredSkillSignal = hoveredNode
+        ? Math.round(Math.max((hoveredNode.size - 14) / 18, 0) * 100)
+        : 0
 
     // If no skills, show empty state
     if (!skills || Object.keys(skills).length === 0) {
@@ -185,25 +249,21 @@ export function SkillTransferGraph({ className, width = 600, height = 400 }: Ski
                         <Card className="p-3 bg-slate-900/90 backdrop-blur border-blue-500/30 w-64 shadow-xl">
                             <h4 className="font-bold text-blue-400">{hoveredNode.label}</h4>
                             <p className="text-xs text-slate-400 mt-1">
-                                Level {(hoveredNode.size / 10).toFixed(1)}
+                                Skill signal {hoveredSkillSignal}%
                             </p>
-                            {(() => {
-                                const transfer = getSkillTransfers(hoveredNode.id)
-                                if (!transfer) return null
-                                return (
-                                    <div className="mt-2 text-xs">
-                                        <div className="font-medium text-emerald-400 mb-1">Transferable To:</div>
-                                        <ul className="list-disc pl-4 text-slate-300">
-                                            {transfer.toDomains.slice(0, 3).map(d => (
-                                                <li key={d}>{d}</li>
-                                            ))}
-                                            {transfer.toDomains.length > 3 && (
-                                                <li>+{transfer.toDomains.length - 3} more</li>
-                                            )}
-                                        </ul>
-                                    </div>
-                                )
-                            })()}
+                            {hoveredTransfer && (
+                                <div className="mt-2 text-xs">
+                                    <div className="font-medium text-emerald-400 mb-1">Transferable To:</div>
+                                    <ul className="list-disc pl-4 text-slate-300">
+                                        {hoveredTransfer.toDomains.slice(0, 3).map(d => (
+                                            <li key={d}>{d}</li>
+                                        ))}
+                                        {hoveredTransfer.toDomains.length > 3 && (
+                                            <li>+{hoveredTransfer.toDomains.length - 3} more</li>
+                                        )}
+                                    </ul>
+                                </div>
+                            )}
                         </Card>
                     </motion.div>
                 )}
