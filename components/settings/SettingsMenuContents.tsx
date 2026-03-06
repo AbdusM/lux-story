@@ -125,6 +125,14 @@ export function SettingsMenuContents({
     setExpandedSection(prev => prev === section ? null : section)
   }
 
+  const accessibilitySummary = [
+    textSize === 'default' ? 'Readable text' : `${TEXT_SIZES.find((size) => size.id === textSize)?.label || 'Larger'} text`,
+    colorBlindMode === 'default'
+      ? 'Standard contrast'
+      : `${COLOR_MODES.find((mode) => mode.id === colorBlindMode)?.label || 'Adjusted'} colors`,
+    reducedMotion ? 'Calmer motion' : 'Full motion',
+  ]
+
   return (
     <>
       <div className="relative overflow-hidden border-b border-white/10">
@@ -322,15 +330,11 @@ export function SettingsMenuContents({
 
           {expandedSection !== 'accessibility' && (
             <div className="mt-3 flex flex-wrap gap-1.5 text-[11px] text-slate-400">
-              <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1 whitespace-normal">
-                Text: {textSize === 'default' ? 'Default' : textSize}
-              </span>
-              <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1 whitespace-normal">
-                Color: {colorBlindMode === 'default' ? 'Standard' : colorBlindMode}
-              </span>
-              <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1 whitespace-normal">
-                Motion: {reducedMotion ? 'Reduced' : 'Standard'}
-              </span>
+              {accessibilitySummary.map((label) => (
+                <span key={label} className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1 whitespace-normal">
+                  {label}
+                </span>
+              ))}
             </div>
           )}
         </section>
@@ -361,7 +365,7 @@ export function SettingsMenuContents({
               <div className="min-w-0 flex-1 pr-2">
                 <div className="text-sm font-medium text-white">Profile & Preferences</div>
                 <p className="mt-1 text-xs leading-relaxed text-slate-400" aria-hidden="true">
-                  Account, backups, audio, accessibility, and display controls.
+                  Audio, accessibility, backups, and account controls.
                 </p>
               </div>
               <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-slate-500" />

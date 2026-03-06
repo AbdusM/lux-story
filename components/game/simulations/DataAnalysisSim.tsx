@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { CheckCircle2, XCircle, AlertTriangle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { SimulationComponentProps, SimulationResult } from './types'
@@ -56,6 +56,11 @@ export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps)
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [submission, setSubmission] = useState<'idle' | 'submitting'>('idle')
   const [localError, setLocalError] = useState<string | null>(null)
+  const [compactContext, setCompactContext] = useState(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false
+    return window.matchMedia('(max-width: 640px)').matches
+  })
+  const [showContext, setShowContext] = useState(() => !compactContext)
 
   const correctOptionLabel = useMemo(() => (correctOptions ? correctOptions.join('+') : null), [correctOptions])
   const correctOptionTexts = useMemo(() => {
@@ -66,6 +71,27 @@ export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps)
   }, [correctOptions, options])
 
   const canInteract = isTimed && options.length > 0
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return
+
+    const media = window.matchMedia('(max-width: 640px)')
+    const syncCompactMode = () => {
+      const nextCompact = media.matches
+      setCompactContext(nextCompact)
+      setShowContext(!nextCompact)
+    }
+
+    syncCompactMode()
+
+    if (typeof media.addEventListener === 'function') {
+      media.addEventListener('change', syncCompactMode)
+      return () => media.removeEventListener('change', syncCompactMode)
+    }
+
+    media.addListener(syncCompactMode)
+    return () => media.removeListener(syncCompactMode)
+  }, [])
 
   const submit = () => {
     if (!canInteract) return
@@ -117,17 +143,35 @@ export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps)
       </div>
 
       <div className="rounded-lg border border-white/10 bg-black/30">
-        <div className="border-b border-white/5 px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-white/40">
-          What you know
-        </div>
-        <pre
-          className={cn(
-            'max-h-48 overflow-y-auto whitespace-pre-wrap px-3 py-3 text-sm leading-relaxed text-slate-100',
-            displayStyle === 'code' ? 'font-mono text-[12px]' : 'font-sans'
+        <div className="flex items-center justify-between gap-3 border-b border-white/5 px-3 py-2">
+          <div className="text-[10px] uppercase tracking-[0.14em] text-white/40">
+            What you know
+          </div>
+          {compactContext && (
+            <button
+              type="button"
+              onClick={() => setShowContext((current) => !current)}
+              aria-expanded={showContext}
+              className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-slate-200/80 transition-colors hover:bg-white/10"
+            >
+              {showContext ? 'Hide case file' : 'Open case file'}
+            </button>
           )}
-        >
-          {content || '[NO_CONTEXT]'}
-        </pre>
+        </div>
+        {showContext ? (
+          <pre
+            className={cn(
+              'max-h-48 overflow-y-auto whitespace-pre-wrap px-3 py-3 text-sm leading-relaxed text-slate-100',
+              displayStyle === 'code' ? 'font-mono text-[12px]' : 'font-sans'
+            )}
+          >
+            {content || '[NO_CONTEXT]'}
+          </pre>
+        ) : (
+          <div className="px-3 py-3 text-sm leading-relaxed text-slate-300/80">
+            Keep the key brief in view and open the case file only if you need deeper context before deciding.
+          </div>
+        )}
       </div>
 
       {options.length > 0 && (

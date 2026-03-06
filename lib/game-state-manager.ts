@@ -372,10 +372,12 @@ export class GameStateManager {
    * (Characters remember you, but conversation starts fresh at Samuel's hub)
    */
   static resetConversationPosition(state: GameState): GameState {
+    const safeStart = getSafeStart()
+
     return {
       ...state,
-      currentNodeId: 'samuel_introduction', // Reset to Samuel
-      currentCharacterId: 'samuel',
+      currentNodeId: safeStart.graph.startNodeId,
+      currentCharacterId: safeStart.characterId,
       lastSaved: Date.now()
     }
   }

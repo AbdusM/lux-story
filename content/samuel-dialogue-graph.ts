@@ -177,7 +177,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Narrator',
     content: [
       {
-        text: "The train slows down.",
+        text: "The train shudders as it pulls into the station.\n\nBeyond the fogged glass, platform signs flare awake one by one. On the concourse, a man with a broom is already watching your door like he knew this stop was yours.",
         emotion: 'atmospheric',
         variation_id: 'arrival_v1'
       }
@@ -238,7 +238,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Narrator',
     content: [
       {
-        text: "You pause at the train door.",
+        text: "You stay at the threshold long enough to feel the station notice you back.\n\nThe air hums. Somewhere below, a route board clicks to a new future.",
         emotion: 'atmospheric',
         variation_id: 'observation_v1'
       }
@@ -281,7 +281,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Narrator',
     content: [
       {
-        text: "You scan the train: paint-stained fingers, a tired person in scrubs, someone your age rehearsing courage.",
+        text: "You scan the train: paint-stained fingers, a tired person in scrubs, someone your age rehearsing courage under their breath.\n\nNobody looks certain. They just look committed to finding out.",
         emotion: 'atmospheric',
         variation_id: 'passengers_v1'
       }
@@ -324,7 +324,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You took your time. Good.",
+        text: "You took your time. Good.\n\nMost people arrive here still arguing with the life they just stepped out of. You looked first. That matters.\n\nI'm Samuel.",
         emotion: 'warm',
         variation_id: 'intro_patient_v1',
         patternReflection: [
@@ -387,7 +387,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Ha! Straight to the big questions.",
+        text: "Ha. Straight to the big questions.\n\nGood. The people who do best here never mistake a platform for an answer.\n\nI'm Samuel.",
         emotion: 'warm',
         variation_id: 'intro_curious_v1'
       }
@@ -446,7 +446,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You noticed the others. That's good.",
+        text: "You noticed the others. That's good.\n\nMost folks only see themselves when the doors open. You saw the people carrying futures in with them.\n\nI'm Samuel.",
         emotion: 'warm',
         variation_id: 'intro_noticed_v1'
       }
@@ -505,7 +505,7 @@ export const samuelDialogueNodes: DialogueNode[] = [
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "You let them go first. Watched 'em find their footing.",
+        text: "You let them go first. Watched 'em find their footing.\n\nThat tells me enough. Grand Central changes when people make room for each other.\n\nI'm Samuel.",
         emotion: 'warm',
         variation_id: 'intro_humble_v1',
         patternReflection: [
@@ -652,7 +652,7 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Hey there. Welcome to Grand Central.",
+        text: "Hey there. Welcome to Grand Central.\n\nRestless night to arrive. Routes are shifting, people are trying to hear what still fits, and the wrong platform can cost you more than time.\n\nI'm Samuel Washington. I help travelers listen before the board flips again.",
         emotion: 'warm',
         variation_id: 'intro_v1_part1',
         patternReflection: [

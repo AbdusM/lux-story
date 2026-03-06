@@ -28,5 +28,6 @@ declare global {
   interface Window {
     __PLAYWRIGHT__?: boolean
     __LUX_E2E_SEED__?: SerializableGameState
+    __LUX_E2E_SIM_TIME_SCALE__?: number
   }
 }

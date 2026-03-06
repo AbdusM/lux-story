@@ -86,23 +86,30 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
     const contextLabel = humanizeSimulationContextLabel(
         typeof simulation.initialContext?.label === 'string' ? simulation.initialContext.label : undefined
     )
-    const [status, setStatus] = useState<'active' | 'success' | 'failed' | 'skipped'>('active')
-    const [secondsRemaining, setSecondsRemaining] = useState<number | null>(() => {
-        if (typeof simulation.timeLimit !== 'number') return null
-        if (!Number.isFinite(simulation.timeLimit) || simulation.timeLimit <= 0) return null
-        return Math.max(0, Math.ceil(simulation.timeLimit))
-    })
-    const [completionMeta, setCompletionMeta] = useState<{ timedOut: boolean } | null>(null)
-
-    const completionRef = useRef(false)
-    const completionTimerRef = useRef<number | null>(null)
-    const deadlineRef = useRef<number | null>(null)
-
     const normalizeTimerValue = (value: number | undefined): number | null => {
         if (typeof value !== 'number') return null
         if (!Number.isFinite(value) || value <= 0) return null
         return Math.max(0, Math.ceil(value))
     }
+    const getEffectiveTimeLimit = (value: number | undefined): number | null => {
+        const normalized = normalizeTimerValue(value)
+        if (normalized === null) return null
+        if (typeof window === 'undefined') return normalized
+
+        const scale = window.__LUX_E2E_SIM_TIME_SCALE__
+        if (typeof scale !== 'number' || !Number.isFinite(scale) || scale <= 0 || scale >= 1) {
+            return normalized
+        }
+
+        return Math.max(1, Math.ceil(normalized * scale))
+    }
+    const [status, setStatus] = useState<'active' | 'success' | 'failed' | 'skipped'>('active')
+    const [secondsRemaining, setSecondsRemaining] = useState<number | null>(() => getEffectiveTimeLimit(simulation.timeLimit))
+    const [completionMeta, setCompletionMeta] = useState<{ timedOut: boolean } | null>(null)
+
+    const completionRef = useRef(false)
+    const completionTimerRef = useRef<number | null>(null)
+    const deadlineRef = useRef<number | null>(null)
 
     const formatCountdown = (seconds: number): string => {
         const minutes = Math.floor(seconds / 60)
@@ -116,7 +123,7 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
         deadlineRef.current = null
         setStatus('active')
         setCompletionMeta(null)
-        setSecondsRemaining(normalizeTimerValue(simulation.timeLimit))
+        setSecondsRemaining(getEffectiveTimeLimit(simulation.timeLimit))
 
         return () => {
             if (completionTimerRef.current !== null) {
@@ -172,7 +179,7 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
     // reliably branch into fail follow-ups without each mini-game needing bespoke timers.
     useEffect(() => {
         if (status !== 'active') return
-        const limitSeconds = normalizeTimerValue(simulation.timeLimit)
+        const limitSeconds = getEffectiveTimeLimit(simulation.timeLimit)
         if (limitSeconds === null) return
 
         const deadline = Date.now() + limitSeconds * 1000
@@ -405,8 +412,8 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                 className="relative border-b border-white/10 bg-black/20 backdrop-blur-xl select-none"
                 data-testid="simulation-shell-header"
             >
-                <div className="flex flex-col gap-4 px-4 py-4 sm:px-6 sm:py-5">
-                    <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-col gap-3 px-3 py-3 sm:gap-4 sm:px-6 sm:py-5">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                         <div className="min-w-0 space-y-2">
                             <div className="flex flex-wrap items-center gap-2 text-[11px] font-medium tracking-[0.08em] text-slate-200/75">
                                 <span className={cn("rounded-full border px-3 py-1.5 backdrop-blur-sm", frameTheme.badgeClass)}>
@@ -419,11 +426,11 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                                 )}
                             </div>
                             <div className="space-y-1">
-                                <h2 className="text-lg font-semibold text-white sm:text-xl" data-testid="simulation-frame-title">
+                                <h2 className="text-base font-semibold text-white sm:text-xl" data-testid="simulation-frame-title">
                                     {simulation.title}
                                 </h2>
                                 <p
-                                    className="max-w-3xl text-sm leading-relaxed text-slate-200/80 sm:text-[15px]"
+                                    className="max-w-3xl text-xs leading-relaxed text-slate-200/80 sm:text-[15px]"
                                     data-testid="simulation-frame-brief"
                                 >
                                     {simulation.taskDescription}
@@ -431,7 +438,7 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                             </div>
                         </div>
 
-                        <div className="flex shrink-0 items-center gap-3">
+                        <div className="flex shrink-0 flex-wrap items-center gap-2 sm:gap-3">
                             {typeof secondsRemaining === 'number' && (
                                 <div
                                     className={cn(
@@ -467,7 +474,7 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
 
             <div className="relative flex-1 overflow-y-auto overflow-x-hidden">
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white/5 to-transparent" />
-                <div className="relative z-10 min-h-full px-4 pb-8 pt-5 sm:px-6 sm:pt-6" data-testid={`simulation-${simulation.type}`}>
+                <div className="relative z-10 min-h-full px-3 pb-8 pt-4 sm:px-6 sm:pt-6" data-testid={`simulation-${simulation.type}`}>
                     {renderContent()}
                 </div>
             </div>

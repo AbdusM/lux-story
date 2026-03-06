@@ -1,84 +1,75 @@
 /**
- * Atmospheric Intro - Single screen value proposition
+ * Atmospheric Intro - authored entry point into the first loop.
  *
- * Clean, minimal intro that answers:
- * - Why trust us (research + experience)
- * - How it works (play to discover)
- * - Pay it forward (helps next explorer + workforce dev people)
+ * It should:
+ * - establish Terminus as a world, not a quote wall
+ * - teach the loop in one glance
+ * - keep the CTA obvious on desktop and mobile
  */
 
 "use client"
 
-import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-
-const quotes = [
-  { text: "Hide not your talents, they for use were made. What's a sundial in the shade?", author: "Benjamin Franklin" },
-  { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
-  { text: "Knowing yourself is the beginning of all wisdom.", author: "Aristotle" },
-  { text: "What lies behind us and what lies before us are tiny matters compared to what lies within us.", author: "Ralph Waldo Emerson" },
-  { text: "The privilege of a lifetime is to become who you truly are.", author: "Carl Jung" },
-  { text: "Your work is to discover your work and then with all your heart to give yourself to it.", author: "Buddha" },
-  { text: "The best way to predict the future is to create it.", author: "Peter Drucker" },
-  { text: "It is never too late to be what you might have been.", author: "George Eliot" },
-  { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
-  { text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.", author: "Aristotle" },
-  { text: "The mind is not a vessel to be filled, but a fire to be kindled.", author: "Plutarch" },
-]
 
 interface AtmosphericIntroProps {
   onStart: () => void
 }
 
 export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
-  // Use first quote for SSR, then randomize on client to avoid hydration mismatch
-  const [quote, setQuote] = useState(quotes[0])
-
-  useEffect(() => {
-    setQuote(quotes[Math.floor(Math.random() * quotes.length)])
-  }, [])
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 p-3 sm:p-4 flex items-center justify-center">
-      <div className="max-w-2xl mx-auto text-center">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 p-3 sm:p-4">
+      <div className="mx-auto max-w-2xl text-center">
+        <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-amber-100/80">
+          <span className="h-1.5 w-1.5 rounded-full bg-amber-300 shadow-[0_0_10px_rgba(252,211,77,0.7)]" />
+          Tonight&apos;s Dispatch
+        </div>
 
-        {/* Header */}
         <h1
-          className="text-3xl sm:text-4xl font-bold text-slate-100 mb-8"
+          className="mb-5 text-3xl font-bold text-slate-100 sm:text-4xl"
           data-testid="intro-title"
         >
           Terminus
         </h1>
 
-        {/* Value proposition */}
-        <div className="glass-panel rounded-xl p-6 sm:p-8 mb-8">
-          <p className="text-lg sm:text-xl text-slate-100 leading-relaxed mb-4">
-            Play. Learn what moves you.
+        <div className="glass-panel rounded-xl p-6 sm:p-8">
+          <p className="text-lg leading-relaxed text-slate-100 sm:text-xl">
+            A late train. A station full of unfinished routes. Step inside and find what keeps calling you forward.
           </p>
 
-          <p className="text-base text-slate-400 leading-relaxed">
-            What you discover lights the way for others.
+          <p className="mt-4 text-sm leading-relaxed text-slate-300 sm:text-base">
+            Read the scene. Choose your response. Watch the route change around you.
+          </p>
+
+          <div className="mt-5 grid gap-2 text-left sm:grid-cols-3">
+            <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3">
+              <div className="text-[10px] uppercase tracking-[0.18em] text-amber-200/70">Scene</div>
+              <p className="mt-1 text-sm text-slate-200">Arrive in a living station and catch the tension in the room.</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3">
+              <div className="text-[10px] uppercase tracking-[0.18em] text-sky-200/70">Choice</div>
+              <p className="mt-1 text-sm text-slate-200">Respond the way you naturally do and let the system notice.</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3">
+              <div className="text-[10px] uppercase tracking-[0.18em] text-emerald-200/70">Route</div>
+              <p className="mt-1 text-sm text-slate-200">Unlock people, pathways, and signals that fit how you move.</p>
+            </div>
+          </div>
+
+          <p className="mt-5 text-sm leading-relaxed text-slate-400">
+            What you discover here leaves better light for the traveler who arrives after you.
           </p>
         </div>
 
-        {/* Rotating Quote */}
-        <p className="text-sm italic text-slate-500 mb-6">
-          {quote.text}
-          <span className="block mt-1 not-italic text-slate-400">— {quote.author}</span>
-        </p>
-
-        {/* CTA Button */}
         <Button
           onClick={onStart}
           variant="default"
           size="lg"
-          className="w-full sm:w-auto min-h-[48px] px-8 bg-violet-600 hover:bg-violet-500 text-white font-semibold shadow-lg shadow-violet-900/30"
+          className="mt-6 min-h-[48px] w-full bg-violet-600 px-8 font-semibold text-white shadow-lg shadow-violet-900/30 hover:bg-violet-500 sm:w-auto"
           aria-label="Begin your journey at Terminus"
           data-testid="intro-cta"
         >
           Enter the Station
         </Button>
-
       </div>
     </div>
   )

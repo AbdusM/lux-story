@@ -24,10 +24,21 @@ describe('SimulationRenderer (data_analysis)', () => {
     if (typeof Element !== 'undefined' && !Element.prototype.scrollIntoView) {
       Element.prototype.scrollIntoView = () => undefined
     }
+    vi.stubGlobal('matchMedia', (query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }))
   })
 
   afterEach(() => {
     vi.useRealTimers()
+    vi.unstubAllGlobals()
   })
 
   it('committing a wrong option yields success=false', () => {
@@ -104,5 +115,44 @@ describe('SimulationRenderer (data_analysis)', () => {
       success: true,
       data: { selectedOption: 'B', correctOptions: ['B'] },
     })
+  })
+
+  it('collapses the case file by default on compact mobile viewports', () => {
+    vi.stubGlobal('matchMedia', (query: string) => ({
+      matches: query.includes('max-width: 640px'),
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }))
+
+    render(
+      <SimulationRenderer
+        simulation={{
+          type: 'data_analysis',
+          title: 'Ethical Decision Test',
+          taskDescription: 'Pick the best balance of utility and justice.',
+          timeLimit: 60,
+          initialContext: {
+            label: 'FRAMEWORK',
+            displayStyle: 'text',
+            content: `OPTIONS:\nA) Deploy immediately\nB) Hold back until bias fixed`,
+          },
+          successFeedback: '✓ ETHICAL FRAMEWORK: Option B - Hold back until bias fixed.',
+        }}
+        onComplete={vi.fn()}
+      />
+    )
+
+    expect(screen.getByRole('button', { name: /open case file/i })).toBeInTheDocument()
+    expect(screen.getByText(/keep the key brief in view/i)).toBeInTheDocument()
+    expect(screen.queryByText(/options:/i, { selector: 'pre' })).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: /open case file/i }))
+    expect(screen.getByText(/options:/i, { selector: 'pre' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /hide case file/i })).toBeInTheDocument()
   })
 })

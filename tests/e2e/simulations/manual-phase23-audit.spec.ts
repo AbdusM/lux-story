@@ -15,11 +15,6 @@ type DecisionScenario = {
   requiredKnowledgeFlags?: string[]
 }
 
-type ClockHandle = {
-  install: () => Promise<void>
-  fastForward: (ms: number) => Promise<void>
-}
-
 const decisionScenarios: DecisionScenario[] = [
   {
     characterId: 'dante',
@@ -180,12 +175,21 @@ async function waitForRoutedNode(page: Page, expectedNodeId: string) {
   await expect(page.locator('[data-testid="choice-button"]').first()).toBeVisible({ timeout: 10000 })
 }
 
-function getClock(page: Page): ClockHandle | null {
-  const candidate = page as Page & { clock?: ClockHandle }
-  return candidate.clock ?? null
+async function waitForTimerReady(page: Page) {
+  await expect(page.getByLabel('Time remaining')).toHaveText(/\d+:\d{2}/, {
+    timeout: 10000,
+  })
+}
+
+async function enableFastSimulationTimeouts(page: Page, scale = 0.01) {
+  await page.addInitScript((nextScale) => {
+    window.__LUX_E2E_SIM_TIME_SCALE__ = nextScale
+  }, scale)
 }
 
 test.describe('Manual Audit: Phase 2/3 Timed Simulations', () => {
+  test.describe.configure({ mode: 'serial' })
+
   test('correct and wrong decisions route to expected nodes without footer bypass', async ({ page, seedState }) => {
     test.setTimeout(180000)
 
@@ -208,28 +212,30 @@ test.describe('Manual Audit: Phase 2/3 Timed Simulations', () => {
     }
   })
 
-  test('representative timeouts route to fail nodes', async ({ page, seedState }) => {
-    test.setTimeout(90000)
+  test('dante phase 2 timeout routes to fail node', async ({ page, seedState }) => {
+    test.setTimeout(60000)
 
-    const clock = getClock(page)
-    test.skip(!clock, 'Playwright page clock is unavailable in this environment')
+    const scenario = decisionScenarios.find((candidate) => candidate.nodeId === 'dante_simulation_phase2')!
 
-    await clock!.install()
+    await enableFastSimulationTimeouts(page)
+    await seedSimulationNode(page, seedState, scenario)
+    await assertTimedFooterSuppressed(page)
+    await waitForTimerReady(page)
+    await waitForRoutedNode(page, scenario.failNodeId)
+    await expect.poll(() => readCurrentNodeId(page)).toBe(scenario.failNodeId)
+  })
 
-    const timeoutScenarios = [
-      decisionScenarios.find((scenario) => scenario.nodeId === 'dante_simulation_phase2')!,
-      decisionScenarios.find((scenario) => scenario.nodeId === 'dante_simulation_phase3')!,
-    ]
+  test('dante phase 3 timeout routes to fail node', async ({ page, seedState }) => {
+    test.setTimeout(60000)
 
-    for (const scenario of timeoutScenarios) {
-      await test.step(`${scenario.nodeId}: timeout routes to fail`, async () => {
-        await seedSimulationNode(page, seedState, scenario)
-        await assertTimedFooterSuppressed(page)
-        await clock!.fastForward((scenario.timeLimitSeconds + 3) * 1000)
-        await waitForRoutedNode(page, scenario.failNodeId)
-        await expect.poll(() => readCurrentNodeId(page)).toBe(scenario.failNodeId)
-      })
-    }
+    const scenario = decisionScenarios.find((candidate) => candidate.nodeId === 'dante_simulation_phase3')!
+
+    await enableFastSimulationTimeouts(page)
+    await seedSimulationNode(page, seedState, scenario)
+    await assertTimedFooterSuppressed(page)
+    await waitForTimerReady(page)
+    await waitForRoutedNode(page, scenario.failNodeId)
+    await expect.poll(() => readCurrentNodeId(page)).toBe(scenario.failNodeId)
   })
 
   test('devon phase 3 remains playable through native sim UI with no footer bypass', async ({ page, seedState }) => {
@@ -254,10 +260,7 @@ test.describe('Manual Audit: Phase 2/3 Timed Simulations', () => {
   test('devon phase 3 timeout routes to fail node', async ({ page, seedState }) => {
     test.setTimeout(60000)
 
-    const clock = getClock(page)
-    test.skip(!clock, 'Playwright page clock is unavailable in this environment')
-
-    await clock!.install()
+    await enableFastSimulationTimeouts(page)
     await seedState({
       currentCharacterId: 'devon',
       currentNodeId: 'devon_simulation_phase3',
@@ -268,7 +271,7 @@ test.describe('Manual Audit: Phase 2/3 Timed Simulations', () => {
 
     await expect(page.getByTestId('simulation-interface')).toBeVisible({ timeout: 10000 })
     await assertTimedFooterSuppressed(page)
-    await clock!.fastForward(93_000)
+    await waitForTimerReady(page)
     await waitForRoutedNode(page, 'devon_simulation_phase3_fail')
     await expect.poll(() => readCurrentNodeId(page)).toBe('devon_simulation_phase3_fail')
   })

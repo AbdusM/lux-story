@@ -503,20 +503,20 @@ export default function ProfilePage() {
 
         {/* Tabs */}
         <div className={cn(PROFILE_SURFACE_CLASS, 'mb-6 p-3')}>
-          <div className="flex gap-2 overflow-x-auto pb-1">
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:gap-2 sm:overflow-x-auto sm:pb-1">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
-                  'flex min-w-fit items-center gap-2 rounded-xl border px-4 py-2.5 whitespace-nowrap transition-all',
+                  'flex min-w-0 items-center gap-2 rounded-xl border px-3 py-2.5 text-left transition-all sm:min-w-fit sm:px-4 sm:whitespace-nowrap',
                   activeTab === tab.id
                     ? 'border-amber-400/30 bg-amber-400/15 text-amber-100 shadow-[0_10px_30px_rgba(245,158,11,0.18)]'
                     : 'border-white/10 bg-white/[0.04] text-slate-400 hover:bg-white/[0.08] hover:text-white'
                 )}
               >
-                <span className="opacity-90">{tab.icon}</span>
-                <span className="font-medium">{tab.label}</span>
+                <span className="shrink-0 opacity-90">{tab.icon}</span>
+                <span className="min-w-0 whitespace-normal font-medium leading-tight sm:whitespace-nowrap">{tab.label}</span>
               </button>
             ))}
           </div>
