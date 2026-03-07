@@ -5,11 +5,12 @@
 
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Volume2, VolumeX, User, Eye, Brain, Palette, Monitor, LogOut, Cloud, CloudOff, Loader2, Download, Upload, Keyboard, Shield, FileText } from 'lucide-react'
+import { Volume2, VolumeX, User, Eye, Brain, Palette, Monitor, LogOut, Cloud, CloudOff, Loader2, Download, Upload, Keyboard, Shield, FileText, Sparkles } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { useAdaptiveGuidance } from '@/hooks/useAdaptiveGuidance'
 import { useAccessibilityProfile } from '@/hooks/useAccessibilityProfile'
 import { useLargeTextMode } from '@/hooks/useLargeTextMode'
 import { useColorBlindMode } from '@/hooks/useColorBlindMode'
@@ -32,6 +33,9 @@ import type {
 } from '@/lib/research-consent'
 import { ensureUserApiSession } from '@/lib/user-api-session'
 import { GameStateManager } from '@/lib/game-state-manager'
+import { routeToGuidanceDestination } from '@/lib/guidance/navigation'
+import { createGuidanceInputFromRuntime } from '@/lib/guidance/runtime'
+import type { ShadowArtifact } from '@/lib/guidance/contracts'
 import { UI_STORAGE_KEYS } from '@/lib/ui-constants'
 import { deriveJourneyLaneSummary } from '@/lib/journey-lane'
 import { cn } from '@/lib/utils'
@@ -159,6 +163,7 @@ export default function ProfilePage() {
     useState<ResearchParticipationLevel>('none')
   const [guardianRequired, setGuardianRequired] = useState(false)
   const [guardianVerified, setGuardianVerified] = useState(false)
+  const didTrackGuidanceSurfaceRef = useRef(false)
 
   // Load user data
   useEffect(() => {
@@ -361,13 +366,6 @@ export default function ProfilePage() {
     router.push('/')
   }
 
-  const handleOpenStrategyProfile = useCallback(() => {
-    if (!saveMetadata?.exists) return
-
-    localStorage.setItem(UI_STORAGE_KEYS.resumeToReport, 'true')
-    router.push('/')
-  }, [router, saveMetadata])
-
   const handleExportSettings = () => {
     const settings = loadLocalSettings()
     const dataStr = JSON.stringify(settings, null, 2)
@@ -440,6 +438,104 @@ export default function ProfilePage() {
   const consentErrorToneClass = consentError === RESEARCH_SETTINGS_UNAVAILABLE_MESSAGE
     ? 'bg-amber-500/10 border-amber-500/20 text-amber-100'
     : 'bg-red-500/10 border-red-500/20 text-red-200'
+  const guidanceSeed = useMemo(() => {
+    const saveSnapshot = typeof window === 'undefined' ? null : GameStateManager.getSaveSnapshot()
+    const input = createGuidanceInputFromRuntime({
+      playerId: playerId ?? saveMetadata?.playerId ?? '',
+      saveSnapshot,
+      taskProgress: {},
+    })
+    const { taskProgress: _taskProgress, ...options } = input
+    return options
+  }, [playerId, saveMetadata?.lastSaved, saveMetadata?.playerId])
+  const guidance = useAdaptiveGuidance({
+    surface: 'profile',
+    ...guidanceSeed,
+  })
+  const handleOpenStrategyProfile = useCallback(() => {
+    if (!saveMetadata?.exists) return
+
+    guidance.trackTaskEvent({
+      taskId: 'open_strategy_profile',
+      kind: 'completed',
+      assistMode: 'manual',
+    })
+    localStorage.setItem(UI_STORAGE_KEYS.resumeToReport, 'true')
+    router.push('/')
+  }, [guidance, router, saveMetadata])
+
+  useEffect(() => {
+    if (didTrackGuidanceSurfaceRef.current) return
+    if (!saveMetadata?.exists) return
+    if (!guidance.isReady) return
+
+    didTrackGuidanceSurfaceRef.current = true
+    guidance.trackTaskEvent({
+      taskId: 'review_journey_artifacts',
+      kind: 'viewed',
+      assistMode: 'manual',
+    })
+  }, [guidance, saveMetadata?.exists])
+
+  const handleGuidanceRecommendation = useCallback(() => {
+    const recommendation = guidance.stableNextBestMove
+    if (!recommendation) return
+    guidance.trackRecommendationClick(recommendation)
+
+    if (recommendation.taskId === 'open_strategy_profile') {
+      handleOpenStrategyProfile()
+      return
+    }
+
+    if (
+      recommendation.taskId === 'review_journey_artifacts' ||
+      (recommendation.destination.kind === 'route' && recommendation.destination.href === '/profile')
+    ) {
+      guidance.trackTaskEvent({
+        taskId: recommendation.taskId,
+        kind: 'completed',
+        assistMode: 'manual',
+      })
+      return
+    }
+
+    guidance.trackTaskEvent({
+      taskId: recommendation.taskId,
+      kind: 'started',
+      assistMode: 'manual',
+    })
+    routeToGuidanceDestination({
+      destination: recommendation.destination,
+      router,
+    })
+  }, [guidance, handleOpenStrategyProfile, router])
+
+  const handleExportShadowArtifact = useCallback((artifact: ShadowArtifact) => {
+    const lines = [
+      artifact.title,
+      '',
+      artifact.description,
+      '',
+      `Completed: ${new Date(artifact.completedAt).toLocaleString()}`,
+      `Assist mode: ${artifact.assistMode ?? 'Not recorded'}`,
+    ]
+
+    const blob = new Blob([lines.join('\n')], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `${artifact.taskId}-${new Date(artifact.completedAt).toISOString().slice(0, 10)}.txt`
+    link.click()
+    URL.revokeObjectURL(url)
+
+    guidance.trackTaskEvent({
+      taskId: artifact.taskId,
+      kind: 'artifact_exported',
+      assistMode: artifact.assistMode,
+    })
+    toast.success('Artifact exported', 'Your proof artifact has been downloaded.')
+  }, [guidance, toast])
+
   const journeySummary =
     typeof window === 'undefined' || !saveMetadata?.exists
       ? deriveJourneyLaneSummary(null)
@@ -617,6 +713,92 @@ export default function ProfilePage() {
                           Open Career Strategy Profile
                         </button>
                       </div>
+                    </div>
+
+                    {guidance.isAdaptive && guidance.isReady && guidance.stableNextBestMove && (
+                      <div className={cn(PROFILE_INSET_CLASS, 'space-y-4 p-4')}>
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                          <div className="space-y-2">
+                            <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-amber-100/80">
+                              <Sparkles className="h-3.5 w-3.5" />
+                              Recommended Next Move
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium text-white">{guidance.stableNextBestMove.title}</p>
+                              <p className="mt-1 text-xs leading-relaxed text-slate-400">
+                                {guidance.stableNextBestMove.reason}
+                              </p>
+                            </div>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => guidance.dismissRecommendation(guidance.stableNextBestMove!.taskId)}
+                            className="rounded-full border border-white/10 px-3 py-1.5 text-xs font-medium text-slate-300 transition-colors hover:border-white/20 hover:text-white"
+                          >
+                            Not now
+                          </button>
+                        </div>
+
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                          <p className="text-xs text-slate-500">
+                            Guidance stays bounded here: one suggestion, one reason, no menu reshuffle.
+                          </p>
+                          <button
+                            type="button"
+                            onClick={handleGuidanceRecommendation}
+                            className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-sm font-medium text-amber-300 transition-colors hover:bg-amber-500/20"
+                          >
+                            {guidance.stableNextBestMove.ctaLabel}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className={cn(PROFILE_INSET_CLASS, 'space-y-4 p-4')}>
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                          <p className="text-sm font-medium text-white">Shadow Portfolio Lite</p>
+                          <p className="text-xs text-slate-400">
+                            Export the proof objects already formed by real actions in your route history.
+                          </p>
+                        </div>
+                        <div className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-emerald-200/85">
+                          {guidance.snapshot.shadowArtifacts.length} artifact{guidance.snapshot.shadowArtifacts.length === 1 ? '' : 's'}
+                        </div>
+                      </div>
+
+                      {guidance.snapshot.shadowArtifacts.length > 0 ? (
+                        <div className="grid gap-3 md:grid-cols-2">
+                          {guidance.snapshot.shadowArtifacts.map((artifact) => (
+                            <div
+                              key={artifact.id}
+                              className="rounded-2xl border border-white/10 bg-black/20 p-4"
+                            >
+                              <p className="text-sm font-medium text-white">{artifact.title}</p>
+                              <p className="mt-2 text-xs leading-relaxed text-slate-400">
+                                {artifact.description}
+                              </p>
+                              <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                <div className="text-[11px] text-slate-500">
+                                  {new Date(artifact.completedAt).toLocaleString()}
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => handleExportShadowArtifact(artifact)}
+                                  className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-medium text-emerald-200 transition-colors hover:bg-emerald-500/20"
+                                >
+                                  Export Artifact
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="rounded-2xl border border-dashed border-white/10 bg-black/10 p-4 text-sm text-slate-300">
+                          Complete a few route actions first. Exportable proof will appear here automatically.
+                        </div>
+                      )}
                     </div>
 
                     {showFacilitatorTools && saveMetadata.playerId && (

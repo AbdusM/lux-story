@@ -293,5 +293,9 @@ export default defineConfig({
     url: 'http://localhost:3005',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
+    env: {
+      ...process.env,
+      PLAYWRIGHT_ADMIN_BYPASS: '1',
+    },
   },
 })

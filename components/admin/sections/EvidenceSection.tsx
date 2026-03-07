@@ -6,9 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { AlertCircle, RefreshCw, ArrowRight } from 'lucide-react'
+import { AlertCircle, Gauge, RefreshCw, ArrowRight } from 'lucide-react'
 import { SamuelQuotesSection } from './SamuelQuotesSection'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
+import type { AdminGuidanceResponse } from '@/lib/types/admin-api'
 
 interface SkillEvidence {
   uniqueSkills: number
@@ -110,6 +111,9 @@ export function EvidenceSection({ userId, profile, adminViewMode }: EvidenceSect
   const [evidenceData, setEvidenceData] = useState<EvidenceData | null>(null)
   const [evidenceLoading, setEvidenceLoading] = useState(false)
   const [evidenceError, setEvidenceError] = useState<string | null>(null)
+  const [guidanceData, setGuidanceData] = useState<AdminGuidanceResponse | null>(null)
+  const [guidanceLoading, setGuidanceLoading] = useState(false)
+  const [guidanceError, setGuidanceError] = useState<string | null>(null)
 
   // Fetch Evidence frameworks data
   useEffect(() => {
@@ -138,6 +142,54 @@ export function EvidenceSection({ userId, profile, adminViewMode }: EvidenceSect
       fetchEvidenceData()
     }
   }, [userId])
+
+  useEffect(() => {
+    let cancelled = false
+
+    const fetchGuidanceData = async () => {
+      setGuidanceLoading(true)
+      setGuidanceError(null)
+
+      try {
+        const response = await fetch(`/api/admin/guidance/${userId}`)
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch guidance diagnostics')
+        }
+
+        const data = (await response.json()) as AdminGuidanceResponse
+        if (cancelled) return
+        setGuidanceData(data)
+      } catch (error) {
+        if (cancelled) return
+        console.error('Error fetching guidance diagnostics:', error)
+        setGuidanceError('Unable to load trajectory dimensions')
+      } finally {
+        if (!cancelled) {
+          setGuidanceLoading(false)
+        }
+      }
+    }
+
+    if (userId) {
+      fetchGuidanceData()
+    }
+
+    return () => {
+      cancelled = true
+    }
+  }, [userId])
+
+  const guidance = guidanceData?.guidance ?? null
+  const dimensionEntries = guidance?.dimensions
+    ? [
+        ['Initiative', guidance.dimensions.initiative],
+        ['Follow-through', guidance.dimensions.followThrough],
+        ['Assisted completion', guidance.dimensions.assistedCompletion],
+        ['Independent completion', guidance.dimensions.independentCompletion],
+        ['Recovery after friction', guidance.dimensions.recoveryAfterFriction],
+      ] as const
+    : []
 
   return (
     <div className="space-y-4">
@@ -180,6 +232,94 @@ export function EvidenceSection({ userId, profile, adminViewMode }: EvidenceSect
           </AlertDescription>
         </Alert>
       </div>
+
+      <Card className="border-blue-200 bg-blue-50/60">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+            <Gauge className="h-5 w-5 text-blue-700" />
+            Trajectory Dimensions
+          </CardTitle>
+          <CardDescription className="text-sm sm:text-base">
+            {adminViewMode === 'family'
+              ? 'A dimensional readout of initiative, follow-through, and recovery. This stays explainable instead of collapsing into one opaque score.'
+              : 'Dimensional guidance readout derived from stored task progress, assist mode, and recovery signals.'}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {guidanceLoading ? (
+            <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 text-sm text-gray-600">
+              <RefreshCw className="h-4 w-4 animate-spin" />
+              <span>Loading trajectory dimensions…</span>
+            </div>
+          ) : guidanceError ? (
+            <Alert className="bg-red-50 border-red-400">
+              <AlertCircle className="h-4 w-4 text-red-600" />
+              <AlertDescription>
+                <strong>Error:</strong> {guidanceError}
+              </AlertDescription>
+            </Alert>
+          ) : guidance?.dimensions ? (
+            <>
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant={guidance.experimentVariant === 'adaptive' ? 'default' : 'secondary'}>
+                  {guidance.experimentVariant === 'adaptive' ? 'Adaptive Cohort' : 'Control Holdout'}
+                </Badge>
+                <Badge variant="outline">{guidance.reachableTaskCount} reachable tasks</Badge>
+                <Badge variant="outline">{guidance.eventCounts.taskCompleted} task completions</Badge>
+                <Badge variant="outline">{guidance.eventCounts.assistModeSelected} assist selections</Badge>
+              </div>
+
+              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                {dimensionEntries.map(([label, value]) => (
+                  <div key={label} className="rounded-xl border border-white/80 bg-white/90 p-4">
+                    <div className="flex items-baseline justify-between gap-3">
+                      <p className="text-sm font-medium text-slate-900">{label}</p>
+                      <p className="text-lg font-semibold text-blue-700">{value}%</p>
+                    </div>
+                    <div className="mt-3 h-2 rounded-full bg-slate-200">
+                      <div
+                        className="h-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400"
+                        style={{ width: `${value}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid gap-3 md:grid-cols-3">
+                <div className="rounded-lg bg-white/80 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                    Friction Flags
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold text-slate-900">
+                    {guidance.frictionFlags.length}
+                  </p>
+                </div>
+                <div className="rounded-lg bg-white/80 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                    Completed Guidance Tasks
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold text-slate-900">
+                    {guidance.completedTasks.length}
+                  </p>
+                </div>
+                <div className="rounded-lg bg-white/80 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                    Recent Guidance Events
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold text-slate-900">
+                    {guidance.recentEvents.length}
+                  </p>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="rounded-lg bg-white/80 p-4 text-sm text-gray-600">
+              Trajectory dimensions appear after the learner builds a stored guidance snapshot.
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

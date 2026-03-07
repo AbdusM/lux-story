@@ -36,6 +36,7 @@ import { useUserRole } from "@/hooks/useUserRole"
 import { hasGodModeUrlParam } from "@/lib/godmode-access"
 import { PrismTabs } from "./journal/PrismTabs"
 import { PrismTabId, getPrismRuntimeTabs } from "@/lib/prism-tabs-config"
+import { UI_STORAGE_KEYS } from "@/lib/ui-constants"
 import { Z_INDEX } from "@/lib/ui-constants"
 import { springs, tabContentSwap, tabContentSwapReduced } from "@/lib/animations"
 
@@ -185,6 +186,24 @@ export function Journal({ isOpen, onClose, mode = 'legacy' }: JournalProps) {
     ...tab,
     icon: TAB_ICONS[tab.id],
   }))
+
+  useEffect(() => {
+    if (!shouldRender) return
+    if (typeof window === 'undefined') return
+
+    const requestedTab = localStorage.getItem(UI_STORAGE_KEYS.resumeToPrismTab)
+    if (!requestedTab) return
+
+    const nextTab = tabs.find((tab) => tab.id === requestedTab)?.id
+    if (!nextTab) {
+      localStorage.removeItem(UI_STORAGE_KEYS.resumeToPrismTab)
+      return
+    }
+
+    setActiveTab(nextTab)
+    setViewedTabs((prev) => new Set([...prev, nextTab]))
+    localStorage.removeItem(UI_STORAGE_KEYS.resumeToPrismTab)
+  }, [shouldRender, tabs])
 
 
   return (
@@ -356,8 +375,18 @@ export function Journal({ isOpen, onClose, mode = 'legacy' }: JournalProps) {
                         <NarrativeAnalysisDisplay />
                       </>
                     )}
-                    {activeTab === 'opportunities' && <OpportunitiesView />}
-                    {activeTab === 'careers' && <CareerRecommendationsView />}
+                    {activeTab === 'opportunities' && (
+                      <OpportunitiesView
+                        onRequestTab={handleTabSelect}
+                        onClose={onClose}
+                      />
+                    )}
+                    {activeTab === 'careers' && (
+                      <CareerRecommendationsView
+                        onRequestTab={handleTabSelect}
+                        onClose={onClose}
+                      />
+                    )}
                     {activeTab === 'combos' && <SkillCombosView />}
                     {activeTab === 'god_mode' && <SimulationGodView onClose={onClose} />}
                   </motion.div>

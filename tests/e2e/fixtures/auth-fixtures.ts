@@ -5,13 +5,20 @@
 
 import { test as base } from '@playwright/test'
 
+const ADMIN_BYPASS_COOKIE = {
+  name: 'lux-playwright-admin-bypass',
+  value: '1',
+  domain: 'localhost',
+  path: '/',
+}
+
 /**
  * Available auth fixtures
  */
 interface AuthFixtures {
   /**
-   * Admin authenticated - Automatically logs in as admin
-   * Creates reusable auth state to speed up subsequent tests
+   * Admin authenticated for Playwright smoke coverage.
+   * Uses the cookie-scoped Playwright bypass instead of a deprecated password form.
    */
   adminAuth: void
 }
@@ -21,23 +28,12 @@ interface AuthFixtures {
  */
 export const test = base.extend<AuthFixtures>({
   adminAuth: async ({ context, page }, use) => {
-    // Navigate to admin login
-    await page.goto('/admin/login')
+    await context.addCookies([ADMIN_BYPASS_COOKIE])
+    await page.addInitScript(() => {
+      ;(window as Window & { __PLAYWRIGHT__?: boolean }).__PLAYWRIGHT__ = true
+    })
 
-    // Get admin password from env or use default
-    const adminPassword = process.env.ADMIN_API_TOKEN || 'admin'
-
-    // Fill and submit login form
-    await page.fill('input[type="password"]', adminPassword)
-    await page.click('button[type="submit"]')
-
-    // Wait for successful redirect to admin dashboard
-    await page.waitForURL('/admin', { timeout: 10000 })
-
-    // Store auth cookies for reuse across tests
     await context.storageState({ path: 'tests/e2e/.auth/admin.json' })
-
-    // Fixture is now ready
     await use()
   }
 })

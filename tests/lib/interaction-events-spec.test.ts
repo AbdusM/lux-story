@@ -31,4 +31,32 @@ describe('interaction-events-spec choice_selected_result', () => {
     expect(issues.join(' ')).toContain('hidden_count')
     expect(issues.join(' ')).toContain('reward_count')
   })
+
+  it('accepts guidance interaction payloads', () => {
+    const issues = validateInteractionEventPayload('recommendation_clicked', {
+      event_id: 'guidance_evt_1',
+      task_id: 'review_career_matches',
+      source_surface: 'opportunities',
+      assist_mode: 'augmented',
+      reason: 'You already have near-ready matches.',
+      guidance_schema_version: '2026-03-v1',
+      recommendation_version: '2026-03-v1',
+    })
+
+    expect(issues).toEqual([])
+  })
+
+  it('rejects malformed guidance interaction payloads', () => {
+    const issues = validateInteractionEventPayload('task_completed', {
+      event_id: '',
+      task_id: '',
+      source_surface: '',
+      assist_mode: 'magic',
+    })
+
+    expect(issues.join(' ')).toContain('event_id')
+    expect(issues.join(' ')).toContain('task_id')
+    expect(issues.join(' ')).toContain('source_surface')
+    expect(issues.join(' ')).toContain('assist_mode')
+  })
 })

@@ -7,6 +7,14 @@ export const INTERACTION_EVENT_TYPES = [
   'node_entered',
   'experiment_assigned',
   'deadlock_recovery_injected',
+  'task_exposed',
+  'assist_mode_selected',
+  'task_started',
+  'task_completed',
+  'recommendation_shown',
+  'recommendation_clicked',
+  'recommendation_dismissed',
+  'artifact_exported',
 ] as const
 
 export type InteractionEventType = (typeof INTERACTION_EVENT_TYPES)[number]
@@ -89,6 +97,16 @@ const DeadlockRecoveryInjectedPayloadSchema = z.object({
   non_recovery_choices_total: z.number().int().optional(),
 }).passthrough()
 
+const GuidanceInteractionPayloadSchema = z.object({
+  event_id: z.string().min(1),
+  task_id: z.string().min(1),
+  source_surface: z.string().min(1),
+  assist_mode: z.enum(['manual', 'augmented', 'delegated']).nullable().optional(),
+  reason: z.string().nullable().optional(),
+  guidance_schema_version: z.string().min(1).optional(),
+  recommendation_version: z.string().min(1).optional(),
+}).passthrough()
+
 const InteractionEventPayloadSchemas: Record<InteractionEventType, z.ZodTypeAny> = {
   choice_presented: ChoicePresentedPayloadSchema,
   choice_selected_ui: ChoiceSelectedUiPayloadSchema,
@@ -96,6 +114,14 @@ const InteractionEventPayloadSchemas: Record<InteractionEventType, z.ZodTypeAny>
   node_entered: NodeEnteredPayloadSchema,
   experiment_assigned: ExperimentAssignedPayloadSchema,
   deadlock_recovery_injected: DeadlockRecoveryInjectedPayloadSchema,
+  task_exposed: GuidanceInteractionPayloadSchema,
+  assist_mode_selected: GuidanceInteractionPayloadSchema,
+  task_started: GuidanceInteractionPayloadSchema,
+  task_completed: GuidanceInteractionPayloadSchema,
+  recommendation_shown: GuidanceInteractionPayloadSchema,
+  recommendation_clicked: GuidanceInteractionPayloadSchema,
+  recommendation_dismissed: GuidanceInteractionPayloadSchema,
+  artifact_exported: GuidanceInteractionPayloadSchema,
 }
 
 export function validateInteractionEventPayload(eventType: string, payload: unknown): string[] {

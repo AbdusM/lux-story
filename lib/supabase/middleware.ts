@@ -6,6 +6,8 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+const PLAYWRIGHT_ADMIN_BYPASS_COOKIE = 'lux-playwright-admin-bypass'
+
 export async function updateSession(request: NextRequest) {
   const createResponse = () => {
     try {
@@ -28,6 +30,15 @@ export async function updateSession(request: NextRequest) {
 
   const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
   const isAdminLoginRoute = request.nextUrl.pathname === '/admin/login'
+  const isPlaywrightAdminBypass =
+    process.env.PLAYWRIGHT_ADMIN_BYPASS === '1' &&
+    request.cookies.get(PLAYWRIGHT_ADMIN_BYPASS_COOKIE)?.value === '1'
+
+  // Playwright-only bypass for admin route smoke tests. This stays off by default,
+  // still requires an explicit cookie, and never applies outside test runs.
+  if (isAdminRoute && !isAdminLoginRoute && isPlaywrightAdminBypass) {
+    return createResponse()
+  }
 
   // Admin routes must fail closed even when Supabase isn't configured (CI/local/dev).
   // This keeps the guardrails enforceable without requiring secrets in CI.

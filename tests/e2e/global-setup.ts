@@ -1,9 +1,20 @@
 /**
  * Playwright Global Setup
- * Runs once before all tests to prepare shared resources
+ * Runs once before all tests to prepare shared resources.
+ *
+ * Note: the current admin smoke path uses a Playwright-only bypass cookie rather
+ * than a deprecated password form. This file remains optional because
+ * `playwright.config.ts` does not currently enable globalSetup.
  */
 
 import { chromium, FullConfig } from '@playwright/test'
+
+const ADMIN_BYPASS_COOKIE = {
+  name: 'lux-playwright-admin-bypass',
+  value: '1',
+  domain: 'localhost',
+  path: '/',
+}
 
 /**
  * Global setup function
@@ -16,19 +27,8 @@ async function globalSetup(config: FullConfig) {
   const page = await browser.newPage()
 
   try {
-    // Navigate to admin login
-    console.log('🔐 Authenticating as admin...')
-    await page.goto('http://localhost:3005/admin/login')
-
-    // Get admin password from env or use default
-    const adminPassword = process.env.ADMIN_API_TOKEN || 'admin'
-
-    // Fill and submit login form
-    await page.fill('input[type="password"]', adminPassword)
-    await page.click('button[type="submit"]')
-
-    // Wait for successful redirect to admin dashboard
-    await page.waitForURL('/admin', { timeout: 10000 })
+    console.log('🔐 Seeding Playwright admin bypass state...')
+    await page.context().addCookies([ADMIN_BYPASS_COOKIE])
 
     // Save auth state to file for reuse
     await page.context().storageState({ path: 'tests/e2e/.auth/admin.json' })

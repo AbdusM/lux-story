@@ -100,6 +100,8 @@ export const GAMEPLAY_SHELL = {
 
 export const UI_STORAGE_KEYS = {
   resumeToReport: 'lux-open-report-on-resume',
+  resumeToPrism: 'lux-open-prism-on-resume',
+  resumeToPrismTab: 'lux-open-prism-tab-on-resume',
 } as const;
 
 // Modal height constants

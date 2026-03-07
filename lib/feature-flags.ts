@@ -36,6 +36,18 @@ export const FLAG_REGISTRY = {
     default: false,
     description: 'Enable additional telemetry debug logging in dev.',
   },
+
+  ADAPTIVE_GUIDANCE_V1_MODE: {
+    default: 'experiment',
+    values: ['off', 'experiment', 'adaptive_only'] as const,
+    description: 'Adaptive guidance operator mode. off|experiment|adaptive_only',
+  },
+
+  ADAPTIVE_GUIDANCE_V1_ROLLOUT: {
+    default: '10',
+    values: ['0', '10', '25', '50', '100'] as const,
+    description: 'Adaptive guidance percentage for new sticky assignments during experiment mode.',
+  },
 } as const satisfies Record<string, FlagDef<FlagValue>>
 
 export type FlagName = keyof typeof FLAG_REGISTRY

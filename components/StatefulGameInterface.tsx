@@ -3992,6 +3992,20 @@ export default function StatefulGameInterface() {
     pushOverlay('report')
   }, [pushOverlay, state.gameState])
 
+  const didHandleResumeToPrismRef = useRef(false)
+  useEffect(() => {
+    if (didHandleResumeToPrismRef.current) return
+    if (!state.gameState) return
+
+    didHandleResumeToPrismRef.current = true
+
+    if (typeof window === 'undefined') return
+    if (localStorage.getItem(UI_STORAGE_KEYS.resumeToPrism) !== 'true') return
+
+    localStorage.removeItem(UI_STORAGE_KEYS.resumeToPrism)
+    pushOverlay('journal')
+  }, [pushOverlay, state.gameState])
+
 	  const renderOverlay = useCallback((entry: { id: string; data?: Record<string, unknown> }) => {
 	    if (entry.id === 'shortcutsHelp') {
 	      return (

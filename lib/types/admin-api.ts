@@ -6,6 +6,13 @@
  * and eliminate `any` type usage.
  */
 
+import type {
+  AssistMode,
+  GuidanceDimensions,
+  GuidanceRecommendation,
+  ProgressState,
+} from '@/lib/guidance/contracts'
+
 // ============================================================================
 // Skill-Related Types
 // ============================================================================
@@ -241,6 +248,111 @@ export interface AdminUserListResponse {
 export interface AdminUrgencyResponse {
   success: boolean
   urgency: UrgencyScore | null
+}
+
+export interface AdminGuidanceEventCounts {
+  taskExposed: number
+  recommendationShown: number
+  recommendationClicked: number
+  recommendationDismissed: number
+  taskStarted: number
+  taskCompleted: number
+  artifactExported: number
+  assistModeSelected: number
+}
+
+export interface AdminGuidanceTaskSummary {
+  taskId: string
+  title: string
+  highestProgressState: ProgressState
+  latestAssistMode: AssistMode | null
+  attemptCount: number
+  completionCount: number
+  evidenceCount: number
+  lastTouchedAt: string
+  lastCompletedAt: string | null
+}
+
+export interface AdminGuidanceRecentEvent {
+  eventType: string
+  occurredAt: string | null
+  taskId: string | null
+  taskTitle: string | null
+  sourceSurface: string | null
+}
+
+export interface AdminGuidanceDiagnostics {
+  experimentVariant: 'control' | 'adaptive'
+  schemaVersion: string | null
+  ontologyVersion: string | null
+  recommendationVersion: string | null
+  updatedAt: string | null
+  dimensions: GuidanceDimensions | null
+  currentRecommendation: GuidanceRecommendation | null
+  missedDoors: GuidanceRecommendation[]
+  reachableTaskCount: number
+  shadowArtifactCount: number
+  frictionFlags: string[]
+  stalledTasks: AdminGuidanceTaskSummary[]
+  completedTasks: AdminGuidanceTaskSummary[]
+  eventCounts: AdminGuidanceEventCounts
+  recentEvents: AdminGuidanceRecentEvent[]
+}
+
+export interface AdminGuidanceRolloutStatus {
+  mode: 'off' | 'experiment' | 'adaptive_only'
+  adaptivePercentage: number
+  controlPercentage: number
+  isKillSwitchActive: boolean
+}
+
+export interface AdminGuidanceCohortMetrics {
+  cohort: 'control' | 'adaptive'
+  userCount: number
+  recommendationShown: number
+  recommendationClicked: number
+  recommendationDismissed: number
+  taskCompleted: number
+  artifactExported: number
+  ctr: number
+  completionRate: number
+  dismissRate: number
+  artifactExportRate: number
+  averageInitiative: number | null
+  averageFollowThrough: number | null
+  averageRecoveryAfterFriction: number | null
+  stalledUserCount: number
+}
+
+export interface AdminGuidanceCohortSummary {
+  generatedAt: string
+  days: number
+  userLimit: number
+  rollout: AdminGuidanceRolloutStatus
+  totals: {
+    usersWithGuidance: number
+    controlUsers: number
+    adaptiveUsers: number
+  }
+  cohorts: AdminGuidanceCohortMetrics[]
+  metadata: {
+    planRowsScanned: number
+    eventRowsScanned: number
+    truncated: boolean
+  }
+}
+
+export interface AdminGuidanceResponse {
+  success: boolean
+  userId: string
+  guidance: AdminGuidanceDiagnostics
+  fetchedAt: string
+}
+
+export interface AdminGuidanceSummaryResponse {
+  success: boolean
+  summary: AdminGuidanceCohortSummary
+  fetchedAt: string
 }
 
 // ============================================================================

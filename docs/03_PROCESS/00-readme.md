@@ -1,6 +1,6 @@
 # Process Hub
 
-Last updated: 2026-03-01
+Last updated: 2026-03-07
 
 ## Current Release-Truth Docs
 
@@ -19,6 +19,8 @@ This folder is the operational hub for implementation, QA, and release workflow.
 - Full verification gate: `npm run verify`
 - Graph/content validation: `npm run validate-graphs` and `npm run validate-content`
 - Analytics contract validation: `npm run verify:analytics-dict`
+- Guidance legacy-state audit: `npm run guidance:audit`
+- Guidance legacy-state backfill: `npm run guidance:backfill`
 - Deep character coverage report: `npm run report:character-deep-coverage`
 - Dialogue style report: `npm run report:dialogue-guidelines`
 - Dialogue style ratchet gate: `npm run verify:dialogue-guidelines`
@@ -42,6 +44,7 @@ This folder is the operational hub for implementation, QA, and release workflow.
 - Dialogue style guardrails: `docs/03_PROCESS/22-dialogue-guidelines.md`
 - Dialogue external review analysis: `docs/03_PROCESS/23-dialogue-external-review-analysis.md`
 - Dialogue topology migration protocol: `docs/03_PROCESS/24-dialogue-topology-migration-protocol.md`
+- Guidance state migration runbook: `docs/03_PROCESS/25-guidance-state-migration-runbook.md`
 - Dialogue remediation appendix (before/after): `docs/qa/dialogue-remediation-samples.md`
 - Archive index: `docs/03_PROCESS/archive/00-archive-index.md`
 

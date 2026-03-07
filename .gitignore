@@ -69,6 +69,7 @@ Thumbs.db
 playwright-report/
 test-results/
 .playwright-mcp/
+tests/e2e/.auth/
 
 # Test outputs and validation
 dialogue-length-report.json
