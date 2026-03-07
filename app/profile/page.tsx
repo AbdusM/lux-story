@@ -33,6 +33,7 @@ import type {
 import { ensureUserApiSession } from '@/lib/user-api-session'
 import { GameStateManager } from '@/lib/game-state-manager'
 import { UI_STORAGE_KEYS } from '@/lib/ui-constants'
+import { deriveJourneyLaneSummary } from '@/lib/journey-lane'
 import { cn } from '@/lib/utils'
 
 type TabId = 'account' | 'audio' | 'accessibility' | 'display' | 'keyboard'
@@ -439,6 +440,10 @@ export default function ProfilePage() {
   const consentErrorToneClass = consentError === RESEARCH_SETTINGS_UNAVAILABLE_MESSAGE
     ? 'bg-amber-500/10 border-amber-500/20 text-amber-100'
     : 'bg-red-500/10 border-red-500/20 text-red-200'
+  const journeySummary =
+    typeof window === 'undefined' || !saveMetadata?.exists
+      ? deriveJourneyLaneSummary(null)
+      : deriveJourneyLaneSummary(GameStateManager.getSaveSnapshot())
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#05070b] px-4 py-4 text-white sm:px-6 sm:py-6">
@@ -464,7 +469,7 @@ export default function ProfilePage() {
                     Profile & Settings
                   </h1>
                   <p className="max-w-2xl text-sm leading-relaxed text-slate-300/80 sm:text-base">
-                    Keep system controls, research permissions, exports, and personal preferences in one place outside the active story shell.
+                    Keep your route record, system controls, and research permissions in one place without dragging utility surfaces back into the story lane.
                   </p>
                 </div>
               </div>
@@ -494,7 +499,7 @@ export default function ProfilePage() {
                   )}
                 </div>
                 <p className="mt-2 text-xs leading-relaxed text-slate-400">
-                  Gameplay remains story-first while profile, consent, and export controls stay here.
+                  Profile Lane keeps your held route, consent choices, and system tools nearby while play stays immersive.
                 </p>
               </div>
             </div>
@@ -533,47 +538,70 @@ export default function ProfilePage() {
           {/* Account Tab */}
           {activeTab === 'account' && (
             <>
-              <div>
-                <h2 className="mb-4 text-xl font-semibold">Account Information</h2>
-                {loading ? (
-                  <p className="text-slate-400">Loading...</p>
-                ) : user ? (
-                  <div className={cn(PROFILE_INSET_CLASS, 'space-y-3 p-4')}>
-                    <div>
-                      <label className="text-sm text-slate-400">Email</label>
-                      <p className="text-white font-medium">{user.email}</p>
-                    </div>
-                    <div>
-                      <label className="text-sm text-slate-400">Account Created</label>
-                      <p className="text-white font-medium">
-                        {user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className={cn(PROFILE_INSET_CLASS, 'p-4 text-slate-400')}>Not signed in</div>
-                )}
-              </div>
-
-              <div className="pt-4 border-t border-white/10 space-y-4">
+              <div className="space-y-4">
                 <div>
                   <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
                     <FileText className="w-5 h-5 text-amber-400" />
                     Journey Artifacts
                   </h2>
                   <p className="text-sm text-slate-400 max-w-2xl">
-                    Career report and facilitator tools now live outside the active story shell so the gameplay menu stays focused on play.
+                    The station keeps a trace of where you were headed, which signal has been strongest, and who is ready when you return.
                   </p>
                 </div>
 
                 {saveMetadata?.exists ? (
                   <div className="space-y-3">
+                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                      <div className={cn(PROFILE_INSET_CLASS, 'space-y-2 p-4')}>
+                        <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Current Chapter</p>
+                        <p className="text-lg font-semibold text-white">Episode {journeySummary.episodeNumber}</p>
+                        <p className="text-sm leading-relaxed text-slate-300/80">
+                          {journeySummary.unlockedAbilitiesCount > 0
+                            ? `${journeySummary.unlockedAbilitiesCount} station tool${journeySummary.unlockedAbilitiesCount === 1 ? '' : 's'} already answer to you.`
+                            : `${journeySummary.voicesReachedCount} traveler${journeySummary.voicesReachedCount === 1 ? '' : 's'} have already bent the route with you.`}
+                        </p>
+                      </div>
+
+                      <div className={cn(PROFILE_INSET_CLASS, 'space-y-2 p-4')}>
+                        <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Held Route</p>
+                        <p className="text-lg font-semibold text-white">{journeySummary.heldRouteLabel}</p>
+                        <p className="text-sm leading-relaxed text-slate-300/80">
+                          {journeySummary.heldRouteNote}
+                        </p>
+                      </div>
+
+                      <div className={cn(PROFILE_INSET_CLASS, 'space-y-2 p-4')}>
+                        <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Strongest Signal</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-lg font-semibold text-white">{journeySummary.dominantPatternLabel}</p>
+                          <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[11px] text-amber-200/85">
+                            {journeySummary.dominantPatternScore}
+                          </span>
+                        </div>
+                        <p className="text-sm leading-relaxed text-slate-300/80">
+                          {journeySummary.dominantPatternSummary}
+                        </p>
+                      </div>
+
+                      <div className={cn(PROFILE_INSET_CLASS, 'space-y-2 p-4')}>
+                        <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Open Returns</p>
+                        <p className="text-lg font-semibold text-white">
+                          {journeySummary.openReturnsCount > 0
+                            ? `${journeySummary.openReturnsCount} waiting`
+                            : 'Quiet for now'}
+                        </p>
+                        <p className="text-sm leading-relaxed text-slate-300/80">
+                          {journeySummary.openReturnsNote}
+                        </p>
+                      </div>
+                    </div>
+
                     <div className={cn(PROFILE_INSET_CLASS, 'p-4')}>
                       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                           <p className="text-sm font-medium text-white">Career Strategy Profile</p>
                           <p className="text-xs text-slate-400">
-                            Resume your journey and open the profile from the immersive shell.
+                            Resume your route and open the deeper strategy view without pushing reports back into the story shell.
                           </p>
                           {saveMetadata.lastSaved && (
                             <p className="mt-2 text-xs text-slate-500">
@@ -618,6 +646,28 @@ export default function ProfilePage() {
                 )}
               </div>
 
+              <div className="pt-4 border-t border-white/10">
+                <h2 className="mb-4 text-xl font-semibold">Account Information</h2>
+                {loading ? (
+                  <p className="text-slate-400">Loading...</p>
+                ) : user ? (
+                  <div className={cn(PROFILE_INSET_CLASS, 'space-y-3 p-4')}>
+                    <div>
+                      <label className="text-sm text-slate-400">Email</label>
+                      <p className="text-white font-medium">{user.email}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm text-slate-400">Account Created</label>
+                      <p className="text-white font-medium">
+                        {user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className={cn(PROFILE_INSET_CLASS, 'p-4 text-slate-400')}>Not signed in</div>
+                )}
+              </div>
+
               <div id="research-consent" className="pt-4 border-t border-white/10 space-y-4">
                 <div className="flex items-start justify-between gap-4">
                   <div>
@@ -626,7 +676,7 @@ export default function ProfilePage() {
                       Research Participation
                     </h2>
                     <p className="text-sm text-slate-400 max-w-2xl">
-                      Control whether your data can be used for pseudonymized cohort analysis,
+                      Optional utility layer. Control whether your data can be used for pseudonymized cohort analysis,
                       identified single-participant export, or full longitudinal research.
                     </p>
                   </div>

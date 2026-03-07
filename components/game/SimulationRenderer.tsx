@@ -412,7 +412,7 @@ export function SimulationRenderer({ simulation, onComplete }: SimulationRendere
                 className="relative border-b border-white/10 bg-black/20 backdrop-blur-xl select-none"
                 data-testid="simulation-shell-header"
             >
-                <div className="flex flex-col gap-3 px-3 py-3 sm:gap-4 sm:px-6 sm:py-5">
+                <div className="flex flex-col gap-3 px-4 py-4 sm:gap-4 sm:px-6 sm:py-5">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                         <div className="min-w-0 space-y-2">
                             <div className="flex flex-wrap items-center gap-2 text-[11px] font-medium tracking-[0.08em] text-slate-200/75">

@@ -652,20 +652,20 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
     speaker: 'Samuel Washington',
     content: [
       {
-        text: "Hey there. Welcome to Grand Central.\n\nRestless night to arrive. Routes are shifting, people are trying to hear what still fits, and the wrong platform can cost you more than time.\n\nI'm Samuel Washington. I help travelers listen before the board flips again.",
+        text: "You made it before the board turned again. Good.\n\nThere's somebody on the concourse about to step onto a life that stopped fitting months ago, and she won't be the last one tonight. Around here, bad timing costs people more than minutes.\n\nI'm Samuel Washington. I keep watch until a traveler is ready to hear what the station is really asking.",
         emotion: 'warm',
         variation_id: 'intro_v1_part1',
         patternReflection: [
-          { pattern: 'analytical', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for... well, longer than I expected. Lot more travelers lately.world's changin' fast. You look like someone who thinks things through. That's gonna matter more than ever.", altEmotion: 'knowing' },
-          { pattern: 'helping', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here for a long time. More people arrivin' every day now. You look like someone who notices people. That's rare, and it's gonna serve you well here.", altEmotion: 'warm' },
-          { pattern: 'exploring', minLevel: 5, altText: "Hey there. Welcome to Grand Central.\n\nI'm Samuel. Been helpin' folks find their way around here longer than I expected. Lot more travelers lately. You look like someone who's ready to discover things. Good.this place rewards curiosity.", altEmotion: 'warm' }
+          { pattern: 'analytical', minLevel: 5, altText: "You made it before the board turned again. Good.\n\nMost people hear noise when they step in here. You look like the sort who hears structure. That's useful, because tonight somebody's about to mistake momentum for meaning.\n\nI'm Samuel. I keep watch until a traveler is ready to see the pattern under the panic.", altEmotion: 'knowing' },
+          { pattern: 'helping', minLevel: 5, altText: "You made it before the board turned again. Good.\n\nMost people come through here trying to save themselves first. You looked past me, straight toward the people on the concourse. That's rare, and this station pays attention to rare things.\n\nI'm Samuel. I keep watch until a traveler is ready to answer for more than themselves.", altEmotion: 'warm' },
+          { pattern: 'exploring', minLevel: 5, altText: "You made it before the board turned again. Good.\n\nMost folks freeze when the signs begin to shift. You look more like someone who wants to know what changed and why. That kind of curiosity opens doors in here.\n\nI'm Samuel. I keep watch until a traveler is ready to follow the signal that keeps calling them forward.", altEmotion: 'warm' }
         ]
       }
     ],
     choices: [
       {
         choiceId: 'ask_what_is_this',
-        text: "What is this place exactly?",
+        text: "What is the station asking me to see?",
         taxonomyClass: 'accept',
         nextNodeId: 'samuel_explains_station',
         pattern: 'exploring',
@@ -675,16 +675,16 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           trustChange: 1
         },
         voiceVariations: {
-          analytical: "What is this place? How does it function?",
-          helping: "What draws people to this place?",
-          building: "What is this place? What can I accomplish here?",
-          exploring: "What is this place exactly?",
-          patience: "Tell me about this place."
+          analytical: "What is this station optimizing for? What am I meant to notice?",
+          helping: "What is this place trying to show people before they miss it?",
+          building: "What kind of place turns timing into a test?",
+          exploring: "What is the station asking me to see?",
+          patience: "Tell me what this place is really for."
         }
       },
       {
         choiceId: 'ask_who_are_you',
-        text: "How'd you end up working here?",
+        text: "Why were you waiting for me?",
         taxonomyClass: 'deflect',
         nextNodeId: 'samuel_backstory_intro',
         pattern: 'patience',
@@ -694,26 +694,26 @@ Traveler_88: Am I stranded? Please, I can't miss this.`,
           trustChange: 2
         },
         voiceVariations: {
-          analytical: "What's your history here? How did you come to this role?",
-          helping: "You've been at this a while. What's your story?",
-          building: "How'd you build your life around this place?",
-          exploring: "I'm curious.how'd you end up here?",
-          patience: "How'd you end up working here?"
+          analytical: "What made you expect my arrival specifically?",
+          helping: "You were watching my door before it opened. Why?",
+          building: "How do you become the person holding this platform together?",
+          exploring: "Why were you waiting for me?",
+          patience: "How did you come to stand watch here?"
         }
       },
       {
         choiceId: 'ready_to_explore_intro',
-        text: "I'm ready to look around",
+        text: "Point me toward the route that moved",
         taxonomyClass: 'reject',
         nextNodeId: 'samuel_orb_introduction',
         pattern: 'exploring',
         skills: ['communication'],
         voiceVariations: {
-          analytical: "I have enough context. Show me what's here.",
-          helping: "I'm ready to meet the people here.",
-          building: "Let's get started. What's first?",
-          exploring: "I'm ready to look around",
-          patience: "I'm ready whenever you are."
+          analytical: "I have enough context. Show me the signal that just changed.",
+          helping: "Take me to the person who needs an answer first.",
+          building: "Let's move. Show me where this starts to matter.",
+          exploring: "Point me toward the route that moved",
+          patience: "Alright. Show me the first step."
         }
       }
     ]

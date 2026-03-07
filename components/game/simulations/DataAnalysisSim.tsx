@@ -9,6 +9,18 @@ type ExtractedOption = {
   text: string
 }
 
+function extractContextPreview(raw: string): string[] {
+  if (!raw) return []
+
+  return raw
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .filter((line) => !/^options:?$/i.test(line))
+    .filter((line) => !/^[A-D]\)\s+/.test(line))
+    .slice(0, 2)
+}
+
 function extractOptions(raw: string): ExtractedOption[] {
   if (!raw) return []
 
@@ -52,6 +64,7 @@ export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps)
 
   const options = useMemo(() => extractOptions(content), [content])
   const correctOptions = useMemo(() => extractCorrectOptions(config.successFeedback), [config.successFeedback])
+  const contextPreview = useMemo(() => extractContextPreview(content), [content])
 
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [submission, setSubmission] = useState<'idle' | 'submitting'>('idle')
@@ -117,35 +130,31 @@ export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps)
 
   return (
     <div className="space-y-4 p-4">
-      <div className="rounded-lg border border-white/10 bg-black/40 p-3 sm:p-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <div className="rounded-2xl border border-white/10 bg-black/40 p-4 sm:p-5">
+        <div className="flex flex-col gap-3">
           <div className="min-w-0">
-            <div className="text-xs uppercase tracking-[0.16em] text-white/50">Case File</div>
-            <div className="text-sm font-medium leading-snug text-white sm:text-[15px]">
+            <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.16em] text-white/50">
+              <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-white/70">
+                Active choice
+              </span>
+              {label && (
+                <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2.5 py-1 text-cyan-100/85">
+                  {label}
+                </span>
+              )}
+            </div>
+            <div className="mt-3 text-sm font-medium leading-snug text-white sm:text-[15px]">
               {config.title}
             </div>
-            {label && <div className="mt-1 text-[11px] text-white/55">{label}</div>}
-          </div>
-          <div className="flex items-center gap-2 self-start text-xs text-white/50">
-            {canInteract ? (
-              <span className="inline-flex items-center gap-1 rounded border border-amber-500/20 bg-amber-950/20 px-2 py-1">
-                <AlertTriangle className="h-3 w-3 text-amber-300/80" />
-                Timed window
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-1 rounded border border-white/10 bg-white/5 px-2 py-1">
-                Reference only
-              </span>
-            )}
+            <p className="mt-2 text-sm leading-relaxed text-slate-200/90">{config.taskDescription}</p>
           </div>
         </div>
-        <p className="mt-3 text-sm text-slate-200/90">{config.taskDescription}</p>
       </div>
 
-      <div className="rounded-lg border border-white/10 bg-black/30">
+      <div className="rounded-2xl border border-white/10 bg-black/30">
         <div className="flex items-center justify-between gap-3 border-b border-white/5 px-3 py-2">
           <div className="text-[10px] uppercase tracking-[0.14em] text-white/40">
-            What you know
+            Reference notes
           </div>
           {compactContext && (
             <button
@@ -154,7 +163,7 @@ export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps)
               aria-expanded={showContext}
               className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-slate-200/80 transition-colors hover:bg-white/10"
             >
-              {showContext ? 'Hide case file' : 'Open case file'}
+              {showContext ? 'Hide notes' : 'Open notes'}
             </button>
           )}
         </div>
@@ -168,8 +177,15 @@ export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps)
             {content || '[NO_CONTEXT]'}
           </pre>
         ) : (
-          <div className="px-3 py-3 text-sm leading-relaxed text-slate-300/80">
-            Keep the key brief in view and open the case file only if you need deeper context before deciding.
+          <div className="space-y-2 px-3 py-3 text-sm leading-relaxed text-slate-300/85">
+            <div className="text-[10px] uppercase tracking-[0.14em] text-white/40">Key brief</div>
+            {contextPreview.length > 0 ? (
+              contextPreview.map((line) => (
+                <p key={line}>{line}</p>
+              ))
+            ) : (
+              <p>Open the notes only if you need the fuller record before deciding.</p>
+            )}
           </div>
         )}
       </div>
@@ -177,7 +193,7 @@ export function DataAnalysisSim({ config, onSuccess }: SimulationComponentProps)
       {options.length > 0 && (
         <div className="space-y-2">
           <div className="text-[10px] uppercase tracking-[0.14em] text-white/50">
-            {canInteract ? 'Choose your response' : 'Available responses'}
+            {canInteract ? 'Make the call' : 'Available responses'}
           </div>
           <div className="grid gap-2">
             {options.map((opt) => {

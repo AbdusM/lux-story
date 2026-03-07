@@ -33,30 +33,39 @@ export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
 
         <div className="glass-panel rounded-xl p-6 sm:p-8">
           <p className="text-lg leading-relaxed text-slate-100 sm:text-xl">
-            A late train. A station full of unfinished routes. Step inside and find what keeps calling you forward.
+            The board has already changed once tonight. Someone is about to follow the wrong route, and the man waiting by your door seems certain you arrived in time to notice.
           </p>
 
           <p className="mt-4 text-sm leading-relaxed text-slate-300 sm:text-base">
-            Read the scene. Choose your response. Watch the route change around you.
+            Step inside. Read the room. Answer before the moment closes.
           </p>
+
+          <div className="mt-5 rounded-2xl border border-amber-400/15 bg-amber-400/[0.05] px-4 py-3 text-left">
+            <div className="text-[10px] uppercase tracking-[0.22em] text-amber-200/70">Before you enter</div>
+            <div className="mt-2 grid gap-2 text-sm text-slate-200 sm:grid-cols-3">
+              <p>Samuel is already watching your platform.</p>
+              <p>Your first decision lands fast.</p>
+              <p>The station remembers how you move.</p>
+            </div>
+          </div>
 
           <div className="mt-5 grid gap-2 text-left sm:grid-cols-3">
             <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3">
-              <div className="text-[10px] uppercase tracking-[0.18em] text-amber-200/70">Scene</div>
-              <p className="mt-1 text-sm text-slate-200">Arrive in a living station and catch the tension in the room.</p>
+              <div className="text-[10px] uppercase tracking-[0.18em] text-amber-200/70">Signal</div>
+              <p className="mt-1 text-sm text-slate-200">Catch what is shifting before anyone names it for you.</p>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3">
-              <div className="text-[10px] uppercase tracking-[0.18em] text-sky-200/70">Choice</div>
-              <p className="mt-1 text-sm text-slate-200">Respond the way you naturally do and let the system notice.</p>
+              <div className="text-[10px] uppercase tracking-[0.18em] text-sky-200/70">Response</div>
+              <p className="mt-1 text-sm text-slate-200">Choose the answer that feels true under pressure, not rehearsed.</p>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3">
               <div className="text-[10px] uppercase tracking-[0.18em] text-emerald-200/70">Route</div>
-              <p className="mt-1 text-sm text-slate-200">Unlock people, pathways, and signals that fit how you move.</p>
+              <p className="mt-1 text-sm text-slate-200">Watch people, pathways, and returning signals start to recognize you.</p>
             </div>
           </div>
 
           <p className="mt-5 text-sm leading-relaxed text-slate-400">
-            What you discover here leaves better light for the traveler who arrives after you.
+            Grand Central does not ask who you planned to become. It asks what kind of traveler answers when the board turns.
           </p>
         </div>
 

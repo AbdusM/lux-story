@@ -443,6 +443,28 @@ export class GameStateManager {
   }
 
   /**
+   * Return the raw validated save snapshot for read-only product surfaces
+   * such as profile/progression summaries.
+   */
+  static getSaveSnapshot(): SerializableGameState | null {
+    try {
+      if (typeof localStorage === 'undefined') return null
+
+      const json = localStorage.getItem(STORAGE_KEY)
+      if (!json) return null
+
+      const parsed = JSON.parse(json)
+      if (!StateValidation.isValidSerializableGameState(parsed)) {
+        return null
+      }
+
+      return parsed
+    } catch {
+      return null
+    }
+  }
+
+  /**
    * Export save as JSON string for manual backup
    */
   static exportSave(): string | null {

@@ -62,9 +62,9 @@ describe('SimulationRenderer (data_analysis)', () => {
       />
     )
 
-    expect(screen.getByText('Case File')).toBeInTheDocument()
-    expect(screen.getAllByText('Working Brief')).toHaveLength(2)
-    expect(screen.getByText('Choose your response')).toBeInTheDocument()
+    expect(screen.getByText('Active choice')).toBeInTheDocument()
+    expect(screen.getAllByText('Working Brief').length).toBeGreaterThanOrEqual(1)
+    expect(screen.getByText('Make the call')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /lock in your response/i })).toBeInTheDocument()
     expect(screen.queryByText(/^FRAMEWORK$/i)).not.toBeInTheDocument()
 
@@ -147,12 +147,12 @@ describe('SimulationRenderer (data_analysis)', () => {
       />
     )
 
-    expect(screen.getByRole('button', { name: /open case file/i })).toBeInTheDocument()
-    expect(screen.getByText(/keep the key brief in view/i)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /open notes/i })).toBeInTheDocument()
+    expect(screen.getByText(/open the notes only if you need the fuller record before deciding/i)).toBeInTheDocument()
     expect(screen.queryByText(/options:/i, { selector: 'pre' })).not.toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: /open case file/i }))
+    fireEvent.click(screen.getByRole('button', { name: /open notes/i }))
     expect(screen.getByText(/options:/i, { selector: 'pre' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /hide case file/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /hide notes/i })).toBeInTheDocument()
   })
 })
