@@ -21,6 +21,8 @@ This folder is the operational hub for implementation, QA, and release workflow.
 - Analytics contract validation: `npm run verify:analytics-dict`
 - Guidance legacy-state audit: `npm run guidance:audit`
 - Guidance legacy-state backfill: `npm run guidance:backfill`
+- Guidance live report (JSON): `npm run guidance:report:live`
+- Guidance live report (markdown): `npm run guidance:report:live:markdown`
 - Deep character coverage report: `npm run report:character-deep-coverage`
 - Dialogue style report: `npm run report:dialogue-guidelines`
 - Dialogue style ratchet gate: `npm run verify:dialogue-guidelines`
@@ -45,6 +47,7 @@ This folder is the operational hub for implementation, QA, and release workflow.
 - Dialogue external review analysis: `docs/03_PROCESS/23-dialogue-external-review-analysis.md`
 - Dialogue topology migration protocol: `docs/03_PROCESS/24-dialogue-topology-migration-protocol.md`
 - Guidance state migration runbook: `docs/03_PROCESS/25-guidance-state-migration-runbook.md`
+- Guidance scheduled operator workflow: `.github/workflows/guidance-report.yml`
 - Dialogue remediation appendix (before/after): `docs/qa/dialogue-remediation-samples.md`
 - Archive index: `docs/03_PROCESS/archive/00-archive-index.md`
 

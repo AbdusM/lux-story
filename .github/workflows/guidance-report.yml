@@ -1,0 +1,56 @@
+name: Guidance Operator Report
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 14 * * *'
+    - cron: '0 15 * * 1'
+
+jobs:
+  guidance-report:
+    name: Generate Guidance Operator Report
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Resolve cadence
+        id: cadence
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ github.event.schedule }}" = "0 15 * * 1" ]; then
+            echo "value=weekly" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=daily" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate guidance report artifacts
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          mkdir -p .reports
+          npm run guidance:report:live > ".reports/guidance-report-${{ steps.cadence.outputs.value }}.json"
+          npm run guidance:report:live:markdown > ".reports/guidance-report-${{ steps.cadence.outputs.value }}.md"
+
+      - name: Publish job summary
+        run: cat ".reports/guidance-report-${{ steps.cadence.outputs.value }}.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: guidance-report-${{ steps.cadence.outputs.value }}-${{ github.run_id }}
+          path: .reports/
+          retention-days: 30

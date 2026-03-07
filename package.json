@@ -39,6 +39,8 @@
     "guidance:audit": "node --loader ./scripts/ts-loader.mjs scripts/backfill-guidance-state.ts",
     "guidance:backfill": "node --loader ./scripts/ts-loader.mjs scripts/backfill-guidance-state.ts --execute",
     "guidance:validate:live": "node --loader ./scripts/ts-loader.mjs scripts/validate-live-guidance.ts",
+    "guidance:report:live": "node --loader ./scripts/ts-loader.mjs scripts/report-live-guidance.ts",
+    "guidance:report:live:markdown": "node --loader ./scripts/ts-loader.mjs scripts/report-live-guidance.ts --format=markdown",
     "verify:env:vercel": "vercel env ls",
     "predeploy": "npm run validate-env && npm run test:run && npm run build",
     "deploy": "npm run deploy:vercel",

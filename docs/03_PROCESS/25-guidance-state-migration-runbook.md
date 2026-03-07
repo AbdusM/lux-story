@@ -18,6 +18,8 @@ Use it for:
 npm run guidance:audit
 npm run guidance:backfill
 npm run guidance:validate:live
+npm run guidance:report:live
+npm run guidance:report:live:markdown
 ```
 
 Operational Supabase checks:
@@ -122,3 +124,30 @@ That is the exact state observed on March 7, 2026.
 - The application already falls back gracefully when dedicated tables are missing, but that condition should not exist after `023` is applied.
 - Reverting the schema would require a new compensating migration; do not drop the guidance tables manually.
 - The backfill script is append-safe for valid legacy envelopes because it reconstructs state and writes through the same `persistGuidanceStateForUser` path used by the product routes.
+
+## Operator Reporting
+
+Use the live report scripts when you want a point-in-time readout from the linked Supabase environment:
+
+```bash
+npm run guidance:report:live
+npm run guidance:report:live:markdown
+```
+
+The JSON form is better for machine inspection. The markdown form is optimized for human review and GitHub job summaries.
+
+Automated cadence is handled by [guidance-report.yml](../../.github/workflows/guidance-report.yml):
+
+- daily run at `14:00 UTC`
+- weekly run at `15:00 UTC` on Mondays
+- manual `workflow_dispatch` support
+
+Each workflow run writes:
+
+- a markdown operator summary to the GitHub Actions job summary
+- JSON and markdown artifacts retained for `30` days
+
+Required repository secrets:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
