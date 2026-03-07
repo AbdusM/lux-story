@@ -37,7 +37,7 @@ export function AtmosphericIntro({ onStart }: AtmosphericIntroProps) {
           </p>
 
           <p className="mt-4 text-sm leading-relaxed text-slate-300 sm:text-base">
-            Step inside. Read the room. Answer before the moment closes.
+            Step inside. Read the room. Answer before the moment closes, and discover which route answers back.
           </p>
 
           <div className="mt-5 rounded-2xl border border-amber-400/15 bg-amber-400/[0.05] px-4 py-3 text-left">
