@@ -1,4 +1,5 @@
 import type { CareerMatch, SkillProfile } from '@/lib/skill-profile-adapter'
+import { getCuratedObservedExposure } from '@/lib/labor-market/observed-exposure-dataset'
 
 export type Posture = 'defend' | 'balance' | 'attack'
 
@@ -31,39 +32,33 @@ function clampReasons(reasons: string[], max: number = 3): string[] {
   return reasons.filter(Boolean).slice(0, max)
 }
 
-function normalizeText(value: string): string {
-  return value.trim().toLowerCase()
-}
+function deriveObservedExposure(career: CareerMatch): {
+  descriptor: SignalDescriptor
+  provenance: string
+} {
+  const curated = getCuratedObservedExposure({
+    careerId: career.id,
+    careerName: career.name,
+  })
 
-function deriveObservedExposure(careerName: string): SignalDescriptor {
-  const name = normalizeText(careerName)
-
-  // Phase 1 intentionally stays conservative: we do not have task-level adoption
-  // data wired in yet. This is a low-confidence heuristic for a few obvious lanes
-  // to make the UI feel alive without implying precision.
-  const highExposureHints = [
-    'software',
-    'developer',
-    'programmer',
-    'customer service',
-    'data entry',
-  ]
-
-  if (highExposureHints.some((hint) => name.includes(hint))) {
+  if (curated) {
     return {
-      level: 'high',
-      confidence: 'low',
-      reasons: clampReasons([
-        'This lane commonly includes tasks where AI tools are being adopted quickly (beta heuristic based on role name).',
-        'This is not a prediction of job loss; it is an early signal that workflows may change.',
-      ]),
+      descriptor: {
+        ...curated.descriptor,
+        reasons: clampReasons(curated.descriptor.reasons),
+      },
+      provenance: curated.provenance,
     }
   }
 
   return {
-    level: 'unknown',
-    confidence: 'low',
-    reasons: ['Task-level adoption data is not connected yet for this lane.'],
+    descriptor: {
+      level: 'unknown',
+      confidence: 'low',
+      reasons: ['No repo-owned nowcasting mapping exists yet for this lane.'],
+    },
+    provenance:
+      'No curated observed-exposure record is attached to this career yet, so the UI stays explicitly unknown.',
   }
 }
 
@@ -109,18 +104,18 @@ export function deriveCareerSignals(options: {
   nowIso?: string
 }): CareerSignals {
   const nowIso = options.nowIso ?? new Date().toISOString()
-  const observedExposure = deriveObservedExposure(options.career.name)
+  const observedExposure = deriveObservedExposure(options.career)
   const entryFriction = deriveEntryFriction(options.career, options.profile)
   const growthOutlook = options.career.growthProjection
 
   return {
-    observedExposure,
+    observedExposure: observedExposure.descriptor,
     entryFriction,
     growthOutlook,
     recommendedPosture: deriveRecommendedPosture(entryFriction, growthOutlook),
     updatedAtIso: nowIso,
     provenance: {
-      observedExposure: 'Role-name heuristic only in Phase 1; task-level observed adoption data is not connected yet.',
+      observedExposure: observedExposure.provenance,
       entryFriction: 'Derived from readiness and current skill-gap evidence, not live labor-market hiring data.',
       freshness: 'Generated at page load from the latest stored profile snapshot.',
     },

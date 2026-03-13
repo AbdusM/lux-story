@@ -52,26 +52,36 @@ function buildProfile(overrides: Partial<SkillProfile> = {}): SkillProfile {
 }
 
 describe('labor market signals', () => {
-  it('uses a conservative observed exposure heuristic (unknown by default)', () => {
+  it('uses the curated nowcasting map for canonical careers', () => {
     const profile = buildProfile()
-    const career = buildCareerMatch({ name: 'Community Data Analyst' })
+    const career = buildCareerMatch({ id: 'data-analyst-community', name: 'Community Data Analyst' })
+
+    const signals = deriveCareerSignals({ career, profile, nowIso: '2026-03-12T00:00:00.000Z' })
+
+    expect(signals.observedExposure.level).toBe('medium')
+    expect(signals.observedExposure.confidence).toBe('medium')
+    expect(signals.updatedAtIso).toBe('2026-03-12T00:00:00.000Z')
+    expect(signals.provenance.observedExposure).toContain('Curated nowcasting mapping reviewed on March 5, 2026')
+  })
+
+  it('falls back to unknown when no curated mapping exists', () => {
+    const profile = buildProfile()
+    const career = buildCareerMatch({ id: 'unmapped-role', name: 'Neighborhood Organizer' })
 
     const signals = deriveCareerSignals({ career, profile, nowIso: '2026-03-12T00:00:00.000Z' })
 
     expect(signals.observedExposure.level).toBe('unknown')
     expect(signals.observedExposure.confidence).toBe('low')
-    expect(signals.updatedAtIso).toBe('2026-03-12T00:00:00.000Z')
-    expect(signals.provenance.observedExposure).toContain('task-level observed adoption data is not connected yet')
   })
 
-  it('flags obvious high-exposure lanes with low confidence (heuristic only)', () => {
+  it('maps compatibility aliases like software developer to high exposure', () => {
     const profile = buildProfile()
     const career = buildCareerMatch({ name: 'Software Developer', readiness: 'near_ready' })
 
     const signals = deriveCareerSignals({ career, profile, nowIso: '2026-03-12T00:00:00.000Z' })
 
     expect(signals.observedExposure.level).toBe('high')
-    expect(signals.observedExposure.confidence).toBe('low')
+    expect(signals.observedExposure.confidence).toBe('medium')
   })
 
   it('derives posture from entry friction and growth outlook (defend when friction is high)', () => {
