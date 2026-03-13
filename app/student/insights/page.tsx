@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -14,6 +14,8 @@ import { SkillGrowthSection } from '@/components/student/sections/SkillGrowthSec
 import { CareerExplorationSection } from '@/components/student/sections/CareerExplorationSection'
 import { ActionPlanSection } from '@/components/student/sections/ActionPlanSection'
 import { NextStepsSection } from '@/components/student/sections/NextStepsSection'
+import { LaborMarketSignalsSection } from '@/components/student/sections/LaborMarketSignalsSection'
+import { deriveCareerSignals, type Posture } from '@/lib/labor-market/signals'
 // import { FrameworkInsights } from '@/components/FrameworkInsights'
 // import { ActionPlanBuilder } from '@/components/ActionPlanBuilder'
 
@@ -24,6 +26,8 @@ export default function StudentInsightsPage() {
   const [loading, setLoading] = useState(true)
   const [userId, setUserId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [posture, setPosture] = useState<Posture>('balance')
+  const postureInitializedRef = useRef(false)
 
   useEffect(() => {
     // Get userId from localStorage (same as game uses)
@@ -42,6 +46,32 @@ export default function StudentInsightsPage() {
       setUserId(savedUserId)
     }
   }, [])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const saved = window.localStorage.getItem('lux-posture')
+    if (saved === 'defend' || saved === 'balance' || saved === 'attack') {
+      setPosture(saved)
+      postureInitializedRef.current = true
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!profile) return
+    if (postureInitializedRef.current) return
+
+    const topCareer = profile.careerMatches[0]
+    if (!topCareer) return
+
+    const recommendation = deriveCareerSignals({ career: topCareer, profile }).recommendedPosture
+    setPosture(recommendation)
+    postureInitializedRef.current = true
+  }, [profile])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    window.localStorage.setItem('lux-posture', posture)
+  }, [posture])
 
   useEffect(() => {
     if (!userId) return
@@ -171,7 +201,15 @@ export default function StudentInsightsPage() {
         {userId && <PatternInsightsSection userId={userId} />}
         <SkillGrowthSection profile={profile} />
         <CareerExplorationSection profile={profile} />
-        {userId && <ActionPlanSection userId={userId} profile={profile} />}
+        <LaborMarketSignalsSection profile={profile} posture={posture} onPostureChange={setPosture} />
+        {userId && (
+          <ActionPlanSection
+            userId={userId}
+            profile={profile}
+            posture={posture}
+            onPostureChange={setPosture}
+          />
+        )}
         <NextStepsSection profile={profile} />
 
         {/* Framework Insights & Action Plan Buttons - DISABLED (Missing Components) */}
