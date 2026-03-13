@@ -1,6 +1,8 @@
 import {
   STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
+  STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
   STUDENT_INSIGHTS_SIGNAL_SURFACE,
+  STUDENT_INSIGHTS_SIGNAL_TASK_ID,
 } from '@/lib/telemetry/student-insights-constants'
 import type {
   AdminStudentInsightsFunnelRates,
@@ -26,6 +28,16 @@ const STUDENT_INSIGHTS_EVENT_TYPES = new Set<string>([
   'artifact_exported',
 ])
 
+const STUDENT_INSIGHTS_SCHEMA_PREFIX_BY_SURFACE: Record<string, string> = {
+  [STUDENT_INSIGHTS_SIGNAL_SURFACE]: 'student-insights-signals-',
+  [STUDENT_INSIGHTS_ACTION_PLAN_SURFACE]: 'student-insights-action-plan-',
+}
+
+const STUDENT_INSIGHTS_TASK_ID_BY_SURFACE: Record<string, string> = {
+  [STUDENT_INSIGHTS_SIGNAL_SURFACE]: STUDENT_INSIGHTS_SIGNAL_TASK_ID,
+  [STUDENT_INSIGHTS_ACTION_PLAN_SURFACE]: STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
+}
+
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
 }
@@ -35,6 +47,32 @@ function getSourceSurface(payload: unknown): string | null {
   return typeof payload.source_surface === 'string' && payload.source_surface.length > 0
     ? payload.source_surface
     : null
+}
+
+function getTaskId(payload: unknown): string | null {
+  if (!isPlainObject(payload)) return null
+  return typeof payload.task_id === 'string' && payload.task_id.length > 0 ? payload.task_id : null
+}
+
+function getSchemaVersion(payload: unknown): string | null {
+  if (!isPlainObject(payload)) return null
+  return typeof payload.guidance_schema_version === 'string' && payload.guidance_schema_version.length > 0
+    ? payload.guidance_schema_version
+    : null
+}
+
+function isStudentInsightsPayloadForSurface(payload: unknown, surface: string): boolean {
+  const expectedTaskId = STUDENT_INSIGHTS_TASK_ID_BY_SURFACE[surface]
+  const schemaPrefix = STUDENT_INSIGHTS_SCHEMA_PREFIX_BY_SURFACE[surface]
+  if (!expectedTaskId || !schemaPrefix) return false
+
+  const taskId = getTaskId(payload)
+  if (taskId !== expectedTaskId) return false
+
+  const schemaVersion = getSchemaVersion(payload)
+  if (!schemaVersion || !schemaVersion.startsWith(schemaPrefix)) return false
+
+  return true
 }
 
 function createEmptyCounts(): AdminStudentInsightsFunnelStageCounts {
@@ -147,7 +185,10 @@ export function buildAdminStudentInsightsFunnelSummary(params: {
   const totalsCounts = createEmptyCounts()
 
   const surfaceMetrics: AdminStudentInsightsSurfaceMetrics[] = surfaces.map((surface) => {
-    const events = candidateEvents.filter((event) => getSourceSurface(event.payload) === surface)
+    const events = candidateEvents.filter((event) => {
+      if (getSourceSurface(event.payload) !== surface) return false
+      return isStudentInsightsPayloadForSurface(event.payload, surface)
+    })
     const metrics = buildSurfaceMetrics(surface, events)
     events.forEach((event) => totalsUsers.add(event.user_id))
     sumCounts(totalsCounts, metrics.counts)

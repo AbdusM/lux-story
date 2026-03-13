@@ -218,8 +218,8 @@ export function deriveCareerSignals(options: {
       ].join(' '),
     },
     disclaimers: [
-      'These signals are early indicators, not predictions.',
-      'You can override guidance if it does not match your reality.',
+      'These are lane-level early indicators, not predictions about you or your job.',
+      'We do not predict job-loss dates. Use this to pick a posture, build proof, and override when needed.',
     ],
   }
 }

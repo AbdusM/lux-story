@@ -5,8 +5,18 @@ import { Activity, Shield, Zap, TrendingUp, Info, ChevronDown } from 'lucide-rea
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import type { Posture, SignalLevel } from '@/lib/labor-market/signals'
 import { deriveCareerSignals } from '@/lib/labor-market/signals'
+import type { MarketSignalMetadata } from '@/lib/labor-market/market-signal-contract'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
 import {
   trackStudentInsightsRecommendationClicked,
@@ -131,6 +141,91 @@ function renderSignalMetadata(
   )
 }
 
+function NowcastingTrustContractDialog(props: {
+  observedExposure: MarketSignalMetadata
+  entryFriction: MarketSignalMetadata
+}) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button type="button" variant="outline" className="gap-2 bg-white/80">
+          <Info className="h-4 w-4" />
+          How to Read
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="w-[95vw] sm:max-w-2xl max-h-[90vh] flex flex-col p-4 sm:p-6">
+        <DialogHeader>
+          <DialogTitle>How to Interpret These Signals</DialogTitle>
+          <DialogDescription>
+            A trust contract for nowcasting: what we do, what we do not claim, and how to use this safely.
+          </DialogDescription>
+        </DialogHeader>
+
+        <ScrollArea className="flex-1 pr-4">
+          <div className="space-y-4 text-sm text-slate-700">
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <p className="text-sm font-semibold text-slate-900">Trust contract</p>
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                <li>We do not predict individual job loss or replacement timelines.</li>
+                <li>We stay explicit about uncertainty and will show “Unknown” instead of inventing a score.</li>
+                <li>We optimize for actions you can take in the next 90 days: posture, proof, and adjacent routes.</li>
+                <li>You can override guidance if it does not match your reality.</li>
+              </ul>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="rounded-xl border border-slate-200 bg-white p-4">
+                <p className="text-sm font-semibold text-slate-900">Observed Exposure</p>
+                <p className="mt-1 text-sm text-slate-600">
+                  A lane-level signal about whether AI is already showing up in related tasks (observed adoption), not a claim that AI can do the whole job.
+                </p>
+              </div>
+              <div className="rounded-xl border border-slate-200 bg-white p-4">
+                <p className="text-sm font-semibold text-slate-900">Entry Friction</p>
+                <p className="mt-1 text-sm text-slate-600">
+                  A lane-level signal about first-job gating and early-career barriers. High friction means you may need stronger proof or an adjacent on-ramp.
+                </p>
+              </div>
+            </div>
+
+            <details className="rounded-xl border border-slate-200 bg-white p-4">
+              <summary className="cursor-pointer text-sm font-semibold text-slate-900">
+                Observed Exposure: data + methodology
+              </summary>
+              <p className="mt-2 text-sm text-slate-600">{props.observedExposure.summary}</p>
+              <div className="mt-3 space-y-1 text-xs text-slate-500">
+                <p>Source: {props.observedExposure.source}</p>
+                <p>Updated: {new Date(props.observedExposure.updatedAtIso).toLocaleString()}</p>
+                <p>Version: {props.observedExposure.version}</p>
+                <p>Coverage: {props.observedExposure.coverage}</p>
+                <p>Methodology: {props.observedExposure.methodology}</p>
+              </div>
+            </details>
+
+            <details className="rounded-xl border border-slate-200 bg-white p-4">
+              <summary className="cursor-pointer text-sm font-semibold text-slate-900">
+                Entry Friction: data + methodology
+              </summary>
+              <p className="mt-2 text-sm text-slate-600">{props.entryFriction.summary}</p>
+              <div className="mt-3 space-y-1 text-xs text-slate-500">
+                <p>Source: {props.entryFriction.source}</p>
+                <p>Updated: {new Date(props.entryFriction.updatedAtIso).toLocaleString()}</p>
+                <p>Version: {props.entryFriction.version}</p>
+                <p>Coverage: {props.entryFriction.coverage}</p>
+                <p>Methodology: {props.entryFriction.methodology}</p>
+              </div>
+            </details>
+
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-600">
+              If this content increases anxiety: pause. The product is designed to help you choose a posture and build proof, not to doomscroll your future.
+            </div>
+          </div>
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 export function LaborMarketSignalsSection({
   userId,
   sessionId,
@@ -204,10 +299,16 @@ export function LaborMarketSignalsSection({
             </CardDescription>
           </div>
 
-          <Button type="button" variant="outline" onClick={scrollToPlan} className="gap-2 bg-white/80">
-            Jump to Plan
-            <ChevronDown className="h-4 w-4" />
-          </Button>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <NowcastingTrustContractDialog
+              observedExposure={signals.provenance.observedExposure}
+              entryFriction={signals.provenance.entryFriction}
+            />
+            <Button type="button" variant="outline" onClick={scrollToPlan} className="gap-2 bg-white/80">
+              Jump to Plan
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </CardHeader>
 
@@ -317,12 +418,16 @@ export function LaborMarketSignalsSection({
             })}
           </div>
           <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50/70 p-3 text-sm text-slate-600">
-            <p className="flex items-start gap-2">
+            <div className="flex items-start gap-2">
               <Info className="mt-0.5 h-4 w-4 text-slate-500" />
-              <span>
-                {signals.disclaimers[0]} {signals.disclaimers[1]}
-              </span>
-            </p>
+              <div className="space-y-1">
+                {signals.disclaimers.map((line, index) => (
+                  <p key={index} className="leading-relaxed">
+                    {line}
+                  </p>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 

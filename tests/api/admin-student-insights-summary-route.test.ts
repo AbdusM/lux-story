@@ -1,6 +1,12 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { NextRequest, NextResponse } from 'next/server'
 
+import {
+  STUDENT_INSIGHTS_SIGNALS_SCHEMA_VERSION,
+  STUDENT_INSIGHTS_SIGNAL_SURFACE,
+  STUDENT_INSIGHTS_SIGNAL_TASK_ID,
+} from '@/lib/telemetry/student-insights-constants'
+
 const mockRequireAdminAuth = vi.fn()
 const mockAuditLog = vi.fn()
 const mockRateLimitCheck = vi.fn().mockResolvedValue(undefined)
@@ -72,7 +78,11 @@ describe('admin student insights summary route', () => {
         user_id: 'player_1',
         event_type: 'recommendation_shown',
         occurred_at: '2026-03-13T00:00:00.000Z',
-        payload: { source_surface: 'student_insights_signals' },
+        payload: {
+          source_surface: STUDENT_INSIGHTS_SIGNAL_SURFACE,
+          task_id: STUDENT_INSIGHTS_SIGNAL_TASK_ID,
+          guidance_schema_version: STUDENT_INSIGHTS_SIGNALS_SCHEMA_VERSION,
+        },
       },
     ]
   })

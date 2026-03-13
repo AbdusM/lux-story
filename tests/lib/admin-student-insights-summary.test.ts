@@ -1,7 +1,11 @@
 import { buildAdminStudentInsightsFunnelSummary } from '@/lib/telemetry/admin-student-insights-summary'
 import {
+  STUDENT_INSIGHTS_ACTION_PLAN_SCHEMA_VERSION,
   STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
+  STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
+  STUDENT_INSIGHTS_SIGNALS_SCHEMA_VERSION,
   STUDENT_INSIGHTS_SIGNAL_SURFACE,
+  STUDENT_INSIGHTS_SIGNAL_TASK_ID,
 } from '@/lib/telemetry/student-insights-constants'
 import { describe, expect, it } from 'vitest'
 
@@ -16,49 +20,81 @@ describe('admin student insights funnel summary', () => {
           user_id: 'player_1',
           event_type: 'recommendation_shown',
           occurred_at: '2026-03-13T00:00:00.000Z',
-          payload: { source_surface: STUDENT_INSIGHTS_SIGNAL_SURFACE },
+          payload: {
+            source_surface: STUDENT_INSIGHTS_SIGNAL_SURFACE,
+            task_id: STUDENT_INSIGHTS_SIGNAL_TASK_ID,
+            guidance_schema_version: STUDENT_INSIGHTS_SIGNALS_SCHEMA_VERSION,
+          },
         },
         {
           user_id: 'player_1',
           event_type: 'recommendation_clicked',
           occurred_at: '2026-03-13T00:01:00.000Z',
-          payload: { source_surface: STUDENT_INSIGHTS_SIGNAL_SURFACE },
+          payload: {
+            source_surface: STUDENT_INSIGHTS_SIGNAL_SURFACE,
+            task_id: STUDENT_INSIGHTS_SIGNAL_TASK_ID,
+            guidance_schema_version: STUDENT_INSIGHTS_SIGNALS_SCHEMA_VERSION,
+          },
         },
         {
           user_id: 'player_1',
           event_type: 'task_exposed',
           occurred_at: '2026-03-13T00:02:00.000Z',
-          payload: { source_surface: STUDENT_INSIGHTS_ACTION_PLAN_SURFACE },
+          payload: {
+            source_surface: STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
+            task_id: STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
+            guidance_schema_version: STUDENT_INSIGHTS_ACTION_PLAN_SCHEMA_VERSION,
+          },
         },
         {
           user_id: 'player_1',
           event_type: 'assist_mode_selected',
           occurred_at: '2026-03-13T00:02:30.000Z',
-          payload: { source_surface: STUDENT_INSIGHTS_ACTION_PLAN_SURFACE },
+          payload: {
+            source_surface: STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
+            task_id: STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
+            guidance_schema_version: STUDENT_INSIGHTS_ACTION_PLAN_SCHEMA_VERSION,
+          },
         },
         {
           user_id: 'player_1',
           event_type: 'task_started',
           occurred_at: '2026-03-13T00:03:00.000Z',
-          payload: { source_surface: STUDENT_INSIGHTS_ACTION_PLAN_SURFACE },
+          payload: {
+            source_surface: STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
+            task_id: STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
+            guidance_schema_version: STUDENT_INSIGHTS_ACTION_PLAN_SCHEMA_VERSION,
+          },
         },
         {
           user_id: 'player_1',
           event_type: 'task_completed',
           occurred_at: '2026-03-13T00:04:00.000Z',
-          payload: { source_surface: STUDENT_INSIGHTS_ACTION_PLAN_SURFACE },
+          payload: {
+            source_surface: STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
+            task_id: STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
+            guidance_schema_version: STUDENT_INSIGHTS_ACTION_PLAN_SCHEMA_VERSION,
+          },
         },
         {
           user_id: 'player_1',
           event_type: 'artifact_exported',
           occurred_at: '2026-03-13T00:05:00.000Z',
-          payload: { source_surface: STUDENT_INSIGHTS_ACTION_PLAN_SURFACE },
+          payload: {
+            source_surface: STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
+            task_id: STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
+            guidance_schema_version: STUDENT_INSIGHTS_ACTION_PLAN_SCHEMA_VERSION,
+          },
         },
         {
           user_id: 'player_2',
           event_type: 'recommendation_shown',
           occurred_at: '2026-03-13T00:06:00.000Z',
-          payload: { source_surface: STUDENT_INSIGHTS_SIGNAL_SURFACE },
+          payload: {
+            source_surface: STUDENT_INSIGHTS_SIGNAL_SURFACE,
+            task_id: STUDENT_INSIGHTS_SIGNAL_TASK_ID,
+            guidance_schema_version: STUDENT_INSIGHTS_SIGNALS_SCHEMA_VERSION,
+          },
         },
         {
           user_id: 'player_2',
