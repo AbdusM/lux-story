@@ -28,6 +28,7 @@ export default function StudentInsightsPage() {
   const [error, setError] = useState<string | null>(null)
   const [posture, setPosture] = useState<Posture>('balance')
   const postureInitializedRef = useRef(false)
+  const sessionIdRef = useRef<string>(`student-insights-${Date.now()}`)
 
   useEffect(() => {
     // Get userId from localStorage (same as game uses)
@@ -215,10 +216,19 @@ export default function StudentInsightsPage() {
         {userId && <PatternInsightsSection userId={userId} />}
         <SkillGrowthSection profile={profile} />
         <CareerExplorationSection profile={profile} />
-        <LaborMarketSignalsSection profile={profile} posture={posture} onPostureChange={setPosture} />
+        {userId && (
+          <LaborMarketSignalsSection
+            userId={userId}
+            sessionId={sessionIdRef.current}
+            profile={profile}
+            posture={posture}
+            onPostureChange={setPosture}
+          />
+        )}
         {userId && (
           <ActionPlanSection
             userId={userId}
+            sessionId={sessionIdRef.current}
             profile={profile}
             posture={posture}
             onPostureChange={setPosture}

@@ -22,7 +22,7 @@ const REPO_ROOT = process.cwd()
 const REPORT_PATH = path.join(REPO_ROOT, 'docs/qa/interaction-event-emitter-parity-report.json')
 
 // Explicitly mark intentionally not-yet-emitted event types here.
-const PLANNED_INTERACTION_EVENT_TYPES: readonly string[] = []
+const PLANNED_INTERACTION_EVENT_TYPES: readonly string[] = ['recommendation_dismissed']
 
 function fail(message: string): never {
   // eslint-disable-next-line no-console
@@ -69,10 +69,10 @@ function main(): void {
     const src = fs.readFileSync(file, 'utf8')
     if (!src.includes('queueInteractionEventSync')) continue
 
-    const eventTypeRegex = /event_type\s*:\s*(['"])([^'"]+)\1/g
+    const eventTypeRegex = /(event_type|eventType)\s*:\s*(['"])([^'"]+)\2/g
     let match: RegExpExecArray | null
     while ((match = eventTypeRegex.exec(src))) {
-      const eventType = match[2]
+      const eventType = match[3]
       emitted.add(eventType)
       if (!emitters[eventType]) emitters[eventType] = []
       emitters[eventType].push({
@@ -130,4 +130,3 @@ function main(): void {
 }
 
 main()
-

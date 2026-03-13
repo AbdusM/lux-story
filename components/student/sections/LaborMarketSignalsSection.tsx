@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { Activity, Shield, Zap, TrendingUp, Info, ChevronDown } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -8,8 +8,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import type { Posture, SignalLevel } from '@/lib/labor-market/signals'
 import { deriveCareerSignals } from '@/lib/labor-market/signals'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
+import {
+  trackStudentInsightsRecommendationClicked,
+  trackStudentInsightsRecommendationShown,
+} from '@/lib/telemetry/student-insights-events'
 
 interface LaborMarketSignalsSectionProps {
+  userId: string
+  sessionId: string
   profile: SkillProfile
   posture: Posture
   onPostureChange: (next: Posture) => void
@@ -126,16 +132,35 @@ function renderSignalMetadata(
 }
 
 export function LaborMarketSignalsSection({
+  userId,
+  sessionId,
   profile,
   posture,
   onPostureChange,
 }: LaborMarketSignalsSectionProps) {
   const topCareer = profile.careerMatches[0] ?? null
+  const exposureTrackedRef = useRef(false)
 
   const signals = useMemo(() => {
     if (!topCareer) return null
     return deriveCareerSignals({ career: topCareer, profile })
   }, [profile, topCareer])
+
+  useEffect(() => {
+    if (!topCareer || !signals || exposureTrackedRef.current) return
+
+    trackStudentInsightsRecommendationShown({
+      userId,
+      sessionId,
+      recommendationVersion: `${signals.provenance.observedExposure.version}|${signals.provenance.entryFriction.version}`,
+      targetCareerId: topCareer.id,
+      targetCareerName: topCareer.name,
+      recommendedPosture: signals.recommendedPosture,
+      observedExposureLevel: signals.observedExposure.level,
+      entryFrictionLevel: signals.entryFriction.level,
+    })
+    exposureTrackedRef.current = true
+  }, [sessionId, signals, topCareer, userId])
 
   if (!topCareer || !signals) {
     return (
@@ -154,6 +179,13 @@ export function LaborMarketSignalsSection({
   }
 
   const scrollToPlan = () => {
+    trackStudentInsightsRecommendationClicked({
+      userId,
+      sessionId,
+      recommendationVersion: `${signals.provenance.observedExposure.version}|${signals.provenance.entryFriction.version}`,
+      targetCareerId: topCareer.id,
+      action: 'jump_to_plan',
+    })
     const target = document.getElementById('action-plan')
     target?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }

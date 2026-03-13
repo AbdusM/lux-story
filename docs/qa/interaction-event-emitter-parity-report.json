@@ -1,22 +1,39 @@
 {
-  "generated_at": "2026-03-06T04:09:46.277Z",
+  "generated_at": "2026-03-13T16:27:52.550Z",
   "declared_types": [
     "choice_presented",
     "choice_selected_ui",
     "choice_selected_result",
     "node_entered",
     "experiment_assigned",
-    "deadlock_recovery_injected"
+    "deadlock_recovery_injected",
+    "task_exposed",
+    "assist_mode_selected",
+    "task_started",
+    "task_completed",
+    "recommendation_shown",
+    "recommendation_clicked",
+    "recommendation_dismissed",
+    "artifact_exported"
   ],
   "emitted_types": [
+    "artifact_exported",
+    "assist_mode_selected",
     "choice_presented",
     "choice_selected_result",
     "choice_selected_ui",
     "deadlock_recovery_injected",
     "experiment_assigned",
-    "node_entered"
+    "node_entered",
+    "recommendation_clicked",
+    "recommendation_shown",
+    "task_completed",
+    "task_exposed",
+    "task_started"
   ],
-  "planned_types": [],
+  "planned_types": [
+    "recommendation_dismissed"
+  ],
   "missing_types": [],
   "unknown_emitted_types": [],
   "emitters": {
@@ -41,23 +58,73 @@
     "node_entered": [
       {
         "file": "components/StatefulGameInterface.tsx",
-        "line": 1320
+        "line": 1293
       },
       {
         "file": "components/StatefulGameInterface.tsx",
-        "line": 2199
+        "line": 2190
       }
     ],
     "choice_selected_result": [
       {
         "file": "components/StatefulGameInterface.tsx",
-        "line": 1616
+        "line": 1607
+      }
+    ],
+    "recommendation_shown": [
+      {
+        "file": "hooks/useAdaptiveGuidance.ts",
+        "line": 457
+      },
+      {
+        "file": "lib/telemetry/student-insights-events.ts",
+        "line": 62
+      }
+    ],
+    "recommendation_clicked": [
+      {
+        "file": "hooks/useAdaptiveGuidance.ts",
+        "line": 607
+      },
+      {
+        "file": "lib/telemetry/student-insights-events.ts",
+        "line": 88
       }
     ],
     "experiment_assigned": [
       {
         "file": "lib/experiments.ts",
         "line": 104
+      }
+    ],
+    "task_exposed": [
+      {
+        "file": "lib/telemetry/student-insights-events.ts",
+        "line": 109
+      }
+    ],
+    "task_started": [
+      {
+        "file": "lib/telemetry/student-insights-events.ts",
+        "line": 131
+      }
+    ],
+    "assist_mode_selected": [
+      {
+        "file": "lib/telemetry/student-insights-events.ts",
+        "line": 154
+      }
+    ],
+    "task_completed": [
+      {
+        "file": "lib/telemetry/student-insights-events.ts",
+        "line": 178
+      }
+    ],
+    "artifact_exported": [
+      {
+        "file": "lib/telemetry/student-insights-events.ts",
+        "line": 201
       }
     ]
   }

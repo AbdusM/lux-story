@@ -124,6 +124,7 @@ function buildPatternProfile(userId: string) {
 
 async function stubInsightsApis(page: Page) {
   const persistedPlans = new Map<string, Record<string, unknown>>()
+  const interactionEvents: Array<{ event_type?: string; payload?: Record<string, unknown> }> = []
   const profiles = {
     [USER_ONE_ID]: buildSkillProfile({
       userId: USER_ONE_ID,
@@ -198,6 +199,17 @@ async function stubInsightsApis(page: Page) {
       body: JSON.stringify({ success: true, plan: persistedPlans.get(userId) ?? {} }),
     })
   })
+
+  await page.route('**/api/user/interaction-events', async (route) => {
+    interactionEvents.push(route.request().postDataJSON() as { event_type?: string; payload?: Record<string, unknown> })
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true }),
+    })
+  })
+
+  return { interactionEvents }
 }
 
 async function stubSingleUserInsightsApis(page: Page) {
@@ -208,6 +220,7 @@ async function stubSingleUserInsightsApis(page: Page) {
     notes: '',
     updatedAt: '',
   }
+  const interactionEvents: Array<{ event_type?: string; payload?: Record<string, unknown> }> = []
 
   await page.route('**/api/user/session', async (route) => {
     await route.fulfill({
@@ -269,6 +282,17 @@ async function stubSingleUserInsightsApis(page: Page) {
       body: JSON.stringify({ success: true, plan: persistedPlan }),
     })
   })
+
+  await page.route('**/api/user/interaction-events', async (route) => {
+    interactionEvents.push(route.request().postDataJSON() as { event_type?: string; payload?: Record<string, unknown> })
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true }),
+    })
+  })
+
+  return { interactionEvents }
 }
 
 async function seedLocalStorage(page: Page, entries: Record<string, string>) {
@@ -361,4 +385,37 @@ test('manual proof edits survive posture and format changes', async ({ page }) =
   await page.getByRole('combobox').click()
   await page.getByRole('option', { name: 'Interview Stories' }).click()
   await expect(draftField).toHaveValue(customDraft)
+})
+
+test('student insights emits labor-signal and action-plan telemetry', async ({ page }) => {
+  const { interactionEvents } = await stubSingleUserInsightsApis(page)
+  await seedLocalStorage(page, { 'lux-player-id': USER_ONE_ID })
+  await page.goto('/student/insights')
+
+  await expect(page.getByRole('heading', { name: 'Signals & Strategy' })).toBeVisible()
+  await expect
+    .poll(() => interactionEvents.some((event) => event.event_type === 'recommendation_shown'))
+    .toBe(true)
+  await expect
+    .poll(() => interactionEvents.some((event) => event.event_type === 'task_exposed'))
+    .toBe(true)
+
+  await page.getByRole('button', { name: 'Jump to Plan' }).click()
+  await page.getByRole('button', { name: 'Use Suggested Draft' }).click()
+  await page.getByRole('button', { name: 'Save Plan' }).click()
+
+  await expect
+    .poll(() =>
+      interactionEvents
+        .filter((event) => event.event_type != null)
+        .map((event) => event.event_type)
+        .sort(),
+    )
+    .toEqual([
+      'recommendation_clicked',
+      'recommendation_shown',
+      'task_completed',
+      'task_exposed',
+      'task_started',
+    ])
 })

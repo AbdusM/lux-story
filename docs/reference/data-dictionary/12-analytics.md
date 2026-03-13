@@ -1,6 +1,6 @@
 # Analytics & Events - Data Dictionary
 
-**Last Updated:** March 1, 2026
+**Last Updated:** March 13, 2026
 **Source:** `/lib/event-bus.ts`, `/lib/career-analytics.ts`, `/lib/simple-analytics.ts`, `/lib/simple-career-analytics.ts`, `/lib/admin-analytics.ts`, `/lib/telemetry/interaction-events-spec.ts`, `/lib/sync-queue.ts`
 **Status:** Manual documentation with mixed recency (see status note below)
 
@@ -566,6 +566,41 @@ This allows analysis like:
 - top-slot click rate (`selected_index === 0`)
 - pattern-by-position pick rates
 - ordering strategy comparisons (`ordering_variant`)
+
+### Student Insights Outcome Instrumentation
+
+The student insights nowcasting loop uses the same canonical `interaction_events` sink for a narrow set of funnel events:
+
+- `recommendation_shown`
+  - source surface: `student_insights_signals`
+  - task id: `review_labor_market_signals`
+- `recommendation_clicked`
+  - source surface: `student_insights_signals`
+  - current action: `jump_to_plan`
+- `task_exposed`
+  - source surface: `student_insights_action_plan`
+  - task id: `build_action_plan`
+- `task_started`
+  - source surface: `student_insights_action_plan`
+  - current action: `use_suggested_draft`
+- `assist_mode_selected`
+  - source surface: `student_insights_action_plan`
+  - current action: `use_suggested_draft`
+  - current assist mode: `augmented`
+- `task_completed`
+  - source surface: `student_insights_action_plan`
+  - includes `completed_field_count` and `has_proof_text`
+- `artifact_exported`
+  - source surface: `student_insights_action_plan`
+  - current action: `proof_copied_to_clipboard`
+
+Additional canonical guidance interaction types already supported in the shared sink:
+- `recommendation_dismissed` remains planned until the student insights flow exposes an explicit dismiss action.
+
+These events are emitted from:
+- [LaborMarketSignalsSection.tsx](/Users/abdusmuwwakkil/Development/30_lux-story/components/student/sections/LaborMarketSignalsSection.tsx)
+- [ActionPlanSection.tsx](/Users/abdusmuwwakkil/Development/30_lux-story/components/student/sections/ActionPlanSection.tsx)
+- [student-insights-events.ts](/Users/abdusmuwwakkil/Development/30_lux-story/lib/telemetry/student-insights-events.ts)
 ## Validation Rules
 
 ### Event Bus Validation

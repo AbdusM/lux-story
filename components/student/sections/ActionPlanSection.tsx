@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ClipboardCopy, Loader2, Save, Shield, Sparkles, Target, Zap } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -15,9 +15,17 @@ import {
 import { ensureUserApiSession } from '@/lib/user-api-session'
 import type { Posture } from '@/lib/labor-market/signals'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
+import {
+  trackStudentInsightsAssistModeSelected,
+  trackStudentInsightsActionPlanCompleted,
+  trackStudentInsightsActionPlanExposed,
+  trackStudentInsightsActionPlanStarted,
+  trackStudentInsightsArtifactExported,
+} from '@/lib/telemetry/student-insights-events'
 
 interface ActionPlanSectionProps {
   userId: string
+  sessionId: string
   profile: SkillProfile
   posture?: Posture
   onPostureChange?: (next: Posture) => void
@@ -180,6 +188,7 @@ function extractDraft(plan: Record<string, unknown> | null): ActionPlanDraft {
 
 export function ActionPlanSection({
   userId,
+  sessionId,
   profile,
   posture: postureProp,
   onPostureChange,
@@ -202,6 +211,7 @@ export function ActionPlanSection({
   const [error, setError] = useState<string | null>(null)
   const [savedAt, setSavedAt] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+  const exposedTrackedRef = useRef(false)
 
   const suggestedDraft = useMemo<ActionPlanDraft>(() => {
     const topCareer = profile.careerMatches[0]
@@ -338,6 +348,18 @@ export function ActionPlanSection({
     })
   }, [postureProp, profile])
 
+  useEffect(() => {
+    if (loading || exposedTrackedRef.current) return
+
+    trackStudentInsightsActionPlanExposed({
+      userId,
+      sessionId,
+      targetCareerId: profile.careerMatches[0]?.id ?? null,
+      posture: draft.posture,
+    })
+    exposedTrackedRef.current = true
+  }, [draft.posture, loading, profile, sessionId, userId])
+
   const hasSavedPlan =
     Boolean(draft.thisWeekFocus) ||
     Boolean(draft.nextMonthGoal) ||
@@ -354,6 +376,20 @@ export function ActionPlanSection({
 
   const applySuggestedDraft = () => {
     setDraft(suggestedDraft)
+    trackStudentInsightsAssistModeSelected({
+      userId,
+      sessionId,
+      posture: suggestedDraft.posture,
+      proofKind: suggestedDraft.proofKind,
+      assistMode: 'augmented',
+    })
+    trackStudentInsightsActionPlanStarted({
+      userId,
+      sessionId,
+      posture: suggestedDraft.posture,
+      proofKind: suggestedDraft.proofKind,
+      action: 'use_suggested_draft',
+    })
   }
 
   const setPosture = (next: Posture) => {
@@ -390,6 +426,12 @@ export function ActionPlanSection({
   const handleCopyProof = async () => {
     try {
       await navigator.clipboard.writeText(draft.proofText)
+      trackStudentInsightsArtifactExported({
+        userId,
+        sessionId,
+        posture: draft.posture,
+        proofKind: draft.proofKind,
+      })
       setCopied(true)
       window.setTimeout(() => setCopied(false), 1200)
     } catch {
@@ -430,6 +472,23 @@ export function ActionPlanSection({
       setRawPlan(persistedPlan)
       setDraft(extractDraft(persistedPlan))
       setSavedAt(readString(persistedPlan.updatedAt) || nextPlan.updatedAt)
+      trackStudentInsightsActionPlanCompleted({
+        userId,
+        sessionId,
+        posture: draft.posture,
+        proofKind: draft.proofKind,
+        completedFieldCount: [
+          draft.thisWeekFocus,
+          draft.nextMonthGoal,
+          draft.supportNeeded,
+          draft.notes,
+          draft.marketMove,
+          draft.skillMove,
+          draft.adjacentRoute,
+          draft.proofText,
+        ].filter((value) => value.trim().length > 0).length,
+        hasProofText: draft.proofText.trim().length > 0,
+      })
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : 'Unable to save action plan.')
     } finally {
