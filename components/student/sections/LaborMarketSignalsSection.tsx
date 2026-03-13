@@ -262,8 +262,33 @@ export function LaborMarketSignalsSection({
             </p>
           </div>
         </div>
+
+        <div className="rounded-2xl border border-sky-200 bg-white/80 p-4 shadow-sm">
+          <div className="flex items-center gap-2">
+            <Info className="h-4 w-4 text-sky-600" />
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
+              Signal Provenance
+            </p>
+          </div>
+          <div className="mt-3 grid gap-3 md:grid-cols-3">
+            <div className="rounded-xl border border-sky-100 bg-sky-50/70 p-3">
+              <p className="text-xs font-semibold text-slate-700">Observed Exposure</p>
+              <p className="mt-1 text-sm text-slate-600">{signals.provenance.observedExposure}</p>
+            </div>
+            <div className="rounded-xl border border-sky-100 bg-sky-50/70 p-3">
+              <p className="text-xs font-semibold text-slate-700">Entry Friction</p>
+              <p className="mt-1 text-sm text-slate-600">{signals.provenance.entryFriction}</p>
+            </div>
+            <div className="rounded-xl border border-sky-100 bg-sky-50/70 p-3">
+              <p className="text-xs font-semibold text-slate-700">Freshness</p>
+              <p className="mt-1 text-sm text-slate-600">{signals.provenance.freshness}</p>
+              <p className="mt-2 text-xs text-slate-500">
+                Updated {new Date(signals.updatedAtIso).toLocaleString()}
+              </p>
+            </div>
+          </div>
+        </div>
       </CardContent>
     </Card>
   )
 }
-

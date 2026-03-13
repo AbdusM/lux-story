@@ -1,116 +1,206 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 
-const TEST_USER_ID = 'player_123'
+const USER_ONE_ID = 'player_123'
+const USER_TWO_ID = 'player_456'
 
-const SKILL_PROFILE = {
-  userId: TEST_USER_ID,
-  userName: 'Jordan',
-  skillDemonstrations: {
-    empathy: [
+function buildSkillProfile(options: {
+  userId: string
+  readiness: 'near_ready' | 'skill_gaps' | 'exploratory'
+  growthProjection: 'high' | 'medium' | 'stable'
+}) {
+  return {
+    userId: options.userId,
+    userName: options.userId === USER_TWO_ID ? 'Alex' : 'Jordan',
+    skillDemonstrations: {
+      empathy: [
+        {
+          scene: 'maya_intro',
+          context: 'Validated another character before responding.',
+          value: 1,
+        },
+      ],
+      communication: [
+        {
+          scene: 'devon_intro',
+          context: 'Asked a clear next-step question.',
+          value: 1,
+        },
+      ],
+    },
+    careerMatches: [
+      {
+        id: 'career_1',
+        name: options.userId === USER_TWO_ID ? 'Software Developer' : 'Community Data Analyst',
+        matchScore: 0.84,
+        requiredSkills: {
+          empathy: { current: 0.8, required: 0.6, gap: 0 },
+          communication: { current: 0.7, required: 0.6, gap: 0 },
+          leadership: { current: 0.4, required: 0.7, gap: 0.3 },
+        },
+        salaryRange: [45000, 65000] as [number, number],
+        educationPaths: ['UAB Data Science'],
+        localOpportunities: ['UAB Innovation Lab'],
+        birminghamRelevance: 0.92,
+        growthProjection: options.growthProjection,
+        readiness: options.readiness,
+      },
+    ],
+    skillEvolution: [
+      { checkpoint: 'Start', totalDemonstrations: 0, timestamp: 1700000000000 },
+      { checkpoint: 'Current', totalDemonstrations: 4, timestamp: 1700003600000 },
+    ],
+    keySkillMoments: [
       {
         scene: 'maya_intro',
-        context: 'Validated another character before responding.',
-        value: 1,
+        choice: 'Offer support',
+        skillsDemonstrated: ['empathy'],
+        insight: 'You slowed down and made room for someone else.',
       },
     ],
-    communication: [
+    skillGaps:
+      options.readiness === 'near_ready'
+        ? []
+        : [
+            {
+              skill: 'leadership',
+              currentLevel: 0.4,
+              targetForTopCareers: 0.7,
+              gap: 0.3,
+              priority: 'high' as const,
+              developmentPath: 'Lead one small group effort this month.',
+            },
+          ],
+    totalDemonstrations: 4,
+    milestones: ['Completed your first route'],
+  }
+}
+
+function buildPatternProfile(userId: string) {
+  return {
+    userId,
+    summaries: [
       {
-        scene: 'devon_intro',
-        context: 'Asked a clear next-step question.',
-        value: 1,
+        patternName: 'helping',
+        demonstrationCount: 3,
+        percentage: 75,
+        lastDemonstrated: '2026-03-10T12:00:00.000Z',
+        firstDemonstrated: '2026-03-01T12:00:00.000Z',
+        scenesInvolved: ['maya_intro'],
+        charactersInvolved: ['maya'],
       },
     ],
-  },
-  careerMatches: [
-    {
-      id: 'career_1',
-      name: 'Community Data Analyst',
-      matchScore: 0.84,
-      requiredSkills: {
-        empathy: { current: 0.8, required: 0.6, gap: 0 },
-        communication: { current: 0.7, required: 0.6, gap: 0 },
-        leadership: { current: 0.4, required: 0.7, gap: 0.3 },
+    evolution: [
+      {
+        weekStart: '2026-03-03T00:00:00.000Z',
+        patternName: 'helping',
+        weeklyCount: 3,
       },
-      salaryRange: [45000, 65000],
-      educationPaths: ['UAB Data Science'],
-      localOpportunities: ['UAB Innovation Lab'],
-      birminghamRelevance: 0.92,
-      growthProjection: 'high',
+    ],
+    decisionStyle: {
+      dominantPattern: 'helping',
+      dominantPercentage: 75,
+      secondaryPattern: 'exploring',
+      secondaryPercentage: 25,
+      styleName: 'Supportive Guide',
+      description: 'You tend to lead with empathy and relationship awareness.',
+    },
+    skillCorrelations: [
+      {
+        patternName: 'helping',
+        topSkills: ['empathy', 'communication'],
+        skillCount: 2,
+      },
+    ],
+    diversityScore: {
+      score: 68,
+      totalPatterns: 2,
+      entropy: 0.7,
+      recommendation: 'Try one analytical choice next.',
+    },
+    totalDemonstrations: 4,
+    recentDemonstrations: [],
+  }
+}
+
+async function stubInsightsApis(page: Page) {
+  const persistedPlans = new Map<string, Record<string, unknown>>()
+  const profiles = {
+    [USER_ONE_ID]: buildSkillProfile({
+      userId: USER_ONE_ID,
       readiness: 'skill_gaps',
-    },
-  ],
-  skillEvolution: [
-    { checkpoint: 'Start', totalDemonstrations: 0, timestamp: 1700000000000 },
-    { checkpoint: 'Current', totalDemonstrations: 4, timestamp: 1700003600000 },
-  ],
-  keySkillMoments: [
-    {
-      scene: 'maya_intro',
-      choice: 'Offer support',
-      skillsDemonstrated: ['empathy'],
-      insight: 'You slowed down and made room for someone else.',
-    },
-  ],
-  skillGaps: [
-    {
-      skill: 'leadership',
-      currentLevel: 0.4,
-      targetForTopCareers: 0.7,
-      gap: 0.3,
-      priority: 'high',
-      developmentPath: 'Lead one small group effort this month.',
-    },
-  ],
-  totalDemonstrations: 4,
-  milestones: ['Completed your first route'],
+      growthProjection: 'high',
+    }),
+    [USER_TWO_ID]: buildSkillProfile({
+      userId: USER_TWO_ID,
+      readiness: 'near_ready',
+      growthProjection: 'high',
+    }),
+  }
+
+  await page.route('**/api/user/session', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true }),
+    })
+  })
+
+  await page.route('**/api/user/skill-profile?*', async (route) => {
+    const userId = new URL(route.request().url()).searchParams.get('userId') ?? USER_ONE_ID
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true, profile: profiles[userId as keyof typeof profiles] ?? profiles[USER_ONE_ID] }),
+    })
+  })
+
+  await page.route('**/api/user/pattern-profile?*', async (route) => {
+    const userId = new URL(route.request().url()).searchParams.get('userId') ?? USER_ONE_ID
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true, profile: buildPatternProfile(userId) }),
+    })
+  })
+
+  await page.route('**/api/user/career-explorations?*', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true, careerExplorations: [] }),
+    })
+  })
+
+  await page.route('**/api/user/action-plan*', async (route) => {
+    const request = route.request()
+
+    if (request.method() === 'POST') {
+      const payload = request.postDataJSON() as {
+        userId?: string
+        plan?: Record<string, unknown>
+      }
+      const userId = payload.userId ?? USER_ONE_ID
+      const nextPlan = payload.plan ?? persistedPlans.get(userId) ?? {}
+      persistedPlans.set(userId, nextPlan)
+
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ success: true, plan: nextPlan }),
+      })
+      return
+    }
+
+    const userId = new URL(request.url()).searchParams.get('userId') ?? USER_ONE_ID
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true, plan: persistedPlans.get(userId) ?? {} }),
+    })
+  })
 }
 
-const PATTERN_PROFILE = {
-  userId: TEST_USER_ID,
-  summaries: [
-    {
-      patternName: 'helping',
-      demonstrationCount: 3,
-      percentage: 75,
-      lastDemonstrated: '2026-03-10T12:00:00.000Z',
-      firstDemonstrated: '2026-03-01T12:00:00.000Z',
-      scenesInvolved: ['maya_intro'],
-      charactersInvolved: ['maya'],
-    },
-  ],
-  evolution: [
-    {
-      weekStart: '2026-03-03T00:00:00.000Z',
-      patternName: 'helping',
-      weeklyCount: 3,
-    },
-  ],
-  decisionStyle: {
-    dominantPattern: 'helping',
-    dominantPercentage: 75,
-    secondaryPattern: 'exploring',
-    secondaryPercentage: 25,
-    styleName: 'Supportive Guide',
-    description: 'You tend to lead with empathy and relationship awareness.',
-  },
-  skillCorrelations: [
-    {
-      patternName: 'helping',
-      topSkills: ['empathy', 'communication'],
-      skillCount: 2,
-    },
-  ],
-  diversityScore: {
-    score: 68,
-    totalPatterns: 2,
-    entropy: 0.7,
-    recommendation: 'Try one analytical choice next.',
-  },
-  totalDemonstrations: 4,
-  recentDemonstrations: [],
-}
-
-test('student insights action plan saves and reloads persisted state', async ({ page }) => {
+async function stubSingleUserInsightsApis(page: Page) {
   let persistedPlan: Record<string, unknown> = {
     thisWeekFocus: '',
     nextMonthGoal: '',
@@ -118,10 +208,6 @@ test('student insights action plan saves and reloads persisted state', async ({ 
     notes: '',
     updatedAt: '',
   }
-
-  await page.addInitScript((userId) => {
-    window.localStorage.setItem('lux-player-id', userId)
-  }, TEST_USER_ID)
 
   await page.route('**/api/user/session', async (route) => {
     await route.fulfill({
@@ -135,7 +221,14 @@ test('student insights action plan saves and reloads persisted state', async ({ 
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ success: true, profile: SKILL_PROFILE }),
+      body: JSON.stringify({
+        success: true,
+        profile: buildSkillProfile({
+          userId: USER_ONE_ID,
+          readiness: 'skill_gaps',
+          growthProjection: 'high',
+        }),
+      }),
     })
   })
 
@@ -143,7 +236,7 @@ test('student insights action plan saves and reloads persisted state', async ({ 
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ success: true, profile: PATTERN_PROFILE }),
+      body: JSON.stringify({ success: true, profile: buildPatternProfile(USER_ONE_ID) }),
     })
   })
 
@@ -176,7 +269,20 @@ test('student insights action plan saves and reloads persisted state', async ({ 
       body: JSON.stringify({ success: true, plan: persistedPlan }),
     })
   })
+}
 
+async function seedLocalStorage(page: Page, entries: Record<string, string>) {
+  await page.goto('/test-env')
+  await page.evaluate((nextEntries) => {
+    Object.entries(nextEntries).forEach(([key, value]) => {
+      window.localStorage.setItem(key, value)
+    })
+  }, entries)
+}
+
+test('student insights action plan saves and reloads persisted state', async ({ page }) => {
+  await stubSingleUserInsightsApis(page)
+  await seedLocalStorage(page, { 'lux-player-id': USER_ONE_ID })
   await page.goto('/student/insights')
 
   await expect(page.getByRole('heading', { name: 'Action Plan' })).toBeVisible()
@@ -201,4 +307,58 @@ test('student insights action plan saves and reloads persisted state', async ({ 
   await expect(page.getByLabel('Notes')).toHaveValue(
     'Remember how natural the community-focused choices felt.',
   )
+})
+
+test('legacy posture migrates once and scoped posture stays isolated per user', async ({ page }) => {
+  await stubInsightsApis(page)
+  await seedLocalStorage(page, {
+    'lux-player-id': USER_ONE_ID,
+    'lux-posture': 'attack',
+  })
+  await page.goto('/student/insights')
+
+  await expect(page.getByRole('heading', { name: 'Signals & Strategy' })).toBeVisible()
+  await expect
+    .poll(() =>
+      page.evaluate(() => ({
+        scoped: window.localStorage.getItem('lux-posture:player_123'),
+        legacy: window.localStorage.getItem('lux-posture'),
+      })),
+    )
+    .toEqual({ scoped: 'attack', legacy: null })
+
+  await page.getByRole('button', { name: 'Defend' }).first().click()
+  await expect
+    .poll(() => page.evaluate(() => window.localStorage.getItem('lux-posture:player_123')))
+    .toBe('defend')
+
+  await page.evaluate((userId) => {
+    window.localStorage.setItem('lux-player-id', userId)
+  }, USER_TWO_ID)
+  await page.goto('/student/insights')
+
+  await expect
+    .poll(() => page.evaluate(() => window.localStorage.getItem('lux-posture:player_456')))
+    .toBe('attack')
+  await expect
+    .poll(() => page.evaluate(() => window.localStorage.getItem('lux-posture:player_123')))
+    .toBe('defend')
+})
+
+test('manual proof edits survive posture and format changes', async ({ page }) => {
+  await stubInsightsApis(page)
+  await seedLocalStorage(page, { 'lux-player-id': USER_ONE_ID })
+  await page.goto('/student/insights')
+
+  const draftField = page.getByLabel('Draft')
+  const customDraft = 'Custom proof text that should survive automatic regeneration.'
+
+  await draftField.fill(customDraft)
+
+  await page.getByRole('button', { name: 'Attack' }).first().click()
+  await expect(draftField).toHaveValue(customDraft)
+
+  await page.getByRole('combobox').click()
+  await page.getByRole('option', { name: 'Interview Stories' }).click()
+  await expect(draftField).toHaveValue(customDraft)
 })

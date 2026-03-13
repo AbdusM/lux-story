@@ -51,9 +51,20 @@ export default function StudentInsightsPage() {
     if (typeof window === 'undefined') return
     if (!userId) return
 
-    const saved = window.localStorage.getItem(`lux-posture:${userId}`)
+    const scopedKey = `lux-posture:${userId}`
+    const saved = window.localStorage.getItem(scopedKey)
+    const legacy = window.localStorage.getItem('lux-posture')
+
     if (saved === 'defend' || saved === 'balance' || saved === 'attack') {
       setPosture(saved)
+      postureInitializedRef.current = true
+      return
+    }
+
+    if (legacy === 'defend' || legacy === 'balance' || legacy === 'attack') {
+      window.localStorage.setItem(scopedKey, legacy)
+      window.localStorage.removeItem('lux-posture')
+      setPosture(legacy)
       postureInitializedRef.current = true
     }
   }, [userId])

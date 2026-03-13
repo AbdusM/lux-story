@@ -61,6 +61,7 @@ describe('labor market signals', () => {
     expect(signals.observedExposure.level).toBe('unknown')
     expect(signals.observedExposure.confidence).toBe('low')
     expect(signals.updatedAtIso).toBe('2026-03-12T00:00:00.000Z')
+    expect(signals.provenance.observedExposure).toContain('task-level observed adoption data is not connected yet')
   })
 
   it('flags obvious high-exposure lanes with low confidence (heuristic only)', () => {
@@ -95,4 +96,3 @@ describe('labor market signals', () => {
     expect(signals.recommendedPosture).toBe('attack')
   })
 })
-

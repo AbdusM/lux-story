@@ -19,6 +19,11 @@ export interface CareerSignals {
   growthOutlook: GrowthOutlook
   recommendedPosture: Posture
   updatedAtIso: string
+  provenance: {
+    observedExposure: string
+    entryFriction: string
+    freshness: string
+  }
   disclaimers: string[]
 }
 
@@ -114,10 +119,14 @@ export function deriveCareerSignals(options: {
     growthOutlook,
     recommendedPosture: deriveRecommendedPosture(entryFriction, growthOutlook),
     updatedAtIso: nowIso,
+    provenance: {
+      observedExposure: 'Role-name heuristic only in Phase 1; task-level observed adoption data is not connected yet.',
+      entryFriction: 'Derived from readiness and current skill-gap evidence, not live labor-market hiring data.',
+      freshness: 'Generated at page load from the latest stored profile snapshot.',
+    },
     disclaimers: [
       'These signals are early indicators, not predictions.',
       'You can override guidance if it does not match your reality.',
     ],
   }
 }
-
