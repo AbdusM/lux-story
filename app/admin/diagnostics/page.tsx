@@ -1,8 +1,15 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { AlertCircle, CheckCircle, RefreshCw, Database, AlertTriangle, Radar, ShieldAlert, ShieldCheck, BarChart3 } from 'lucide-react'
 import { AdminUtilityNav } from '@/components/admin/AdminUtilityNav'
 import { cn } from '@/lib/utils'
@@ -49,6 +56,17 @@ const ISSUE_TYPE_SEVERITY: Record<ConsistencyIssue['type'], 'error' | 'warning' 
   'text_fk_mismatch': 'info' // Intentional for multi-tenant
 }
 
+const STUDENT_FUNNEL_DAY_OPTIONS = [
+  { value: 7, label: 'Last 7 days' },
+  { value: 30, label: 'Last 30 days' },
+  { value: 90, label: 'Last 90 days' },
+] as const
+
+const STUDENT_INSIGHTS_SURFACE_LABELS: Record<string, string> = {
+  student_insights_signals: 'Signals',
+  student_insights_action_plan: 'Action Plan',
+}
+
 export default function AdminDiagnosticsPage() {
   const [loading, setLoading] = useState(false)
   const [report, setReport] = useState<ConsistencyReport | null>(null)
@@ -59,6 +77,7 @@ export default function AdminDiagnosticsPage() {
   const [studentInsightsLoading, setStudentInsightsLoading] = useState(false)
   const [studentInsightsSummary, setStudentInsightsSummary] = useState<AdminStudentInsightsFunnelSummary | null>(null)
   const [studentInsightsError, setStudentInsightsError] = useState<string | null>(null)
+  const [studentInsightsDays, setStudentInsightsDays] = useState<number>(30)
 
   const runConsistencyCheck = async (autoFix: boolean = false) => {
     setLoading(true)
@@ -86,7 +105,7 @@ export default function AdminDiagnosticsPage() {
   const warningIssues = report?.issues.filter(i => ISSUE_TYPE_SEVERITY[i.type] === 'warning') || []
   const infoIssues = report?.issues.filter(i => ISSUE_TYPE_SEVERITY[i.type] === 'info') || []
 
-  const runLaborSignalCheck = async () => {
+  const runLaborSignalCheck = useCallback(async () => {
     setLaborSignalLoading(true)
     setLaborSignalError(null)
 
@@ -105,14 +124,14 @@ export default function AdminDiagnosticsPage() {
     } finally {
       setLaborSignalLoading(false)
     }
-  }
+  }, [])
 
-  const runStudentInsightsCheck = async () => {
+  const runStudentInsightsCheck = useCallback(async () => {
     setStudentInsightsLoading(true)
     setStudentInsightsError(null)
 
     try {
-      const response = await fetch('/api/admin/student-insights-summary')
+      const response = await fetch(`/api/admin/student-insights-summary?days=${studentInsightsDays}`)
       if (!response.ok) {
         const data = await response.json()
         throw new Error(data.error || 'Failed to load student insights summary')
@@ -126,12 +145,15 @@ export default function AdminDiagnosticsPage() {
     } finally {
       setStudentInsightsLoading(false)
     }
-  }
+  }, [studentInsightsDays])
 
   useEffect(() => {
     void runLaborSignalCheck()
+  }, [runLaborSignalCheck])
+
+  useEffect(() => {
     void runStudentInsightsCheck()
-  }, [])
+  }, [runStudentInsightsCheck])
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -302,25 +324,54 @@ export default function AdminDiagnosticsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex gap-3">
-              <Button
-                onClick={() => void runStudentInsightsCheck()}
-                disabled={studentInsightsLoading}
-                variant="outline"
-                className="flex items-center gap-2"
-              >
-                {studentInsightsLoading ? (
-                  <>
-                    <RefreshCw className="w-4 h-4 animate-spin" />
-                    Loading...
-                  </>
-                ) : (
-                  <>
-                    <BarChart3 className="w-4 h-4" />
-                    Refresh Student Funnel
-                  </>
-                )}
-              </Button>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-wrap items-center gap-3">
+                <Button
+                  onClick={() => void runStudentInsightsCheck()}
+                  disabled={studentInsightsLoading}
+                  variant="outline"
+                  className="flex items-center gap-2"
+                >
+                  {studentInsightsLoading ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      Loading...
+                    </>
+                  ) : (
+                    <>
+                      <BarChart3 className="w-4 h-4" />
+                      Refresh Student Funnel
+                    </>
+                  )}
+                </Button>
+
+                <div className="min-w-[170px]">
+                  <Select
+                    value={String(studentInsightsDays)}
+                    onValueChange={(value) => {
+                      const parsed = Number.parseInt(value, 10)
+                      if (Number.isFinite(parsed)) setStudentInsightsDays(parsed)
+                    }}
+                  >
+                    <SelectTrigger className="bg-white/80">
+                      <SelectValue placeholder="Time window" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {STUDENT_FUNNEL_DAY_OPTIONS.map((option) => (
+                        <SelectItem key={option.value} value={String(option.value)}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {studentInsightsSummary && (
+                <p className="text-xs text-slate-500">
+                  Rows scanned: {studentInsightsSummary.metadata.eventRowsScanned.toLocaleString()} (limit {studentInsightsSummary.eventLimit.toLocaleString()})
+                </p>
+              )}
             </div>
 
             {studentInsightsError && (
@@ -387,6 +438,51 @@ export default function AdminDiagnosticsPage() {
                     tone={studentInsightsSummary.totals.rates.artifactExportRate > 0 ? 'success' : 'neutral'}
                     detail="% exported / completed"
                   />
+                </div>
+
+                <div className="rounded-lg border border-slate-200 bg-white/60 p-4">
+                  <p className="text-sm font-semibold text-slate-900">Surface Breakdown</p>
+                  <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {studentInsightsSummary.surfaces.map((surface) => {
+                      const label = STUDENT_INSIGHTS_SURFACE_LABELS[surface.surface] ?? surface.surface
+                      return (
+                        <div
+                          key={surface.surface}
+                          className="rounded-lg border border-slate-200 bg-slate-50 p-3"
+                        >
+                          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-700">
+                            {label}
+                          </p>
+                          <div className="mt-2 grid grid-cols-2 gap-3 text-sm">
+                            <div>
+                              <p className="text-xs text-slate-500">Users</p>
+                              <p className="font-semibold text-slate-900">{surface.uniqueUsers}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-slate-500">Signals Shown</p>
+                              <p className="font-semibold text-slate-900">{surface.counts.recommendationShown}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-slate-500">Signals CTR</p>
+                              <p className="font-semibold text-slate-900">{surface.rates.recommendationCtr}%</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-slate-500">Plan Started</p>
+                              <p className="font-semibold text-slate-900">{surface.counts.taskStarted}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-slate-500">Plan Completed</p>
+                              <p className="font-semibold text-slate-900">{surface.counts.taskCompleted}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-slate-500">Proof Exported</p>
+                              <p className="font-semibold text-slate-900">{surface.counts.artifactExported}</p>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
 
                 {studentInsightsSummary.metadata.truncated && (
