@@ -9,8 +9,29 @@
 
 import { test, expect } from './fixtures/game-state-fixtures'
 
+type PatternTotals = {
+  analytical: number
+  building: number
+  helping: number
+  patience: number
+  exploring: number
+}
+
+type CoreLoopSaveState = {
+  currentNodeId: string
+  patterns: PatternTotals
+}
+
+const EMPTY_PATTERNS: PatternTotals = {
+  analytical: 0,
+  building: 0,
+  helping: 0,
+  patience: 0,
+  exploring: 0,
+}
+
 test.describe('Core Game Loop E2E', () => {
-  test('Happy Path: New user completes first choice cycle', async ({ page, freshGame }) => {
+  test('Happy Path: New user completes first choice cycle', async ({ page, freshGame: _freshGame }) => {
     // STEP 1: Verify we're at the game interface
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
@@ -46,30 +67,31 @@ test.describe('Core Game Loop E2E', () => {
     )
 
     // STEP 6: Verify state was persisted to localStorage
-    const savedState = await page.evaluate(() => {
+    const savedState = await page.evaluate<CoreLoopSaveState | null>(() => {
       const saved = localStorage.getItem('grand-central-terminus-save')
       return saved ? JSON.parse(saved) : null
     })
 
     expect(savedState).toBeDefined()
-    expect(savedState.patterns).toBeDefined()
+    expect(savedState?.patterns).toBeDefined()
+    if (!savedState) return
 
     // At least one pattern should have increased OR we should have advanced to a new node
-    const hasPatternChange = Object.values(savedState.patterns).some((v: any) => v > 0)
+    const hasPatternChange = Object.values(savedState.patterns).some((value) => value > 0)
     const hasNodeChanged = savedState.currentNodeId !== 'samuel_introduction'
 
     expect(hasPatternChange || hasNodeChanged).toBe(true)
   })
 
-  test('Pattern accumulation: Making multiple choices increases patterns', async ({ page, freshGame }) => {
+  test('Pattern accumulation: Making multiple choices increases patterns', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('dialogue-content')).toBeVisible({ timeout: 10000 })
 
     // Get initial pattern levels
-    const initialPatterns = await page.evaluate(() => {
+    const initialPatterns = await page.evaluate<PatternTotals>(() => {
       const saved = localStorage.getItem('grand-central-terminus-save')
-      if (!saved) return { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 }
-      const state = JSON.parse(saved)
-      return state.patterns || { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 }
+      if (!saved) return EMPTY_PATTERNS
+      const state = JSON.parse(saved) as Partial<CoreLoopSaveState>
+      return state.patterns ?? EMPTY_PATTERNS
     })
 
     // Make 3 choices in sequence
@@ -96,21 +118,21 @@ test.describe('Core Game Loop E2E', () => {
     }
 
     // Get final pattern levels
-    const finalPatterns = await page.evaluate(() => {
+    const finalPatterns = await page.evaluate<PatternTotals>(() => {
       const saved = localStorage.getItem('grand-central-terminus-save')
-      if (!saved) return { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 }
-      const state = JSON.parse(saved)
-      return state.patterns || { analytical: 0, building: 0, helping: 0, patience: 0, exploring: 0 }
+      if (!saved) return EMPTY_PATTERNS
+      const state = JSON.parse(saved) as Partial<CoreLoopSaveState>
+      return state.patterns ?? EMPTY_PATTERNS
     })
 
     // At least one pattern should have increased
-    const initialSum = Object.values(initialPatterns).reduce((a: any, b: any) => a + b, 0)
-    const finalSum = Object.values(finalPatterns).reduce((a: any, b: any) => a + b, 0)
+    const initialSum = Object.values(initialPatterns).reduce((sum, value) => sum + value, 0)
+    const finalSum = Object.values(finalPatterns).reduce((sum, value) => sum + value, 0)
 
     expect(finalSum).toBeGreaterThan(initialSum as number)
   })
 
-  test('State persists across page reload', async ({ page, freshGame }) => {
+  test('State persists across page reload', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('dialogue-content')).toBeVisible({ timeout: 10000 })
 
     // Make a choice
@@ -167,7 +189,7 @@ test.describe('Core Game Loop E2E', () => {
     await nextPage.close()
   })
 
-  test('Dialogue content updates after choice selection', async ({ page, freshGame }) => {
+  test('Dialogue content updates after choice selection', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('dialogue-content')).toBeVisible({ timeout: 10000 })
 
     // Capture initial dialogue
@@ -197,7 +219,7 @@ test.describe('Core Game Loop E2E', () => {
     expect(newDialogue).toBeTruthy()
   })
 
-  test('Choices are interactive and not disabled', async ({ page, freshGame }) => {
+  test('Choices are interactive and not disabled', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('dialogue-content')).toBeVisible({ timeout: 10000 })
 
     // Wait for choices
@@ -218,7 +240,7 @@ test.describe('Core Game Loop E2E', () => {
     await expect(dialogueContent).toBeVisible()
   })
 
-  test('Character header shows current character', async ({ page, freshGame }) => {
+  test('Character header shows current character', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('dialogue-content')).toBeVisible({ timeout: 10000 })
 
     // Make a choice to advance from narrative to character dialogue if needed
@@ -238,7 +260,7 @@ test.describe('Core Game Loop E2E', () => {
     expect(name).toBeTruthy()
   })
 
-  test('Pattern-gated choice becomes visible after threshold', async ({ page, freshGame }) => {
+  test('Pattern-gated choice becomes visible after threshold', async ({ page, freshGame: _freshGame }) => {
     // freshGame fixture already sets up the game state properly
     await expect(page.getByTestId('dialogue-content')).toBeVisible({ timeout: 10000 })
 
@@ -250,7 +272,7 @@ test.describe('Core Game Loop E2E', () => {
     expect(initialCount).toBeGreaterThan(0)
   })
 
-  test('Multiple rapid clicks do not cause errors', async ({ page, freshGame }) => {
+  test('Multiple rapid clicks do not cause errors', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('dialogue-content')).toBeVisible({ timeout: 10000 })
 
     const choices = page.locator('[data-testid="choice-button"]')

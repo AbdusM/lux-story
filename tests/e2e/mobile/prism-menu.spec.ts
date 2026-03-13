@@ -6,12 +6,12 @@
 import { test, expect } from '../fixtures/game-state-fixtures'
 
 test.describe('Prism (Journal) on Mobile', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async () => {
     // Viewport is set by Playwright project config (iPhone SE, iPhone 14, iPad, etc.)
     // Don't override it here - let the project device config handle viewport sizing
   })
 
-  test('opens Prism and navigates tabs', async ({ page, freshGame }) => {
+  test('opens Prism and navigates tabs', async ({ page, freshGame: _freshGame }) => {
     // Prism trigger should be visible
     const prismTrigger = page.getByLabel('Open Journal')
     await expect(prismTrigger).toBeVisible({ timeout: 15000 })
@@ -44,7 +44,7 @@ test.describe('Prism (Journal) on Mobile', () => {
     await expect(page.getByText(/ability mastery/i)).toBeVisible({ timeout: 10000 })
   })
 
-  test('shows empty state in Harmonics for fresh game', async ({ page, freshGame }) => {
+  test('shows empty state in Harmonics for fresh game', async ({ page, freshGame: _freshGame }) => {
     const prismTrigger = page.getByLabel('Open Journal')
     await prismTrigger.click()
 
@@ -52,7 +52,7 @@ test.describe('Prism (Journal) on Mobile', () => {
     await expect(page.getByText(/resonance field/i)).toBeVisible({ timeout: 10000 })
   })
 
-  test('closes Prism with close button', async ({ page, freshGame }) => {
+  test('closes Prism with close button', async ({ page, freshGame: _freshGame }) => {
     const prismTrigger = page.getByLabel('Open Journal')
     await prismTrigger.click()
     // Use heading role to avoid strict mode violation
@@ -68,12 +68,12 @@ test.describe('Prism (Journal) on Mobile', () => {
 })
 
 test.describe('UnifiedMenu on Mobile', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async () => {
     // Viewport is set by Playwright project config (iPhone SE, iPhone 14, iPad, etc.)
     // Don't override it here - let the project device config handle viewport sizing
   })
 
-  test('opens settings menu and toggles sections', async ({ page, freshGame }) => {
+  test('opens settings menu and toggles sections', async ({ page, freshGame: _freshGame }) => {
     // Settings button
     const settingsButton = page.getByRole('button', { name: /settings menu/i })
     await expect(settingsButton).toBeVisible()
@@ -96,7 +96,7 @@ test.describe('UnifiedMenu on Mobile', () => {
     await expect(page.getByText(/color mode/i)).toBeVisible()
   })
 
-  test('reduce motion toggle has correct ARIA attributes', async ({ page, freshGame }) => {
+  test('reduce motion toggle has correct ARIA attributes', async ({ page, freshGame: _freshGame }) => {
     const settingsButton = page.getByRole('button', { name: /settings menu/i })
     await settingsButton.click()
 
@@ -124,7 +124,7 @@ test.describe('UnifiedMenu on Mobile', () => {
     // when playerId is undefined
   })
 
-  test('closes menu with escape key', async ({ page, freshGame }) => {
+  test('closes menu with escape key', async ({ page, freshGame: _freshGame }) => {
     const settingsButton = page.getByRole('button', { name: /settings menu/i })
     await settingsButton.click()
 

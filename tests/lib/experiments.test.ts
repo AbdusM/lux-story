@@ -4,6 +4,11 @@ vi.mock('@/lib/sync-queue', () => ({
   queueInteractionEventSync: vi.fn(),
 }))
 
+type ExperimentAssignedPayload = {
+  test_id: string
+  assignment_version: string
+}
+
 describe('experiments', () => {
   beforeEach(() => {
     window.localStorage.clear()
@@ -51,7 +56,8 @@ describe('experiments', () => {
 
   it('emits experiment_assigned only on first assignment per key', async () => {
     const exp = await import('@/lib/experiments')
-    const { queueInteractionEventSync } = await import('@/lib/sync-queue')
+    const syncQueue = await import('@/lib/sync-queue')
+    const queueInteractionEventSync = vi.mocked(syncQueue.queueInteractionEventSync)
 
     exp.ACTIVE_TESTS['t1'] = { id: 't1', variants: ['a', 'b'], assignment_version: 'v1' }
 
@@ -59,10 +65,11 @@ describe('experiments', () => {
     exp.assignVariant('t1', 'user_123')
 
     expect(queueInteractionEventSync).toHaveBeenCalledTimes(1)
-    const call = (queueInteractionEventSync as any).mock.calls[0][0]
+    const call = queueInteractionEventSync.mock.calls[0]?.[0]
+    const payload = call.payload as ExperimentAssignedPayload
     expect(call.event_type).toBe('experiment_assigned')
     expect(call.user_id).toBe('user_123')
-    expect(call.payload.test_id).toBe('t1')
-    expect(call.payload.assignment_version).toBe('v1')
+    expect(payload.test_id).toBe('t1')
+    expect(payload.assignment_version).toBe('v1')
   })
 })

@@ -86,6 +86,7 @@ import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import { useSearchParams } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -410,6 +411,8 @@ const characterNames: Record<CharacterId, string> = {
 
 export default function StatefulGameInterface() {
   const safeStart = getSafeStart()
+  const searchParams = useSearchParams()
+  const requestedOverlay = searchParams.get('overlay')
 
   // Orb earning-SILENT during gameplay (discovery in Journal)
   const { earnOrb, earnBonusOrbs, hasNewOrbs, markOrbsViewed, getUnacknowledgedMilestone, acknowledgeMilestone, balance: orbBalance } = useOrbs()
@@ -514,6 +517,15 @@ export default function StatefulGameInterface() {
 
   // Force re-render when God Mode navigates (refreshCounter increments trigger React update)
   const refreshCounter = useGameStore(s => s.refreshCounter)
+
+  useEffect(() => {
+    if (requestedOverlay !== 'login') return
+
+    const overlayState = useOverlayStore.getState()
+    if (!overlayState.isOverlayOpen('loginModal')) {
+      pushOverlay('loginModal')
+    }
+  }, [pushOverlay, requestedOverlay])
 
   // Derived State for UI Logic
   const currentState = state.gameState ? 'dialogue' : 'station'

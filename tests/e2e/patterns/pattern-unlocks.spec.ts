@@ -89,7 +89,7 @@ test.describe('Pattern Unlock Effects', () => {
 
       // Check for tooltip (may be role="tooltip" or a popup)
       const tooltip = page.getByRole('tooltip')
-      const tooltipVisible = await tooltip.isVisible({ timeout: 2000 }).catch(() => false)
+      await tooltip.isVisible({ timeout: 2000 }).catch(() => false)
 
       // If no role=tooltip, tooltip may be implemented differently
       // Just verify location text exists
@@ -166,7 +166,7 @@ test.describe('Pattern Unlock Effects', () => {
       // With Analytical L2, should have insights about character relationships
       // Look for insight text
       const insightText = page.getByText(/opened up|resonates|approach|pattern/i).first()
-      const hasInsight = await insightText.isVisible({ timeout: 3000 }).catch(() => false)
+      await insightText.isVisible({ timeout: 3000 }).catch(() => false)
 
       // Insights may appear in various tabs
       // Just verify journal opened

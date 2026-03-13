@@ -18,6 +18,7 @@ import { useSearchParams } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { AdminUtilityNav } from '@/components/admin/AdminUtilityNav'
 import { DialogueDisplay } from '@/components/DialogueDisplay'
 import { StateConditionEvaluator, DialogueNode } from '@/lib/dialogue-graph'
 import { GameStateUtils, type GameState as _GameState } from '@/lib/character-state'
@@ -132,6 +133,7 @@ function DialoguePreviewContent() {
     <div className="min-h-screen bg-slate-50 p-4">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-2xl font-bold mb-4">Dialogue Preview Mode</h1>
+        <AdminUtilityNav className="mb-4" />
 
         {/* Controls */}
         <Card className="mb-4">

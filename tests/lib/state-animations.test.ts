@@ -13,8 +13,7 @@ import {
   getMoodStaggerDelay,
   getPatternAnimationStyle,
   PATTERN_ANIMATION_HINTS,
-  type AnimationMood,
-  type AnimationContext
+  type AnimationMood
 } from '@/lib/state-animations'
 
 describe('State-Based Animations (D-026)', () => {

@@ -51,16 +51,6 @@ function createHighPatterns(): PlayerPatterns {
   }
 }
 
-function createLowPatterns(): PlayerPatterns {
-  return {
-    analytical: 2,
-    patience: 2,
-    exploring: 2,
-    helping: 2,
-    building: 2
-  }
-}
-
 // ═══════════════════════════════════════════════════════════════════════════
 // SKILLS & CAREERS STRUCTURE
 // ═══════════════════════════════════════════════════════════════════════════
@@ -221,7 +211,6 @@ describe('D-012: Skill Transfer Visualization', () => {
 
   it('categorizes transfer strength correctly', () => {
     const highTransfer = getSkillTransfers('critical_thinking')
-    const lowTransfer = getSkillTransfers('cybersecurity')
 
     // Critical thinking transfers to 5+ domains
     expect(['high', 'medium']).toContain(highTransfer?.transferStrength)

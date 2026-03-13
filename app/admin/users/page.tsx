@@ -11,6 +11,7 @@ import { Shield, Users as UsersIcon, Loader2, AlertCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useUserRole } from '@/hooks/useUserRole'
 import { useRouter } from 'next/navigation'
+import { AdminUtilityNav } from '@/components/admin/AdminUtilityNav'
 
 interface UserProfile {
   user_id: string
@@ -20,6 +21,14 @@ interface UserProfile {
   created_at: string
 }
 
+interface ProfileCheckState {
+  loading: boolean
+  exists?: boolean
+  currentScene?: string | null
+  totalDemonstrations?: number
+  error?: string
+}
+
 export default function AdminUsersPage() {
   const { isAdmin, loading: roleLoading } = useUserRole()
   const router = useRouter()
@@ -27,6 +36,7 @@ export default function AdminUsersPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [updatingUserId, setUpdatingUserId] = useState<string | null>(null)
+  const [profileChecks, setProfileChecks] = useState<Record<string, ProfileCheckState>>({})
 
   const supabase = createClient()
 
@@ -90,6 +100,43 @@ export default function AdminUsersPage() {
     }
   }
 
+  const handleCheckProfile = async (userId: string) => {
+    setProfileChecks(prev => ({
+      ...prev,
+      [userId]: { loading: true }
+    }))
+
+    try {
+      const response = await fetch(`/api/admin/check-profile?userId=${encodeURIComponent(userId)}`, {
+        credentials: 'include'
+      })
+      const body = await response.json().catch(() => null)
+
+      if (!response.ok) {
+        throw new Error(typeof body?.error === 'string' ? body.error : 'Failed to check profile')
+      }
+
+      setProfileChecks(prev => ({
+        ...prev,
+        [userId]: {
+          loading: false,
+          exists: Boolean(body?.exists),
+          currentScene: typeof body?.profile?.current_scene === 'string' ? body.profile.current_scene : null,
+          totalDemonstrations:
+            typeof body?.profile?.total_demonstrations === 'number' ? body.profile.total_demonstrations : 0,
+        }
+      }))
+    } catch (checkError) {
+      setProfileChecks(prev => ({
+        ...prev,
+        [userId]: {
+          loading: false,
+          error: checkError instanceof Error ? checkError.message : 'Failed to check profile'
+        }
+      }))
+    }
+  }
+
   if (roleLoading || (loading && isAdmin)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -119,6 +166,8 @@ export default function AdminUsersPage() {
           </div>
           <p className="text-slate-400">Manage user roles and permissions</p>
         </motion.div>
+
+        <AdminUtilityNav tone="dark" className="mb-6" />
 
         {/* Error Message */}
         {error && (
@@ -180,15 +229,19 @@ export default function AdminUsersPage() {
                   <th className="text-left p-4 text-sm font-medium text-slate-400">Email</th>
                   <th className="text-left p-4 text-sm font-medium text-slate-400">Name</th>
                   <th className="text-left p-4 text-sm font-medium text-slate-400">Current Role</th>
+                  <th className="text-left p-4 text-sm font-medium text-slate-400">Journey Profile</th>
                   <th className="text-left p-4 text-sm font-medium text-slate-400">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
+                {users.map((user) => {
+                  const profileCheck = profileChecks[user.user_id]
+
+                  return (
                   <tr key={user.user_id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                     <td className="p-4 text-sm text-white">{user.email}</td>
                     <td className="p-4 text-sm text-slate-300">{user.full_name || '—'}</td>
-                    <td className="p-4">
+                    <td className="p-4 align-top">
                       <span
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
                           user.role === 'admin'
@@ -204,7 +257,52 @@ export default function AdminUsersPage() {
                         {user.role}
                       </span>
                     </td>
-                    <td className="p-4">
+                    <td className="p-4 align-top">
+                      <div className="flex min-w-[220px] flex-col gap-2">
+                        {profileCheck?.loading ? (
+                          <div className="flex items-center gap-2 text-xs text-slate-400">
+                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            <span>Checking profile…</span>
+                          </div>
+                        ) : profileCheck?.error ? (
+                          <div className="rounded border border-red-500/20 bg-red-500/10 px-2.5 py-2 text-xs text-red-300">
+                            {profileCheck.error}
+                          </div>
+                        ) : profileCheck ? (
+                          <div className="rounded border border-white/10 bg-white/5 px-2.5 py-2 text-xs text-slate-300">
+                            <div className="mb-1">
+                              <span
+                                className={`inline-flex rounded-full px-2 py-0.5 font-medium ${
+                                  profileCheck.exists
+                                    ? 'bg-emerald-500/20 text-emerald-300'
+                                    : 'bg-amber-500/20 text-amber-300'
+                                }`}
+                              >
+                                {profileCheck.exists ? 'Profile exists' : 'No profile yet'}
+                              </span>
+                            </div>
+                            {profileCheck.exists && (
+                              <div className="space-y-1">
+                                <div>Scene: {profileCheck.currentScene || 'Unknown'}</div>
+                                <div>Demonstrations: {profileCheck.totalDemonstrations || 0}</div>
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="text-xs text-slate-500">
+                            Run a diagnostic check for this user&apos;s gameplay profile.
+                          </div>
+                        )}
+
+                        <button
+                          onClick={() => handleCheckProfile(user.user_id)}
+                          className="w-fit rounded border border-slate-600 px-3 py-1 text-xs text-slate-200 transition-colors hover:border-amber-400 hover:text-white"
+                        >
+                          {profileCheck ? 'Refresh Profile Check' : 'Check Profile'}
+                        </button>
+                      </div>
+                    </td>
+                    <td className="p-4 align-top">
                       {updatingUserId === user.user_id ? (
                         <Loader2 className="w-4 h-4 text-amber-400 animate-spin" />
                       ) : (
@@ -237,7 +335,7 @@ export default function AdminUsersPage() {
                       )}
                     </td>
                   </tr>
-                ))}
+                )})}
               </tbody>
             </table>
           </div>

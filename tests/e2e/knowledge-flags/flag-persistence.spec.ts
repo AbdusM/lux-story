@@ -10,6 +10,20 @@
 
 import { test, expect } from '@playwright/test'
 
+type KnowledgeFlagCharacter = {
+  characterId: string
+  trust?: number
+  knowledgeFlags?: string[]
+}
+
+type KnowledgeFlagEnvelope = {
+  state?: {
+    characters?: KnowledgeFlagCharacter[]
+    globalFlags?: string[]
+    nervousSystemRegulation?: number
+  }
+}
+
 test.describe('Knowledge Flag System', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
@@ -44,11 +58,11 @@ test.describe('Knowledge Flag System', () => {
     }, { timeout: 10000 })
 
     // Verify flags persisted
-    const flags = await page.evaluate(() => {
+    const flags = await page.evaluate<string[]>(() => {
       const saved = localStorage.getItem('grand-central-terminus-save')
       if (saved) {
-        const state = JSON.parse(saved)
-        const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
+        const state = JSON.parse(saved) as KnowledgeFlagEnvelope
+        const maya = state.state?.characters?.find((c) => c.characterId === 'maya')
         return maya?.knowledgeFlags || []
       }
       return []
@@ -129,16 +143,6 @@ test.describe('Knowledge Flag System', () => {
     }, { timeout: 10000 })
 
     // Get initial flag count
-    const initialFlags = await page.evaluate(() => {
-      const saved = localStorage.getItem('grand-central-terminus-save')
-      if (saved) {
-        const state = JSON.parse(saved)
-        const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
-        return maya?.knowledgeFlags || []
-      }
-      return []
-    })
-
     // Make a choice
     const choices = page.locator('[data-testid="choice-button"]')
     if (await choices.first().isVisible({ timeout: 10000 }).catch(() => false)) {
@@ -151,17 +155,17 @@ test.describe('Knowledge Flag System', () => {
       await page.waitForFunction(() => {
         const saved = localStorage.getItem('grand-central-terminus-save')
         if (!saved) return false
-        const state = JSON.parse(saved)
-        const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
+        const state = JSON.parse(saved) as KnowledgeFlagEnvelope
+        const maya = state.state?.characters?.find((c) => c.characterId === 'maya')
         return (maya?.knowledgeFlags || []).length > 0
       }, { timeout: 5000 }).catch(() => {})
 
       // Verify flags were added
-      const updatedFlags = await page.evaluate(() => {
+      const updatedFlags = await page.evaluate<string[]>(() => {
         const saved = localStorage.getItem('grand-central-terminus-save')
         if (saved) {
-          const state = JSON.parse(saved)
-          const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
+          const state = JSON.parse(saved) as KnowledgeFlagEnvelope
+          const maya = state.state?.characters?.find((c) => c.characterId === 'maya')
           return maya?.knowledgeFlags || []
         }
         return []
@@ -352,11 +356,11 @@ test.describe('Knowledge Flag System', () => {
       await page.waitForTimeout(1000)
 
       // Verify original flags are still present plus potentially new ones
-      const updatedFlags = await page.evaluate(() => {
+      const updatedFlags = await page.evaluate<string[]>(() => {
         const saved = localStorage.getItem('grand-central-terminus-save')
         if (saved) {
-          const state = JSON.parse(saved)
-          const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
+          const state = JSON.parse(saved) as KnowledgeFlagEnvelope
+          const maya = state.state?.characters?.find((c) => c.characterId === 'maya')
           return maya?.knowledgeFlags || []
         }
         return []
@@ -396,13 +400,13 @@ test.describe('Knowledge Flag System', () => {
     }, { timeout: 10000 })
 
     // Verify golden prompt flag persisted
-    const { hasFlag, regulation } = await page.evaluate(() => {
+    const { hasFlag, regulation } = await page.evaluate<{ hasFlag: boolean; regulation: number }>(() => {
       const saved = localStorage.getItem('grand-central-terminus-save')
       if (saved) {
-        const state = JSON.parse(saved)
+        const state = JSON.parse(saved) as KnowledgeFlagEnvelope
         return {
-          hasFlag: state.state.globalFlags?.includes('golden_prompt_voice') || false,
-          regulation: state.state.nervousSystemRegulation || 0
+          hasFlag: state.state?.globalFlags?.includes('golden_prompt_voice') || false,
+          regulation: state.state?.nervousSystemRegulation || 0
         }
       }
       return { hasFlag: false, regulation: 0 }

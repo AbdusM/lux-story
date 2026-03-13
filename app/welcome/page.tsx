@@ -95,7 +95,7 @@ export default function WelcomePage() {
 
   // Handle sign in
   const handleSignIn = useCallback(() => {
-    router.push('/admin/login')
+    router.push('/?overlay=login')
   }, [router])
 
   // Handle accessibility profile change

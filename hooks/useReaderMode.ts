@@ -20,16 +20,6 @@ export function useReaderMode() {
   const [mode, setModeState] = useState<ReaderMode>('mono')
   const [isLoaded, setIsLoaded] = useState(false)
 
-  // Load preference from localStorage on mount
-  useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY) as ReaderMode | null
-    if (stored === 'mono' || stored === 'sans') {
-      setModeState(stored)
-      applyReaderMode(stored)
-    }
-    setIsLoaded(true)
-  }, [])
-
   // Apply mode to document
   const applyReaderMode = useCallback((newMode: ReaderMode) => {
     const root = document.documentElement
@@ -41,6 +31,16 @@ export function useReaderMode() {
       root.classList.remove('reader-mode-sans')
     }
   }, [])
+
+  // Load preference from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem(STORAGE_KEY) as ReaderMode | null
+    if (stored === 'mono' || stored === 'sans') {
+      setModeState(stored)
+      applyReaderMode(stored)
+    }
+    setIsLoaded(true)
+  }, [applyReaderMode])
 
   // Toggle between modes
   const toggleMode = useCallback(() => {

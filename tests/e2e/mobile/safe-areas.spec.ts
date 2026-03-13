@@ -15,7 +15,7 @@ test.describe('Safe Area Boundaries', () => {
   // iPhone safe-area behavior is an iOS/WebKit concern; avoid running these in Chromium mobile projects.
   test.skip(({ browserName }) => browserName !== 'webkit', 'Safe-area insets are only meaningful on WebKit/iOS.')
 
-  test('Bottom navigation stays within viewport', async ({ page, freshGame }) => {
+  test('Bottom navigation stays within viewport', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
 
     const viewport = page.viewportSize()
@@ -41,7 +41,7 @@ test.describe('Safe Area Boundaries', () => {
     }
   })
 
-  test('Modal dialogs render within viewport', async ({ page, freshGame }) => {
+  test('Modal dialogs render within viewport', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
 
     const viewport = page.viewportSize()

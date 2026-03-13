@@ -8,16 +8,13 @@ import {
   // D-003: Voice Tone
   getVoiceToneForTrust,
   formatVoiceWithTone,
-  VOICE_TONE_MODIFIERS,
 
   // D-005: Trust Asymmetry
   calculateTrustAsymmetry,
-  TRUST_ASYMMETRY,
 
   // D-010: Echo Intensity
   getEchoIntensity,
   formatEchoByIntensity,
-  ECHO_INTENSITY_MODIFIERS,
   StoredEcho,
 
   // D-039: Trust Timeline
@@ -45,7 +42,26 @@ import {
   TRUST_TRANSFER_RATES
 } from '@/lib/trust-derivatives'
 
+import type { CharacterState } from '@/lib/character-state'
 import { TRUST_THRESHOLDS } from '@/lib/constants'
+
+function makeCharacterState(
+  characterId: string,
+  trust: number,
+  overrides: Partial<CharacterState> = {}
+): CharacterState {
+  return {
+    characterId,
+    trust,
+    anxiety: 0,
+    nervousSystemState: 'ventral_vagal',
+    lastReaction: null,
+    knowledgeFlags: new Set(),
+    relationshipStatus: 'stranger',
+    conversationHistory: [],
+    ...overrides,
+  }
+}
 
 // ═══════════════════════════════════════════════════════════════════════════
 // D-003: TRUST-BASED PATTERN VOICE TONE
@@ -374,9 +390,9 @@ describe('D-093: Trust Relationship Inheritance', () => {
   it('calculates inherited trust from connections', () => {
     // Create mock character states with trust values
     // Devon is connected to kai (close_friend) and silas (friend)
-    const characters = new Map([
-      ['kai', { trust: 8 } as any],
-      ['silas', { trust: 6 } as any]
+    const characters = new Map<string, CharacterState>([
+      ['kai', makeCharacterState('kai', 8)],
+      ['silas', makeCharacterState('silas', 6)],
     ])
 
     // Devon is connected to kai (close_friend: 0.5 transfer)
@@ -386,10 +402,10 @@ describe('D-093: Trust Relationship Inheritance', () => {
   })
 
   it('inherited trust is capped at 3', () => {
-    const characters = new Map([
-      ['samuel', { trust: 10 } as any],
-      ['maya', { trust: 10 } as any],
-      ['marcus', { trust: 10 } as any]
+    const characters = new Map<string, CharacterState>([
+      ['samuel', makeCharacterState('samuel', 10)],
+      ['maya', makeCharacterState('maya', 10)],
+      ['marcus', makeCharacterState('marcus', 10)],
     ])
 
     const inheritedTrust = calculateInheritedTrust('devon', characters)

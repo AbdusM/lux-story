@@ -7,9 +7,7 @@ import { describe, it, expect } from 'vitest'
 import {
   validateDialogueGating,
   validatePatternUnlocks,
-  validateDialogueGraph,
-  GatingIssue,
-  PatternUnlockIssue
+  validateDialogueGraph
 } from '@/lib/validators/dialogue-validators'
 import { DialogueGraph, DialogueNode, ConditionalChoice } from '@/lib/dialogue-graph'
 

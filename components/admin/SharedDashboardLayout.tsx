@@ -9,8 +9,10 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Users, GraduationCap, ChevronRight, TrendingUp } from 'lucide-react'
+import { AdminUtilityNav } from '@/components/admin/AdminUtilityNav'
 import { AdvisorBriefingButton } from '@/components/admin/AdvisorBriefingButton'
 import { ExportButton } from '@/components/admin/ExportButton'
+import { ResearchExportButton } from '@/components/admin/ResearchExportButton'
 import { getTopSkills, getReadinessPercentage, getReadinessDisplay } from '@/lib/admin-dashboard-helpers'
 import { AdminDashboardProvider } from '@/components/admin/AdminDashboardContext'
 import { DashboardSkeleton } from '@/components/admin/skeletons'
@@ -100,6 +102,8 @@ export function SharedDashboardLayout({ children, userId }: SharedDashboardLayou
   return (
     <AdminDashboardProvider value={contextValue}>
       <div className="w-full max-w-2xl mx-auto p-4 space-y-4">
+        <AdminUtilityNav userId={userId} />
+
         {/* Show loading state if profile not loaded */}
         {(!mounted || loading) ? (
           <DashboardSkeleton />
@@ -131,6 +135,7 @@ export function SharedDashboardLayout({ children, userId }: SharedDashboardLayou
                       </Badge>
                     )}
                     <AdvisorBriefingButton profile={profile} variant="default" size="default" />
+                    <ResearchExportButton userId={userId} variant="outline" size="default" />
                     <ExportButton profile={profile} variant="outline" />
                   </div>
                 </div>
@@ -274,4 +279,3 @@ export function SharedDashboardLayout({ children, userId }: SharedDashboardLayou
     </AdminDashboardProvider>
   )
 }
-

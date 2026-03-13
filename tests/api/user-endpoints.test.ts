@@ -3,7 +3,7 @@
  * Tests for user-facing data synchronization routes
  */
 
-import { describe, test, expect, beforeEach, vi, afterEach } from 'vitest'
+import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 import { createUserSessionToken, USER_SESSION_COOKIE_NAME } from '@/lib/api/user-session'
 
@@ -643,5 +643,74 @@ describe('Profile API (/api/user/profile)', () => {
       expect(response.status).toBe(200)
       expect(data.profile).toBeNull()
     })
+  })
+})
+
+describe('Skill Profile API (/api/user/skill-profile)', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockSupabaseResponse.data = {
+      user_id: TEST_USER_ID,
+      total_demonstrations: 3,
+      skill_summaries: [
+        {
+          skill_name: 'empathy',
+          demonstration_count: 2,
+          latest_context: 'Validated another character before responding.',
+          scenes_involved: ['maya_intro'],
+          last_demonstrated: new Date().toISOString(),
+        },
+      ],
+      skill_demonstrations: [],
+      career_explorations: [
+        {
+          id: 'career_1',
+          career_name: 'Community Data Analyst',
+          match_score: 0.84,
+          readiness_level: 'skill_gaps',
+          local_opportunities: ['UAB Innovation Lab'],
+          education_paths: ['UAB Data Science'],
+        },
+      ],
+      relationship_progress: [],
+    }
+    mockSupabaseResponse.error = null
+  })
+
+  test('should reject unauthenticated requests', async () => {
+    const { GET } = await import('@/app/api/user/skill-profile/route')
+
+    const request = createRequest('http://localhost:3000/api/user/skill-profile')
+
+    const response = await GET(request)
+    expect(response.status).toBe(401)
+  })
+
+  test('should return a dashboard-shaped profile for the authenticated player', async () => {
+    const { GET } = await import('@/app/api/user/skill-profile/route')
+
+    const url = new URL('http://localhost:3000/api/user/skill-profile')
+    url.searchParams.set('userId', TEST_USER_ID)
+    const request = createRequest(url.toString(), { cookies: sessionCookieFor() })
+
+    const response = await GET(request)
+    const data = await response.json()
+
+    expect(response.status).toBe(200)
+    expect(data.success).toBe(true)
+    expect(data.profile.userId).toBe(TEST_USER_ID)
+    expect(data.profile.totalDemonstrations).toBe(3)
+    expect(data.profile.careerMatches[0].name).toBe('Community Data Analyst')
+  })
+
+  test('should reject userId mismatch', async () => {
+    const { GET } = await import('@/app/api/user/skill-profile/route')
+
+    const url = new URL('http://localhost:3000/api/user/skill-profile')
+    url.searchParams.set('userId', 'player_9999999999')
+    const request = createRequest(url.toString(), { cookies: sessionCookieFor(TEST_USER_ID) })
+
+    const response = await GET(request)
+    expect(response.status).toBe(403)
   })
 })

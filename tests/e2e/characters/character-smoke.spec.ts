@@ -34,7 +34,7 @@ test.describe('Character Intro Smoke', () => {
         const introNodeId = `${characterId}_introduction`
 
         await seedState({
-          currentCharacterId: characterId as any,
+          currentCharacterId: characterId,
           currentNodeId: introNodeId
         })
 

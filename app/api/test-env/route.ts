@@ -4,6 +4,10 @@
  */
 
 export async function GET() {
+  if (process.env.NODE_ENV === 'production') {
+    return Response.json({ error: 'Not found' }, { status: 404 })
+  }
+
   const envCheck = {
     nodeEnv: process.env.NODE_ENV,
     nextPublicSupabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Missing',
@@ -12,4 +16,3 @@ export async function GET() {
 
   return Response.json(envCheck)
 }
-

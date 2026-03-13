@@ -12,6 +12,8 @@ import { POST, GET } from '../../app/api/user/career-explorations/route'
 import { createUserSessionToken, USER_SESSION_COOKIE_NAME } from '@/lib/api/user-session'
 
 const TEST_USER_ID = 'player_1234567890'
+type MockSupabaseRow = Record<string, unknown>
+type MockSupabaseError = { code: string; message: string }
 
 function withSession(request: NextRequest, userId: string = TEST_USER_ID): NextRequest {
   request.cookies.set(USER_SESSION_COOKIE_NAME, createUserSessionToken(userId))
@@ -19,13 +21,13 @@ function withSession(request: NextRequest, userId: string = TEST_USER_ID): NextR
 }
 
 // Mock Supabase
-const mockSupabaseData: Record<string, unknown[]> = {}
-const mockSupabaseErrors: Record<string, Error> = {}
+const mockSupabaseData: Record<string, MockSupabaseRow[]> = {}
+const mockSupabaseErrors: Record<string, MockSupabaseError> = {}
 
 vi.mock('@supabase/supabase-js', () => ({
   createClient: vi.fn(() => ({
     from: (tableName: string) => ({
-      upsert: (data: unknown, options?: unknown) => ({
+      upsert: (data: unknown, _options?: unknown) => ({
         select: () => ({
           then: async (resolve: (value: { data: unknown; error: unknown }) => void) => {
             const error = mockSupabaseErrors[tableName]
@@ -33,7 +35,7 @@ vi.mock('@supabase/supabase-js', () => ({
               return resolve({ data: null, error })
             }
 
-            const newData = Array.isArray(data) ? data : [data]
+            const newData = (Array.isArray(data) ? data : [data]) as MockSupabaseRow[]
             mockSupabaseData[tableName] = mockSupabaseData[tableName] || []
             mockSupabaseData[tableName].push(...newData)
 
@@ -41,9 +43,9 @@ vi.mock('@supabase/supabase-js', () => ({
           }
         })
       }),
-      select: (fields?: string) => ({
+      select: (_fields?: string) => ({
         eq: (column: string, value: unknown) => ({
-          order: (field: string, options?: { ascending?: boolean }) => ({
+          order: (_field: string, _options?: { ascending?: boolean }) => ({
             then: async (resolve: (value: { data: unknown; error: unknown }) => void) => {
               const error = mockSupabaseErrors[tableName]
               if (error) {
@@ -51,7 +53,7 @@ vi.mock('@supabase/supabase-js', () => ({
               }
 
               const data = mockSupabaseData[tableName] || []
-              const filtered = data.filter((item: any) => item[column] === value)
+              const filtered = data.filter((item) => item[column] === value)
 
               return resolve({ data: filtered, error: null })
             }
@@ -167,7 +169,7 @@ describe('Career Explorations API - POST', () => {
     mockSupabaseErrors['career_explorations'] = {
       code: 'PGRST301',
       message: 'Database error'
-    } as any
+    }
 
     const requestBody = {
       user_id: TEST_USER_ID,
@@ -323,7 +325,7 @@ describe('Career Explorations API - GET', () => {
     mockSupabaseErrors['career_explorations'] = {
       code: 'PGRST301',
       message: 'Database error'
-    } as any
+    }
 
     const request = withSession(new NextRequest(
       `http://localhost:3000/api/user/career-explorations?userId=${TEST_USER_ID}`

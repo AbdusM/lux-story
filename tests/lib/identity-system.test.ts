@@ -15,7 +15,27 @@ import {
   createIdentityOffer,
   IDENTITY_CONSTANTS
 } from '@/lib/identity-system'
+import type { ActiveThought } from '@/content/thoughts'
 import type { GameState } from '@/lib/character-state'
+
+function makeIdentityThought(
+  status: ActiveThought['status'],
+  overrides: Partial<ActiveThought> = {}
+): ActiveThought {
+  return {
+    id: 'identity-analytical',
+    title: 'The Analytical Observer',
+    description: 'Identity test thought',
+    iconName: 'Brain',
+    color: 'blue',
+    maxProgress: 100,
+    status,
+    progress: status === 'developing' ? 50 : 100,
+    addedAt: Date.now(),
+    lastUpdated: Date.now(),
+    ...overrides
+  }
+}
 
 // Mock game state factory
 function createMockGameState(overrides: Partial<GameState> = {}): GameState {
@@ -114,12 +134,7 @@ describe('Identity System', () => {
 
     it('should apply bonus when pattern is internalized', () => {
       const state = createMockGameState({
-        thoughts: [{
-          id: 'identity-analytical',
-          status: 'internalized',
-          lastUpdated: Date.now(),
-          progress: 100
-        } as any]
+        thoughts: [makeIdentityThought('internalized')]
       })
 
       const gain = calculatePatternGain(1, 'analytical', state)
@@ -129,12 +144,7 @@ describe('Identity System', () => {
 
     it('should not apply bonus for different patterns', () => {
       const state = createMockGameState({
-        thoughts: [{
-          id: 'identity-analytical',
-          status: 'internalized',
-          lastUpdated: Date.now(),
-          progress: 100
-        } as any]
+        thoughts: [makeIdentityThought('internalized')]
       })
 
       // Patience pattern should not get analytical bonus
@@ -144,12 +154,7 @@ describe('Identity System', () => {
 
     it('should not apply bonus for developing thoughts', () => {
       const state = createMockGameState({
-        thoughts: [{
-          id: 'identity-analytical',
-          status: 'developing', // Not internalized yet
-          lastUpdated: Date.now(),
-          progress: 50
-        } as any]
+        thoughts: [makeIdentityThought('developing')] // Not internalized yet
       })
 
       const gain = calculatePatternGain(1, 'analytical', state)

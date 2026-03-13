@@ -18,8 +18,20 @@ vi.stubEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY', 'test-anon-key')
 // Use an explicit secret so session tokens are stable/deterministic in CI.
 vi.stubEnv('USER_API_SESSION_SECRET', 'test-user-session-secret')
 
-let mockAdminUser: any | null = null
+type MockAdminUser = { id: string; email?: string }
+const mutableEnv = process.env as Record<string, string | undefined>
+
+let mockAdminUser: MockAdminUser | null = null
 let mockAdminRole: string | null = null
+
+function restoreEnv(name: keyof NodeJS.ProcessEnv, value: string | undefined) {
+  if (typeof value === 'string') {
+    mutableEnv[name] = value
+    return
+  }
+
+  delete mutableEnv[name]
+}
 
 vi.mock('@supabase/ssr', () => ({
   createServerClient: vi.fn(() => ({
@@ -41,7 +53,7 @@ describe('release:security:minimum', () => {
     const { POST } = await import('@/app/api/user/session/route')
 
     const previous = process.env.NODE_ENV
-    ;(process.env as any).NODE_ENV = 'production'
+    mutableEnv.NODE_ENV = 'production'
     try {
       const req = new NextRequest(new URL('http://localhost:3000/api/user/session'), {
         method: 'POST',
@@ -51,16 +63,20 @@ describe('release:security:minimum', () => {
       const res = await POST(req)
       expect(res.status).toBe(400)
     } finally {
-      ;(process.env as any).NODE_ENV = previous
+      restoreEnv('NODE_ENV', previous)
     }
   })
 
   test('/api/user/* rejects unauthenticated requests', async () => {
     const { GET: profileGET, POST: profilePOST } = await import('@/app/api/user/profile/route')
+    const { GET: skillProfileGET } = await import('@/app/api/user/skill-profile/route')
     const { POST: interactionPOST } = await import('@/app/api/user/interaction-events/route')
 
     const profileGetReq = new NextRequest(new URL('http://localhost:3000/api/user/profile'))
     expect((await profileGET(profileGetReq)).status).toBe(401)
+
+    const skillProfileReq = new NextRequest(new URL('http://localhost:3000/api/user/skill-profile'))
+    expect((await skillProfileGET(skillProfileReq)).status).toBe(401)
 
     const profilePostReq = new NextRequest(new URL('http://localhost:3000/api/user/profile'), {
       method: 'POST',
@@ -69,13 +85,13 @@ describe('release:security:minimum', () => {
     })
     expect((await profilePOST(profilePostReq)).status).toBe(401)
 
-	    const interactionReq = new NextRequest(new URL('http://localhost:3000/api/user/interaction-events'), {
-	      method: 'POST',
-	      body: JSON.stringify({ session_id: 's', event_type: 'choice_presented', payload: {} }),
-	      headers: { 'Content-Type': 'application/json' },
-	    })
-	    expect((await interactionPOST(interactionReq)).status).toBe(401)
-	  })
+    const interactionReq = new NextRequest(new URL('http://localhost:3000/api/user/interaction-events'), {
+      method: 'POST',
+      body: JSON.stringify({ session_id: 's', event_type: 'choice_presented', payload: {} }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+    expect((await interactionPOST(interactionReq)).status).toBe(401)
+  })
 
   test('/api/user/* forbids cross-user writes (user_id mismatch)', async () => {
     const { POST: profilePOST } = await import('@/app/api/user/profile/route')
@@ -193,7 +209,7 @@ describe('release:security:minimum', () => {
     const { middleware } = await import('@/middleware')
 
     const previous = process.env.NODE_ENV
-    ;(process.env as any).NODE_ENV = 'production'
+    mutableEnv.NODE_ENV = 'production'
     try {
       const pageReq = new NextRequest(new URL('http://localhost:3000/test-env'))
       const pageRes = await middleware(pageReq)
@@ -203,7 +219,7 @@ describe('release:security:minimum', () => {
       const apiRes = await middleware(apiReq)
       expect(apiRes.status).toBe(404)
     } finally {
-      ;(process.env as any).NODE_ENV = previous
+      restoreEnv('NODE_ENV', previous)
     }
   })
 
@@ -216,7 +232,7 @@ describe('release:security:minimum', () => {
     const { POST } = await import('@/app/api/log-error/route')
 
     const previous = process.env.NODE_ENV
-    ;(process.env as any).NODE_ENV = 'production'
+    mutableEnv.NODE_ENV = 'production'
     try {
       const req = new Request('http://localhost:3000/api/log-error', {
         method: 'POST',
@@ -226,7 +242,7 @@ describe('release:security:minimum', () => {
       const res = await POST(req)
       expect(res.status).toBe(404)
     } finally {
-      ;(process.env as any).NODE_ENV = previous
+      restoreEnv('NODE_ENV', previous)
     }
   })
 
@@ -234,7 +250,7 @@ describe('release:security:minimum', () => {
     const { POST } = await import('@/app/api/log-error/route')
 
     const previous = process.env.NODE_ENV
-    ;(process.env as any).NODE_ENV = 'development'
+    mutableEnv.NODE_ENV = 'development'
     try {
       const tooLarge = 'x'.repeat(40_000)
       const req = new Request('http://localhost:3000/api/log-error', {
@@ -245,7 +261,7 @@ describe('release:security:minimum', () => {
       const res = await POST(req)
       expect(res.status).toBe(413)
     } finally {
-      ;(process.env as any).NODE_ENV = previous
+      restoreEnv('NODE_ENV', previous)
     }
   })
 
@@ -253,7 +269,7 @@ describe('release:security:minimum', () => {
     const { POST } = await import('@/app/api/log-error/route')
 
     const previous = process.env.NODE_ENV
-    ;(process.env as any).NODE_ENV = 'development'
+    mutableEnv.NODE_ENV = 'development'
     try {
       const req = new Request('http://localhost:3000/api/log-error', {
         method: 'POST',
@@ -263,7 +279,7 @@ describe('release:security:minimum', () => {
       const res = await POST(req)
       expect(res.status).toBe(400)
     } finally {
-      ;(process.env as any).NODE_ENV = previous
+      restoreEnv('NODE_ENV', previous)
     }
   })
 
@@ -279,7 +295,7 @@ describe('release:security:minimum', () => {
 
   test('production CSP in next config enforces hardened baseline + scoped inline exceptions', async () => {
     const previous = process.env.NODE_ENV
-    ;(process.env as any).NODE_ENV = 'production'
+    mutableEnv.NODE_ENV = 'production'
     try {
       const nextConfigModule = await import('../../../next.config.js')
       const config = nextConfigModule.default as {
@@ -310,7 +326,7 @@ describe('release:security:minimum', () => {
 
       expect(invalidUnsafeInlineDirectives).toEqual([])
     } finally {
-      ;(process.env as any).NODE_ENV = previous
+      restoreEnv('NODE_ENV', previous)
     }
   })
 

@@ -1,97 +1,29 @@
+import { test, expect } from '../fixtures/game-state-fixtures'
 
-import { test, expect } from '@playwright/test';
+test.describe('Final QA Smoke', () => {
+  test('landing page renders the intro contract and primary CTA', async ({ page }) => {
+    await page.goto('/')
 
-test('Final QA: Landing Page Renders Correctly', async ({ page }) => {
-  // 1. Verify landing page loads
-  await page.goto('/');
-  await page.waitForLoadState('networkidle');
+    await expect(page.getByTestId('intro-title')).toHaveText('Terminus', { timeout: 10000 })
+    await expect(
+      page.getByText(/The board has already changed once tonight\./i)
+    ).toBeVisible({ timeout: 10000 })
+    await expect(page.getByTestId('intro-cta')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByRole('button', { name: /begin your journey at terminus/i })).toBeEnabled()
+  })
 
-  // Check main elements
-  await expect(page.getByText('Grand Central Terminus')).toBeVisible();
-  await expect(page.getByText('Discover your interests, skills, and values through play.')).toBeVisible();
+  test('seeded game renders dialogue shell and player controls', async ({ page, seedState }) => {
+    await seedState({ currentCharacterId: 'samuel', currentNodeId: 'samuel_introduction' })
 
-  // Verify Enter button exists and is clickable
-  const enterButton = page.locator('button:has-text("Enter the Station")');
-  await expect(enterButton).toBeVisible({ timeout: 10000 });
-  await expect(enterButton).toBeEnabled();
+    await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
+    await expect(page.getByTestId('gameplay-header')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByTestId('dialogue-card')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByTestId('dialogue-content')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByLabel('Open Journal')).toBeVisible({ timeout: 10000 })
 
-  console.log('✅ Landing page renders correctly');
-});
+    const inlineChoicesVisible = await page.getByTestId('game-choices').isVisible({ timeout: 1500 }).catch(() => false)
+    const bottomSheetTriggerVisible = await page.getByTestId('choice-sheet-trigger').isVisible({ timeout: 1500 }).catch(() => false)
 
-test.skip('Final QA: Game Interface Structure', async ({ page }) => {
-  // SKIPPED: Complex state seeding requires full game initialization flow
-  // This test validates game interface structure - covered by manual testing
-  // Pre-seed localStorage to skip intro and go directly to game
-  await page.goto('/');
-  await page.evaluate(() => {
-    const gameState = {
-      playerId: 'test-player-e2e',
-      currentScene: 'samuel_introduction',
-      globalFlags: [],
-      characterKnowledge: {},
-      relationships: { samuel: { trustLevel: 0, status: 'stranger', hasMet: true } },
-      demonstratedSkills: {},
-      patternScores: { analytical: 0, building: 0, helping: 0, exploring: 0, patience: 0 },
-      lastUpdated: Date.now()
-    };
-    localStorage.setItem('grand-central-terminus-save', JSON.stringify(gameState));
-  });
-
-  // Reload to trigger game initialization with saved state
-  await page.reload();
-  await page.waitForLoadState('networkidle');
-
-  // Wait for game interface (may take time for React hydration + init)
-  const gameInterface = page.getByTestId('game-interface');
-  await expect(gameInterface).toBeVisible({ timeout: 15000 });
-
-  // Verify Samuel's dialogue appears
-  await expect(page.getByText('Samuel Washington', { exact: true })).toBeVisible({ timeout: 10000 });
-
-  // Verify choices are rendered
-  await expect(page.getByTestId('game-choices')).toBeVisible({ timeout: 5000 });
-
-  console.log('✅ Game interface structure verified');
-});
-
-test.skip('Final QA: UI Components Render', async ({ page }) => {
-  // SKIPPED: Complex state seeding requires full game initialization flow
-  // This test validates UI components - covered by manual testing
-  // Pre-seed localStorage
-  await page.goto('/');
-  await page.evaluate(() => {
-    const gameState = {
-      playerId: 'test-player-e2e-2',
-      currentScene: 'samuel_introduction',
-      globalFlags: [],
-      characterKnowledge: {},
-      relationships: { samuel: { trustLevel: 0, status: 'stranger', hasMet: true } },
-      demonstratedSkills: {},
-      patternScores: { analytical: 0, building: 0, helping: 0, exploring: 0, patience: 0 },
-      lastUpdated: Date.now()
-    };
-    localStorage.setItem('grand-central-terminus-save', JSON.stringify(gameState));
-  });
-
-  await page.reload();
-  await page.waitForLoadState('networkidle');
-
-  // Wait for game to load
-  await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 });
-
-  // Check for UI control buttons (Thought Cabinet, Journal, Progress)
-  const thoughtCabinetBtn = page.getByLabel('Open Thought Cabinet');
-  const journalBtn = page.getByLabel('Open Journal');
-  const progressBtn = page.getByLabel('Open Progress');
-
-  // At least one of these should be visible
-  const uiButtonsVisible = await Promise.race([
-    thoughtCabinetBtn.isVisible({ timeout: 5000 }).catch(() => false),
-    journalBtn.isVisible({ timeout: 5000 }).catch(() => false),
-    progressBtn.isVisible({ timeout: 5000 }).catch(() => false)
-  ]);
-
-  expect(uiButtonsVisible || true).toBeTruthy(); // Pass if any UI elements exist
-
-  console.log('✅ UI components verified');
-});
+    expect(inlineChoicesVisible || bottomSheetTriggerVisible).toBe(true)
+  })
+})

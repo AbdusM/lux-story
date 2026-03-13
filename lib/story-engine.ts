@@ -3,6 +3,13 @@ import storyData from '@/data/grand-central-story.json'
 import { generateDynamicChoices, ChoiceGenerator } from './choice-generator'
 import type { GameState } from './game-store'
 
+export function isLiveAugmentationEnabled(): boolean {
+  return (
+    process.env.NEXT_PUBLIC_ENABLE_LIVE_AUGMENTATION === 'true' ||
+    process.env.ENABLE_LIVE_AUGMENTATION === 'true'
+  )
+}
+
 /**
  * Represents a single scene in the story
  */
@@ -82,14 +89,15 @@ export class StoryEngine {
       try {
         // Generate anonymous player ID for choice generation
         const playerId = 'player_' + Date.now().toString(36)
+        const liveAugmentationEnabled = isLiveAugmentationEnabled()
 
         const dynamicChoices = await generateDynamicChoices(baseScene, gameState, {
           performanceLevel: this.getPerformanceLevel(gameState),
           platformContext: this.getPlatformContext(baseScene, gameState),
           characterContext: this.getCharacterContext(baseScene, gameState),
-          enableLiveAugmentation: true,
+          enableLiveAugmentation: liveAugmentationEnabled,
           playerId, // Use actual player ID from game state
-          liveAugmentationChance: 0.33
+          liveAugmentationChance: liveAugmentationEnabled ? 0.33 : 0
         })
 
         // Use dynamic choices if they were generated

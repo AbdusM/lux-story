@@ -20,9 +20,7 @@ import {
   getOrbSymbol,
   getOrbFillTier,
   ORB_FILL_TIERS,
-  getUnlocksForPattern,
   getUnlockedAbilities,
-  getNextUnlock,
   getProgressToNextUnlock,
   getAllUnlockedAbilities,
   getPatternTagline,
@@ -103,7 +101,7 @@ export function usePatternUnlocks(): UsePatternUnlocksReturn {
         nextUnlock,
         pointsToNext: pointsNeeded,
         progressToNext: progressPercent,
-        hasNewGrowth: patternsWithNewOrbs.has(pattern as any),
+        hasNewGrowth: patternsWithNewOrbs.has(pattern),
       }
     })
   }, [balance, patternsWithNewOrbs])

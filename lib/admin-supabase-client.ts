@@ -22,6 +22,16 @@ import { createClient } from '@supabase/supabase-js'
 import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
 
+const PLAYWRIGHT_ADMIN_BYPASS_COOKIE = 'lux-playwright-admin-bypass'
+
+function hasPlaywrightAdminBypass(request: NextRequest): boolean {
+  return (
+    process.env.NODE_ENV !== 'production' &&
+    process.env.PLAYWRIGHT_ADMIN_BYPASS === '1' &&
+    request.cookies.get(PLAYWRIGHT_ADMIN_BYPASS_COOKIE)?.value === '1'
+  )
+}
+
 /**
  * Verify admin authentication via user role
  *
@@ -31,6 +41,12 @@ import { NextRequest, NextResponse } from 'next/server'
  * Returns error response if unauthorized, null if authorized
  */
 export async function requireAdminAuth(request: NextRequest): Promise<NextResponse | null> {
+  // Playwright-only bypass for browser smoke tests. This mirrors the admin page
+  // middleware bypass and stays off in production.
+  if (hasPlaywrightAdminBypass(request)) {
+    return null
+  }
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY
   if (!supabaseUrl || !supabaseAnonKey) {

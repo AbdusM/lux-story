@@ -10,7 +10,7 @@ import { test, expect } from '../fixtures/game-state-fixtures'
 const MINIMUM_TOUCH_TARGET = 44 // Apple HIG recommendation
 
 test.describe('Touch Target Validation', () => {
-  test('Choice buttons meet 44px minimum', async ({ page, freshGame }) => {
+  test('Choice buttons meet 44px minimum', async ({ page, freshGame: _freshGame }) => {
     // Use freshGame fixture to ensure game state is properly initialized
     // Wait for game interface and choices
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
@@ -31,7 +31,7 @@ test.describe('Touch Target Validation', () => {
     }
   })
 
-  test('Navigation buttons meet 44px minimum', async ({ page, freshGame }) => {
+  test('Navigation buttons meet 44px minimum', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Check Journal button
@@ -71,7 +71,7 @@ test.describe('Touch Target Validation', () => {
     }
   })
 
-  test('Constellation panel close button meets 44px minimum', async ({ page, freshGame }) => {
+  test('Constellation panel close button meets 44px minimum', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Open constellation panel
@@ -94,7 +94,7 @@ test.describe('Touch Target Validation', () => {
     }
   })
 
-  test('Constellation tab buttons meet 44px minimum', async ({ page, freshGame }) => {
+  test('Constellation tab buttons meet 44px minimum', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Open constellation panel
@@ -191,7 +191,7 @@ test.describe('Touch Target Validation', () => {
     }
   })
 
-  test('Journal panel close button meets 44px minimum', async ({ page, freshGame }) => {
+  test('Journal panel close button meets 44px minimum', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Open journal panel

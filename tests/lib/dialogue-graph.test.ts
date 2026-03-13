@@ -3,10 +3,9 @@ import {
   StateConditionEvaluator,
   DialogueGraphNavigator,
   type DialogueNode,
-  type DialogueGraph,
-  type ConditionalChoice
+  type DialogueGraph
 } from '@/lib/dialogue-graph'
-import { GameStateUtils, type GameState, type CharacterState, type StateCondition } from '@/lib/character-state'
+import { GameStateUtils, type GameState, type StateCondition } from '@/lib/character-state'
 
 describe('Dialogue Graph Logic', () => {
   let gameState: GameState
@@ -143,9 +142,6 @@ describe('Dialogue Graph Logic', () => {
     mockGraph.nodes.set('node_b', nodeB)
 
     it('should return all available nodes based on choices', () => {
-      // Trust is 0, so only c2 should be valid, pointing to node_b
-      const nodes = DialogueGraphNavigator.getAvailableNodes(mockGraph, gameState, 'start')
-      
       // WAIT: getAvailableNodes checks if the *destination node's* requiredState is met?
       // No, looking at the code:
       // it checks `nextNode.requiredState`

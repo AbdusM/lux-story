@@ -1,5 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+const mutableEnv = process.env as Record<string, string | undefined>
+
+function restoreNodeEnv(previous: string | undefined) {
+  if (typeof previous === 'string') {
+    mutableEnv.NODE_ENV = previous
+    return
+  }
+
+  delete mutableEnv.NODE_ENV
+}
+
 describe('feature-flags', () => {
   beforeEach(() => {
     // Reset URL and localStorage between tests (use relative URLs; jsdom blocks cross-origin replaceState).
@@ -24,15 +35,15 @@ describe('feature-flags', () => {
   })
 
   it('localStorage overrides env overrides (dev only)', async () => {
-    const prev = process.env.NEXT_PUBLIC_FF_RANKING_V2
-    process.env.NEXT_PUBLIC_FF_RANKING_V2 = 'beta'
+    const prev = mutableEnv.NEXT_PUBLIC_FF_RANKING_V2
+    mutableEnv.NEXT_PUBLIC_FF_RANKING_V2 = 'beta'
 
     const ff = await import('@/lib/feature-flags')
 
     window.localStorage.setItem('ff_RANKING_V2', 'control')
     expect(ff.getFlag('RANKING_V2')).toBe('control')
 
-    process.env.NEXT_PUBLIC_FF_RANKING_V2 = prev
+    mutableEnv.NEXT_PUBLIC_FF_RANKING_V2 = prev
   })
 
   it('parses boolean flags from query/localStorage', async () => {
@@ -47,12 +58,12 @@ describe('feature-flags', () => {
   })
 
   it('setFlag throws in production', async () => {
-    const prev = process.env.NODE_ENV
-    ;(process.env as any).NODE_ENV = 'production'
+    const prev = mutableEnv.NODE_ENV
+    mutableEnv.NODE_ENV = 'production'
 
     const ff = await import('@/lib/feature-flags')
     expect(() => ff.setFlag('RANKING_V2', 'beta')).toThrow(/disabled in production/i)
 
-    ;(process.env as any).NODE_ENV = prev
+    restoreNodeEnv(prev)
   })
 })

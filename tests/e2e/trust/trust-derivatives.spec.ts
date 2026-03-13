@@ -13,6 +13,18 @@
 
 import { test, expect } from '@playwright/test'
 
+type TrustCharacterState = {
+  characterId: string
+  trust?: number
+}
+
+type TrustSaveEnvelope = {
+  state?: {
+    characters?: TrustCharacterState[]
+    nervousSystemState?: string
+  }
+}
+
 test.describe('Trust Derivative Mechanics', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
@@ -138,7 +150,7 @@ test.describe('Trust Derivative Mechanics', () => {
 
       // Look for loyalty-related content
       const loyaltyText = page.getByText(/loyalty/i)
-      const hasLoyaltyContent = await loyaltyText.count() > 0
+      await loyaltyText.count()
 
       // At trust 7, loyalty experiences may not be fully unlocked
       // (This is a soft check since loyalty system may be in Journal)
@@ -173,11 +185,11 @@ test.describe('Trust Derivative Mechanics', () => {
     }, { timeout: 10000 })
 
     // Verify state was set correctly
-    const actualTrust = await page.evaluate(() => {
+    const actualTrust = await page.evaluate<number>(() => {
       const saved = localStorage.getItem('grand-central-terminus-save')
       if (saved) {
-        const state = JSON.parse(saved)
-        const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
+        const state = JSON.parse(saved) as TrustSaveEnvelope
+        const maya = state.state?.characters?.find((c) => c.characterId === 'maya')
         return maya?.trust || 0
       }
       return 0
@@ -322,11 +334,11 @@ test.describe('Trust Derivative Mechanics', () => {
       await page.waitForTimeout(1000)
 
       // Check if trust changed (may increase, stay same, or rarely decrease)
-      const finalTrust = await page.evaluate(() => {
+      const finalTrust = await page.evaluate<number>(() => {
         const saved = localStorage.getItem('grand-central-terminus-save')
         if (saved) {
-          const state = JSON.parse(saved)
-          const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
+          const state = JSON.parse(saved) as TrustSaveEnvelope
+          const maya = state.state?.characters?.find((c) => c.characterId === 'maya')
           return maya?.trust || 0
         }
         return 0
@@ -373,11 +385,11 @@ test.describe('Trust Derivative Mechanics', () => {
       await page.waitForTimeout(1000)
 
       // Verify trust doesn't exceed 10
-      const finalTrust = await page.evaluate(() => {
+      const finalTrust = await page.evaluate<number>(() => {
         const saved = localStorage.getItem('grand-central-terminus-save')
         if (saved) {
-          const state = JSON.parse(saved)
-          const maya = state.state.characters.find((c: any) => c.characterId === 'maya')
+          const state = JSON.parse(saved) as TrustSaveEnvelope
+          const maya = state.state?.characters?.find((c) => c.characterId === 'maya')
           return maya?.trust || 0
         }
         return 0
@@ -452,14 +464,14 @@ test.describe('Trust Derivative Mechanics', () => {
     }, { timeout: 10000 })
 
     // Verify all trust levels persisted correctly
-    const trustLevels = await page.evaluate(() => {
+    const trustLevels = await page.evaluate<{ maya: number; devon: number; marcus: number }>(() => {
       const saved = localStorage.getItem('grand-central-terminus-save')
       if (saved) {
-        const state = JSON.parse(saved)
+        const state = JSON.parse(saved) as TrustSaveEnvelope
         return {
-          maya: state.state.characters.find((c: any) => c.characterId === 'maya')?.trust || 0,
-          devon: state.state.characters.find((c: any) => c.characterId === 'devon')?.trust || 0,
-          marcus: state.state.characters.find((c: any) => c.characterId === 'marcus')?.trust || 0
+          maya: state.state?.characters?.find((c) => c.characterId === 'maya')?.trust || 0,
+          devon: state.state?.characters?.find((c) => c.characterId === 'devon')?.trust || 0,
+          marcus: state.state?.characters?.find((c) => c.characterId === 'marcus')?.trust || 0
         }
       }
       return { maya: 0, devon: 0, marcus: 0 }

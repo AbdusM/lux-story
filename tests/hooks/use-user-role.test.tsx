@@ -33,6 +33,9 @@ describe('useUserRole', () => {
         },
       },
     })
+
+    ;(window as Window & { __PLAYWRIGHT__?: boolean }).__PLAYWRIGHT__ = undefined
+    document.cookie = 'lux-playwright-admin-bypass=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
   })
 
   it('stays quiet on the unauthenticated path and reuses one client across rerenders', async () => {
@@ -59,5 +62,22 @@ describe('useUserRole', () => {
     expect(createClientMock).toHaveBeenCalledTimes(1)
 
     logSpy.mockRestore()
+  })
+
+  it('returns admin immediately for the Playwright bypass path', async () => {
+    ;(window as Window & { __PLAYWRIGHT__?: boolean }).__PLAYWRIGHT__ = true
+    document.cookie = 'lux-playwright-admin-bypass=1; path=/'
+
+    const { result } = renderHook(() => useUserRole())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    expect(result.current.role).toBe('admin')
+    expect(result.current.isAdmin).toBe(true)
+    expect(result.current.user?.id).toBe('playwright-admin-bypass')
+    expect(getUserMock).not.toHaveBeenCalled()
+    expect(onAuthStateChangeMock).not.toHaveBeenCalled()
   })
 })

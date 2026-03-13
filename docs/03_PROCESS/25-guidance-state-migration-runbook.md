@@ -12,6 +12,12 @@ Use it for:
 - auditing whether legacy `adaptiveGuidance` envelopes still need backfill
 - running the no-op-safe backfill command when valid legacy records exist
 
+## Current Product Surfaces
+
+- learner action-plan UI lives in `/student/insights` and reads/writes through `/api/user/action-plan`
+- learner saves now merge the freeform plan with the adaptive-guidance record/snapshot split described in this runbook
+- admin validation still happens through the guidance diagnostics and cohort-summary tooling, not through a separate learner-only storage path
+
 ## Canonical Commands
 
 ```bash
@@ -66,6 +72,7 @@ Interpretation:
 3. If the audit reports `candidates.valid > 0`, run `npm run guidance:backfill`.
 4. Re-run `npm run guidance:audit` and confirm the target-table counts increased as expected.
 5. Spot-check one migrated user through the admin guidance endpoints.
+6. Spot-check the learner UI by saving an action plan in `/student/insights` and confirming the saved draft reloads.
 
 ## Internal Live Validation User
 

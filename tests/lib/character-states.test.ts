@@ -8,7 +8,6 @@ import {
   CHARACTER_STATES,
   STATE_THRESHOLDS,
   CHARACTER_STATE_MODIFIERS,
-  CharacterState,
   getCharacterState,
   getGreetingPrefix,
   getToneShift,
@@ -38,7 +37,7 @@ describe('Character States System', () => {
     })
 
     it('should have all 4 states defined for each character with modifiers', () => {
-      Object.entries(CHARACTER_STATE_MODIFIERS).forEach(([charId, modifiers]) => {
+      Object.entries(CHARACTER_STATE_MODIFIERS).forEach(([_charId, modifiers]) => {
         CHARACTER_STATES.forEach(state => {
           expect(modifiers[state]).toBeDefined()
           expect(modifiers[state].greetingPrefix).toBeTruthy()
@@ -126,7 +125,7 @@ describe('Character States System', () => {
     it('should return default prefix for character without custom modifiers', () => {
       // Using a character ID that might not have modifiers
       // The function should return a default prefix
-      const prefix = getGreetingPrefix('station_entry' as any, 4)
+      const prefix = getGreetingPrefix('station_entry', 4)
       expect(prefix).toBeTruthy()
     })
   })
@@ -145,7 +144,7 @@ describe('Character States System', () => {
     })
 
     it('should return undefined for character without modifiers', () => {
-      expect(getToneShift('station_entry' as any, 4)).toBeUndefined()
+      expect(getToneShift('station_entry', 4)).toBeUndefined()
     })
   })
 
@@ -167,7 +166,7 @@ describe('Character States System', () => {
     })
 
     it('should return empty array for character without modifiers', () => {
-      expect(getAvailableTopics('station_entry' as any, 6)).toEqual([])
+      expect(getAvailableTopics('station_entry', 6)).toEqual([])
     })
   })
 
@@ -181,7 +180,7 @@ describe('Character States System', () => {
     })
 
     it('should return undefined for character without modifiers', () => {
-      expect(getStateModifiers('station_entry' as any, 4)).toBeUndefined()
+      expect(getStateModifiers('station_entry', 4)).toBeUndefined()
     })
   })
 

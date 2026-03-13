@@ -13,7 +13,6 @@ import {
   generateCSSVariables,
   generateCSSClasses,
   detectSystemPreferences,
-  DEFAULT_SETTINGS,
   PROFILE_METADATA
 } from '@/lib/accessibility-profiles'
 

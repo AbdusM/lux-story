@@ -24,7 +24,6 @@ import {
   type ResearchBehavioralProfileRow,
   type ResearchCareerExplorationRow,
   type ResearchConsentRow,
-  type ResearchExportMode,
   type ResearchPatternDemonstrationRow,
   type ResearchProfileRow,
   type ResearchSkillDemonstrationRow,

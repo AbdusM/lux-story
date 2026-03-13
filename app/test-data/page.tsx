@@ -104,7 +104,7 @@ export default function TestDataPage() {
                 </div>
 
                 <div className="flex gap-2">
-                  <Link href={`/admin/skills?userId=${userId}`} className="flex-1">
+                  <Link href={`/admin/${encodeURIComponent(userId)}/skills`} className="flex-1">
                     <Button className="w-full">
                       View User Dashboard
                     </Button>

@@ -12,6 +12,7 @@ import { YourJourneySection } from '@/components/student/sections/YourJourneySec
 import { PatternInsightsSection } from '@/components/student/sections/PatternInsightsSection'
 import { SkillGrowthSection } from '@/components/student/sections/SkillGrowthSection'
 import { CareerExplorationSection } from '@/components/student/sections/CareerExplorationSection'
+import { ActionPlanSection } from '@/components/student/sections/ActionPlanSection'
 import { NextStepsSection } from '@/components/student/sections/NextStepsSection'
 // import { FrameworkInsights } from '@/components/FrameworkInsights'
 // import { ActionPlanBuilder } from '@/components/ActionPlanBuilder'
@@ -49,7 +50,7 @@ export default function StudentInsightsPage() {
       try {
         setLoading(true)
         await ensureUserApiSession(userId)
-        const loaded = await loadSkillProfile(userId)
+        const loaded = await loadSkillProfile(userId, { preferUserRoute: true })
         if (!loaded) {
           setError('Unable to load your journey data. Make some choices in the game first!')
           return
@@ -170,6 +171,7 @@ export default function StudentInsightsPage() {
         {userId && <PatternInsightsSection userId={userId} />}
         <SkillGrowthSection profile={profile} />
         <CareerExplorationSection profile={profile} />
+        {userId && <ActionPlanSection userId={userId} profile={profile} />}
         <NextStepsSection profile={profile} />
 
         {/* Framework Insights & Action Plan Buttons - DISABLED (Missing Components) */}

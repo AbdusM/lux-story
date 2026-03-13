@@ -1,4 +1,4 @@
-import type { GuidanceInput, GuidanceTaskDefinition, GuidanceTaskProgress } from '@/lib/guidance/contracts'
+import type { GuidanceTaskDefinition, GuidanceTaskProgress } from '@/lib/guidance/contracts'
 
 function isTaskCompleted(progress: GuidanceTaskProgress | null): boolean {
   if (!progress) return false

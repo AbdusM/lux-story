@@ -88,7 +88,7 @@ export function useVirtualScrolling(
 /**
  * Hook for message list virtualization with automatic configuration
  */
-export function useMessageListVirtualization(messages: any[]) {
+export function useMessageListVirtualization<T>(messages: T[]) {
   const config: VirtualScrollingConfig = {
     itemHeight: 80, // Average message height
     containerHeight: 400, // Default container height

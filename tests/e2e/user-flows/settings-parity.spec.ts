@@ -11,7 +11,7 @@
 import { test, expect } from '../fixtures/game-state-fixtures'
 
 test.describe('Settings Overlay Parity', () => {
-  test('settings re-renders cleanly when resizing across breakpoint while open', async ({ page, freshGame }) => {
+  test('settings re-renders cleanly when resizing across breakpoint while open', async ({ page, freshGame: _freshGame }) => {
     // Ensure we're in desktop mode for the initial open (anchored panel).
     await page.setViewportSize({ width: 900, height: 720 })
 

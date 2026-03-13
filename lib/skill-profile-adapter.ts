@@ -83,6 +83,10 @@ export interface SkillProfile {
   learningObjectivesEngagement?: import('./learning-objectives-tracker').LearningObjectiveEngagement[] // Learning objectives engagement tracking
 }
 
+export interface LoadSkillProfileOptions {
+  preferUserRoute?: boolean
+}
+
 /**
  * Convert SkillContext[] to SkillDemonstrations format
  */
@@ -323,7 +327,10 @@ export function createSkillProfile(
 /**
  * Load SkillProfile from Supabase or SkillTracker for a given user
  */
-export async function loadSkillProfile(userId: string): Promise<SkillProfile | null> {
+export async function loadSkillProfile(
+  userId: string,
+  options: LoadSkillProfileOptions = {}
+): Promise<SkillProfile | null> {
   if (typeof window === 'undefined') return null
 
   // Check cache first to prevent duplicate requests
@@ -334,33 +341,59 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
   }
 
   try {
-    // Try admin API first (uses service role key)
-    try {
-      const response = await fetch(`/api/admin/skill-data?userId=${encodeURIComponent(userId)}`, {
-        credentials: 'include', // Include cookies for authentication
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      if (response.ok) {
-        const result = await response.json()
-        if (result.success && result.profile) {
-          logger.debug('Loaded user from admin API', { operation: 'skill-profile-adapter.load', userId })
-          const profile = convertSupabaseProfileToDashboard(result.profile)
+    if (options.preferUserRoute) {
+      try {
+        const response = await fetch(`/api/user/skill-profile?userId=${encodeURIComponent(userId)}`, {
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+
+        if (response.ok) {
+          const result = await response.json()
+          const profile = (result.profile ?? null) as SkillProfile | null
           profileCache.set(userId, { profile, timestamp: Date.now() })
           return profile
-        } else {
-          console.warn(`[SkillProfileAdapter] Admin API returned unsuccessful result for ${userId}:`, result.error || 'Unknown error')
         }
-      } else {
+
         const errorText = await response.text().catch(() => 'Unable to read error response')
-        console.warn(`[SkillProfileAdapter] Admin API returned ${response.status} for ${userId}:`, errorText.substring(0, 200))
+        console.warn(`[SkillProfileAdapter] User skill profile API returned ${response.status} for ${userId}:`, errorText.substring(0, 200))
+      } catch (apiError: unknown) {
+        console.warn(`[SkillProfileAdapter] User skill profile API failed for ${userId}:`, {
+          message: (apiError as Error)?.message || 'Network or fetch error',
+          name: (apiError as Error)?.name
+        })
       }
-    } catch (apiError: unknown) {
-      console.warn(`[SkillProfileAdapter] Admin API failed for ${userId}:`, {
-        message: (apiError as Error)?.message || 'Network or fetch error',
-        name: (apiError as Error)?.name
-      })
+    } else {
+      // Try admin API first (uses service role key)
+      try {
+        const response = await fetch(`/api/admin/skill-data?userId=${encodeURIComponent(userId)}`, {
+          credentials: 'include', // Include cookies for authentication
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        if (response.ok) {
+          const result = await response.json()
+          if (result.success && result.profile) {
+            logger.debug('Loaded user from admin API', { operation: 'skill-profile-adapter.load', userId })
+            const profile = convertSupabaseProfileToDashboard(result.profile)
+            profileCache.set(userId, { profile, timestamp: Date.now() })
+            return profile
+          } else {
+            console.warn(`[SkillProfileAdapter] Admin API returned unsuccessful result for ${userId}:`, result.error || 'Unknown error')
+          }
+        } else {
+          const errorText = await response.text().catch(() => 'Unable to read error response')
+          console.warn(`[SkillProfileAdapter] Admin API returned ${response.status} for ${userId}:`, errorText.substring(0, 200))
+        }
+      } catch (apiError: unknown) {
+        console.warn(`[SkillProfileAdapter] Admin API failed for ${userId}:`, {
+          message: (apiError as Error)?.message || 'Network or fetch error',
+          name: (apiError as Error)?.name
+        })
+      }
     }
 
     // Try career explorations API (optional - just for logging)
@@ -466,7 +499,7 @@ export async function loadSkillProfile(userId: string): Promise<SkillProfile | n
 /**
  * Convert Supabase profile to dashboard-compatible format
  */
-function convertSupabaseProfileToDashboard(supabaseProfile: Record<string, unknown>): SkillProfile {
+export function convertSupabaseProfileToDashboard(supabaseProfile: Record<string, unknown>): SkillProfile {
   const userId = typeof supabaseProfile.user_id === 'string' ? supabaseProfile.user_id : ''
 
   // Convert skill demonstrations from skill_summaries
@@ -619,14 +652,15 @@ function convertSupabaseProfileToDashboard(supabaseProfile: Record<string, unkno
 
   // Calculate total demonstrations from skill_summaries
   const skillSummariesArray = Array.isArray(supabaseProfile.skill_summaries) ? supabaseProfile.skill_summaries : []
-  const totalDemonstrations = skillSummariesArray.length > 0
-    ? skillSummariesArray.reduce((sum: number, summary: unknown) => {
-      if (typeof summary !== 'object' || summary === null) return sum
-      const summaryObj = summary as Record<string, unknown>
-      const count = typeof summaryObj.demonstration_count === 'number' ? summaryObj.demonstration_count : 0
-      return sum + count
-    }, 0)
-    : (typeof supabaseProfile.total_demonstrations === 'number' ? supabaseProfile.total_demonstrations : 0)
+  const summaryTotalDemonstrations = skillSummariesArray.reduce((sum: number, summary: unknown) => {
+    if (typeof summary !== 'object' || summary === null) return sum
+    const summaryObj = summary as Record<string, unknown>
+    const count = typeof summaryObj.demonstration_count === 'number' ? summaryObj.demonstration_count : 0
+    return sum + count
+  }, 0)
+  const storedTotalDemonstrations =
+    typeof supabaseProfile.total_demonstrations === 'number' ? supabaseProfile.total_demonstrations : 0
+  const totalDemonstrations = Math.max(summaryTotalDemonstrations, storedTotalDemonstrations)
 
   return {
     userId,
@@ -913,7 +947,7 @@ export async function getAllUserIds(): Promise<string[]> {
       } else {
         // Handle specific error cases
         if (response.status === 401) {
-          console.warn(`[SkillProfileAdapter] Admin authentication required. Please log in at /admin/login`)
+          console.warn('[SkillProfileAdapter] Admin authentication required. Use an active educator/admin session to access admin user IDs.')
           // Don't throw - fall through to localStorage fallback
         } else {
           const errorText = await response.text().catch(() => 'Unable to read error response')

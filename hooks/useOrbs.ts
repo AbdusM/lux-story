@@ -115,7 +115,7 @@ export function useOrbs(): UseOrbsReturn {
 
       // Check for streak
       let newStreak = 1
-      let newStreakType: OrbType | null = orbType
+      const newStreakType: OrbType | null = orbType
 
       if (prev.currentStreakType === orbType) {
         newStreak = prev.currentStreak + 1

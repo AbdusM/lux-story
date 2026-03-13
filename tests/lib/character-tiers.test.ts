@@ -7,7 +7,6 @@ import { describe, it, expect } from 'vitest'
 import {
   CHARACTER_TIERS,
   TIER_CONFIGS,
-  CharacterTier,
   getCharacterTier,
   getCharacterTierConfig,
   getCharactersByTier,

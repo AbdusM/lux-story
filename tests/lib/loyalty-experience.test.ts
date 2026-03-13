@@ -28,7 +28,6 @@ import {
   LOYALTY_TRUST_THRESHOLD,
   LOYALTY_PATTERN_THRESHOLD,
   LOYALTY_EXPERIENCES,
-  LoyaltyExperience,
   LoyaltyExperienceType,
   getLoyaltyExperienceForCharacter,
   isLoyaltyExperienceUnlocked,

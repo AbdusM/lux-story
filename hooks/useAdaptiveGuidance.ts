@@ -310,12 +310,7 @@ export function useAdaptiveGuidance(
     return () => {
       cancelled = true
     }
-  }, [
-    options.playerId,
-    rolloutConfig.adaptivePercentage,
-    rolloutConfig.assignmentVersion,
-    rolloutConfig.mode,
-  ])
+  }, [options.playerId, rolloutConfig])
 
   const snapshot = useMemo(() => {
     const input: GuidanceInput = {
@@ -567,7 +562,7 @@ export function useAdaptiveGuidance(
         assistMode: event.assistMode ?? null,
       })
     }
-  }, [options, options.playerId, options.surface, persistRecord, updateSessionState])
+  }, [options, persistRecord, updateSessionState])
 
   const selectAssistMode = useCallback((taskId: string, assistMode: AssistMode) => {
     commitEvent(

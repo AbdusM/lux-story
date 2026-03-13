@@ -18,7 +18,6 @@ import {
   generateRadarPath,
   generateLevelPaths,
   DEFAULT_RADAR_CONFIG,
-  type SkillCategory,
   type SkillProfile
 } from '@/lib/skill-radar'
 
@@ -361,7 +360,7 @@ describe('Skill Radar Chart (D-074)', () => {
 
     describe('generateRadarPath', () => {
       it('should generate valid SVG path', () => {
-        const data = SKILL_CATEGORIES.map((category, i) => ({
+        const data = SKILL_CATEGORIES.map((category) => ({
           category,
           label: category,
           playerValue: 5,

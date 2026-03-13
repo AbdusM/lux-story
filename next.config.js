@@ -50,6 +50,18 @@ const nextConfig = {
     }
   },
 
+  webpack: (config) => {
+    config.ignoreWarnings = [
+      ...(config.ignoreWarnings ?? []),
+      {
+        module: /@opentelemetry\/instrumentation\/build\/esm\/platform\/node\/instrumentation\.js$/,
+        message: /Critical dependency: the request of a dependency is an expression/,
+      },
+    ]
+
+    return config
+  },
+
   // Temporarily disable custom webpack config to fix runtime errors
   // webpack: (config, { isServer }) => {
   //   // Optimize bundle splitting

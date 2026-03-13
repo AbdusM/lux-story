@@ -7,7 +7,7 @@
  * `playwright.config.ts` does not currently enable globalSetup.
  */
 
-import { chromium, FullConfig } from '@playwright/test'
+import { chromium } from '@playwright/test'
 
 const ADMIN_BYPASS_COOKIE = {
   name: 'lux-playwright-admin-bypass',
@@ -20,7 +20,7 @@ const ADMIN_BYPASS_COOKIE = {
  * Global setup function
  * Creates reusable authentication state for admin tests
  */
-async function globalSetup(config: FullConfig) {
+async function globalSetup() {
   console.log('🔧 Running global setup...')
 
   const browser = await chromium.launch()

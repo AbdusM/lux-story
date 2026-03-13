@@ -39,11 +39,18 @@ const loginSchema = z.object({
   password: z.string().min(1, 'Password required').max(100, 'Password too long')
 })
 
+function isLegacyAdminAuthEnabled(): boolean {
+  return (
+    (process.env.NODE_ENV as string | undefined) !== 'production' &&
+    process.env.ENABLE_LEGACY_ADMIN_AUTH === '1'
+  )
+}
+
 export async function POST(request: NextRequest) {
   try {
-    // Legacy password-based admin auth is disabled in production.
-    // Admin access is now role-based via Supabase auth sessions.
-    if ((process.env.NODE_ENV as string | undefined) === 'production') {
+    // Legacy password-based admin auth is now explicit opt-in only.
+    // Supported admin access is role-based via Supabase auth sessions.
+    if (!isLegacyAdminAuthEnabled()) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 })
     }
 
@@ -115,8 +122,7 @@ export async function POST(request: NextRequest) {
 
 // Logout endpoint
 export async function DELETE(request: NextRequest) {
-  // Legacy password-based admin auth is disabled in production.
-  if ((process.env.NODE_ENV as string | undefined) === 'production') {
+  if (!isLegacyAdminAuthEnabled()) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 

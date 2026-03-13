@@ -167,7 +167,7 @@ describe('D-002: Pattern-Gated Trust Content', () => {
   })
 
   it('all gates have required fields', () => {
-    Object.entries(PATTERN_TRUST_GATES).forEach(([id, gate]) => {
+    Object.entries(PATTERN_TRUST_GATES).forEach(([_id, gate]) => {
       expect(gate.trustMin).toBeGreaterThan(0)
       expect(gate.patternMin).toBeGreaterThan(0)
       expect(gate.pattern).toBeDefined()

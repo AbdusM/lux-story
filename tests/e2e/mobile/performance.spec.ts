@@ -6,20 +6,24 @@
 
 import { test, expect } from '../fixtures/game-state-fixtures'
 
+type PerformanceWithMemory = Performance & {
+  memory?: {
+    usedJSHeapSize: number
+  }
+}
+
 test.describe('Mobile Performance', () => {
   const isCI = !!process.env.CI
   // Performance benchmarks in headless CI are too noisy to gate on. Keep them for
   // local runs and/or a dedicated scheduled perf workflow.
   test.skip(isCI, 'Skip mobile perf benchmarks in CI (unstable timing on shared runners).')
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async () => {
     // Viewport is set by Playwright project config (iPhone SE, iPhone 14, iPad, etc.)
     // Don't override it here - let the project device config handle viewport sizing
   })
 
   test('First Contentful Paint < 2s on initial load', async ({ page }) => {
-    const startTime = Date.now()
-
     await page.goto('/')
     await page.waitForLoadState('domcontentloaded')
 
@@ -37,7 +41,7 @@ test.describe('Mobile Performance', () => {
     }
   })
 
-  test('Game interface loads within 3s', async ({ page, freshGame }) => {
+  test('Game interface loads within 3s', async ({ page, freshGame: _freshGame }) => {
     const startTime = Date.now()
 
     // Wait for game interface to be visible
@@ -48,7 +52,7 @@ test.describe('Mobile Performance', () => {
     console.log(`Game interface load time: ${loadTime}ms`)
   })
 
-  test('Dialogue renders within 1s after choice selection', async ({ page, freshGame }) => {
+  test('Dialogue renders within 1s after choice selection', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Wait for initial dialogue
@@ -79,7 +83,7 @@ test.describe('Mobile Performance', () => {
     console.log(`Dialogue render time: ${renderTime}ms`)
   })
 
-  test('Smooth animation frame rate during dialogue transition', async ({ page, freshGame }) => {
+  test('Smooth animation frame rate during dialogue transition', async ({ page, freshGame: _freshGame }) => {
     test.skip(isCI, 'RAF cadence is not stable in headless CI runners (dev build).')
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
@@ -106,15 +110,15 @@ test.describe('Mobile Performance', () => {
     console.log(`Average FPS: ${avgFPS.toFixed(1)}`)
   })
 
-  test('Memory usage remains stable after multiple choices', async ({ page, freshGame }) => {
+  test('Memory usage remains stable after multiple choices', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Get initial memory usage
-    const initialMemory = await page.evaluate(() => {
-      if ('memory' in performance && typeof (performance as any).memory === 'object') {
-        return (performance as any).memory.usedJSHeapSize
-      }
-      return null
+    const initialMemory = await page.evaluate<number | null>(() => {
+      const performanceWithMemory = performance as PerformanceWithMemory
+      return typeof performanceWithMemory.memory?.usedJSHeapSize === 'number'
+        ? performanceWithMemory.memory.usedJSHeapSize
+        : null
     })
 
     // Make 5 choices in sequence
@@ -137,11 +141,11 @@ test.describe('Mobile Performance', () => {
     }
 
     // Get final memory usage
-    const finalMemory = await page.evaluate(() => {
-      if ('memory' in performance && typeof (performance as any).memory === 'object') {
-        return (performance as any).memory.usedJSHeapSize
-      }
-      return null
+    const finalMemory = await page.evaluate<number | null>(() => {
+      const performanceWithMemory = performance as PerformanceWithMemory
+      return typeof performanceWithMemory.memory?.usedJSHeapSize === 'number'
+        ? performanceWithMemory.memory.usedJSHeapSize
+        : null
     })
 
     if (initialMemory && finalMemory) {
@@ -154,7 +158,7 @@ test.describe('Mobile Performance', () => {
     }
   })
 
-  test('localStorage operations are fast (<50ms)', async ({ page, freshGame }) => {
+  test('localStorage operations are fast (<50ms)', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Make a choice and measure localStorage save time
@@ -188,17 +192,17 @@ test.describe('Mobile Performance', () => {
     console.log(`localStorage save time: ${saveTime.toFixed(2)}ms`)
   })
 
-  test('No memory leaks in dialogue loop (10 cycles)', async ({ page, freshGame }) => {
+  test('No memory leaks in dialogue loop (10 cycles)', async ({ page, freshGame: _freshGame }) => {
     test.skip(isCI, 'Heap usage is too noisy in CI to gate on (GC timing differs per run).')
 
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Get baseline memory
-    const baselineMemory = await page.evaluate(() => {
-      if ('memory' in performance && typeof (performance as any).memory === 'object') {
-        return (performance as any).memory.usedJSHeapSize
-      }
-      return null
+    const baselineMemory = await page.evaluate<number | null>(() => {
+      const performanceWithMemory = performance as PerformanceWithMemory
+      return typeof performanceWithMemory.memory?.usedJSHeapSize === 'number'
+        ? performanceWithMemory.memory.usedJSHeapSize
+        : null
     })
 
     // Run 10 dialogue cycles
@@ -222,11 +226,11 @@ test.describe('Mobile Performance', () => {
     }
 
     // Get final memory
-    const finalMemory = await page.evaluate(() => {
-      if ('memory' in performance && typeof (performance as any).memory === 'object') {
-        return (performance as any).memory.usedJSHeapSize
-      }
-      return null
+    const finalMemory = await page.evaluate<number | null>(() => {
+      const performanceWithMemory = performance as PerformanceWithMemory
+      return typeof performanceWithMemory.memory?.usedJSHeapSize === 'number'
+        ? performanceWithMemory.memory.usedJSHeapSize
+        : null
     })
 
     if (baselineMemory && finalMemory) {
@@ -238,7 +242,7 @@ test.describe('Mobile Performance', () => {
     }
   })
 
-  test('Panel animations are smooth (>50 FPS)', async ({ page, freshGame }) => {
+  test('Panel animations are smooth (>50 FPS)', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 10000 })
 
     // Measure FPS during panel animation

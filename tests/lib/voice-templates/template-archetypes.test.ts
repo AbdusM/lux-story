@@ -21,7 +21,7 @@ describe('VOICE_TEMPLATES', () => {
   it('has all 5 pattern transforms for each archetype', () => {
     const patterns = ['analytical', 'patience', 'exploring', 'helping', 'building'] as const
 
-    for (const [archetype, template] of Object.entries(VOICE_TEMPLATES)) {
+    for (const [_archetype, template] of Object.entries(VOICE_TEMPLATES)) {
       for (const pattern of patterns) {
         expect(template.transforms[pattern]).toBeDefined()
         expect(template.transforms[pattern].length).toBeGreaterThan(0)

@@ -3,7 +3,7 @@
  * Tests authentication, authorization, and data retrieval for admin routes
  */
 
-import { describe, test, expect, beforeEach, vi, afterEach } from 'vitest'
+import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 
 // Mock environment variables
@@ -15,9 +15,10 @@ vi.stubEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY', 'test-anon-key')
 vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'test-service-role-key')
 
 // Mock Supabase client
-const mockSupabaseResponse = {
+const mockAdminQueryResponse = {
   data: null as unknown,
-  error: null as Error | null
+  error: null as { code?: string; message?: string } | Error | null,
+  thrownError: null as Error | null,
 }
 
 vi.mock('@supabase/supabase-js', () => ({
@@ -25,34 +26,69 @@ vi.mock('@supabase/supabase-js', () => ({
     from: vi.fn(() => ({
       select: vi.fn(() => ({
         order: vi.fn(() => ({
-          abortSignal: vi.fn(() => Promise.resolve(mockSupabaseResponse))
+          abortSignal: vi.fn(async () => {
+            if (mockAdminQueryResponse.thrownError) throw mockAdminQueryResponse.thrownError
+            return {
+              data: mockAdminQueryResponse.data,
+              error: mockAdminQueryResponse.error
+            }
+          })
         })),
         eq: vi.fn(() => ({
-          single: vi.fn(() => Promise.resolve(mockSupabaseResponse)),
-          abortSignal: vi.fn(() => Promise.resolve(mockSupabaseResponse))
+          single: vi.fn(async () => {
+            if (mockAdminQueryResponse.thrownError) throw mockAdminQueryResponse.thrownError
+            return {
+              data: mockAdminQueryResponse.data,
+              error: mockAdminQueryResponse.error
+            }
+          }),
+          abortSignal: vi.fn(async () => {
+            if (mockAdminQueryResponse.thrownError) throw mockAdminQueryResponse.thrownError
+            return {
+              data: mockAdminQueryResponse.data,
+              error: mockAdminQueryResponse.error
+            }
+          })
         })),
-        abortSignal: vi.fn(() => Promise.resolve(mockSupabaseResponse))
+        abortSignal: vi.fn(async () => {
+          if (mockAdminQueryResponse.thrownError) throw mockAdminQueryResponse.thrownError
+          return {
+            data: mockAdminQueryResponse.data,
+            error: mockAdminQueryResponse.error
+          }
+        })
       })),
       upsert: vi.fn(() => ({
-        select: vi.fn(() => Promise.resolve(mockSupabaseResponse))
+        select: vi.fn(async () => ({
+          data: mockAdminQueryResponse.data,
+          error: mockAdminQueryResponse.error
+        }))
       }))
     }))
   }))
 }))
 
 // Mock Supabase SSR client (used by admin-supabase-client.ts)
-let mockAuthUser: any | null = null
-let mockAuthError: any | null = null
+type MockAuthUser = { id: string; email?: string }
+type MockAuthError = Error | { message?: string }
+
+let mockAuthUser: MockAuthUser | null = null
+let mockAuthError: MockAuthError | null = null
+let mockProfileResponse: { data: unknown; error: unknown } = { data: null, error: null }
 
 vi.mock('@supabase/ssr', () => ({
   createServerClient: vi.fn(() => ({
     auth: {
       getUser: vi.fn(() => Promise.resolve({ data: { user: mockAuthUser }, error: mockAuthError }))
     },
-    from: vi.fn(() => ({
+    from: vi.fn((table: string) => ({
       select: vi.fn(() => ({
         eq: vi.fn(() => ({
-          single: vi.fn(() => Promise.resolve(mockSupabaseResponse))
+          single: vi.fn(() => Promise.resolve(
+            table === 'profiles'
+              ? mockProfileResponse
+              : { data: null, error: null }
+          ))
         }))
       }))
     }))
@@ -126,14 +162,39 @@ function createRequest(
   return request
 }
 
+function authenticateAdmin() {
+  mockAuthUser = { id: '00000000-0000-0000-0000-000000000000', email: 'admin@example.com' }
+  mockAuthError = null
+  mockProfileResponse = { data: { role: 'admin' }, error: null }
+}
+
 describe('Admin Auth API (/api/admin/auth)', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockSupabaseResponse.data = null
-    mockSupabaseResponse.error = null
+    delete process.env.ENABLE_LEGACY_ADMIN_AUTH
+    mockAdminQueryResponse.data = null
+    mockAdminQueryResponse.error = null
+    mockAdminQueryResponse.thrownError = null
+    mockAuthUser = null
+    mockAuthError = null
+    mockProfileResponse = { data: null, error: null }
+  })
+
+  test('returns 404 unless legacy auth is explicitly enabled', async () => {
+    const { POST } = await import('@/app/api/admin/auth/route')
+
+    const request = createRequest('http://localhost:3000/api/admin/auth', {
+      method: 'POST',
+      body: { password: MOCK_ADMIN_TOKEN }
+    })
+
+    const response = await POST(request)
+
+    expect(response.status).toBe(404)
   })
 
   test('should reject login with missing password', async () => {
+    process.env.ENABLE_LEGACY_ADMIN_AUTH = '1'
     const { POST } = await import('@/app/api/admin/auth/route')
 
     const request = createRequest('http://localhost:3000/api/admin/auth', {
@@ -150,6 +211,7 @@ describe('Admin Auth API (/api/admin/auth)', () => {
   })
 
   test('should reject login with wrong password', async () => {
+    process.env.ENABLE_LEGACY_ADMIN_AUTH = '1'
     const { POST } = await import('@/app/api/admin/auth/route')
 
     const request = createRequest('http://localhost:3000/api/admin/auth', {
@@ -165,6 +227,7 @@ describe('Admin Auth API (/api/admin/auth)', () => {
   })
 
   test('should accept login with correct password', async () => {
+    process.env.ENABLE_LEGACY_ADMIN_AUTH = '1'
     const { POST } = await import('@/app/api/admin/auth/route')
 
     const request = createRequest('http://localhost:3000/api/admin/auth', {
@@ -184,6 +247,7 @@ describe('Admin Auth API (/api/admin/auth)', () => {
   })
 
   test('should clear cookie on logout', async () => {
+    process.env.ENABLE_LEGACY_ADMIN_AUTH = '1'
     const { DELETE } = await import('@/app/api/admin/auth/route')
 
     const request = createRequest('http://localhost:3000/api/admin/auth', {
@@ -202,11 +266,15 @@ describe('Admin Auth API (/api/admin/auth)', () => {
 describe('Admin User IDs API (/api/admin/user-ids)', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockSupabaseResponse.data = [
+    mockAdminQueryResponse.data = [
       { user_id: 'player_123', last_activity: '2024-01-01' },
       { user_id: 'player_456', last_activity: '2024-01-02' }
     ]
-    mockSupabaseResponse.error = null
+    mockAdminQueryResponse.error = null
+    mockAdminQueryResponse.thrownError = null
+    mockAuthUser = null
+    mockAuthError = null
+    mockProfileResponse = { data: null, error: null }
   })
 
   test('should reject unauthenticated requests', async () => {
@@ -233,9 +301,9 @@ describe('Admin User IDs API (/api/admin/user-ids)', () => {
     expect(response.status).toBe(401)
   })
 
-  // TODO: Requires proper Supabase SSR auth mocking
-  test.skip('should return user IDs for authenticated admin', async () => {
+  test('should return user IDs for authenticated admin', async () => {
     const { GET } = await import('@/app/api/admin/user-ids/route')
+    authenticateAdmin()
 
     const request = createRequest('http://localhost:3000/api/admin/user-ids', {
       cookies: { admin_auth_token: MOCK_ADMIN_TOKEN }
@@ -249,10 +317,13 @@ describe('Admin User IDs API (/api/admin/user-ids)', () => {
     expect(data.userIds).toEqual(['player_123', 'player_456'])
   })
 
-  // TODO: Requires proper Supabase SSR auth mocking
-  test.skip('should handle database errors gracefully', async () => {
-    mockSupabaseResponse.data = null
-    mockSupabaseResponse.error = new Error('Database connection failed')
+  test('should handle database errors gracefully', async () => {
+    authenticateAdmin()
+    mockAdminQueryResponse.data = null
+    mockAdminQueryResponse.error = {
+      code: 'PGRST301',
+      message: 'Database connection failed'
+    }
 
     const { GET } = await import('@/app/api/admin/user-ids/route')
 
@@ -273,8 +344,11 @@ describe('Admin Auth Helper Functions', () => {
     vi.clearAllMocks()
     mockAuthUser = null
     mockAuthError = null
-    mockSupabaseResponse.data = null
-    mockSupabaseResponse.error = null
+    mockProfileResponse = { data: null, error: null }
+    mockAdminQueryResponse.data = null
+    mockAdminQueryResponse.error = null
+    mockAdminQueryResponse.thrownError = null
+    delete process.env.PLAYWRIGHT_ADMIN_BYPASS
   })
 
   test('requireAdminAuth should block without Supabase session', async () => {
@@ -290,8 +364,7 @@ describe('Admin Auth Helper Functions', () => {
   test('requireAdminAuth should allow admin role', async () => {
     const { requireAdminAuth } = await import('@/lib/admin-supabase-client')
 
-    mockAuthUser = { id: '00000000-0000-0000-0000-000000000000', email: 'admin@example.com' }
-    mockSupabaseResponse.data = { role: 'admin' }
+    authenticateAdmin()
 
     const request = createRequest('http://localhost:3000/api/admin/test')
 
@@ -303,13 +376,43 @@ describe('Admin Auth Helper Functions', () => {
     const { requireAdminAuth } = await import('@/lib/admin-supabase-client')
 
     mockAuthUser = { id: '00000000-0000-0000-0000-000000000000', email: 'student@example.com' }
-    mockSupabaseResponse.data = { role: 'student' }
+    mockProfileResponse = { data: { role: 'student' }, error: null }
 
     const request = createRequest('http://localhost:3000/api/admin/test')
 
     const result = await requireAdminAuth(request)
     expect(result).not.toBeNull()
     expect(result?.status).toBe(403)
+  })
+
+  test('requireAdminAuth should allow the Playwright bypass outside production', async () => {
+    const { requireAdminAuth } = await import('@/lib/admin-supabase-client')
+
+    process.env.PLAYWRIGHT_ADMIN_BYPASS = '1'
+    const request = createRequest('http://localhost:3000/api/admin/test')
+    request.cookies.set('lux-playwright-admin-bypass', '1')
+
+    const result = await requireAdminAuth(request)
+    expect(result).toBeNull()
+  })
+
+  test('requireAdminAuth should ignore the Playwright bypass in production', async () => {
+    const { requireAdminAuth } = await import('@/lib/admin-supabase-client')
+
+    const previousNodeEnv = process.env.NODE_ENV
+    process.env.PLAYWRIGHT_ADMIN_BYPASS = '1'
+    ;(process.env as Record<string, string | undefined>).NODE_ENV = 'production'
+
+    try {
+      const request = createRequest('http://localhost:3000/api/admin/test')
+      request.cookies.set('lux-playwright-admin-bypass', '1')
+
+      const result = await requireAdminAuth(request)
+      expect(result).not.toBeNull()
+      expect(result?.status).toBe(401)
+    } finally {
+      ;(process.env as Record<string, string | undefined>).NODE_ENV = previousNodeEnv
+    }
   })
 
   test('updateSession should redirect unauthenticated /admin routes', async () => {
@@ -327,8 +430,7 @@ describe('Admin Auth Helper Functions', () => {
   test('updateSession should allow authenticated /admin routes', async () => {
     const { updateSession } = await import('@/lib/supabase/middleware')
 
-    mockAuthUser = { id: '00000000-0000-0000-0000-000000000000', email: 'admin@example.com' }
-    mockSupabaseResponse.data = { role: 'admin' }
+    authenticateAdmin()
     const request = createRequest('http://localhost:3000/admin/users')
     const response = await updateSession(request)
 
@@ -347,8 +449,19 @@ describe('Admin Auth Helper Functions', () => {
 describe('Admin Check Profile API (/api/admin/check-profile)', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockSupabaseResponse.data = { user_id: 'player_123', patterns: {} }
-    mockSupabaseResponse.error = null
+    mockAdminQueryResponse.data = {
+      user_id: 'player_123',
+      created_at: '2026-03-01T10:00:00.000Z',
+      updated_at: '2026-03-02T10:00:00.000Z',
+      last_activity: '2026-03-03T10:00:00.000Z',
+      total_demonstrations: 4,
+      current_scene: 'samuel_introduction'
+    }
+    mockAdminQueryResponse.error = null
+    mockAdminQueryResponse.thrownError = null
+    mockAuthUser = null
+    mockAuthError = null
+    mockProfileResponse = { data: null, error: null }
   })
 
   test('should reject unauthenticated requests', async () => {
@@ -363,9 +476,9 @@ describe('Admin Check Profile API (/api/admin/check-profile)', () => {
     expect(response.status).toBe(401)
   })
 
-  // TODO: Requires proper Supabase SSR auth mocking
-  test.skip('should require userId parameter', async () => {
+  test('should require userId parameter', async () => {
     const { GET } = await import('@/app/api/admin/check-profile/route')
+    authenticateAdmin()
 
     const request = createRequest('http://localhost:3000/api/admin/check-profile', {
       cookies: { admin_auth_token: MOCK_ADMIN_TOKEN }
@@ -377,10 +490,58 @@ describe('Admin Check Profile API (/api/admin/check-profile)', () => {
     expect(response.status).toBe(400)
     expect(data.error).toContain('userId')
   })
+
+  test('should return profile diagnostics when a profile exists', async () => {
+    const { GET } = await import('@/app/api/admin/check-profile/route')
+    authenticateAdmin()
+
+    const url = new URL('http://localhost:3000/api/admin/check-profile')
+    url.searchParams.set('userId', 'player_123')
+    const response = await GET(createRequest(url.toString()))
+    const data = await response.json()
+
+    expect(response.status).toBe(200)
+    expect(data.exists).toBe(true)
+    expect(data.userId).toBe('player_123')
+    expect(data.profile.total_demonstrations).toBe(4)
+  })
+
+  test('should return exists=false when profile is missing', async () => {
+    const { GET } = await import('@/app/api/admin/check-profile/route')
+    authenticateAdmin()
+    mockAdminQueryResponse.data = null
+    mockAdminQueryResponse.error = { code: 'PGRST116', message: 'No rows found' }
+
+    const url = new URL('http://localhost:3000/api/admin/check-profile')
+    url.searchParams.set('userId', 'player_404')
+    const response = await GET(createRequest(url.toString()))
+    const data = await response.json()
+
+    expect(response.status).toBe(200)
+    expect(data.exists).toBe(false)
+    expect(data.userId).toBe('player_404')
+  })
+
+  test('should surface database failures', async () => {
+    const { GET } = await import('@/app/api/admin/check-profile/route')
+    authenticateAdmin()
+    mockAdminQueryResponse.data = null
+    mockAdminQueryResponse.error = { code: 'PGRST301', message: 'Database exploded' }
+
+    const url = new URL('http://localhost:3000/api/admin/check-profile')
+    url.searchParams.set('userId', 'player_500')
+    const response = await GET(createRequest(url.toString()))
+    const data = await response.json()
+
+    expect(response.status).toBe(500)
+    expect(data.error).toBe('Database error')
+  })
 })
 
 describe('Rate Limiting', () => {
   test('should enforce rate limits on login attempts', async () => {
+    process.env.ENABLE_LEGACY_ADMIN_AUTH = '1'
+
     // Mock rate limiter to throw (rate limit exceeded)
     vi.doMock('@/lib/rate-limit', () => ({
       rateLimit: () => ({

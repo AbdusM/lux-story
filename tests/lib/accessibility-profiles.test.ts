@@ -13,8 +13,7 @@ import {
   generateCSSClasses,
   getAvailableProfiles,
   validateContrastRatio,
-  type AccessibilityProfile,
-  type AccessibilitySettings
+  type AccessibilityProfile
 } from '@/lib/accessibility-profiles'
 
 describe('Accessibility Profiles (D-030)', () => {

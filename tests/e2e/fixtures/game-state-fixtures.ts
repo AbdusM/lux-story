@@ -63,6 +63,11 @@ interface GameStateFixtures {
   seedState: (state: SeedOverrides) => Promise<void>
 }
 
+type PlaywrightSeedWindow = Window & {
+  __PLAYWRIGHT__?: boolean
+  __LUX_E2E_SEED__?: SerializableGameState
+}
+
 /**
  * Convert overrides into a valid GameState (then serialize it for storage).
  */
@@ -196,8 +201,9 @@ async function seedGameState(page: Page, state: SerializableGameState): Promise<
   await page.goto('about:blank')
   await page.addInitScript((stateToSeed) => {
     localStorage.clear()
-    ;(window as any).__PLAYWRIGHT__ = true
-    ;(window as any).__LUX_E2E_SEED__ = stateToSeed
+    const seededWindow = window as PlaywrightSeedWindow
+    seededWindow.__PLAYWRIGHT__ = true
+    seededWindow.__LUX_E2E_SEED__ = stateToSeed
     localStorage.setItem('grand-central-terminus-save', JSON.stringify(stateToSeed))
   }, state)
 
@@ -230,40 +236,47 @@ async function seedGameState(page: Page, state: SerializableGameState): Promise<
 
   const tryClick = async (locator: ReturnType<Page['getByRole']>) => {
     try {
-      if (!await locator.isVisible({ timeout: 500 }).catch(() => false)) {
+      if (!await locator.isVisible({ timeout: 1200 }).catch(() => false)) {
         return false
       }
-      await locator.click({ timeout: 1500 })
+      await locator.click({ timeout: 2500 })
       return true
     } catch {
       return false
     }
   }
 
+  // The app should usually auto-bootstrap straight into the shell when a Playwright seed
+  // is present. Give that path a chance before poking the welcome screen.
+  if (await gameInterface.isVisible({ timeout: 4000 }).catch(() => false)) {
+    return
+  }
+
   // Some routes show a welcome/intro screen even when a save is present; click through if needed.
   // Keep this bounded so shell-contract specs fail on the app state, not on fixture spin.
-  for (let attempt = 0; attempt < 8; attempt++) {
-    if (await gameInterface.isVisible({ timeout: 500 }).catch(() => false)) break
+  const readyDeadline = Date.now() + 12_000
+  while (Date.now() < readyDeadline) {
+    if (await gameInterface.isVisible({ timeout: 300 }).catch(() => false)) break
 
     if (await tryClick(continueButton)) {
-      await page.waitForTimeout(300)
+      await page.waitForTimeout(500)
       continue
     }
 
     if (await tryClick(beginExploringButton)) {
-      await page.waitForTimeout(300)
+      await page.waitForTimeout(500)
       continue
     }
 
     if (await tryClick(enterStationButton)) {
-      await page.waitForTimeout(300)
+      await page.waitForTimeout(500)
       continue
     }
 
     await page.waitForTimeout(500)
   }
 
-  await gameInterface.waitFor({ state: 'visible', timeout: 15000 })
+  await gameInterface.waitFor({ state: 'visible', timeout: 10000 })
 }
 
 /**

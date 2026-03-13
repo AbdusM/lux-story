@@ -298,7 +298,6 @@ function deriveDimensions(
 function deriveMissedDoors(
   input: GuidanceInput,
   record: GuidancePersistenceRecord,
-  nowIso: string,
 ): GuidanceRecommendation[] {
   return GUIDANCE_TASKS
     .filter((task) => task.isReachable(input))
@@ -386,7 +385,7 @@ export function buildGuidanceSnapshot(
     experimentVariant: record.experimentVariant,
     dimensions: deriveDimensions(input, record),
     nextBestMove: rankedRecommendations[0] || null,
-    missedDoors: deriveMissedDoors(input, record, nowIso),
+    missedDoors: deriveMissedDoors(input, record),
     shadowArtifacts: deriveShadowArtifacts(input, record),
     reachableTaskIds: GUIDANCE_TASKS.filter((task) => task.isReachable(input)).map((task) => task.id),
     frictionFlags,

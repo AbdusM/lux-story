@@ -3,7 +3,7 @@
  * Feature IDs: D-016, D-017, D-018, D-063, D-095
  */
 
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import {
   // D-016: Character-Influenced Environmental Changes
   CHARACTER_INFLUENCES,
@@ -247,7 +247,7 @@ describe('D-018: Sector-Specific Character Appearances', () => {
   })
 
   it('respects flag conditions for secondary sectors', () => {
-    let state = createTestState()
+    const state = createTestState()
 
     // Devon can appear in deep_station only after arc complete
     const before = getCharactersInSector('deep_station', state)
@@ -265,9 +265,6 @@ describe('D-018: Sector-Specific Character Appearances', () => {
     let state = createTestState()
 
     // Rohan requires trust 4 to appear
-    const before = getCharactersInSector('deep_station', state)
-    const rohanBefore = before.includes('rohan')
-
     state = setTrust(state, 'rohan', 4)
     const after = getCharactersInSector('deep_station', state)
     const rohanAfter = after.includes('rohan')

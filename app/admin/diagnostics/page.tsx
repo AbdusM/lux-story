@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { AlertCircle, CheckCircle, RefreshCw, Database, AlertTriangle } from 'lucide-react'
+import { AdminUtilityNav } from '@/components/admin/AdminUtilityNav'
 import { cn } from '@/lib/utils'
 
 interface ConsistencyIssue {
@@ -82,6 +83,8 @@ export default function AdminDiagnosticsPage() {
           </div>
           <Database className="w-12 h-12 text-blue-600" />
         </div>
+
+        <AdminUtilityNav />
 
         {/* Actions */}
         <Card>

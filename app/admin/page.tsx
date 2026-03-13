@@ -1,6 +1,7 @@
 import React from 'react'
 import { ACTIVE_NODE_USERS, EXIT_TRACKING, getDropOffRate } from '@/lib/admin-analytics'
 import { ACTIVE_MEMES } from '@/lib/character-complex' // Assuming we export this to visualize D-018
+import { AdminUtilityNav } from '@/components/admin/AdminUtilityNav'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,7 +24,8 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-8 bg-slate-950 min-h-screen text-slate-200 font-mono">
-      <h1 className="text-3xl mb-8 font-bold text-amber-500">Lux Story Admin</h1>
+      <h1 className="text-3xl mb-4 font-bold text-amber-500">Lux Story Admin</h1>
+      <AdminUtilityNav tone="dark" className="mb-8" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* D-011: Real-Time Flow */}

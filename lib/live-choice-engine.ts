@@ -10,8 +10,15 @@ import { logger } from './logger'
 import { safeStorage } from './safe-storage'
 import { z } from 'zod'
 
-// Live Choice Engine now uses Next.js API routes for secure server-side generation
-// No direct API configuration needed - handled by /api/live-choices route
+export function isLiveChoiceGenerationEnabled(): boolean {
+  return (
+    process.env.NEXT_PUBLIC_ENABLE_LIVE_AUGMENTATION === 'true' ||
+    process.env.ENABLE_LIVE_AUGMENTATION === 'true'
+  )
+}
+
+// Live choice generation is experimental-only until the backing route is restored.
+const LIVE_CHOICE_ROUTE = '/api/live-choices'
 
 export interface LiveChoiceRequest {
   sceneContext: string
@@ -151,17 +158,23 @@ export class LiveChoiceEngine {
     safeStorage.setItem('lux-story-approved-choices-v2', JSON.stringify(this.approvedChoices))
   }
 
-  // Prompt engineering is now handled server-side in /api/live-choices
-  // This keeps client-side code clean and secure
+  // Prompt engineering is handled server-side when the experimental route is enabled.
 
   /**
-   * Generate a choice using secure Next.js API route
+   * Generate a choice using the experimental Next.js API route.
    */
   async generateChoice(request: LiveChoiceRequest): Promise<LiveChoiceResponse | null> {
+    if (!isLiveChoiceGenerationEnabled()) {
+      logger.debug('Live choice generation skipped because the experimental route is disabled', {
+        operation: 'live-choice-engine.disabled',
+      })
+      return null
+    }
+
     try {
       logger.debug('Calling internal API for choice generation', { operation: 'live-choice-engine.generate' })
 
-      const response = await fetch('/api/live-choices', {
+      const response = await fetch(LIVE_CHOICE_ROUTE, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

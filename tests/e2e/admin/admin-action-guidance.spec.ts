@@ -180,7 +180,7 @@ const guidanceSummaryResponse = {
 }
 
 test.describe('Admin Action Guidance Smoke', () => {
-  test('renders the rollout summary and adaptive diagnostics on the action page', async ({ page, adminAuth }) => {
+  test('renders the rollout summary and adaptive diagnostics on the action page', async ({ page, adminAuth: _adminAuth }) => {
     await page.route(`**/api/admin/skill-data?userId=${TEST_USER_ID}`, async (route) => {
       await route.fulfill({ json: skillDataResponse })
     })

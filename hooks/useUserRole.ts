@@ -4,26 +4,53 @@
  */
 
 import { useEffect, useState } from 'react'
-import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
+import type { AuthChangeEvent, Session, User } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
 
 export type UserRole = 'student' | 'educator' | 'admin'
+const PLAYWRIGHT_ADMIN_BYPASS_COOKIE = 'lux-playwright-admin-bypass'
 
 interface UserRoleData {
   role: UserRole
   loading: boolean
   isEducator: boolean
   isAdmin: boolean
-  user: any | null
+  user: User | null
+}
+
+function hasPlaywrightAdminBypass(): boolean {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return false
+  if (process.env.NODE_ENV === 'production') return false
+
+  const isPlaywrightRuntime = (window as Window & { __PLAYWRIGHT__?: boolean }).__PLAYWRIGHT__ === true
+  if (!isPlaywrightRuntime) return false
+
+  return document.cookie
+    .split(';')
+    .map(cookie => cookie.trim())
+    .some(cookie => cookie === `${PLAYWRIGHT_ADMIN_BYPASS_COOKIE}=1`)
 }
 
 export function useUserRole(): UserRoleData {
   const [role, setRole] = useState<UserRole>('student')
   const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState<any | null>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [supabase] = useState(() => createClient())
 
   useEffect(() => {
+    if (hasPlaywrightAdminBypass()) {
+      setRole('admin')
+      setUser({
+        id: 'playwright-admin-bypass',
+        app_metadata: {},
+        user_metadata: {},
+        aud: 'authenticated',
+        created_at: new Date(0).toISOString(),
+      } as User)
+      setLoading(false)
+      return
+    }
+
     async function fetchRole() {
       try {
         // Get current user
@@ -62,7 +89,7 @@ export function useUserRole(): UserRoleData {
     fetchRole()
 
     // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: AuthChangeEvent, session: Session | null) => {
       if (!session?.user) {
         setRole('student')
         setUser(null)

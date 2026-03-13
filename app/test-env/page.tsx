@@ -3,7 +3,13 @@
  * Used for debugging environment variables and configuration
  */
 
+import { notFound } from 'next/navigation'
+
 export default function TestEnvPage() {
+  if (process.env.NODE_ENV === 'production') {
+    notFound()
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-4xl mx-auto">

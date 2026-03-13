@@ -447,7 +447,7 @@ export default function ProfilePage() {
     })
     const { taskProgress: _taskProgress, ...options } = input
     return options
-  }, [playerId, saveMetadata?.lastSaved, saveMetadata?.playerId])
+  }, [playerId, saveMetadata?.playerId])
   const guidance = useAdaptiveGuidance({
     surface: 'profile',
     ...guidanceSeed,

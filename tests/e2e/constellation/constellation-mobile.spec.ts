@@ -22,7 +22,7 @@ async function openConstellation(page: Page) {
 }
 
 test.describe('Constellation Mobile UX', () => {
-  test('Panel opens from game interface', async ({ page, withDemonstratedSkills }) => {
+  test('Panel opens from game interface', async ({ page, withDemonstratedSkills: _withDemonstratedSkills }) => {
     const dialog = await openConstellation(page)
     await expect(dialog).toBeVisible()
 
@@ -30,7 +30,7 @@ test.describe('Constellation Mobile UX', () => {
     await expect(page.getByText('Your Journey')).toBeVisible()
   })
 
-  test('Skills tab renders SVG constellation', async ({ page, withDemonstratedSkills }) => {
+  test('Skills tab renders SVG constellation', async ({ page, withDemonstratedSkills: _withDemonstratedSkills }) => {
     await openConstellation(page)
 
     const skillsTab = page.getByRole('tab', { name: /skills/i })
@@ -42,7 +42,7 @@ test.describe('Constellation Mobile UX', () => {
     await expect(svg).toBeVisible({ timeout: 15000 })
   })
 
-  test('Cluster filter chips are visible', async ({ page, withDemonstratedSkills }) => {
+  test('Cluster filter chips are visible', async ({ page, withDemonstratedSkills: _withDemonstratedSkills }) => {
     await openConstellation(page)
 
     const skillsTab = page.getByRole('tab', { name: /skills/i })
@@ -54,7 +54,7 @@ test.describe('Constellation Mobile UX', () => {
     await expect(page.getByRole('button', { name: 'Heart' })).toBeVisible()
   })
 
-  test('Cluster filter changes visible skills', async ({ page, withDemonstratedSkills }) => {
+  test('Cluster filter changes visible skills', async ({ page, withDemonstratedSkills: _withDemonstratedSkills }) => {
     await openConstellation(page)
 
     const skillsTab = page.getByRole('tab', { name: /skills/i })

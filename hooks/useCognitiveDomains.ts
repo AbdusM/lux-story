@@ -12,13 +12,12 @@
  */
 
 import { useMemo, useCallback, useEffect, useState } from 'react'
-import { useGameStore, useGameSelectors } from '@/lib/game-store'
+import { useGameSelectors } from '@/lib/game-store'
 import { safeStorage } from '@/lib/safe-storage'
 import { GameStateManager } from '@/lib/game-state-manager'
 import {
   CognitiveDomainId,
   CognitiveDomainScore,
-  COGNITIVE_DOMAIN_IDS,
   createEmptyDomainScores,
   DOMAIN_METADATA,
   getCoreDomains,
@@ -28,7 +27,6 @@ import {
 } from '@/lib/cognitive-domains'
 import {
   calculateCognitiveDomainState,
-  calculateEngagementMetrics,
   getStrongestDomains,
   getDevelopmentAreas,
   getDomainsNearThreshold,
@@ -38,17 +36,6 @@ import {
   CognitiveDomainState
 } from '@/lib/cognitive-domain-calculator'
 import { SkillDemonstration } from '@/lib/skill-tracker'
-
-// -----------------------------------------------------------------------------
-// Constants
-// -----------------------------------------------------------------------------
-
-const STORAGE_KEY_PREFIX = 'cognitive_domains_'
-const CACHE_DURATION_MS = 5 * 60 * 1000 // 5 minutes
-
-// -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
 
 export interface CognitiveDomainData {
   // Core domain scores
@@ -89,8 +76,6 @@ export interface CognitiveDomainData {
 export function useCognitiveDomains(): CognitiveDomainData {
   // Get game state - use derived selector for patterns (single source of truth)
   const patterns = useGameSelectors.usePatterns()
-  const skills = useGameStore(state => state.skills)
-  const coreGameState = useGameStore(state => state.coreGameState)
 
   // Local state for loading and cache
   const [isLoading, setIsLoading] = useState(true)
@@ -107,7 +92,7 @@ export function useCognitiveDomains(): CognitiveDomainData {
       }
     }
     return 'anonymous'
-  }, [coreGameState])
+  }, [])
 
   // Load skill demonstrations from storage
   const demonstrations = useMemo<SkillDemonstration[]>(() => {
@@ -302,7 +287,7 @@ export function useDomainProgress(domainId: CognitiveDomainId): {
  * Check if any domains have new activity (for badge display)
  */
 export function useHasNewActivity(): boolean {
-  const { engagement, lastUpdated } = useCognitiveDomains()
+  const { engagement } = useCognitiveDomains()
 
   // Consider "new" if there's been activity in the last session
   const sessionStart = Date.now() - (30 * 60 * 1000) // 30 minutes

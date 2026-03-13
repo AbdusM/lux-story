@@ -6,6 +6,9 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 const constrained = process.env.PLAYWRIGHT_CONSTRAINED === 'true'
 const projectWorkers = process.env.CI ? 1 : (constrained ? 1 : 2)
+const playwrightRuntimeEnv = Object.fromEntries(
+  Object.entries(process.env).filter(([key]) => key !== 'NO_COLOR' && key !== 'FORCE_COLOR')
+)
 
 /**
  * Playwright E2E Testing Configuration
@@ -92,7 +95,9 @@ export default defineConfig({
       name: 'core-game',
       testMatch: [
         '**/core-game-loop.spec.ts',
-        '**/journey-summary.spec.ts'
+        '**/journey-summary.spec.ts',
+        '**/user-flows/student-action-plan.spec.ts',
+        '**/final-qa/full-feature.spec.ts'
       ],
       fullyParallel: true,
       workers: projectWorkers,
@@ -294,7 +299,7 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
     env: {
-      ...process.env,
+      ...playwrightRuntimeEnv,
       PLAYWRIGHT_ADMIN_BYPASS: '1',
     },
   },

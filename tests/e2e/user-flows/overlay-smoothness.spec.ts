@@ -32,7 +32,7 @@ async function measureFps(page: import('@playwright/test').Page, durationMs = 70
 }
 
 test.describe('Overlay Smoothness', () => {
-  test('settings open/close stays responsive under CPU throttle (desktop + mobile)', async ({ page, freshGame }) => {
+  test('settings open/close stays responsive under CPU throttle (desktop + mobile)', async ({ page, freshGame: _freshGame }) => {
     await expect(page.getByTestId('game-interface')).toBeVisible({ timeout: 15000 })
 
     // Chromium-only CDP throttle (project is Desktop Chrome).

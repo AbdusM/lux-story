@@ -81,28 +81,30 @@ function getSimulationFrameTheme(simulation: SimulationConfig): SimulationFrameT
     }
 }
 
+function normalizeTimerValue(value: number | undefined): number | null {
+    if (typeof value !== 'number') return null
+    if (!Number.isFinite(value) || value <= 0) return null
+    return Math.max(0, Math.ceil(value))
+}
+
+function getEffectiveTimeLimit(value: number | undefined): number | null {
+    const normalized = normalizeTimerValue(value)
+    if (normalized === null) return null
+    if (typeof window === 'undefined') return normalized
+
+    const scale = window.__LUX_E2E_SIM_TIME_SCALE__
+    if (typeof scale !== 'number' || !Number.isFinite(scale) || scale <= 0 || scale >= 1) {
+        return normalized
+    }
+
+    return Math.max(1, Math.ceil(normalized * scale))
+}
+
 export function SimulationRenderer({ simulation, onComplete }: SimulationRendererProps) {
     const frameTheme = getSimulationFrameTheme(simulation)
     const contextLabel = humanizeSimulationContextLabel(
         typeof simulation.initialContext?.label === 'string' ? simulation.initialContext.label : undefined
     )
-    const normalizeTimerValue = (value: number | undefined): number | null => {
-        if (typeof value !== 'number') return null
-        if (!Number.isFinite(value) || value <= 0) return null
-        return Math.max(0, Math.ceil(value))
-    }
-    const getEffectiveTimeLimit = (value: number | undefined): number | null => {
-        const normalized = normalizeTimerValue(value)
-        if (normalized === null) return null
-        if (typeof window === 'undefined') return normalized
-
-        const scale = window.__LUX_E2E_SIM_TIME_SCALE__
-        if (typeof scale !== 'number' || !Number.isFinite(scale) || scale <= 0 || scale >= 1) {
-            return normalized
-        }
-
-        return Math.max(1, Math.ceil(normalized * scale))
-    }
     const [status, setStatus] = useState<'active' | 'success' | 'failed' | 'skipped'>('active')
     const [secondsRemaining, setSecondsRemaining] = useState<number | null>(() => getEffectiveTimeLimit(simulation.timeLimit))
     const [completionMeta, setCompletionMeta] = useState<{ timedOut: boolean } | null>(null)

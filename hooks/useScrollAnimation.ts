@@ -200,8 +200,6 @@ export function useScrollProgress(options: UseScrollProgressOptions = {}): numbe
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    const element = container?.current || document.documentElement
-
     const handleScroll = () => {
       const scrollTop = container?.current
         ? container.current.scrollTop

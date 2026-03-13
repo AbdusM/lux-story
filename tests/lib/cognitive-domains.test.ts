@@ -8,7 +8,6 @@ import { describe, it, expect } from 'vitest'
 import {
   // Types
   COGNITIVE_DOMAIN_IDS,
-  CognitiveDomainId,
   DomainLevel,
 
   // Metadata
@@ -40,7 +39,6 @@ import {
   getAffectedDomains,
   getStrongestDomains,
   getDevelopmentAreas,
-  getDomainsNearThreshold,
   getCognitiveProfileSummary,
   createResearchExport,
   PatternScores

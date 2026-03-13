@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
 
-import type { DialogueGraph } from '@/lib/dialogue-graph'
+import type { DialogueGraph, DialogueNode } from '@/lib/dialogue-graph'
 import { getSkillComboUnlockChoices } from '@/lib/skill-combo-unlock-choices'
 
 function makeGraphWithNode(nodeId: string): DialogueGraph {
-  const node: any = {
+  const node: DialogueNode = {
     nodeId,
     speaker: 'Devon',
-    content: [{ text: 'x', emotion: 'neutral' }],
+    content: [{ text: 'x', emotion: 'neutral', variation_id: 'base' }],
     choices: [],
   }
 
@@ -49,4 +49,3 @@ describe('skill-combo-unlock-choices', () => {
     expect(choices.length).toBe(0)
   })
 })
-
