@@ -29,8 +29,8 @@ function buildSkillProfile(options: {
     },
     careerMatches: [
       {
-        id: 'career_1',
-        name: options.userId === USER_TWO_ID ? 'Software Developer' : 'Community Data Analyst',
+        id: options.userId === USER_TWO_ID ? 'advanced-logistics' : 'data-analyst-community',
+        name: options.userId === USER_TWO_ID ? 'Advanced Logistics & Manufacturing' : 'Community Data Analyst',
         matchScore: 0.84,
         requiredSkills: {
           empathy: { current: 0.8, required: 0.6, gap: 0 },

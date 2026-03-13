@@ -178,7 +178,7 @@ export function LaborMarketSignalsSection({
 
           <div className="rounded-2xl border border-indigo-200 bg-white/80 p-4 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-700">
-              Entry Friction (Readiness)
+              Entry Friction
             </p>
             <div className="mt-2 flex items-center gap-2">
               <span

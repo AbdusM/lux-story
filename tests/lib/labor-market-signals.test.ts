@@ -84,6 +84,17 @@ describe('labor market signals', () => {
     expect(signals.observedExposure.confidence).toBe('medium')
   })
 
+  it('uses the curated entry-friction proxy for canonical careers', () => {
+    const profile = buildProfile()
+    const career = buildCareerMatch({ id: 'data-analyst-community', name: 'Community Data Analyst' })
+
+    const signals = deriveCareerSignals({ career, profile, nowIso: '2026-03-12T00:00:00.000Z' })
+
+    expect(signals.entryFriction.level).toBe('high')
+    expect(signals.entryFriction.confidence).toBe('medium')
+    expect(signals.provenance.entryFriction).toContain('Curated entry-friction proxy reviewed on March 12, 2026')
+  })
+
   it('derives posture from entry friction and growth outlook (defend when friction is high)', () => {
     const profile = buildProfile({
       skillGaps: [buildSkillGap({ priority: 'high' })],
@@ -98,11 +109,29 @@ describe('labor market signals', () => {
 
   it('recommends attack when friction is low and growth is high', () => {
     const profile = buildProfile({ skillGaps: [] })
-    const career = buildCareerMatch({ readiness: 'near_ready', growthProjection: 'high' })
+    const career = buildCareerMatch({
+      id: 'advanced-logistics',
+      name: 'Advanced Logistics & Manufacturing',
+      readiness: 'near_ready',
+      growthProjection: 'high',
+    })
 
     const signals = deriveCareerSignals({ career, profile, nowIso: '2026-03-12T00:00:00.000Z' })
 
     expect(signals.entryFriction.level).toBe('low')
     expect(signals.recommendedPosture).toBe('attack')
+  })
+
+  it('falls back to readiness evidence when no curated entry-friction mapping exists', () => {
+    const profile = buildProfile({
+      skillGaps: [buildSkillGap({ skill: 'project planning', priority: 'high' })],
+    })
+    const career = buildCareerMatch({ id: 'unmapped-role', name: 'Neighborhood Organizer', readiness: 'skill_gaps' })
+
+    const signals = deriveCareerSignals({ career, profile, nowIso: '2026-03-12T00:00:00.000Z' })
+
+    expect(signals.entryFriction.level).toBe('high')
+    expect(signals.entryFriction.reasons.join(' ')).toContain('project planning')
+    expect(signals.provenance.entryFriction).toContain('falls back to readiness and skill-gap evidence')
   })
 })

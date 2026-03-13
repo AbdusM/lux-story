@@ -1,4 +1,5 @@
 import type { CareerMatch, SkillProfile } from '@/lib/skill-profile-adapter'
+import { getCuratedEntryFriction } from '@/lib/labor-market/entry-friction-dataset'
 import { getCuratedObservedExposure } from '@/lib/labor-market/observed-exposure-dataset'
 
 export type Posture = 'defend' | 'balance' | 'attack'
@@ -62,20 +63,17 @@ function deriveObservedExposure(career: CareerMatch): {
   }
 }
 
-function deriveEntryFriction(
-  career: CareerMatch,
-  profile: SkillProfile,
-): SignalDescriptor {
+function buildReadinessContextReasons(career: CareerMatch, profile: SkillProfile): string[] {
   const reasons: string[] = []
 
   if (career.readiness === 'near_ready') {
     reasons.push('You appear near-ready for this lane based on your current evidence.')
-    return { level: 'low', confidence: 'medium', reasons: clampReasons(reasons) }
+    return reasons
   }
 
   if (career.readiness === 'exploratory') {
     reasons.push('This lane is still exploratory; the fastest path is usually to gather more evidence and narrow options.')
-    return { level: 'high', confidence: 'medium', reasons: clampReasons(reasons) }
+    return reasons
   }
 
   const topGap = profile.skillGaps[0]
@@ -85,8 +83,55 @@ function deriveEntryFriction(
     reasons.push('Skill gaps exist for this lane, but the highest-priority gap is not yet clear.')
   }
 
+  return reasons
+}
+
+function deriveEntryFriction(
+  career: CareerMatch,
+  profile: SkillProfile,
+): {
+  descriptor: SignalDescriptor
+  provenance: string
+} {
+  const contextReasons = buildReadinessContextReasons(career, profile)
+  const curated = getCuratedEntryFriction({
+    careerId: career.id,
+    careerName: career.name,
+  })
+
+  if (curated) {
+    return {
+      descriptor: {
+        ...curated.descriptor,
+        reasons: clampReasons([...curated.descriptor.reasons, ...contextReasons]),
+      },
+      provenance: `${curated.provenance} Supporting readiness context is appended from the student profile at page load.`,
+    }
+  }
+
+  if (career.readiness === 'near_ready') {
+    return {
+      descriptor: { level: 'low', confidence: 'medium', reasons: clampReasons(contextReasons) },
+      provenance:
+        'No curated entry-friction record exists yet for this lane, so the estimate falls back to readiness and skill-gap evidence from the current profile.',
+    }
+  }
+
+  if (career.readiness === 'exploratory') {
+    return {
+      descriptor: { level: 'high', confidence: 'medium', reasons: clampReasons(contextReasons) },
+      provenance:
+        'No curated entry-friction record exists yet for this lane, so the estimate falls back to readiness and skill-gap evidence from the current profile.',
+    }
+  }
+
+  const topGap = profile.skillGaps[0]
   const level: SignalLevel = topGap?.priority === 'high' ? 'high' : 'medium'
-  return { level, confidence: 'medium', reasons: clampReasons(reasons) }
+  return {
+    descriptor: { level, confidence: 'medium', reasons: clampReasons(contextReasons) },
+    provenance:
+      'No curated entry-friction record exists yet for this lane, so the estimate falls back to readiness and skill-gap evidence from the current profile.',
+  }
 }
 
 function deriveRecommendedPosture(
@@ -110,13 +155,13 @@ export function deriveCareerSignals(options: {
 
   return {
     observedExposure: observedExposure.descriptor,
-    entryFriction,
+    entryFriction: entryFriction.descriptor,
     growthOutlook,
-    recommendedPosture: deriveRecommendedPosture(entryFriction, growthOutlook),
+    recommendedPosture: deriveRecommendedPosture(entryFriction.descriptor, growthOutlook),
     updatedAtIso: nowIso,
     provenance: {
       observedExposure: observedExposure.provenance,
-      entryFriction: 'Derived from readiness and current skill-gap evidence, not live labor-market hiring data.',
+      entryFriction: entryFriction.provenance,
       freshness: 'Generated at page load from the latest stored profile snapshot.',
     },
     disclaimers: [
