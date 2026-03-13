@@ -50,7 +50,10 @@ function deriveObservedExposure(career: CareerMatch): {
         ...curated.descriptor,
         reasons: clampReasons(curated.descriptor.reasons),
       },
-      metadata: curated.metadata,
+      metadata: {
+        ...curated.metadata,
+        matchType: curated.matchType,
+      },
     }
   }
 
@@ -69,6 +72,7 @@ function deriveObservedExposure(career: CareerMatch): {
       version: 'observed-exposure-v1',
       methodology:
         'If no repo-owned observed-exposure record exists, the system stays explicitly unknown rather than inventing a score.',
+      matchType: 'fallback',
     },
   }
 }
@@ -119,6 +123,7 @@ function deriveEntryFriction(
       metadata: {
         ...curated.metadata,
         summary: `${curated.metadata.summary} Supporting readiness context from the current student profile is appended at page load.`,
+        matchType: curated.matchType,
       },
     }
   }
@@ -136,6 +141,7 @@ function deriveEntryFriction(
         version: 'entry-friction-v1',
         methodology:
           'Fallback path uses readiness and skill-gap evidence from the current profile until a lane mapping is added.',
+        matchType: 'fallback',
       },
     }
   }
@@ -153,6 +159,7 @@ function deriveEntryFriction(
         version: 'entry-friction-v1',
         methodology:
           'Fallback path uses readiness and skill-gap evidence from the current profile until a lane mapping is added.',
+        matchType: 'fallback',
       },
     }
   }
@@ -171,6 +178,7 @@ function deriveEntryFriction(
       version: 'entry-friction-v1',
       methodology:
         'Fallback path uses readiness and skill-gap evidence from the current profile until a lane mapping is added.',
+      matchType: 'fallback',
     },
   }
 }

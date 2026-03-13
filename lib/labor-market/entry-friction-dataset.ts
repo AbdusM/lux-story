@@ -7,6 +7,7 @@ import type { SignalDescriptor } from '@/lib/labor-market/signals'
 export interface CuratedEntryFrictionMatch {
   descriptor: SignalDescriptor
   metadata: MarketSignalMetadata
+  matchType: 'canonical' | 'alias'
 }
 
 const CURATED_ENTRY_FRICTION = loadMarketSignalDataset(
@@ -25,21 +26,30 @@ export function getCuratedEntryFriction(options: {
   const normalizedId = options.careerId ? normalizeMarketSignalValue(options.careerId) : null
   const normalizedName = normalizeMarketSignalValue(options.careerName)
 
-  const match = CURATED_ENTRY_FRICTION.find((entry) => {
-    if (
-      normalizedId &&
-      entry.careerIds.some((careerId) => normalizeMarketSignalValue(careerId) === normalizedId)
-    ) {
-      return true
+  const canonicalMatch =
+    normalizedId
+      ? CURATED_ENTRY_FRICTION.find((entry) =>
+          entry.careerIds.some((careerId) => normalizeMarketSignalValue(careerId) === normalizedId),
+        )
+      : null
+
+  if (canonicalMatch) {
+    return {
+      descriptor: canonicalMatch.descriptor,
+      metadata: canonicalMatch.metadata,
+      matchType: 'canonical',
     }
+  }
 
-    return entry.aliases.some((alias) => normalizedName.includes(normalizeMarketSignalValue(alias)))
-  })
+  const aliasMatch = CURATED_ENTRY_FRICTION.find((entry) =>
+    entry.aliases.some((alias) => normalizedName.includes(normalizeMarketSignalValue(alias))),
+  )
 
-  if (!match) return null
+  if (!aliasMatch) return null
 
   return {
-    descriptor: match.descriptor,
-    metadata: match.metadata,
+    descriptor: aliasMatch.descriptor,
+    metadata: aliasMatch.metadata,
+    matchType: 'alias',
   }
 }

@@ -1,5 +1,6 @@
 export type MarketSignalConfidence = 'low' | 'medium' | 'high'
 export type MarketSignalKind = 'observedExposure' | 'entryFriction'
+export type MarketSignalMatchType = 'canonical' | 'alias' | 'fallback'
 
 export interface MarketSignalMetadata {
   summary: string
@@ -9,6 +10,7 @@ export interface MarketSignalMetadata {
   confidence: MarketSignalConfidence
   version: string
   methodology: string
+  matchType?: MarketSignalMatchType
 }
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000

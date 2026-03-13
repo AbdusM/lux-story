@@ -94,9 +94,29 @@ function postureIcon(posture: Posture) {
   }
 }
 
-function renderSignalMetadata(updatedAtIso: string, source: string, coverage: string, version: string) {
+function matchTypeLabel(matchType?: string): string {
+  switch (matchType) {
+    case 'canonical':
+      return 'Canonical lane'
+    case 'alias':
+      return 'Alias match'
+    case 'fallback':
+      return 'Fallback'
+    default:
+      return 'Unknown'
+  }
+}
+
+function renderSignalMetadata(
+  updatedAtIso: string,
+  source: string,
+  coverage: string,
+  version: string,
+  matchType?: string,
+) {
   return (
     <div className="mt-2 space-y-1 text-xs text-slate-500">
+      <p>Match: {matchTypeLabel(matchType)}</p>
       <p>Source: {source}</p>
       <p>Coverage: {coverage}</p>
       <p>Updated: {new Date(updatedAtIso).toLocaleDateString()}</p>
@@ -290,6 +310,7 @@ export function LaborMarketSignalsSection({
                 signals.provenance.observedExposure.source,
                 signals.provenance.observedExposure.coverage,
                 signals.provenance.observedExposure.version,
+                signals.provenance.observedExposure.matchType,
               )}
             </div>
             <div className="rounded-xl border border-sky-100 bg-sky-50/70 p-3">
@@ -300,6 +321,7 @@ export function LaborMarketSignalsSection({
                 signals.provenance.entryFriction.source,
                 signals.provenance.entryFriction.coverage,
                 signals.provenance.entryFriction.version,
+                signals.provenance.entryFriction.matchType,
               )}
             </div>
             <div className="rounded-xl border border-sky-100 bg-sky-50/70 p-3">

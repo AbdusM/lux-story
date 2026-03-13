@@ -83,6 +83,7 @@ describe('labor market signals', () => {
 
     expect(signals.observedExposure.level).toBe('high')
     expect(signals.observedExposure.confidence).toBe('medium')
+    expect(signals.provenance.observedExposure.matchType).toBe('alias')
   })
 
   it('uses the curated entry-friction proxy for canonical careers', () => {
@@ -136,5 +137,6 @@ describe('labor market signals', () => {
     expect(signals.entryFriction.reasons.join(' ')).toContain('project planning')
     expect(signals.provenance.entryFriction.source).toBe('Lux fallback: student profile readiness')
     expect(signals.provenance.entryFriction.updatedAtIso).toBe('2026-03-12T00:00:00.000Z')
+    expect(signals.provenance.entryFriction.matchType).toBe('fallback')
   })
 })
