@@ -3,9 +3,16 @@ import path from 'node:path'
 
 import {
   buildMarketSignalDatasetArtifacts,
-  loadMarketSignalAuthoringBundle,
 } from '@/lib/labor-market/market-signal-authoring'
+import {
+  buildMarketSignalAuthoringBundleFromSnapshot,
+  loadMarketSignalSourceSnapshot,
+} from '@/lib/labor-market/market-signal-import'
 
+const AUTHORING_BUNDLE_PATH = path.join(
+  process.cwd(),
+  'lib/labor-market/data/market-signal-authoring-v1.json',
+)
 const OBSERVED_EXPOSURE_PATH = path.join(
   process.cwd(),
   'lib/labor-market/data/observed-exposure-v1.json',
@@ -37,23 +44,27 @@ async function ensureMatchesExpected(filePath: string, expected: string): Promis
 }
 
 async function main(): Promise<void> {
-  const bundle = loadMarketSignalAuthoringBundle()
+  const snapshot = loadMarketSignalSourceSnapshot()
+  const bundle = buildMarketSignalAuthoringBundleFromSnapshot(snapshot)
   const artifacts = buildMarketSignalDatasetArtifacts(bundle)
+  const authoringJson = formatJson(bundle)
   const observedExposureJson = formatJson(artifacts.observedExposure)
   const entryFrictionJson = formatJson(artifacts.entryFriction)
 
   if (shouldCheckOnly()) {
+    await ensureMatchesExpected(AUTHORING_BUNDLE_PATH, authoringJson)
     await ensureMatchesExpected(OBSERVED_EXPOSURE_PATH, observedExposureJson)
     await ensureMatchesExpected(ENTRY_FRICTION_PATH, entryFrictionJson)
     // eslint-disable-next-line no-console
-    console.log('Market signal datasets are up to date.')
+    console.log('Market signal snapshot, authoring bundle, and datasets are up to date.')
     return
   }
 
+  await writeFile(AUTHORING_BUNDLE_PATH, authoringJson, 'utf8')
   await writeFile(OBSERVED_EXPOSURE_PATH, observedExposureJson, 'utf8')
   await writeFile(ENTRY_FRICTION_PATH, entryFrictionJson, 'utf8')
   // eslint-disable-next-line no-console
-  console.log('Refreshed observed exposure and entry friction datasets from authoring source.')
+  console.log('Refreshed labor-signal authoring bundle and shipped datasets from source snapshot.')
 }
 
 void main()

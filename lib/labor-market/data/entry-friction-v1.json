@@ -1,6 +1,33 @@
 [
   {
     "careerIds": [
+      "data-analyst-community"
+    ],
+    "aliases": [
+      "community data analyst",
+      "data analyst",
+      "data journalist / analyst"
+    ],
+    "descriptor": {
+      "level": "high",
+      "confidence": "medium",
+      "reasons": [
+        "Entry-level analytics hiring is tightening in many markets, with employers asking for proof beyond coursework alone.",
+        "Community-facing data roles also expect communication and domain context, not just tool familiarity."
+      ]
+    },
+    "metadata": {
+      "summary": "Curated high-friction mapping for analytics entry lanes where hiring is proof-heavy and community context matters.",
+      "source": "Lux nowcasting proxy map + early-career friction synthesis",
+      "updatedAtIso": "2026-03-12T00:00:00.000Z",
+      "coverage": "Canonical Birmingham career lanes plus selected alias coverage for adjacent role names.",
+      "confidence": "medium",
+      "version": "entry-friction-v1",
+      "methodology": "Repo-owned market-friction proxy focused on early-career bottlenecks in exposed knowledge-work lanes."
+    }
+  },
+  {
+    "careerIds": [
       "healthcare-tech"
     ],
     "aliases": [
@@ -50,33 +77,6 @@
       "confidence": "medium",
       "version": "entry-friction-v1",
       "methodology": "Repo-owned market-friction proxy emphasizing apprenticeship availability versus proof-of-execution requirements."
-    }
-  },
-  {
-    "careerIds": [
-      "data-analyst-community"
-    ],
-    "aliases": [
-      "community data analyst",
-      "data analyst",
-      "data journalist / analyst"
-    ],
-    "descriptor": {
-      "level": "high",
-      "confidence": "medium",
-      "reasons": [
-        "Entry-level analytics hiring is tightening in many markets, with employers asking for proof beyond coursework alone.",
-        "Community-facing data roles also expect communication and domain context, not just tool familiarity."
-      ]
-    },
-    "metadata": {
-      "summary": "Curated high-friction mapping for analytics entry lanes where hiring is proof-heavy and community context matters.",
-      "source": "Lux nowcasting proxy map + early-career friction synthesis",
-      "updatedAtIso": "2026-03-12T00:00:00.000Z",
-      "coverage": "Canonical Birmingham career lanes plus selected alias coverage for adjacent role names.",
-      "confidence": "medium",
-      "version": "entry-friction-v1",
-      "methodology": "Repo-owned market-friction proxy focused on early-career bottlenecks in exposed knowledge-work lanes."
     }
   },
   {
