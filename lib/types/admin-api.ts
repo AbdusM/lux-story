@@ -483,6 +483,13 @@ export interface AdminStudentInsightsFollowUpActor {
   fullName: string | null
 }
 
+export interface AdminStudentInsightsFollowUpEntry {
+  status: AdminStudentInsightsFollowUpStatus
+  updatedAt: string
+  note: string | null
+  updatedBy: AdminStudentInsightsFollowUpActor | null
+}
+
 export interface AdminStudentInsightsWorklistItem {
   userId: string
   email: string | null
@@ -495,6 +502,7 @@ export interface AdminStudentInsightsWorklistItem {
   followUpUpdatedAt: string | null
   followUpNote: string | null
   followUpUpdatedBy: AdminStudentInsightsFollowUpActor | null
+  followUpHistory: AdminStudentInsightsFollowUpEntry[]
   counts: AdminStudentInsightsFunnelStageCounts
   outcomeCheckIn: {
     applicationsSubmitted30d: number
@@ -513,6 +521,13 @@ export interface AdminStudentInsightsWorklistSummary {
   totalUsersConsidered: number
   flaggedUsers: number
   flags: Record<AdminStudentInsightsQueueFlag, number>
+  followUpSummary: {
+    untracked: number
+    contacted: number
+    followUpDue: number
+    resolved: number
+    updatedLast7d: number
+  }
   outcomeSnapshot: {
     reporters: number
     firstInterviewBooked: number

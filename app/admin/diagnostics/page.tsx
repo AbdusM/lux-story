@@ -17,6 +17,7 @@ import { AdminUtilityNav } from '@/components/admin/AdminUtilityNav'
 import { cn } from '@/lib/utils'
 import type {
   AdminStudentInsightsFollowUpActor,
+  AdminStudentInsightsFollowUpEntry,
   AdminStudentInsightsFollowUpStatus,
   AdminLaborMarketSignalDatasetSummary,
   AdminLaborMarketSignalReport,
@@ -119,6 +120,32 @@ function formatFollowUpActor(actor: AdminStudentInsightsFollowUpActor | null): s
   return actor.fullName || actor.email || actor.userId
 }
 
+function extractFollowUpHistory(value: unknown): AdminStudentInsightsFollowUpEntry[] {
+  if (!Array.isArray(value)) return []
+
+  return value.flatMap((entry) => {
+    if (!entry || typeof entry !== 'object' || Array.isArray(entry)) return []
+    const candidate = entry as Record<string, unknown>
+    const status = candidate.status
+    const updatedAt = candidate.updatedAt
+    if (
+      status !== 'contacted' &&
+      status !== 'follow_up_due' &&
+      status !== 'resolved'
+    ) {
+      return []
+    }
+    if (typeof updatedAt !== 'string') return []
+
+    return [{
+      status,
+      updatedAt,
+      note: typeof candidate.note === 'string' ? candidate.note : null,
+      updatedBy: extractFollowUpActor(candidate.updatedBy),
+    }]
+  })
+}
+
 export default function AdminDiagnosticsPage() {
   const [loading, setLoading] = useState(false)
   const [report, setReport] = useState<ConsistencyReport | null>(null)
@@ -136,6 +163,7 @@ export default function AdminDiagnosticsPage() {
   const [worklistSavingUserId, setWorklistSavingUserId] = useState<string | null>(null)
   const [worklistSaveError, setWorklistSaveError] = useState<string | null>(null)
   const [worklistNoteDrafts, setWorklistNoteDrafts] = useState<Record<string, string>>({})
+  const [expandedFollowUpHistory, setExpandedFollowUpHistory] = useState<Record<string, boolean>>({})
 
   const runConsistencyCheck = async (autoFix: boolean = false) => {
     setLoading(true)
@@ -278,6 +306,7 @@ export default function AdminDiagnosticsPage() {
         : new Date().toISOString()
       const savedNote = typeof data?.followUp?.note === 'string' ? data.followUp.note : ''
       const savedUpdatedBy = extractFollowUpActor(data?.followUp?.updatedBy)
+      const savedHistory = extractFollowUpHistory(data?.history)
 
       setStudentInsightsWorklist((current) => {
         if (!current) return current
@@ -291,6 +320,7 @@ export default function AdminDiagnosticsPage() {
                   followUpUpdatedAt: updatedAt,
                   followUpNote: savedNote || null,
                   followUpUpdatedBy: savedUpdatedBy,
+                  followUpHistory: savedHistory,
                 }
               : item
           )),
@@ -300,12 +330,13 @@ export default function AdminDiagnosticsPage() {
         ...current,
         [userId]: savedNote,
       }))
+      void runStudentInsightsCheck()
     } catch (error) {
       setWorklistSaveError(error instanceof Error ? error.message : 'Failed to update follow-up status')
     } finally {
       setWorklistSavingUserId(null)
     }
-  }, [worklistNoteDrafts])
+  }, [runStudentInsightsCheck, worklistNoteDrafts])
 
   const handleFollowUpNoteChange = useCallback((userId: string, value: string) => {
     setWorklistNoteDrafts((current) => ({
@@ -325,6 +356,13 @@ export default function AdminDiagnosticsPage() {
 
     await handleFollowUpUpdate(userId, currentStatus, worklistNoteDrafts[userId] ?? '')
   }, [handleFollowUpUpdate, worklistNoteDrafts])
+
+  const toggleFollowUpHistory = useCallback((userId: string) => {
+    setExpandedFollowUpHistory((current) => ({
+      ...current,
+      [userId]: !current[userId],
+    }))
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -712,6 +750,33 @@ export default function AdminDiagnosticsPage() {
                           />
                         </div>
 
+                        <div className="grid grid-cols-2 gap-3">
+                          <SignalMetricCard
+                            label="Untracked"
+                            value={studentInsightsWorklist.followUpSummary.untracked}
+                            tone={studentInsightsWorklist.followUpSummary.untracked > 0 ? 'warning' : 'success'}
+                            detail="no follow-up state"
+                          />
+                          <SignalMetricCard
+                            label="Resolved"
+                            value={studentInsightsWorklist.followUpSummary.resolved}
+                            tone={studentInsightsWorklist.followUpSummary.resolved > 0 ? 'success' : 'neutral'}
+                            detail="counselor closed"
+                          />
+                          <SignalMetricCard
+                            label="Follow-Up Due"
+                            value={studentInsightsWorklist.followUpSummary.followUpDue}
+                            tone={studentInsightsWorklist.followUpSummary.followUpDue > 0 ? 'warning' : 'neutral'}
+                            detail="needs next touch"
+                          />
+                          <SignalMetricCard
+                            label="Touched 7d"
+                            value={studentInsightsWorklist.followUpSummary.updatedLast7d}
+                            tone={studentInsightsWorklist.followUpSummary.updatedLast7d > 0 ? 'success' : 'neutral'}
+                            detail="recent counselor updates"
+                          />
+                        </div>
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
                             <p className="text-xs text-slate-500">Avg applications (30d)</p>
@@ -907,6 +972,45 @@ export default function AdminDiagnosticsPage() {
                                         ? `Last updated by ${formatFollowUpActor(item.followUpUpdatedBy)}`
                                         : 'No counselor owner recorded yet.'}
                                     </p>
+                                    {item.followUpHistory.length > 0 ? (
+                                      <div className="rounded-md border border-slate-200 bg-slate-50/80 p-2">
+                                        <div className="flex items-center justify-between gap-3">
+                                          <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+                                            Follow-Up History
+                                          </p>
+                                          <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="sm"
+                                            className="h-auto px-2 py-1 text-xs"
+                                            onClick={() => toggleFollowUpHistory(item.userId)}
+                                          >
+                                            {expandedFollowUpHistory[item.userId] ? 'Hide' : `Show ${item.followUpHistory.length}`}
+                                          </Button>
+                                        </div>
+                                        {expandedFollowUpHistory[item.userId] ? (
+                                          <div className="mt-2 space-y-2">
+                                            {item.followUpHistory.map((entry, index) => (
+                                              <div
+                                                key={`${item.userId}-${entry.updatedAt}-${index}`}
+                                                className="rounded-md border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700"
+                                              >
+                                                <div className="flex flex-wrap items-center gap-2">
+                                                  <Badge variant={entry.status === 'resolved' ? 'default' : 'outline'}>
+                                                    {STUDENT_INSIGHTS_FOLLOW_UP_LABELS[entry.status]}
+                                                  </Badge>
+                                                  <span>{new Date(entry.updatedAt).toLocaleString()}</span>
+                                                  <span>{formatFollowUpActor(entry.updatedBy)}</span>
+                                                </div>
+                                                {entry.note ? (
+                                                  <p className="mt-2 whitespace-pre-wrap text-slate-600">{entry.note}</p>
+                                                ) : null}
+                                              </div>
+                                            ))}
+                                          </div>
+                                        ) : null}
+                                      </div>
+                                    ) : null}
                                   </div>
                                 </div>
 

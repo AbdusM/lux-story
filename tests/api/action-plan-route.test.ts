@@ -211,6 +211,18 @@ describe('action-plan route', () => {
   test('GET returns the stored merged plan for the authenticated user', async () => {
     store.userActionPlan = {
       existingFocus: 'keep',
+      followUpStatus: {
+        status: 'contacted',
+        updatedAt: '2026-03-08T12:00:00.000Z',
+        note: 'Internal counselor note',
+      },
+      followUpHistory: [
+        {
+          status: 'contacted',
+          updatedAt: '2026-03-08T12:00:00.000Z',
+          note: 'Internal counselor note',
+        },
+      ],
     }
     store.guidanceSnapshot = {
       user_id: 'player_123',
@@ -263,6 +275,8 @@ describe('action-plan route', () => {
     expect(response.status).toBe(200)
     expect(data.success).toBe(true)
     expect(data.plan.existingFocus).toBe('keep')
+    expect(data.plan.followUpStatus).toBeUndefined()
+    expect(data.plan.followUpHistory).toBeUndefined()
     expect(data.plan.adaptiveGuidance.record.taskProgress.review_career_matches.attemptCount).toBe(1)
   })
 
@@ -366,7 +380,7 @@ describe('action-plan route', () => {
     expect(store.userActionPlan).toEqual({ existingFocus: 'keep' })
   })
 
-  test('POST strips followUpStatus from learner write payload', async () => {
+  test('POST strips follow-up admin fields from learner write payload', async () => {
     store.userActionPlan = { existingFocus: 'keep' }
 
     const { POST } = await import('@/app/api/user/action-plan/route')
@@ -381,6 +395,13 @@ describe('action-plan route', () => {
             status: 'contacted',
             updatedAt: '2026-03-08T12:00:00.000Z',
           },
+          followUpHistory: [
+            {
+              status: 'follow_up_due',
+              updatedAt: '2026-03-07T09:00:00.000Z',
+              note: 'Learner should not be able to write this.',
+            },
+          ],
         },
       },
     })
@@ -391,6 +412,7 @@ describe('action-plan route', () => {
     expect(response.status).toBe(200)
     expect(data.success).toBe(true)
     expect(data.plan.followUpStatus).toBeUndefined()
+    expect(data.plan.followUpHistory).toBeUndefined()
     expect(store.userActionPlan).toEqual({ existingFocus: 'keep' })
   })
 })

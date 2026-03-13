@@ -148,6 +148,18 @@ describe('admin action plan follow-up route', () => {
           fullName: 'Casey Counselor',
         },
       },
+      followUpHistory: [
+        {
+          status: 'follow_up_due',
+          updatedAt: '2026-03-13T10:00:00.000Z',
+          note: 'Check back after Friday.',
+          updatedBy: {
+            userId: 'admin_123',
+            email: 'counselor@example.com',
+            fullName: 'Casey Counselor',
+          },
+        },
+      ],
     }
 
     const { GET } = await import('@/app/api/admin/action-plan-follow-up/route')
@@ -159,6 +171,7 @@ describe('admin action plan follow-up route', () => {
     expect(body.followUp.status).toBe('follow_up_due')
     expect(body.followUp.note).toBe('Check back after Friday.')
     expect(body.followUp.updatedBy.userId).toBe('admin_123')
+    expect(body.history).toHaveLength(1)
   })
 
   test('POST upserts follow-up status into user_action_plans plan_data', async () => {
@@ -190,5 +203,7 @@ describe('admin action plan follow-up route', () => {
         fullName: 'Casey Counselor',
       },
     })
+    expect((store.planData as Record<string, unknown>).followUpHistory).toHaveLength(1)
+    expect(body.history).toHaveLength(1)
   })
 })

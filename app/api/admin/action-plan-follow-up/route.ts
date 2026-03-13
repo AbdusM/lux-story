@@ -4,6 +4,7 @@ import { z } from 'zod'
 import {
   ActionPlanFollowUpStatusSchema,
   extractActionPlanFollowUp,
+  extractActionPlanFollowUpHistory,
   withFollowUpStatus,
 } from '@/lib/action-plan/follow-up-status'
 import { auditLog } from '@/lib/audit-logger'
@@ -100,11 +101,12 @@ export async function GET(request: NextRequest) {
     const supabase = getAdminSupabaseClient()
     const existing = await loadStoredPlan({ supabase, userId })
     const followUp = extractActionPlanFollowUp(existing.plan)
+    const history = extractActionPlanFollowUpHistory(existing.plan)
 
     auditLog('view_action_plan_follow_up', 'admin', userId)
 
     return NextResponse.json(
-      { success: true, userId, followUp },
+      { success: true, userId, followUp, history },
       { headers: { 'Cache-Control': 'private, max-age=30' } },
     )
   } catch (error) {
@@ -162,6 +164,7 @@ export async function POST(request: NextRequest) {
     const supabase = getAdminSupabaseClient()
     const existing = await loadStoredPlan({ supabase, userId })
     const planWithFollowUp = withFollowUpStatus(existing.plan, followUp)
+    const history = extractActionPlanFollowUpHistory(planWithFollowUp)
 
     if (existing.missingTable) {
       const { error } = await supabase
@@ -191,7 +194,7 @@ export async function POST(request: NextRequest) {
       updatedByUserId: adminContext.userId,
     })
 
-    return NextResponse.json({ success: true, userId, followUp })
+    return NextResponse.json({ success: true, userId, followUp, history })
   } catch (error) {
     logger.error(
       'Unexpected error in admin action-plan-follow-up endpoint',

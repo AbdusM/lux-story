@@ -1,5 +1,5 @@
 import { extractAdvisorReview } from '@/lib/action-plan/advisor-review'
-import { extractActionPlanFollowUp } from '@/lib/action-plan/follow-up-status'
+import { extractActionPlanFollowUp, extractActionPlanFollowUpHistory } from '@/lib/action-plan/follow-up-status'
 import { extractOutcomeCheckIn } from '@/lib/action-plan/outcome-check-in'
 import { isStudentInsightsInteractionEvent, type StudentInsightsInteractionEventRow } from '@/lib/telemetry/admin-student-insights-helpers'
 import type {
@@ -130,6 +130,18 @@ function latestTimestamp(values: Array<string | null | undefined>): string | nul
   return valid.sort((left, right) => right.localeCompare(left))[0] ?? null
 }
 
+function isRecentIsoDate(value: string | null, options: {
+  days: number
+  referenceIso: string
+}): boolean {
+  if (!value) return false
+  const parsed = Date.parse(value)
+  const reference = Date.parse(options.referenceIso)
+  if (Number.isNaN(parsed)) return false
+  if (Number.isNaN(reference)) return false
+  return parsed >= reference - options.days * 24 * 60 * 60 * 1000
+}
+
 export function buildAdminStudentInsightsWorklist(params: {
   interactionEvents: StudentInsightsInteractionEventRow[]
   profiles?: ProfileSnapshot[]
@@ -164,6 +176,7 @@ export function buildAdminStudentInsightsWorklist(params: {
     const planSnapshot = plansByUserId.get(userId)
     const advisorReview = extractAdvisorReview(planSnapshot?.plan)
     const followUpStatus = extractActionPlanFollowUp(planSnapshot?.plan)
+    const followUpHistory = extractActionPlanFollowUpHistory(planSnapshot?.plan)
     const outcomeCheckIn = extractOutcomeCheckIn(planSnapshot?.plan)
     const flags = computeFlags({
       counts: summary.counts,
@@ -189,6 +202,18 @@ export function buildAdminStudentInsightsWorklist(params: {
             fullName: typeof followUpStatus.updatedBy.fullName === 'string' ? followUpStatus.updatedBy.fullName : null,
           }
         : null,
+      followUpHistory: followUpHistory.map((entry) => ({
+        status: entry.status,
+        updatedAt: entry.updatedAt,
+        note: typeof entry.note === 'string' ? entry.note : null,
+        updatedBy: entry.updatedBy
+          ? {
+              userId: entry.updatedBy.userId,
+              email: typeof entry.updatedBy.email === 'string' ? entry.updatedBy.email : null,
+              fullName: typeof entry.updatedBy.fullName === 'string' ? entry.updatedBy.fullName : null,
+            }
+          : null,
+      })),
       counts: summary.counts,
       outcomeCheckIn: outcomeCheckIn
         ? {
@@ -237,6 +262,38 @@ export function buildAdminStudentInsightsWorklist(params: {
     },
   )
 
+  const followUpSummary = items.reduce(
+    (acc, item) => {
+      switch (item.followUpStatus) {
+        case 'contacted':
+          acc.contacted += 1
+          break
+        case 'follow_up_due':
+          acc.followUpDue += 1
+          break
+        case 'resolved':
+          acc.resolved += 1
+          break
+        default:
+          acc.untracked += 1
+          break
+      }
+
+      if (isRecentIsoDate(item.followUpUpdatedAt, { days: 7, referenceIso: generatedAt })) {
+        acc.updatedLast7d += 1
+      }
+
+      return acc
+    },
+    {
+      untracked: 0,
+      contacted: 0,
+      followUpDue: 0,
+      resolved: 0,
+      updatedLast7d: 0,
+    },
+  )
+
   return {
     generatedAt,
     days: params.days,
@@ -244,6 +301,7 @@ export function buildAdminStudentInsightsWorklist(params: {
     totalUsersConsidered: items.length,
     flaggedUsers: flaggedItems.length,
     flags,
+    followUpSummary,
     outcomeSnapshot: {
       reporters: reporters.length,
       firstInterviewBooked,

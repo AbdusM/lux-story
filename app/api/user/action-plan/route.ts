@@ -102,7 +102,10 @@ export async function GET(request: NextRequest) {
           guidanceStateResult.state.snapshot ?? undefined,
         )
 
-    return NextResponse.json({ success: true, plan: mergedPlan })
+    return NextResponse.json({
+      success: true,
+      plan: isPlainObject(mergedPlan) ? stripFollowUpStatusFromPlan(mergedPlan) : mergedPlan,
+    })
   } catch (error) {
     return handleApiError(error, OPERATION_GET, 'GET')
   }
@@ -226,7 +229,10 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({ success: true, plan: responsePlan })
+    return NextResponse.json({
+      success: true,
+      plan: stripFollowUpStatusFromPlan(responsePlan),
+    })
   } catch (error) {
     return handleApiError(error, OPERATION_POST, 'POST')
   }

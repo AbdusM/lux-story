@@ -93,6 +93,28 @@ describe('admin student insights worklist', () => {
                 fullName: 'Avery Advisor',
               },
             },
+            followUpHistory: [
+              {
+                status: 'follow_up_due',
+                updatedAt: '2026-03-13T00:07:00.000Z',
+                note: 'Call after portfolio revision.',
+                updatedBy: {
+                  userId: 'admin_2',
+                  email: 'advisor@example.com',
+                  fullName: 'Avery Advisor',
+                },
+              },
+              {
+                status: 'contacted',
+                updatedAt: '2026-03-12T00:07:00.000Z',
+                note: 'Initial outreach complete.',
+                updatedBy: {
+                  userId: 'admin_1',
+                  email: 'coach@example.com',
+                  fullName: 'Chris Coach',
+                },
+              },
+            ],
           },
         },
       ],
@@ -106,12 +128,16 @@ describe('admin student insights worklist', () => {
     expect(summary.flags.stalled_without_interview).toBe(1)
     expect(summary.outcomeSnapshot.reporters).toBe(1)
     expect(summary.outcomeSnapshot.averageApplicationsSubmitted30d).toBe(8)
+    expect(summary.followUpSummary.untracked).toBe(1)
+    expect(summary.followUpSummary.followUpDue).toBe(1)
+    expect(summary.followUpSummary.resolved).toBe(0)
 
     expect(summary.items[0]?.userId).toBe('player_2')
     expect(summary.items[0]?.flags).toContain('high_effort_no_interview')
     expect(summary.items[0]?.followUpStatus).toBe('follow_up_due')
     expect(summary.items[0]?.followUpNote).toBe('Call after portfolio revision.')
     expect(summary.items[0]?.followUpUpdatedBy?.userId).toBe('admin_2')
+    expect(summary.items[0]?.followUpHistory).toHaveLength(2)
     expect(summary.items[1]?.userId).toBe('player_1')
     expect(summary.items[1]?.flags).toContain('needs_review')
     expect(summary.items[1]?.flags).toContain('needs_outcome_check_in')

@@ -143,6 +143,18 @@ describe('admin student insights worklist route', () => {
               fullName: 'Avery Advisor',
             },
           },
+          followUpHistory: [
+            {
+              status: 'follow_up_due',
+              updatedAt: '2026-03-13T00:02:00.000Z',
+              note: 'Review resume before next outreach.',
+              updatedBy: {
+                userId: 'admin_123',
+                email: 'advisor@example.com',
+                fullName: 'Avery Advisor',
+              },
+            },
+          ],
         },
       },
     ]
@@ -175,6 +187,8 @@ describe('admin student insights worklist route', () => {
     expect(payload.worklist.items[0]?.flags).toContain('needs_outcome_check_in')
     expect(payload.worklist.items[0]?.followUpNote).toBe('Review resume before next outreach.')
     expect(payload.worklist.items[0]?.followUpUpdatedBy?.userId).toBe('admin_123')
+    expect(payload.worklist.items[0]?.followUpHistory).toHaveLength(1)
+    expect(payload.worklist.followUpSummary.followUpDue).toBe(1)
     expect(mockAuditLog).toHaveBeenCalled()
   })
 })

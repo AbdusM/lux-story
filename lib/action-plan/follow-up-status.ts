@@ -23,6 +23,10 @@ export const ActionPlanFollowUpSchema = z
   })
   .passthrough()
 
+export const ActionPlanFollowUpHistorySchema = z
+  .array(ActionPlanFollowUpSchema)
+  .max(20)
+
 export type ActionPlanFollowUp = z.infer<typeof ActionPlanFollowUpSchema>
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
@@ -37,12 +41,24 @@ export function extractActionPlanFollowUp(plan: unknown): ActionPlanFollowUp | n
   return result.data
 }
 
+export function extractActionPlanFollowUpHistory(plan: unknown): ActionPlanFollowUp[] {
+  if (!isPlainObject(plan)) return []
+
+  const result = ActionPlanFollowUpHistorySchema.safeParse(plan.followUpHistory)
+  if (!result.success) return []
+  return result.data
+}
+
 export function stripFollowUpStatusFromPlan(
   plan: Record<string, unknown> | null | undefined,
 ): Record<string, unknown> {
   if (!isPlainObject(plan)) return {}
 
-  const { followUpStatus: _followUpStatus, ...rest } = plan
+  const {
+    followUpStatus: _followUpStatus,
+    followUpHistory: _followUpHistory,
+    ...rest
+  } = plan
   return rest
 }
 
@@ -50,8 +66,10 @@ export function withFollowUpStatus(
   plan: Record<string, unknown> | null | undefined,
   followUpStatus: ActionPlanFollowUp,
 ): Record<string, unknown> {
+  const existingHistory = extractActionPlanFollowUpHistory(plan)
   return {
     ...(isPlainObject(plan) ? plan : {}),
     followUpStatus,
+    followUpHistory: [followUpStatus, ...existingHistory].slice(0, 20),
   }
 }
