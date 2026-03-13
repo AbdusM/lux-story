@@ -23,6 +23,7 @@ import type {
   AdminGuidanceSummaryResponse,
   AdminGuidanceResponse,
 } from '@/lib/types/admin-api'
+import { NowcastingActionPlanSection } from '@/components/admin/sections/NowcastingActionPlanSection'
 
 interface ActionSectionProps {
   userId: string
@@ -212,6 +213,8 @@ export function ActionSection({ userId, profile, adminViewMode }: ActionSectionP
           </p>
         </div>
       )}
+
+      <NowcastingActionPlanSection userId={userId} adminViewMode={adminViewMode} />
 
       <Card className="border-slate-200 bg-slate-50/70">
         <CardHeader>
