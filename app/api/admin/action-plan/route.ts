@@ -76,9 +76,9 @@ export async function GET(request: NextRequest) {
   }
 
   const userId = request.nextUrl.searchParams.get('userId')
-  if (!userId) {
+  if (!userId || userId.length > 160) {
     return NextResponse.json(
-      { error: 'userId parameter required' },
+      { error: 'Invalid userId' },
       { status: 400 },
     )
   }
@@ -106,4 +106,3 @@ export async function GET(request: NextRequest) {
     )
   }
 }
-

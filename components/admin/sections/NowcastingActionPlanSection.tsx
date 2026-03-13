@@ -1,17 +1,29 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ClipboardCopy, Loader2, NotebookPen } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 type Posture = 'defend' | 'balance' | 'attack'
 type ProofArtifactKind = 'resume_bullets' | 'one_pager' | 'interview_stories'
+type AdvisorReviewStatus = 'draft' | 'needs_work' | 'approved'
 
 type AdminActionPlanResponse =
   | { success: true; userId: string; plan: unknown }
+  | { error: string }
+
+type AdminActionPlanReviewResponse =
+  | { success: true; userId: string; review: unknown }
   | { error: string }
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
@@ -32,6 +44,11 @@ function readProofKind(value: unknown): ProofArtifactKind | null {
   return null
 }
 
+function readReviewStatus(value: unknown): AdvisorReviewStatus | null {
+  if (value === 'draft' || value === 'needs_work' || value === 'approved') return value
+  return null
+}
+
 function postureLabel(posture: Posture): string {
   switch (posture) {
     case 'defend':
@@ -42,6 +59,21 @@ function postureLabel(posture: Posture): string {
       return 'Attack'
     default: {
       const exhaustive: never = posture
+      return exhaustive
+    }
+  }
+}
+
+function reviewStatusLabel(status: AdvisorReviewStatus): string {
+  switch (status) {
+    case 'draft':
+      return 'Draft'
+    case 'needs_work':
+      return 'Needs Work'
+    case 'approved':
+      return 'Approved'
+    default: {
+      const exhaustive: never = status
       return exhaustive
     }
   }
@@ -71,6 +103,18 @@ export function NowcastingActionPlanSection(props: {
   const [error, setError] = useState<string | null>(null)
   const [plan, setPlan] = useState<Record<string, unknown> | null>(null)
   const [copied, setCopied] = useState(false)
+  const reviewInitializedRef = useRef(false)
+  const [reviewStatus, setReviewStatus] = useState<AdvisorReviewStatus>('draft')
+  const [reviewFeedback, setReviewFeedback] = useState('')
+  const [reviewUpdatedAt, setReviewUpdatedAt] = useState<string | null>(null)
+  const [reviewSaving, setReviewSaving] = useState(false)
+  const [reviewCopied, setReviewCopied] = useState(false)
+  const [reviewError, setReviewError] = useState<string | null>(null)
+
+  useEffect(() => {
+    // Reset review init when swapping learners.
+    reviewInitializedRef.current = false
+  }, [userId])
 
   useEffect(() => {
     let cancelled = false
@@ -123,8 +167,21 @@ export function NowcastingActionPlanSection(props: {
       notes: readString(plan?.notes),
       proofKind,
       proofText: readString(plan?.proofText),
+      advisorReview: isPlainObject(plan?.advisorReview) ? plan?.advisorReview : null,
     }
   }, [plan])
+
+  useEffect(() => {
+    if (loading) return
+    if (reviewInitializedRef.current) return
+
+    const review = isPlainObject(draft.advisorReview) ? draft.advisorReview : null
+    const status = readReviewStatus(review?.status) ?? 'draft'
+    setReviewStatus(status)
+    setReviewFeedback(readString(review?.feedback))
+    setReviewUpdatedAt(readString(review?.updatedAt) || null)
+    reviewInitializedRef.current = true
+  }, [draft.advisorReview, loading])
 
   const handleCopyProof = async () => {
     if (!draft.proofText) return
@@ -135,6 +192,68 @@ export function NowcastingActionPlanSection(props: {
       window.setTimeout(() => setCopied(false), 1200)
     } catch {
       setError('Copy failed. Try selecting the text and copying manually.')
+    }
+  }
+
+  const handleCopyReview = async () => {
+    const text = reviewFeedback.trim()
+    if (!text) return
+
+    try {
+      await navigator.clipboard.writeText(text)
+      setReviewCopied(true)
+      window.setTimeout(() => setReviewCopied(false), 1200)
+    } catch {
+      setReviewError('Copy failed. Try selecting the text and copying manually.')
+    }
+  }
+
+  const handleSaveReview = async () => {
+    setReviewSaving(true)
+    setReviewError(null)
+
+    try {
+      const response = await fetch('/api/admin/action-plan-review', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          review: {
+            status: reviewStatus,
+            feedback: reviewFeedback,
+          },
+        }),
+      })
+      const body = (await response.json()) as AdminActionPlanReviewResponse
+
+      if (!response.ok) {
+        throw new Error('error' in body && typeof body.error === 'string' ? body.error : 'Unable to save review')
+      }
+
+      const savedReview = isPlainObject('review' in body ? body.review : null)
+        ? (body as { review: Record<string, unknown> }).review
+        : null
+
+      const nextUpdatedAt = readString(savedReview?.updatedAt) || new Date().toISOString()
+      setReviewUpdatedAt(nextUpdatedAt)
+      setPlan((current) => {
+        if (!current) return { advisorReview: { status: reviewStatus, feedback: reviewFeedback, updatedAt: nextUpdatedAt } }
+        return {
+          ...current,
+          advisorReview: {
+            status: reviewStatus,
+            feedback: reviewFeedback,
+            updatedAt: nextUpdatedAt,
+          },
+        }
+      })
+    } catch (saveError) {
+      setReviewError(saveError instanceof Error ? saveError.message : 'Unable to save review')
+    } finally {
+      setReviewSaving(false)
     }
   }
 
@@ -183,12 +302,103 @@ export function NowcastingActionPlanSection(props: {
           </div>
         ) : (
           <>
+            <div className="rounded-xl border border-emerald-200 bg-white/70 p-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="space-y-1">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-700">
+                    Advisor Review
+                  </p>
+                  <p className="text-sm text-slate-600">
+                    {adminViewMode === 'family'
+                      ? 'Leave a short note and mark whether this plan is ready to use.'
+                      : 'Persisted counselor/admin review attached to the learner plan.'}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {reviewFeedback.trim() ? (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleCopyReview}
+                      className="gap-2 bg-white/80 border-emerald-200"
+                    >
+                      <ClipboardCopy className="h-4 w-4" />
+                      {reviewCopied ? 'Copied' : 'Copy Note'}
+                    </Button>
+                  ) : null}
+                  <Button
+                    type="button"
+                    onClick={handleSaveReview}
+                    disabled={reviewSaving}
+                    className="gap-2"
+                  >
+                    {reviewSaving ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Saving…
+                      </>
+                    ) : (
+                      'Save Review'
+                    )}
+                  </Button>
+                </div>
+              </div>
+
+              {reviewError ? (
+                <div className="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                  {reviewError}
+                </div>
+              ) : null}
+
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                <div className="space-y-2">
+                  <p className="text-xs font-medium text-slate-700">Status</p>
+                  <Select
+                    value={reviewStatus}
+                    onValueChange={(value) => {
+                      const next = readReviewStatus(value)
+                      if (next) setReviewStatus(next)
+                    }}
+                  >
+                    <SelectTrigger className="bg-white/90 border-emerald-200">
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="draft">Draft</SelectItem>
+                      <SelectItem value="needs_work">Needs work</SelectItem>
+                      <SelectItem value="approved">Approved</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-xs font-medium text-slate-700">Last updated</p>
+                  <div className="rounded-md border border-emerald-200 bg-white/80 px-3 py-2 text-sm text-slate-700">
+                    {reviewUpdatedAt ? new Date(reviewUpdatedAt).toLocaleString() : '—'}
+                  </div>
+                </div>
+                <div className="md:col-span-2 space-y-2">
+                  <p className="text-xs font-medium text-slate-700">Feedback</p>
+                  <textarea
+                    value={reviewFeedback}
+                    onChange={(event) => setReviewFeedback(event.target.value)}
+                    placeholder={adminViewMode === 'family'
+                      ? 'Example: Great start. Next, add one adjacent on-ramp and tighten the proof bullets.'
+                      : 'Notes, change requests, or approval rationale.'}
+                    className="min-h-[120px] w-full rounded-xl border border-emerald-200 bg-white/90 p-3 text-sm outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200"
+                  />
+                </div>
+              </div>
+            </div>
+
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant="secondary">
                 Posture: {draft.posture ? postureLabel(draft.posture) : 'Unknown'}
               </Badge>
               <Badge variant="outline">
                 Proof: {draft.proofKind ? proofKindLabel(draft.proofKind) : 'Unknown'}
+              </Badge>
+              <Badge variant={reviewStatus === 'approved' ? 'default' : 'outline'}>
+                Review: {reviewStatusLabel(reviewStatus)}
               </Badge>
               {draft.updatedAt ? (
                 <Badge variant="outline">Updated: {new Date(draft.updatedAt).toLocaleString()}</Badge>
@@ -271,4 +481,3 @@ export function NowcastingActionPlanSection(props: {
     </Card>
   )
 }
-

@@ -19,6 +19,7 @@ import {
 } from '@/lib/guidance/storage'
 import { logger } from '@/lib/logger'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
+import { stripAdvisorReviewFromPlan } from '@/lib/action-plan/advisor-review'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -128,14 +129,17 @@ export async function POST(request: NextRequest) {
     })
     if (mismatch) return mismatch
 
+    // Defense in depth: learners must not be able to write counselor/admin-only fields.
+    const sanitizedPlan = stripAdvisorReviewFromPlan(plan)
+
     const supabase = getSupabaseServerClient()
     const [existing, existingGuidanceState] = await Promise.all([
       loadExistingPlan(session.userId),
       loadGuidanceStateForUser(supabase, session.userId),
     ])
 
-    const incomingGuidanceRecord = extractRemoteGuidanceRecord(plan)
-    const incomingGuidanceSnapshot = extractRemoteGuidanceSnapshot(plan)
+    const incomingGuidanceRecord = extractRemoteGuidanceRecord(sanitizedPlan)
+    const incomingGuidanceSnapshot = extractRemoteGuidanceSnapshot(sanitizedPlan)
     const legacyStoredGuidanceRecord = extractRemoteGuidanceRecord(existing.plan)
     const legacyStoredGuidanceSnapshot = extractRemoteGuidanceSnapshot(existing.plan)
     const guidanceRecordToPersist = incomingGuidanceRecord ?? legacyStoredGuidanceRecord
@@ -143,7 +147,7 @@ export async function POST(request: NextRequest) {
       incomingGuidanceSnapshot ?? legacyStoredGuidanceSnapshot
     const mergedPlan = {
       ...stripGuidanceFromPlan(existing.plan),
-      ...stripGuidanceFromPlan(plan),
+      ...stripGuidanceFromPlan(sanitizedPlan),
     }
 
     if (

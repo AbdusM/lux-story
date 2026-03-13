@@ -32,6 +32,13 @@ interface ActionPlanSectionProps {
 }
 
 type ProofArtifactKind = 'resume_bullets' | 'one_pager' | 'interview_stories'
+type AdvisorReviewStatus = 'draft' | 'needs_work' | 'approved'
+
+interface AdvisorReview {
+  status: AdvisorReviewStatus
+  feedback: string
+  updatedAt: string
+}
 
 interface ActionPlanDraft {
   posture: Posture
@@ -64,6 +71,54 @@ function readPosture(value: unknown): Posture | null {
 function readProofKind(value: unknown): ProofArtifactKind | null {
   if (value === 'resume_bullets' || value === 'one_pager' || value === 'interview_stories') return value
   return null
+}
+
+function readAdvisorReviewStatus(value: unknown): AdvisorReviewStatus | null {
+  if (value === 'draft' || value === 'needs_work' || value === 'approved') return value
+  return null
+}
+
+function extractAdvisorReview(plan: Record<string, unknown> | null): AdvisorReview | null {
+  const review = asPlanRecord(plan?.advisorReview)
+  const status = readAdvisorReviewStatus(review?.status)
+  const updatedAt = readString(review?.updatedAt)
+  if (!review || !status || !updatedAt) return null
+
+  return {
+    status,
+    updatedAt,
+    feedback: readString(review.feedback),
+  }
+}
+
+function advisorReviewTone(status: AdvisorReviewStatus): string {
+  switch (status) {
+    case 'approved':
+      return 'border-emerald-200 bg-emerald-50/70'
+    case 'needs_work':
+      return 'border-amber-200 bg-amber-50/70'
+    case 'draft':
+      return 'border-slate-200 bg-slate-50/70'
+    default: {
+      const exhaustive: never = status
+      return exhaustive
+    }
+  }
+}
+
+function advisorReviewLabel(status: AdvisorReviewStatus): string {
+  switch (status) {
+    case 'approved':
+      return 'Approved'
+    case 'needs_work':
+      return 'Needs Work'
+    case 'draft':
+      return 'Draft'
+    default: {
+      const exhaustive: never = status
+      return exhaustive
+    }
+  }
 }
 
 function postureLabel(posture: Posture): string {
@@ -370,6 +425,8 @@ export function ActionPlanSection({
     Boolean(draft.adjacentRoute) ||
     Boolean(draft.proofText)
 
+  const advisorReview = useMemo(() => extractAdvisorReview(rawPlan), [rawPlan])
+
   const updateField = <K extends keyof ActionPlanDraft>(field: K, value: ActionPlanDraft[K]) => {
     setDraft((current) => ({ ...current, [field]: value }))
   }
@@ -533,6 +590,25 @@ export function ActionPlanSection({
           </div>
         ) : (
           <>
+            {advisorReview ? (
+              <div className={`rounded-2xl border p-4 shadow-sm ${advisorReviewTone(advisorReview.status)}`}>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-700">
+                  Advisor Review
+                </p>
+                <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-slate-700">
+                  <span className="font-medium">Status:</span>
+                  <span>{advisorReviewLabel(advisorReview.status)}</span>
+                  <span className="text-slate-500">·</span>
+                  <span className="text-slate-600">
+                    Updated {new Date(advisorReview.updatedAt).toLocaleString()}
+                  </span>
+                </div>
+                <p className="mt-3 whitespace-pre-wrap text-sm text-slate-700">
+                  {advisorReview.feedback || 'No feedback note yet.'}
+                </p>
+              </div>
+            ) : null}
+
             <div className="rounded-2xl border border-emerald-200 bg-white/70 p-4 shadow-sm">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
                 Your Posture

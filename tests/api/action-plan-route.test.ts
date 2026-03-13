@@ -336,4 +336,33 @@ describe('action-plan route', () => {
       adaptiveGuidance: payload,
     })
   })
+
+  test('POST strips advisorReview from learner write payload', async () => {
+    store.userActionPlan = { existingFocus: 'keep' }
+
+    const { POST } = await import('@/app/api/user/action-plan/route')
+    const request = createRequest('http://localhost:3000/api/user/action-plan', {
+      method: 'POST',
+      cookies: sessionCookieFor(),
+      body: {
+        userId: 'player_123',
+        plan: {
+          existingFocus: 'keep',
+          advisorReview: {
+            status: 'approved',
+            feedback: 'User should not be allowed to write this.',
+            updatedAt: '2026-03-08T12:00:00.000Z',
+          },
+        },
+      },
+    })
+
+    const response = await POST(request)
+    const data = await response.json()
+
+    expect(response.status).toBe(200)
+    expect(data.success).toBe(true)
+    expect(data.plan.advisorReview).toBeUndefined()
+    expect(store.userActionPlan).toEqual({ existingFocus: 'keep' })
+  })
 })
