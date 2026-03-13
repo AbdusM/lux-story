@@ -18,28 +18,30 @@ const mockSupabaseResponse = {
 }
 
 vi.mock('@supabase/supabase-js', () => ({
-  createClient: vi.fn(() => ({
-    from: vi.fn(() => ({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn(() => Promise.resolve(mockSupabaseResponse)),
-          order: vi.fn(() => Promise.resolve(mockSupabaseResponse)),
-          abortSignal: vi.fn(() => Promise.resolve(mockSupabaseResponse))
+  createClient: vi.fn(() => {
+    const selectChain = {
+      eq: vi.fn(() => selectChain),
+      order: vi.fn(() => Promise.resolve(mockSupabaseResponse)),
+      abortSignal: vi.fn(() => Promise.resolve(mockSupabaseResponse)),
+      single: vi.fn(() => Promise.resolve(mockSupabaseResponse)),
+    }
+
+    return {
+      from: vi.fn(() => ({
+        select: vi.fn(() => selectChain),
+        upsert: vi.fn(() => ({
+          select: vi.fn(() => ({
+            single: vi.fn(() => Promise.resolve(mockSupabaseResponse))
+          }))
         })),
-        abortSignal: vi.fn(() => Promise.resolve(mockSupabaseResponse))
-      })),
-      upsert: vi.fn(() => ({
-        select: vi.fn(() => ({
-          single: vi.fn(() => Promise.resolve(mockSupabaseResponse))
-        }))
-      })),
-      insert: vi.fn(() => ({
-        select: vi.fn(() => ({
-          single: vi.fn(() => Promise.resolve(mockSupabaseResponse))
+        insert: vi.fn(() => ({
+          select: vi.fn(() => ({
+            single: vi.fn(() => Promise.resolve(mockSupabaseResponse))
+          }))
         }))
       }))
-    }))
-  }))
+    }
+  })
 }))
 
 vi.mock('@/lib/api/ensure-player-profile', () => ({

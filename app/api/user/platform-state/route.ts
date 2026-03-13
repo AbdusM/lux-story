@@ -24,6 +24,7 @@ export const runtime = 'nodejs'
 
 const OPERATION_GET = 'platform-state.get'
 const OPERATION_POST = 'platform-state.post'
+const GLOBAL_PLATFORM_STATE_ID = 'global'
 
 const MAX_BODY_BYTES = 16_384
 
@@ -60,6 +61,7 @@ export async function POST(request: NextRequest) {
     // Build update object with only provided fields
     const updateData: Record<string, unknown> = {
       user_id: session.userId,
+      platform_id: GLOBAL_PLATFORM_STATE_ID,
       updated_at: updated_at || new Date().toISOString()
     }
     if (current_scene !== undefined) updateData.current_scene = current_scene
@@ -68,7 +70,7 @@ export async function POST(request: NextRequest) {
 
     const { data, error } = await supabase
       .from('platform_states')
-      .upsert(updateData, { onConflict: 'user_id' })
+      .upsert(updateData, { onConflict: 'user_id,platform_id' })
       .select()
       .single()
 
@@ -109,6 +111,7 @@ export async function GET(request: NextRequest) {
       .from('platform_states')
       .select('*')
       .eq('user_id', session.userId)
+      .eq('platform_id', GLOBAL_PLATFORM_STATE_ID)
       .single()
 
     // PGRST116 = no rows returned (not an error)
