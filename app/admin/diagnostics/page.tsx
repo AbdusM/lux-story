@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -16,6 +16,7 @@ import { AlertCircle, ArrowUpRight, BarChart3, CheckCircle, ClipboardList, Datab
 import { AdminUtilityNav } from '@/components/admin/AdminUtilityNav'
 import { cn } from '@/lib/utils'
 import type {
+  AdminStudentInsightsFollowUpStatus,
   AdminLaborMarketSignalDatasetSummary,
   AdminLaborMarketSignalReport,
   AdminLaborMarketSignalRowSummary,
@@ -86,6 +87,12 @@ const STUDENT_INSIGHTS_QUEUE_FLAG_BADGE: Record<AdminStudentInsightsQueueFlag, '
   stalled_without_interview: 'default',
 }
 
+const STUDENT_INSIGHTS_FOLLOW_UP_LABELS: Record<AdminStudentInsightsFollowUpStatus, string> = {
+  contacted: 'Contacted',
+  follow_up_due: 'Follow-Up Due',
+  resolved: 'Resolved',
+}
+
 export default function AdminDiagnosticsPage() {
   const [loading, setLoading] = useState(false)
   const [report, setReport] = useState<ConsistencyReport | null>(null)
@@ -98,6 +105,10 @@ export default function AdminDiagnosticsPage() {
   const [studentInsightsWorklist, setStudentInsightsWorklist] = useState<AdminStudentInsightsWorklistSummary | null>(null)
   const [studentInsightsError, setStudentInsightsError] = useState<string | null>(null)
   const [studentInsightsDays, setStudentInsightsDays] = useState<number>(30)
+  const [queueFlagFilter, setQueueFlagFilter] = useState<'all' | AdminStudentInsightsQueueFlag>('all')
+  const [queueFollowUpFilter, setQueueFollowUpFilter] = useState<'all' | 'untracked' | AdminStudentInsightsFollowUpStatus>('all')
+  const [worklistSavingUserId, setWorklistSavingUserId] = useState<string | null>(null)
+  const [worklistSaveError, setWorklistSaveError] = useState<string | null>(null)
 
   const runConsistencyCheck = async (autoFix: boolean = false) => {
     setLoading(true)
@@ -170,6 +181,7 @@ export default function AdminDiagnosticsPage() {
       const worklistData: AdminStudentInsightsWorklistResponse = await worklistResponse.json()
       setStudentInsightsSummary(summaryData.summary)
       setStudentInsightsWorklist(worklistData.worklist)
+      setWorklistSaveError(null)
     } catch (err) {
       setStudentInsightsError(err instanceof Error ? err.message : 'Unknown error occurred')
       setStudentInsightsSummary(null)
@@ -186,6 +198,65 @@ export default function AdminDiagnosticsPage() {
   useEffect(() => {
     void runStudentInsightsCheck()
   }, [runStudentInsightsCheck])
+
+  const filteredWorklistItems = useMemo(() => {
+    const items = studentInsightsWorklist?.items ?? []
+    return items.filter((item) => {
+      const matchesFlag = queueFlagFilter === 'all' || item.flags.includes(queueFlagFilter)
+      const matchesFollowUp =
+        queueFollowUpFilter === 'all'
+          ? true
+          : queueFollowUpFilter === 'untracked'
+            ? item.followUpStatus === null
+            : item.followUpStatus === queueFollowUpFilter
+
+      return matchesFlag && matchesFollowUp
+    })
+  }, [queueFlagFilter, queueFollowUpFilter, studentInsightsWorklist])
+
+  const handleFollowUpUpdate = useCallback(async (
+    userId: string,
+    status: AdminStudentInsightsFollowUpStatus,
+  ) => {
+    setWorklistSavingUserId(userId)
+    setWorklistSaveError(null)
+
+    try {
+      const response = await fetch('/api/admin/action-plan-follow-up', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          userId,
+          followUp: { status },
+        }),
+      })
+
+      const data = await response.json()
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update follow-up status')
+      }
+
+      setStudentInsightsWorklist((current) => {
+        if (!current) return current
+        const updatedAt = typeof data?.followUp?.updatedAt === 'string' ? data.followUp.updatedAt : new Date().toISOString()
+        return {
+          ...current,
+          items: current.items.map((item) => (
+            item.userId === userId
+              ? { ...item, followUpStatus: status, followUpUpdatedAt: updatedAt }
+              : item
+          )),
+        }
+      })
+    } catch (error) {
+      setWorklistSaveError(error instanceof Error ? error.message : 'Failed to update follow-up status')
+    } finally {
+      setWorklistSavingUserId(null)
+    }
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -615,12 +686,75 @@ export default function AdminDiagnosticsPage() {
                         </CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-3">
-                        {studentInsightsWorklist.items.length === 0 ? (
+                        <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50/70 p-3 md:flex-row md:items-center md:justify-between">
+                          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                            <div className="min-w-[190px]">
+                              <p className="mb-2 text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+                                Flag Filter
+                              </p>
+                              <Select
+                                value={queueFlagFilter}
+                                onValueChange={(value) => {
+                                  setQueueFlagFilter(value as 'all' | AdminStudentInsightsQueueFlag)
+                                }}
+                              >
+                                <SelectTrigger className="bg-white">
+                                  <SelectValue placeholder="All flags" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="all">All Flags</SelectItem>
+                                  {Object.entries(STUDENT_INSIGHTS_QUEUE_FLAG_LABELS).map(([flag, label]) => (
+                                    <SelectItem key={flag} value={flag}>
+                                      {label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+
+                            <div className="min-w-[190px]">
+                              <p className="mb-2 text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+                                Follow-Up Filter
+                              </p>
+                              <Select
+                                value={queueFollowUpFilter}
+                                onValueChange={(value) => {
+                                  setQueueFollowUpFilter(value as 'all' | 'untracked' | AdminStudentInsightsFollowUpStatus)
+                                }}
+                              >
+                                <SelectTrigger className="bg-white">
+                                  <SelectValue placeholder="All follow-up states" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="all">All Follow-Up States</SelectItem>
+                                  <SelectItem value="untracked">Untracked</SelectItem>
+                                  {Object.entries(STUDENT_INSIGHTS_FOLLOW_UP_LABELS).map(([status, label]) => (
+                                    <SelectItem key={status} value={status}>
+                                      {label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+
+                          <p className="text-sm text-slate-600">
+                            Showing {filteredWorklistItems.length} of {studentInsightsWorklist.items.length} flagged learners
+                          </p>
+                        </div>
+
+                        {worklistSaveError ? (
+                          <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                            {worklistSaveError}
+                          </div>
+                        ) : null}
+
+                        {filteredWorklistItems.length === 0 ? (
                           <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
-                            No flagged learners in the current window.
+                            No learners match the current queue filters.
                           </div>
                         ) : (
-                          studentInsightsWorklist.items.map((item) => (
+                          filteredWorklistItems.map((item) => (
                             <div
                               key={item.userId}
                               className="rounded-lg border border-slate-200 bg-white/80 p-4"
@@ -644,6 +778,9 @@ export default function AdminDiagnosticsPage() {
                                     ))}
                                     <Badge variant="outline">
                                       Review: {item.advisorReviewStatus ? item.advisorReviewStatus.replace('_', ' ') : 'none'}
+                                    </Badge>
+                                    <Badge variant={item.followUpStatus === 'resolved' ? 'default' : 'outline'}>
+                                      Follow-Up: {item.followUpStatus ? STUDENT_INSIGHTS_FOLLOW_UP_LABELS[item.followUpStatus] : 'Untracked'}
                                     </Badge>
                                   </div>
 
@@ -675,14 +812,51 @@ export default function AdminDiagnosticsPage() {
                                           ? `Latest event ${new Date(item.latestEventAt).toLocaleString()}`
                                           : 'No recent timestamp'}
                                   </p>
+                                  <p className="text-xs text-slate-500">
+                                    {item.followUpUpdatedAt
+                                      ? `Follow-up status updated ${new Date(item.followUpUpdatedAt).toLocaleString()}`
+                                      : 'No counselor follow-up status set yet.'}
+                                  </p>
                                 </div>
 
-                                <Button asChild variant="outline" size="sm" className="gap-2 bg-white">
-                                  <Link href={`/admin/${encodeURIComponent(item.userId)}/action`}>
-                                    Open Learner
-                                    <ArrowUpRight className="h-4 w-4" />
-                                  </Link>
-                                </Button>
+                                <div className="flex flex-col gap-2">
+                                  <Button
+                                    type="button"
+                                    variant={item.followUpStatus === 'contacted' ? 'default' : 'outline'}
+                                    size="sm"
+                                    className="bg-white"
+                                    disabled={worklistSavingUserId === item.userId}
+                                    onClick={() => void handleFollowUpUpdate(item.userId, 'contacted')}
+                                  >
+                                    Contacted
+                                  </Button>
+                                  <Button
+                                    type="button"
+                                    variant={item.followUpStatus === 'follow_up_due' ? 'default' : 'outline'}
+                                    size="sm"
+                                    className="bg-white"
+                                    disabled={worklistSavingUserId === item.userId}
+                                    onClick={() => void handleFollowUpUpdate(item.userId, 'follow_up_due')}
+                                  >
+                                    Follow-Up Due
+                                  </Button>
+                                  <Button
+                                    type="button"
+                                    variant={item.followUpStatus === 'resolved' ? 'default' : 'outline'}
+                                    size="sm"
+                                    className="bg-white"
+                                    disabled={worklistSavingUserId === item.userId}
+                                    onClick={() => void handleFollowUpUpdate(item.userId, 'resolved')}
+                                  >
+                                    Resolved
+                                  </Button>
+                                  <Button asChild variant="outline" size="sm" className="gap-2 bg-white">
+                                    <Link href={`/admin/${encodeURIComponent(item.userId)}/action`}>
+                                      Open Learner
+                                      <ArrowUpRight className="h-4 w-4" />
+                                    </Link>
+                                  </Button>
+                                </div>
                               </div>
                             </div>
                           ))

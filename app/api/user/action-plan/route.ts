@@ -20,6 +20,7 @@ import {
 import { logger } from '@/lib/logger'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { stripAdvisorReviewFromPlan } from '@/lib/action-plan/advisor-review'
+import { stripFollowUpStatusFromPlan } from '@/lib/action-plan/follow-up-status'
 import { sanitizeUserWritableActionPlan } from '@/lib/action-plan/user-plan-sanitizer'
 
 export const dynamic = 'force-dynamic'
@@ -132,7 +133,8 @@ export async function POST(request: NextRequest) {
 
     // Defense in depth: learners must not be able to write counselor/admin-only fields.
     const withoutAdvisorReview = stripAdvisorReviewFromPlan(plan)
-    const sanitized = sanitizeUserWritableActionPlan(withoutAdvisorReview)
+    const withoutAdminOnlyFields = stripFollowUpStatusFromPlan(withoutAdvisorReview)
+    const sanitized = sanitizeUserWritableActionPlan(withoutAdminOnlyFields)
     if (!sanitized.ok) {
       return NextResponse.json(
         { success: false, error: 'Invalid action plan payload' },

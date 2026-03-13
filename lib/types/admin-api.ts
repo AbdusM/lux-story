@@ -472,6 +472,11 @@ export type AdminStudentInsightsQueueFlag =
   | 'high_effort_no_interview'
   | 'stalled_without_interview'
 
+export type AdminStudentInsightsFollowUpStatus =
+  | 'contacted'
+  | 'follow_up_due'
+  | 'resolved'
+
 export interface AdminStudentInsightsWorklistItem {
   userId: string
   email: string | null
@@ -480,6 +485,8 @@ export interface AdminStudentInsightsWorklistItem {
   actionPlanUpdatedAt: string | null
   advisorReviewStatus: 'draft' | 'needs_work' | 'approved' | null
   advisorReviewUpdatedAt: string | null
+  followUpStatus: AdminStudentInsightsFollowUpStatus | null
+  followUpUpdatedAt: string | null
   counts: AdminStudentInsightsFunnelStageCounts
   outcomeCheckIn: {
     applicationsSubmitted30d: number

@@ -1,4 +1,5 @@
 import { extractAdvisorReview } from '@/lib/action-plan/advisor-review'
+import { extractActionPlanFollowUp } from '@/lib/action-plan/follow-up-status'
 import { extractOutcomeCheckIn } from '@/lib/action-plan/outcome-check-in'
 import { isStudentInsightsInteractionEvent, type StudentInsightsInteractionEventRow } from '@/lib/telemetry/admin-student-insights-helpers'
 import type {
@@ -162,6 +163,7 @@ export function buildAdminStudentInsightsWorklist(params: {
     const profile = profilesByUserId.get(userId)
     const planSnapshot = plansByUserId.get(userId)
     const advisorReview = extractAdvisorReview(planSnapshot?.plan)
+    const followUpStatus = extractActionPlanFollowUp(planSnapshot?.plan)
     const outcomeCheckIn = extractOutcomeCheckIn(planSnapshot?.plan)
     const flags = computeFlags({
       counts: summary.counts,
@@ -177,6 +179,8 @@ export function buildAdminStudentInsightsWorklist(params: {
       actionPlanUpdatedAt: latestTimestamp([planSnapshot?.updatedAt, typeof planSnapshot?.plan?.updatedAt === 'string' ? planSnapshot.plan.updatedAt : null]),
       advisorReviewStatus: advisorReview?.status ?? null,
       advisorReviewUpdatedAt: advisorReview?.updatedAt ?? null,
+      followUpStatus: followUpStatus?.status ?? null,
+      followUpUpdatedAt: followUpStatus?.updatedAt ?? null,
       counts: summary.counts,
       outcomeCheckIn: outcomeCheckIn
         ? {
