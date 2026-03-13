@@ -1,7 +1,13 @@
 [
   {
-    "careerIds": ["healthcare-tech"],
-    "aliases": ["healthcare technology specialist", "health informatics", "healthcare support"],
+    "careerIds": [
+      "healthcare-tech"
+    ],
+    "aliases": [
+      "healthcare technology specialist",
+      "health informatics",
+      "healthcare support"
+    ],
     "descriptor": {
       "level": "medium",
       "confidence": "medium",
@@ -21,8 +27,13 @@
     }
   },
   {
-    "careerIds": ["sustainable-construction"],
-    "aliases": ["sustainable construction manager", "construction manager"],
+    "careerIds": [
+      "sustainable-construction"
+    ],
+    "aliases": [
+      "sustainable construction manager",
+      "construction manager"
+    ],
     "descriptor": {
       "level": "medium",
       "confidence": "medium",
@@ -42,8 +53,14 @@
     }
   },
   {
-    "careerIds": ["data-analyst-community"],
-    "aliases": ["community data analyst", "data analyst", "data journalist / analyst"],
+    "careerIds": [
+      "data-analyst-community"
+    ],
+    "aliases": [
+      "community data analyst",
+      "data analyst",
+      "data journalist / analyst"
+    ],
     "descriptor": {
       "level": "high",
       "confidence": "medium",
@@ -63,8 +80,13 @@
     }
   },
   {
-    "careerIds": ["creative-entrepreneur"],
-    "aliases": ["creative entrepreneur", "digital creative director"],
+    "careerIds": [
+      "creative-entrepreneur"
+    ],
+    "aliases": [
+      "creative entrepreneur",
+      "digital creative director"
+    ],
     "descriptor": {
       "level": "high",
       "confidence": "medium",
@@ -84,8 +106,12 @@
     }
   },
   {
-    "careerIds": ["cybersecurity-specialist"],
-    "aliases": ["cybersecurity specialist"],
+    "careerIds": [
+      "cybersecurity-specialist"
+    ],
+    "aliases": [
+      "cybersecurity specialist"
+    ],
     "descriptor": {
       "level": "high",
       "confidence": "medium",
@@ -105,8 +131,13 @@
     }
   },
   {
-    "careerIds": ["learning-experience-architect"],
-    "aliases": ["learning experience architect", "technical educator / content creator"],
+    "careerIds": [
+      "learning-experience-architect"
+    ],
+    "aliases": [
+      "learning experience architect",
+      "technical educator / content creator"
+    ],
     "descriptor": {
       "level": "high",
       "confidence": "medium",
@@ -126,8 +157,13 @@
     }
   },
   {
-    "careerIds": ["advanced-logistics"],
-    "aliases": ["advanced logistics & manufacturing", "logistics manager"],
+    "careerIds": [
+      "advanced-logistics"
+    ],
+    "aliases": [
+      "advanced logistics & manufacturing",
+      "logistics manager"
+    ],
     "descriptor": {
       "level": "low",
       "confidence": "low",
@@ -148,7 +184,11 @@
   },
   {
     "careerIds": [],
-    "aliases": ["software developer", "developer", "programmer"],
+    "aliases": [
+      "software developer",
+      "developer",
+      "programmer"
+    ],
     "descriptor": {
       "level": "high",
       "confidence": "medium",
