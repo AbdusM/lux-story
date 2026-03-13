@@ -7,7 +7,11 @@ import {
   withFollowUpStatus,
 } from '@/lib/action-plan/follow-up-status'
 import { auditLog } from '@/lib/audit-logger'
-import { getAdminSupabaseClient, requireAdminAuth } from '@/lib/admin-supabase-client'
+import {
+  getAdminSupabaseClient,
+  getAuthenticatedAdminContext,
+  requireAdminAuth,
+} from '@/lib/admin-supabase-client'
 import { readJsonBody } from '@/lib/api/request-body'
 import { logger } from '@/lib/logger'
 import { getClientIp, rateLimit } from '@/lib/rate-limit'
@@ -24,6 +28,7 @@ const FollowUpUpsertBodySchema = z.object({
   userId: z.string().min(1).max(160),
   followUp: z.object({
     status: ActionPlanFollowUpStatusSchema,
+    note: z.string().max(2_000).optional(),
   }),
 })
 
@@ -116,8 +121,11 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const authError = await requireAdminAuth(request)
+  const [adminContext, authError] = await getAuthenticatedAdminContext(request)
   if (authError) return authError
+  if (!adminContext) {
+    return NextResponse.json({ error: 'Unauthorized - Please sign in' }, { status: 401 })
+  }
 
   const ip = getClientIp(request)
   try {
@@ -138,9 +146,16 @@ export async function POST(request: NextRequest) {
   }
 
   const userId = body.data.userId
+  const note = body.data.followUp.note?.trim() ?? ''
   const followUp = {
     status: body.data.followUp.status,
     updatedAt: new Date().toISOString(),
+    ...(note.length > 0 ? { note } : {}),
+    updatedBy: {
+      userId: adminContext.userId,
+      email: adminContext.email,
+      fullName: adminContext.fullName,
+    },
   }
 
   try {
@@ -172,6 +187,8 @@ export async function POST(request: NextRequest) {
 
     auditLog('update_action_plan_follow_up', 'admin', userId, {
       status: followUp.status,
+      hasNote: note.length > 0,
+      updatedByUserId: adminContext.userId,
     })
 
     return NextResponse.json({ success: true, userId, followUp })

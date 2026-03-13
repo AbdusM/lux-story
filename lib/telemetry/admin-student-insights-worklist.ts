@@ -181,6 +181,14 @@ export function buildAdminStudentInsightsWorklist(params: {
       advisorReviewUpdatedAt: advisorReview?.updatedAt ?? null,
       followUpStatus: followUpStatus?.status ?? null,
       followUpUpdatedAt: followUpStatus?.updatedAt ?? null,
+      followUpNote: typeof followUpStatus?.note === 'string' ? followUpStatus.note : null,
+      followUpUpdatedBy: followUpStatus?.updatedBy
+        ? {
+            userId: followUpStatus.updatedBy.userId,
+            email: typeof followUpStatus.updatedBy.email === 'string' ? followUpStatus.updatedBy.email : null,
+            fullName: typeof followUpStatus.updatedBy.fullName === 'string' ? followUpStatus.updatedBy.fullName : null,
+          }
+        : null,
       counts: summary.counts,
       outcomeCheckIn: outcomeCheckIn
         ? {

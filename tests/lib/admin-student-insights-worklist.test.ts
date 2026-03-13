@@ -83,6 +83,16 @@ describe('admin student insights worklist', () => {
               firstInterviewBooked: false,
               updatedAt: '2026-03-13T00:06:00.000Z',
             },
+            followUpStatus: {
+              status: 'follow_up_due',
+              updatedAt: '2026-03-13T00:07:00.000Z',
+              note: 'Call after portfolio revision.',
+              updatedBy: {
+                userId: 'admin_2',
+                email: 'advisor@example.com',
+                fullName: 'Avery Advisor',
+              },
+            },
           },
         },
       ],
@@ -99,6 +109,9 @@ describe('admin student insights worklist', () => {
 
     expect(summary.items[0]?.userId).toBe('player_2')
     expect(summary.items[0]?.flags).toContain('high_effort_no_interview')
+    expect(summary.items[0]?.followUpStatus).toBe('follow_up_due')
+    expect(summary.items[0]?.followUpNote).toBe('Call after portfolio revision.')
+    expect(summary.items[0]?.followUpUpdatedBy?.userId).toBe('admin_2')
     expect(summary.items[1]?.userId).toBe('player_1')
     expect(summary.items[1]?.flags).toContain('needs_review')
     expect(summary.items[1]?.flags).toContain('needs_outcome_check_in')

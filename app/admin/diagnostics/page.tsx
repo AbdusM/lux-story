@@ -16,6 +16,7 @@ import { AlertCircle, ArrowUpRight, BarChart3, CheckCircle, ClipboardList, Datab
 import { AdminUtilityNav } from '@/components/admin/AdminUtilityNav'
 import { cn } from '@/lib/utils'
 import type {
+  AdminStudentInsightsFollowUpActor,
   AdminStudentInsightsFollowUpStatus,
   AdminLaborMarketSignalDatasetSummary,
   AdminLaborMarketSignalReport,
@@ -93,6 +94,31 @@ const STUDENT_INSIGHTS_FOLLOW_UP_LABELS: Record<AdminStudentInsightsFollowUpStat
   resolved: 'Resolved',
 }
 
+function buildWorklistNoteDrafts(summary: AdminStudentInsightsWorklistSummary): Record<string, string> {
+  return Object.fromEntries(
+    summary.items.map((item) => [item.userId, item.followUpNote ?? '']),
+  )
+}
+
+function extractFollowUpActor(value: unknown): AdminStudentInsightsFollowUpActor | null {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null
+
+  const candidate = value as Record<string, unknown>
+  const userId = typeof candidate.userId === 'string' ? candidate.userId : null
+  if (!userId) return null
+
+  return {
+    userId,
+    email: typeof candidate.email === 'string' ? candidate.email : null,
+    fullName: typeof candidate.fullName === 'string' ? candidate.fullName : null,
+  }
+}
+
+function formatFollowUpActor(actor: AdminStudentInsightsFollowUpActor | null): string {
+  if (!actor) return 'Unknown counselor'
+  return actor.fullName || actor.email || actor.userId
+}
+
 export default function AdminDiagnosticsPage() {
   const [loading, setLoading] = useState(false)
   const [report, setReport] = useState<ConsistencyReport | null>(null)
@@ -109,6 +135,7 @@ export default function AdminDiagnosticsPage() {
   const [queueFollowUpFilter, setQueueFollowUpFilter] = useState<'all' | 'untracked' | AdminStudentInsightsFollowUpStatus>('all')
   const [worklistSavingUserId, setWorklistSavingUserId] = useState<string | null>(null)
   const [worklistSaveError, setWorklistSaveError] = useState<string | null>(null)
+  const [worklistNoteDrafts, setWorklistNoteDrafts] = useState<Record<string, string>>({})
 
   const runConsistencyCheck = async (autoFix: boolean = false) => {
     setLoading(true)
@@ -181,11 +208,13 @@ export default function AdminDiagnosticsPage() {
       const worklistData: AdminStudentInsightsWorklistResponse = await worklistResponse.json()
       setStudentInsightsSummary(summaryData.summary)
       setStudentInsightsWorklist(worklistData.worklist)
+      setWorklistNoteDrafts(buildWorklistNoteDrafts(worklistData.worklist))
       setWorklistSaveError(null)
     } catch (err) {
       setStudentInsightsError(err instanceof Error ? err.message : 'Unknown error occurred')
       setStudentInsightsSummary(null)
       setStudentInsightsWorklist(null)
+      setWorklistNoteDrafts({})
     } finally {
       setStudentInsightsLoading(false)
     }
@@ -217,9 +246,11 @@ export default function AdminDiagnosticsPage() {
   const handleFollowUpUpdate = useCallback(async (
     userId: string,
     status: AdminStudentInsightsFollowUpStatus,
+    noteOverride?: string,
   ) => {
     setWorklistSavingUserId(userId)
     setWorklistSaveError(null)
+    const note = (noteOverride ?? worklistNoteDrafts[userId] ?? '').trim()
 
     try {
       const response = await fetch('/api/admin/action-plan-follow-up', {
@@ -230,7 +261,10 @@ export default function AdminDiagnosticsPage() {
         credentials: 'include',
         body: JSON.stringify({
           userId,
-          followUp: { status },
+          followUp: {
+            status,
+            ...(note.length > 0 ? { note } : {}),
+          },
         }),
       })
 
@@ -239,24 +273,58 @@ export default function AdminDiagnosticsPage() {
         throw new Error(data.error || 'Failed to update follow-up status')
       }
 
+      const updatedAt = typeof data?.followUp?.updatedAt === 'string'
+        ? data.followUp.updatedAt
+        : new Date().toISOString()
+      const savedNote = typeof data?.followUp?.note === 'string' ? data.followUp.note : ''
+      const savedUpdatedBy = extractFollowUpActor(data?.followUp?.updatedBy)
+
       setStudentInsightsWorklist((current) => {
         if (!current) return current
-        const updatedAt = typeof data?.followUp?.updatedAt === 'string' ? data.followUp.updatedAt : new Date().toISOString()
         return {
           ...current,
           items: current.items.map((item) => (
             item.userId === userId
-              ? { ...item, followUpStatus: status, followUpUpdatedAt: updatedAt }
+              ? {
+                  ...item,
+                  followUpStatus: status,
+                  followUpUpdatedAt: updatedAt,
+                  followUpNote: savedNote || null,
+                  followUpUpdatedBy: savedUpdatedBy,
+                }
               : item
           )),
         }
       })
+      setWorklistNoteDrafts((current) => ({
+        ...current,
+        [userId]: savedNote,
+      }))
     } catch (error) {
       setWorklistSaveError(error instanceof Error ? error.message : 'Failed to update follow-up status')
     } finally {
       setWorklistSavingUserId(null)
     }
+  }, [worklistNoteDrafts])
+
+  const handleFollowUpNoteChange = useCallback((userId: string, value: string) => {
+    setWorklistNoteDrafts((current) => ({
+      ...current,
+      [userId]: value,
+    }))
   }, [])
+
+  const handleFollowUpNoteSave = useCallback(async (
+    userId: string,
+    currentStatus: AdminStudentInsightsFollowUpStatus | null,
+  ) => {
+    if (!currentStatus) {
+      setWorklistSaveError('Set a follow-up status before saving a counselor note.')
+      return
+    }
+
+    await handleFollowUpUpdate(userId, currentStatus, worklistNoteDrafts[userId] ?? '')
+  }, [handleFollowUpUpdate, worklistNoteDrafts])
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -814,9 +882,32 @@ export default function AdminDiagnosticsPage() {
                                   </p>
                                   <p className="text-xs text-slate-500">
                                     {item.followUpUpdatedAt
-                                      ? `Follow-up status updated ${new Date(item.followUpUpdatedAt).toLocaleString()}`
+                                      ? `Follow-up updated ${new Date(item.followUpUpdatedAt).toLocaleString()} by ${formatFollowUpActor(item.followUpUpdatedBy)}`
                                       : 'No counselor follow-up status set yet.'}
                                   </p>
+                                  <div className="space-y-2">
+                                    <label
+                                      htmlFor={`follow-up-note-${item.userId}`}
+                                      className="text-xs font-medium uppercase tracking-wide text-slate-500"
+                                    >
+                                      Counselor Note
+                                    </label>
+                                    <textarea
+                                      id={`follow-up-note-${item.userId}`}
+                                      value={worklistNoteDrafts[item.userId] ?? ''}
+                                      onChange={(event) => handleFollowUpNoteChange(item.userId, event.target.value)}
+                                      disabled={worklistSavingUserId === item.userId}
+                                      rows={3}
+                                      maxLength={2000}
+                                      className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200 disabled:cursor-not-allowed disabled:bg-slate-50"
+                                      placeholder="Add counselor context, outreach notes, or next-step reminders."
+                                    />
+                                    <p className="text-xs text-slate-500">
+                                      {item.followUpUpdatedBy
+                                        ? `Last updated by ${formatFollowUpActor(item.followUpUpdatedBy)}`
+                                        : 'No counselor owner recorded yet.'}
+                                    </p>
+                                  </div>
                                 </div>
 
                                 <div className="flex flex-col gap-2">
@@ -849,6 +940,16 @@ export default function AdminDiagnosticsPage() {
                                     onClick={() => void handleFollowUpUpdate(item.userId, 'resolved')}
                                   >
                                     Resolved
+                                  </Button>
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    className="bg-white"
+                                    disabled={worklistSavingUserId === item.userId}
+                                    onClick={() => void handleFollowUpNoteSave(item.userId, item.followUpStatus)}
+                                  >
+                                    Save Note
                                   </Button>
                                   <Button asChild variant="outline" size="sm" className="gap-2 bg-white">
                                     <Link href={`/admin/${encodeURIComponent(item.userId)}/action`}>

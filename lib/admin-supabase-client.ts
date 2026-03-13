@@ -24,12 +24,98 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const PLAYWRIGHT_ADMIN_BYPASS_COOKIE = 'lux-playwright-admin-bypass'
 
+export interface AuthenticatedAdminContext {
+  userId: string
+  email: string | null
+  fullName: string | null
+  role: 'admin' | 'educator'
+}
+
 function hasPlaywrightAdminBypass(request: NextRequest): boolean {
   return (
     process.env.NODE_ENV !== 'production' &&
     process.env.PLAYWRIGHT_ADMIN_BYPASS === '1' &&
     request.cookies.get(PLAYWRIGHT_ADMIN_BYPASS_COOKIE)?.value === '1'
   )
+}
+
+async function authenticateAdminRequest(
+  request: NextRequest
+): Promise<[AuthenticatedAdminContext, null] | [null, NextResponse]> {
+  // Playwright-only bypass for browser smoke tests. This mirrors the admin page
+  // middleware bypass and stays off in production.
+  if (hasPlaywrightAdminBypass(request)) {
+    return [
+      {
+        userId: 'playwright-admin-bypass',
+        email: null,
+        fullName: 'Playwright Admin',
+        role: 'admin',
+      },
+      null,
+    ]
+  }
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return [
+      null,
+      NextResponse.json(
+        { error: 'Admin authentication is not configured' },
+        { status: 503 }
+      ),
+    ]
+  }
+
+  const supabase = createSupabaseServerClient(request)
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+  if (authError || !user) {
+    return [
+      null,
+      NextResponse.json(
+        { error: 'Unauthorized - Please sign in' },
+        { status: 401 }
+      ),
+    ]
+  }
+
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('role, full_name')
+    .eq('user_id', user.id)
+    .single()
+
+  if (profileError || !profile) {
+    return [
+      null,
+      NextResponse.json(
+        { error: 'Unauthorized - Profile not found' },
+        { status: 401 }
+      ),
+    ]
+  }
+
+  if (!['admin', 'educator'].includes(profile.role)) {
+    return [
+      null,
+      NextResponse.json(
+        { error: 'Forbidden - Admin access required' },
+        { status: 403 }
+      ),
+    ]
+  }
+
+  return [
+    {
+      userId: user.id,
+      email: typeof user.email === 'string' ? user.email : null,
+      fullName: typeof profile.full_name === 'string' ? profile.full_name : null,
+      role: profile.role,
+    },
+    null,
+  ]
 }
 
 /**
@@ -41,59 +127,14 @@ function hasPlaywrightAdminBypass(request: NextRequest): boolean {
  * Returns error response if unauthorized, null if authorized
  */
 export async function requireAdminAuth(request: NextRequest): Promise<NextResponse | null> {
-  // Playwright-only bypass for browser smoke tests. This mirrors the admin page
-  // middleware bypass and stays off in production.
-  if (hasPlaywrightAdminBypass(request)) {
-    return null
-  }
+  const [, authError] = await authenticateAdminRequest(request)
+  return authError
+}
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY
-  if (!supabaseUrl || !supabaseAnonKey) {
-    return NextResponse.json(
-      { error: 'Admin authentication is not configured' },
-      { status: 503 }
-    )
-  }
-
-  // Primary auth: Supabase session cookies
-  // Create Supabase client from request cookies
-  const supabase = createSupabaseServerClient(request)
-
-  // Get authenticated user
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-
-  if (authError || !user) {
-    return NextResponse.json(
-      { error: 'Unauthorized - Please sign in' },
-      { status: 401 }
-    )
-  }
-
-  // Check user role from profiles table
-  const { data: profile, error: profileError } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('user_id', user.id)
-    .single()
-
-  if (profileError || !profile) {
-    return NextResponse.json(
-      { error: 'Unauthorized - Profile not found' },
-      { status: 401 }
-    )
-  }
-
-  // Check if user has admin or educator role
-  if (!['admin', 'educator'].includes(profile.role)) {
-    return NextResponse.json(
-      { error: 'Forbidden - Admin access required' },
-      { status: 403 }
-    )
-  }
-
-  // Auth passed - user is admin or educator
-  return null
+export async function getAuthenticatedAdminContext(
+  request: NextRequest
+): Promise<[AuthenticatedAdminContext, null] | [null, NextResponse]> {
+  return authenticateAdminRequest(request)
 }
 
 /**
@@ -202,7 +243,7 @@ export function getAdminSupabaseClientOrNull() {
 export async function getAuthenticatedAdminClient(
   request: NextRequest
 ): Promise<[ReturnType<typeof getAdminSupabaseClient>, null] | [null, NextResponse]> {
-  const authError = await requireAdminAuth(request)
+  const [, authError] = await authenticateAdminRequest(request)
   if (authError) {
     return [null, authError]
   }

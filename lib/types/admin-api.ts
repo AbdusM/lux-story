@@ -477,6 +477,12 @@ export type AdminStudentInsightsFollowUpStatus =
   | 'follow_up_due'
   | 'resolved'
 
+export interface AdminStudentInsightsFollowUpActor {
+  userId: string
+  email: string | null
+  fullName: string | null
+}
+
 export interface AdminStudentInsightsWorklistItem {
   userId: string
   email: string | null
@@ -487,6 +493,8 @@ export interface AdminStudentInsightsWorklistItem {
   advisorReviewUpdatedAt: string | null
   followUpStatus: AdminStudentInsightsFollowUpStatus | null
   followUpUpdatedAt: string | null
+  followUpNote: string | null
+  followUpUpdatedBy: AdminStudentInsightsFollowUpActor | null
   counts: AdminStudentInsightsFunnelStageCounts
   outcomeCheckIn: {
     applicationsSubmitted30d: number

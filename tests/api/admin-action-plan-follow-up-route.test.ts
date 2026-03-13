@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { NextRequest, NextResponse } from 'next/server'
 
 const mockRequireAdminAuth = vi.fn()
+const mockGetAuthenticatedAdminContext = vi.fn()
 const mockAuditLog = vi.fn()
 const mockRateLimitCheck = vi.fn().mockResolvedValue(undefined)
 const mockLoggerError = vi.fn()
@@ -67,6 +68,7 @@ const mockSupabase = {
 
 vi.mock('@/lib/admin-supabase-client', () => ({
   requireAdminAuth: mockRequireAdminAuth,
+  getAuthenticatedAdminContext: mockGetAuthenticatedAdminContext,
   getAdminSupabaseClient: vi.fn(() => mockSupabase),
 }))
 
@@ -111,6 +113,15 @@ describe('admin action plan follow-up route', () => {
     store.profilePlan = null
     store.noPlanRow = false
     mockRequireAdminAuth.mockResolvedValue(null)
+    mockGetAuthenticatedAdminContext.mockResolvedValue([
+      {
+        userId: 'admin_123',
+        email: 'counselor@example.com',
+        fullName: 'Casey Counselor',
+        role: 'educator',
+      },
+      null,
+    ])
     mockRateLimitCheck.mockResolvedValue(undefined)
   })
 
@@ -130,6 +141,12 @@ describe('admin action plan follow-up route', () => {
       followUpStatus: {
         status: 'follow_up_due',
         updatedAt: '2026-03-13T10:00:00.000Z',
+        note: 'Check back after Friday.',
+        updatedBy: {
+          userId: 'admin_123',
+          email: 'counselor@example.com',
+          fullName: 'Casey Counselor',
+        },
       },
     }
 
@@ -140,6 +157,8 @@ describe('admin action plan follow-up route', () => {
     const body = await response.json()
     expect(body.success).toBe(true)
     expect(body.followUp.status).toBe('follow_up_due')
+    expect(body.followUp.note).toBe('Check back after Friday.')
+    expect(body.followUp.updatedBy.userId).toBe('admin_123')
   })
 
   test('POST upserts follow-up status into user_action_plans plan_data', async () => {
@@ -150,7 +169,10 @@ describe('admin action plan follow-up route', () => {
       method: 'POST',
       body: {
         userId: 'player_123',
-        followUp: { status: 'contacted' },
+        followUp: {
+          status: 'contacted',
+          note: 'Reached out by email.',
+        },
       },
     }))
 
@@ -159,5 +181,14 @@ describe('admin action plan follow-up route', () => {
     expect(body.success).toBe(true)
     expect(store.planData?.posture).toBe('balance')
     expect((store.planData as Record<string, unknown>).followUpStatus).toBeTruthy()
+    expect((store.planData as Record<string, unknown>).followUpStatus).toMatchObject({
+      status: 'contacted',
+      note: 'Reached out by email.',
+      updatedBy: {
+        userId: 'admin_123',
+        email: 'counselor@example.com',
+        fullName: 'Casey Counselor',
+      },
+    })
   })
 })

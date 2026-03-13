@@ -6,10 +6,20 @@ export const ActionPlanFollowUpStatusSchema = z.enum([
   'resolved',
 ])
 
+export const ActionPlanFollowUpActorSchema = z
+  .object({
+    userId: z.string().min(1).max(160),
+    email: z.string().email().max(320).nullable().optional(),
+    fullName: z.string().max(160).nullable().optional(),
+  })
+  .passthrough()
+
 export const ActionPlanFollowUpSchema = z
   .object({
     status: ActionPlanFollowUpStatusSchema,
     updatedAt: z.string().datetime(),
+    note: z.string().max(2_000).optional(),
+    updatedBy: ActionPlanFollowUpActorSchema.optional(),
   })
   .passthrough()
 
