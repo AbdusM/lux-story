@@ -316,8 +316,27 @@ export function ActionPlanSection({
 
   useEffect(() => {
     if (!postureProp) return
-    setDraft((current) => ({ ...current, posture: postureProp }))
-  }, [postureProp])
+    setDraft((current) => {
+      if (current.posture === postureProp) return current
+
+      const currentGenerated = buildProofArtifact({
+        profile,
+        posture: current.posture,
+        proofKind: current.proofKind,
+      })
+      const nextGenerated = buildProofArtifact({
+        profile,
+        posture: postureProp,
+        proofKind: current.proofKind,
+      })
+      const shouldReplace = !current.proofText || current.proofText === currentGenerated
+      return {
+        ...current,
+        posture: postureProp,
+        proofText: shouldReplace ? nextGenerated : current.proofText,
+      }
+    })
+  }, [postureProp, profile])
 
   const hasSavedPlan =
     Boolean(draft.thisWeekFocus) ||
@@ -338,7 +357,24 @@ export function ActionPlanSection({
   }
 
   const setPosture = (next: Posture) => {
-    setDraft((current) => ({ ...current, posture: next }))
+    setDraft((current) => {
+      const currentGenerated = buildProofArtifact({
+        profile,
+        posture: current.posture,
+        proofKind: current.proofKind,
+      })
+      const nextGenerated = buildProofArtifact({
+        profile,
+        posture: next,
+        proofKind: current.proofKind,
+      })
+      const shouldReplace = !current.proofText || current.proofText === currentGenerated
+      return {
+        ...current,
+        posture: next,
+        proofText: shouldReplace ? nextGenerated : current.proofText,
+      }
+    })
     onPostureChange?.(next)
   }
 
@@ -595,7 +631,26 @@ export function ActionPlanSection({
                     value={draft.proofKind}
                     onValueChange={(value) => {
                       const nextKind = readProofKind(value) ?? 'resume_bullets'
-                      setDraft((current) => ({ ...current, proofKind: nextKind }))
+                      setDraft((current) => {
+                        if (current.proofKind === nextKind) return current
+
+                        const currentGenerated = buildProofArtifact({
+                          profile,
+                          posture: current.posture,
+                          proofKind: current.proofKind,
+                        })
+                        const nextGenerated = buildProofArtifact({
+                          profile,
+                          posture: current.posture,
+                          proofKind: nextKind,
+                        })
+                        const shouldReplace = !current.proofText || current.proofText === currentGenerated
+                        return {
+                          ...current,
+                          proofKind: nextKind,
+                          proofText: shouldReplace ? nextGenerated : current.proofText,
+                        }
+                      })
                     }}
                   >
                     <SelectTrigger className="border-emerald-200 bg-white/90">

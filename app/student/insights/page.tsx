@@ -49,12 +49,14 @@ export default function StudentInsightsPage() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    const saved = window.localStorage.getItem('lux-posture')
+    if (!userId) return
+
+    const saved = window.localStorage.getItem(`lux-posture:${userId}`)
     if (saved === 'defend' || saved === 'balance' || saved === 'attack') {
       setPosture(saved)
       postureInitializedRef.current = true
     }
-  }, [])
+  }, [userId])
 
   useEffect(() => {
     if (!profile) return
@@ -70,8 +72,9 @@ export default function StudentInsightsPage() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    window.localStorage.setItem('lux-posture', posture)
-  }, [posture])
+    if (!userId) return
+    window.localStorage.setItem(`lux-posture:${userId}`, posture)
+  }, [posture, userId])
 
   useEffect(() => {
     if (!userId) return
