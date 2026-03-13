@@ -3,6 +3,12 @@ import fs from 'fs'
 import path from 'path'
 
 export async function POST() {
+  // Legacy endpoint: keep available for local/dev workflows only.
+  // Production validation is handled by CI (`npm run validate-content`).
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  }
+
   try {
     // Simple validation - just check if story.json exists and is valid JSON
 
