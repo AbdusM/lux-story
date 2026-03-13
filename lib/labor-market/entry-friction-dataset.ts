@@ -1,4 +1,4 @@
-import entryFrictionDataset from '@/lib/labor-market/data/entry-friction-v1.json'
+import entryFrictionDataset from '@/lib/labor-market/data/entry-friction-v1.json' with { type: 'json' }
 import type { MarketSignalMetadata } from '@/lib/labor-market/market-signal-contract'
 import { normalizeMarketSignalValue } from '@/lib/labor-market/market-signal-contract'
 import { loadMarketSignalDataset, type MarketSignalDatasetRecord } from '@/lib/labor-market/market-signal-loader'

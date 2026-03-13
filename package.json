@@ -59,6 +59,7 @@
     "audit-config": "node --loader ./scripts/ts-loader.mjs scripts/audit-configuration.ts",
     "generate-coverage-matrix": "node --loader ./scripts/ts-loader.mjs scripts/generate-coverage-matrix.ts",
     "report-entry-nodes": "node --loader ./scripts/ts-loader.mjs scripts/report-entry-nodes.ts",
+    "report:market-signal-freshness": "node --loader ./scripts/ts-loader.mjs scripts/report-market-signal-freshness.ts",
     "report:dialogue-external-review": "node --loader ./scripts/ts-loader.mjs scripts/report-dialogue-external-review.ts",
     "precommit": "npm run check-typewriter && npm run lint",
     "health-check": "curl http://localhost:3005/api/health && curl http://localhost:3005/api/health/db",

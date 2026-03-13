@@ -1,4 +1,4 @@
-import observedExposureDataset from '@/lib/labor-market/data/observed-exposure-v1.json'
+import observedExposureDataset from '@/lib/labor-market/data/observed-exposure-v1.json' with { type: 'json' }
 import { loadMarketSignalDataset, type MarketSignalDatasetRecord } from '@/lib/labor-market/market-signal-loader'
 import type { MarketSignalMetadata } from '@/lib/labor-market/market-signal-contract'
 import { normalizeMarketSignalValue } from '@/lib/labor-market/market-signal-contract'
