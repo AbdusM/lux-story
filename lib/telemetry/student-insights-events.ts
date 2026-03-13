@@ -4,6 +4,8 @@ import {
   STUDENT_INSIGHTS_ACTION_PLAN_SCHEMA_VERSION,
   STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
   STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
+  STUDENT_INSIGHTS_OUTCOME_CHECK_IN_TASK_ID,
+  STUDENT_INSIGHTS_OUTCOME_SCHEMA_VERSION,
   STUDENT_INSIGHTS_SIGNALS_SCHEMA_VERSION,
   STUDENT_INSIGHTS_SIGNAL_SURFACE,
   STUDENT_INSIGHTS_SIGNAL_TASK_ID,
@@ -12,6 +14,7 @@ import {
 export {
   STUDENT_INSIGHTS_ACTION_PLAN_SCHEMA_VERSION,
   STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
+  STUDENT_INSIGHTS_OUTCOME_SCHEMA_VERSION,
   STUDENT_INSIGHTS_SIGNALS_SCHEMA_VERSION,
   STUDENT_INSIGHTS_SIGNAL_SURFACE,
 } from '@/lib/telemetry/student-insights-constants'
@@ -24,6 +27,7 @@ type StudentInsightsEventType =
   | 'recommendation_shown'
   | 'recommendation_clicked'
   | 'artifact_exported'
+  | 'outcome_checkin_submitted'
 
 function createTelemetryId(): string {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
@@ -215,6 +219,31 @@ export function trackStudentInsightsArtifactExported(input: {
       reason: 'proof_copied_to_clipboard',
       posture: input.posture,
       proof_kind: input.proofKind,
+    },
+  })
+}
+
+export function trackStudentInsightsOutcomeCheckInSubmitted(input: {
+  userId: string
+  sessionId: string
+  posture: string
+  applicationsSubmitted30d: number
+  interviewsSecured30d: number
+  firstInterviewBooked: boolean
+}) {
+  queueStudentInsightsEvent({
+    userId: input.userId,
+    sessionId: input.sessionId,
+    eventType: 'outcome_checkin_submitted',
+    payload: {
+      task_id: STUDENT_INSIGHTS_OUTCOME_CHECK_IN_TASK_ID,
+      source_surface: STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
+      assist_mode: 'manual',
+      guidance_schema_version: STUDENT_INSIGHTS_OUTCOME_SCHEMA_VERSION,
+      posture: input.posture,
+      applications_submitted_30d: input.applicationsSubmitted30d,
+      interviews_secured_30d: input.interviewsSecured30d,
+      first_interview_booked: input.firstInterviewBooked,
     },
   })
 }

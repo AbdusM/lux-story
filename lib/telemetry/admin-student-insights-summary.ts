@@ -1,6 +1,7 @@
 import {
   STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
   STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
+  STUDENT_INSIGHTS_OUTCOME_CHECK_IN_TASK_ID,
   STUDENT_INSIGHTS_SIGNAL_SURFACE,
   STUDENT_INSIGHTS_SIGNAL_TASK_ID,
 } from '@/lib/telemetry/student-insights-constants'
@@ -26,11 +27,15 @@ const STUDENT_INSIGHTS_EVENT_TYPES = new Set<string>([
   'assist_mode_selected',
   'task_completed',
   'artifact_exported',
+  'outcome_checkin_submitted',
 ])
 
-const STUDENT_INSIGHTS_SCHEMA_PREFIX_BY_SURFACE: Record<string, string> = {
-  [STUDENT_INSIGHTS_SIGNAL_SURFACE]: 'student-insights-signals-',
-  [STUDENT_INSIGHTS_ACTION_PLAN_SURFACE]: 'student-insights-action-plan-',
+const STUDENT_INSIGHTS_SCHEMA_PREFIXES_BY_SURFACE: Record<string, string[]> = {
+  [STUDENT_INSIGHTS_SIGNAL_SURFACE]: ['student-insights-signals-'],
+  [STUDENT_INSIGHTS_ACTION_PLAN_SURFACE]: [
+    'student-insights-action-plan-',
+    'student-insights-outcome-',
+  ],
 }
 
 const STUDENT_INSIGHTS_TASK_ID_BY_SURFACE: Record<string, string> = {
@@ -62,15 +67,23 @@ function getSchemaVersion(payload: unknown): string | null {
 }
 
 function isStudentInsightsPayloadForSurface(payload: unknown, surface: string): boolean {
-  const expectedTaskId = STUDENT_INSIGHTS_TASK_ID_BY_SURFACE[surface]
-  const schemaPrefix = STUDENT_INSIGHTS_SCHEMA_PREFIX_BY_SURFACE[surface]
-  if (!expectedTaskId || !schemaPrefix) return false
+  const schemaPrefixes = STUDENT_INSIGHTS_SCHEMA_PREFIXES_BY_SURFACE[surface]
+  if (!schemaPrefixes) return false
 
   const taskId = getTaskId(payload)
-  if (taskId !== expectedTaskId) return false
+  if (surface === STUDENT_INSIGHTS_ACTION_PLAN_SURFACE) {
+    const validActionPlanTaskIds = new Set([
+      STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
+      STUDENT_INSIGHTS_OUTCOME_CHECK_IN_TASK_ID,
+    ])
+    if (!taskId || !validActionPlanTaskIds.has(taskId)) return false
+  } else {
+    const expectedTaskId = STUDENT_INSIGHTS_TASK_ID_BY_SURFACE[surface]
+    if (!expectedTaskId || taskId !== expectedTaskId) return false
+  }
 
   const schemaVersion = getSchemaVersion(payload)
-  if (!schemaVersion || !schemaVersion.startsWith(schemaPrefix)) return false
+  if (!schemaVersion || !schemaPrefixes.some((prefix) => schemaVersion.startsWith(prefix))) return false
 
   return true
 }
@@ -84,6 +97,7 @@ function createEmptyCounts(): AdminStudentInsightsFunnelStageCounts {
     assistModeSelected: 0,
     taskCompleted: 0,
     artifactExported: 0,
+    outcomeCheckInSubmitted: 0,
   }
 }
 
@@ -110,6 +124,9 @@ function recordEvent(counts: AdminStudentInsightsFunnelStageCounts, eventType: s
     case 'artifact_exported':
       counts.artifactExported += 1
       return
+    case 'outcome_checkin_submitted':
+      counts.outcomeCheckInSubmitted += 1
+      return
     default:
       return
   }
@@ -123,6 +140,7 @@ function sumCounts(left: AdminStudentInsightsFunnelStageCounts, right: AdminStud
   left.assistModeSelected += right.assistModeSelected
   left.taskCompleted += right.taskCompleted
   left.artifactExported += right.artifactExported
+  left.outcomeCheckInSubmitted += right.outcomeCheckInSubmitted
 }
 
 function roundRate(numerator: number, denominator: number): number {
@@ -136,6 +154,7 @@ function buildRates(counts: AdminStudentInsightsFunnelStageCounts): AdminStudent
     startRate: roundRate(counts.taskStarted, counts.taskExposed),
     completionRate: roundRate(counts.taskCompleted, counts.taskStarted),
     artifactExportRate: roundRate(counts.artifactExported, counts.taskCompleted),
+    outcomeCheckInRate: roundRate(counts.outcomeCheckInSubmitted, counts.taskCompleted),
   }
 }
 

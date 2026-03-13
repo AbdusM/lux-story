@@ -1,10 +1,11 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ClipboardCopy, Loader2, Save, Shield, Sparkles, Target, Zap } from 'lucide-react'
+import { BriefcaseBusiness, ClipboardCopy, Loader2, Save, Shield, Sparkles, Target, Zap } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -12,6 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Toggle } from '@/components/ui/toggle'
+import { extractOutcomeCheckIn, type OutcomeCheckIn } from '@/lib/action-plan/outcome-check-in'
 import { ensureUserApiSession } from '@/lib/user-api-session'
 import type { Posture } from '@/lib/labor-market/signals'
 import type { SkillProfile } from '@/lib/skill-profile-adapter'
@@ -21,6 +24,7 @@ import {
   trackStudentInsightsActionPlanExposed,
   trackStudentInsightsActionPlanStarted,
   trackStudentInsightsArtifactExported,
+  trackStudentInsightsOutcomeCheckInSubmitted,
 } from '@/lib/telemetry/student-insights-events'
 
 interface ActionPlanSectionProps {
@@ -51,6 +55,9 @@ interface ActionPlanDraft {
   adjacentRoute: string
   proofKind: ProofArtifactKind
   proofText: string
+  applicationsSubmitted30d: number
+  interviewsSecured30d: number
+  firstInterviewBooked: boolean
 }
 
 function asPlanRecord(value: unknown): Record<string, unknown> | null {
@@ -151,6 +158,12 @@ function proofKindLabel(kind: ProofArtifactKind): string {
   }
 }
 
+function parseNonNegativeInteger(value: string, max: number): number {
+  const parsed = Number.parseInt(value, 10)
+  if (!Number.isFinite(parsed) || parsed < 0) return 0
+  return Math.min(parsed, max)
+}
+
 function buildProofArtifact(options: {
   profile: SkillProfile
   posture: Posture
@@ -227,6 +240,7 @@ function buildProofArtifact(options: {
 
 function extractDraft(plan: Record<string, unknown> | null): ActionPlanDraft {
   const posture = readPosture(plan?.posture) ?? 'balance'
+  const outcomeCheckIn = extractOutcomeCheckIn(plan)
   return {
     posture,
     thisWeekFocus: readString(plan?.thisWeekFocus),
@@ -238,6 +252,9 @@ function extractDraft(plan: Record<string, unknown> | null): ActionPlanDraft {
     adjacentRoute: readString(plan?.adjacentRoute),
     proofKind: readProofKind(plan?.proofKind) ?? 'resume_bullets',
     proofText: readString(plan?.proofText),
+    applicationsSubmitted30d: outcomeCheckIn?.applicationsSubmitted30d ?? 0,
+    interviewsSecured30d: outcomeCheckIn?.interviewsSecured30d ?? 0,
+    firstInterviewBooked: outcomeCheckIn?.firstInterviewBooked ?? false,
   }
 }
 
@@ -260,12 +277,16 @@ export function ActionPlanSection({
     adjacentRoute: '',
     proofKind: 'resume_bullets',
     proofText: '',
+    applicationsSubmitted30d: 0,
+    interviewsSecured30d: 0,
+    firstInterviewBooked: false,
   })
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [savedAt, setSavedAt] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+  const [outcomeCheckInTouched, setOutcomeCheckInTouched] = useState(false)
   const exposedTrackedRef = useRef(false)
 
   const suggestedDraft = useMemo<ActionPlanDraft>(() => {
@@ -322,8 +343,18 @@ export function ActionPlanSection({
         posture,
         proofKind,
       }),
+      applicationsSubmitted30d: draft.applicationsSubmitted30d,
+      interviewsSecured30d: draft.interviewsSecured30d,
+      firstInterviewBooked: draft.firstInterviewBooked,
     }
-  }, [draft.posture, postureProp, profile])
+  }, [
+    draft.applicationsSubmitted30d,
+    draft.firstInterviewBooked,
+    draft.interviewsSecured30d,
+    draft.posture,
+    postureProp,
+    profile,
+  ])
 
   useEffect(() => {
     let cancelled = false
@@ -358,6 +389,7 @@ export function ActionPlanSection({
         setRawPlan(nextPlan)
         setDraft(extractDraft(nextPlan))
         setSavedAt(readString(nextPlan?.updatedAt) || null)
+        setOutcomeCheckInTouched(false)
 
         if (loadedPosture && onPostureChange) {
           onPostureChange(loadedPosture)
@@ -423,16 +455,58 @@ export function ActionPlanSection({
     Boolean(draft.marketMove) ||
     Boolean(draft.skillMove) ||
     Boolean(draft.adjacentRoute) ||
-    Boolean(draft.proofText)
+    Boolean(draft.proofText) ||
+    draft.applicationsSubmitted30d > 0 ||
+    draft.interviewsSecured30d > 0 ||
+    draft.firstInterviewBooked
 
   const advisorReview = useMemo(() => extractAdvisorReview(rawPlan), [rawPlan])
+  const persistedOutcomeCheckIn = useMemo(() => extractOutcomeCheckIn(rawPlan), [rawPlan])
 
   const updateField = <K extends keyof ActionPlanDraft>(field: K, value: ActionPlanDraft[K]) => {
     setDraft((current) => ({ ...current, [field]: value }))
   }
 
+  const updateOutcomeField = <K extends 'applicationsSubmitted30d' | 'interviewsSecured30d' | 'firstInterviewBooked'>(
+    field: K,
+    value: ActionPlanDraft[K],
+  ) => {
+    setOutcomeCheckInTouched(true)
+    setDraft((current) => ({ ...current, [field]: value }))
+  }
+
+  const currentOutcomeCheckIn = useMemo<OutcomeCheckIn | null>(() => {
+    if (
+      !persistedOutcomeCheckIn &&
+      !outcomeCheckInTouched &&
+      draft.applicationsSubmitted30d === 0 &&
+      draft.interviewsSecured30d === 0 &&
+      draft.firstInterviewBooked === false
+    ) {
+      return null
+    }
+
+    return {
+      applicationsSubmitted30d: draft.applicationsSubmitted30d,
+      interviewsSecured30d: draft.interviewsSecured30d,
+      firstInterviewBooked: draft.firstInterviewBooked,
+      updatedAt: new Date().toISOString(),
+    }
+  }, [
+    draft.applicationsSubmitted30d,
+    draft.firstInterviewBooked,
+    draft.interviewsSecured30d,
+    outcomeCheckInTouched,
+    persistedOutcomeCheckIn,
+  ])
+
   const applySuggestedDraft = () => {
-    setDraft(suggestedDraft)
+    setDraft((current) => ({
+      ...suggestedDraft,
+      applicationsSubmitted30d: current.applicationsSubmitted30d,
+      interviewsSecured30d: current.interviewsSecured30d,
+      firstInterviewBooked: current.firstInterviewBooked,
+    }))
     trackStudentInsightsAssistModeSelected({
       userId,
       sessionId,
@@ -501,11 +575,18 @@ export function ActionPlanSection({
     setError(null)
 
     try {
+      const {
+        applicationsSubmitted30d: _applicationsSubmitted30d,
+        interviewsSecured30d: _interviewsSecured30d,
+        firstInterviewBooked: _firstInterviewBooked,
+        ...planDraft
+      } = draft
       const nextPlan = {
         ...(rawPlan ?? {}),
         version: 1,
         updatedAt: new Date().toISOString(),
-        ...draft,
+        ...planDraft,
+        ...(currentOutcomeCheckIn ? { outcomeCheckIn: currentOutcomeCheckIn } : {}),
       }
 
       const response = await fetch('/api/user/action-plan', {
@@ -529,6 +610,7 @@ export function ActionPlanSection({
       setRawPlan(persistedPlan)
       setDraft(extractDraft(persistedPlan))
       setSavedAt(readString(persistedPlan.updatedAt) || nextPlan.updatedAt)
+      setOutcomeCheckInTouched(false)
       trackStudentInsightsActionPlanCompleted({
         userId,
         sessionId,
@@ -546,6 +628,16 @@ export function ActionPlanSection({
         ].filter((value) => value.trim().length > 0).length,
         hasProofText: draft.proofText.trim().length > 0,
       })
+      if (currentOutcomeCheckIn && outcomeCheckInTouched) {
+        trackStudentInsightsOutcomeCheckInSubmitted({
+          userId,
+          sessionId,
+          posture: draft.posture,
+          applicationsSubmitted30d: currentOutcomeCheckIn.applicationsSubmitted30d,
+          interviewsSecured30d: currentOutcomeCheckIn.interviewsSecured30d,
+          firstInterviewBooked: currentOutcomeCheckIn.firstInterviewBooked,
+        })
+      }
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : 'Unable to save action plan.')
     } finally {
@@ -728,6 +820,72 @@ export function ActionPlanSection({
                     className="min-h-[110px] w-full rounded-xl border border-emerald-200 bg-white/90 p-3 text-sm outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200"
                   />
                 </label>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-emerald-200 bg-white/70 p-4 shadow-sm">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="space-y-1">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                    Outcome Check-In
+                  </p>
+                  <p className="text-sm text-slate-600">
+                    Track a simple 30-day snapshot so you can see whether this plan is helping you reach interviews.
+                  </p>
+                </div>
+                {persistedOutcomeCheckIn ? (
+                  <p className="text-xs text-slate-500">
+                    Last check-in {new Date(persistedOutcomeCheckIn.updatedAt).toLocaleString()}
+                  </p>
+                ) : null}
+              </div>
+
+              <div className="mt-4 grid gap-4 md:grid-cols-3">
+                <label className="space-y-2 text-sm text-slate-700">
+                  <span className="font-medium">Applications Submitted (30 days)</span>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={500}
+                    inputMode="numeric"
+                    value={draft.applicationsSubmitted30d}
+                    onChange={(event) =>
+                      updateOutcomeField('applicationsSubmitted30d', parseNonNegativeInteger(event.target.value, 500))
+                    }
+                    className="border-emerald-200 bg-white/90"
+                  />
+                </label>
+
+                <label className="space-y-2 text-sm text-slate-700">
+                  <span className="font-medium">Interviews Secured (30 days)</span>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={100}
+                    inputMode="numeric"
+                    value={draft.interviewsSecured30d}
+                    onChange={(event) =>
+                      updateOutcomeField('interviewsSecured30d', parseNonNegativeInteger(event.target.value, 100))
+                    }
+                    className="border-emerald-200 bg-white/90"
+                  />
+                </label>
+
+                <div className="space-y-2 text-sm text-slate-700">
+                  <span className="font-medium">First Interview Booked</span>
+                  <div className="flex h-11 items-center">
+                    <Toggle
+                      pressed={draft.firstInterviewBooked}
+                      onPressedChange={(pressed) => updateOutcomeField('firstInterviewBooked', pressed)}
+                      variant="outline"
+                      className="border-emerald-200 bg-white/90 data-[state=on]:bg-emerald-100 data-[state=on]:text-emerald-900"
+                      aria-label="Toggle first interview booked"
+                    >
+                      <BriefcaseBusiness className="h-4 w-4" />
+                      {draft.firstInterviewBooked ? 'Booked' : 'Not yet'}
+                    </Toggle>
+                  </div>
+                </div>
               </div>
             </div>
 

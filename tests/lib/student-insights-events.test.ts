@@ -2,12 +2,14 @@ import {
   trackStudentInsightsAssistModeSelected,
   STUDENT_INSIGHTS_ACTION_PLAN_SCHEMA_VERSION,
   STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
+  STUDENT_INSIGHTS_OUTCOME_SCHEMA_VERSION,
   STUDENT_INSIGHTS_SIGNALS_SCHEMA_VERSION,
   STUDENT_INSIGHTS_SIGNAL_SURFACE,
   trackStudentInsightsActionPlanCompleted,
   trackStudentInsightsActionPlanExposed,
   trackStudentInsightsActionPlanStarted,
   trackStudentInsightsArtifactExported,
+  trackStudentInsightsOutcomeCheckInSubmitted,
   trackStudentInsightsRecommendationClicked,
   trackStudentInsightsRecommendationShown,
 } from '@/lib/telemetry/student-insights-events'
@@ -88,6 +90,14 @@ describe('student insights telemetry', () => {
       posture: 'attack',
       proofKind: 'one_pager',
     })
+    trackStudentInsightsOutcomeCheckInSubmitted({
+      userId: 'player_123',
+      sessionId: 'session_123',
+      posture: 'attack',
+      applicationsSubmitted30d: 12,
+      interviewsSecured30d: 2,
+      firstInterviewBooked: true,
+    })
     trackStudentInsightsRecommendationClicked({
       userId: 'player_123',
       sessionId: 'session_123',
@@ -153,6 +163,20 @@ describe('student insights telemetry', () => {
     expect(queueInteractionEventSync).toHaveBeenNthCalledWith(
       6,
       expect.objectContaining({
+        event_type: 'outcome_checkin_submitted',
+        payload: expect.objectContaining({
+          task_id: 'report_outcome_check_in',
+          source_surface: STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
+          guidance_schema_version: STUDENT_INSIGHTS_OUTCOME_SCHEMA_VERSION,
+          applications_submitted_30d: 12,
+          interviews_secured_30d: 2,
+          first_interview_booked: true,
+        }),
+      }),
+    )
+    expect(queueInteractionEventSync).toHaveBeenNthCalledWith(
+      7,
+      expect.objectContaining({
         event_type: 'recommendation_clicked',
         payload: expect.objectContaining({
           task_id: 'review_labor_market_signals',
@@ -161,6 +185,6 @@ describe('student insights telemetry', () => {
         }),
       }),
     )
-    expect(processQueueDeferred).toHaveBeenCalledTimes(6)
+    expect(processQueueDeferred).toHaveBeenCalledTimes(7)
   })
 })

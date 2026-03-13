@@ -3,6 +3,8 @@ import {
   STUDENT_INSIGHTS_ACTION_PLAN_SCHEMA_VERSION,
   STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
   STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
+  STUDENT_INSIGHTS_OUTCOME_CHECK_IN_TASK_ID,
+  STUDENT_INSIGHTS_OUTCOME_SCHEMA_VERSION,
   STUDENT_INSIGHTS_SIGNALS_SCHEMA_VERSION,
   STUDENT_INSIGHTS_SIGNAL_SURFACE,
   STUDENT_INSIGHTS_SIGNAL_TASK_ID,
@@ -87,6 +89,16 @@ describe('admin student insights funnel summary', () => {
           },
         },
         {
+          user_id: 'player_1',
+          event_type: 'outcome_checkin_submitted',
+          occurred_at: '2026-03-13T00:05:30.000Z',
+          payload: {
+            source_surface: STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
+            task_id: STUDENT_INSIGHTS_OUTCOME_CHECK_IN_TASK_ID,
+            guidance_schema_version: STUDENT_INSIGHTS_OUTCOME_SCHEMA_VERSION,
+          },
+        },
+        {
           user_id: 'player_2',
           event_type: 'recommendation_shown',
           occurred_at: '2026-03-13T00:06:00.000Z',
@@ -126,8 +138,10 @@ describe('admin student insights funnel summary', () => {
     expect(summary.totals.counts.taskStarted).toBe(1)
     expect(summary.totals.counts.taskCompleted).toBe(1)
     expect(summary.totals.counts.artifactExported).toBe(1)
+    expect(summary.totals.counts.outcomeCheckInSubmitted).toBe(1)
     expect(summary.totals.rates.startRate).toBe(100)
     expect(summary.totals.rates.completionRate).toBe(100)
     expect(summary.totals.rates.artifactExportRate).toBe(100)
+    expect(summary.totals.rates.outcomeCheckInRate).toBe(100)
   })
 })

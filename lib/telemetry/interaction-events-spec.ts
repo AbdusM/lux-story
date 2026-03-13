@@ -15,6 +15,7 @@ export const INTERACTION_EVENT_TYPES = [
   'recommendation_clicked',
   'recommendation_dismissed',
   'artifact_exported',
+  'outcome_checkin_submitted',
 ] as const
 
 export type InteractionEventType = (typeof INTERACTION_EVENT_TYPES)[number]
@@ -122,6 +123,7 @@ const InteractionEventPayloadSchemas: Record<InteractionEventType, z.ZodTypeAny>
   recommendation_clicked: GuidanceInteractionPayloadSchema,
   recommendation_dismissed: GuidanceInteractionPayloadSchema,
   artifact_exported: GuidanceInteractionPayloadSchema,
+  outcome_checkin_submitted: GuidanceInteractionPayloadSchema,
 }
 
 export function validateInteractionEventPayload(eventType: string, payload: unknown): string[] {

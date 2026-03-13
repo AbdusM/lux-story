@@ -426,6 +426,7 @@ export interface AdminStudentInsightsFunnelStageCounts {
   assistModeSelected: number
   taskCompleted: number
   artifactExported: number
+  outcomeCheckInSubmitted: number
 }
 
 export interface AdminStudentInsightsFunnelRates {
@@ -433,6 +434,7 @@ export interface AdminStudentInsightsFunnelRates {
   startRate: number
   completionRate: number
   artifactExportRate: number
+  outcomeCheckInRate: number
 }
 
 export interface AdminStudentInsightsSurfaceMetrics {

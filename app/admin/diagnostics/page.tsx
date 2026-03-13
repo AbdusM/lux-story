@@ -386,7 +386,7 @@ export default function AdminDiagnosticsPage() {
 
             {studentInsightsSummary && (
               <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
                   <SignalMetricCard
                     label="Users"
                     value={studentInsightsSummary.totals.uniqueUsers}
@@ -417,9 +417,15 @@ export default function AdminDiagnosticsPage() {
                     tone={studentInsightsSummary.totals.counts.artifactExported > 0 ? 'success' : 'neutral'}
                     detail="artifact_exported"
                   />
+                  <SignalMetricCard
+                    label="Outcome Check-Ins"
+                    value={studentInsightsSummary.totals.counts.outcomeCheckInSubmitted}
+                    tone={studentInsightsSummary.totals.counts.outcomeCheckInSubmitted > 0 ? 'success' : 'neutral'}
+                    detail="outcome_checkin_submitted"
+                  />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <SignalMetricCard
                     label="Plan Start Rate"
                     value={studentInsightsSummary.totals.rates.startRate}
@@ -437,6 +443,12 @@ export default function AdminDiagnosticsPage() {
                     value={studentInsightsSummary.totals.rates.artifactExportRate}
                     tone={studentInsightsSummary.totals.rates.artifactExportRate > 0 ? 'success' : 'neutral'}
                     detail="% exported / completed"
+                  />
+                  <SignalMetricCard
+                    label="Outcome Rate"
+                    value={studentInsightsSummary.totals.rates.outcomeCheckInRate}
+                    tone={studentInsightsSummary.totals.rates.outcomeCheckInRate > 0 ? 'success' : 'neutral'}
+                    detail="% check-ins / completed"
                   />
                 </div>
 
@@ -477,6 +489,10 @@ export default function AdminDiagnosticsPage() {
                             <div>
                               <p className="text-xs text-slate-500">Proof Exported</p>
                               <p className="font-semibold text-slate-900">{surface.counts.artifactExported}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-slate-500">Outcome Check-Ins</p>
+                              <p className="font-semibold text-slate-900">{surface.counts.outcomeCheckInSubmitted}</p>
                             </div>
                           </div>
                         </div>

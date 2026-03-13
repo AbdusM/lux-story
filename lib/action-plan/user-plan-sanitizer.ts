@@ -15,6 +15,12 @@ const UserWritableActionPlanSchema = z
     adjacentRoute: z.string().max(2_000).optional(),
     proofKind: ProofKindSchema.optional(),
     proofText: z.string().max(16_000).optional(),
+    outcomeCheckIn: z.object({
+      applicationsSubmitted30d: z.number().int().min(0).max(500),
+      interviewsSecured30d: z.number().int().min(0).max(100),
+      firstInterviewBooked: z.boolean(),
+      updatedAt: z.string().datetime(),
+    }).optional(),
     updatedAt: z.string().max(64).optional(),
     version: z.number().int().min(1).max(99).optional(),
     adaptiveGuidance: z.unknown().optional(),
@@ -43,4 +49,3 @@ export function sanitizeUserWritableActionPlan(
 
   return { ok: true, plan: withoutUndefined as UserWritableActionPlan }
 }
-

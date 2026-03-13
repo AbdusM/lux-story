@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { extractOutcomeCheckIn } from '@/lib/action-plan/outcome-check-in'
 
 type Posture = 'defend' | 'balance' | 'attack'
 type ProofArtifactKind = 'resume_bullets' | 'one_pager' | 'interview_stories'
@@ -167,6 +168,7 @@ export function NowcastingActionPlanSection(props: {
       notes: readString(plan?.notes),
       proofKind,
       proofText: readString(plan?.proofText),
+      outcomeCheckIn: extractOutcomeCheckIn(plan),
       advisorReview: isPlainObject(plan?.advisorReview) ? plan?.advisorReview : null,
     }
   }, [plan])
@@ -463,6 +465,30 @@ export function NowcastingActionPlanSection(props: {
                 </p>
                 <p className="mt-2 whitespace-pre-wrap text-sm text-slate-700">
                   {draft.notes || '—'}
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-emerald-200 bg-white/70 p-4">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-700">
+                    Outcome Check-In
+                  </p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Applications: {draft.outcomeCheckIn?.applicationsSubmitted30d ?? 0}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-700">
+                    Interviews: {draft.outcomeCheckIn?.interviewsSecured30d ?? 0}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-700">
+                    First interview booked: {draft.outcomeCheckIn?.firstInterviewBooked ? 'Yes' : 'No'}
+                  </p>
+                </div>
+                <p className="text-xs text-slate-500">
+                  {draft.outcomeCheckIn?.updatedAt
+                    ? `Updated ${new Date(draft.outcomeCheckIn.updatedAt).toLocaleString()}`
+                    : 'No check-in saved yet.'}
                 </p>
               </div>
             </div>
