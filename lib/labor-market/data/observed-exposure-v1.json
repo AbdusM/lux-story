@@ -1,0 +1,191 @@
+[
+  {
+    "careerIds": ["data-analyst-community"],
+    "aliases": ["community data analyst", "data analyst", "data journalist / analyst"],
+    "descriptor": {
+      "level": "medium",
+      "confidence": "medium",
+      "reasons": [
+        "Data-heavy knowledge work is seeing meaningful AI adoption, especially for analysis and drafting support.",
+        "Community-facing interpretation and local context still require human judgment and communication."
+      ]
+    },
+    "metadata": {
+      "summary": "Curated nowcasting mapping for a high-context data lane with meaningful AI adoption but continued human interpretation demand.",
+      "source": "Anthropic labor-market note + Lux canonical career mapping",
+      "updatedAtIso": "2026-03-05T00:00:00.000Z",
+      "coverage": "Canonical Birmingham career lanes plus compatibility aliases inside the repo-owned nowcasting map.",
+      "confidence": "medium",
+      "version": "observed-exposure-v1",
+      "methodology": "Repo-owned mapping that translates external observed-adoption framing into canonical Lux career lanes."
+    }
+  },
+  {
+    "careerIds": ["healthcare-tech"],
+    "aliases": ["healthcare technology specialist", "health informatics", "healthcare support"],
+    "descriptor": {
+      "level": "low",
+      "confidence": "medium",
+      "reasons": [
+        "Healthcare technology work includes regulated workflows and human coordination that slow direct automation.",
+        "AI adoption may still change tooling, but patient safety and operational oversight constrain full task replacement."
+      ]
+    },
+    "metadata": {
+      "summary": "Curated low-exposure mapping for regulated healthcare workflows where safety and coordination slow direct automation.",
+      "source": "Anthropic labor-market note + Lux canonical career mapping",
+      "updatedAtIso": "2026-03-05T00:00:00.000Z",
+      "coverage": "Canonical Birmingham career lanes plus compatibility aliases inside the repo-owned nowcasting map.",
+      "confidence": "medium",
+      "version": "observed-exposure-v1",
+      "methodology": "Repo-owned mapping that applies conservative exposure assumptions to regulated healthcare-adjacent work."
+    }
+  },
+  {
+    "careerIds": ["sustainable-construction"],
+    "aliases": ["sustainable construction manager", "construction manager"],
+    "descriptor": {
+      "level": "low",
+      "confidence": "medium",
+      "reasons": [
+        "Construction and field coordination remain anchored in physical-world execution and on-site decision-making.",
+        "AI may assist planning and documentation, but observed exposure is currently lower than desk-based digital work."
+      ]
+    },
+    "metadata": {
+      "summary": "Curated lower-exposure mapping for physical-world construction work where field execution remains dominant.",
+      "source": "Anthropic labor-market note + Lux canonical career mapping",
+      "updatedAtIso": "2026-03-05T00:00:00.000Z",
+      "coverage": "Canonical Birmingham career lanes plus compatibility aliases inside the repo-owned nowcasting map.",
+      "confidence": "medium",
+      "version": "observed-exposure-v1",
+      "methodology": "Repo-owned mapping emphasizing the difference between digital drafting assistance and on-site execution."
+    }
+  },
+  {
+    "careerIds": ["creative-entrepreneur"],
+    "aliases": ["creative entrepreneur", "digital creative director"],
+    "descriptor": {
+      "level": "medium",
+      "confidence": "medium",
+      "reasons": [
+        "Creative production is seeing active AI adoption in drafting, ideation, and asset generation.",
+        "Client trust, taste, direction, and brand judgment still create human leverage in the lane."
+      ]
+    },
+    "metadata": {
+      "summary": "Curated medium-exposure mapping for creative work that is actively adopting AI while preserving human taste and direction.",
+      "source": "Anthropic labor-market note + Lux canonical career mapping",
+      "updatedAtIso": "2026-03-05T00:00:00.000Z",
+      "coverage": "Canonical Birmingham career lanes plus compatibility aliases inside the repo-owned nowcasting map.",
+      "confidence": "medium",
+      "version": "observed-exposure-v1",
+      "methodology": "Repo-owned mapping using an augmentation-versus-automation interpretation for creative production roles."
+    }
+  },
+  {
+    "careerIds": ["cybersecurity-specialist"],
+    "aliases": ["cybersecurity specialist"],
+    "descriptor": {
+      "level": "medium",
+      "confidence": "medium",
+      "reasons": [
+        "Security work is adopting AI for triage and analysis, but verification and risk ownership remain human-heavy.",
+        "Exposure is meaningful, though current adoption often augments analysts more than it replaces them."
+      ]
+    },
+    "metadata": {
+      "summary": "Curated medium-exposure mapping for cybersecurity where AI assists analysis but humans retain verification and accountability.",
+      "source": "Anthropic labor-market note + Lux canonical career mapping",
+      "updatedAtIso": "2026-03-05T00:00:00.000Z",
+      "coverage": "Canonical Birmingham career lanes plus compatibility aliases inside the repo-owned nowcasting map.",
+      "confidence": "medium",
+      "version": "observed-exposure-v1",
+      "methodology": "Repo-owned mapping using observed-adoption framing for high-skill digital work with retained human risk ownership."
+    }
+  },
+  {
+    "careerIds": ["learning-experience-architect"],
+    "aliases": ["learning experience architect", "technical educator / content creator"],
+    "descriptor": {
+      "level": "medium",
+      "confidence": "medium",
+      "reasons": [
+        "Learning design and content work is adopting AI for drafting, adaptation, and asset generation.",
+        "Instructional sequencing, audience fit, and facilitation still depend on human judgment."
+      ]
+    },
+    "metadata": {
+      "summary": "Curated medium-exposure mapping for instructional design work with AI-assisted drafting but continued human facilitation.",
+      "source": "Anthropic labor-market note + Lux canonical career mapping",
+      "updatedAtIso": "2026-03-05T00:00:00.000Z",
+      "coverage": "Canonical Birmingham career lanes plus compatibility aliases inside the repo-owned nowcasting map.",
+      "confidence": "medium",
+      "version": "observed-exposure-v1",
+      "methodology": "Repo-owned mapping using knowledge-work adoption patterns translated into canonical Lux learning-design roles."
+    }
+  },
+  {
+    "careerIds": ["advanced-logistics"],
+    "aliases": ["advanced logistics & manufacturing", "logistics manager"],
+    "descriptor": {
+      "level": "medium",
+      "confidence": "low",
+      "reasons": [
+        "Logistics planning and operational analysis are becoming more software- and AI-assisted.",
+        "Observed adoption varies widely between planning, warehouse, and field roles, so confidence stays low."
+      ]
+    },
+    "metadata": {
+      "summary": "Curated mixed-exposure mapping for logistics, with uneven AI adoption across planning, warehouse, and field sub-roles.",
+      "source": "Anthropic labor-market note + Lux canonical career mapping",
+      "updatedAtIso": "2026-03-05T00:00:00.000Z",
+      "coverage": "Canonical Birmingham career lanes plus compatibility aliases inside the repo-owned nowcasting map.",
+      "confidence": "low",
+      "version": "observed-exposure-v1",
+      "methodology": "Repo-owned mapping that keeps confidence low when adoption patterns vary sharply across sub-roles."
+    }
+  },
+  {
+    "careerIds": [],
+    "aliases": ["software developer", "developer", "programmer"],
+    "descriptor": {
+      "level": "high",
+      "confidence": "medium",
+      "reasons": [
+        "Software development is one of the clearest lanes where AI tools are already changing day-to-day workflows.",
+        "High exposure here means workflows are shifting quickly, not that individual outcomes are predetermined."
+      ]
+    },
+    "metadata": {
+      "summary": "Compatibility mapping for software-role aliases where day-to-day workflows are already shifting quickly.",
+      "source": "Anthropic labor-market note + Lux compatibility alias mapping",
+      "updatedAtIso": "2026-03-05T00:00:00.000Z",
+      "coverage": "Alias-only mapping for non-canonical role names that still appear in adjacent repo flows.",
+      "confidence": "medium",
+      "version": "observed-exposure-v1",
+      "methodology": "Compatibility alias mapping layered on top of the canonical observed-exposure dataset for adjacent role names."
+    }
+  },
+  {
+    "careerIds": [],
+    "aliases": ["customer service", "data entry"],
+    "descriptor": {
+      "level": "high",
+      "confidence": "medium",
+      "reasons": [
+        "These lanes include repeatable digital tasks where current AI adoption is already visible.",
+        "Observed exposure is elevated even though local job conditions can still differ by employer and workflow."
+      ]
+    },
+    "metadata": {
+      "summary": "Compatibility mapping for common high-exposure digital task lanes outside the core Birmingham taxonomy.",
+      "source": "Anthropic labor-market note + Lux compatibility alias mapping",
+      "updatedAtIso": "2026-03-05T00:00:00.000Z",
+      "coverage": "Alias-only mapping for common exposed roles outside the canonical Birmingham lane set.",
+      "confidence": "medium",
+      "version": "observed-exposure-v1",
+      "methodology": "Compatibility alias mapping used when external role names appear outside the repo canonical taxonomy."
+    }
+  }
+]
