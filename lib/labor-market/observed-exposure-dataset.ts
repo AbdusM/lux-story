@@ -1,19 +1,17 @@
 import type { SignalDescriptor } from '@/lib/labor-market/signals'
+import type { MarketSignalMetadata } from '@/lib/labor-market/market-signal-contract'
+import { normalizeMarketSignalValue } from '@/lib/labor-market/market-signal-contract'
 
 export interface CuratedObservedExposureMatch {
   descriptor: SignalDescriptor
-  provenance: string
+  metadata: MarketSignalMetadata
 }
 
 interface CuratedObservedExposureRecord {
   careerIds: string[]
   aliases: string[]
   descriptor: SignalDescriptor
-  provenance: string
-}
-
-function normalize(value: string): string {
-  return value.trim().toLowerCase()
+  metadata: MarketSignalMetadata
 }
 
 const CURATED_OBSERVED_EXPOSURE: CuratedObservedExposureRecord[] = [
@@ -28,8 +26,17 @@ const CURATED_OBSERVED_EXPOSURE: CuratedObservedExposureRecord[] = [
         'Community-facing interpretation and local context still require human judgment and communication.',
       ],
     },
-    provenance:
-      'Curated nowcasting mapping reviewed on March 5, 2026 using the repo canonical career taxonomy and the observed-exposure framing from the Anthropic labor-market note.',
+    metadata: {
+      summary:
+        'Curated nowcasting mapping for a high-context data lane with meaningful AI adoption but continued human interpretation demand.',
+      source: 'Anthropic labor-market note + Lux canonical career mapping',
+      updatedAtIso: '2026-03-05T00:00:00.000Z',
+      coverage: 'Canonical Birmingham career lanes plus compatibility aliases inside the repo-owned nowcasting map.',
+      confidence: 'medium',
+      version: 'observed-exposure-v1',
+      methodology:
+        'Repo-owned mapping that translates external observed-adoption framing into canonical Lux career lanes.',
+    },
   },
   {
     careerIds: ['healthcare-tech'],
@@ -42,8 +49,17 @@ const CURATED_OBSERVED_EXPOSURE: CuratedObservedExposureRecord[] = [
         'AI adoption may still change tooling, but patient safety and operational oversight constrain full task replacement.',
       ],
     },
-    provenance:
-      'Curated nowcasting mapping reviewed on March 5, 2026 using repo career IDs and a conservative interpretation of regulated-work adoption.',
+    metadata: {
+      summary:
+        'Curated low-exposure mapping for regulated healthcare workflows where safety and coordination slow direct automation.',
+      source: 'Anthropic labor-market note + Lux canonical career mapping',
+      updatedAtIso: '2026-03-05T00:00:00.000Z',
+      coverage: 'Canonical Birmingham career lanes plus compatibility aliases inside the repo-owned nowcasting map.',
+      confidence: 'medium',
+      version: 'observed-exposure-v1',
+      methodology:
+        'Repo-owned mapping that applies conservative exposure assumptions to regulated healthcare-adjacent work.',
+    },
   },
   {
     careerIds: ['sustainable-construction'],
@@ -56,8 +72,17 @@ const CURATED_OBSERVED_EXPOSURE: CuratedObservedExposureRecord[] = [
         'AI may assist planning and documentation, but observed exposure is currently lower than desk-based digital work.',
       ],
     },
-    provenance:
-      'Curated nowcasting mapping reviewed on March 5, 2026 with emphasis on physical-world execution work remaining less exposed.',
+    metadata: {
+      summary:
+        'Curated lower-exposure mapping for physical-world construction work where field execution remains dominant.',
+      source: 'Anthropic labor-market note + Lux canonical career mapping',
+      updatedAtIso: '2026-03-05T00:00:00.000Z',
+      coverage: 'Canonical Birmingham career lanes plus compatibility aliases inside the repo-owned nowcasting map.',
+      confidence: 'medium',
+      version: 'observed-exposure-v1',
+      methodology:
+        'Repo-owned mapping emphasizing the difference between digital drafting assistance and on-site execution.',
+    },
   },
   {
     careerIds: ['creative-entrepreneur'],
@@ -70,8 +95,17 @@ const CURATED_OBSERVED_EXPOSURE: CuratedObservedExposureRecord[] = [
         'Client trust, taste, direction, and brand judgment still create human leverage in the lane.',
       ],
     },
-    provenance:
-      'Curated nowcasting mapping reviewed on March 5, 2026 using the report’s augmentation-vs-automation framing for creative work.',
+    metadata: {
+      summary:
+        'Curated medium-exposure mapping for creative work that is actively adopting AI while preserving human taste and direction.',
+      source: 'Anthropic labor-market note + Lux canonical career mapping',
+      updatedAtIso: '2026-03-05T00:00:00.000Z',
+      coverage: 'Canonical Birmingham career lanes plus compatibility aliases inside the repo-owned nowcasting map.',
+      confidence: 'medium',
+      version: 'observed-exposure-v1',
+      methodology:
+        'Repo-owned mapping using an augmentation-versus-automation interpretation for creative production roles.',
+    },
   },
   {
     careerIds: ['cybersecurity-specialist'],
@@ -84,8 +118,17 @@ const CURATED_OBSERVED_EXPOSURE: CuratedObservedExposureRecord[] = [
         'Exposure is meaningful, though current adoption often augments analysts more than it replaces them.',
       ],
     },
-    provenance:
-      'Curated nowcasting mapping reviewed on March 5, 2026 using the report’s observed-adoption lens for high-skill digital work.',
+    metadata: {
+      summary:
+        'Curated medium-exposure mapping for cybersecurity where AI assists analysis but humans retain verification and accountability.',
+      source: 'Anthropic labor-market note + Lux canonical career mapping',
+      updatedAtIso: '2026-03-05T00:00:00.000Z',
+      coverage: 'Canonical Birmingham career lanes plus compatibility aliases inside the repo-owned nowcasting map.',
+      confidence: 'medium',
+      version: 'observed-exposure-v1',
+      methodology:
+        'Repo-owned mapping using observed-adoption framing for high-skill digital work with retained human risk ownership.',
+    },
   },
   {
     careerIds: ['learning-experience-architect'],
@@ -98,8 +141,17 @@ const CURATED_OBSERVED_EXPOSURE: CuratedObservedExposureRecord[] = [
         'Instructional sequencing, audience fit, and facilitation still depend on human judgment.',
       ],
     },
-    provenance:
-      'Curated nowcasting mapping reviewed on March 5, 2026 using the report’s observed-adoption framing for knowledge work.',
+    metadata: {
+      summary:
+        'Curated medium-exposure mapping for instructional design work with AI-assisted drafting but continued human facilitation.',
+      source: 'Anthropic labor-market note + Lux canonical career mapping',
+      updatedAtIso: '2026-03-05T00:00:00.000Z',
+      coverage: 'Canonical Birmingham career lanes plus compatibility aliases inside the repo-owned nowcasting map.',
+      confidence: 'medium',
+      version: 'observed-exposure-v1',
+      methodology:
+        'Repo-owned mapping using knowledge-work adoption patterns translated into canonical Lux learning-design roles.',
+    },
   },
   {
     careerIds: ['advanced-logistics'],
@@ -112,8 +164,17 @@ const CURATED_OBSERVED_EXPOSURE: CuratedObservedExposureRecord[] = [
         'Observed adoption varies widely between planning, warehouse, and field roles, so confidence stays low.',
       ],
     },
-    provenance:
-      'Curated nowcasting mapping reviewed on March 5, 2026; confidence remains low because adoption differs across sub-roles.',
+    metadata: {
+      summary:
+        'Curated mixed-exposure mapping for logistics, with uneven AI adoption across planning, warehouse, and field sub-roles.',
+      source: 'Anthropic labor-market note + Lux canonical career mapping',
+      updatedAtIso: '2026-03-05T00:00:00.000Z',
+      coverage: 'Canonical Birmingham career lanes plus compatibility aliases inside the repo-owned nowcasting map.',
+      confidence: 'low',
+      version: 'observed-exposure-v1',
+      methodology:
+        'Repo-owned mapping that keeps confidence low when adoption patterns vary sharply across sub-roles.',
+    },
   },
   {
     careerIds: [],
@@ -126,8 +187,17 @@ const CURATED_OBSERVED_EXPOSURE: CuratedObservedExposureRecord[] = [
         'High exposure here means workflows are shifting quickly, not that individual outcomes are predetermined.',
       ],
     },
-    provenance:
-      'Curated compatibility mapping reviewed on March 5, 2026 for non-canonical software-role names that still appear in tests and adjacent flows.',
+    metadata: {
+      summary:
+        'Compatibility mapping for software-role aliases where day-to-day workflows are already shifting quickly.',
+      source: 'Anthropic labor-market note + Lux compatibility alias mapping',
+      updatedAtIso: '2026-03-05T00:00:00.000Z',
+      coverage: 'Alias-only mapping for non-canonical role names that still appear in adjacent repo flows.',
+      confidence: 'medium',
+      version: 'observed-exposure-v1',
+      methodology:
+        'Compatibility alias mapping layered on top of the canonical observed-exposure dataset for adjacent role names.',
+    },
   },
   {
     careerIds: [],
@@ -140,8 +210,17 @@ const CURATED_OBSERVED_EXPOSURE: CuratedObservedExposureRecord[] = [
         'Observed exposure is elevated even though local job conditions can still differ by employer and workflow.',
       ],
     },
-    provenance:
-      'Curated compatibility mapping reviewed on March 5, 2026 for common exposed role names outside the core Birmingham career taxonomy.',
+    metadata: {
+      summary:
+        'Compatibility mapping for common high-exposure digital task lanes outside the core Birmingham taxonomy.',
+      source: 'Anthropic labor-market note + Lux compatibility alias mapping',
+      updatedAtIso: '2026-03-05T00:00:00.000Z',
+      coverage: 'Alias-only mapping for common exposed roles outside the canonical Birmingham lane set.',
+      confidence: 'medium',
+      version: 'observed-exposure-v1',
+      methodology:
+        'Compatibility alias mapping used when external role names appear outside the repo canonical taxonomy.',
+    },
   },
 ]
 
@@ -149,21 +228,24 @@ export function getCuratedObservedExposure(options: {
   careerId?: string
   careerName: string
 }): CuratedObservedExposureMatch | null {
-  const normalizedId = options.careerId ? normalize(options.careerId) : null
-  const normalizedName = normalize(options.careerName)
+  const normalizedId = options.careerId ? normalizeMarketSignalValue(options.careerId) : null
+  const normalizedName = normalizeMarketSignalValue(options.careerName)
 
   const match = CURATED_OBSERVED_EXPOSURE.find((entry) => {
-    if (normalizedId && entry.careerIds.some((careerId) => normalize(careerId) === normalizedId)) {
+    if (
+      normalizedId &&
+      entry.careerIds.some((careerId) => normalizeMarketSignalValue(careerId) === normalizedId)
+    ) {
       return true
     }
 
-    return entry.aliases.some((alias) => normalizedName.includes(normalize(alias)))
+    return entry.aliases.some((alias) => normalizedName.includes(normalizeMarketSignalValue(alias)))
   })
 
   if (!match) return null
 
   return {
     descriptor: match.descriptor,
-    provenance: match.provenance,
+    metadata: match.metadata,
   }
 }

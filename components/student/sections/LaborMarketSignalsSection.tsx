@@ -94,6 +94,17 @@ function postureIcon(posture: Posture) {
   }
 }
 
+function renderSignalMetadata(updatedAtIso: string, source: string, coverage: string, version: string) {
+  return (
+    <div className="mt-2 space-y-1 text-xs text-slate-500">
+      <p>Source: {source}</p>
+      <p>Coverage: {coverage}</p>
+      <p>Updated: {new Date(updatedAtIso).toLocaleDateString()}</p>
+      <p>Version: {version}</p>
+    </div>
+  )
+}
+
 export function LaborMarketSignalsSection({
   profile,
   posture,
@@ -273,11 +284,23 @@ export function LaborMarketSignalsSection({
           <div className="mt-3 grid gap-3 md:grid-cols-3">
             <div className="rounded-xl border border-sky-100 bg-sky-50/70 p-3">
               <p className="text-xs font-semibold text-slate-700">Observed Exposure</p>
-              <p className="mt-1 text-sm text-slate-600">{signals.provenance.observedExposure}</p>
+              <p className="mt-1 text-sm text-slate-600">{signals.provenance.observedExposure.summary}</p>
+              {renderSignalMetadata(
+                signals.provenance.observedExposure.updatedAtIso,
+                signals.provenance.observedExposure.source,
+                signals.provenance.observedExposure.coverage,
+                signals.provenance.observedExposure.version,
+              )}
             </div>
             <div className="rounded-xl border border-sky-100 bg-sky-50/70 p-3">
               <p className="text-xs font-semibold text-slate-700">Entry Friction</p>
-              <p className="mt-1 text-sm text-slate-600">{signals.provenance.entryFriction}</p>
+              <p className="mt-1 text-sm text-slate-600">{signals.provenance.entryFriction.summary}</p>
+              {renderSignalMetadata(
+                signals.provenance.entryFriction.updatedAtIso,
+                signals.provenance.entryFriction.source,
+                signals.provenance.entryFriction.coverage,
+                signals.provenance.entryFriction.version,
+              )}
             </div>
             <div className="rounded-xl border border-sky-100 bg-sky-50/70 p-3">
               <p className="text-xs font-semibold text-slate-700">Freshness</p>

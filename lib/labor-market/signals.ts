@@ -1,5 +1,6 @@
 import type { CareerMatch, SkillProfile } from '@/lib/skill-profile-adapter'
 import { getCuratedEntryFriction } from '@/lib/labor-market/entry-friction-dataset'
+import type { MarketSignalMetadata } from '@/lib/labor-market/market-signal-contract'
 import { getCuratedObservedExposure } from '@/lib/labor-market/observed-exposure-dataset'
 
 export type Posture = 'defend' | 'balance' | 'attack'
@@ -22,8 +23,8 @@ export interface CareerSignals {
   recommendedPosture: Posture
   updatedAtIso: string
   provenance: {
-    observedExposure: string
-    entryFriction: string
+    observedExposure: MarketSignalMetadata
+    entryFriction: MarketSignalMetadata
     freshness: string
   }
   disclaimers: string[]
@@ -35,7 +36,7 @@ function clampReasons(reasons: string[], max: number = 3): string[] {
 
 function deriveObservedExposure(career: CareerMatch): {
   descriptor: SignalDescriptor
-  provenance: string
+  metadata: MarketSignalMetadata
 } {
   const curated = getCuratedObservedExposure({
     careerId: career.id,
@@ -48,7 +49,7 @@ function deriveObservedExposure(career: CareerMatch): {
         ...curated.descriptor,
         reasons: clampReasons(curated.descriptor.reasons),
       },
-      provenance: curated.provenance,
+      metadata: curated.metadata,
     }
   }
 
@@ -58,8 +59,16 @@ function deriveObservedExposure(career: CareerMatch): {
       confidence: 'low',
       reasons: ['No repo-owned nowcasting mapping exists yet for this lane.'],
     },
-    provenance:
-      'No curated observed-exposure record is attached to this career yet, so the UI stays explicitly unknown.',
+    metadata: {
+      summary: 'No curated observed-exposure mapping exists for this lane yet.',
+      source: 'Lux fallback: unmapped lane',
+      updatedAtIso: '2026-03-13T00:00:00.000Z',
+      coverage: 'Only canonical and alias lanes already added to the repo-owned mapping are covered.',
+      confidence: 'low',
+      version: 'observed-exposure-v1',
+      methodology:
+        'If no repo-owned observed-exposure record exists, the system stays explicitly unknown rather than inventing a score.',
+    },
   }
 }
 
@@ -89,9 +98,10 @@ function buildReadinessContextReasons(career: CareerMatch, profile: SkillProfile
 function deriveEntryFriction(
   career: CareerMatch,
   profile: SkillProfile,
+  nowIso: string,
 ): {
   descriptor: SignalDescriptor
-  provenance: string
+  metadata: MarketSignalMetadata
 } {
   const contextReasons = buildReadinessContextReasons(career, profile)
   const curated = getCuratedEntryFriction({
@@ -105,23 +115,44 @@ function deriveEntryFriction(
         ...curated.descriptor,
         reasons: clampReasons([...curated.descriptor.reasons, ...contextReasons]),
       },
-      provenance: `${curated.provenance} Supporting readiness context is appended from the student profile at page load.`,
+      metadata: {
+        ...curated.metadata,
+        summary: `${curated.metadata.summary} Supporting readiness context from the current student profile is appended at page load.`,
+      },
     }
   }
 
   if (career.readiness === 'near_ready') {
     return {
       descriptor: { level: 'low', confidence: 'medium', reasons: clampReasons(contextReasons) },
-      provenance:
-        'No curated entry-friction record exists yet for this lane, so the estimate falls back to readiness and skill-gap evidence from the current profile.',
+      metadata: {
+        summary:
+          'No curated entry-friction mapping exists for this lane yet, so the estimate falls back to readiness evidence.',
+        source: 'Lux fallback: student profile readiness',
+        updatedAtIso: nowIso,
+        coverage: 'Current student profile only; no external lane mapping is attached yet.',
+        confidence: 'medium',
+        version: 'entry-friction-v1',
+        methodology:
+          'Fallback path uses readiness and skill-gap evidence from the current profile until a lane mapping is added.',
+      },
     }
   }
 
   if (career.readiness === 'exploratory') {
     return {
       descriptor: { level: 'high', confidence: 'medium', reasons: clampReasons(contextReasons) },
-      provenance:
-        'No curated entry-friction record exists yet for this lane, so the estimate falls back to readiness and skill-gap evidence from the current profile.',
+      metadata: {
+        summary:
+          'No curated entry-friction mapping exists for this lane yet, so the estimate falls back to exploratory readiness evidence.',
+        source: 'Lux fallback: student profile readiness',
+        updatedAtIso: nowIso,
+        coverage: 'Current student profile only; no external lane mapping is attached yet.',
+        confidence: 'medium',
+        version: 'entry-friction-v1',
+        methodology:
+          'Fallback path uses readiness and skill-gap evidence from the current profile until a lane mapping is added.',
+      },
     }
   }
 
@@ -129,8 +160,17 @@ function deriveEntryFriction(
   const level: SignalLevel = topGap?.priority === 'high' ? 'high' : 'medium'
   return {
     descriptor: { level, confidence: 'medium', reasons: clampReasons(contextReasons) },
-    provenance:
-      'No curated entry-friction record exists yet for this lane, so the estimate falls back to readiness and skill-gap evidence from the current profile.',
+    metadata: {
+      summary:
+        'No curated entry-friction mapping exists for this lane yet, so the estimate falls back to skill-gap evidence.',
+      source: 'Lux fallback: student profile readiness',
+      updatedAtIso: nowIso,
+      coverage: 'Current student profile only; no external lane mapping is attached yet.',
+      confidence: 'medium',
+      version: 'entry-friction-v1',
+      methodology:
+        'Fallback path uses readiness and skill-gap evidence from the current profile until a lane mapping is added.',
+    },
   }
 }
 
@@ -150,7 +190,7 @@ export function deriveCareerSignals(options: {
 }): CareerSignals {
   const nowIso = options.nowIso ?? new Date().toISOString()
   const observedExposure = deriveObservedExposure(options.career)
-  const entryFriction = deriveEntryFriction(options.career, options.profile)
+  const entryFriction = deriveEntryFriction(options.career, options.profile, nowIso)
   const growthOutlook = options.career.growthProjection
 
   return {
@@ -160,8 +200,8 @@ export function deriveCareerSignals(options: {
     recommendedPosture: deriveRecommendedPosture(entryFriction.descriptor, growthOutlook),
     updatedAtIso: nowIso,
     provenance: {
-      observedExposure: observedExposure.provenance,
-      entryFriction: entryFriction.provenance,
+      observedExposure: observedExposure.metadata,
+      entryFriction: entryFriction.metadata,
       freshness: 'Generated at page load from the latest stored profile snapshot.',
     },
     disclaimers: [

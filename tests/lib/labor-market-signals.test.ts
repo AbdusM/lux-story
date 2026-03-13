@@ -61,7 +61,8 @@ describe('labor market signals', () => {
     expect(signals.observedExposure.level).toBe('medium')
     expect(signals.observedExposure.confidence).toBe('medium')
     expect(signals.updatedAtIso).toBe('2026-03-12T00:00:00.000Z')
-    expect(signals.provenance.observedExposure).toContain('Curated nowcasting mapping reviewed on March 5, 2026')
+    expect(signals.provenance.observedExposure.source).toContain('Anthropic labor-market note')
+    expect(signals.provenance.observedExposure.version).toBe('observed-exposure-v1')
   })
 
   it('falls back to unknown when no curated mapping exists', () => {
@@ -92,7 +93,8 @@ describe('labor market signals', () => {
 
     expect(signals.entryFriction.level).toBe('high')
     expect(signals.entryFriction.confidence).toBe('medium')
-    expect(signals.provenance.entryFriction).toContain('Curated entry-friction proxy reviewed on March 12, 2026')
+    expect(signals.provenance.entryFriction.source).toContain('Lux nowcasting proxy map')
+    expect(signals.provenance.entryFriction.version).toBe('entry-friction-v1')
   })
 
   it('derives posture from entry friction and growth outlook (defend when friction is high)', () => {
@@ -132,6 +134,7 @@ describe('labor market signals', () => {
 
     expect(signals.entryFriction.level).toBe('high')
     expect(signals.entryFriction.reasons.join(' ')).toContain('project planning')
-    expect(signals.provenance.entryFriction).toContain('falls back to readiness and skill-gap evidence')
+    expect(signals.provenance.entryFriction.source).toBe('Lux fallback: student profile readiness')
+    expect(signals.provenance.entryFriction.updatedAtIso).toBe('2026-03-12T00:00:00.000Z')
   })
 })
