@@ -1,6 +1,8 @@
 'use client'
 
+import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
+import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import {
@@ -10,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { AlertCircle, CheckCircle, RefreshCw, Database, AlertTriangle, Radar, ShieldAlert, ShieldCheck, BarChart3 } from 'lucide-react'
+import { AlertCircle, ArrowUpRight, BarChart3, CheckCircle, ClipboardList, Database, AlertTriangle, Radar, RefreshCw, ShieldAlert, ShieldCheck } from 'lucide-react'
 import { AdminUtilityNav } from '@/components/admin/AdminUtilityNav'
 import { cn } from '@/lib/utils'
 import type {
@@ -20,6 +22,9 @@ import type {
   AdminLaborMarketSignalsResponse,
   AdminStudentInsightsFunnelSummary,
   AdminStudentInsightsSummaryResponse,
+  AdminStudentInsightsQueueFlag,
+  AdminStudentInsightsWorklistResponse,
+  AdminStudentInsightsWorklistSummary,
 } from '@/lib/types/admin-api'
 
 interface ConsistencyIssue {
@@ -67,6 +72,20 @@ const STUDENT_INSIGHTS_SURFACE_LABELS: Record<string, string> = {
   student_insights_action_plan: 'Action Plan',
 }
 
+const STUDENT_INSIGHTS_QUEUE_FLAG_LABELS: Record<AdminStudentInsightsQueueFlag, string> = {
+  needs_review: 'Needs Review',
+  needs_outcome_check_in: 'Needs Check-In',
+  high_effort_no_interview: 'High Effort / No Interview',
+  stalled_without_interview: 'Stalled / No Interview',
+}
+
+const STUDENT_INSIGHTS_QUEUE_FLAG_BADGE: Record<AdminStudentInsightsQueueFlag, 'secondary' | 'destructive' | 'outline' | 'default'> = {
+  needs_review: 'secondary',
+  needs_outcome_check_in: 'outline',
+  high_effort_no_interview: 'destructive',
+  stalled_without_interview: 'default',
+}
+
 export default function AdminDiagnosticsPage() {
   const [loading, setLoading] = useState(false)
   const [report, setReport] = useState<ConsistencyReport | null>(null)
@@ -76,6 +95,7 @@ export default function AdminDiagnosticsPage() {
   const [laborSignalError, setLaborSignalError] = useState<string | null>(null)
   const [studentInsightsLoading, setStudentInsightsLoading] = useState(false)
   const [studentInsightsSummary, setStudentInsightsSummary] = useState<AdminStudentInsightsFunnelSummary | null>(null)
+  const [studentInsightsWorklist, setStudentInsightsWorklist] = useState<AdminStudentInsightsWorklistSummary | null>(null)
   const [studentInsightsError, setStudentInsightsError] = useState<string | null>(null)
   const [studentInsightsDays, setStudentInsightsDays] = useState<number>(30)
 
@@ -131,17 +151,29 @@ export default function AdminDiagnosticsPage() {
     setStudentInsightsError(null)
 
     try {
-      const response = await fetch(`/api/admin/student-insights-summary?days=${studentInsightsDays}`)
-      if (!response.ok) {
-        const data = await response.json()
+      const [summaryResponse, worklistResponse] = await Promise.all([
+        fetch(`/api/admin/student-insights-summary?days=${studentInsightsDays}`),
+        fetch(`/api/admin/student-insights-worklist?days=${studentInsightsDays}&limit=20`),
+      ])
+
+      if (!summaryResponse.ok) {
+        const data = await summaryResponse.json()
         throw new Error(data.error || 'Failed to load student insights summary')
       }
 
-      const data: AdminStudentInsightsSummaryResponse = await response.json()
-      setStudentInsightsSummary(data.summary)
+      if (!worklistResponse.ok) {
+        const data = await worklistResponse.json()
+        throw new Error(data.error || 'Failed to load student insights worklist')
+      }
+
+      const summaryData: AdminStudentInsightsSummaryResponse = await summaryResponse.json()
+      const worklistData: AdminStudentInsightsWorklistResponse = await worklistResponse.json()
+      setStudentInsightsSummary(summaryData.summary)
+      setStudentInsightsWorklist(worklistData.worklist)
     } catch (err) {
       setStudentInsightsError(err instanceof Error ? err.message : 'Unknown error occurred')
       setStudentInsightsSummary(null)
+      setStudentInsightsWorklist(null)
     } finally {
       setStudentInsightsLoading(false)
     }
@@ -500,6 +532,165 @@ export default function AdminDiagnosticsPage() {
                     })}
                   </div>
                 </div>
+
+                {studentInsightsWorklist && (
+                  <div className="grid grid-cols-1 xl:grid-cols-[1.05fr_1.35fr] gap-4">
+                    <Card className="border-slate-200 shadow-none">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-lg">
+                          <BarChart3 className="h-5 w-5 text-emerald-600" />
+                          Outcome Snapshot
+                        </CardTitle>
+                        <CardDescription>
+                          Learner-reported momentum from saved 30-day check-ins.
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="grid grid-cols-2 gap-3">
+                          <SignalMetricCard
+                            label="Reporters"
+                            value={studentInsightsWorklist.outcomeSnapshot.reporters}
+                            tone="neutral"
+                            detail="saved check-ins"
+                          />
+                          <SignalMetricCard
+                            label="Interview Booked"
+                            value={studentInsightsWorklist.outcomeSnapshot.firstInterviewBooked}
+                            tone={studentInsightsWorklist.outcomeSnapshot.firstInterviewBooked > 0 ? 'success' : 'neutral'}
+                            detail="first interview"
+                          />
+                          <SignalMetricCard
+                            label="Zero-Interview Check-Ins"
+                            value={studentInsightsWorklist.outcomeSnapshot.zeroInterviewCheckIns}
+                            tone={studentInsightsWorklist.outcomeSnapshot.zeroInterviewCheckIns > 0 ? 'warning' : 'neutral'}
+                            detail="reported no interviews"
+                          />
+                          <SignalMetricCard
+                            label="Flagged Learners"
+                            value={studentInsightsWorklist.flaggedUsers}
+                            tone={studentInsightsWorklist.flaggedUsers > 0 ? 'warning' : 'success'}
+                            detail={`${studentInsightsWorklist.totalUsersConsidered} considered`}
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                            <p className="text-xs text-slate-500">Avg applications (30d)</p>
+                            <p className="mt-1 text-lg font-semibold text-slate-900">
+                              {studentInsightsWorklist.outcomeSnapshot.averageApplicationsSubmitted30d}
+                            </p>
+                          </div>
+                          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                            <p className="text-xs text-slate-500">Avg interviews (30d)</p>
+                            <p className="mt-1 text-lg font-semibold text-slate-900">
+                              {studentInsightsWorklist.outcomeSnapshot.averageInterviewsSecured30d}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                          {Object.entries(studentInsightsWorklist.flags).map(([flag, count]) => (
+                            <div
+                              key={flag}
+                              className="rounded-lg border border-slate-200 bg-white/80 p-3"
+                            >
+                              <p className="text-xs text-slate-500">
+                                {STUDENT_INSIGHTS_QUEUE_FLAG_LABELS[flag as AdminStudentInsightsQueueFlag]}
+                              </p>
+                              <p className="mt-1 text-lg font-semibold text-slate-900">{count}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="border-slate-200 shadow-none">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-lg">
+                          <ClipboardList className="h-5 w-5 text-indigo-600" />
+                          Counselor Queue
+                        </CardTitle>
+                        <CardDescription>
+                          Learners who need review or follow-up based on saved plan and check-in signals.
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        {studentInsightsWorklist.items.length === 0 ? (
+                          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+                            No flagged learners in the current window.
+                          </div>
+                        ) : (
+                          studentInsightsWorklist.items.map((item) => (
+                            <div
+                              key={item.userId}
+                              className="rounded-lg border border-slate-200 bg-white/80 p-4"
+                            >
+                              <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                                <div className="space-y-2">
+                                  <div>
+                                    <p className="font-semibold text-slate-900">
+                                      {item.fullName || item.email || item.userId}
+                                    </p>
+                                    <p className="text-xs text-slate-500">
+                                      {item.email && item.fullName ? `${item.email} · ` : ''}{item.userId}
+                                    </p>
+                                  </div>
+
+                                  <div className="flex flex-wrap gap-2">
+                                    {item.flags.map((flag) => (
+                                      <Badge key={flag} variant={STUDENT_INSIGHTS_QUEUE_FLAG_BADGE[flag]}>
+                                        {STUDENT_INSIGHTS_QUEUE_FLAG_LABELS[flag]}
+                                      </Badge>
+                                    ))}
+                                    <Badge variant="outline">
+                                      Review: {item.advisorReviewStatus ? item.advisorReviewStatus.replace('_', ' ') : 'none'}
+                                    </Badge>
+                                  </div>
+
+                                  <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-slate-700 md:grid-cols-4">
+                                    <div>
+                                      <p className="text-xs text-slate-500">Plans Completed</p>
+                                      <p className="font-semibold">{item.counts.taskCompleted}</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-xs text-slate-500">Proof Exported</p>
+                                      <p className="font-semibold">{item.counts.artifactExported}</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-xs text-slate-500">Applications (30d)</p>
+                                      <p className="font-semibold">{item.outcomeCheckIn?.applicationsSubmitted30d ?? 0}</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-xs text-slate-500">Interviews (30d)</p>
+                                      <p className="font-semibold">{item.outcomeCheckIn?.interviewsSecured30d ?? 0}</p>
+                                    </div>
+                                  </div>
+
+                                  <p className="text-xs text-slate-500">
+                                    {item.outcomeCheckIn
+                                      ? `Check-in ${new Date(item.outcomeCheckIn.updatedAt).toLocaleString()} · First interview booked: ${item.outcomeCheckIn.firstInterviewBooked ? 'yes' : 'no'}`
+                                      : item.actionPlanUpdatedAt
+                                        ? `Plan updated ${new Date(item.actionPlanUpdatedAt).toLocaleString()}`
+                                        : item.latestEventAt
+                                          ? `Latest event ${new Date(item.latestEventAt).toLocaleString()}`
+                                          : 'No recent timestamp'}
+                                  </p>
+                                </div>
+
+                                <Button asChild variant="outline" size="sm" className="gap-2 bg-white">
+                                  <Link href={`/admin/${encodeURIComponent(item.userId)}/action`}>
+                                    Open Learner
+                                    <ArrowUpRight className="h-4 w-4" />
+                                  </Link>
+                                </Button>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
 
                 {studentInsightsSummary.metadata.truncated && (
                   <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 flex items-start gap-3">

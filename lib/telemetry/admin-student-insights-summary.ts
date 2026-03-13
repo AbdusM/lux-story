@@ -1,92 +1,18 @@
 import {
   STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
-  STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
-  STUDENT_INSIGHTS_OUTCOME_CHECK_IN_TASK_ID,
   STUDENT_INSIGHTS_SIGNAL_SURFACE,
-  STUDENT_INSIGHTS_SIGNAL_TASK_ID,
 } from '@/lib/telemetry/student-insights-constants'
+import {
+  getStudentInsightsSourceSurface,
+  isStudentInsightsInteractionEvent,
+  type StudentInsightsInteractionEventRow as InteractionEventRow,
+} from '@/lib/telemetry/admin-student-insights-helpers'
 import type {
   AdminStudentInsightsFunnelRates,
   AdminStudentInsightsFunnelStageCounts,
   AdminStudentInsightsFunnelSummary,
   AdminStudentInsightsSurfaceMetrics,
 } from '@/lib/types/admin-api'
-
-type InteractionEventRow = {
-  user_id: string
-  event_type: string
-  occurred_at: string | null
-  payload: unknown
-}
-
-const STUDENT_INSIGHTS_EVENT_TYPES = new Set<string>([
-  'recommendation_shown',
-  'recommendation_clicked',
-  'task_exposed',
-  'task_started',
-  'assist_mode_selected',
-  'task_completed',
-  'artifact_exported',
-  'outcome_checkin_submitted',
-])
-
-const STUDENT_INSIGHTS_SCHEMA_PREFIXES_BY_SURFACE: Record<string, string[]> = {
-  [STUDENT_INSIGHTS_SIGNAL_SURFACE]: ['student-insights-signals-'],
-  [STUDENT_INSIGHTS_ACTION_PLAN_SURFACE]: [
-    'student-insights-action-plan-',
-    'student-insights-outcome-',
-  ],
-}
-
-const STUDENT_INSIGHTS_TASK_ID_BY_SURFACE: Record<string, string> = {
-  [STUDENT_INSIGHTS_SIGNAL_SURFACE]: STUDENT_INSIGHTS_SIGNAL_TASK_ID,
-  [STUDENT_INSIGHTS_ACTION_PLAN_SURFACE]: STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
-}
-
-function isPlainObject(value: unknown): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
-}
-
-function getSourceSurface(payload: unknown): string | null {
-  if (!isPlainObject(payload)) return null
-  return typeof payload.source_surface === 'string' && payload.source_surface.length > 0
-    ? payload.source_surface
-    : null
-}
-
-function getTaskId(payload: unknown): string | null {
-  if (!isPlainObject(payload)) return null
-  return typeof payload.task_id === 'string' && payload.task_id.length > 0 ? payload.task_id : null
-}
-
-function getSchemaVersion(payload: unknown): string | null {
-  if (!isPlainObject(payload)) return null
-  return typeof payload.guidance_schema_version === 'string' && payload.guidance_schema_version.length > 0
-    ? payload.guidance_schema_version
-    : null
-}
-
-function isStudentInsightsPayloadForSurface(payload: unknown, surface: string): boolean {
-  const schemaPrefixes = STUDENT_INSIGHTS_SCHEMA_PREFIXES_BY_SURFACE[surface]
-  if (!schemaPrefixes) return false
-
-  const taskId = getTaskId(payload)
-  if (surface === STUDENT_INSIGHTS_ACTION_PLAN_SURFACE) {
-    const validActionPlanTaskIds = new Set([
-      STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
-      STUDENT_INSIGHTS_OUTCOME_CHECK_IN_TASK_ID,
-    ])
-    if (!taskId || !validActionPlanTaskIds.has(taskId)) return false
-  } else {
-    const expectedTaskId = STUDENT_INSIGHTS_TASK_ID_BY_SURFACE[surface]
-    if (!expectedTaskId || taskId !== expectedTaskId) return false
-  }
-
-  const schemaVersion = getSchemaVersion(payload)
-  if (!schemaVersion || !schemaPrefixes.some((prefix) => schemaVersion.startsWith(prefix))) return false
-
-  return true
-}
 
 function createEmptyCounts(): AdminStudentInsightsFunnelStageCounts {
   return {
@@ -194,8 +120,8 @@ export function buildAdminStudentInsightsFunnelSummary(params: {
   const allowedSurfaces = new Set<string>(surfaces)
 
   const candidateEvents = params.interactionEvents.filter((event) => {
-    if (!STUDENT_INSIGHTS_EVENT_TYPES.has(event.event_type)) return false
-    const surface = getSourceSurface(event.payload)
+    if (!isStudentInsightsInteractionEvent(event)) return false
+    const surface = getStudentInsightsSourceSurface(event.payload)
     if (!surface) return false
     return allowedSurfaces.has(surface)
   })
@@ -205,8 +131,7 @@ export function buildAdminStudentInsightsFunnelSummary(params: {
 
   const surfaceMetrics: AdminStudentInsightsSurfaceMetrics[] = surfaces.map((surface) => {
     const events = candidateEvents.filter((event) => {
-      if (getSourceSurface(event.payload) !== surface) return false
-      return isStudentInsightsPayloadForSurface(event.payload, surface)
+      return getStudentInsightsSourceSurface(event.payload) === surface
     })
     const metrics = buildSurfaceMetrics(surface, events)
     events.forEach((event) => totalsUsers.add(event.user_id))

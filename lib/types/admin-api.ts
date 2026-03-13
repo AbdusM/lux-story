@@ -466,6 +466,54 @@ export interface AdminStudentInsightsSummaryResponse {
   fetchedAt: string
 }
 
+export type AdminStudentInsightsQueueFlag =
+  | 'needs_review'
+  | 'needs_outcome_check_in'
+  | 'high_effort_no_interview'
+  | 'stalled_without_interview'
+
+export interface AdminStudentInsightsWorklistItem {
+  userId: string
+  email: string | null
+  fullName: string | null
+  latestEventAt: string | null
+  actionPlanUpdatedAt: string | null
+  advisorReviewStatus: 'draft' | 'needs_work' | 'approved' | null
+  advisorReviewUpdatedAt: string | null
+  counts: AdminStudentInsightsFunnelStageCounts
+  outcomeCheckIn: {
+    applicationsSubmitted30d: number
+    interviewsSecured30d: number
+    firstInterviewBooked: boolean
+    updatedAt: string
+  } | null
+  flags: AdminStudentInsightsQueueFlag[]
+  priorityScore: number
+}
+
+export interface AdminStudentInsightsWorklistSummary {
+  generatedAt: string
+  days: number
+  limit: number
+  totalUsersConsidered: number
+  flaggedUsers: number
+  flags: Record<AdminStudentInsightsQueueFlag, number>
+  outcomeSnapshot: {
+    reporters: number
+    firstInterviewBooked: number
+    zeroInterviewCheckIns: number
+    averageApplicationsSubmitted30d: number
+    averageInterviewsSecured30d: number
+  }
+  items: AdminStudentInsightsWorklistItem[]
+}
+
+export interface AdminStudentInsightsWorklistResponse {
+  success: boolean
+  worklist: AdminStudentInsightsWorklistSummary
+  fetchedAt: string
+}
+
 // ============================================================================
 // Component Props Types
 // ============================================================================

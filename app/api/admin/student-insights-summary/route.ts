@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getAdminSupabaseClient, requireAdminAuth } from '@/lib/admin-supabase-client'
 import { auditLog } from '@/lib/audit-logger'
 import { buildAdminStudentInsightsFunnelSummary } from '@/lib/telemetry/admin-student-insights-summary'
+import { STUDENT_INSIGHTS_EVENT_TYPES, type StudentInsightsInteractionEventRow } from '@/lib/telemetry/admin-student-insights-helpers'
 import { logger } from '@/lib/logger'
 import { getClientIp, rateLimit } from '@/lib/rate-limit'
 import type { AdminStudentInsightsSummaryResponse } from '@/lib/types/admin-api'
@@ -20,16 +21,6 @@ const MIN_DAYS = 1
 const MAX_DAYS = 90
 const EVENT_LIMIT = 5000
 
-const STUDENT_INSIGHTS_EVENT_TYPES = [
-  'recommendation_shown',
-  'recommendation_clicked',
-  'task_exposed',
-  'task_started',
-  'assist_mode_selected',
-  'task_completed',
-  'artifact_exported',
-] as const
-
 function clampInteger(
   value: string | null,
   fallback: number,
@@ -39,13 +30,6 @@ function clampInteger(
   const parsed = Number.parseInt(value ?? '', 10)
   if (!Number.isFinite(parsed)) return fallback
   return Math.min(Math.max(parsed, min), max)
-}
-
-type StudentInsightsEventRow = {
-  user_id: string
-  event_type: string
-  occurred_at: string | null
-  payload: unknown
 }
 
 export async function GET(
@@ -106,7 +90,7 @@ export async function GET(
       throw error
     }
 
-    const interactionEvents = (data ?? []) as StudentInsightsEventRow[]
+    const interactionEvents = (data ?? []) as StudentInsightsInteractionEventRow[]
     const summary = buildAdminStudentInsightsFunnelSummary({
       interactionEvents,
       days,
