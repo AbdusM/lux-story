@@ -418,6 +418,52 @@ export interface AdminLaborMarketSignalsResponse {
   fetchedAt: string
 }
 
+export interface AdminStudentInsightsFunnelStageCounts {
+  recommendationShown: number
+  recommendationClicked: number
+  taskExposed: number
+  taskStarted: number
+  assistModeSelected: number
+  taskCompleted: number
+  artifactExported: number
+}
+
+export interface AdminStudentInsightsFunnelRates {
+  recommendationCtr: number
+  startRate: number
+  completionRate: number
+  artifactExportRate: number
+}
+
+export interface AdminStudentInsightsSurfaceMetrics {
+  surface: string
+  uniqueUsers: number
+  counts: AdminStudentInsightsFunnelStageCounts
+  rates: AdminStudentInsightsFunnelRates
+}
+
+export interface AdminStudentInsightsFunnelSummary {
+  generatedAt: string
+  days: number
+  eventLimit: number
+  surfaces: AdminStudentInsightsSurfaceMetrics[]
+  totals: {
+    uniqueUsers: number
+    counts: AdminStudentInsightsFunnelStageCounts
+    rates: AdminStudentInsightsFunnelRates
+  }
+  metadata: {
+    eventRowsScanned: number
+    truncated: boolean
+  }
+}
+
+export interface AdminStudentInsightsSummaryResponse {
+  success: boolean
+  summary: AdminStudentInsightsFunnelSummary
+  fetchedAt: string
+}
+
 // ============================================================================
 // Component Props Types
 // ============================================================================

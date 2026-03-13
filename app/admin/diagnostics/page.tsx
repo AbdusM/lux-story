@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { AlertCircle, CheckCircle, RefreshCw, Database, AlertTriangle, Radar, ShieldAlert, ShieldCheck } from 'lucide-react'
+import { AlertCircle, CheckCircle, RefreshCw, Database, AlertTriangle, Radar, ShieldAlert, ShieldCheck, BarChart3 } from 'lucide-react'
 import { AdminUtilityNav } from '@/components/admin/AdminUtilityNav'
 import { cn } from '@/lib/utils'
 import type {
@@ -11,6 +11,8 @@ import type {
   AdminLaborMarketSignalReport,
   AdminLaborMarketSignalRowSummary,
   AdminLaborMarketSignalsResponse,
+  AdminStudentInsightsFunnelSummary,
+  AdminStudentInsightsSummaryResponse,
 } from '@/lib/types/admin-api'
 
 interface ConsistencyIssue {
@@ -54,6 +56,9 @@ export default function AdminDiagnosticsPage() {
   const [laborSignalLoading, setLaborSignalLoading] = useState(false)
   const [laborSignalReport, setLaborSignalReport] = useState<AdminLaborMarketSignalReport | null>(null)
   const [laborSignalError, setLaborSignalError] = useState<string | null>(null)
+  const [studentInsightsLoading, setStudentInsightsLoading] = useState(false)
+  const [studentInsightsSummary, setStudentInsightsSummary] = useState<AdminStudentInsightsFunnelSummary | null>(null)
+  const [studentInsightsError, setStudentInsightsError] = useState<string | null>(null)
 
   const runConsistencyCheck = async (autoFix: boolean = false) => {
     setLoading(true)
@@ -102,8 +107,30 @@ export default function AdminDiagnosticsPage() {
     }
   }
 
+  const runStudentInsightsCheck = async () => {
+    setStudentInsightsLoading(true)
+    setStudentInsightsError(null)
+
+    try {
+      const response = await fetch('/api/admin/student-insights-summary')
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Failed to load student insights summary')
+      }
+
+      const data: AdminStudentInsightsSummaryResponse = await response.json()
+      setStudentInsightsSummary(data.summary)
+    } catch (err) {
+      setStudentInsightsError(err instanceof Error ? err.message : 'Unknown error occurred')
+      setStudentInsightsSummary(null)
+    } finally {
+      setStudentInsightsLoading(false)
+    }
+  }
+
   useEffect(() => {
     void runLaborSignalCheck()
+    void runStudentInsightsCheck()
   }, [])
 
   return (
@@ -259,6 +286,120 @@ export default function AdminDiagnosticsPage() {
                     </div>
                   </CardContent>
                 </Card>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <BarChart3 className="h-5 w-5 text-indigo-600" />
+              Student Insights Funnel
+            </CardTitle>
+            <CardDescription>
+              Whether nowcasting signals are driving plan and proof behavior (interaction events).
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex gap-3">
+              <Button
+                onClick={() => void runStudentInsightsCheck()}
+                disabled={studentInsightsLoading}
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                {studentInsightsLoading ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    Loading...
+                  </>
+                ) : (
+                  <>
+                    <BarChart3 className="w-4 h-4" />
+                    Refresh Student Funnel
+                  </>
+                )}
+              </Button>
+            </div>
+
+            {studentInsightsError && (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-semibold text-red-900">Student Funnel Error</p>
+                  <p className="text-sm text-red-700">{studentInsightsError}</p>
+                </div>
+              </div>
+            )}
+
+            {studentInsightsSummary && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                  <SignalMetricCard
+                    label="Users"
+                    value={studentInsightsSummary.totals.uniqueUsers}
+                    tone="neutral"
+                    detail={`Last ${studentInsightsSummary.days} days`}
+                  />
+                  <SignalMetricCard
+                    label="Signals Shown"
+                    value={studentInsightsSummary.totals.counts.recommendationShown}
+                    tone="neutral"
+                    detail="recommendation_shown"
+                  />
+                  <SignalMetricCard
+                    label="Signals CTR"
+                    value={studentInsightsSummary.totals.rates.recommendationCtr}
+                    tone={studentInsightsSummary.totals.rates.recommendationCtr > 0 ? 'success' : 'neutral'}
+                    detail="% clicked / shown"
+                  />
+                  <SignalMetricCard
+                    label="Plans Completed"
+                    value={studentInsightsSummary.totals.counts.taskCompleted}
+                    tone={studentInsightsSummary.totals.counts.taskCompleted > 0 ? 'success' : 'neutral'}
+                    detail="task_completed"
+                  />
+                  <SignalMetricCard
+                    label="Proof Exported"
+                    value={studentInsightsSummary.totals.counts.artifactExported}
+                    tone={studentInsightsSummary.totals.counts.artifactExported > 0 ? 'success' : 'neutral'}
+                    detail="artifact_exported"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <SignalMetricCard
+                    label="Plan Start Rate"
+                    value={studentInsightsSummary.totals.rates.startRate}
+                    tone={studentInsightsSummary.totals.rates.startRate > 0 ? 'success' : 'neutral'}
+                    detail="% started / exposed"
+                  />
+                  <SignalMetricCard
+                    label="Plan Completion"
+                    value={studentInsightsSummary.totals.rates.completionRate}
+                    tone={studentInsightsSummary.totals.rates.completionRate > 0 ? 'success' : 'neutral'}
+                    detail="% completed / started"
+                  />
+                  <SignalMetricCard
+                    label="Export Rate"
+                    value={studentInsightsSummary.totals.rates.artifactExportRate}
+                    tone={studentInsightsSummary.totals.rates.artifactExportRate > 0 ? 'success' : 'neutral'}
+                    detail="% exported / completed"
+                  />
+                </div>
+
+                {studentInsightsSummary.metadata.truncated && (
+                  <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 flex items-start gap-3">
+                    <AlertTriangle className="mt-0.5 h-5 w-5 text-amber-600" />
+                    <div>
+                      <p className="font-semibold">Event limit reached.</p>
+                      <p>
+                        Showing summary derived from the newest {studentInsightsSummary.eventLimit} events. Increase limits if needed.
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </CardContent>

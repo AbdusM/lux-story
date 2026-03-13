@@ -1,12 +1,20 @@
 import { processQueueDeferred, queueInteractionEventSync } from '@/lib/sync-queue'
 
-const STUDENT_INSIGHTS_SIGNAL_TASK_ID = 'review_labor_market_signals'
-const STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID = 'build_action_plan'
+import {
+  STUDENT_INSIGHTS_ACTION_PLAN_SCHEMA_VERSION,
+  STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
+  STUDENT_INSIGHTS_ACTION_PLAN_TASK_ID,
+  STUDENT_INSIGHTS_SIGNALS_SCHEMA_VERSION,
+  STUDENT_INSIGHTS_SIGNAL_SURFACE,
+  STUDENT_INSIGHTS_SIGNAL_TASK_ID,
+} from '@/lib/telemetry/student-insights-constants'
 
-export const STUDENT_INSIGHTS_SIGNAL_SURFACE = 'student_insights_signals'
-export const STUDENT_INSIGHTS_ACTION_PLAN_SURFACE = 'student_insights_action_plan'
-export const STUDENT_INSIGHTS_SIGNALS_SCHEMA_VERSION = 'student-insights-signals-v1'
-export const STUDENT_INSIGHTS_ACTION_PLAN_SCHEMA_VERSION = 'student-insights-action-plan-v1'
+export {
+  STUDENT_INSIGHTS_ACTION_PLAN_SCHEMA_VERSION,
+  STUDENT_INSIGHTS_ACTION_PLAN_SURFACE,
+  STUDENT_INSIGHTS_SIGNALS_SCHEMA_VERSION,
+  STUDENT_INSIGHTS_SIGNAL_SURFACE,
+} from '@/lib/telemetry/student-insights-constants'
 
 type StudentInsightsEventType =
   | 'assist_mode_selected'
