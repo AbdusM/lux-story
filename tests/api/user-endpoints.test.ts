@@ -42,6 +42,10 @@ vi.mock('@supabase/supabase-js', () => ({
   }))
 }))
 
+vi.mock('@/lib/api/ensure-player-profile', () => ({
+  ensurePlayerProfile: vi.fn().mockResolvedValue(undefined)
+}))
+
 // Helper to create NextRequest
 function createRequest(
   url: string,
@@ -103,6 +107,7 @@ describe('Platform State API (/api/user/platform-state)', () => {
 
     test('should upsert platform state with valid data', async () => {
       const { POST } = await import('@/app/api/user/platform-state/route')
+      const { ensurePlayerProfile } = await import('@/lib/api/ensure-player-profile')
 
       const request = createRequest('http://localhost:3000/api/user/platform-state', {
         method: 'POST',
@@ -126,6 +131,7 @@ describe('Platform State API (/api/user/platform-state)', () => {
 
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
+      expect(ensurePlayerProfile).toHaveBeenCalledWith(TEST_USER_ID, 'platform-state')
     })
 
     test('should reject user_id mismatch', async () => {

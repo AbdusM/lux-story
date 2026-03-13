@@ -14,7 +14,6 @@
 
 import { safeStorage } from './safe-storage'
 import { logSync } from './real-time-monitor'
-import { ensureUserProfile } from './ensure-user-profile'
 import { logger } from './logger'
 import { parseSyncQueue } from './schemas'
 
@@ -22,6 +21,8 @@ const SYNC_QUEUE_KEY = 'lux-sync-queue'
 const STATIC_EXPORT_DETECTED_KEY = 'lux-static-export-detected'
 const MAX_QUEUE_SIZE = 500 // Prevent unbounded growth
 const MAX_RETRY_AGE_MS = 7 * 24 * 60 * 60 * 1000 // 7 days
+const PROFILE_CACHE_KEY = 'profile-existence-cache'
+const PROFILE_CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000 // 24 hours
 
 // In-memory fallback when localStorage writes fail (e.g., quota exceeded, privacy mode).
 let volatileQueue: QueuedAction[] = []
@@ -273,17 +274,13 @@ export class SyncQueue {
     // Track user IDs we've already ensured exist to avoid duplicate checks
     const ensuredUserIds = new Set<string>()
 
-    // PERFORMANCE FIX: Check localStorage cache for profile existence
-    const PROFILE_CACHE_KEY = 'profile-existence-cache'
-    const CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000 // 24 hours
-
     const getCachedProfileExists = (userId: string): boolean | null => {
       const cached = safeStorage.getItem(`${PROFILE_CACHE_KEY}-${userId}`)
       if (!cached) return null
 
       try {
         const data = JSON.parse(cached)
-        if (Date.now() - data.timestamp > CACHE_EXPIRY_MS) {
+        if (Date.now() - data.timestamp > PROFILE_CACHE_EXPIRY_MS) {
           safeStorage.removeItem(`${PROFILE_CACHE_KEY}-${userId}`)
           return null
         }
@@ -298,6 +295,48 @@ export class SyncQueue {
         exists,
         timestamp: Date.now()
       }))
+    }
+
+    const ensurePlayerProfileViaApi = async (userId: string): Promise<void> => {
+      const cachedExists = getCachedProfileExists(userId)
+      if (cachedExists === true) {
+        ensuredUserIds.add(userId)
+        return
+      }
+
+      let response: Response
+      try {
+        response = await fetch('/api/user/profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ user_id: userId }),
+        })
+      } catch (fetchError) {
+        throw new Error(
+          `Profile ensure failed: network error ${
+            fetchError instanceof Error ? fetchError.message : String(fetchError)
+          }`
+        )
+      }
+
+      if (!response.ok) {
+        let errorBody = ''
+        try {
+          errorBody = await response.text()
+        } catch (_error) {
+          // Ignore if we can't read the response body.
+        }
+
+        throw new Error(
+          `Profile ensure failed: ${response.status} ${response.statusText}${
+            errorBody ? ` - ${errorBody.slice(0, 100)}` : ''
+          }`
+        )
+      }
+
+      ensuredUserIds.add(userId)
+      setCachedProfileExists(userId, true)
     }
 
     for (const action of queue) {
@@ -332,26 +371,7 @@ export class SyncQueue {
 
         // Ensure user profile exists before any data insertion
         if (userId && !ensuredUserIds.has(userId)) {
-          // PERFORMANCE FIX: Check cache first to avoid unnecessary database query
-          const cachedExists = getCachedProfileExists(userId)
-
-          if (cachedExists === true) {
-            // Profile cache check log removed - too verbose
-            ensuredUserIds.add(userId)
-          } else {
-            // Profile ensure log removed - too verbose
-            const profileEnsured = await ensureUserProfile(userId)
-
-            if (!profileEnsured) {
-              console.error(`❌ [SyncQueue] Failed to ensure profile for ${userId}, skipping action`)
-              failedActions.push({ ...action, retries: action.retries + 1 })
-              continue
-            }
-
-            ensuredUserIds.add(userId)
-            setCachedProfileExists(userId, true)
-            // Profile ensured log removed - too verbose
-          }
+          await ensurePlayerProfileViaApi(userId)
         }
 
         // Handle different action types

@@ -31,11 +31,6 @@ vi.mock('../lib/real-time-monitor', () => ({
   logSync: vi.fn()
 }))
 
-// Mock ensure-user-profile
-vi.mock('../lib/ensure-user-profile', () => ({
-  ensureUserProfile: vi.fn().mockResolvedValue(true)
-}))
-
 // Mock supabase to return configured
 vi.mock('../lib/supabase', () => ({
   isSupabaseConfigured: vi.fn().mockReturnValue(true)
@@ -484,12 +479,16 @@ describe('SyncQueue', () => {
       expect(queue.some(a => a.id === 'fail-1')).toBe(true)
     })
 
-    test('calls ensureUserProfile before processing actions', async () => {
-      const { ensureUserProfile } = await import('../lib/ensure-user-profile')
-      global.fetch = vi.fn().mockResolvedValue({
-        ok: true,
-        json: async () => ({ success: true })
-      })
+    test('ensures player profile via API before processing actions', async () => {
+      global.fetch = vi.fn()
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ success: true })
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ success: true })
+        })
 
       SyncQueue.addToQueue({
         id: 'test-1',
@@ -500,12 +499,31 @@ describe('SyncQueue', () => {
 
       await SyncQueue.processQueue()
 
-      expect(ensureUserProfile).toHaveBeenCalledWith('player_1234567890')
+      expect(global.fetch).toHaveBeenNthCalledWith(
+        1,
+        '/api/user/profile',
+        expect.objectContaining({
+          method: 'POST',
+          credentials: 'include',
+          body: JSON.stringify({ user_id: 'player_1234567890' })
+        })
+      )
+      expect(global.fetch).toHaveBeenNthCalledWith(
+        2,
+        '/api/user/career-analytics',
+        expect.objectContaining({
+          method: 'POST'
+        })
+      )
     })
 
-    test('skips action if ensureUserProfile fails', async () => {
-      const { ensureUserProfile } = await import('../lib/ensure-user-profile')
-      vi.mocked(ensureUserProfile).mockResolvedValueOnce(false)
+    test('keeps action queued if profile ensure API fails', async () => {
+      global.fetch = vi.fn().mockResolvedValueOnce({
+        ok: false,
+        status: 503,
+        statusText: 'Service Unavailable',
+        text: async () => 'Supabase not configured'
+      })
 
       SyncQueue.addToQueue({
         id: 'test-1',
@@ -518,7 +536,7 @@ describe('SyncQueue', () => {
 
       expect(result.failed).toBe(1)
       expect(result.processed).toBe(0)
-      
+
       // Action should remain in queue (may or may not have incremented retries)
       const queue = SyncQueue.getQueue()
       expect(queue).toHaveLength(1)

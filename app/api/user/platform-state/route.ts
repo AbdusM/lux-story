@@ -15,6 +15,7 @@ import {
   handleApiError,
   checkSupabaseConfigured
 } from '@/lib/api/api-utils'
+import { ensurePlayerProfile } from '@/lib/api/ensure-player-profile'
 import { ensureProvidedUserIdMatchesSession, requireUserSession } from '@/lib/api/user-session'
 
 // Mark as dynamic for Next.js static export compatibility
@@ -51,6 +52,8 @@ export async function POST(request: NextRequest) {
 
     const skipResponse = checkSupabaseConfigured(OPERATION_POST)
     if (skipResponse) return skipResponse
+
+    await ensurePlayerProfile(session.userId, 'platform-state')
 
     const supabase = getSupabaseServerClient()
 
