@@ -92,6 +92,8 @@ tests/visual/output/
 
 # Local doc staging (large/unstructured assets, not for repo)
 docs/toAllocate/
+# External report drops (keep repo-owned summaries instead)
+docs/Nowcasting_Econ-Report-*.md
 
 # Local AI audit runtime outputs
 .ai/runs/
