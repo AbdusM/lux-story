@@ -1,5 +1,6 @@
 import type { CareerMatch, SkillProfile } from '@/lib/skill-profile-adapter'
 import { getCuratedEntryFriction } from '@/lib/labor-market/entry-friction-dataset'
+import { describeMarketSignalFreshness } from '@/lib/labor-market/market-signal-contract'
 import type { MarketSignalMetadata } from '@/lib/labor-market/market-signal-contract'
 import { getCuratedObservedExposure } from '@/lib/labor-market/observed-exposure-dataset'
 
@@ -202,7 +203,11 @@ export function deriveCareerSignals(options: {
     provenance: {
       observedExposure: observedExposure.metadata,
       entryFriction: entryFriction.metadata,
-      freshness: 'Generated at page load from the latest stored profile snapshot.',
+      freshness: [
+        describeMarketSignalFreshness(observedExposure.metadata, 'observedExposure', nowIso),
+        describeMarketSignalFreshness(entryFriction.metadata, 'entryFriction', nowIso),
+        'Signals were generated at page load from the latest stored profile snapshot.',
+      ].join(' '),
     },
     disclaimers: [
       'These signals are early indicators, not predictions.',
