@@ -12,6 +12,8 @@ const store = {
   planData: null as Record<string, unknown> | null,
   profilePlan: null as Record<string, unknown> | null,
   noPlanRow: false,
+  followUpEventsTableMissing: false,
+  followUpEvents: [] as Array<Record<string, unknown>>,
 }
 
 const mockSupabase = {
@@ -59,6 +61,32 @@ const mockSupabase = {
             return { error: null }
           }),
         })),
+      }
+    }
+
+    if (table === 'action_plan_follow_up_events') {
+      return {
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            order: vi.fn(() => ({
+              limit: vi.fn(async () => {
+                if (store.followUpEventsTableMissing) {
+                  return { data: null, error: { code: '42P01' } }
+                }
+
+                return { data: store.followUpEvents, error: null }
+              }),
+            })),
+          })),
+        })),
+        insert: vi.fn(async (payload: Record<string, unknown>) => {
+          if (store.followUpEventsTableMissing) {
+            return { error: { code: '42P01' } }
+          }
+
+          store.followUpEvents = [payload, ...store.followUpEvents]
+          return { error: null }
+        }),
       }
     }
 
@@ -112,6 +140,8 @@ describe('admin action plan follow-up route', () => {
     store.planData = null
     store.profilePlan = null
     store.noPlanRow = false
+    store.followUpEventsTableMissing = false
+    store.followUpEvents = []
     mockRequireAdminAuth.mockResolvedValue(null)
     mockGetAuthenticatedAdminContext.mockResolvedValue([
       {
@@ -137,30 +167,17 @@ describe('admin action plan follow-up route', () => {
   })
 
   test('GET returns existing follow-up status when present', async () => {
-    store.planData = {
-      followUpStatus: {
+    store.followUpEvents = [
+      {
+        user_id: 'player_123',
         status: 'follow_up_due',
-        updatedAt: '2026-03-13T10:00:00.000Z',
         note: 'Check back after Friday.',
-        updatedBy: {
-          userId: 'admin_123',
-          email: 'counselor@example.com',
-          fullName: 'Casey Counselor',
-        },
+        updated_by_user_id: 'admin_123',
+        updated_by_email: 'counselor@example.com',
+        updated_by_full_name: 'Casey Counselor',
+        created_at: '2026-03-13T10:00:00.000Z',
       },
-      followUpHistory: [
-        {
-          status: 'follow_up_due',
-          updatedAt: '2026-03-13T10:00:00.000Z',
-          note: 'Check back after Friday.',
-          updatedBy: {
-            userId: 'admin_123',
-            email: 'counselor@example.com',
-            fullName: 'Casey Counselor',
-          },
-        },
-      ],
-    }
+    ]
 
     const { GET } = await import('@/app/api/admin/action-plan-follow-up/route')
     const response = await GET(createRequest('http://localhost:3000/api/admin/action-plan-follow-up?userId=player_123'))
@@ -204,6 +221,7 @@ describe('admin action plan follow-up route', () => {
       },
     })
     expect((store.planData as Record<string, unknown>).followUpHistory).toHaveLength(1)
+    expect(store.followUpEvents).toHaveLength(1)
     expect(body.history).toHaveLength(1)
   })
 })

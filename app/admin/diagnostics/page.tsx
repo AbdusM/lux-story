@@ -164,6 +164,8 @@ export default function AdminDiagnosticsPage() {
   const [worklistSaveError, setWorklistSaveError] = useState<string | null>(null)
   const [worklistNoteDrafts, setWorklistNoteDrafts] = useState<Record<string, string>>({})
   const [expandedFollowUpHistory, setExpandedFollowUpHistory] = useState<Record<string, boolean>>({})
+  const [followUpHistoryByUserId, setFollowUpHistoryByUserId] = useState<Record<string, AdminStudentInsightsFollowUpEntry[]>>({})
+  const [followUpHistoryLoadingUserId, setFollowUpHistoryLoadingUserId] = useState<string | null>(null)
 
   const runConsistencyCheck = async (autoFix: boolean = false) => {
     setLoading(true)
@@ -243,6 +245,7 @@ export default function AdminDiagnosticsPage() {
       setStudentInsightsSummary(null)
       setStudentInsightsWorklist(null)
       setWorklistNoteDrafts({})
+      setFollowUpHistoryByUserId({})
     } finally {
       setStudentInsightsLoading(false)
     }
@@ -330,6 +333,10 @@ export default function AdminDiagnosticsPage() {
         ...current,
         [userId]: savedNote,
       }))
+      setFollowUpHistoryByUserId((current) => ({
+        ...current,
+        [userId]: savedHistory,
+      }))
       void runStudentInsightsCheck()
     } catch (error) {
       setWorklistSaveError(error instanceof Error ? error.message : 'Failed to update follow-up status')
@@ -358,11 +365,38 @@ export default function AdminDiagnosticsPage() {
   }, [handleFollowUpUpdate, worklistNoteDrafts])
 
   const toggleFollowUpHistory = useCallback((userId: string) => {
+    const shouldOpen = !expandedFollowUpHistory[userId]
     setExpandedFollowUpHistory((current) => ({
       ...current,
-      [userId]: !current[userId],
+      [userId]: shouldOpen,
     }))
-  }, [])
+
+    if (!shouldOpen || followUpHistoryByUserId[userId]) return
+
+    setFollowUpHistoryLoadingUserId(userId)
+    setWorklistSaveError(null)
+
+    void fetch(`/api/admin/action-plan-follow-up?userId=${encodeURIComponent(userId)}`, {
+      credentials: 'include',
+    })
+      .then(async (response) => {
+        const data = await response.json()
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to load follow-up history')
+        }
+
+        setFollowUpHistoryByUserId((current) => ({
+          ...current,
+          [userId]: extractFollowUpHistory(data?.history),
+        }))
+      })
+      .catch((error) => {
+        setWorklistSaveError(error instanceof Error ? error.message : 'Failed to load follow-up history')
+      })
+      .finally(() => {
+        setFollowUpHistoryLoadingUserId((current) => (current === userId ? null : current))
+      })
+  }, [expandedFollowUpHistory, followUpHistoryByUserId])
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -887,11 +921,15 @@ export default function AdminDiagnosticsPage() {
                             No learners match the current queue filters.
                           </div>
                         ) : (
-                          filteredWorklistItems.map((item) => (
-                            <div
-                              key={item.userId}
-                              className="rounded-lg border border-slate-200 bg-white/80 p-4"
-                            >
+                          filteredWorklistItems.map((item) => {
+                            const visibleFollowUpHistory =
+                              followUpHistoryByUserId[item.userId] ?? item.followUpHistory
+
+                            return (
+                              <div
+                                key={item.userId}
+                                className="rounded-lg border border-slate-200 bg-white/80 p-4"
+                              >
                               <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                                 <div className="space-y-2">
                                   <div>
@@ -972,7 +1010,7 @@ export default function AdminDiagnosticsPage() {
                                         ? `Last updated by ${formatFollowUpActor(item.followUpUpdatedBy)}`
                                         : 'No counselor owner recorded yet.'}
                                     </p>
-                                    {item.followUpHistory.length > 0 ? (
+                                    {visibleFollowUpHistory.length > 0 ? (
                                       <div className="rounded-md border border-slate-200 bg-slate-50/80 p-2">
                                         <div className="flex items-center justify-between gap-3">
                                           <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
@@ -985,12 +1023,16 @@ export default function AdminDiagnosticsPage() {
                                             className="h-auto px-2 py-1 text-xs"
                                             onClick={() => toggleFollowUpHistory(item.userId)}
                                           >
-                                            {expandedFollowUpHistory[item.userId] ? 'Hide' : `Show ${item.followUpHistory.length}`}
+                                            {expandedFollowUpHistory[item.userId]
+                                              ? 'Hide'
+                                              : followUpHistoryLoadingUserId === item.userId
+                                                ? 'Loading...'
+                                                : `Show ${visibleFollowUpHistory.length}`}
                                           </Button>
                                         </div>
                                         {expandedFollowUpHistory[item.userId] ? (
                                           <div className="mt-2 space-y-2">
-                                            {item.followUpHistory.map((entry, index) => (
+                                            {visibleFollowUpHistory.map((entry, index) => (
                                               <div
                                                 key={`${item.userId}-${entry.updatedAt}-${index}`}
                                                 className="rounded-md border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700"
@@ -1063,8 +1105,9 @@ export default function AdminDiagnosticsPage() {
                                   </Button>
                                 </div>
                               </div>
-                            </div>
-                          ))
+                              </div>
+                            )
+                          })
                         )}
                       </CardContent>
                     </Card>

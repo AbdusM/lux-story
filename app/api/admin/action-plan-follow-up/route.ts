@@ -7,6 +7,10 @@ import {
   extractActionPlanFollowUpHistory,
   withFollowUpStatus,
 } from '@/lib/action-plan/follow-up-status'
+import {
+  insertFollowUpEvent,
+  loadFollowUpEventsForUser,
+} from '@/lib/action-plan/follow-up-event-store'
 import { auditLog } from '@/lib/audit-logger'
 import {
   getAdminSupabaseClient,
@@ -100,8 +104,11 @@ export async function GET(request: NextRequest) {
   try {
     const supabase = getAdminSupabaseClient()
     const existing = await loadStoredPlan({ supabase, userId })
-    const followUp = extractActionPlanFollowUp(existing.plan)
-    const history = extractActionPlanFollowUpHistory(existing.plan)
+    const latestStoredFollowUp = extractActionPlanFollowUp(existing.plan)
+    const storedHistory = extractActionPlanFollowUpHistory(existing.plan)
+    const eventHistoryResult = await loadFollowUpEventsForUser({ supabase, userId })
+    const history = eventHistoryResult.events.length > 0 ? eventHistoryResult.events : storedHistory
+    const followUp = history[0] ?? latestStoredFollowUp
 
     auditLog('view_action_plan_follow_up', 'admin', userId)
 
@@ -164,7 +171,6 @@ export async function POST(request: NextRequest) {
     const supabase = getAdminSupabaseClient()
     const existing = await loadStoredPlan({ supabase, userId })
     const planWithFollowUp = withFollowUpStatus(existing.plan, followUp)
-    const history = extractActionPlanFollowUpHistory(planWithFollowUp)
 
     if (existing.missingTable) {
       const { error } = await supabase
@@ -188,10 +194,37 @@ export async function POST(request: NextRequest) {
       if (error) throw error
     }
 
+    let eventLogStored = false
+    try {
+      const eventResult = await insertFollowUpEvent({ supabase, userId, followUp })
+      eventLogStored = eventResult.persisted
+    } catch (eventError) {
+      logger.error(
+        'Failed to persist counselor follow-up event',
+        { operation: 'admin.action-plan-follow-up.event', userId },
+        eventError instanceof Error ? eventError : undefined,
+      )
+    }
+
+    let history = extractActionPlanFollowUpHistory(planWithFollowUp)
+    try {
+      const eventHistoryResult = await loadFollowUpEventsForUser({ supabase, userId })
+      if (eventHistoryResult.events.length > 0) {
+        history = eventHistoryResult.events
+      }
+    } catch (historyError) {
+      logger.error(
+        'Failed to load counselor follow-up event history',
+        { operation: 'admin.action-plan-follow-up.history', userId },
+        historyError instanceof Error ? historyError : undefined,
+      )
+    }
+
     auditLog('update_action_plan_follow_up', 'admin', userId, {
       status: followUp.status,
       hasNote: note.length > 0,
       updatedByUserId: adminContext.userId,
+      eventLogStored,
     })
 
     return NextResponse.json({ success: true, userId, followUp, history })
