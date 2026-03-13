@@ -1,11 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { AlertCircle, CheckCircle, RefreshCw, Database, AlertTriangle } from 'lucide-react'
+import { AlertCircle, CheckCircle, RefreshCw, Database, AlertTriangle, Radar, ShieldAlert, ShieldCheck } from 'lucide-react'
 import { AdminUtilityNav } from '@/components/admin/AdminUtilityNav'
 import { cn } from '@/lib/utils'
+import type {
+  AdminLaborMarketSignalDatasetSummary,
+  AdminLaborMarketSignalReport,
+  AdminLaborMarketSignalRowSummary,
+  AdminLaborMarketSignalsResponse,
+} from '@/lib/types/admin-api'
 
 interface ConsistencyIssue {
   type: 'orphaned_profile' | 'orphaned_player_profile' | 'missing_profile' | 'missing_player_profile' | 'text_fk_mismatch'
@@ -45,6 +51,9 @@ export default function AdminDiagnosticsPage() {
   const [loading, setLoading] = useState(false)
   const [report, setReport] = useState<ConsistencyReport | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [laborSignalLoading, setLaborSignalLoading] = useState(false)
+  const [laborSignalReport, setLaborSignalReport] = useState<AdminLaborMarketSignalReport | null>(null)
+  const [laborSignalError, setLaborSignalError] = useState<string | null>(null)
 
   const runConsistencyCheck = async (autoFix: boolean = false) => {
     setLoading(true)
@@ -72,6 +81,31 @@ export default function AdminDiagnosticsPage() {
   const warningIssues = report?.issues.filter(i => ISSUE_TYPE_SEVERITY[i.type] === 'warning') || []
   const infoIssues = report?.issues.filter(i => ISSUE_TYPE_SEVERITY[i.type] === 'info') || []
 
+  const runLaborSignalCheck = async () => {
+    setLaborSignalLoading(true)
+    setLaborSignalError(null)
+
+    try {
+      const response = await fetch('/api/admin/labor-market-signals')
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Failed to load labor market diagnostics')
+      }
+
+      const data: AdminLaborMarketSignalsResponse = await response.json()
+      setLaborSignalReport(data.report)
+    } catch (err) {
+      setLaborSignalError(err instanceof Error ? err.message : 'Unknown error occurred')
+      setLaborSignalReport(null)
+    } finally {
+      setLaborSignalLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    void runLaborSignalCheck()
+  }, [])
+
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-6xl mx-auto space-y-6">
@@ -85,6 +119,150 @@ export default function AdminDiagnosticsPage() {
         </div>
 
         <AdminUtilityNav />
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Radar className="h-5 w-5 text-sky-600" />
+              Labor Signal Diagnostics
+            </CardTitle>
+            <CardDescription>
+              Freshness, canonical coverage, alias-only rows, and fallback risk for the labor-market signal layer.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex gap-3">
+              <Button
+                onClick={() => void runLaborSignalCheck()}
+                disabled={laborSignalLoading}
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                {laborSignalLoading ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    Loading...
+                  </>
+                ) : (
+                  <>
+                    <Radar className="w-4 h-4" />
+                    Refresh Labor Signals
+                  </>
+                )}
+              </Button>
+            </div>
+
+            {laborSignalError && (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-semibold text-red-900">Labor Signal Error</p>
+                  <p className="text-sm text-red-700">{laborSignalError}</p>
+                </div>
+              </div>
+            )}
+
+            {laborSignalReport && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <SignalMetricCard
+                    label="Fresh Rows"
+                    value={laborSignalReport.totals.freshRows}
+                    tone="success"
+                    detail={`${laborSignalReport.totals.totalRows} total rows`}
+                  />
+                  <SignalMetricCard
+                    label="Warning Rows"
+                    value={laborSignalReport.totals.warningRows}
+                    tone={laborSignalReport.totals.warningRows > 0 ? 'warning' : 'neutral'}
+                    detail={`Threshold ${laborSignalReport.warningThresholdDays} days`}
+                  />
+                  <SignalMetricCard
+                    label="Urgent Rows"
+                    value={laborSignalReport.totals.staleRows + laborSignalReport.totals.invalidTimestampRows}
+                    tone={
+                      laborSignalReport.totals.staleRows + laborSignalReport.totals.invalidTimestampRows > 0
+                        ? 'danger'
+                        : 'success'
+                    }
+                    detail="Stale or invalid timestamps"
+                  />
+                  <SignalMetricCard
+                    label="Fallback Risk"
+                    value={laborSignalReport.fallbackRisk.totalMissingCanonicalMatches}
+                    tone={
+                      laborSignalReport.fallbackRisk.totalMissingCanonicalMatches > 0
+                        ? 'danger'
+                        : 'success'
+                    }
+                    detail={`${laborSignalReport.fallbackRisk.aliasOnlyRowCount} alias-only rows`}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                  {laborSignalReport.datasets.map((dataset) => (
+                    <SignalDatasetCard key={dataset.kind} dataset={dataset} />
+                  ))}
+                </div>
+
+                <Card className="border-slate-200 shadow-none">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Upcoming Expirations</CardTitle>
+                    <CardDescription>
+                      Next dataset rows to age out under the current freshness policy.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {laborSignalReport.upcomingExpirations.map((row) => (
+                      <SignalRow key={`${row.kind}-${row.summary}`} row={row} />
+                    ))}
+                  </CardContent>
+                </Card>
+
+                <Card className="border-slate-200 shadow-none">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Fallback Coverage</CardTitle>
+                    <CardDescription>
+                      Canonical lanes missing from curated datasets would fall back to heuristic logic.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {laborSignalReport.fallbackRisk.totalMissingCanonicalMatches === 0 ? (
+                      <div className="rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-900 flex items-start gap-3">
+                        <ShieldCheck className="mt-0.5 h-5 w-5 text-green-600" />
+                        <div>
+                          <p className="font-semibold">Canonical coverage is complete.</p>
+                          <p>No Birmingham lane currently falls back outside the curated signal maps.</p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-900 flex items-start gap-3">
+                        <ShieldAlert className="mt-0.5 h-5 w-5 text-red-600" />
+                        <div>
+                          <p className="font-semibold">Fallback risk detected.</p>
+                          <p>
+                            {laborSignalReport.fallbackRisk.totalMissingCanonicalMatches} canonical lane matches are missing from the curated datasets.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                      <FallbackList
+                        label="Observed Exposure Missing"
+                        items={laborSignalReport.fallbackRisk.observedExposureMissingCareerIds}
+                      />
+                      <FallbackList
+                        label="Entry Friction Missing"
+                        items={laborSignalReport.fallbackRisk.entryFrictionMissingCareerIds}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Actions */}
         <Card>
@@ -279,6 +457,116 @@ export default function AdminDiagnosticsPage() {
           </>
         )}
       </div>
+    </div>
+  )
+}
+
+function SignalMetricCard(props: {
+  label: string
+  value: number
+  detail: string
+  tone: 'neutral' | 'success' | 'warning' | 'danger'
+}) {
+  const toneClasses = {
+    neutral: 'bg-slate-50 border-slate-200 text-slate-900',
+    success: 'bg-green-50 border-green-200 text-green-900',
+    warning: 'bg-amber-50 border-amber-200 text-amber-900',
+    danger: 'bg-red-50 border-red-200 text-red-900',
+  }
+
+  return (
+    <div className={cn('rounded-lg border p-4', toneClasses[props.tone])}>
+      <p className="text-sm font-medium">{props.label}</p>
+      <p className="mt-2 text-2xl font-bold">{props.value}</p>
+      <p className="mt-1 text-xs opacity-80">{props.detail}</p>
+    </div>
+  )
+}
+
+function SignalDatasetCard({ dataset }: { dataset: AdminLaborMarketSignalDatasetSummary }) {
+  const hasRisk = dataset.staleRows > 0 || dataset.invalidTimestampRows > 0 || dataset.missingCanonicalCareerIds.length > 0
+
+  return (
+    <Card className="border-slate-200 shadow-none">
+      <CardHeader>
+        <CardTitle className="text-lg">
+          {dataset.kind === 'observedExposure' ? 'Observed Exposure' : 'Entry Friction'}
+        </CardTitle>
+        <CardDescription>
+          Coverage {dataset.canonicalCoverageCount}/{dataset.canonicalCareerCount} canonical lanes.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="grid grid-cols-2 gap-3 text-sm">
+          <div className="rounded-lg bg-slate-50 p-3">
+            <p className="text-slate-500">Canonical coverage</p>
+            <p className="font-semibold text-slate-900">{dataset.canonicalCoveragePercent}%</p>
+          </div>
+          <div className="rounded-lg bg-slate-50 p-3">
+            <p className="text-slate-500">Alias-only rows</p>
+            <p className="font-semibold text-slate-900">{dataset.aliasOnlyRecordCount}</p>
+          </div>
+          <div className="rounded-lg bg-slate-50 p-3">
+            <p className="text-slate-500">Next expiry</p>
+            <p className="font-semibold text-slate-900">
+              {dataset.nextExpirationDays === null ? 'n/a' : `${dataset.nextExpirationDays}d`}
+            </p>
+          </div>
+          <div className="rounded-lg bg-slate-50 p-3">
+            <p className="text-slate-500">Policy max age</p>
+            <p className="font-semibold text-slate-900">{dataset.maxAgeDays}d</p>
+          </div>
+        </div>
+
+        <div className={cn(
+          'rounded-lg border p-3 text-sm',
+          hasRisk ? 'border-amber-200 bg-amber-50 text-amber-900' : 'border-green-200 bg-green-50 text-green-900',
+        )}>
+          <p className="font-semibold">{hasRisk ? 'Needs operator attention' : 'Healthy dataset contract'}</p>
+          <p className="mt-1">
+            {hasRisk
+              ? `${dataset.warningRows} warning, ${dataset.staleRows} stale, ${dataset.invalidTimestampRows} invalid timestamp rows.`
+              : `All ${dataset.totalRows} rows are inside policy and canonical coverage is complete.`}
+          </p>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function SignalRow({ row }: { row: AdminLaborMarketSignalRowSummary }) {
+  return (
+    <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="font-semibold text-slate-900">{row.summary}</p>
+        <span className="rounded-full bg-white px-2 py-1 text-xs font-medium text-slate-700 border border-slate-200">
+          {row.kind === 'observedExposure' ? 'Observed Exposure' : 'Entry Friction'} · {row.status}
+        </span>
+      </div>
+      <p className="mt-1 text-sm text-slate-600">{row.source}</p>
+      <div className="mt-2 flex flex-wrap gap-3 text-xs text-slate-500">
+        <span>Updated {new Date(row.updatedAtIso).toLocaleDateString()}</span>
+        <span>Age {row.ageDays === null ? 'invalid' : `${row.ageDays}d`}</span>
+        <span>Expires in {row.daysUntilStale === null ? 'n/a' : `${row.daysUntilStale}d`}</span>
+        <span>{row.version}</span>
+      </div>
+    </div>
+  )
+}
+
+function FallbackList(props: { label: string; items: string[] }) {
+  return (
+    <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+      <p className="font-semibold text-slate-900">{props.label}</p>
+      {props.items.length === 0 ? (
+        <p className="mt-1 text-slate-600">None.</p>
+      ) : (
+        <ul className="mt-2 space-y-1 text-slate-700">
+          {props.items.map((item) => (
+            <li key={item} className="font-mono text-xs">{item}</li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }

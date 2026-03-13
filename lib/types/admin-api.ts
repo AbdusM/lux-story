@@ -12,6 +12,11 @@ import type {
   GuidanceRecommendation,
   ProgressState,
 } from '@/lib/guidance/contracts'
+import type {
+  MarketSignalConfidence,
+  MarketSignalKind,
+} from '@/lib/labor-market/market-signal-contract'
+import type { MarketSignalFreshnessStatus } from '@/lib/labor-market/market-signal-freshness-report'
 
 // ============================================================================
 // Skill-Related Types
@@ -352,6 +357,64 @@ export interface AdminGuidanceResponse {
 export interface AdminGuidanceSummaryResponse {
   success: boolean
   summary: AdminGuidanceCohortSummary
+  fetchedAt: string
+}
+
+export interface AdminLaborMarketSignalRowSummary {
+  kind: MarketSignalKind
+  summary: string
+  source: string
+  version: string
+  updatedAtIso: string
+  coverage: string
+  confidence: MarketSignalConfidence
+  ageDays: number | null
+  maxAgeDays: number
+  daysUntilStale: number | null
+  status: MarketSignalFreshnessStatus
+}
+
+export interface AdminLaborMarketSignalDatasetSummary {
+  kind: MarketSignalKind
+  totalRows: number
+  freshRows: number
+  warningRows: number
+  staleRows: number
+  invalidTimestampRows: number
+  canonicalCoverageCount: number
+  canonicalCareerCount: number
+  canonicalCoveragePercent: number
+  canonicalRecordCount: number
+  aliasOnlyRecordCount: number
+  missingCanonicalCareerIds: string[]
+  nextExpirationDays: number | null
+  maxAgeDays: number
+}
+
+export interface AdminLaborMarketSignalReport {
+  generatedAt: string
+  warningThresholdDays: number
+  totals: {
+    totalRows: number
+    freshRows: number
+    warningRows: number
+    staleRows: number
+    invalidTimestampRows: number
+  }
+  datasets: AdminLaborMarketSignalDatasetSummary[]
+  upcomingExpirations: AdminLaborMarketSignalRowSummary[]
+  urgentRows: AdminLaborMarketSignalRowSummary[]
+  fallbackRisk: {
+    totalMissingCanonicalMatches: number
+    observedExposureMissingCareerIds: string[]
+    entryFrictionMissingCareerIds: string[]
+    aliasOnlyRowCount: number
+  }
+}
+
+export interface AdminLaborMarketSignalsResponse {
+  success: boolean
+  report: AdminLaborMarketSignalReport
   fetchedAt: string
 }
 
