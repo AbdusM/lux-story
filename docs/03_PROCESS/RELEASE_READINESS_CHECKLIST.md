@@ -1,6 +1,6 @@
 ---
 title: Release Readiness Checklist (Guardrail-Complete)
-last_updated: 2026-03-02
+last_updated: 2026-03-14
 scope: operational-verifications
 ---
 
@@ -40,6 +40,7 @@ This checklist defines what “verified” means (evidence + acceptance).
 **Acceptance**
 - ✅ “Require a pull request before merging” enabled (optional but recommended)
 - ✅ “Require status checks to pass before merging” enabled (**required**)
+- ✅ “Do not allow bypassing the above settings” for admins is effectively enforced (`enforce_admins: true`)
 - ✅ Required checks include the workflow jobs from `.github/workflows/test.yml`:
   - “Test Suite / Run Tests” (`.github/workflows/test.yml:15`)
   - “Test Suite / Build Project” (`.github/workflows/test.yml:114`)
@@ -147,6 +148,10 @@ What it does:
 - supports manual `workflow_dispatch` for production or preview URLs
 - auto-runs on successful GitHub `deployment_status` events when an `environment_url` is present
 - waits for `EXPECTED_COMMIT_SHA` when available before running the authenticated smoke
+
+Verified on 2026-03-14:
+- `workflow_dispatch` run passed: `23088328679`
+- `deployment_status` auto-trigger run passed: `23088337529`
 
 Recommended usage:
 - production: trigger the workflow manually if you deploy from local CLI and want CI evidence against the live alias

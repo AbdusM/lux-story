@@ -114,6 +114,8 @@ Suggested checks:
 ```bash
 curl https://lux-story.vercel.app/api/health
 curl https://lux-story.vercel.app/api/health/db
+npm run verify:release-smoke:prod
+CURRENT_SHA=$(git rev-parse HEAD) gh workflow run deployed-release-smoke.yml -f base_url=https://lux-story.vercel.app -f expected_commit_sha=$CURRENT_SHA
 ```
 
 For user-flow incidents, verify the smallest real path that proves behavior:
