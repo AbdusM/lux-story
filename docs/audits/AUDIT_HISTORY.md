@@ -1,6 +1,6 @@
 # Audit History
 
-Last updated: 2026-03-13
+Last updated: 2026-03-14
 
 This file tracks changes to the audit system itself, not every generated audit report.
 
@@ -36,3 +36,25 @@ Next review target:
 
 - First monthly run using the new schema
 - Confirm whether generated audit reports in `docs/qa/` need a stricter filename convention
+
+## 2026-03-14 - Release governance closeout evidence added
+
+Status: active
+
+Changes:
+
+- Hardened `main` branch protection:
+  - required checks: `Test Suite / Run Tests`, `Test Suite / Build Project`, `Playwright E2E Tests / report`
+  - `enforce_admins` set to `true`
+- Verified deployed smoke workflow in both trigger modes:
+  - `workflow_dispatch` run `23088328679` passed
+  - `deployment_status` run `23088337529` passed
+- Updated release readiness checklist metadata and acceptance criteria to include admin enforcement and trigger-proof evidence
+
+Reason:
+
+The repo’s open operational risk was not code correctness; it was release-governance proof. This closeout captures concrete evidence that:
+
+- checks are required on `main`
+- admin bypass is closed
+- deployed smoke can run both manually and via deployment status events

@@ -1,6 +1,6 @@
 # Analytics & Events - Data Dictionary
 
-**Last Updated:** March 13, 2026
+**Last Updated:** March 14, 2026
 **Source:** `/lib/event-bus.ts`, `/lib/career-analytics.ts`, `/lib/simple-analytics.ts`, `/lib/simple-career-analytics.ts`, `/lib/admin-analytics.ts`, `/lib/telemetry/interaction-events-spec.ts`, `/lib/sync-queue.ts`
 **Status:** Manual documentation with mixed recency (see status note below)
 
@@ -593,6 +593,10 @@ The student insights nowcasting loop uses the same canonical `interaction_events
 - `artifact_exported`
   - source surface: `student_insights_action_plan`
   - current action: `proof_copied_to_clipboard`
+- `outcome_checkin_submitted`
+  - source surface: `student_insights_action_plan`
+  - recorded when learners submit 30-day momentum outcomes
+  - includes `applications_submitted_last_30_days` and `interviews_scheduled_last_30_days`
 
 Additional canonical guidance interaction types already supported in the shared sink:
 - `recommendation_dismissed` remains planned until the student insights flow exposes an explicit dismiss action.
