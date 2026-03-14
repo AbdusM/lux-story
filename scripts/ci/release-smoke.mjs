@@ -7,9 +7,14 @@
  *   BASE_URL="https://preview.example.com" node scripts/ci/release-smoke.mjs
  */
 
+import { commitMatchesExpected, normalizeCommitSha, readPositiveInteger } from './release-smoke-lib.mjs'
+
 const DEFAULT_BASE_URL = 'https://lux-story.vercel.app'
 const baseUrl = (process.env.BASE_URL || DEFAULT_BASE_URL).trim().replace(/\/+$/, '')
 const smokeUserId = (process.env.SMOKE_USER_ID || crypto.randomUUID()).trim()
+const expectedCommitSha = normalizeCommitSha(process.env.EXPECTED_COMMIT_SHA)
+const waitTimeoutMs = readPositiveInteger(process.env.SMOKE_WAIT_TIMEOUT_MS, 300_000)
+const waitIntervalMs = readPositiveInteger(process.env.SMOKE_WAIT_INTERVAL_MS, 5_000)
 const cookieJar = new Map()
 
 const checks = []
@@ -134,20 +139,95 @@ function assertTruthy(name, condition, detailsIfFail, detailsIfPass = 'ok') {
   }
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+async function waitForExpectedCommit() {
+  if (!expectedCommitSha) {
+    return null
+  }
+
+  const deadline = Date.now() + waitTimeoutMs
+  let lastSeenCommitSha = null
+  let attempts = 0
+
+  console.log(`Expected deployed commit: ${expectedCommitSha}`)
+
+  while (Date.now() <= deadline) {
+    attempts += 1
+
+    try {
+      const health = await request('/api/health')
+      const build = health.json?.build ?? {}
+      const actualCommitSha = normalizeCommitSha(build.commitSha || build.commitShaShort)
+
+      if (actualCommitSha) {
+        lastSeenCommitSha = actualCommitSha
+      }
+
+      if (commitMatchesExpected(actualCommitSha, expectedCommitSha)) {
+        pass('build.commit.ready', `commit=${actualCommitSha}`)
+        return health
+      }
+
+      console.log(
+        `[release-smoke] waiting for expected commit (attempt ${attempts})` +
+          ` saw=${actualCommitSha || 'none'} expected=${expectedCommitSha}`
+      )
+    } catch (error) {
+      const detail = error instanceof Error ? error.message : String(error)
+      console.log(`[release-smoke] waiting for expected commit (attempt ${attempts}) failed: ${detail}`)
+    }
+
+    await sleep(waitIntervalMs)
+  }
+
+  fail(
+    'build.commit.ready',
+    `expected commit=${expectedCommitSha}, last seen=${lastSeenCommitSha || 'none'}, timed out after ${waitTimeoutMs}ms`
+  )
+
+  return null
+}
+
 async function run() {
   console.log(`Release smoke target: ${baseUrl}`)
   console.log(`Smoke user: ${smokeUserId}`)
+  if (expectedCommitSha) {
+    console.log(`Commit gate enabled: ${expectedCommitSha}`)
+  }
 
-  const home = await request('/')
-  assertStatus('GET /', home.response.status, 200)
+  const gatedHealth = await waitForExpectedCommit()
+  if (expectedCommitSha && !gatedHealth) {
+    const failed = checks.filter((check) => !check.ok)
 
-  const health = await request('/api/health')
+    for (const check of checks) {
+      const prefix = check.ok ? 'PASS' : 'FAIL'
+      console.log(`${prefix}: ${check.name} -> ${check.details}`)
+    }
+
+    console.log(`\nSummary: ${checks.length - failed.length} passed, ${failed.length} failed`)
+    process.exit(1)
+  }
+
+  const health = gatedHealth || await request('/api/health')
   assertStatus('GET /api/health', health.response.status, 200)
   assertTruthy(
     'health.status',
     health.json?.status === 'healthy',
     `expected health.status=healthy, got ${JSON.stringify(health.json)}`
   )
+  if (expectedCommitSha) {
+    assertTruthy(
+      'health.commit.matches',
+      commitMatchesExpected(health.json?.build?.commitSha, expectedCommitSha),
+      `expected health.build.commitSha to match ${expectedCommitSha}, got ${JSON.stringify(health.json?.build)}`
+    )
+  }
+
+  const home = await request('/')
+  assertStatus('GET /', home.response.status, 200)
 
   const storage = await request('/api/health/storage')
   assertStatus('GET /api/health/storage', storage.response.status, 200)

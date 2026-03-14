@@ -134,3 +134,21 @@ What it verifies:
 To target a preview deployment instead of production:
 
 - `BASE_URL="https://preview.example.com" npm run verify:release-smoke`
+
+To require that the alias has switched to a specific build before smoke begins:
+
+- `BASE_URL="https://preview.example.com" EXPECTED_COMMIT_SHA="<git-sha>" npm run verify:release-smoke`
+
+## GitHub Action: deployed smoke (E1)
+
+This repo now includes `.github/workflows/deployed-release-smoke.yml`.
+
+What it does:
+- supports manual `workflow_dispatch` for production or preview URLs
+- auto-runs on successful GitHub `deployment_status` events when an `environment_url` is present
+- waits for `EXPECTED_COMMIT_SHA` when available before running the authenticated smoke
+
+Recommended usage:
+- production: trigger the workflow manually if you deploy from local CLI and want CI evidence against the live alias
+- preview: run the workflow manually with the preview URL and optional commit SHA
+- auto mode: if your deployment provider posts GitHub deployment statuses with `environment_url`, the workflow will run automatically after successful deployments

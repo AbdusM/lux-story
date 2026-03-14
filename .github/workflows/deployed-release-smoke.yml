@@ -1,0 +1,54 @@
+name: Deployed Release Smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Deployed URL to smoke
+        required: true
+        default: https://lux-story.vercel.app
+        type: string
+      expected_commit_sha:
+        description: Optional commit SHA to wait for before running smoke
+        required: false
+        type: string
+  deployment_status:
+
+permissions:
+  contents: read
+
+jobs:
+  release-smoke:
+    name: Run Deployed Release Smoke
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'deployment_status' &&
+       github.event.deployment_status.state == 'success' &&
+       github.event.deployment_status.environment_url != '')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Resolve smoke target
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "BASE_URL=${{ inputs.base_url }}" >> "$GITHUB_ENV"
+            echo "EXPECTED_COMMIT_SHA=${{ inputs.expected_commit_sha }}" >> "$GITHUB_ENV"
+          else
+            echo "BASE_URL=${{ github.event.deployment_status.environment_url }}" >> "$GITHUB_ENV"
+            echo "EXPECTED_COMMIT_SHA=${{ github.event.deployment.sha }}" >> "$GITHUB_ENV"
+          fi
+          echo "SMOKE_WAIT_TIMEOUT_MS=600000" >> "$GITHUB_ENV"
+          echo "SMOKE_WAIT_INTERVAL_MS=5000" >> "$GITHUB_ENV"
+
+      - name: Run release smoke
+        run: node scripts/ci/release-smoke.mjs

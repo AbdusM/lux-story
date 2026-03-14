@@ -8,16 +8,24 @@
 
 import { NextResponse } from 'next/server';
 
+import { resolveBuildMetadata } from '@/lib/build-metadata';
+
 export const runtime = 'nodejs';
 
 export async function GET() {
   try {
+    const build = resolveBuildMetadata()
     const health = {
       status: 'healthy',
       timestamp: new Date().toISOString(),
       uptime: process.uptime ? Math.floor(process.uptime()) : 0,
       environment: process.env.NODE_ENV || 'unknown',
-      version: '2.0.0',
+      version: build.version,
+      build: {
+        version: build.version,
+        commitSha: build.commitSha,
+        commitShaShort: build.commitShaShort,
+      },
       checks: {
         server: true,
         // Other checks are handled by specific endpoints
