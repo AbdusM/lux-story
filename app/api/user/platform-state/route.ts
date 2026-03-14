@@ -7,6 +7,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
 import { getSupabaseServerClient } from '@/lib/supabase-server'
 import { logger } from '@/lib/logger'
 import { readJsonBody } from '@/lib/api/request-body'
@@ -27,6 +28,21 @@ const OPERATION_POST = 'platform-state.post'
 const GLOBAL_PLATFORM_STATE_ID = 'global'
 
 const MAX_BODY_BYTES = 16_384
+const PatternScoreSchema = z.number().finite().min(0)
+const PlatformStatePatternsSchema = z.object({
+  analytical: PatternScoreSchema.optional(),
+  helping: PatternScoreSchema.optional(),
+  building: PatternScoreSchema.optional(),
+  patience: PatternScoreSchema.optional(),
+  exploring: PatternScoreSchema.optional(),
+}).strict()
+const PlatformStateRequestSchema = z.object({
+  user_id: z.string().min(1).optional(),
+  current_scene: z.string().min(1).optional(),
+  global_flags: z.array(z.string().min(1)).optional(),
+  patterns: PlatformStatePatternsSchema.optional(),
+  updated_at: z.string().datetime({ offset: true }).optional(),
+}).strict()
 
 /**
  * POST /api/user/platform-state
@@ -39,8 +55,20 @@ export async function POST(request: NextRequest) {
 
     const parsed = await readJsonBody(request, { maxBytes: MAX_BODY_BYTES })
     if (!parsed.ok) return parsed.response
-    const body = parsed.body as Record<string, unknown>
-    const { user_id, current_scene, global_flags, patterns, updated_at } = body
+    const bodyResult = PlatformStateRequestSchema.safeParse(parsed.body)
+    if (!bodyResult.success) {
+      const issues = bodyResult.error.issues.map((issue) => ({
+        path: issue.path.join('.') || '(root)',
+        message: issue.message,
+      }))
+      logger.warn('Invalid platform state payload', {
+        operation: OPERATION_POST,
+        userId: session.userId,
+        issues,
+      })
+      return NextResponse.json({ error: 'Invalid payload', issues }, { status: 400 })
+    }
+    const { user_id, current_scene, global_flags, patterns, updated_at } = bodyResult.data
 
     logger.debug('Platform state POST request', { operation: OPERATION_POST, userId: session.userId })
 

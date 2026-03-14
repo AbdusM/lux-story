@@ -1,0 +1,385 @@
+{
+  "audit_version": "AUDIT_BIBLE_v2",
+  "generated_at": "2026-03-14T02:28:29Z",
+  "project_type": "Next.js API + React frontend + Supabase sync layer",
+  "audit_modes": [
+    "security",
+    "reliability",
+    "integrity",
+    "maintainability"
+  ],
+  "depth": "standard",
+  "risk_tolerance": "production",
+  "changed_since": "HEAD~2",
+  "scope": {
+    "in_scope": [
+      "app/api/user/platform-state/route.ts",
+      "lib/sync-queue.ts",
+      "lib/api/user-session.ts",
+      "lib/admin-supabase-client.ts",
+      "tests/api/user-endpoints.test.ts",
+      "tests/sync-queue.test.ts",
+      "scripts/ci/release-smoke.mjs",
+      "package.json",
+      "supabase/migrations/001_initial_schema.sql",
+      "supabase/migrations/019_align_gameplay_contracts.sql"
+    ],
+    "out_of_scope": [
+      "other /api/user/* sync routes",
+      "student/admin UI flows",
+      "non-sync Supabase access patterns",
+      "content audits"
+    ]
+  },
+  "baseline_snapshot": [
+    "Current hotfix head under review is 4a20bf3 after b0645eb.",
+    "platform_states still uses a canonical unique contract on (user_id, platform_id).",
+    "Migration 019 adds current_scene, global_flags, and patterns but does not change uniqueness.",
+    "Focused tests passed: npx vitest run tests/api/user-endpoints.test.ts tests/sync-queue.test.ts -> 2 files, 63 tests passed.",
+    "Production health is green: /api/health returned healthy on 2026-03-14T02:28:56Z.",
+    "Production DB health is green: /api/health/db returned healthy on 2026-03-14T02:28:57Z.",
+    "Release smoke currently checks health, unauthenticated session, unauthenticated advisor briefing, and CSP only.",
+    "User-provided production console logs on 2026-03-13 showed repeated POST /api/user/platform-state 500s and repeated sync retries."
+  ],
+  "findings": [
+    {
+      "id": "F-001",
+      "title": "SyncQueue does not persist incremented retry counts for transient failures",
+      "severity": "P1",
+      "category": "reliability",
+      "issue_type": "code_defect",
+      "certainty": "observed",
+      "evidence_grade": "E0",
+      "impact": "Transient sync failures can remain effectively immortal in the queue, causing repeated retries, noisy logs, and unnecessary user-facing degradation.",
+      "evidence": [
+        "lib/sync-queue.ts:743-787 increments retries into failedActions but persists remainingQueue instead of the incremented copies.",
+        "tests/sync-queue.test.ts:383-441 only asserts retries >= 0 rather than asserting incremented retry state.",
+        "Focused run passed despite the gap: npx vitest run tests/api/user-endpoints.test.ts tests/sync-queue.test.ts -> 63 tests passed."
+      ],
+      "root_cause": "Retry bookkeeping is updated in a temporary failedActions list but never written back into persisted queue state.",
+      "fix": "Persist incremented failed actions back into the queue and add explicit tests for retry increments and max-retry eviction.",
+      "verification": [
+        "Add a test that a 500 response changes stored retries from 0 to 1.",
+        "Add a test that an action is removed after the configured max retries.",
+        "Run npx vitest run tests/sync-queue.test.ts."
+      ],
+      "prod_verification": [
+        "Historical user console logs on 2026-03-13 showed repeated retry warnings for the same sync surface.",
+        "Current audit did not inspect persisted retry counters directly in production."
+      ]
+    },
+    {
+      "id": "F-002",
+      "title": "/api/user/platform-state accepts raw unknown fields and turns malformed payloads into server errors",
+      "severity": "P2",
+      "category": "reliability",
+      "issue_type": "code_defect",
+      "certainty": "observed",
+      "evidence_grade": "E1",
+      "impact": "Malformed or off-version client payloads become 500s instead of 400s, which obscures blame and drives unnecessary retries.",
+      "evidence": [
+        "app/api/user/platform-state/route.ts:40-69 casts the body to Record<string, unknown> and forwards current_scene, global_flags, and patterns without schema validation.",
+        "User-provided production logs from 2026-03-13 showed repeated POST https://lux-story.vercel.app/api/user/platform-state 500 responses and sync retry warnings.",
+        "tests/api/user-endpoints.test.ts:97-184 has no invalid-payload coverage for platform-state."
+      ],
+      "root_cause": "The route relies on database rejection instead of validating request shape at the API boundary.",
+      "fix": "Add strict request validation for platform-state payloads and return 400s before profile ensure or database writes.",
+      "verification": [
+        "Add tests for invalid global_flags, invalid patterns, and oversized bodies returning 400.",
+        "Run npx vitest run tests/api/user-endpoints.test.ts.",
+        "Manual smoke: invalid platform-state POST returns 400 with a validation error."
+      ],
+      "prod_verification": [
+        "Historical production logs showed this route returning 500 before the hotfix.",
+        "Current audit rechecked only /api/health and /api/health/db, not the invalid-payload path on prod."
+      ]
+    },
+    {
+      "id": "F-003",
+      "title": "Release verification omits the authenticated platform-state write path",
+      "severity": "P2",
+      "category": "reliability",
+      "issue_type": "process_gap",
+      "certainty": "observed",
+      "evidence_grade": "E0",
+      "impact": "Authenticated route or schema drift can pass release verification and only fail in live sessions.",
+      "evidence": [
+        "package.json:48-52 wires deploy through release:gate only.",
+        "package.json:105 defines verify:release-smoke but it is not part of release:gate or deploy.",
+        "scripts/ci/release-smoke.mjs:69-107 checks health and unauthenticated paths only."
+      ],
+      "root_cause": "Release verification is health-oriented and unauthenticated while the broken path was authenticated and stateful.",
+      "fix": "Add authenticated profile bootstrap plus platform-state write/read smoke coverage to release verification.",
+      "verification": [
+        "Extend release-smoke to exercise authenticated POST /api/user/profile and POST/GET /api/user/platform-state.",
+        "Confirm release verification fails when the platform-state contract is intentionally broken in a local branch."
+      ],
+      "prod_verification": [
+        "Current production health endpoints are healthy, but current automated smoke still does not cover authenticated write paths."
+      ]
+    },
+    {
+      "id": "F-004",
+      "title": "platform-state tests do not assert the live table contract or invalid-body behavior",
+      "severity": "P2",
+      "category": "reliability",
+      "issue_type": "test_gap",
+      "certainty": "observed",
+      "evidence_grade": "E2",
+      "impact": "Tests can stay green while the route drifts away from the actual table contract or returns the wrong error class for malformed input.",
+      "evidence": [
+        "tests/api/user-endpoints.test.ts:20-45 uses a generic mocked Supabase chain that does not inspect upsert payload or onConflict options.",
+        "tests/api/user-endpoints.test.ts:110-137 only asserts 200 success and ensurePlayerProfile call.",
+        "tests/api/user-endpoints.test.ts:152-166 allows a minimal payload but does not test malformed gameplay fields.",
+        "Focused run passed: npx vitest run tests/api/user-endpoints.test.ts tests/sync-queue.test.ts -> 63 tests passed."
+      ],
+      "root_cause": "Route tests are centered on response status and auth gates rather than contract details and boundary behavior.",
+      "fix": "Capture upsert payload and options in tests and add invalid-body assertions.",
+      "verification": [
+        "Add tests that assert platform_id = global, onConflict = user_id,platform_id, and invalid payloads return 400.",
+        "Run npx vitest run tests/api/user-endpoints.test.ts."
+      ],
+      "prod_verification": [
+        "Historical production incident escaped the current test suite before hotfix."
+      ]
+    },
+    {
+      "id": "F-005",
+      "title": "Admin service-role helper is still not guarded as server-only",
+      "severity": "P2",
+      "category": "maintainability",
+      "issue_type": "code_defect",
+      "certainty": "observed",
+      "evidence_grade": "E1",
+      "impact": "A future accidental client import can reintroduce browser warnings or server-only assumptions into client bundles.",
+      "evidence": [
+        "lib/admin-supabase-client.ts:1-23 has no import 'server-only' guard despite exposing service-role client creation.",
+        "lib/admin-supabase-client.ts:207-219 logs missing SUPABASE_SERVICE_ROLE_KEY warnings when imported without server envs.",
+        "User-provided browser logs from 2026-03-13 showed [AdminSupabase] Missing env vars: SUPABASE_SERVICE_ROLE_KEY. Database operations will be skipped."
+      ],
+      "root_cause": "Server-only capability is enforced by convention instead of module-level import boundaries.",
+      "fix": "Add import 'server-only' and separate any browser-safe helpers from the service-role module.",
+      "verification": [
+        "Run npm run build.",
+        "Add a check that client modules cannot import admin-supabase-client.",
+        "Verify a fresh browser session no longer shows the admin env warning."
+      ],
+      "prod_verification": [
+        "Historical browser warning was observed before the hotfix.",
+        "Current audit did not reproduce the warning on the latest bundle."
+      ]
+    }
+  ],
+  "root_cause_clusters": [
+    {
+      "id": "RC-001",
+      "title": "Boundary contract hardening gap",
+      "summary": "The platform-state route is loosely validated at the API edge and loosely asserted in tests, so malformed payloads and contract drift surface as runtime incidents instead of deterministic failures.",
+      "finding_ids": [
+        "F-002",
+        "F-004"
+      ],
+      "primary_fix": "Add strict request validation plus contract-aware route tests."
+    },
+    {
+      "id": "RC-002",
+      "title": "Retry semantics gap",
+      "summary": "Transient-failure bookkeeping is not persisted back into queue state, so retry ceilings are not reliably enforced.",
+      "finding_ids": [
+        "F-001"
+      ],
+      "primary_fix": "Persist incremented failed actions and add tests for retry exhaustion."
+    },
+    {
+      "id": "RC-003",
+      "title": "Release verification gap",
+      "summary": "Deploy verification checks liveness and unauthenticated paths but not authenticated stateful writes.",
+      "finding_ids": [
+        "F-003"
+      ],
+      "primary_fix": "Add authenticated platform-state smoke coverage to release verification."
+    },
+    {
+      "id": "RC-004",
+      "title": "Server/client boundary discipline gap",
+      "summary": "Server-only capabilities are still partially protected by convention instead of import-level guards.",
+      "finding_ids": [
+        "F-005"
+      ],
+      "primary_fix": "Mark service-role helpers as server-only and keep browser-safe helpers separate."
+    }
+  ],
+  "fix_queue": [
+    {
+      "id": "AQ-001",
+      "priority": "P1",
+      "title": "Fix persisted retry accounting in SyncQueue",
+      "category": "reliability",
+      "issue_type": "code_defect",
+      "certainty": "observed",
+      "evidence_grade": "E0",
+      "description": "Transient failures are counted in memory but the incremented retry state is not written back into persisted queue storage.",
+      "evidence": [
+        "lib/sync-queue.ts:743-787",
+        "tests/sync-queue.test.ts:383-441"
+      ],
+      "root_cause": "Retry bookkeeping is not persisted.",
+      "cluster_id": "RC-002",
+      "proposed_fix": [
+        "Persist incremented failed actions instead of the stale queue snapshot.",
+        "Add tests for retry increment and max-retry eviction.",
+        "Verify browser retry churn stops after the configured max retries."
+      ],
+      "acceptance_criteria": [
+        "A transient 500 increments stored retry count after the first failure.",
+        "A queued action is removed once max retries are reached.",
+        "Queue stats reflect real retry counts."
+      ],
+      "verification_steps": [
+        "Run npx vitest run tests/sync-queue.test.ts.",
+        "Run a browser smoke with forced transient failures."
+      ],
+      "prod_verification": [
+        "Historical user console logs showed repeated retry warnings on 2026-03-13."
+      ],
+      "risk": "medium",
+      "effort": "S",
+      "owner_type": "eng"
+    },
+    {
+      "id": "AQ-002",
+      "priority": "P1",
+      "title": "Add strict request validation to /api/user/platform-state",
+      "category": "reliability",
+      "issue_type": "code_defect",
+      "certainty": "observed",
+      "evidence_grade": "E1",
+      "description": "Malformed platform-state payloads currently fall through to the database layer and return server errors instead of client errors.",
+      "evidence": [
+        "app/api/user/platform-state/route.ts:40-69",
+        "User production console logs from 2026-03-13",
+        "tests/api/user-endpoints.test.ts:97-184"
+      ],
+      "root_cause": "No strict API boundary validation exists for the platform-state payload.",
+      "cluster_id": "RC-001",
+      "proposed_fix": [
+        "Add Zod validation for user_id, current_scene, global_flags, patterns, and payload size.",
+        "Return 400 for invalid payloads before profile ensure or database writes.",
+        "Ensure sync queue treats validation failures as permanent."
+      ],
+      "acceptance_criteria": [
+        "Invalid payloads return 400 with a stable error shape.",
+        "Valid payloads still write canonical platform_id = global rows.",
+        "Malformed actions are not endlessly retried."
+      ],
+      "verification_steps": [
+        "Run npx vitest run tests/api/user-endpoints.test.ts tests/sync-queue.test.ts.",
+        "Manually POST valid and invalid platform-state payloads."
+      ],
+      "prod_verification": [
+        "Historical production logs showed 500s on malformed platform-state sync before the hotfix.",
+        "Current audit did not rerun the invalid-payload path on prod."
+      ],
+      "risk": "medium",
+      "effort": "M",
+      "owner_type": "eng"
+    },
+    {
+      "id": "AQ-003",
+      "priority": "P2",
+      "title": "Add contract-aware tests and authenticated release smoke for platform-state",
+      "category": "reliability",
+      "issue_type": "process_gap",
+      "certainty": "observed",
+      "evidence_grade": "E2",
+      "description": "Current test and release verification paths do not assert the live platform-state contract or exercise the authenticated write path that regressed.",
+      "evidence": [
+        "tests/api/user-endpoints.test.ts:20-45",
+        "tests/api/user-endpoints.test.ts:110-137",
+        "package.json:48-52",
+        "package.json:105",
+        "scripts/ci/release-smoke.mjs:69-107"
+      ],
+      "root_cause": "Contract-aware assertions and authenticated deployment smoke are missing.",
+      "cluster_id": "RC-001",
+      "proposed_fix": [
+        "Capture upsert payload and onConflict arguments in route tests.",
+        "Add invalid-body 400 tests.",
+        "Extend release smoke to POST /api/user/profile and POST/GET /api/user/platform-state with an authenticated test user."
+      ],
+      "acceptance_criteria": [
+        "Route tests fail if platform_id or onConflict drift.",
+        "Release verification fails on authenticated route/schema drift.",
+        "Deploy logs show authenticated smoke coverage ran."
+      ],
+      "verification_steps": [
+        "Run npx vitest run tests/api/user-endpoints.test.ts.",
+        "Run BASE_URL=<deploy-url> node scripts/ci/release-smoke.mjs with authenticated smoke enabled."
+      ],
+      "prod_verification": [
+        "Current prod health is green but the automated smoke still does not cover authenticated write paths."
+      ],
+      "risk": "low",
+      "effort": "M",
+      "owner_type": "eng",
+      "dependencies": [
+        "AQ-002"
+      ]
+    },
+    {
+      "id": "AQ-004",
+      "priority": "P2",
+      "title": "Enforce server-only import boundaries for admin service-role helpers",
+      "category": "maintainability",
+      "issue_type": "code_defect",
+      "certainty": "observed",
+      "evidence_grade": "E1",
+      "description": "The admin service-role helper is still importable by client code because the module is not explicitly server-only.",
+      "evidence": [
+        "lib/admin-supabase-client.ts:1-23",
+        "lib/admin-supabase-client.ts:207-219",
+        "User browser logs from 2026-03-13"
+      ],
+      "root_cause": "Server/client boundaries rely on developer discipline instead of import guards.",
+      "cluster_id": "RC-004",
+      "proposed_fix": [
+        "Add import 'server-only' to lib/admin-supabase-client.ts.",
+        "Split any browser-safe helpers into a separate module if needed.",
+        "Add a build or unit check that client code cannot import the module."
+      ],
+      "acceptance_criteria": [
+        "Client imports of admin-supabase-client fail deterministically.",
+        "Fresh browser sessions no longer emit the admin env warning."
+      ],
+      "verification_steps": [
+        "Run npm run build.",
+        "Run a fresh browser smoke on affected flows."
+      ],
+      "prod_verification": [
+        "Historical browser warning was observed before the hotfix.",
+        "Current audit did not reproduce the warning on the latest bundle."
+      ],
+      "risk": "low",
+      "effort": "S",
+      "owner_type": "eng"
+    }
+  ],
+  "summary": {
+    "top_3_risks": [
+      "Retry ceilings are not reliably enforced for transient sync failures.",
+      "Malformed platform-state payloads still degrade into server errors instead of client errors.",
+      "Deploy verification can miss authenticated write-path regressions."
+    ],
+    "top_3_quick_wins": [
+      "Persist incremented retry counts in SyncQueue.",
+      "Add Zod validation to /api/user/platform-state.",
+      "Add authenticated release smoke for profile bootstrap plus platform-state write/read."
+    ],
+    "human_verification_needed": [
+      "Confirm malformed platform-state requests return 400 in deployed runtime after validation is added.",
+      "Confirm a fresh browser bundle no longer logs the admin env warning after server-only guards are added.",
+      "Confirm real browser retries stop after the configured max retry count."
+    ],
+    "recommended_next_run": "Run a second diff-first audit over the remaining /api/user/* sync routes after AQ-001 through AQ-004 land."
+  }
+}

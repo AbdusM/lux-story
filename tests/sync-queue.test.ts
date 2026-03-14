@@ -406,8 +406,8 @@ describe('SyncQueue', () => {
       const queue = SyncQueue.getQueue()
       expect(queue).toHaveLength(1)
       expect(queue[0].id).toBe('test-1')
-      // Retries may be 0 on first failure, but action should remain in queue
-      expect(queue[0].retries).toBeGreaterThanOrEqual(0)
+      expect(queue[0].retries).toBe(1)
+      expect(JSON.parse(mockStorage.get('lux-sync-queue') ?? '[]')[0].retries).toBe(1)
     })
 
     test('keeps failed actions in queue', async () => {
@@ -437,8 +437,32 @@ describe('SyncQueue', () => {
       // Action should still be in queue for retry (500 is transient, not permanent)
       const updatedQueue = SyncQueue.getQueue()
       expect(updatedQueue).toHaveLength(1)
-      // Retries may be 0 on first failure, but action should remain in queue
-      expect(updatedQueue[0].retries).toBeGreaterThanOrEqual(0)
+      expect(updatedQueue[0].retries).toBe(1)
+      expect(JSON.parse(mockStorage.get('lux-sync-queue') ?? '[]')[0].retries).toBe(1)
+    })
+
+    test('removes actions once max retries have been exhausted', async () => {
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: false,
+        status: 500,
+        text: async () => 'Internal Server Error'
+      })
+
+      mockStorage.set('lux-sync-queue', JSON.stringify([{
+        id: 'maxed-1',
+        type: 'career_analytics',
+        data: { user_id: 'player_1234567890' },
+        timestamp: Date.now(),
+        retries: 3
+      }]))
+
+      const result = await SyncQueue.processQueue()
+
+      expect(result.success).toBe(true)
+      expect(result.processed).toBe(0)
+      expect(result.failed).toBe(0)
+      expect(SyncQueue.getQueue()).toHaveLength(0)
+      expect(JSON.parse(mockStorage.get('lux-sync-queue') ?? '[]')).toEqual([])
     })
 
     test('continues processing after individual failures', async () => {
@@ -540,8 +564,47 @@ describe('SyncQueue', () => {
       // Action should remain in queue (may or may not have incremented retries)
       const queue = SyncQueue.getQueue()
       expect(queue).toHaveLength(1)
-      // The important thing is the action remains for retry
       expect(queue[0].id).toBe('test-1')
+      expect(queue[0].retries).toBe(1)
+      expect(JSON.parse(mockStorage.get('lux-sync-queue') ?? '[]')[0].retries).toBe(1)
+    })
+
+    test('drops malformed platform_state actions after permanent 400 validation errors', async () => {
+      global.fetch = vi.fn()
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ success: true })
+        })
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 400,
+          statusText: 'Bad Request',
+          text: async () => 'Invalid payload'
+        })
+
+      SyncQueue.addToQueue({
+        id: 'platform-1',
+        type: 'platform_state',
+        data: {
+          user_id: 'player_1234567890',
+          global_flags: { broken: true } as unknown as string[]
+        },
+        timestamp: Date.now()
+      })
+
+      const result = await SyncQueue.processQueue()
+
+      expect(result.success).toBe(true)
+      expect(result.processed).toBe(0)
+      expect(result.failed).toBe(0)
+      expect(SyncQueue.getQueue()).toHaveLength(0)
+      expect(global.fetch).toHaveBeenNthCalledWith(
+        2,
+        '/api/user/platform-state',
+        expect.objectContaining({
+          method: 'POST'
+        })
+      )
     })
   })
 

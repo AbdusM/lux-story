@@ -40,6 +40,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      'server-only': resolve(__dirname, './tests/support/server-only-stub.ts'),
       'next/server': resolve(__dirname, './node_modules/next/server.js'),
       'next/navigation': resolve(__dirname, './node_modules/next/navigation.js'),
       'next/headers': resolve(__dirname, './node_modules/next/headers.js'),

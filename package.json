@@ -102,7 +102,8 @@
     "verify:dialogue-soft-ratchet": "node --loader ./scripts/ts-loader.mjs scripts/verify-dialogue-soft-ratchet.ts",
     "verify:dialogue-node-redirects": "node --loader ./scripts/ts-loader.mjs scripts/verify-dialogue-node-redirects.ts",
     "verify:review-target": "node scripts/ci/verify-review-target.mjs",
-    "verify:release-smoke": "node scripts/ci/release-smoke.mjs"
+    "verify:release-smoke": "node scripts/ci/release-smoke.mjs",
+    "verify:release-smoke:prod": "node scripts/ci/release-smoke.mjs"
   },
   "keywords": [
     "career-exploration",

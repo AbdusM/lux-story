@@ -7,18 +7,89 @@
  *   BASE_URL="https://preview.example.com" node scripts/ci/release-smoke.mjs
  */
 
-const baseUrl = (process.env.BASE_URL || '').trim().replace(/\/+$/, '')
-
-if (!baseUrl) {
-  console.error('Missing BASE_URL. Example: BASE_URL="https://preview.example.com" node scripts/ci/release-smoke.mjs')
-  process.exit(1)
-}
+const DEFAULT_BASE_URL = 'https://lux-story.vercel.app'
+const baseUrl = (process.env.BASE_URL || DEFAULT_BASE_URL).trim().replace(/\/+$/, '')
+const smokeUserId = (process.env.SMOKE_USER_ID || crypto.randomUUID()).trim()
+const cookieJar = new Map()
 
 const checks = []
 
-async function request(path, init = {}) {
+function splitSetCookieHeader(headerValue) {
+  if (!headerValue) return []
+
+  const cookies = []
+  let current = ''
+  let inExpiresAttribute = false
+
+  for (let index = 0; index < headerValue.length; index += 1) {
+    const char = headerValue[index]
+
+    if (char === ',') {
+      if (!inExpiresAttribute) {
+        if (current.trim()) cookies.push(current.trim())
+        current = ''
+        continue
+      }
+    }
+
+    current += char
+
+    const lowerCurrent = current.toLowerCase()
+    if (lowerCurrent.endsWith('expires=')) {
+      inExpiresAttribute = true
+      continue
+    }
+
+    if (inExpiresAttribute && char === ';') {
+      inExpiresAttribute = false
+    }
+  }
+
+  if (current.trim()) cookies.push(current.trim())
+  return cookies
+}
+
+function storeCookies(response) {
+  const setCookieValues =
+    typeof response.headers.getSetCookie === 'function'
+      ? response.headers.getSetCookie()
+      : splitSetCookieHeader(response.headers.get('set-cookie'))
+
+  for (const entry of setCookieValues) {
+    const [pair] = entry.split(';')
+    if (!pair) continue
+    const separatorIndex = pair.indexOf('=')
+    if (separatorIndex <= 0) continue
+
+    const name = pair.slice(0, separatorIndex).trim()
+    const value = pair.slice(separatorIndex + 1).trim()
+    if (!name || !value) continue
+    cookieJar.set(name, value)
+  }
+}
+
+function getCookieHeader() {
+  return Array.from(cookieJar.entries())
+    .map(([name, value]) => `${name}=${value}`)
+    .join('; ')
+}
+
+async function request(path, init = {}, options = {}) {
   const url = `${baseUrl}${path}`
-  const response = await fetch(url, init)
+  const headers = new Headers(init.headers || {})
+  if (options.useCookies && cookieJar.size > 0 && !headers.has('Cookie')) {
+    headers.set('Cookie', getCookieHeader())
+  }
+
+  const response = await fetch(url, {
+    ...init,
+    headers,
+  })
+
+  if (options.captureCookies) {
+    storeCookies(response)
+  }
+
   const text = await response.text()
   let json = null
 
@@ -65,6 +136,7 @@ function assertTruthy(name, condition, detailsIfFail, detailsIfPass = 'ok') {
 
 async function run() {
   console.log(`Release smoke target: ${baseUrl}`)
+  console.log(`Smoke user: ${smokeUserId}`)
 
   const home = await request('/')
   assertStatus('GET /', home.response.status, 200)
@@ -95,6 +167,85 @@ async function run() {
 
   const userSession = await request('/api/user/session')
   assertStatus('GET /api/user/session (unauth)', userSession.response.status, 401)
+
+  const sessionCreate = await request('/api/user/session', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id: smokeUserId }),
+  }, { captureCookies: true })
+  assertStatus('POST /api/user/session', sessionCreate.response.status, 200)
+  assertTruthy(
+    'user-session.created',
+    sessionCreate.json?.success === true && sessionCreate.json?.user_id === smokeUserId,
+    `expected session create success for ${smokeUserId}, got ${JSON.stringify(sessionCreate.json)}`
+  )
+  assertTruthy(
+    'user-session.cookie',
+    cookieJar.size > 0,
+    'expected session cookie to be set'
+  )
+
+  const authedUserSession = await request('/api/user/session', {}, { useCookies: true })
+  assertStatus('GET /api/user/session (auth)', authedUserSession.response.status, 200)
+  assertTruthy(
+    'user-session.authenticated',
+    authedUserSession.json?.authenticated === true && authedUserSession.json?.user_id === smokeUserId,
+    `expected authenticated session for ${smokeUserId}, got ${JSON.stringify(authedUserSession.json)}`
+  )
+
+  const profileEnsure = await request('/api/user/profile', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id: smokeUserId }),
+  }, { useCookies: true })
+  assertStatus('POST /api/user/profile', profileEnsure.response.status, 200)
+  assertTruthy(
+    'profile.ensure',
+    profileEnsure.json?.success === true,
+    `expected profile ensure success, got ${JSON.stringify(profileEnsure.json)}`
+  )
+
+  const platformStatePayload = {
+    user_id: smokeUserId,
+    current_scene: 'release_smoke_scene',
+    global_flags: ['release_smoke_flag'],
+    patterns: {
+      analytical: 1,
+      helping: 0,
+      building: 0,
+      patience: 0,
+      exploring: 0,
+    },
+  }
+  const platformStateWrite = await request('/api/user/platform-state', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(platformStatePayload),
+  }, { useCookies: true })
+  assertStatus('POST /api/user/platform-state', platformStateWrite.response.status, 200)
+  assertTruthy(
+    'platform-state.write',
+    platformStateWrite.json?.success === true,
+    `expected platform-state write success, got ${JSON.stringify(platformStateWrite.json)}`
+  )
+
+  const platformStateRead = await request(
+    `/api/user/platform-state?userId=${encodeURIComponent(smokeUserId)}`,
+    {},
+    { useCookies: true }
+  )
+  assertStatus('GET /api/user/platform-state', platformStateRead.response.status, 200)
+  assertTruthy(
+    'platform-state.read',
+    platformStateRead.json?.success === true &&
+      platformStateRead.json?.state?.user_id === smokeUserId &&
+      platformStateRead.json?.state?.platform_id === 'global' &&
+      platformStateRead.json?.state?.current_scene === platformStatePayload.current_scene &&
+      Array.isArray(platformStateRead.json?.state?.global_flags) &&
+      platformStateRead.json.state.global_flags.includes('release_smoke_flag') &&
+      platformStateRead.json?.state?.patterns?.analytical === 1,
+    `expected persisted platform-state for ${smokeUserId}, got ${JSON.stringify(platformStateRead.json)}`
+  )
 
   const advisor = await request('/api/advisor-briefing', {
     method: 'POST',

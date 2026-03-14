@@ -116,3 +116,21 @@ These prove code-level guardrails locally (not production config):
 - `npm run test:run`
 - `npm run release:security:minimum`
 - `npm run verify:user-id-uuid-readiness` (writes `docs/qa/user-id-uuid-readiness-report.json`; fails if any `player_profiles.user_id` is non-UUID)
+
+## Post-deploy production smoke (E1)
+
+Run this after the production alias is updated:
+
+- `npm run verify:release-smoke:prod`
+
+What it verifies:
+- home route and health endpoints
+- unauthenticated `/api/user/session` still fails closed
+- disposable UUID-backed session bootstrap via `/api/user/session`
+- authenticated `/api/user/profile` ensure
+- authenticated `/api/user/platform-state` write + read on the canonical `platform_id = 'global'` row
+- CSP guardrails
+
+To target a preview deployment instead of production:
+
+- `BASE_URL="https://preview.example.com" npm run verify:release-smoke`

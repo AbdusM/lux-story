@@ -17,29 +17,42 @@ const mockSupabaseResponse = {
   error: null as Error | null
 }
 
+const mockSelectSingle = vi.fn(() => Promise.resolve(mockSupabaseResponse))
+const mockSelectChain = {
+  eq: vi.fn(),
+  order: vi.fn(),
+  abortSignal: vi.fn(),
+  single: mockSelectSingle,
+}
+mockSelectChain.eq.mockImplementation(() => mockSelectChain)
+mockSelectChain.order.mockImplementation(() => Promise.resolve(mockSupabaseResponse))
+mockSelectChain.abortSignal.mockImplementation(() => Promise.resolve(mockSupabaseResponse))
+
+const mockSelect = vi.fn(() => mockSelectChain)
+const mockUpsertSingle = vi.fn(() => Promise.resolve(mockSupabaseResponse))
+const mockUpsertSelect = vi.fn(() => ({
+  single: mockUpsertSingle
+}))
+const mockUpsert = vi.fn(() => ({
+  select: mockUpsertSelect
+}))
+const mockInsertSingle = vi.fn(() => Promise.resolve(mockSupabaseResponse))
+const mockInsertSelect = vi.fn(() => ({
+  single: mockInsertSingle
+}))
+const mockInsert = vi.fn(() => ({
+  select: mockInsertSelect
+}))
+const mockFrom = vi.fn(() => ({
+  select: mockSelect,
+  upsert: mockUpsert,
+  insert: mockInsert
+}))
+
 vi.mock('@supabase/supabase-js', () => ({
   createClient: vi.fn(() => {
-    const selectChain = {
-      eq: vi.fn(() => selectChain),
-      order: vi.fn(() => Promise.resolve(mockSupabaseResponse)),
-      abortSignal: vi.fn(() => Promise.resolve(mockSupabaseResponse)),
-      single: vi.fn(() => Promise.resolve(mockSupabaseResponse)),
-    }
-
     return {
-      from: vi.fn(() => ({
-        select: vi.fn(() => selectChain),
-        upsert: vi.fn(() => ({
-          select: vi.fn(() => ({
-            single: vi.fn(() => Promise.resolve(mockSupabaseResponse))
-          }))
-        })),
-        insert: vi.fn(() => ({
-          select: vi.fn(() => ({
-            single: vi.fn(() => Promise.resolve(mockSupabaseResponse))
-          }))
-        }))
-      }))
+      from: mockFrom
     }
   })
 }))
@@ -134,6 +147,24 @@ describe('Platform State API (/api/user/platform-state)', () => {
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
       expect(ensurePlayerProfile).toHaveBeenCalledWith(TEST_USER_ID, 'platform-state')
+      expect(mockFrom).toHaveBeenCalledWith('platform_states')
+      expect(mockUpsert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          user_id: TEST_USER_ID,
+          platform_id: 'global',
+          current_scene: 'maya_introduction',
+          global_flags: ['met_samuel', 'met_maya'],
+          patterns: {
+            analytical: 5,
+            helping: 3,
+            building: 2,
+            patience: 4,
+            exploring: 1
+          },
+          updated_at: expect.any(String)
+        }),
+        { onConflict: 'user_id,platform_id' }
+      )
     })
 
     test('should reject user_id mismatch', async () => {
@@ -163,6 +194,52 @@ describe('Platform State API (/api/user/platform-state)', () => {
 
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
+    })
+
+    test('should reject invalid global_flags payloads before touching the database', async () => {
+      const { POST } = await import('@/app/api/user/platform-state/route')
+      const { ensurePlayerProfile } = await import('@/lib/api/ensure-player-profile')
+
+      const request = createRequest('http://localhost:3000/api/user/platform-state', {
+        method: 'POST',
+        cookies: sessionCookieFor(),
+        body: {
+          user_id: TEST_USER_ID,
+          global_flags: { met_samuel: true } as unknown as string[]
+        }
+      })
+
+      const response = await POST(request)
+      const data = await response.json()
+
+      expect(response.status).toBe(400)
+      expect(data.error).toBe('Invalid payload')
+      expect(ensurePlayerProfile).not.toHaveBeenCalled()
+      expect(mockUpsert).not.toHaveBeenCalled()
+    })
+
+    test('should reject invalid pattern scores before touching the database', async () => {
+      const { POST } = await import('@/app/api/user/platform-state/route')
+      const { ensurePlayerProfile } = await import('@/lib/api/ensure-player-profile')
+
+      const request = createRequest('http://localhost:3000/api/user/platform-state', {
+        method: 'POST',
+        cookies: sessionCookieFor(),
+        body: {
+          user_id: TEST_USER_ID,
+          patterns: {
+            analytical: -1
+          }
+        }
+      })
+
+      const response = await POST(request)
+      const data = await response.json()
+
+      expect(response.status).toBe(400)
+      expect(data.error).toBe('Invalid payload')
+      expect(ensurePlayerProfile).not.toHaveBeenCalled()
+      expect(mockUpsert).not.toHaveBeenCalled()
     })
 
     test('should handle database errors gracefully', async () => {

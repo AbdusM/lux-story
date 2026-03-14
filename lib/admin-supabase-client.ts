@@ -18,6 +18,8 @@
  * - Current admin access is role-based (Supabase session + profiles.role).
  */
 
+import 'server-only'
+
 import { createClient } from '@supabase/supabase-js'
 import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'

@@ -2,6 +2,7 @@
 
 ## Current Source of Truth (Use These First)
 
+- `2026-03-13-sync-platform-state-audit-findings.md`: current diff-first reliability/security audit for the sync queue and `platform-state` incident surface, with root-cause clusters and fix queue.
 - `2026-03-01-doc-reconciliation-status.md`: canonical reconciliation map for what is current vs historical.
 - `../03_PROCESS/RELEASE_READINESS_CHECKLIST.md`: release-time operational verifications (branch protection, UUID-only IDs, session secret).
 - `2026-03-02-release-readiness-gate-status.md`: latest pass/fail gate snapshot with exact manual actions required before release.

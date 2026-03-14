@@ -1,12 +1,13 @@
 # Process Hub
 
-Last updated: 2026-03-07
+Last updated: 2026-03-13
 
 ## Current Release-Truth Docs
 
 - Release readiness checklist: `docs/03_PROCESS/RELEASE_READINESS_CHECKLIST.md`
 - QA reconciliation status: `docs/qa/2026-03-01-doc-reconciliation-status.md`
 - CI gate definitions: `.github/workflows/test.yml`
+- Audit system: `docs/audits/AUDIT_BIBLE.md` and `docs/audits/AUDIT_RUNBOOK.md`
 
 ## Purpose
 
@@ -41,6 +42,7 @@ This folder is the operational hub for implementation, QA, and release workflow.
 - Testing strategy: `docs/03_PROCESS/01-testing.md`
 - Delivery methodology: `docs/03_PROCESS/02-methodology.md`
 - Document control policy: `docs/03_PROCESS/03-document-control.md`
+- Audit framework and output schema: `docs/audits/AUDIT_BIBLE.md` and `docs/audits/AUDIT_OUTPUT_SCHEMA.json`
 - UI / design system agent prompt: `docs/03_PROCESS/onboarding/03-design-systems-engineer-prompt.md`
 - Character deep coverage audit: `docs/03_PROCESS/21-character-deep-coverage-audit.md`
 - Dialogue style guardrails: `docs/03_PROCESS/22-dialogue-guidelines.md`

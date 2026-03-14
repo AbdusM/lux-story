@@ -1,6 +1,6 @@
 # Lux Story Documentation
 
-Last updated: 2026-03-02
+Last updated: 2026-03-13
 
 ## Canonical Structure
 
@@ -19,6 +19,7 @@ The following paths remain top-level because scripts and CI reference them direc
 - `docs/testing/` - Selector standards and E2E testing guidance.
 - `docs/qa/` - Baselines and generated QA reports.
 - `docs/adr/` - Architecture Decision Record templates.
+- `docs/audits/` - Canonical audit standards, schema, runbook, and audit-system history.
 
 Do not relocate these paths without updating all script references.
 
@@ -32,7 +33,8 @@ Do not relocate these paths without updating all script references.
 6. Dialogue style guardrails: `docs/03_PROCESS/22-dialogue-guidelines.md`
 7. Dialogue external review analysis: `docs/03_PROCESS/23-dialogue-external-review-analysis.md`
 8. Dialogue topology migration protocol: `docs/03_PROCESS/24-dialogue-topology-migration-protocol.md`
-9. Agent continuity + UI prompt: `docs/qa/2026-03-02-agentic-session-handoff.md` and `docs/03_PROCESS/onboarding/03-design-systems-engineer-prompt.md`
+9. Audit system: `docs/audits/AUDIT_BIBLE.md` and `docs/audits/AUDIT_RUNBOOK.md`
+10. Agent continuity + UI prompt: `docs/qa/2026-03-02-agentic-session-handoff.md` and `docs/03_PROCESS/onboarding/03-design-systems-engineer-prompt.md`
 
 Primary product directives:
 - `docs/00_PRD.01 - AAA.md`
@@ -41,6 +43,7 @@ Primary product directives:
 ## Document Control Rules
 
 - New active docs should go under `00_CORE`, `01_MECHANICS`, `02_WORLD`, or `03_PROCESS`.
+- Audit-system docs belong under `docs/audits/`.
 - Keep active docs at depth <= 3 when practical.
 - Archive historical material under `docs/03_PROCESS/archive/`.
 - Generated QA artifacts belong in `docs/qa/`.

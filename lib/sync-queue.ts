@@ -20,6 +20,7 @@ import { parseSyncQueue } from './schemas'
 const SYNC_QUEUE_KEY = 'lux-sync-queue'
 const STATIC_EXPORT_DETECTED_KEY = 'lux-static-export-detected'
 const MAX_QUEUE_SIZE = 500 // Prevent unbounded growth
+const MAX_SYNC_RETRIES = 3
 const MAX_RETRY_AGE_MS = 7 * 24 * 60 * 60 * 1000 // 7 days
 const PROFILE_CACHE_KEY = 'profile-existence-cache'
 const PROFILE_CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000 // 24 hours
@@ -269,6 +270,7 @@ export class SyncQueue {
 
     const successfulIds: string[] = []
     const permanentErrorIds: string[] = [] // Actions with permanent errors (405, 404, etc.) that should be removed
+    const exhaustedRetryIds: string[] = []
     const failedActions: QueuedAction[] = []
 
     // Track user IDs we've already ensured exist to avoid duplicate checks
@@ -667,7 +669,7 @@ export class SyncQueue {
         // Permanent errors that should not be retried:
         // 400 (Bad Request), 404 (Not Found), 405 (Method Not Allowed), 422 (Unprocessable Entity)
         const isPermanentError = httpStatus !== null && [400, 404, 405, 422].includes(httpStatus)
-        const willRetry = !isPermanentError && action.retries < 3
+        const willRetry = !isPermanentError && action.retries < MAX_SYNC_RETRIES
 
         // 405 specifically indicates static export mode - API routes don't exist
         // Mark this so we stop trying all API calls, not just this one
@@ -705,9 +707,17 @@ export class SyncQueue {
               httpStatus,
               error: errorMessage.substring(0, 100) // Truncate for logging
             })
-          } else {
+          } else if (willRetry) {
             logger.warn('Sync action failed (will retry)', {
               operation: 'sync-queue.action-failed',
+              type: action.type,
+              id: action.id?.substring(0, 8) || 'unknown',
+              httpStatus,
+              retries: action.retries || 0
+            })
+          } else {
+            logger.debug('Sync action failed (max retries reached - will remove)', {
+              operation: 'sync-queue.max-retries',
               type: action.type,
               id: action.id?.substring(0, 8) || 'unknown',
               httpStatus,
@@ -745,6 +755,7 @@ export class SyncQueue {
           failedActions.push({ ...action, retries: action.retries + 1 })
         } else {
           // Max retries reached - remove from queue
+          exhaustedRetryIds.push(action.id)
           if (process.env.NODE_ENV === 'development') {
             console.warn(`⚠️ [SyncQueue] Max retries reached, removing from queue:`, {
               type: action.type,
@@ -763,10 +774,17 @@ export class SyncQueue {
       }
     }
 
-    // Remove successful actions and permanent errors from queue
-    const actionsToRemove = [...successfulIds, ...permanentErrorIds]
-    if (actionsToRemove.length > 0) {
-      this.removeFromQueue(actionsToRemove)
+    const actionsToRemove = new Set([...successfulIds, ...permanentErrorIds, ...exhaustedRetryIds])
+
+    // Persist queue mutations in one pass so retry increments are not lost.
+    if (actionsToRemove.size > 0 || failedActions.length > 0) {
+      const failedActionsById = new Map(failedActions.map((action) => [action.id, action]))
+      const remainingQueue = this.getQueue()
+        .filter((action) => !actionsToRemove.has(action.id))
+        .map((action) => failedActionsById.get(action.id) ?? action)
+
+      this.persistQueue(remainingQueue)
+
       if (successfulIds.length > 0) {
         // Success log removed - too verbose
       }
@@ -781,10 +799,7 @@ export class SyncQueue {
       }
     }
 
-    // Update retry counts for failed actions
     if (failedActions.length > 0) {
-      const remainingQueue = this.getQueue()
-      this.persistQueue(remainingQueue)
       console.warn(`⚠️ [SyncQueue] ${failedActions.length} actions failed, will retry later`)
     }
 
